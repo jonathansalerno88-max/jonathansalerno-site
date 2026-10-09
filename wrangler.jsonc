@@ -1,0 +1,11 @@
+{
+  // Static site for jonathansalerno.org. No entrypoint: the Worker serves
+  // the files under public/ and nothing else. The name must keep matching
+  // the existing Worker, or a deploy would create a second one and the
+  // custom domain would stay on the old.
+  "name": "wandering-morning-3bfe",
+  "compatibility_date": "2026-10-09",
+  "assets": {
+    "directory": "./public"
+  }
+}
