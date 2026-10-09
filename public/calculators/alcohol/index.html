@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Alcohol</title>
+<meta name="description" content="Grams of ethanol from what was actually drunk, and the same week expressed in four national definitions of a standard unit.">
+<meta name="author" content="Jonathan Salerno">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M6 11h20M6 16h20M6 21h12' stroke='%235B9BE5' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Alcohol">
+<link rel="stylesheet" href="/calculators/tools.css">
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="masthead">
+      <a class="back" href="/calculators/" data-t="back"></a>
+      <select id="lang" aria-label="Language">
+        <option value="en">English</option><option value="it">Italiano</option>
+        <option value="es">Espa&#241;ol</option><option value="fr">Fran&#231;ais</option>
+        <option value="de">Deutsch</option><option value="pt">Portugu&#234;s</option>
+      </select>
+    </div>
+    <h1 data-t="alTitle" data-title="alTitle"></h1>
+    <p class="standfirst" data-t="alLead"></p>
+  </header>
+
+  <div class="block">
+    <h2 class="sec" data-t="alWhat"></h2>
+    <div class="cards" id="cards"></div>
+    <p class="formula">g = ml &#215; (ABV / 100) &#215; 0.8</p>
+    <div class="result"><span class="n" id="out">&#8212;</span><span class="u" data-t="alUnit"></span><span class="badge b-none" id="bg">&#8212;</span></div>
+    <p class="note" id="sub"></p>
+    <p class="note" id="kcal"></p>
+  </div>
+
+  <div class="block sep">
+    <h2 class="sec" data-t="alStd"></h2>
+    <table><thead><tr><th data-t="thStd"></th><th data-t="thSameWeek"></th></tr></thead><tbody id="tb"></tbody></table>
+    <p class="note" data-t="alNote"></p>
+    <p class="note" data-t="alNote2"></p>
+    <ul class="srcs" id="srcs"></ul>
+  </div>
+
+  <div class="disclaimer"><p data-t="disc"></p></div>
+  <footer><p data-t="foot"></p></footer>
+</div>
+<script src="/calculators/i18n.js"></script>
+<script src="/calculators/core.js"></script>
+<script>
+/* abv and sugar band per drink type, sizes in ml — as in the source tool */
+var CATS = [
+ {k:'beer',     emo:'🍺', types:[[4.5,'medium'],[5,'medium'],[7,'medium'],[9,'medium'],[12,'medium']],
+  fmts:[330,400,473,500,568,1000], dT:1, dF:0, dQ:2},
+ {k:'wine',     emo:'🍷', types:[[7,'high'],[12,'low'],[13,'low'],[17,'high']],
+  fmts:[100,125,175,250,750], dT:1, dF:1, dQ:3},
+ {k:'spark',    emo:'🥂', types:[[11.5,'low'],[11,'high']],
+  fmts:[75,125,750], dT:0, dF:1, dQ:0},
+ {k:'spirit',   emo:'🥃', types:[[40,'low'],[20,'high'],[31.5,'high'],[31.5,'medium']],
+  fmts:[25,30,40,50], dT:0, dF:2, dQ:0},
+ {k:'cocktail', emo:'🍸', types:[[30,'low'],[10,'medium'],[15,'high'],[9,'high'],[22,'high'],[30,'high']],
+  fmts:[90,150,200,300,400], dT:0, dF:1, dQ:0}
+];
+var SUGAR_KCAL = {low:0, medium:20, high:60};
+var STD_G = [10, 12, 8, 14];
+var BANDS = [{max:140, tone:'good'},{max:280, tone:'warn'},{max:Infinity, tone:'flag'}];
+var state = CATS.map(function(c){ return {ty:c.dT, fm:c.dF, q:c.dQ}; });
+var stdIdx = 0;
+
+function buildCards(){
+  var host = document.getElementById('cards');
+  host.innerHTML = '';
+  CATS.forEach(function(c, ci){
+    var d = document.createElement('div'); d.className = 'card'; d.id = 'card' + ci;
+    d.innerHTML =
+      '<div class="hd"><span class="emo">' + c.emo + '</span>'
+      + '<span class="nm" id="nm' + ci + '"></span>'
+      + '<span class="sug" id="sg' + ci + '"></span></div>'
+      + '<div class="row">'
+      +   '<div class="f"><label for="ty' + ci + '" id="lty' + ci + '"></label><select id="ty' + ci + '"></select></div>'
+      +   '<div class="f"><label for="fm' + ci + '" id="lfm' + ci + '"></label><select id="fm' + ci + '"></select></div>'
+      +   '<div class="f"><label for="q' + ci + '" id="lq' + ci + '"></label>'
+      +     '<input id="q' + ci + '" type="number" min="0" step="1" value="' + c.dQ + '"></div>'
+      + '</div><p class="out" id="o' + ci + '"></p>';
+    host.appendChild(d);
+  });
+  CATS.forEach(function(c, ci){
+    document.getElementById('ty' + ci).addEventListener('change', function(){ state[ci].ty = this.selectedIndex; calc(); });
+    document.getElementById('fm' + ci).addEventListener('change', function(){ state[ci].fm = this.selectedIndex; calc(); });
+    document.getElementById('q' + ci).addEventListener('input', function(){
+      var v = parseFloat(this.value); state[ci].q = (isFinite(v) && v >= 0) ? v : 0; calc(); });
+  });
+}
+
+function calc(){
+  var grams = 0, sugar = 0;
+  CATS.forEach(function(c, ci){
+    var s = state[ci], ty = c.types[s.ty], ml = c.fmts[s.fm];
+    var g = s.q * ml * (ty[0]/100) * 0.8;
+    grams += g;
+    sugar += s.q * (ml/100) * SUGAR_KCAL[ty[1]];
+
+    document.getElementById('nm' + ci).textContent = t('alCats')[ci];
+    var sg = document.getElementById('sg' + ci);
+    sg.textContent = t('sug')[ty[1]]; sg.className = 'sug s-' + ty[1];
+    document.getElementById('lty' + ci).textContent = t('alType');
+    document.getElementById('lfm' + ci).textContent = t('alFmt');
+    document.getElementById('lq' + ci).textContent = t('alQty');
+    opts(document.getElementById('ty' + ci), c.types.map(function(x, k){
+      return t('alTypes')[c.k][k] + ' · ' + fmt(x[0],1) + '%'; }), s.ty);
+    opts(document.getElementById('fm' + ci), c.fmts.map(function(m){
+      return fmt(m,0) + ' ml'; }), s.fm);
+    document.getElementById('card' + ci).className = 'card' + (s.q > 0 ? ' active' : '');
+    document.getElementById('o' + ci).textContent = s.q > 0
+      ? fmt(s.q,0) + ' × ' + fmt(ml,0) + ' ml · ' + fmt(ty[0],1) + '% = ' + fmt(g,0) + ' g'
+      : '—';
+  });
+
+  var b = band(grams, BANDS), i = BANDS.indexOf(b);
+  document.getElementById('out').textContent = fmt(grams,0);
+  setBadge(document.getElementById('bg'), grams > 0 ? b.tone : null, grams > 0 ? t('alBands')[i] : '—');
+  document.getElementById('sub').innerHTML = grams > 0
+    ? t('alSub').replace('{u}', fmt(grams/STD_G[stdIdx], 1)) : '';
+  document.getElementById('kcal').textContent = grams > 0
+    ? t('alKcal').replace('{a}', fmt(grams*7,0)).replace('{s}', fmt(sugar,0))
+                 .replace('{t}', fmt(grams*7 + sugar,0)) : '';
+  rows(document.getElementById('tb'), STD_G, stdIdx, [
+    function(g, k){ return t('alStdOpts')[k]; },
+    function(g){ return grams > 0 ? fmt(grams/g,1) + ' ' + t('alUnits') : '—'; }
+  ]);
+  Array.prototype.forEach.call(document.getElementById('tb').children, function(tr, k){
+    tr.style.cursor = 'pointer';
+    tr.onclick = function(){ stdIdx = k; calc(); };
+  });
+  srcList(document.getElementById('srcs'), t('alSrcs'));
+}
+
+buildCards();
+initTool(calc);
+</script>
+</body>
+</html>

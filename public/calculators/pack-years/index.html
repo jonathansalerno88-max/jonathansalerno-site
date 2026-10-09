@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pack-years</title>
+<meta name="description" content="Cumulative tobacco exposure in pack-years, with the COPD and lung cancer screening thresholds and the arithmetic error that distorts them.">
+<meta name="author" content="Jonathan Salerno">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M6 11h20M6 16h20M6 21h12' stroke='%235B9BE5' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pack-years">
+<link rel="stylesheet" href="/calculators/tools.css">
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="masthead">
+      <a class="back" href="/calculators/" data-t="back"></a>
+      <select id="lang" aria-label="Language">
+        <option value="en">English</option><option value="it">Italiano</option>
+        <option value="es">Espa&#241;ol</option><option value="fr">Fran&#231;ais</option>
+        <option value="de">Deutsch</option><option value="pt">Portugu&#234;s</option>
+      </select>
+    </div>
+    <h1 data-t="pyTitle" data-title="pyTitle"></h1>
+    <p class="standfirst" data-t="pyLead"></p>
+  </header>
+
+  <div class="block">
+    <div class="fields">
+      <div class="f"><label for="c" data-t="pyC"></label><input id="c" type="number" min="0" step="1" value="20"></div>
+      <div class="f"><label for="y" data-t="pyY"></label><input id="y" type="number" min="0" step="0.5" value="15"></div>
+    </div>
+    <p class="formula" id="fx"></p>
+    <div class="result"><span class="n" id="out">&#8212;</span><span class="u" data-t="pyU"></span><span class="badge b-none" id="bg">&#8212;</span></div>
+    <table><thead><tr><th data-t="thPy"></th><th data-t="thMeans"></th></tr></thead><tbody id="tb"></tbody></table>
+    <p class="note" data-t="pyNote"></p>
+    <ul class="srcs" id="srcs"></ul>
+  </div>
+
+  <div class="disclaimer"><p data-t="disc"></p></div>
+  <footer><p data-t="foot"></p></footer>
+</div>
+<script src="/calculators/i18n.js"></script>
+<script src="/calculators/core.js"></script>
+<script>
+var BANDS = [
+  {max:10, t:'lt', b:10, d:0, tone:'good'},
+  {max:20, t:'r',  a:10, b:19, d:0, tone:'warn'},
+  {max:Infinity, t:'ge', a:20, d:0, tone:'flag'}
+];
+function calc(){
+  var c = num('c'), y = num('y');
+  var v = (c !== null && y !== null) ? (c/20)*y : null;
+  var b = (v !== null) ? band(v, BANDS) : null, i = b ? BANDS.indexOf(b) : -1;
+  document.getElementById('fx').textContent = t('pyWord') + ' = (' + (c !== null ? c : '?')
+    + ' / 20) × ' + (y !== null ? y : '?') + (v !== null ? ' = ' + fmt(v,1) : '');
+  document.getElementById('out').textContent = v !== null ? fmt(v,1) : '—';
+  setBadge(document.getElementById('bg'), b && b.tone, b ? t('pyBand')[i] : '—');
+  rows(document.getElementById('tb'), BANDS, i, [range, function(x,k){ return t('pyBand')[k]; }]);
+  srcList(document.getElementById('srcs'), t('pySrcs'));
+}
+onInput(['c','y'], calc);
+initTool(calc);
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Body mass index</title>
+<meta name="description" content="Body mass index with the WHO bands, and what a ratio of mass to height cannot distinguish.">
+<meta name="author" content="Jonathan Salerno">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M6 11h20M6 16h20M6 21h12' stroke='%235B9BE5' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Body mass index">
+<link rel="stylesheet" href="/calculators/tools.css">
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="masthead">
+      <a class="back" href="/calculators/" data-t="back"></a>
+      <select id="lang" aria-label="Language">
+        <option value="en">English</option><option value="it">Italiano</option>
+        <option value="es">Espa&#241;ol</option><option value="fr">Fran&#231;ais</option>
+        <option value="de">Deutsch</option><option value="pt">Portugu&#234;s</option>
+      </select>
+    </div>
+    <h1 data-t="bmiTitle" data-title="bmiTitle"></h1>
+    <p class="standfirst" data-t="bmiLead"></p>
+  </header>
+
+  <div class="block">
+    <div class="fields">
+      <div class="f"><label for="w" data-t="bmiW"></label><input id="w" type="number" min="0" step="0.1" value="70"></div>
+      <div class="f"><label for="h" data-t="bmiHt"></label><input id="h" type="number" min="0" step="0.5" value="175"></div>
+    </div>
+    <p class="formula" data-t="bmiF"></p>
+    <div class="result"><span class="n" id="out">&#8212;</span><span class="u">kg/m&#178;</span><span class="badge b-none" id="bg">&#8212;</span></div>
+    <table><thead><tr><th data-t="thBmi"></th><th data-t="thCat"></th></tr></thead><tbody id="tb"></tbody></table>
+    <p class="note" data-t="bmiNote"></p>
+    <ul class="srcs" id="srcs"></ul>
+  </div>
+
+  <div class="disclaimer"><p data-t="disc"></p></div>
+  <footer><p data-t="foot"></p></footer>
+</div>
+<script src="/calculators/i18n.js"></script>
+<script src="/calculators/core.js"></script>
+<script>
+var BANDS = [
+  {max:18.5, t:'lt', b:18.5, d:1, tone:'warn'},
+  {max:25,   t:'r',  a:18.5, b:24.9, d:1, tone:'good'},
+  {max:30,   t:'r',  a:25,   b:29.9, d:1, tone:'warn'},
+  {max:35,   t:'r',  a:30,   b:34.9, d:1, tone:'flag'},
+  {max:40,   t:'r',  a:35,   b:39.9, d:1, tone:'flag'},
+  {max:Infinity, t:'ge', a:40, d:1, tone:'flag'}
+];
+function calc(){
+  var w = num('w'), h = num('h');
+  var v = (w && h) ? w / Math.pow(h/100, 2) : null;
+  var b = v ? band(v, BANDS) : null, i = b ? BANDS.indexOf(b) : -1;
+  document.getElementById('out').textContent = v ? fmt(v,1) : '—';
+  setBadge(document.getElementById('bg'), b && b.tone, b ? t('bmiCat')[i] : '—');
+  rows(document.getElementById('tb'), BANDS, i, [range, function(x,k){ return t('bmiCat')[k]; }]);
+  srcList(document.getElementById('srcs'), t('bmiSrcs'));
+}
+onInput(['w','h'], calc);
+initTool(calc);
+</script>
+</body>
+</html>

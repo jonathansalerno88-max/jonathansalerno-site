@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Physical activity</title>
+<meta name="description" content="Weekly moderate-equivalent minutes against the WHO target, with heart-rate zones estimated from age and the talk test.">
+<meta name="author" content="Jonathan Salerno">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M6 11h20M6 16h20M6 21h12' stroke='%235B9BE5' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Physical activity">
+<link rel="stylesheet" href="/calculators/tools.css">
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="masthead">
+      <a class="back" href="/calculators/" data-t="back"></a>
+      <select id="lang" aria-label="Language">
+        <option value="en">English</option><option value="it">Italiano</option>
+        <option value="es">Espa&#241;ol</option><option value="fr">Fran&#231;ais</option>
+        <option value="de">Deutsch</option><option value="pt">Portugu&#234;s</option>
+      </select>
+    </div>
+    <h1 data-t="paTitle" data-title="paTitle"></h1>
+    <p class="standfirst" data-t="paLead"></p>
+  </header>
+
+  <div class="block">
+    <div class="fields">
+      <div class="f"><label for="m" data-t="paM"></label><input id="m" type="number" min="0" step="5" value="120"></div>
+      <div class="f"><label for="v" data-t="paV"></label><input id="v" type="number" min="0" step="5" value="30"></div>
+      <div class="f"><label for="age" data-t="paAge"></label><input id="age" type="number" min="10" max="110" step="1" value="30"></div>
+    </div>
+    <p class="formula" id="fx"></p>
+    <div class="result"><span class="n" id="out">&#8212;</span><span class="u" data-t="paU"></span><span class="badge b-none" id="bg">&#8212;</span></div>
+    <table><thead><tr><th data-t="thMin"></th><th data-t="thMeans"></th></tr></thead><tbody id="tb"></tbody></table>
+  </div>
+
+  <div class="block sep">
+    <h2 class="sec" data-t="paHrTitle"></h2>
+    <p class="formula" id="hrf"></p>
+    <table><thead><tr><th data-t="thZone"></th><th data-t="thHr"></th></tr></thead><tbody id="hz"></tbody></table>
+    <table style="margin-top:.4rem"><thead><tr><th data-t="thZone"></th><th data-t="thFeels"></th></tr></thead><tbody id="tt"></tbody></table>
+    <p class="note" data-t="paNote"></p>
+    <ul class="srcs" id="srcs"></ul>
+  </div>
+
+  <div class="disclaimer"><p data-t="disc"></p></div>
+  <footer><p data-t="foot"></p></footer>
+</div>
+<script src="/calculators/i18n.js"></script>
+<script src="/calculators/core.js"></script>
+<script>
+var BANDS = [
+  {max:150, t:'lt', b:150, d:0, tone:'warn'},
+  {max:300, t:'r',  a:150, b:300, d:0, tone:'good'},
+  {max:Infinity, t:'gt', a:300, d:0, tone:'good'}
+];
+/* zone fractions of HRmax, as used in the source tool */
+var ZONES = [[0.50,0.70],[0.70,0.85]];
+
+function calc(){
+  var m = num('m'), vg = num('v');
+  var tot = (m !== null && vg !== null) ? m + 2*vg : null;
+  var b = (tot !== null) ? band(tot, BANDS) : null, i = b ? BANDS.indexOf(b) : -1;
+  document.getElementById('fx').textContent = t('paF') + (m !== null ? m : '?')
+    + ' + 2 × ' + (vg !== null ? vg : '?') + (tot !== null ? ' = ' + fmt(tot,0) : '');
+  document.getElementById('out').textContent = tot !== null ? fmt(tot,0) : '—';
+  setBadge(document.getElementById('bg'), b && b.tone, b ? t('paBand')[i] : '—');
+  rows(document.getElementById('tb'), BANDS, i, [range, function(x,k){ return t('paBand')[k]; }]);
+
+  var age = num('age');
+  var hr = (age && age >= 10 && age <= 110) ? 220 - age : null;
+  document.getElementById('hrf').textContent = t('paHrMax') + ' = 220 − '
+    + (age !== null ? age : '?') + (hr !== null ? ' = ' + fmt(hr,0) : '');
+  rows(document.getElementById('hz'), ZONES, -1, [
+    function(z,k){ return t('paZones')[k]; },
+    function(z){ return hr === null ? '—'
+      : fmt(Math.round(hr*z[0]),0) + ' – ' + fmt(Math.round(hr*z[1]),0) + ' bpm ('
+        + fmt(z[0]*100,0) + '–' + fmt(z[1]*100,0) + '%)'; }
+  ]);
+  rows(document.getElementById('tt'), ZONES, -1, [
+    function(z,k){ return t('paZones')[k]; },
+    function(z,k){ return t('paFeels')[k]; }
+  ]);
+  srcList(document.getElementById('srcs'), t('paSrcs'));
+}
+onInput(['m','v','age'], calc);
+initTool(calc);
+</script>
+</body>
+</html>
