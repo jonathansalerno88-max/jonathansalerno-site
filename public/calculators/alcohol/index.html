@@ -52,7 +52,7 @@
 /* abv and sugar band per drink type, sizes in ml — as in the source tool */
 var CATS = [
  {k:'beer',     emo:'🍺', types:[[4.5,'medium'],[5,'medium'],[7,'medium'],[9,'medium'],[12,'medium']],
-  fmts:[330,400,473,500,568,1000], dT:1, dF:0, dQ:2},
+  fmts:[330,400,473,500,568,660,1000], dT:1, dF:0, dQ:2},
  {k:'wine',     emo:'🍷', types:[[7,'high'],[12,'low'],[13,'low'],[17,'high']],
   fmts:[100,125,175,250,750], dT:1, dF:1, dQ:3},
  {k:'spark',    emo:'🥂', types:[[11.5,'low'],[11,'high']],
@@ -62,6 +62,7 @@ var CATS = [
  {k:'cocktail', emo:'🍸', types:[[30,'low'],[10,'medium'],[15,'high'],[9,'high'],[22,'high'],[30,'high']],
   fmts:[90,150,200,300,400], dT:0, dF:1, dQ:0}
 ];
+function size(m){ return m >= 1000 ? fmt(m/1000,0) + ' L' : fmt(m,0) + ' ml'; }
 var SUGAR_KCAL = {low:0, medium:20, high:60};
 var STD_G = [10, 12, 8, 14];
 var BANDS = [{max:140, tone:'good'},{max:280, tone:'warn'},{max:Infinity, tone:'flag'}];
@@ -109,11 +110,10 @@ function calc(){
     document.getElementById('lq' + ci).textContent = t('alQty');
     opts(document.getElementById('ty' + ci), c.types.map(function(x, k){
       return t('alTypes')[c.k][k] + ' · ' + fmt(x[0],1) + '%'; }), s.ty);
-    opts(document.getElementById('fm' + ci), c.fmts.map(function(m){
-      return fmt(m,0) + ' ml'; }), s.fm);
+    opts(document.getElementById('fm' + ci), c.fmts.map(size), s.fm);
     document.getElementById('card' + ci).className = 'card' + (s.q > 0 ? ' active' : '');
     document.getElementById('o' + ci).textContent = s.q > 0
-      ? fmt(s.q,0) + ' × ' + fmt(ml,0) + ' ml · ' + fmt(ty[0],1) + '% = ' + fmt(g,0) + ' g'
+      ? fmt(s.q,0) + ' × ' + size(ml) + ' · ' + fmt(ty[0],1) + '% = ' + fmt(g,0) + ' g'
       : '—';
   });
 
