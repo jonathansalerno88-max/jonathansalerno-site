@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jonathan Salerno</title>
+<meta name="description" content="Jonathan Salerno — medical student in Florence working on nosology, the boundary of secondary prevention, and the geometric reading of enzyme kinetics.">
+<meta name="author" content="Jonathan Salerno">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Jonathan Salerno">
+<meta property="og:description" content="Nosology, the boundary of secondary prevention, and the geometric reading of enzyme kinetics.">
+<style>
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-sans-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:italic;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-sans-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/ibm-plex-sans-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/ibm-plex-sans-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-sans-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:italic;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-sans-latin-ext-400-italic.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/ibm-plex-sans-latin-ext-500-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/ibm-plex-sans-latin-ext-600-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-sans-greek-400-normal.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Sans';font-style:italic;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-sans-greek-400-italic.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/ibm-plex-sans-greek-500-normal.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/ibm-plex-sans-greek-600-normal.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-serif-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:italic;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-serif-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/ibm-plex-serif-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-serif-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Serif';font-style:italic;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-serif-latin-ext-400-italic.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/ibm-plex-serif-latin-ext-500-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/ibm-plex-mono-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-mono-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/ibm-plex-mono-latin-ext-500-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+
+:root{
+  --paper:#FBFCFD; --ink:#16222E; --mut:#55697A; --faint:#8696A4;
+  --rule:#DDE4EA; --link:#1456A8; --mark:#B5520C; --axis:#9DACB9;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0E151B; --ink:#E2E9EF; --mut:#9BAAB7; --faint:#6C7D8C;
+  --rule:#27343F; --link:#6FA8EA; --mark:#F08A3C; --axis:#50616F;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#0E151B; --ink:#E2E9EF; --mut:#9BAAB7; --faint:#6C7D8C;
+  --rule:#27343F; --link:#6FA8EA; --mark:#F08A3C; --axis:#50616F;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:17px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.page{max-width:40rem; margin:0 auto; padding:clamp(2.5rem,7vw,5.5rem) 16px clamp(3rem,8vw,6rem)}
+
+a{color:var(--link); text-decoration:none; border-bottom:1px solid color-mix(in srgb, var(--link) 32%, transparent)}
+a:hover{border-bottom-color:var(--link)}
+a:focus-visible{outline:2px solid var(--link); outline-offset:3px; border-radius:2px}
+
+/* ── masthead ───────────────────────────── */
+.top{display:flex; gap:clamp(1.25rem,4vw,2.75rem); align-items:center; flex-wrap:wrap}
+.top .who{flex:1 1 17rem; min-width:0}
+h1{
+  font-family:var(--serif); font-weight:500;
+  font-size:clamp(2.35rem,6.4vw,3.25rem); line-height:1.05;
+  letter-spacing:-.021em; margin:0 0 .5rem;
+}
+.sub{color:var(--mut); font-size:.95rem; margin:0}
+.sub em{font-family:var(--serif); font-style:italic}
+
+figure.plane{margin:.4rem 0 0; flex:0 0 auto}
+figure.plane svg{display:block; width:156px; height:156px}
+@media (max-width:30rem){ figure.plane svg{width:144px;height:144px} }
+.ax{stroke:var(--axis); stroke-width:1}
+.iso{stroke:var(--axis); stroke-width:1; stroke-dasharray:3 4; opacity:.85}
+.ray{stroke:var(--mark); stroke-width:1.2}
+.pt-nat{fill:var(--link)}
+.pt-mod{fill:var(--mark)}
+.glyph{font-family:var(--serif); font-style:italic; font-size:11px; fill:var(--mut)}
+
+@media (prefers-reduced-motion:no-preference){
+  .ray{stroke-dasharray:120; stroke-dashoffset:120; animation:draw .62s cubic-bezier(.4,0,.2,1) .35s forwards}
+  .pt-mod{opacity:0; animation:pop .3s ease-out .92s forwards}
+}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pop{to{opacity:1}}
+
+/* ── prose ──────────────────────────────── */
+.lede{margin:clamp(1.6rem,4.2vw,2.3rem) 0 0; font-size:1.0625rem; color:var(--ink)}
+.lede p{margin:0 0 .85rem; max-width:34rem}
+.lede p:last-child{margin-bottom:0}
+
+/* ── sections ───────────────────────────── */
+section{margin-top:clamp(2.4rem,6vw,3.6rem)}
+h2{
+  font-family:var(--sans); font-weight:600; font-size:.8125rem;
+  color:var(--mut); margin:0 0 1.15rem; padding-bottom:.5rem;
+  border-bottom:1px solid var(--rule); letter-spacing:.005em;
+}
+
+.entry{margin-bottom:1.9rem}
+.entry:last-child{margin-bottom:0}
+.entry .hd{display:flex; gap:1rem; align-items:baseline; justify-content:space-between}
+.entry h3{
+  font-family:var(--serif); font-weight:500; font-size:1.1875rem;
+  line-height:1.3; margin:0; letter-spacing:-.006em;
+}
+.entry h3 a{color:var(--ink); border-bottom-color:var(--rule)}
+.entry h3 a:hover{color:var(--link); border-bottom-color:var(--link)}
+.yr{font-family:var(--mono); font-size:.75rem; color:var(--faint); white-space:nowrap; flex:0 0 auto}
+.venue{font-family:var(--serif); font-style:italic; color:var(--mut); font-size:.925rem; margin:.2rem 0 0}
+.entry p.d{margin:.45rem 0 0; color:var(--mut); font-size:.9375rem; max-width:33rem}
+dl.ids{margin:.7rem 0 0; display:grid; grid-template-columns:auto 1fr; gap:.3rem 1rem;
+  font-size:.875rem; font-family:var(--mono); align-items:baseline}
+dl.ids dt{color:var(--faint); font-size:.75rem}
+dl.ids dd{margin:0; color:var(--mut)}
+@media (max-width:26rem){dl.ids{font-size:.8125rem}}
+.links{margin:.6rem 0 0; font-size:.875rem; display:flex; flex-wrap:wrap; gap:.35rem 1.15rem}
+.links span.sep{display:none}
+
+ul.areas{list-style:none; margin:0; padding:0}
+ul.areas li{
+  padding-left:1.15rem; position:relative; margin-bottom:.8rem;
+  color:var(--mut); font-size:.9375rem; max-width:33rem;
+}
+ul.areas li:last-child{margin-bottom:0}
+ul.areas li::before{
+  content:""; position:absolute; left:0; top:.62em;
+  width:5px; height:5px; background:var(--axis); border-radius:50%;
+}
+ul.areas b{font-family:var(--serif); font-weight:500; font-size:1.0312rem; color:var(--ink); display:block; margin-bottom:.08rem}
+
+dl.meta{margin:0; display:grid; grid-template-columns:auto 1fr; gap:.55rem 1.4rem; font-size:.9375rem}
+dl.meta dt{color:var(--faint); font-size:.8125rem; font-family:var(--mono); padding-top:.15rem}
+dl.meta dd{margin:0}
+
+footer{
+  margin-top:clamp(3rem,8vw,4.5rem); padding-top:1.1rem;
+  border-top:1px solid var(--rule); color:var(--faint); font-size:.8125rem;
+}
+footer p{margin:0}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="top">
+    <div class="who">
+      <h1>Jonathan Salerno</h1>
+      <p class="sub">Medicine, Università degli Studi di Firenze</p>
+    </div>
+
+    <figure class="plane" aria-hidden="true">
+      <svg viewBox="0 0 200 200" role="img">
+        <line class="ax" x1="25" y1="175" x2="181" y2="175"/>
+        <line class="ax" x1="25" y1="175" x2="25" y2="19"/>
+        <line class="iso" x1="25" y1="175" x2="175" y2="25"/>
+        <line class="ray" x1="25" y1="175" x2="90.6" y2="78.3"/>
+        <circle cx="100" cy="100" r="6.4" fill="none" stroke="var(--link)" stroke-width="1" opacity=".42"/>
+        <circle class="pt-nat" cx="100" cy="100" r="3.1"/>
+        <circle class="pt-mod" cx="90.6" cy="78.3" r="3.6"/>
+        <text class="glyph" x="178" y="190" text-anchor="end">K&#771;<tspan dy="2" font-size="8">m</tspan></text>
+        <text class="glyph" transform="translate(13,22) rotate(-90)" text-anchor="end">V&#771;<tspan dy="2" font-size="8">max</tspan></text>
+      </svg>
+    </figure>
+  </header>
+
+  <div class="lede">
+    <p>I am a fifth-year medical student in Florence, working in two areas.</p>
+    <p>The first is secondary prevention. The category gathers conditions that are underneath
+    deeply different, and that uniformity propagates: states that would call for different
+    decisions end up with the same diagnosis and the same treatment.</p>
+    <p>The second is pharmacokinetics &#8212; in vitro&#8211;in vivo extrapolation and drug&#8211;drug
+    interaction. I am working on whether K<sub>i</sub>-to-AUCR prediction can be improved from
+    classical kinetic data alone, read through a different lens.</p>
+    <p>The two are nearer than they look: in both, one label or one number stands in for states
+    that do not behave alike.</p>
+  </div>
+
+  <section>
+    <h2>Published</h2>
+
+    <div class="entry">
+      <div class="hd">
+        <h3><a href="https://doi.org/10.1016/j.dmpk.2026.101553">Beyond K<sub>m</sub> and V<sub>max</sub>: a geometric framework for characterising enzyme modulation and validating kinetic data</a></h3>
+        <span class="yr">2026</span>
+      </div>
+      <p class="venue">Drug Metabolism and Pharmacokinetics</p>
+      <p class="d">Modulation of an enzyme is usually reported as a change in two parameters read
+      separately. Here the modulated state is normalised against its own native control and read as a
+      single point on a plane, where position carries the direction of the effect, its size, and an
+      internal consistency check on the data behind it.</p>
+      <dl class="ids">
+        <dt>Article</dt>
+        <dd><a href="https://doi.org/10.1016/j.dmpk.2026.101553">10.1016/j.dmpk.2026.101553</a></dd>
+        <dt>Data</dt>
+        <dd><a href="https://doi.org/10.5281/zenodo.20647762">10.5281/zenodo.20647762</a> on Zenodo</dd>
+      </dl>
+      <p class="links"><a href="catalytic-plane/">Interactive reader</a></p>
+    </div>
+  </section>
+
+  <section>
+    <h2>In progress</h2>
+    <ul class="areas">
+      <li><b>The boundary of secondary prevention</b>
+      What changes when the cause is removed and the label is not — and why two states that share a
+      diagnosis can call for opposite decisions.</li>
+      <li><b>Teleological definitions of medicine</b>
+      Definitions of medicine that proceed from its ends have to answer a prior question: who is
+      entitled to posit those ends.</li>
+      <li><b>Criteria of personal identity in bioethics</b>
+      What advance directives, a hypothetical quasi-clone, and a trained model of a dead person each
+      assume about what makes someone the same person.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Software</h2>
+
+    <div class="entry">
+      <div class="hd">
+        <h3><a href="https://diariosalute.org/en/">Diario Salute</a></h3>
+      </div>
+      <p class="d">Structured tracking of physiological measurements, built so that what a patient
+      records between visits arrives at their doctor in a form that can actually be read.</p>
+    </div>
+
+    <div class="entry">
+      <div class="hd">
+        <h3><a href="calculators/">Clinical thresholds</a></h3>
+      </div>
+      <p class="d">BMI, pack-years, alcohol units and weekly activity, each shown with the
+      definition it depends on, the threshold that follows from it, and the source. Built for
+      students, in English and Italian.</p>
+    </div>
+
+    <div class="entry">
+      <div class="hd">
+        <h3><a href="catalytic-plane/">Catalytic Plane Reader</a></h3>
+      </div>
+      <p class="d">Put in a native and a modulated K<sub>m</sub>–V<sub>max</sub> pair and see the same
+      displacement drawn four ways at once: saturation curve, Lineweaver–Burk, the catalytic plane,
+      and the circle-and-triangle geometry.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Contact</h2>
+    <dl class="meta">
+      <dt>Email</dt><dd><a href="mailto:jonathan.salerno@edu.unifi.it">jonathan.salerno@edu.unifi.it</a></dd>
+      <dt>ORCID</dt><dd><a href="https://orcid.org/0009-0005-4649-3634">0009-0005-4649-3634</a></dd>
+    </dl>
+  </section>
+
+  <footer>
+    <p>Florence, Italy</p>
+  </footer>
+
+</div>
+</body>
+</html>

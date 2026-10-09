@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clinical thresholds</title>
+<meta name="description" content="Four clinical measures — BMI, pack-years, alcohol units and weekly physical activity — each with the definition it depends on, the threshold that follows, and the source.">
+<meta name="author" content="Jonathan Salerno">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M6 11h20M6 16h20M6 21h12' stroke='%235B9BE5' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Clinical thresholds">
+<meta property="og:description" content="BMI, pack-years, alcohol units and weekly activity — each with its definition, its threshold and its source.">
+<style>
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:italic;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:italic;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-ext-400-italic.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-ext-500-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-ext-600-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-sans-greek-400-normal.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Sans';font-style:italic;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-sans-greek-400-italic.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-sans-greek-500-normal.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(../fonts/ibm-plex-sans-greek-600-normal.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-serif-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:italic;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-serif-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-serif-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-serif-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Serif';font-style:italic;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-serif-latin-ext-400-italic.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-serif-latin-ext-500-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-mono-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-mono-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-mono-latin-ext-500-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+:root{
+  --paper:#FBFCFD; --ink:#16222E; --mut:#55697A; --faint:#8696A4;
+  --rule:#DDE4EA; --surface:#FFFFFF; --surface2:#EFF3F6;
+  --link:#1456A8; --good:#1F6B4A; --warn:#8A5A11; --flag:#B3261E;
+  --goodbg:#E8F3ED; --warnbg:#FBF1DF; --flagbg:#FBEAE8;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0E151B; --ink:#E2E9EF; --mut:#9BAAB7; --faint:#6C7D8C;
+  --rule:#27343F; --surface:#17212B; --surface2:#1E2A35;
+  --link:#6FA8EA; --good:#4FB286; --warn:#E0A33F; --flag:#E97567;
+  --goodbg:#16302A; --warnbg:#332814; --flagbg:#36201E; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#0E151B; --ink:#E2E9EF; --mut:#9BAAB7; --faint:#6C7D8C;
+  --rule:#27343F; --surface:#17212B; --surface2:#1E2A35;
+  --link:#6FA8EA; --good:#4FB286; --warn:#E0A33F; --flag:#E97567;
+  --goodbg:#16302A; --warnbg:#332814; --flagbg:#36201E; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased}
+.page{max-width:42rem; margin:0 auto; padding:clamp(2rem,6vw,4rem) 16px clamp(3rem,7vw,5rem)}
+
+a{color:var(--link); text-decoration:none; border-bottom:1px solid color-mix(in srgb,var(--link) 30%,transparent)}
+a:hover{border-bottom-color:var(--link)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{
+  outline:2px solid var(--link); outline-offset:2px; border-radius:3px}
+
+/* header */
+.masthead{display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap}
+.back{font-size:.8125rem; color:var(--mut); border:0}
+.back:hover{color:var(--link)}
+h1{font-family:var(--serif); font-weight:500; font-size:clamp(1.9rem,5vw,2.6rem);
+  line-height:1.1; letter-spacing:-.018em; margin:.9rem 0 .55rem}
+.standfirst{color:var(--mut); margin:0; max-width:34rem; font-size:1rem}
+
+.lang{display:inline-flex; background:var(--surface2); border-radius:7px; padding:2px; flex:0 0 auto}
+.lang button{font-family:var(--sans); font-size:12px; font-weight:500; letter-spacing:.02em;
+  padding:5px 11px; border:0; border-radius:5px; background:transparent; color:var(--mut); cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--surface); color:var(--ink);
+  box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+/* calculator block */
+.calc{margin-top:clamp(2.2rem,5.5vw,3.2rem); border-top:1px solid var(--rule); padding-top:1.4rem}
+.calc h2{font-family:var(--serif); font-weight:500; font-size:1.375rem;
+  margin:0 0 .3rem; letter-spacing:-.008em}
+.calc .intro{margin:0 0 1.1rem; color:var(--mut); font-size:.9375rem; max-width:33rem}
+
+.fields{display:grid; grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr)); gap:.75rem}
+.f label{display:block; font-size:.75rem; color:var(--faint); margin-bottom:.25rem;
+  font-family:var(--mono); letter-spacing:.01em}
+.f input,.f select{width:100%; min-width:0; font-family:var(--mono); font-size:15px;
+  padding:7px 9px; border:1px solid var(--rule); border-radius:6px;
+  background:var(--surface); color:var(--ink)}
+.f input{text-align:right}
+
+.result{margin-top:1.1rem; display:flex; align-items:baseline; gap:.6rem; flex-wrap:wrap}
+.result .n{font-family:var(--mono); font-size:2rem; font-variant-numeric:tabular-nums;
+  letter-spacing:-.025em; line-height:1}
+.result .u{font-size:.875rem; color:var(--mut)}
+.badge{font-size:.75rem; font-weight:600; padding:3px 9px; border-radius:999px; white-space:nowrap}
+.b-good{background:var(--goodbg); color:var(--good)}
+.b-warn{background:var(--warnbg); color:var(--warn)}
+.b-flag{background:var(--flagbg); color:var(--flag)}
+.b-none{background:var(--surface2); color:var(--faint)}
+
+.formula{margin:.7rem 0 0; font-family:var(--mono); font-size:.8125rem; color:var(--mut);
+  background:var(--surface2); padding:7px 10px; border-radius:6px; overflow-x:auto}
+
+table{width:100%; border-collapse:collapse; margin-top:1rem; font-size:.875rem}
+th{text-align:left; font-weight:600; font-size:.6875rem; color:var(--faint);
+  font-family:var(--mono); letter-spacing:.03em; padding:0 .6rem .4rem 0;
+  border-bottom:1px solid var(--rule)}
+th:last-child,td:last-child{text-align:right}
+td{padding:.42rem .6rem .42rem 0; border-bottom:1px solid var(--rule); color:var(--mut); vertical-align:top}
+td:first-child{font-family:var(--mono); font-variant-numeric:tabular-nums; white-space:nowrap}
+tr.on td{color:var(--ink); font-weight:500}
+tr.on td:first-child{position:relative}
+tr.on td:first-child::before{content:"\25B8"; position:absolute; left:-.75rem; color:var(--link)}
+
+.note{margin:.95rem 0 0; font-size:.875rem; color:var(--mut); max-width:33rem}
+.note b{color:var(--ink); font-weight:600}
+.src{margin:.7rem 0 0; font-size:.8125rem; color:var(--faint)}
+.src a{color:var(--faint); border-bottom-color:color-mix(in srgb,var(--faint) 40%,transparent)}
+.src a:hover{color:var(--link); border-bottom-color:var(--link)}
+
+.disclaimer{margin-top:clamp(2.4rem,6vw,3.4rem); padding:.95rem 1.1rem; border-radius:8px;
+  background:var(--surface2); color:var(--mut); font-size:.875rem}
+.disclaimer p{margin:0}
+footer{margin-top:2rem; padding-top:1rem; border-top:1px solid var(--rule);
+  color:var(--faint); font-size:.8125rem}
+footer p{margin:0}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="masthead">
+      <a class="back" href="../" data-t="back">&#8592; Jonathan Salerno</a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="it" aria-pressed="false">IT</button>
+      </div>
+    </div>
+    <h1 data-t="title">Clinical thresholds</h1>
+    <p class="standfirst" data-t="standfirst"></p>
+  </header>
+
+  <!-- BMI -->
+  <section class="calc">
+    <h2 data-t="bmiH"></h2>
+    <p class="intro" data-t="bmiI"></p>
+    <div class="fields">
+      <div class="f"><label for="bmiW" data-t="bmiW"></label><input id="bmiW" type="number" min="0" step="0.1" value="70"></div>
+      <div class="f"><label for="bmiH" data-t="bmiHt"></label><input id="bmiH" type="number" min="0" step="0.5" value="175"></div>
+    </div>
+    <p class="formula">BMI = kg / m&#178;</p>
+    <div class="result"><span class="n" id="bmiN">&#8212;</span><span class="u">kg/m&#178;</span><span class="badge b-none" id="bmiB">&#8212;</span></div>
+    <table><thead><tr><th data-t="thBmi"></th><th data-t="thCat"></th></tr></thead><tbody id="bmiT"></tbody></table>
+    <p class="note" data-t="bmiN1"></p>
+    <p class="src" data-t="bmiS"></p>
+  </section>
+
+  <!-- PACK-YEARS -->
+  <section class="calc">
+    <h2 data-t="pyH"></h2>
+    <p class="intro" data-t="pyI"></p>
+    <div class="fields">
+      <div class="f"><label for="pyC" data-t="pyC"></label><input id="pyC" type="number" min="0" step="1" value="20"></div>
+      <div class="f"><label for="pyY" data-t="pyY"></label><input id="pyY" type="number" min="0" step="0.5" value="15"></div>
+    </div>
+    <p class="formula" id="pyF"></p>
+    <div class="result"><span class="n" id="pyN">&#8212;</span><span class="u" data-t="pyU"></span><span class="badge b-none" id="pyB">&#8212;</span></div>
+    <table><thead><tr><th data-t="thPy"></th><th data-t="thMeans"></th></tr></thead><tbody id="pyT"></tbody></table>
+    <p class="note" data-t="pyN1"></p>
+    <p class="src" data-t="pyS"></p>
+  </section>
+
+  <!-- ALCOHOL -->
+  <section class="calc">
+    <h2 data-t="alH"></h2>
+    <p class="intro" data-t="alI"></p>
+    <div class="fields">
+      <div class="f"><label for="alS" data-t="alS"></label><select id="alS"></select></div>
+      <div class="f"><label for="alD" data-t="alD"></label><select id="alD"></select></div>
+    </div>
+    <div class="fields" style="margin-top:.75rem">
+      <div class="f"><label for="alV" data-t="alV"></label><input id="alV" type="number" min="0" step="5" value="330"></div>
+      <div class="f"><label for="alA" data-t="alA"></label><input id="alA" type="number" min="0" step="0.5" value="5"></div>
+      <div class="f"><label for="alQ" data-t="alQ"></label><input id="alQ" type="number" min="0" step="1" value="7"></div>
+    </div>
+    <p class="formula">g = ml &#215; (ABV / 100) &#215; 0.8</p>
+    <div class="result"><span class="n" id="alN">&#8212;</span><span class="u" id="alNU"></span><span class="badge b-none" id="alB">&#8212;</span></div>
+    <p class="note" id="alSub"></p>
+    <table><thead><tr><th data-t="thStd"></th><th data-t="thSameWeek"></th></tr></thead><tbody id="alT"></tbody></table>
+    <p class="note" data-t="alN1"></p>
+    <p class="src" data-t="alS2"></p>
+  </section>
+
+  <!-- ACTIVITY -->
+  <section class="calc">
+    <h2 data-t="paH"></h2>
+    <p class="intro" data-t="paI"></p>
+    <div class="fields">
+      <div class="f"><label for="paM" data-t="paM"></label><input id="paM" type="number" min="0" step="5" value="120"></div>
+      <div class="f"><label for="paV" data-t="paV"></label><input id="paV" type="number" min="0" step="5" value="30"></div>
+    </div>
+    <p class="formula" id="paF"></p>
+    <div class="result"><span class="n" id="paN">&#8212;</span><span class="u" data-t="paU"></span><span class="badge b-none" id="paB">&#8212;</span></div>
+    <table><thead><tr><th data-t="thMin"></th><th data-t="thMeans"></th></tr></thead><tbody id="paT"></tbody></table>
+    <p class="note" data-t="paN1"></p>
+    <p class="src" data-t="paS"></p>
+  </section>
+
+  <div class="disclaimer"><p data-t="disc"></p></div>
+  <footer><p data-t="foot"></p></footer>
+
+</div>
+
+<script>
+/* ────────── copy ────────── */
+var T = {
+en:{
+ back:'← Jonathan Salerno',
+ title:'Clinical thresholds',
+ standfirst:'Four measures that medical students meet early and get wrong often. Each one is only as good as the definition behind it, so the definition, the threshold and the source are shown next to the number.',
+
+ thCat:'Category', thMeans:'What it means', thBmi:'BMI', thPy:'Pack-years', thStd:'Definition', thSameWeek:'Same week counts as', thMin:'Minutes/week',
+
+ bmiH:'Body mass index',
+ bmiI:'A ratio of mass to height, not a measure of body composition. It separates populations well and individuals badly.',
+ bmiW:'weight kg', bmiHt:'height cm',
+ bmiN1:'<b>What it cannot see.</b> BMI does not distinguish fat from muscle, nor where fat sits. A muscular athlete and a sedentary person of the same height and weight receive the same number. WHO also notes that the risk associated with a given BMI differs between populations, and that lower action points — around 23 and 27.5 — have been considered for people of Asian descent.',
+ bmiS:'Source: <a href="https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/body-mass-index">WHO Global Health Observatory — body mass index</a>.',
+
+ pyH:'Pack-years',
+ pyI:'Cumulative tobacco exposure. One pack-year is twenty cigarettes a day for one year.',
+ pyC:'cigarettes/day', pyY:'years smoked', pyU:'pack-years',
+ pyN1:'<b>The usual error.</b> The first term is cigarettes per day divided by twenty, not packs per day. Entering 20 in the packs field gives twenty times the true exposure. Note also that the screening threshold is <b>20</b> pack-years, not 30: the USPSTF lowered it in 2021, and older material still carries the previous figure.',
+ pyS:'Sources: USPSTF lung cancer screening recommendation (2021); GOLD report.',
+
+ alH:'Alcohol',
+ alI:'Grams of ethanol are the physical quantity. The “unit” is a convention, and it is not the same convention everywhere.',
+ alS:'standard unit', alD:'drink', alV:'volume ml', alA:'ABV %', alQ:'drinks/week',
+ alN1:'<b>Why this matters.</b> The same drinking week is reported as a different number of units depending on which country’s definition is used. Reading a British paper and comparing it with Italian data without converting through grams compares two different things. Grams of ethanol travel; units do not.',
+ alS2:'Sources: <a href="https://publications.iarc.fr/122">IARC Monographs vol. 100E</a> (alcohol, Group 1 carcinogen); <a href="https://www.epicentro.iss.it/passi/indicatori/alcol">ISS Italy</a>; UK Government guidance.',
+
+ paH:'Weekly physical activity',
+ paI:'The WHO target is expressed in moderate-intensity equivalent minutes, where vigorous activity counts double.',
+ paM:'moderate min/wk', paV:'vigorous min/wk', paU:'equivalent min/week',
+ paN1:'<b>Judging intensity.</b> The talk test is the practical rule: during moderate activity you can speak but not sing; during vigorous activity you cannot say more than a few words without pausing for breath.',
+ paS:'Source: WHO guidelines on physical activity and sedentary behaviour (2020).',
+
+ disc:'This page is a teaching aid. It reproduces published definitions and thresholds so they can be checked against their sources, and it is not clinical advice, a diagnosis, or a substitute for a clinician’s judgement about a particular person.',
+ foot:'Jonathan Salerno — Florence'
+},
+it:{
+ back:'← Jonathan Salerno',
+ title:'Soglie cliniche',
+ standfirst:'Quattro misure che gli studenti di medicina incontrano presto e sbagliano spesso. Ognuna vale quanto la definizione che le sta sotto, perciò accanto al numero stanno la definizione, la soglia e la fonte.',
+
+ thCat:'Categoria', thMeans:'Che cosa significa', thBmi:'BMI', thPy:'Pack-years', thStd:'Definizione', thSameWeek:'La stessa settimana vale', thMin:'Minuti/sett.',
+
+ bmiH:'Indice di massa corporea',
+ bmiI:'Un rapporto fra massa e statura, non una misura della composizione corporea. Separa bene le popolazioni e male gli individui.',
+ bmiW:'peso kg', bmiHt:'altezza cm',
+ bmiN1:'<b>Che cosa non vede.</b> Il BMI non distingue il grasso dal muscolo, né dove il grasso è collocato. Un atleta muscoloso e una persona sedentaria di pari peso e statura ricevono lo stesso numero. L’OMS osserva inoltre che il rischio associato a un dato BMI varia fra popolazioni, e che per le persone di origine asiatica sono stati considerati punti d’azione più bassi, intorno a 23 e 27,5.',
+ bmiS:'Fonte: <a href="https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/body-mass-index">OMS, Global Health Observatory — body mass index</a>.',
+
+ pyH:'Pack-years',
+ pyI:'Esposizione cumulativa al tabacco. Un pack-year è un pacchetto da venti sigarette al giorno per un anno.',
+ pyC:'sigarette/die', pyY:'anni di fumo', pyU:'pack-years',
+ pyN1:'<b>L’errore tipico.</b> Il primo termine è le sigarette al giorno diviso venti, non i pacchetti al giorno. Mettere 20 al posto dei pacchetti dà un’esposizione venti volte superiore a quella vera. Si noti anche che la soglia di screening è <b>20</b> pack-years, non 30: la USPSTF l’ha abbassata nel 2021 e il materiale più vecchio riporta ancora la cifra precedente.',
+ pyS:'Fonti: USPSTF, raccomandazione sullo screening del carcinoma polmonare (2021); rapporto GOLD.',
+
+ alH:'Alcol',
+ alI:'I grammi di etanolo sono la quantità fisica. L’«unità» è una convenzione, e non è la stessa ovunque.',
+ alS:'unità standard', alD:'bevanda', alV:'volume ml', alA:'ABV %', alQ:'bevande/sett.',
+ alN1:'<b>Perché conta.</b> La stessa settimana di consumo viene riportata come un numero diverso di unità a seconda della definizione nazionale adottata. Leggere un lavoro britannico e confrontarlo con dati italiani senza passare per i grammi significa confrontare due cose diverse. I grammi di etanolo viaggiano, le unità no.',
+ alS2:'Fonti: <a href="https://publications.iarc.fr/122">IARC Monographs vol. 100E</a> (alcol, cancerogeno di Gruppo 1); <a href="https://www.epicentro.iss.it/passi/indicatori/alcol">ISS</a>; linee guida del governo britannico.',
+
+ paH:'Attività fisica settimanale',
+ paI:'Il target OMS è espresso in minuti equivalenti di intensità moderata, dove l’attività vigorosa conta doppio.',
+ paM:'moderata min/sett.', paV:'vigorosa min/sett.', paU:'min equivalenti/sett.',
+ paN1:'<b>Come giudicare l’intensità.</b> Il talk test è la regola pratica: durante l’attività moderata si riesce a parlare ma non a cantare; durante quella vigorosa non si riescono a dire più di poche parole senza fermarsi a respirare.',
+ paS:'Fonte: OMS, linee guida su attività fisica e comportamento sedentario (2020).',
+
+ disc:'Questa pagina è uno strumento didattico. Riproduce definizioni e soglie pubblicate perché possano essere verificate sulle rispettive fonti, e non costituisce un parere clinico, una diagnosi, né un sostituto del giudizio di un medico su una persona determinata.',
+ foot:'Jonathan Salerno — Firenze'
+}};
+
+/* ────────── reference data ────────── */
+var BMI_BANDS = [
+  {max:18.5, en:'Underweight',  it:'Sottopeso',   tone:'warn', lo:'< 18.5'},
+  {max:25,   en:'Normal range', it:'Normopeso',   tone:'good', lo:'18.5 – 24.9'},
+  {max:30,   en:'Overweight',   it:'Sovrappeso',  tone:'warn', lo:'25.0 – 29.9'},
+  {max:35,   en:'Obesity I',    it:'Obesità I',  tone:'flag', lo:'30.0 – 34.9'},
+  {max:40,   en:'Obesity II',   it:'Obesità II', tone:'flag', lo:'35.0 – 39.9'},
+  {max:Infinity, en:'Obesity III', it:'Obesità III', tone:'flag', lo:'≥ 40.0'}
+];
+var PY_BANDS = [
+  {max:10, lo:'< 10',    tone:'good',
+   en:'Below the usual thresholds', it:'Sotto le soglie abituali'},
+  {max:20, lo:'10 – 19', tone:'warn',
+   en:'COPD risk threshold (GOLD)', it:'Soglia di rischio BPCO (GOLD)'},
+  {max:Infinity, lo:'≥ 20', tone:'flag',
+   en:'LDCT screening eligibility, ages 50–80 (USPSTF 2021)',
+   it:'Eleggibilità allo screening LDCT, 50–80 anni (USPSTF 2021)'}
+];
+var STANDARDS = [
+  {k:'who', g:10, en:'WHO — 10 g',       it:'OMS — 10 g'},
+  {k:'it',  g:12, en:'Italy, ISS — 12 g', it:'Italia, ISS — 12 g'},
+  {k:'uk',  g:8,  en:'United Kingdom — 8 g', it:'Regno Unito — 8 g'},
+  {k:'us',  g:14, en:'United States — 14 g', it:'Stati Uniti — 14 g'}
+];
+var DRINKS = [
+  {k:'beer',   ml:330, abv:5,  en:'Beer, 330 ml, 5%',          it:'Birra, 330 ml, 5%'},
+  {k:'wine',   ml:125, abv:12, en:'Wine, 125 ml, 12%',         it:'Vino, 125 ml, 12%'},
+  {k:'spark',  ml:125, abv:11, en:'Sparkling, 125 ml, 11%',    it:'Spumante, 125 ml, 11%'},
+  {k:'spirit', ml:40,  abv:40, en:'Spirit, 40 ml, 40%',        it:'Distillato, 40 ml, 40%'},
+  {k:'custom', ml:null,abv:null,en:'Custom',                   it:'Personalizzato'}
+];
+var AL_BANDS = [
+  {max:140, tone:'good'}, {max:280, tone:'warn'}, {max:Infinity, tone:'flag'}
+];
+var AL_LAB = {
+  good:{en:'Under 140 g/week', it:'Sotto 140 g/sett.'},
+  warn:{en:'140–280 g/week',  it:'140–280 g/sett.'},
+  flag:{en:'Over 280 g/week',  it:'Oltre 280 g/sett.'}
+};
+var PA_BANDS = [
+  {max:150, lo:'< 150', tone:'warn',
+   en:'Below the WHO target', it:'Sotto il target OMS'},
+  {max:300, lo:'150 – 300', tone:'good',
+   en:'Within the WHO target', it:'Dentro il target OMS'},
+  {max:Infinity, lo:'> 300', tone:'good',
+   en:'Above the target — additional benefit', it:'Oltre il target — beneficio aggiuntivo'}
+];
+
+/* ────────── helpers ────────── */
+var L = 'en';
+function t(k){ return T[L][k]; }
+function num(id){ var v = parseFloat(document.getElementById(id).value); return isFinite(v) && v >= 0 ? v : null; }
+function fmt(x,d){ return x.toLocaleString(L === 'it' ? 'it-IT' : 'en-GB',
+  {minimumFractionDigits:d, maximumFractionDigits:d}); }
+function band(v, bands){ for (var i=0;i<bands.length;i++) if (v < bands[i].max) return bands[i]; return bands[bands.length-1]; }
+function setBadge(el, tone, text){
+  el.className = 'badge ' + (tone ? 'b-'+tone : 'b-none');
+  el.textContent = text;
+}
+function rows(tb, list, active, colA, colB){
+  tb.innerHTML = '';
+  list.forEach(function(b){
+    var tr = document.createElement('tr');
+    if (b === active) tr.className = 'on';
+    var a = document.createElement('td'); a.textContent = colA(b);
+    var c = document.createElement('td'); c.textContent = colB(b);
+    tr.appendChild(a); tr.appendChild(c); tb.appendChild(tr);
+  });
+}
+
+/* ────────── calculators ────────── */
+function bmi(){
+  var w = num('bmiW'), h = num('bmiH');
+  var v = (w && h) ? w / Math.pow(h/100, 2) : null;
+  var b = v ? band(v, BMI_BANDS) : null;
+  document.getElementById('bmiN').textContent = v ? fmt(v,1) : '—';
+  setBadge(document.getElementById('bmiB'), b && b.tone, b ? b[L] : '—');
+  rows(document.getElementById('bmiT'), BMI_BANDS, b, function(x){return x.lo}, function(x){return x[L]});
+}
+function py(){
+  var c = num('pyC'), y = num('pyY');
+  var v = (c !== null && y !== null) ? (c/20)*y : null;
+  var b = (v !== null) ? band(v, PY_BANDS) : null;
+  document.getElementById('pyF').textContent =
+    'pack-years = (' + (c !== null ? c : '?') + ' / 20) × ' + (y !== null ? y : '?')
+    + (v !== null ? ' = ' + fmt(v,1) : '');
+  document.getElementById('pyN').textContent = v !== null ? fmt(v,1) : '—';
+  setBadge(document.getElementById('pyB'), b && b.tone, b ? b[L] : '—');
+  rows(document.getElementById('pyT'), PY_BANDS, b, function(x){return x.lo}, function(x){return x[L]});
+}
+function al(){
+  var sel = document.getElementById('alS').value;
+  var std = STANDARDS.filter(function(s){return s.k===sel})[0] || STANDARDS[0];
+  var v = num('alV'), a = num('alA'), q = num('alQ');
+  var g = (v !== null && a !== null && q !== null) ? q * v * (a/100) * 0.8 : null;
+  var b = (g !== null) ? band(g, AL_BANDS) : null;
+  document.getElementById('alN').textContent = g !== null ? fmt(g,0) : '—';
+  document.getElementById('alNU').textContent = L==='it' ? 'g etanolo / settimana' : 'g ethanol / week';
+  setBadge(document.getElementById('alB'), b && b.tone, b ? AL_LAB[b.tone][L] : '—');
+  document.getElementById('alSub').innerHTML = g === null ? '' :
+    (L==='it' ? 'Con la definizione scelta: <b>' : 'Under the chosen definition: <b>')
+    + fmt(g/std.g,1) + (L==='it' ? ' unità/settimana</b> · ' : ' units/week</b> · ')
+    + fmt(g*7,0) + (L==='it' ? ' kcal dal solo etanolo' : ' kcal from ethanol alone');
+  rows(document.getElementById('alT'), STANDARDS, std,
+    function(s){return s[L]},
+    function(s){ return g === null ? '—' : fmt(g/s.g,1) + (L==='it' ? ' unità' : ' units'); });
+}
+function pa(){
+  var m = num('paM'), vg = num('paV');
+  var v = (m !== null && vg !== null) ? m + 2*vg : null;
+  var b = (v !== null) ? band(v, PA_BANDS) : null;
+  document.getElementById('paF').textContent =
+    (L==='it' ? 'equivalenti = moderata + 2 × vigorosa = ' : 'equivalent = moderate + 2 × vigorous = ')
+    + (m !== null ? m : '?') + ' + 2 × ' + (vg !== null ? vg : '?')
+    + (v !== null ? ' = ' + fmt(v,0) : '');
+  document.getElementById('paN').textContent = v !== null ? fmt(v,0) : '—';
+  setBadge(document.getElementById('paB'), b && b.tone, b ? b[L] : '—');
+  rows(document.getElementById('paT'), PA_BANDS, b, function(x){return x.lo}, function(x){return x[L]});
+}
+function all(){ bmi(); py(); al(); pa(); }
+
+/* ────────── language ────────── */
+function fillSelects(){
+  var s = document.getElementById('alS'), keep = s.value;
+  s.innerHTML = '';
+  STANDARDS.forEach(function(o){
+    var e = document.createElement('option'); e.value = o.k; e.textContent = o[L]; s.appendChild(e);
+  });
+  s.value = keep || 'who';
+  var d = document.getElementById('alD'), keepD = d.value;
+  d.innerHTML = '';
+  DRINKS.forEach(function(o){
+    var e = document.createElement('option'); e.value = o.k; e.textContent = o[L]; d.appendChild(e);
+  });
+  d.value = keepD || 'beer';
+}
+function render(){
+  document.documentElement.lang = L;
+  document.title = t('title');
+  Array.prototype.forEach.call(document.querySelectorAll('[data-t]'), function(el){
+    var v = T[L][el.getAttribute('data-t')];
+    if (v === undefined) return;
+    if (v.indexOf('<') >= 0) el.innerHTML = v; else el.textContent = v;
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.lang button'), function(b){
+    b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === L));
+  });
+  fillSelects();
+  all();
+}
+function setLang(l){
+  L = (l === 'it') ? 'it' : 'en';
+  try { localStorage.setItem('ct-lang', L); } catch(e) {}
+  render();
+}
+
+/* ────────── wiring ────────── */
+Array.prototype.forEach.call(document.querySelectorAll('.lang button'), function(b){
+  b.addEventListener('click', function(){ setLang(b.getAttribute('data-lang')); });
+});
+document.getElementById('alD').addEventListener('change', function(){
+  var d = DRINKS.filter(function(x){return x.k === this.value}, this)[0];
+  if (d && d.ml !== null){
+    document.getElementById('alV').value = d.ml;
+    document.getElementById('alA').value = d.abv;
+  }
+  al();
+});
+['bmiW','bmiH'].forEach(function(id){ document.getElementById(id).addEventListener('input', bmi); });
+['pyC','pyY'].forEach(function(id){ document.getElementById(id).addEventListener('input', py); });
+['alV','alA','alQ'].forEach(function(id){ document.getElementById(id).addEventListener('input', al); });
+document.getElementById('alS').addEventListener('change', al);
+['paM','paV'].forEach(function(id){ document.getElementById(id).addEventListener('input', pa); });
+
+var saved = null;
+try { saved = localStorage.getItem('ct-lang'); } catch(e) {}
+setLang(saved || (navigator.language && navigator.language.slice(0,2) === 'it' ? 'it' : 'en'));
+</script>
+</body>
+</html>

@@ -1,0 +1,1212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Catalytic Plane Reader</title>
+<meta name="description" content="Interactive reader for the catalytic plane: enter native and modulated Km and Vmax and see the same enzyme modulation as a saturation curve, a Lineweaver-Burk plot, a point on the catalytic plane, and the circle-and-triangle geometry.">
+<meta name="author" content="Jonathan Salerno">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231565C0'/%3E%3Cpath d='M6 26 L26 6' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Cpath d='M6 26 A20 20 0 0 0 26 6' stroke='%23F08A3C' stroke-width='2' fill='none'/%3E%3Ccircle cx='21' cy='13' r='2.6' fill='white'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Catalytic Plane Reader">
+<meta property="og:description" content="Interactive reader for the catalytic plane: enter native and modulated Km and Vmax and see the same enzyme modulation as a saturation curve, a Lineweaver-Burk plot, a point on the catalytic plane, and the circle-and-triangle geometry.">
+<meta name="twitter:card" content="summary">
+<style>
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:italic;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:italic;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-ext-400-italic.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-ext-500-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(../fonts/ibm-plex-sans-latin-ext-600-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-sans-greek-400-normal.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Sans';font-style:italic;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-sans-greek-400-italic.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-sans-greek-500-normal.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(../fonts/ibm-plex-sans-greek-600-normal.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-serif-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:italic;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-serif-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-serif-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-serif-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Serif';font-style:italic;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-serif-latin-ext-400-italic.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-serif-latin-ext-500-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-mono-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-mono-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-mono-latin-ext-500-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+</style>
+</head>
+<body>
+<style>
+/* Layout: control rail over a 2x2 instrument grid, then a readout ledger. Stacks to one column on phones. */
+:root{
+  --bg:#F4F6F8; --surface:#FFFFFF; --surface2:#EAEFF3; --line:#D6DEE5;
+  --ink:#16222E; --mut:#566778; --faint:#8B99A6;
+  --accent:#1565C0; --kdom:#D4600E; --bal:#8B99A6; --iso:#7B4EA8;
+  --flag:#B3261E; --good:#1F6B4A;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E151B; --surface:#17212B; --surface2:#1E2A35; --line:#2C3B48;
+  --ink:#E2E9EF; --mut:#9BAAB7; --faint:#6C7D8C;
+  --accent:#5B9BE5; --kdom:#F08A3C; --bal:#7C8B99; --iso:#AC8DD4;
+  --flag:#E97567; --good:#4FB286; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0E151B; --surface:#17212B; --surface2:#1E2A35; --line:#2C3B48;
+  --ink:#E2E9EF; --mut:#9BAAB7; --faint:#6C7D8C;
+  --accent:#5B9BE5; --kdom:#F08A3C; --bal:#7C8B99; --iso:#AC8DD4;
+  --flag:#E97567; --good:#4FB286; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:28px 48px}
+h1{font-family:var(--sans);font-weight:600;font-size:clamp(1.4rem,3.4vw,2rem);letter-spacing:-.015em;margin:0 0 6px;text-wrap:balance}
+.lede{color:var(--mut);max-width:62ch;margin:0}
+.lede a{color:var(--accent)}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 0 10px}
+header{border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:24px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.pad{padding:18px}
+
+/* ── controls ─────────────────────────────── */
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:18px;margin-bottom:14px}
+fieldset{border:1px solid var(--line);border-radius:8px;margin:0;padding:12px 14px 14px;min-width:0;background:var(--surface)}
+legend{font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);padding:0 6px}
+.pair{display:flex;gap:10px}
+.fld{flex:1;min-width:0}
+label{display:block;font-size:11px;color:var(--mut);margin-bottom:4px}
+input[type=number]{width:100%;min-width:0;font-family:var(--mono);font-size:14px;padding:7px 8px;
+  border:1px solid var(--line);border-radius:6px;background:var(--surface2);color:var(--ink)}
+input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.unit{font-size:10.5px;color:var(--faint);font-family:var(--mono)}
+
+/* the controls follow you down: stacked to one column the panels run past 3500px,
+   and the buttons would be stranded at the top */
+.rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);
+  padding-block:10px;margin-bottom:18px;box-shadow:0 10px 12px -10px rgba(0,0,0,.18)}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.presets button{font-family:var(--sans);font-size:12px;padding:5px 11px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--line);background:var(--surface);color:var(--mut)}
+.presets button.cur{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,var(--surface))}
+.presets button:hover{border-color:var(--accent);color:var(--accent)}
+.presets button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.presets span{font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);align-self:center;margin-right:4px}
+
+.seg{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-bottom:0;
+  background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:13px 16px}
+.seg > p{margin:0;font-size:12.5px;color:var(--mut);flex:1 1 230px;min-width:0}
+.segbtns{display:flex;gap:4px;background:var(--surface2);border-radius:8px;padding:3px}
+.segbtns button{font-family:var(--sans);font-size:12.5px;font-weight:500;padding:6px 13px;border:0;border-radius:6px;
+  cursor:pointer;background:transparent;color:var(--mut)}
+.segbtns button[aria-pressed=true]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.14)}
+.segbtns button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.segbtns em{font-family:var(--serif);font-style:italic}
+.chk{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--mut);cursor:pointer;
+  padding:6px 12px 6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);flex:0 0 auto}
+.chk:hover{border-color:var(--accent);color:var(--accent)}
+.chk input{accent-color:var(--accent);width:14px;height:14px;margin:0;cursor:pointer}
+.chk:has(input:checked){border-color:var(--accent);color:var(--accent)}
+.chk:focus-within{outline:2px solid var(--accent);outline-offset:1px}
+/* the one confusion this page can cause: two quantities, one name */
+.warn2{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--iso);
+  border-radius:10px;padding:16px 18px;margin-bottom:20px}
+.warn2 h3{font-size:13px;font-weight:600;margin:0 0 10px;color:var(--iso);letter-spacing:.01em}
+.warn2 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:12px 22px;margin-bottom:11px}
+.warn2 .q{min-width:0}
+.warn2 .q b{display:block;font-family:var(--serif);font-size:14px;font-weight:500;color:var(--ink);margin-bottom:3px}
+.warn2 .q span{font-size:11.5px;color:var(--mut);line-height:1.45;display:block}
+.warn2 .q em{font-family:var(--mono);font-style:normal;color:var(--ink);font-variant-numeric:tabular-nums}
+.warn2 p{margin:0;font-size:12px;line-height:1.5;color:var(--mut)}
+.warn2 p + p{margin-top:7px}
+
+/* ── three practical tools: pin & compare, paste a table, close the chain ── */
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:14px;margin-bottom:20px}
+.tool{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
+.tool h3{margin:0 0 3px;font-size:13px;font-weight:600;color:var(--ink)}
+.tool .hint{margin:0 0 12px;font-size:11.5px;color:var(--mut);line-height:1.45}
+.tool button{font-family:var(--sans);font-size:12px;padding:6px 12px;border-radius:7px;cursor:pointer;
+  border:1px solid var(--line);background:var(--surface2);color:var(--ink)}
+.tool button:hover{border-color:var(--accent);color:var(--accent)}
+.tool button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.tool textarea{width:100%;min-width:0;font-family:var(--mono);font-size:11.5px;line-height:1.5;
+  padding:8px 9px;border:1px solid var(--line);border-radius:7px;background:var(--surface2);
+  color:var(--ink);resize:vertical;min-height:84px}
+.tool textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.pinrow{display:flex;align-items:center;gap:8px;font-size:11.5px;padding:5px 0;border-bottom:1px solid var(--line)}
+.pinrow:last-child{border-bottom:0}
+.pinrow .sw{width:10px;height:10px;border-radius:50%;flex:0 0 10px}
+.pinrow .nm{font-weight:600;color:var(--ink);flex:0 0 auto;max-width:34%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pinrow .vv{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--mut);flex:1;min-width:0;
+  font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pinrow .x{margin-left:auto;border:0;background:none;color:var(--faint);cursor:pointer;padding:0 4px;font-size:14px;line-height:1}
+.pinrow .x:hover{color:var(--flag)}
+.arms{display:grid;gap:7px;margin-top:11px}
+.arm{display:flex;align-items:baseline;gap:9px;padding:8px 10px;border-radius:7px;background:var(--surface2)}
+.arm.lead{background:color-mix(in srgb,var(--accent) 10%,var(--surface));border:1px solid var(--accent)}
+.arm .lbl{font-size:11.5px;color:var(--mut);flex:1;min-width:0}
+.arm .lbl b{display:block;color:var(--ink);font-size:12px;font-weight:600}
+.arm .num{font-family:var(--mono);font-size:17px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.spread{margin:10px 0 0;font-size:11.5px;line-height:1.45;color:var(--mut)}
+.spread b{color:var(--ink)}
+.mini{display:flex;flex-wrap:wrap;gap:8px 12px;margin-bottom:10px}
+.mini label{font-size:11px;color:var(--mut);display:block;margin-bottom:3px}
+.mini div{flex:1 1 92px;min-width:0}
+.mini input{width:100%;min-width:0;font-family:var(--mono);font-size:12px;padding:5px 7px;
+  border:1px solid var(--line);border-radius:6px;background:var(--surface2);color:var(--ink)}
+.mini input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.note{flex:1 1 100%;margin:2px 0 0;font-size:12px;line-height:1.45;color:var(--ink);
+  background:color-mix(in srgb,var(--iso) 10%,var(--surface));
+  border:1px solid var(--iso);border-left-width:3px;border-radius:7px;padding:9px 12px}
+.note b{color:var(--iso)}
+
+/* ── panels ───────────────────────────────── */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:20px}
+@media (max-width:620px){.grid{grid-template-columns:minmax(0,1fr)}}
+/* in a narrow pane the rail must stay a strip, not a third of the screen:
+   the explanatory line is prose, the buttons are the point */
+@media (max-width:900px){
+  .seg > p{display:none}
+  .seg{padding:9px 12px;gap:10px;justify-content:flex-start}
+  .presets button{font-size:11.5px;padding:4px 9px}
+  .presets{gap:5px;margin-bottom:8px}
+  .rail{padding-block:8px}
+  .chk{padding:5px 10px 5px 9px;font-size:12px}
+}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 14px 10px;min-width:0}
+.panel h2{font-size:12.5px;font-weight:600;letter-spacing:.02em;margin:0 0 2px}
+.panel .cap{font-size:11.5px;color:var(--mut);margin:0 0 8px;min-height:2.6em}
+.lg{display:flex;flex-wrap:wrap;gap:4px 13px;margin:3px 0 6px}
+.lg span{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:var(--mut);white-space:nowrap}
+.lg i{display:inline-block;width:17px;flex:0 0 17px;border-top:2px solid currentColor}
+.lg i.d{border-top-style:dashed}
+.lg b{display:inline-block;width:9px;height:9px;flex:0 0 9px;border-radius:50%;background:currentColor}
+.lg b.o{background:var(--surface);border:1.8px solid currentColor;width:10px;height:10px;flex-basis:10px}
+.panel .cap b{color:var(--accent);font-weight:500}
+.panel svg{display:block;width:100%;height:auto;max-width:100%}
+
+/* ── readout ──────────────────────────────── */
+.out{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{text-align:left;padding:5px 0;border-bottom:1px solid var(--line)}
+th{font-weight:400;color:var(--mut)}
+td{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+td.n{color:var(--faint)}
+tr:last-child th,tr:last-child td{border-bottom:0}
+.m{font-family:var(--serif)}
+.m i{font-style:italic}
+
+/* 2x2: circle sign against triangle sign */
+.g22{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1fr);gap:5px;align-items:stretch}
+.g22 .ch,.g22 .rh{font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);
+  display:flex;align-items:center;line-height:1.25}
+.g22 .ch{justify-content:center;text-align:center;padding-bottom:2px}
+.g22 .rh{flex-direction:column;align-items:flex-end;justify-content:center;text-align:right;
+  padding-right:8px;max-width:112px}
+.g22 .rh .g{font-size:9px;font-weight:400;letter-spacing:0;text-transform:none;color:var(--faint);
+  margin-top:3px;line-height:1.3}
+.cell{border:1px solid var(--line);border-radius:7px;padding:9px 10px;background:var(--surface2);min-width:0}
+.cell .t{font-size:11.5px;font-weight:600;line-height:1.25;margin-bottom:3px}
+.cell .x{font-size:10px;color:var(--mut);line-height:1.35}
+.cell.on{border-color:var(--accent);border-width:1.5px;background:color-mix(in srgb,var(--accent) 11%,var(--surface));
+  box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 16%,transparent)}
+.cell.on .t{color:var(--accent)}
+.idn{margin:12px 0 0;padding-top:11px;border-top:1px solid var(--line);font-size:11.5px;color:var(--mut)}
+.idn .eq{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink);display:block;margin-top:4px;font-size:12px}
+.pill{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;padding:2px 8px;border-radius:999px;
+  border:1px solid currentColor}
+
+.ki{margin-top:14px}
+.kirow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:10px}
+.kibox{border:1px solid var(--line);border-radius:8px;padding:11px 13px;background:var(--surface2);min-width:0}
+.kibox .k{font-family:var(--serif);font-size:15px;margin-bottom:1px}
+.kibox .n{font-family:var(--mono);font-size:19px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.kibox .d{font-size:11px;color:var(--mut);margin-top:3px}
+.warn{font-size:12px;color:var(--flag);margin:0}
+
+footer{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--mut);max-width:72ch}
+footer p{margin:0 0 7px}
+code{font-family:var(--mono);font-size:.92em;background:var(--surface2);padding:1px 4px;border-radius:3px}
+@media (prefers-reduced-motion:no-preference){.presets button,.segbtns button{transition:color .12s,border-color .12s,background .12s}}
+</style>
+
+<div class="wrap">
+<header>
+  <p class="eyebrow">Enzyme modulation · normalised reading</p>
+  <h1>Catalytic Plane Reader</h1>
+  <p class="lede">Put in a native and a modulated Km–Vmax pair. The same displacement is drawn four ways at once — saturation curve, Lineweaver–Burk, the catalytic plane, the circle and triangle — and classified by the four-level scheme of <a href="https://doi.org/10.1016/j.dmpk.2026.101553" target="_blank" rel="noopener">Salerno 2026</a>.</p>
+</header>
+
+<div class="ctl">
+  <fieldset>
+    <legend>Native</legend>
+    <div class="pair">
+      <div class="fld"><label for="kmN">K<sub>m</sub> <span class="unit">µM</span></label><input type="number" id="kmN" step="any" min="0" value="4.00"></div>
+      <div class="fld"><label for="vmN">V<sub>max</sub> <span class="unit">nmol/min/mg</span></label><input type="number" id="vmN" step="any" min="0" value="10.00"></div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Modulated</legend>
+    <div class="pair">
+      <div class="fld"><label for="kmM">K<sub>m</sub> <span class="unit">µM</span></label><input type="number" id="kmM" step="any" min="0" value="3.50"></div>
+      <div class="fld"><label for="vmM">V<sub>max</sub> <span class="unit">nmol/min/mg</span></label><input type="number" id="vmM" step="any" min="0" value="12.89"></div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Modulator, optional</legend>
+    <div class="pair">
+      <div class="fld"><label for="conc">[I] <span class="unit">µM — unlocks K<sub>i</sub> and K<sub>i</sub>&prime;</span></label><input type="number" id="conc" step="any" min="0" value="0"></div>
+    </div>
+  </fieldset>
+</div>
+
+<div class="rail">
+<div class="presets" id="presets"><span>Load</span></div>
+
+<div class="seg">
+  <p>CL<sub>int</sub> is the one quantity the classical chain carries forward. Watch where it lives in each of the four views.</p>
+  <div class="segbtns" id="seg" role="group" aria-label="Quantity to highlight">
+    <button data-h="cl" aria-pressed="true">CL<sub>int</sub></button>
+    <button data-h="none" aria-pressed="false">None</button>
+  </div>
+  <label class="chk" for="lab"><input type="checkbox" id="lab"> Show labels</label>
+  <label class="chk" for="kib"><input type="checkbox" id="kib"> Show K<sub>i</sub> / K<sub>i</sub>&prime;</label>
+  <p id="kinote" class="note" hidden></p>
+</div>
+</div>
+
+<div class="grid">
+  <div class="panel"><h2>Classical saturation</h2><div class="lg" id="lg-sat"></div><p class="cap" id="cap-sat"></p><div id="p-sat"></div></div>
+  <div class="panel"><h2>Lineweaver–Burk</h2><div class="lg" id="lg-lb"></div><p class="cap" id="cap-lb"></p><div id="p-lb"></div></div>
+  <div class="panel"><h2>Catalytic plane</h2><div class="lg" id="lg-pl"></div><p class="cap" id="cap-pl"></p><div id="p-pl"></div></div>
+  <div class="panel"><h2>Circle and triangle</h2><div class="lg" id="lg-ci"></div><p class="cap" id="cap-ci"></p><div id="p-ci"></div></div>
+</div>
+
+<div class="warn2" id="warn2"></div>
+
+
+<div class="tools">
+  <div class="tool">
+    <h3>Pin and compare</h3>
+    <p class="hint">Pin the state on screen, then load another. Pinned states stay on the catalytic
+    plane together &#8212; which is the one thing a saturation curve or a double-reciprocal plot
+    cannot do, since each spends a whole figure on a single state.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+      <button type="button" id="pinBtn">Pin this state</button>
+      <button type="button" id="pinClear">Clear all</button>
+    </div>
+    <div id="pinList"></div>
+  </div>
+
+  <div class="tool">
+    <h3>Paste a table</h3>
+    <p class="hint">One row per state, comma or tab separated:
+    <code>Km,nat &#160;Vmax,nat &#160;Km,mod &#160;Vmax,mod &#160;[I] &#160;label</code>.
+    Every row is pinned at once &#8212; the working end of a retrospective survey.</p>
+    <textarea id="pasteBox" spellcheck="false"
+placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&#10;4, 10, 6, 5, 10, mixed"></textarea>
+    <div style="display:flex;gap:8px;margin-top:9px"><button type="button" id="pasteBtn">Plot these rows</button></div>
+    <p class="hint" id="pasteMsg" style="margin:9px 0 0"></p>
+  </div>
+
+  <div class="tool">
+    <h3>Carry it to the AUC ratio</h3>
+    <p class="hint">What the second constant is worth, in the currency the clinic uses. The same
+    state predicted three ways &#8212; with the measured pair, and with the two mechanisms a single
+    constant would have forced you to assume.</p>
+    <div class="mini">
+      <div><label for="fmIn">f<sub>m</sub></label><input type="number" id="fmIn" step="any" min="0" max="1" value="0.9"></div>
+      <div><label for="fgIn">F<sub>g</sub></label><input type="number" id="fgIn" step="any" min="0" max="1" value="0.5"></div>
+      <div><label for="ihIn">[I] liver µM</label><input type="number" id="ihIn" step="any" min="0" value="10"></div>
+      <div><label for="igIn">[I] gut µM</label><input type="number" id="igIn" step="any" min="0" value="50"></div>
+    </div>
+    <div id="aucrOut"></div>
+  </div>
+</div>
+
+<div class="out">
+  <div class="card pad">
+    <p class="eyebrow">Derived quantities</p>
+    <table id="tbl"></table>
+  </div>
+  <div class="card pad">
+    <p class="eyebrow">Kinetic type</p>
+    <div id="g22"></div>
+    <div class="ki" id="ki"></div>
+  </div>
+</div>
+
+<footer>
+  <p><b>What the scheme reads.</b> Polarity comes from the hypotenuse — its tilt is the clearance ratio, so a tilt past 45° is activation. The circle measures how far the state has moved, never in which direction. The triangle flags a pair whose product has drifted, which is where a transcription or unit error usually shows up.</p>
+  <p><b>What it does not do.</b> K<sub>i</sub> and K<sub>i</sub>&prime; are inverted under one binding site and rapid equilibrium; neither holds for time-dependent inactivation. A ratio pair carries no information about the quality of the fit it came from, so a wide confidence interval on Vmax passes through this tool silently.</p>
+  <p>The loaded example reproduces the ratios of Fig. 2A (efavirenz 1 µM) and Fig. 1F; the absolute Km and Vmax are illustrative round numbers, not the published values.</p>
+</footer>
+</div>
+
+<script>
+/* ══════════════ state ══════════════ */
+var F = {kmN:4, vmN:10, kmM:3.5, vmM:12.89, I:0};
+var HL = 'cl';
+var LAB = false;
+var KI = false;
+var SWITCHED = false;     /* the Ki toggle auto-loaded an example */
+var ANN = 'var(--iso)';   /* the construction colour: neither native nor modulated */
+
+var PRESETS = [
+  {n:'Fig. 2A · efavirenz 1 µM', v:[4,10,3.50,12.89,0]},
+  {n:'Fig. 1F · POH 10 µM',      v:[4,10,3.012,11.19,0]},
+  {n:'Competitive',              v:[4,10,8.00,10.00,10]},
+  {n:'Non-competitive',          v:[4,10,4.00,5.00,10]},
+  {n:'Uncompetitive',            v:[4,10,2.00,5.00,10]},
+  {n:'Mixed',                    v:[4,10,6.00,5.00,10]}
+];
+/* Competitive and Non-competitive above share a CLint of 1.250 — ratio 0.500 — and
+   land in opposite cells of the 2x2. Clicking between them is the compression. */
+
+/* ══════════════ maths ══════════════ */
+function calc(){
+  var K = F.kmM/F.kmN, V = F.vmM/F.vmN;
+  var cl = V/K;
+  var phi = Math.atan2(V,K)*180/Math.PI;
+  var r2 = K*K + V*V, r = Math.sqrt(r2);
+  var dAc = (r2-2)/2*100;
+  var Atri = K*V/2, dAtri = (K*V-1)*100;
+  var X = Math.log(V), Y = -Math.log(K), XY = X+Y;
+
+  var pol = XY > 0.05 ? 'Activation' : (XY < -0.05 ? 'Inhibition' : 'Indeterminate');
+  var ia = Math.abs(dAc);
+  var inten = ia > 40 ? 'Strong' : (ia > 5 ? 'Moderate' : 'Minimal');
+  var flag = Math.abs(dAtri) > 20;
+  var circ = dAc < -5 ? 'contracted' : (dAc > 5 ? 'expanded' : 'balanced');
+
+  var shape, dom;
+  if(circ === 'balanced'){ shape='Balanced'; dom='—'; }
+  else if(circ === 'contracted'){ shape='Restricted'; dom = pol==='Activation' ? 'K-dominant' : pol==='Inhibition' ? 'V-dominant' : '—'; }
+  else { shape='Enlarged'; dom = pol==='Activation' ? 'V-dominant' : pol==='Inhibition' ? 'K-dominant' : '—'; }
+
+  // Ki and Ki' by inversion of the apparent-parameter relations
+  var Ki=null, Kip=null;
+  if(F.I > 0){
+    var dv = 1/V - 1;   // = [I]/Ki'
+    var ds = K/V - 1;   // = [I]/Ki
+    Kip = dv > 1e-9 ? F.I/dv : (dv < -1e-9 ? NaN : Infinity);
+    Ki  = ds > 1e-9 ? F.I/ds : (ds < -1e-9 ? NaN : Infinity);
+  }
+  return {K:K,V:V,cl:cl,phi:phi,r:r,r2:r2,dAc:dAc,Atri:Atri,dAtri:dAtri,
+          X:X,Y:Y,XY:XY,pol:pol,inten:inten,flag:flag,circ:circ,shape:shape,dom:dom,Ki:Ki,Kip:Kip};
+}
+
+/* ══════════════ svg helpers ══════════════ */
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function ln(x1,y1,x2,y2,c,w,dash){
+  return '<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+
+    '" stroke="'+c+'" stroke-width="'+(w||1)+'"'+(dash?' stroke-dasharray="'+dash+'"':'')+' fill="none"/>';
+}
+function tx(x,y,t,c,s,a,st){
+  return '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" fill="'+c+'" font-size="'+(s||10)+
+    '" text-anchor="'+(a||'start')+'" font-family="'+(st==='m'?'var(--mono)':st==='s'?'var(--serif)':'var(--sans)')+
+    '"'+(st==='s'?' font-style="italic"':'')+'>'+t+'</text>';
+}
+function dot(x,y,c,r){
+  return '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(r||3.6)+'" fill="'+c+'"/>';
+}
+function ring(x,y,c,r){
+  return '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(r||4.2)+'" fill="var(--surface)" stroke="'+c+'" stroke-width="1.8"/>';
+}
+function poly(pts,c,w,dash,fill){
+  var d = pts.map(function(p,i){ return (i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1); }).join(' ');
+  return '<path d="'+d+'" fill="'+(fill||'none')+'" stroke="'+(c||'none')+'" stroke-width="'+(w||1.6)+
+    '"'+(dash?' stroke-dasharray="'+dash+'"':'')+' stroke-linejoin="round"/>';
+}
+function nf(x,d){
+  if(!isFinite(x)) return '∞';
+  return x.toFixed(d===undefined?3:d);
+}
+function sf(x,d){ return (x>0?'+':'')+nf(x,d); }
+
+/* One rule across all four panels: blue and dashed = native, orange and solid = modulated.
+   A highlight is carried by stroke weight, never by a third colour. */
+var NAT='var(--accent)', MOD='var(--kdom)', GRID='var(--line)', AX='var(--mut)', TXT='var(--mut)';
+
+
+/* an arc at a vertex, from one line to the other: this is where Ki lives in the
+   panels where it is a change of slope rather than a gap */
+function angArc(vx,vy,a0,a1,rr,c,w){
+  var p=[],n=26;
+  for(var i=0;i<=n;i++){ var a=a0+(a1-a0)*i/n; p.push([vx+rr*Math.cos(a), vy+rr*Math.sin(a)]); }
+  return poly(p,c,w||1.8);
+}
+
+/* the two constants, written the same way in every panel */
+function kiShow(d){ return KI && F.I > 0 && !isNaN(d.Ki) && !isNaN(d.Kip); }
+function kiLine(d){
+  var a = isFinite(d.Ki)  ? nf(d.Ki,1)+' µM'  : '&#8594; &#8734;';
+  var b = isFinite(d.Kip) ? nf(d.Kip,1)+' µM' : '&#8594; &#8734;';
+  return 'Ki ' + a + '   &#183;   Ki&#8242; ' + b;
+}
+
+/* ══════════════ panel 1 · saturation ══════════════ */
+function panelSat(d){
+  var W=380,H=288,L=48,R=16,T=14,B=38, pw=W-L-R, ph=H-T-B;
+  /* The curve only approaches Vmax, so the range has to run well past Km for the
+     plateau line to sit close to the flat part. 16x Km leaves the curve at ~95%. */
+  var Smax = 16*Math.max(F.kmN,F.kmM);
+  var Vtop = 1.03*Math.max(F.vmN,F.vmM);
+  var PLX  = L + pw*0.34;        /* plateau lines start here, over the flat part */
+  var px=function(s){return L+s/Smax*pw;}, py=function(v){return T+ph-v/Vtop*ph;};
+  var o=[];
+  // grid
+  for(var i=1;i<=4;i++){ var gy=T+ph-i/5*ph; o.push(ln(L,gy,L+pw,gy,GRID,1)); }
+  // curves
+  function curve(km,vm,c,w,dash){
+    var p=[]; for(var i=0;i<=180;i++){ var s=i/180*Smax; p.push([px(s),py(vm*s/(km+s))]); }
+    return poly(p,c,w,dash);
+  }
+  o.push(curve(F.kmN,F.vmN,NAT,1.8,'5 4'));
+  o.push(curve(F.kmM,F.vmM,MOD,2.4));
+
+  /* hairlines, and solid: a thin solid rule reads as a reference next to a
+     dashed curve, where a second dash pattern would just look like more curve */
+  if(HL==='vm' || LAB){
+    var yN=py(F.vmN), yM=py(F.vmM);
+    o.push(ln(PLX,yN,L+pw,yN,NAT,0.8));
+    o.push(ln(PLX,yM,L+pw,yM,MOD,0.8));
+    if(Math.abs(yN-yM) < 16){
+      /* the two asymptotes coincide — one label, or they print on top of each other */
+      o.push(tx(L+pw-2,yN-6,'asymptote &#8594; Vmax = Vmax&#8242;',TXT,9.5,'end','s'));
+    } else {
+      o.push(tx(L+pw-2,yN-6,'asymptote &#8594; Vmax',NAT,9.5,'end','s'));
+      o.push(tx(L+pw-2,yM-6,'asymptote &#8594; Vmax&#8242;',MOD,9.5,'end','s'));
+    }
+  }
+  if(HL==='km'){
+    [[F.kmN,F.vmN,NAT,1.6,'5 4'],[F.kmM,F.vmM,MOD,2.2,null]].forEach(function(a){
+      o.push(ln(px(a[0]),py(0),px(a[0]),py(a[1]/2),a[2],a[3],a[4]));
+      o.push(ln(L,py(a[1]/2),px(a[0]),py(a[1]/2),a[2],a[3],a[4]));
+      o.push(dot(px(a[0]),py(a[1]/2),a[2],3.4));
+    });
+    o.push(tx(px(F.kmM)+5,py(0)-6,'Km',MOD,11,'start','s'));
+  }
+  if(HL==='cl'){
+    /* two curves, two values: native then modulated, each in its own colour */
+    o.push(tx(L+8,T+14,'initial slope = CLint = Vmax / Km = '+
+      '<tspan fill="'+NAT+'">'+nf(F.vmN/F.kmN,3)+'</tspan> &#8594; '+
+      '<tspan fill="'+MOD+'">'+nf(F.vmM/F.kmM,3)+'</tspan>',MOD,10.5,'start','s'));
+  }
+  if(LAB){
+    // the plateau is Vmax; the abscissa at half the plateau is Km
+    [[F.kmN,F.vmN,NAT],[F.kmM,F.vmM,MOD]].forEach(function(a){
+      o.push(ln(px(a[0]),py(0)-4,px(a[0]),py(0)+4,a[2],1.8));
+      o.push(dot(px(a[0]),py(a[1]/2),a[2],2.8));
+    });
+    /* +26 collided with the [S] axis label; the x-anchor keeps it clear of "64 µM" */
+    o.push(tx((px(F.kmN)+px(F.kmM))/2,py(0)+15,'Km, at half the plateau',TXT,9.5,'start','s'));
+  }
+  /* Ki is in the drop of the initial slope; Ki-prime is in the drop of the plateau. */
+  if(kiShow(d)){
+    o.push(tx(L+8,HL==='cl'?T+29:T+15,kiLine(d),ANN,10,'start','s'));
+    /* short stubs of the two initial tangents, and the angle between them */
+    (function(){
+      var ox=px(0), oy=py(0), len=78;
+      [[F.vmN/F.kmN],[F.vmM/F.kmM]].forEach(function(a){
+        var sl=a[0], se=Math.min(Smax, Vtop/sl)*0.999;
+        var ex=px(se), ey=py(sl*se);
+        var t=len/Math.hypot(ex-ox,ey-oy);
+        o.push(ln(ox,oy,ox+(ex-ox)*t,oy+(ey-oy)*t,ANN,1.4));
+      });
+      var aN=Math.atan2(py(F.vmN/F.kmN*1)-oy, px(1)-ox);
+      var aM=Math.atan2(py(F.vmM/F.kmM*1)-oy, px(1)-ox);
+      o.push(angArc(ox,oy,aN,aM,56,ANN,1.6));
+      var ab=(aN+aM)/2;
+      o.push(tx(ox+Math.cos(ab)*72,oy+Math.sin(ab)*72+4,'&#945;',ANN,11,'middle','s'));
+    })();
+    var gx = L+pw-20;
+    if(F.vmN - F.vmM > 1e-9){
+      o.push(ln(gx,py(F.vmN),gx,py(F.vmM),ANN,3));
+      o.push(ln(gx-6,py(F.vmN),gx+6,py(F.vmN),ANN,1.6));
+      o.push(ln(gx-6,py(F.vmM),gx+6,py(F.vmM),ANN,1.6));
+      o.push(tx(gx-10,(py(F.vmN)+py(F.vmM))/2,'Ki&#8242;',ANN,10.5,'end','s'));
+    } else {
+      /* bottom right, the one empty corner under a saturation curve: the top of the
+         plot holds the asymptote label and the scale value */
+      o.push(tx(L+pw-4,T+ph-10,'plateau unchanged &#8594; Ki&#8242; &#8594; &#8734;',ANN,9.5,'end','s'));
+    }
+  }
+  // axes
+  o.push(ln(L,T+ph,L+pw,T+ph,AX,1.4));
+  o.push(ln(L,T,L,T+ph,AX,1.4));
+  o.push(tx(L+pw/2,H-8,'[S]',TXT,11,'middle','s'));
+  /* upright (a rotated single letter reads as a chevron) and at mid height:
+     at the top of the axis it printed on top of the scale value */
+  o.push(tx(L-10,T+ph/2+4,'v',TXT,12,'end','s'));
+  o.push(tx(L-6,T+8,nf(Vtop,1),'var(--faint)',9.5,'end','m'));
+  o.push(tx(L+pw,H-24,nf(Smax,0)+' µM','var(--faint)',9.5,'end','m'));
+  return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Saturation curves, native and modulated">'+o.join('')+'</svg>';
+}
+
+/* ══════════════ panel 2 · Lineweaver–Burk ══════════════ */
+function panelLB(d){
+  var W=380,H=288,L=46,R=18,T=14,B=38, pw=W-L-R, ph=H-T-B;
+  var kmin = Math.min(F.kmN,F.kmM);
+  var xmin = -1.30/kmin, xmax = 2.10/kmin;
+  var yv = [[F.kmN,F.vmN],[F.kmM,F.vmM]].map(function(a){ return a[0]/a[1]*xmax + 1/a[1]; });
+  var ymax = 1.10*Math.max(yv[0],yv[1]);
+  var px=function(x){return L+(x-xmin)/(xmax-xmin)*pw;}, py=function(y){return T+ph-y/ymax*ph;};
+  var o=[];
+  for(var i=1;i<=3;i++){ var gy=T+ph-i/4*ph; o.push(ln(L,gy,L+pw,gy,GRID,1)); }
+  o.push(ln(px(0),T,px(0),T+ph,AX,1.4));          // 1/v axis at x=0
+  o.push(ln(L,py(0),L+pw,py(0),AX,1.4));
+
+  function line(km,vm,c,w,dash){
+    var f=function(x){ return km/vm*x + 1/vm; };
+    return poly([[px(xmin),py(f(xmin))],[px(xmax),py(f(xmax))]],c,w,dash);
+  }
+  o.push(line(F.kmN,F.vmN,NAT,1.8,'5 4'));
+  o.push(line(F.kmM,F.vmM,MOD,2.4));
+
+  if(HL==='vm'){
+    o.push(ln(L,py(1/F.vmN),px(0),py(1/F.vmN),NAT,1.6,'5 4'));
+    o.push(ln(L,py(1/F.vmM),px(0),py(1/F.vmM),MOD,2.2));
+    o.push(dot(px(0),py(1/F.vmN),NAT,4));
+    o.push(dot(px(0),py(1/F.vmM),MOD,4.4));
+    o.push(tx(px(0)+7,py(1/F.vmM)-7,'intercept = 1 / Vmax',MOD,10.5,'start','s'));
+  }
+  if(HL==='km'){
+    o.push(dot(px(-1/F.kmN),py(0),NAT,4));
+    o.push(dot(px(-1/F.kmM),py(0),MOD,4.4));
+    o.push(tx(px(-1/F.kmM),py(0)+17,'&#8722;1 / Km',MOD,10.5,'middle','s'));
+  }
+  if(HL==='cl'){
+    /* on two lines: one line long enough to carry the values reached back to "1 / v",
+       which sits at the top of this plot's internal axis */
+    o.push(tx(L+pw-4,T+14,'slope = Km / Vmax = 1 / CLint',MOD,10.5,'end','s'));
+    o.push(tx(L+pw-4,T+29,'<tspan fill="'+NAT+'">'+nf(F.kmN/F.vmN,4)+'</tspan> &#8594; '+
+      '<tspan fill="'+MOD+'">'+nf(F.kmM/F.vmM,4)+'</tspan>',MOD,10.5,'end','s'));
+    /* invert the slope on the spot — these land on the saturation panel's values */
+    o.push(tx(L+pw-4,T+44,'hence CLint = '+
+      '<tspan fill="'+NAT+'">'+nf(F.vmN/F.kmN,3)+'</tspan> &#8594; '+
+      '<tspan fill="'+MOD+'">'+nf(F.vmM/F.kmM,3)+'</tspan>',MOD,10.5,'end','s'));
+  }
+  if(LAB){
+    // the three readings of a double-reciprocal line
+    [[F.vmN,NAT],[F.vmM,MOD]].forEach(function(a){ o.push(dot(px(0),py(1/a[0]),a[1],3.2)); });
+    [[F.kmN,NAT],[F.kmM,MOD]].forEach(function(a){ o.push(dot(px(-1/a[0]),py(0),a[1],3.2)); });
+    var yi = (py(1/F.vmN)+py(1/F.vmM))/2;
+    o.push(tx(px(0)+9,yi+3.5,'y-intercept = 1 / Vmax',TXT,9.5,'start','s'));
+    o.push(tx(px(-1/Math.min(F.kmN,F.kmM))-4,py(0)+17,'x-intercept = &#8722;1 / Km',TXT,9.5,'start','s'));
+    o.push(tx(L+pw-4,T+ph-9,'slope = Km / Vmax',TXT,9.5,'end','s'));
+  }
+  /* Cleland's two constants: Ki in the slopes (Kis), Ki-prime in the intercepts (Kii). */
+  if(kiShow(d)){
+    o.push(tx(L+6,T+ph-9,kiLine(d),ANN,10,'start','s'));
+    /* the two lines cross; the angle there is the change of slope that carries Ki */
+    (function(){
+      var sN=F.kmN/F.vmN, sM=F.kmM/F.vmM, iN=1/F.vmN, iM=1/F.vmM;
+      if(Math.abs(sM-sN) < 1e-12) return;
+      var xc=(iN-iM)/(sM-sN), yc=sN*xc+iN;
+      var cx=px(xc), cy=py(yc);
+      if(cx<L||cx>L+pw||cy<T||cy>T+ph) return;
+      var aN=Math.atan2(py(sN*(xc+1)+iN)-cy, px(xc+1)-cx);
+      var aM=Math.atan2(py(sM*(xc+1)+iM)-cy, px(xc+1)-cx);
+      o.push(angArc(cx,cy,aN,aM,46,ANN,1.6));
+      var ab=(aN+aM)/2;
+      o.push(tx(cx+Math.cos(ab)*86,cy+Math.sin(ab)*86+4,'&#945;',ANN,11,'middle','s'));
+    })();
+    var yN=py(1/F.vmN), yM=py(1/F.vmM), gx2=px(0);
+    if(Math.abs(1/F.vmM - 1/F.vmN) > 1e-12){
+      o.push(ln(gx2,yN,gx2,yM,ANN,3));
+      o.push(ln(gx2-6,yN,gx2+6,yN,ANN,1.6));
+      o.push(ln(gx2-6,yM,gx2+6,yM,ANN,1.6));
+      /* left of the axis: the "y-intercept = 1 / Vmax" label owns the right side */
+      o.push(tx(gx2-9,(yN+yM)/2,'Ki&#8242;',ANN,10.5,'end','s'));
+    } else {
+      o.push(tx(L+6,T+ph-23,'intercepts coincide &#8594; Ki&#8242; &#8594; &#8734;',ANN,9.5,'start','s'));
+    }
+  }
+  o.push(tx(L+pw/2,H-8,'1 / [S]',TXT,11,'middle','s'));
+  /* at the top of its own axis, which is internal here; the slope annotation that
+     used to sit there has moved to the right edge */
+  o.push(tx(px(0)-9,T+10,'1 / v',TXT,12,'end','s'));
+  return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Lineweaver-Burk plot, native and modulated">'+o.join('')+'</svg>';
+}
+
+/* ══════════════ panel 3 · catalytic plane ══════════════ */
+function panelPlane(d){
+  /* equal scales on both axes, or the 45 degree diagonal is not at 45 degrees */
+  var W=380,H=288,T=16,B=36, ph=H-T-B, pw=ph, L=(W-pw)/2, R=L;
+  var cmp = PINS.length > 0;      /* con dei pin il pannello serve a confrontare, non a studiare un punto */
+  var span = Math.max(d.K,d.V,1);
+  PINS.forEach(function(q){ span=Math.max(span,q.K,q.V); });
+  var M = Math.max(1.45, 1.22*span);
+  var px=function(x){return L+x/M*pw;}, py=function(y){return T+ph-y/M*ph;};
+  var o=[];
+  // the two half-planes the diagonal separates
+  o.push(poly([[px(0),py(0)],[px(M),py(M)],[px(0),py(M)]],'none',1,null,'var(--good)')
+         .replace('fill="var(--good)"','fill="var(--good)" fill-opacity="0.08"'));
+  o.push(poly([[px(0),py(0)],[px(M),py(0)],[px(M),py(M)]],'none',1,null,'var(--flag)')
+         .replace('fill="var(--flag)"','fill="var(--flag)" fill-opacity="0.08"'));
+  var step = M>3 ? 1 : 0.5;
+  for(var g=step; g<M-1e-9; g+=step){
+    o.push(ln(px(g),py(0),px(g),py(M),GRID,1));
+    o.push(ln(px(0),py(g),px(M),py(g),GRID,1));
+    o.push(tx(px(g),py(0)+14,nf(g,1),'var(--faint)',9,'middle','m'));
+    o.push(tx(px(0)-6,py(g)+3.5,nf(g,1),'var(--faint)',9,'end','m'));
+  }
+  // isoclearance
+  o.push(ln(px(0),py(0),px(M),py(M),'var(--iso)',1.6));
+  o.push(tx(px(M*0.97),py(M*0.97)-7,'isoclearance','var(--iso)',9.5,'end'));
+
+  var col = MOD;
+
+  /* the ray from the origin to the SAD — its slope IS the CLint ratio.
+     Scales are equal here, so the on-screen angle is exactly phi. */
+  var xe = Math.min(M, M/Math.max(d.cl,1e-9));
+  var rx0=px(0), ry0=py(0), rx1=px(xe), ry1=py(d.cl*xe);
+  o.push(ln(rx0,ry0,rx1,ry1,col,HL==='cl'?2:1.5));
+  /* the radius proper is only the stretch from the origin to the SAD; the rest of the
+     ray is the locus, not the length */
+  o.push(ln(rx0,ry0,px(d.K),py(d.V),col,HL==='cl'?3.4:2.8));
+  if(!cmp) o.push(tx(px(d.K*0.58)+10,py(d.V*0.58)+4,'r (O&#8594;SAD) = '+nf(d.r,3),col,9.5,'start','s'));
+
+  if(HL==='cl'){
+    /* the plane's axes are the ratios, so the tildes belong here: without them this
+       would read as the absolute CLint, not the CLint ratio */
+    o.push(tx(L+8,T+12,'slope = V&#x303;max / K&#x303;m = CLint ratio = '+nf(d.cl,3),col,10.5,'start','s'));
+    /* The fibre of the CLint map: every point on this ray returns the same ratio.
+       Clearance cannot separate them; only the radius can. Dropped once states are
+       pinned — then the panel is a comparison, not a study of one point. */
+    if(!cmp){
+      [0.38,0.68].forEach(function(s){
+        o.push(ring(px(d.K*s),py(d.V*s),col,4));
+      });
+      o.push(tx(px(M*0.04),py(M*0.04),'points on the same ray = same CLint ratio',col,9.5,'start','s'));
+    }
+  }
+  if(HL==='km'){
+    o.push(ln(px(d.K),py(0),px(d.K),py(d.V),col,2.6));
+    o.push(tx(px(d.K),py(0)+14,nf(d.K,3),col,10,'middle','m'));
+  }
+  if(HL==='vm'){
+    o.push(ln(px(0),py(d.V),px(d.K),py(d.V),col,2.6));
+    o.push(tx(px(0)-6,py(d.V)+3.5,nf(d.V,3),col,10,'end','m'));
+  }
+
+  /* every pinned state in the same frame: the whole point of the plane */
+  var seen=[];
+  PINS.forEach(function(q){
+    if(q.K>M || q.V>M) return;
+    o.push(ln(px(0),py(0),px(q.K),py(q.V),q.col,1.1));
+    o.push(dot(px(q.K),py(q.V),q.col,4.2));
+    var lx=px(q.K)+7, ly=py(q.V)-6;
+    /* nudge down until this label clears the ones already placed */
+    for(var g=0; g<40; g++){
+      var hit=seen.some(function(t){ return Math.abs(t.y-ly)<11 && Math.abs(t.x-lx)<78; });
+      if(!hit) break; ly+=11;
+    }
+    seen.push({x:lx,y:ly});
+    o.push(tx(lx,ly,esc(q.name),q.col,9,'start','s'));
+  });
+  o.push(ring(px(1),py(1),NAT,4.4));
+  o.push(tx(px(1)-8,py(1)-9,'native',NAT,9.5,'end'));
+  o.push(dot(px(d.K),py(d.V),col,5.6));
+  var sx=px(d.K)+9, sy=py(d.V)-8;
+  for(var g2=0; g2<4; g2++){   /* capped: better slightly close than floating off the point */
+    var h2=seen.some(function(t){ return Math.abs(t.y-sy)<12 && Math.abs(t.x-sx)<78; });
+    if(!h2) break; sy-=12;
+  }
+  o.push(tx(sx,sy,'SAD',col,11,'start','s'));
+
+  if(LAB){
+    /* hard into the corners: the ray caption runs along the bottom of this plot */
+    /* hugging the diagonal that separates them, clear of the SAD and of the corners */
+    o.push(tx(px(M*0.06),py(M*0.70),'activation','var(--good)',10,'start','s'));
+    o.push(tx(px(M*0.94),py(M*0.62),'inhibition','var(--flag)',10,'end','s'));
+  }
+
+  /* Ki = [I]*Vmax~ / (Km~ - Vmax~) : the height over the HORIZONTAL gap to the diagonal.
+     Ki' = [I]*Vmax~ / (1 - Vmax~)  : the height over the VERTICAL gap to Vmax~ = 1.
+     A gap of zero is a constant of infinity — which is what the picture then shows. */
+  if(kiShow(d) && !cmp){
+    o.push(tx(L+8,HL==='cl'?T+27:T+13,kiLine(d),ANN,10,'start','s'));
+    o.push(ln(px(0),py(1),px(M),py(1),ANN,1,'3 3'));
+    var gapH = d.K - d.V, gapV = 1 - d.V;
+    if(gapH > 1e-6){
+      o.push(ln(px(d.V),py(d.V),px(d.K),py(d.V),ANN,2.6));
+      o.push(tx((px(d.V)+px(d.K))/2,py(d.V)-7,'K',ANN,11,'middle','s'));
+      o.push(tx((px(d.V)+px(d.K))/2+7,py(d.V)-4,'i',ANN,8,'middle','s'));
+    } else {
+      o.push(tx(px(d.K)+8,py(d.V)+14,'gap zero &#8594; Ki &#8594; &#8734;',ANN,9.5,'start','s'));
+    }
+    if(gapV > 1e-6){
+      o.push(ln(px(d.K),py(d.V),px(d.K),py(1),ANN,2.6));
+      o.push(tx(px(d.K)+7,(py(d.V)+py(1))/2,'K',ANN,11,'start','s'));
+      o.push(tx(px(d.K)+15,(py(d.V)+py(1))/2+3,'i&#8242;',ANN,8,'start','s'));
+    } else {
+      /* below the point: just above it is where the SAD label sits */
+      o.push(tx(px(d.K)+8,py(d.V)+28,'gap zero &#8594; Ki&#8242; &#8594; &#8734;',ANN,9.5,'start','s'));
+    }
+  }
+  o.push(ln(px(0),py(0),px(M),py(0),AX,1.4));
+  o.push(ln(px(0),py(0),px(0),py(M),AX,1.4));
+  o.push(tx(L+pw/2,H-7,'K&#x303;m',TXT,11,'middle','s'));
+  o.push('<text transform="translate(11,'+(T+ph/2)+') rotate(-90)" fill="'+TXT+'" font-size="11" text-anchor="middle" font-family="var(--serif)" font-style="italic">V&#x303;max</text>');
+  return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Catalytic plane with the SAD point">'+o.join('')+'</svg>';
+}
+
+/* ══════════════ panel 4 · circle and triangle ══════════════ */
+function panelCircle(d){
+  /* equal scales, or the quarter circle draws as an ellipse */
+  var W=380,H=288,T=16,B=36, ph=H-T-B, pw=ph, L=(W-pw)/2, R=L;
+  var M = Math.max(1.62, 1.14*Math.max(d.r,Math.SQRT2,d.K,d.V));
+  var px=function(x){return L+x/M*pw;}, py=function(y){return T+ph-y/M*ph;};
+  var o=[];
+  function arc(R0){
+    var p=[]; for(var i=0;i<=64;i++){ var a=i/64*Math.PI/2; p.push([px(R0*Math.cos(a)),py(R0*Math.sin(a))]); }
+    return p;
+  }
+  var aN=arc(Math.SQRT2), aR=arc(d.r);
+  var shadeCol = MOD;
+
+  // annulus between the native arc and the actual arc = the change in circle area
+  var band = aR.concat(aN.slice().reverse());
+  o.push('<path d="'+band.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' ')+
+         ' Z" fill="'+shadeCol+'" fill-opacity="0.14" stroke="none"/>');
+
+  // the triangle, right angle at the origin
+  o.push('<path d="M'+px(0).toFixed(1)+','+py(0).toFixed(1)+' L'+px(d.K).toFixed(1)+','+py(0).toFixed(1)+
+         ' L'+px(0).toFixed(1)+','+py(d.V).toFixed(1)+' Z" fill="'+MOD+'" fill-opacity="0.10" stroke="none"/>');
+
+  o.push(poly(aN,NAT,1.8,'5 4'));
+  o.push(poly(aR,shadeCol,2.4));
+
+  if(HL==='km') o.push(ln(px(0),py(0),px(d.K),py(0),shadeCol,3.2));
+  if(HL==='vm') o.push(ln(px(0),py(0),px(0),py(d.V),shadeCol,3.2));
+  if(HL==='cl'){
+    // the native hypotenuse is shown only here, where the tilt is the comparison
+    o.push(poly([[px(1),py(0)],[px(0),py(1)]],NAT,1.8,'5 4'));
+  }
+  /* the hypotenuse runs from (Km&#x303;, 0) to (0, Vmax&#x303;), so its slope is
+     &#8722;Vmax&#x303;/Km&#x303; &#8212; the CLint ratio with the sign flipped. Same magnitude as the
+     ray on the plane; the Lineweaver&#8211;Burk slope is the reciprocal instead. */
+  o.push(poly([[px(d.K),py(0)],[px(0),py(d.V)]],shadeCol,HL==='cl'?3:1.8));
+  if(HL==='cl'){
+    /* U+2212, to match the minus in the formula rather than toFixed's hyphen */
+    o.push(tx(L+8,T+12,'hypotenuse slope = &#8722; V&#x303;max / K&#x303;m = &#8722; CLint ratio = &#8722;'+nf(d.cl,3),
+             shadeCol,10,'start','s'));
+  }
+
+  o.push(dot(px(d.K),py(d.V),shadeCol,5));
+  /* beside the hypotenuse, whose length is this same r: pushed straight out from
+     the origin past the midpoint of that segment */
+  var mx=(px(d.K)+px(0))/2, my=(py(0)+py(d.V))/2;
+  var ox=mx-px(0), oy=my-py(0), ol=Math.hypot(ox,oy) || 1;
+  o.push(tx(mx+ox/ol*22,my+oy/ol*22+4,'r = hypotenuse length = '+nf(d.r,3),shadeCol,9.5,'start','s'));
+
+  /* Ki is in the tilt of the hypotenuse; Ki-prime is in the vertical leg
+     measured against the native leg of 1. */
+  if(kiShow(d)){
+    o.push(tx(L+8,HL==='cl'?T+27:T+13,kiLine(d),ANN,10,'start','s'));
+    /* native hypotenuse always drawn here, so the angle against it can be shown */
+    o.push(poly([[px(1),py(0)],[px(0),py(1)]],ANN,1.2,'4 3'));
+    (function(){
+      if(Math.abs(d.K-1)<1e-9 && Math.abs(d.V-1)<1e-9) return;
+      var den=(1/d.K-1)+(1-1/d.V);          // intersezione delle due ipotenuse
+      if(Math.abs(den)<1e-9) return;
+      var xc=(1-1/d.V)/((1/d.K-1)+(1-1/d.V))*0+0;
+      // nativa: x + y = 1 ; modulata: x/K + y/V = 1
+      xc=(1-1/d.V)/(1/d.K-1/d.V); var yc=1-xc;
+      if(!(xc>0.02&&yc>0.02&&xc<M&&yc<M)) return;
+      var cx=px(xc), cy=py(yc);
+      var aN=Math.atan2(py(yc-0.3)-cy, px(xc+0.3)-cx);
+      var aM=Math.atan2(py(yc-0.3*d.V/d.K)-cy, px(xc+0.3)-cx);
+      o.push(angArc(cx,cy,aN,aM,44,ANN,1.6));
+      var ab2=(aN+aM)/2;
+      o.push(tx(cx+Math.cos(ab2)*58,cy+Math.sin(ab2)*58+4,'&#945;',ANN,11,'middle','s'));
+    })();
+    o.push(ln(px(0)-5,py(1),px(0)+5,py(1),ANN,2));
+    if(1 - d.V > 1e-6){
+      o.push(ln(px(0),py(d.V),px(0),py(1),ANN,3));
+      o.push(tx(px(0)+8,(py(d.V)+py(1))/2,'Ki&#8242;',ANN,10.5,'start','s'));
+    }
+  }
+  if(LAB){
+    o.push(tx(px(d.K/2),py(0)-7,'leg = K&#x303;m',TXT,9.5,'middle','s'));
+    /* high on the leg: at half height it ran into the "same CLint" marker */
+    o.push(tx(px(0)+7,py(d.V*0.72),'leg = V&#x303;max',TXT,9.5,'start','s'));
+    o.push(tx(px(M)-4,py(M)-24,'radius = hypotenuse length',TXT,9.5,'end','s'));
+    o.push(tx(px(M)-4,py(M)-10,'shaded band = change in circle area',TXT,9.5,'end','s'));
+  }
+  o.push(ln(px(0),py(0),px(M),py(0),AX,1.4));
+  o.push(ln(px(0),py(0),px(0),py(M),AX,1.4));
+  o.push(tx(L+pw/2,H-7,'K&#x303;m',TXT,11,'middle','s'));
+  o.push('<text transform="translate(11,'+(T+ph/2)+') rotate(-90)" fill="'+TXT+'" font-size="11" text-anchor="middle" font-family="var(--serif)" font-style="italic">V&#x303;max</text>');
+  return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Catalytic circle and triangle">'+o.join('')+'</svg>';
+}
+
+/* ══════════════ captions ══════════════ */
+var CAPS = {
+  km:{sat:'the abscissa at half the plateau',            lb:'the x-intercept, &#8722;1 / Km',        pl:'the horizontal coordinate',             ci:'the horizontal leg'},
+  vm:{sat:'the plateau the curve approaches',            lb:'the y-intercept, 1 / Vmax',            pl:'the vertical coordinate',               ci:'the vertical leg'},
+  cl:{sat:'the initial slope through the origin',        lb:'the reciprocal of the line&rsquo;s slope',
+      pl:'the slope of the ray &mdash; and every point on that ray returns the same value',
+      ci:'the tilt of the hypotenuse &mdash; the shape of the triangle, never its size'},
+  none:{sat:'',lb:'',pl:'',ci:''}
+};
+var NAMES = {km:'K<sub>m</sub>', vm:'V<sub>max</sub>', cl:'CL<sub>int</sub>'};
+
+/* ══════════════ legends ══════════════ */
+function lgItem(mark,color,label){
+  return '<span style="color:'+color+'">'+mark+'<span style="color:var(--mut)">'+label+'</span></span>';
+}
+function legends(d){
+  var nm = lgItem('<i class="d"></i>',NAT,'native')+lgItem('<i></i>',MOD,'modulated');
+  return {
+    sat:nm,
+    lb: nm,
+    pl: lgItem('<b class="o"></b>',NAT,'native (1, 1)')+lgItem('<b></b>',MOD,'modulated — the SAD')+
+        lgItem('<i></i>',MOD,'ray slope = CL<sub>int</sub> ratio '+nf(d.cl,3)),
+    ci: lgItem('<i class="d"></i>',NAT,'native circle')+
+        lgItem('<i></i>',MOD,'modulated circle, r = '+nf(d.r,3))+
+        lgItem('<i></i>',MOD,'hypotenuse slope = '+sf(-d.cl,3))
+  };
+}
+/* where the two inhibition constants are read off, per panel */
+var KICAP = {
+  sat:'K<sub>i</sub> = [I]&#183;tan&#945;<sub>mod</sub> / (tan&#945;<sub>nat</sub> &#8722; tan&#945;<sub>mod</sub>), the angle &#945; between the two initial tangents · K<sub>i</sub>&prime; from the drop in the plateau',
+  lb: 'K<sub>i</sub> = [I]&#183;slope<sub>nat</sub> / (slope<sub>mod</sub> &#8722; slope<sub>nat</sub>) &#8212; reciprocal axes, so the form flips (Cleland&rsquo;s K<sub>is</sub>) · K<sub>i</sub>&prime; from the change in intercept (K<sub>ii</sub>)',
+  pl: 'K<sub>i</sub> = [I]&#183;V&#x303;<sub>max</sub> / (K&#x303;<sub>m</sub> &#8722; V&#x303;<sub>max</sub>), the horizontal gap to the diagonal · K<sub>i</sub>&prime; = [I]&#183;V&#x303;<sub>max</sub> / (1 &#8722; V&#x303;<sub>max</sub>), the vertical gap to the native level',
+  ci: 'K<sub>i</sub> = [I]&#183;tan&#945;<sub>mod</sub> / (tan&#945;<sub>nat</sub> &#8722; tan&#945;<sub>mod</sub>), &#945; against the native hypotenuse at 45&#176; · K<sub>i</sub>&prime; from the vertical leg against the native leg of 1'
+};
+function caption(k,d){
+  var base = HL==='none' ? 'Dashed is native, solid is modulated.'
+                         : NAMES[HL]+' is <b>'+CAPS[HL][k]+'</b>.';
+  if(KI && F.I > 0 && d && !isNaN(d.Ki) && !isNaN(d.Kip))
+    base += '<br><span style="color:var(--iso)">'+KICAP[k]+'</span>';
+  return base;
+}
+
+/* ══════════════ readout ══════════════ */
+/* Two quantities, one name. The top two panels carry CLint, the bottom two the ratio. */
+function warnBlock(d){
+  return '<h3>Don&rsquo;t confuse CL<sub>int</sub> with the CL<sub>int</sub> ratio</h3>'+
+  '<div class="two">'+
+    '<div class="q"><b>CL<sub>int</sub> = V<sub>max</sub> / K<sub>m</sub></b>'+
+      '<span>Carries units, set by whatever units V<sub>max</sub> and K<sub>m</sub> were measured in. '+
+      'Read in the two panels above this one &#8212; saturation and Lineweaver&#8211;Burk. '+
+      'Here <em>'+nf(F.vmN/F.kmN,3)+'</em> &#8594; <em>'+nf(F.vmM/F.kmM,3)+'</em>.</span></div>'+
+    '<div class="q"><b>CL<sub>int</sub> ratio = V&#x303;<sub>max</sub> / K&#x303;<sub>m</sub></b>'+
+      '<span>A pure number, no units, native = 1. Read in the catalytic plane and in the circle '+
+      'and triangle. Here <em>'+nf(d.cl,3)+'</em>.</span></div>'+
+  '</div>'+
+  '<p>It is called a <b style="display:inline;font-family:inherit;font-size:inherit">ratio</b> '+
+  'because it is taken against the state&rsquo;s <b style="display:inline;font-family:inherit;font-size:inherit">own native control</b>, '+
+  'not against any external standard. That is what lets states from different enzymes, substrates and '+
+  'laboratories share one plane: each has been divided by its own uninhibited incubation.</p>'+
+  '<p>Back to absolute units: CL<sub>int,mod</sub> = CL<sub>int</sub> ratio &#215; CL<sub>int,nat</sub> = '+
+  nf(d.cl,3)+' &#215; '+nf(F.vmN/F.kmN,3)+' = '+nf(F.vmM/F.kmM,3)+'. '+
+  'The ratio alone cannot do it &#8212; the native row has to come with it.</p>';
+}
+
+/* null when there is no [I] at all, NaN when the pair is an activation: isFinite(null)
+   is true, so these have to be caught before any toFixed */
+function kiTxt(x){
+  if(x === null || isNaN(x)) return '&#8212;';
+  if(!isFinite(x)) return '&#8594; &#8734;';
+  return nf(x,1)+' µM';
+}
+
+function rows(d){
+  var R=[
+    ['K&#x303;<sub>m</sub>','K<sub>m,mod</sub> / K<sub>m,nat</sub>',nf(d.K,3)],
+    ['V&#x303;<sub>max</sub>','V<sub>max,mod</sub> / V<sub>max,nat</sub>',nf(d.V,3)],
+    ['CL<sub>int</sub> ratio','V&#x303;<sub>max</sub> / K&#x303;<sub>m</sub>',nf(d.cl,3)],
+    ['&#966;','arctan(V&#x303;<sub>max</sub> / K&#x303;<sub>m</sub>)',nf(d.phi,1)+'&#176;'],
+    ['&#916;&#966;','against 45&#176;',sf(d.phi-45,1)+'&#176;'],
+    ['r','&#8730;(K&#x303;<sub>m</sub>&#178; + V&#x303;<sub>max</sub>&#178;)',nf(d.r,3)],
+    ['&#916;A<sub>c</sub> %','against the native circle',sf(d.dAc,1)+' %'],
+    ['A<sub>tri</sub>','K&#x303;<sub>m</sub>&#183;V&#x303;<sub>max</sub> / 2',nf(d.Atri,3)],
+    ['&#916;A<sub>tri</sub> %','against 0.5',sf(d.dAtri,1)+' %'],
+    ['X, Y','ln V&#x303;<sub>max</sub>, &#8722;ln K&#x303;<sub>m</sub>',nf(d.X,3)+', '+nf(d.Y,3)],
+    ['X + Y','ln(CL<sub>int</sub> ratio)',sf(d.XY,3)]
+  ];
+  return R.map(function(a){
+    return '<tr><th><span class="m">'+a[0]+'</span> <span class="n" style="color:var(--faint);font-size:11px">'+a[1]+'</span></th><td>'+a[2]+'</td></tr>';
+  }).join('');
+}
+
+/* Polarity against the circle, with the dominance each pairing implies.
+   The same column reverses meaning between the two rows. */
+var CELLS = {
+  'act-con':{s:'Restricted', d:'K-dominant', x:'Activation carried mainly by the fall in Km.'},
+  'act-exp':{s:'Enlarged',   d:'V-dominant', x:'Activation carried mainly by the rise in Vmax.'},
+  'inh-con':{s:'Restricted', d:'V-dominant', x:'Inhibition carried mainly by the fall in Vmax.'},
+  'inh-exp':{s:'Enlarged',   d:'K-dominant', x:'Inhibition carried mainly by the rise in Km.'}
+};
+function grid22(d){
+  var row = d.pol==='Activation' ? 'act' : d.pol==='Inhibition' ? 'inh' : null;
+  var col = d.circ==='contracted' ? 'con' : d.circ==='expanded' ? 'exp' : null;
+  var live = (row && col) ? row+'-'+col : null;
+  function cell(key){
+    var c = CELLS[key];
+    var dc = c.d==='V-dominant' ? 'var(--accent)' : 'var(--kdom)';
+    return '<div class="cell'+(key===live?' on':'')+'">'+
+      '<div class="t">'+c.s+'<br><span style="color:'+dc+'">'+c.d+'</span></div>'+
+      '<div class="x">'+c.x+'</div></div>';
+  }
+  var pc = row==='inh' ? 'X + Y &lt; &#8722;0.05' : 'X + Y &gt; +0.05';
+  var cc = col==='con' ? '&#916;A<sub>c</sub>% &lt; &#8722;5' : '&#916;A<sub>c</sub>% &gt; +5';
+  var here = '<span class="eq">Here we have: X + Y = '+sf(d.XY,3)+
+             ' and &#916;A<sub>c</sub>% = '+sf(d.dAc,1)+'</span>';
+  var note;
+  if(!row)      note = '<span style="color:var(--faint)">|X + Y| &#8804; 0.05 &#8212; polarity indeterminate</span>'+here;
+  else if(!col) note = '<span style="color:var(--faint)">|&#916;A<sub>c</sub>%| &#8804; 5 &#8212; circle balanced</span>'+here;
+  else note = '<b>'+CELLS[live].s+' '+d.pol.toLowerCase()+'</b> &#183; mathematical countercheck: '+pc+' and '+cc+here;
+
+  var rhInh = '<div class="rh">inhibition<span class="g">hypotenuse slope decreases</span></div>';
+  var rhAct = '<div class="rh">activation<span class="g">hypotenuse slope increases</span></div>';
+  return '<div class="g22">'+
+    '<div></div><div class="ch">circle contracted</div><div class="ch">circle expanded</div>'+
+    rhInh+cell('inh-con')+cell('inh-exp')+
+    rhAct+cell('act-con')+cell('act-exp')+
+  '</div>'+
+  '<p class="idn">'+note+'</p>';
+}
+
+function kiBlock(d){
+  if(F.I <= 0) return '';
+  if(isNaN(d.Ki) || isNaN(d.Kip)){
+    return '<p class="warn">This displacement is not an inhibition pattern: with V&#x303;<sub>max</sub> above 1 or a clearance ratio above 1, the inversion returns a negative constant. The two constants are defined only for inhibition under one binding site.</p>';
+  }
+  var ratio = d.Kip/d.Ki;
+  var arche;
+  if(!isFinite(d.Kip)) arche='competitive — no term on the ES complex';
+  else if(!isFinite(d.Ki)) arche='uncompetitive — no term on the free enzyme, so the point sits on the isoclearance line';
+  else if(ratio>0.5 && ratio<2) arche='non-competitive — the two constants are close';
+  else arche = 'mixed — both finite and different, K<sub>i</sub>&prime; / K<sub>i</sub> = '+nf(ratio,2);
+  return '<p class="eyebrow" style="margin:0 0 9px">Inverted at [I] = '+nf(F.I,2)+' µM</p>'+
+    '<div class="kirow">'+
+    '<div class="kibox"><div class="k"><i>K</i><sub>i</sub></div><div class="n">'+nf(d.Ki,1)+(isFinite(d.Ki)?' µM':'')+
+      '</div><div class="d">on the free enzyme · from the ray slope</div></div>'+
+    '<div class="kibox"><div class="k"><i>K</i><sub>i</sub>&prime;</div><div class="n">'+nf(d.Kip,1)+(isFinite(d.Kip)?' µM':'')+
+      '</div><div class="d">on the ES complex · from the height</div></div>'+
+    '</div><p style="font-size:12px;color:var(--mut);margin:0">'+arche+'</p>';
+}
+
+
+/* ══════════════ pinned states ══════════════ */
+var PINS = [], PINSEQ = 0;
+var PINCOL = ['#7B4EA8','#1F6B4A','#B3261E','#8A5A11','#1565C0','#C2185B','#00838F','#5D4037'];
+
+function pinFrom(kmN,vmN,kmM,vmM,I,label){
+  var K=kmM/kmN, V=vmM/vmN;
+  if(!(K>0&&V>0&&isFinite(K)&&isFinite(V))) return null;
+  var dv=1/V-1, ds=K/V-1;
+  PINSEQ++;
+  return {K:K, V:V, I:I, cl:V/K, r:Math.hypot(K,V),
+          Ki:  I>0 ? (ds>1e-9 ? I/ds : (ds<-1e-9?NaN:Infinity)) : null,
+          Kip: I>0 ? (dv>1e-9 ? I/dv : (dv<-1e-9?NaN:Infinity)) : null,
+          name: label || ('S'+PINSEQ),
+          col: PINCOL[(PINSEQ-1)%PINCOL.length]};
+}
+function renderPins(){
+  var box=document.getElementById('pinList');
+  if(!PINS.length){ box.innerHTML='<p class="hint" style="margin:0">Nothing pinned yet.</p>'; return; }
+  box.innerHTML = PINS.map(function(q,i){
+    return '<div class="pinrow"><span class="sw" style="background:'+q.col+'"></span>'+
+      '<span class="nm">'+esc(q.name)+'</span>'+
+      '<span class="vv">K&#x303;m '+nf(q.K,3)+' &#183; V&#x303;max '+nf(q.V,3)+
+      ' &#183; CL ratio '+nf(q.cl,3)+' &#183; r '+nf(q.r,3)+
+      (q.Ki!==null && !isNaN(q.Ki) ? ' &#183; Ki '+kiTxt(q.Ki)+' &#183; Ki&#8242; '+kiTxt(q.Kip) : '')+
+      '</span><button class="x" data-i="'+i+'" aria-label="remove">&#215;</button></div>';
+  }).join('');
+}
+
+/* ══════════════ the AUC ratio, three ways ══════════════ */
+function aucr(fm,Fg,Ah,Ag){ return (1/(Fg+(1-Fg)*Ag))*(1/(fm*Ah+1-fm)); }
+function num(id,dflt){ var v=parseFloat(document.getElementById(id).value); return isNaN(v)?dflt:v; }
+
+function renderAucr(d){
+  var box=document.getElementById('aucrOut');
+  if(F.I<=0 || d.Ki===null || isNaN(d.Ki) || isNaN(d.Kip)){
+    box.innerHTML='<p class="hint" style="margin:0">Needs an inhibition with a stated [I]. '+
+      'Load Competitive, Non-competitive or Mixed.</p>'; return;
+  }
+  var fm=num('fmIn',0.9), Fg=num('fgIn',0.5), Ih=num('ihIn',10), Ig=num('igIn',50);
+  var A=function(I,K){ return isFinite(K) ? 1/(1+I/K) : 1; };
+  var arms=[
+    {n:'With the measured pair', s:'A<sub>h</sub> from K<sub>i</sub>, A<sub>g</sub> from K<sub>i</sub>&prime;',
+     v:aucr(fm,Fg,A(Ih,d.Ki),A(Ig,d.Kip)), lead:true},
+    {n:'Assuming competitive', s:'one constant, so no gut term at all',
+     v:aucr(fm,Fg,A(Ih,d.Ki),1)},
+    {n:'Assuming non-competitive', s:'one constant used for both organs',
+     v:aucr(fm,Fg,A(Ih,d.Ki),A(Ig,d.Ki))}
+  ];
+  var vs=arms.map(function(a){return a.v;}), lo=Math.min.apply(null,vs), hi=Math.max.apply(null,vs);
+  box.innerHTML='<div class="arms">'+arms.map(function(a){
+    return '<div class="arm'+(a.lead?' lead':'')+'"><div class="lbl"><b>'+a.n+'</b>'+a.s+'</div>'+
+           '<div class="num">'+nf(a.v,2)+'</div></div>';
+  }).join('')+'</div>'+
+  '<p class="spread">The single-constant answer is not one number but a range, '+
+  '<b>'+nf(lo,2)+'</b> to <b>'+nf(hi,2)+'</b> &#8212; a spread of <b>'+nf(hi/lo,2)+'&#215;</b>, '+
+  'decided by an assumption rather than a measurement. Which of the three is closest to the clinic '+
+  'is exactly what a validation study would have to settle.</p>';
+}
+
+/* ══════════════ paste a table ══════════════ */
+function parsePaste(txt){
+  var out=[], bad=0;
+  txt.split(/\r?\n/).forEach(function(line){
+    line=line.trim(); if(!line || /^[#\/]/.test(line)) return;
+    var p=line.split(/[\t,;]+/).map(function(x){return x.trim();});
+    if(p.length<4){ bad++; return; }
+    var n=p.slice(0,5).map(parseFloat);
+    if(n.slice(0,4).some(function(x){return isNaN(x)||x<=0;})){ bad++; return; }
+    var I = (p.length>4 && !isNaN(n[4])) ? n[4] : 0;
+    var lab = p.slice((p.length>4 && !isNaN(n[4]))?5:4).join(' ').trim();
+    var q = pinFrom(n[0],n[1],n[2],n[3],I,lab);
+    if(q) out.push(q); else bad++;
+  });
+  return {rows:out, bad:bad};
+}
+
+/* ══════════════ render ══════════════ */
+function render(){
+  var ok = F.kmN>0 && F.vmN>0 && F.kmM>0 && F.vmM>0;
+  if(!ok){
+    document.getElementById('tbl').innerHTML =
+      '<tr><th>All four parameters must be above zero.</th><td></td></tr>';
+    return;
+  }
+  var d = calc();
+  document.getElementById('p-sat').innerHTML = panelSat(d);
+  document.getElementById('p-lb').innerHTML  = panelLB(d);
+  document.getElementById('p-pl').innerHTML  = panelPlane(d);
+  document.getElementById('p-ci').innerHTML  = panelCircle(d);
+  document.getElementById('cap-sat').innerHTML = caption('sat',d);
+  document.getElementById('cap-lb').innerHTML  = caption('lb',d);
+  document.getElementById('cap-pl').innerHTML  = caption('pl',d);
+  document.getElementById('cap-ci').innerHTML  = caption('ci',d);
+  renderPins();
+  renderAucr(d);
+
+  var kn = document.getElementById('kinote'), msg = '';
+  if(KI && SWITCHED)
+    msg = 'Loaded the <b>Mixed</b> example at [I] = 10 µM. The two constants exist only for an inhibition with a stated modulator concentration, and the pair on screen had neither. Change any field to use your own.';
+  else if(KI && F.I <= 0)
+    msg = 'Enter a modulator concentration [I] above — without it neither constant can be inverted.';
+  else if(KI && (isNaN(d.Ki) || isNaN(d.Kip)))
+    msg = 'This pair is an activation, so no inhibition constant can be inverted. Load Competitive, Non-competitive or Mixed.';
+  kn.innerHTML = msg;
+  kn.hidden = !msg;
+
+  var lg = legends(d);
+  document.getElementById('lg-sat').innerHTML = lg.sat;
+  document.getElementById('lg-lb').innerHTML  = lg.lb;
+  document.getElementById('lg-pl').innerHTML  = lg.pl;
+  document.getElementById('lg-ci').innerHTML  = lg.ci;
+  document.getElementById('warn2').innerHTML = warnBlock(d);
+  document.getElementById('tbl').innerHTML  = rows(d);
+  document.getElementById('g22').innerHTML  = grid22(d);
+  var kiHtml = kiBlock(d);
+  var kiEl = document.getElementById('ki');
+  kiEl.innerHTML = kiHtml;
+  kiEl.className = kiHtml ? 'ki' : '';
+}
+
+/* ══════════════ wiring ══════════════ */
+var IDS = {kmN:'kmN', vmN:'vmN', kmM:'kmM', vmM:'vmM', I:'conc'};
+Object.keys(IDS).forEach(function(k){
+  document.getElementById(IDS[k]).addEventListener('input', function(e){
+    var v = parseFloat(e.target.value);
+    F[k] = isNaN(v) ? 0 : v;
+    SWITCHED = false;
+    Array.prototype.forEach.call(document.querySelectorAll('#presets button.cur'),
+      function(x){x.classList.remove('cur');});
+    render();
+  });
+});
+
+function loadPreset(p){
+  F.kmN=p.v[0]; F.vmN=p.v[1]; F.kmM=p.v[2]; F.vmM=p.v[3]; F.I=p.v[4];
+  document.getElementById('kmN').value=p.v[0];
+  document.getElementById('vmN').value=p.v[1];
+  document.getElementById('kmM').value=p.v[2];
+  document.getElementById('vmM').value=p.v[3];
+  document.getElementById('conc').value=p.v[4];
+}
+
+var pbox = document.getElementById('presets');
+PRESETS.forEach(function(p){
+  var b = document.createElement('button');
+  b.type='button'; b.textContent = p.n;
+  b.addEventListener('click', function(){
+    Array.prototype.forEach.call(pbox.querySelectorAll('button'),function(x){x.classList.remove('cur');});
+    b.classList.add('cur');
+    loadPreset(p); SWITCHED = false; render();
+  });
+  pbox.appendChild(b);
+});
+
+document.getElementById('lab').addEventListener('change', function(e){
+  LAB = e.target.checked;
+  render();
+});
+
+
+document.getElementById('pinBtn').addEventListener('click', function(){
+  var act=document.querySelector('#presets button.cur');
+  var q=pinFrom(F.kmN,F.vmN,F.kmM,F.vmM,F.I, act?act.textContent.trim():'');
+  if(q){ PINS.push(q); render(); }
+});
+document.getElementById('pinClear').addEventListener('click', function(){
+  PINS=[]; PINSEQ=0; render();
+});
+document.getElementById('pinList').addEventListener('click', function(e){
+  var b=e.target.closest('button.x'); if(!b) return;
+  PINS.splice(+b.dataset.i,1); render();
+});
+document.getElementById('pasteBtn').addEventListener('click', function(){
+  var r=parsePaste(document.getElementById('pasteBox').value);
+  PINS=PINS.concat(r.rows);
+  document.getElementById('pasteMsg').innerHTML =
+    r.rows.length ? r.rows.length+' row'+(r.rows.length>1?'s':'')+' plotted'+
+      (r.bad? ', '+r.bad+' skipped':'') + '.'
+    : 'Nothing readable. Each row needs at least four positive numbers.';
+  render();
+});
+['fmIn','fgIn','ihIn','igIn'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', render);
+});
+
+document.getElementById('kib').addEventListener('change', function(e){
+  KI = e.target.checked;
+  SWITCHED = false;
+  if(KI){
+    /* The two constants exist only for an inhibition with a stated [I]. If the pair
+       on screen cannot give them, load the mixed example so the button has something
+       to show instead of appearing dead. */
+    var c = calc();
+    if(F.I <= 0 || isNaN(c.Ki) || isNaN(c.Kip)){
+      var mixed = PRESETS.filter(function(p){ return p.n === 'Mixed'; })[0];
+      if(mixed){ loadPreset(mixed); SWITCHED = true; }
+    }
+  }
+  render();
+});
+
+document.getElementById('seg').addEventListener('click', function(e){
+  var b = e.target.closest('button'); if(!b) return;
+  HL = b.dataset.h;
+  Array.prototype.forEach.call(this.querySelectorAll('button'), function(x){
+    x.setAttribute('aria-pressed', String(x===b));
+  });
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
