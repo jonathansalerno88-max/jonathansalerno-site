@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Alcohol</title>
-<meta name="description" content="Grams of ethanol from what was actually drunk, and the same week expressed in four national definitions of a standard unit.">
+<meta name="description" content="Grams of ethanol from what was actually drunk, named cocktails costed from their standard recipes, and the same week expressed in four national definitions of a standard unit.">
 <meta name="author" content="Jonathan Salerno">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M6 11h20M6 16h20M6 21h12' stroke='%235B9BE5' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
 <meta property="og:type" content="website">
@@ -28,14 +28,6 @@
 
   <div class="block">
     <h2 class="sec" data-t="alWhat"></h2>
-    <div class="fields" style="margin-bottom:.9rem">
-      <div class="f" style="grid-column:1 / -1">
-        <label for="find" data-t="alFind"></label>
-        <input id="find" type="text" list="ck" autocomplete="off" style="text-align:left">
-        <datalist id="ck"></datalist>
-      </div>
-    </div>
-    <p class="note" id="treated" style="margin-top:-.4rem"></p>
     <div class="cards" id="cards"></div>
     <p class="formula">g = ml &#215; (ABV / 100) &#215; 0.8</p>
     <div class="result"><span class="n" id="out">&#8212;</span><span class="u" data-t="alUnit"></span><span class="badge b-none" id="bg">&#8212;</span></div>
@@ -58,7 +50,7 @@
 <script src="/calculators/i18n.js"></script>
 <script src="/calculators/core.js"></script>
 <script>
-/* abv and sugar band per drink type, sizes in ml — as in the source tool */
+/* Generic categories: abv and sugar band per drink type, sizes in ml. */
 var CATS = [
  {k:'beer',     emo:'🍺', types:[[4.5,'medium'],[5,'medium'],[7,'medium'],[9,'medium'],[12,'medium']],
   fmts:[330,400,473,500,568,660,1000], dT:1, dF:0, dQ:2},
@@ -71,28 +63,117 @@ var CATS = [
  {k:'cocktail', emo:'🍸', types:[[30,'low'],[10,'medium'],[15,'high'],[9,'high'],[22,'high'],[30,'high']],
   fmts:[90,150,200,300,400], dT:0, dF:1, dQ:0}
 ];
-function size(m){ return m >= 1000 ? fmt(m/1000,0) + ' L' : fmt(m,0) + ' ml'; }
+var CKI = 4;              /* the cocktail card */
+var HEAVY = 1.3;          /* correction when the drink was clearly poured strong */
+
+/* Named cocktails, costed from a standard recipe.
+   e  = millilitres of pure ethanol in one serve, summed over the alcoholic
+        ingredients. It does not depend on how far the ice dilutes the glass:
+        dilution changes the strength, not the amount of ethanol.
+   ml = the glass as served, used only for the sugar estimate. */
+var CK = [
+ ['Negroni',            24.0, 90,  'medium', '30 ml gin 40% · 30 ml Campari 25% · 30 ml vermouth 15%'],
+ ['Negroni sbagliato',  15.3, 150, 'high',   '30 ml Campari 25% · 30 ml vermouth 15% · 30 ml prosecco 11%'],
+ ['Americano',          12.0, 150, 'high',   '30 ml Campari 25% · 30 ml vermouth 15% · soda'],
+ ['Boulevardier',       24.0, 90,  'medium', '30 ml bourbon 40% · 30 ml Campari 25% · 30 ml vermouth 15%'],
+ ['Dry Martini',        25.8, 70,  'low',    '60 ml gin 40% · 10 ml dry vermouth 18%'],
+ ['Manhattan',          25.5, 80,  'low',    '50 ml rye 45% · 20 ml sweet vermouth 15%'],
+ ['Old Fashioned',      18.0, 90,  'low',    '45 ml bourbon 40% · sugar · bitters'],
+ ['Sazerac',            20.0, 70,  'low',    '50 ml cognac or rye 40% · absinthe rinse'],
+ ['Sidecar',            26.0, 90,  'medium', '50 ml cognac 40% · 20 ml triple sec 30% · lemon'],
+ ['Mint Julep',         24.0, 120, 'medium', '60 ml bourbon 40% · sugar · mint'],
+ ['Mojito',             18.0, 200, 'high',   '45 ml white rum 40% · sugar · lime · soda'],
+ ['Daiquiri',           18.0, 120, 'medium', '45 ml white rum 40% · sugar · lime'],
+ ['Margarita',          19.3, 120, 'medium', '35 ml tequila 38% · 20 ml triple sec 30% · lime'],
+ ['Caipirinha',         24.0, 150, 'high',   '60 ml cachaça 40% · sugar · lime'],
+ ['Whisky Sour',        18.0, 120, 'medium', '45 ml bourbon 40% · sugar · lemon'],
+ ['Pisco Sour',         18.0, 120, 'medium', '45 ml pisco 40% · sugar · lime'],
+ ['Amaretto Sour',      10.8, 120, 'high',   '45 ml amaretto 24% · lemon'],
+ ['Cosmopolitan',       22.0, 120, 'medium', '40 ml vodka 40% · 15 ml Cointreau 40% · cranberry'],
+ ['Bramble',            19.0, 150, 'high',   '40 ml gin 40% · 15 ml crème de mûre 20%'],
+ ['Gin Fizz',           18.0, 200, 'medium', '45 ml gin 40% · sugar · lemon · soda'],
+ ['Gin Basil Smash',    24.0, 150, 'medium', '60 ml gin 40% · sugar · lemon · basil'],
+ ['Penicillin',         27.0, 120, 'medium', '60 ml scotch 40% · 7.5 ml Islay 40% · honey · ginger'],
+ ['Paper Plane',        19.4, 90,  'medium', '22.5 ml bourbon 40% · 22.5 ml Aperol 11% · 22.5 ml Amaro Nonino 35%'],
+ ['Spritz',             11.0, 200, 'high',   '60 ml prosecco 11% · 40 ml Aperol 11% · soda'],
+ ['Aperol Spritz',      11.0, 200, 'high',   '60 ml prosecco 11% · 40 ml Aperol 11% · soda'],
+ ['Hugo',               11.0, 200, 'high',   '100 ml prosecco 11% · elderflower syrup · soda · mint'],
+ ['Bellini',            11.0, 150, 'high',   '100 ml prosecco 11% · 50 ml peach purée'],
+ ['Rossini',            11.0, 150, 'high',   '100 ml prosecco 11% · strawberry purée'],
+ ['Mimosa',              8.3, 150, 'high',   '75 ml sparkling 11% · 75 ml orange juice'],
+ ['French 75',          19.2, 150, 'medium', '30 ml gin 40% · 60 ml champagne 12% · lemon'],
+ ['Gin and tonic',      20.0, 250, 'medium', '50 ml gin 40% · tonic'],
+ ['Vodka soda',         20.0, 250, 'low',    '50 ml vodka 40% · soda'],
+ ['Cuba libre',         20.0, 250, 'high',   '50 ml rum 40% · cola · lime'],
+ ['Moscow Mule',        18.0, 250, 'high',   '45 ml vodka 40% · ginger beer · lime'],
+ ['Dark ’n’ Stormy', 24.0, 250, 'high', '60 ml dark rum 40% · ginger beer'],
+ ['Bloody Mary',        18.0, 200, 'low',    '45 ml vodka 40% · tomato juice · spices'],
+ ['Paloma',             19.0, 250, 'high',   '50 ml tequila 38% · grapefruit soda'],
+ ['Garibaldi',          12.5, 200, 'high',   '50 ml Campari 25% · orange juice'],
+ ['Long Island Iced Tea', 28.5, 300, 'high', '15 ml each of vodka, gin, rum, tequila 40% · 15 ml triple sec 30% · cola'],
+ ['Sex on the Beach',   20.0, 250, 'high',   '40 ml vodka 40% · 20 ml peach schnapps 20% · juices'],
+ ['Tequila Sunrise',    17.1, 250, 'high',   '45 ml tequila 38% · orange juice · grenadine'],
+ ['Mai Tai',            28.5, 200, 'high',   '40 ml dark rum 40% · 20 ml white rum 40% · 15 ml curaçao 30%'],
+ ['Hurricane',          40.0, 300, 'high',   '50 ml dark rum 40% · 50 ml light rum 40% · juices'],
+ ['Zombie',             57.5, 300, 'high',   '45 ml Jamaican rum 40% · 42.5 ml gold rum 40% · 30 ml overproof 75%'],
+ ['Piña Colada',   20.0, 300, 'high',   '50 ml white rum 40% · coconut cream · pineapple'],
+ ['B52',                15.4, 60,  'high',   '20 ml Kahlúa 20% · 20 ml Baileys 17% · 20 ml Grand Marnier 40%'],
+ ['Espresso Martini',   22.0, 120, 'high',   '50 ml vodka 40% · 10 ml coffee liqueur 20% · espresso'],
+ ['White Russian',      24.0, 150, 'high',   '50 ml vodka 40% · 20 ml coffee liqueur 20% · cream'],
+ ['Alexander',          19.5, 120, 'high',   '30 ml cognac 40% · 30 ml crème de cacao 25% · cream'],
+ ['Golden Cadillac',    20.2, 120, 'high',   '30 ml Galliano 42% · 30 ml white cacao 25% · cream'],
+ ['Irish Coffee',       16.0, 200, 'high',   '40 ml Irish whiskey 40% · coffee · sugar · cream'],
+ ['Porn Star Martini',  24.3, 180, 'high',   '40 ml vanilla vodka 40% · 10 ml Passoã 17% · 60 ml prosecco 11%']
+];
+
 var SUGAR_KCAL = {low:0, medium:20, high:60};
 var STD_G = [10, 12, 8, 14];
 var BANDS = [{max:140, tone:'good'},{max:280, tone:'warn'},{max:Infinity, tone:'flag'}];
+function size(m){ return m >= 1000 ? fmt(m/1000,0) + ' L' : fmt(m,0) + ' ml'; }
+
 var state = CATS.map(function(c){ return {ty:c.dT, fm:c.dF, q:c.dQ}; });
+state[CKI].named = -1;
+state[CKI].heavy = false;
 var stdIdx = 0;
+
+function norm(x){ return x.toLowerCase().replace(/[^a-z0-9]/g, ''); }
+function findCk(q){
+  q = norm(q); if (!q) return -1;
+  var i;
+  for (i=0;i<CK.length;i++) if (norm(CK[i][0]) === q) return i;
+  for (i=0;i<CK.length;i++) if (norm(CK[i][0]).indexOf(q) === 0) return i;
+  for (i=0;i<CK.length;i++) if (norm(CK[i][0]).indexOf(q) >= 0) return i;
+  return -1;
+}
 
 function buildCards(){
   var host = document.getElementById('cards');
   host.innerHTML = '';
   CATS.forEach(function(c, ci){
     var d = document.createElement('div'); d.className = 'card'; d.id = 'card' + ci;
+    var extra = (ci === CKI)
+      ? '<div class="f" style="margin-bottom:.5rem"><label for="find" id="lfind"></label>'
+        + '<input id="find" type="text" list="ck" autocomplete="off" style="text-align:left">'
+        + '<datalist id="ck"></datalist></div>'
+        + '<p class="out" id="recipe" style="margin:0 0 .55rem"></p>'
+      : '';
+    var heavy = (ci === CKI)
+      ? '<label id="lheavy" style="display:flex;gap:.45rem;align-items:center;margin-top:.55rem;'
+        + 'font-size:.8125rem;color:var(--mut);cursor:pointer">'
+        + '<input type="checkbox" id="heavy" style="margin:0"><span id="sheavy"></span></label>'
+      : '';
     d.innerHTML =
       '<div class="hd"><span class="emo">' + c.emo + '</span>'
       + '<span class="nm" id="nm' + ci + '"></span>'
       + '<span class="sug" id="sg' + ci + '"></span></div>'
+      + extra
       + '<div class="row">'
-      +   '<div class="f"><label for="ty' + ci + '" id="lty' + ci + '"></label><select id="ty' + ci + '"></select></div>'
-      +   '<div class="f"><label for="fm' + ci + '" id="lfm' + ci + '"></label><select id="fm' + ci + '"></select></div>'
+      +   '<div class="f" id="wty' + ci + '"><label for="ty' + ci + '" id="lty' + ci + '"></label><select id="ty' + ci + '"></select></div>'
+      +   '<div class="f" id="wfm' + ci + '"><label for="fm' + ci + '" id="lfm' + ci + '"></label><select id="fm' + ci + '"></select></div>'
       +   '<div class="f"><label for="q' + ci + '" id="lq' + ci + '"></label>'
       +     '<input id="q' + ci + '" type="number" min="0" step="1" value="' + c.dQ + '"></div>'
-      + '</div><p class="out" id="o' + ci + '"></p>';
+      + '</div>' + heavy
+      + '<p class="out" id="o' + ci + '"></p>';
     host.appendChild(d);
   });
   CATS.forEach(function(c, ci){
@@ -101,28 +182,66 @@ function buildCards(){
     document.getElementById('q' + ci).addEventListener('input', function(){
       var v = parseFloat(this.value); state[ci].q = (isFinite(v) && v >= 0) ? v : 0; calc(); });
   });
+  document.getElementById('find').addEventListener('input', function(){
+    state[CKI].named = findCk(this.value);
+    if (state[CKI].named >= 0 && !state[CKI].q){
+      state[CKI].q = 1; document.getElementById('q' + CKI).value = 1;
+    }
+    calc();
+  });
+  document.getElementById('heavy').addEventListener('change', function(){
+    state[CKI].heavy = this.checked; calc();
+  });
+}
+
+function fillFind(){
+  var dl = document.getElementById('ck'); dl.innerHTML = '';
+  CK.map(function(x){ return x[0]; }).sort(function(a,b){ return a.localeCompare(b); })
+    .forEach(function(n){ var o = document.createElement('option'); o.value = n; dl.appendChild(o); });
 }
 
 function calc(){
   var grams = 0, sugar = 0;
   CATS.forEach(function(c, ci){
-    var s = state[ci], ty = c.types[s.ty], ml = c.fmts[s.fm];
-    var g = s.q * ml * (ty[0]/100) * 0.8;
+    var s = state[ci];
+    var named = (ci === CKI && s.named >= 0) ? CK[s.named] : null;
+    var ty = c.types[s.ty];
+    var ml = named ? named[2] : c.fmts[s.fm];
+    var sband = named ? named[3] : ty[1];
+    var k = (ci === CKI && s.heavy) ? HEAVY : 1;
+    var perServe = named ? named[1] * 0.8 : ml * (ty[0]/100) * 0.8;
+    var g = s.q * perServe * k;
     grams += g;
-    sugar += s.q * (ml/100) * SUGAR_KCAL[ty[1]];
+    sugar += s.q * (ml/100) * SUGAR_KCAL[sband] * k;
 
-    document.getElementById('nm' + ci).textContent = t('alCats')[ci];
+    document.getElementById('nm' + ci).textContent = named ? named[0] : t('alCats')[ci];
     var sg = document.getElementById('sg' + ci);
-    sg.textContent = t('sug')[ty[1]]; sg.className = 'sug s-' + ty[1];
+    sg.textContent = t('sug')[sband]; sg.className = 'sug s-' + sband;
     document.getElementById('lty' + ci).textContent = t('alType');
     document.getElementById('lfm' + ci).textContent = t('alFmt');
     document.getElementById('lq' + ci).textContent = t('alQty');
-    opts(document.getElementById('ty' + ci), c.types.map(function(x, k){
-      return t('alTypes')[c.k][k] + ' · ' + fmt(x[0],1) + '%'; }), s.ty);
+    opts(document.getElementById('ty' + ci), c.types.map(function(x, j){
+      return t('alTypes')[c.k][j] + ' · ' + fmt(x[0],1) + '%'; }), s.ty);
     opts(document.getElementById('fm' + ci), c.fmts.map(size), s.fm);
+
+    if (ci === CKI){
+      var typed = document.getElementById('find').value.trim();
+      document.getElementById('lfind').textContent = t('alFind');
+      document.getElementById('find').placeholder = t('alFindPh');
+      document.getElementById('sheavy').textContent = t('alHeavy');
+      document.getElementById('recipe').textContent = named
+        ? named[4] + '  =  ' + fmt(named[1] * 0.8, 0) + ' g ' + t('alPerServe')
+        : (typed ? t('alNotFound') : '');
+      document.getElementById('wty' + ci).style.display = named ? 'none' : '';
+      document.getElementById('wfm' + ci).style.display = named ? 'none' : '';
+    }
+
     document.getElementById('card' + ci).className = 'card' + (s.q > 0 ? ' active' : '');
     document.getElementById('o' + ci).textContent = s.q > 0
-      ? fmt(s.q,0) + ' × ' + size(ml) + ' · ' + fmt(ty[0],1) + '% = ' + fmt(g,0) + ' g'
+      ? (named
+          ? fmt(s.q,0) + ' × ' + fmt(named[1] * 0.8, 0) + ' g'
+            + (k > 1 ? ' × ' + fmt(k,1) : '') + ' = ' + fmt(g,0) + ' g'
+          : fmt(s.q,0) + ' × ' + size(ml) + ' · ' + fmt(ty[0],1) + '% = ' + fmt(g,0) + ' g')
       : '—';
   });
 
@@ -130,66 +249,20 @@ function calc(){
   document.getElementById('out').textContent = fmt(grams,0);
   setBadge(document.getElementById('bg'), grams > 0 ? b.tone : null, grams > 0 ? t('alBands')[i] : '—');
   document.getElementById('sub').innerHTML = grams > 0
-    ? t('alSub').replace('{u}', fmt(grams/STD_G[stdIdx], 1)) : '';
+    ? t('alSub').replace('{u}', fmt(grams / STD_G[stdIdx], 1)) : '';
   document.getElementById('kcal').textContent = grams > 0
     ? t('alKcal').replace('{a}', fmt(grams*7,0)).replace('{s}', fmt(sugar,0))
                  .replace('{t}', fmt(grams*7 + sugar,0)) : '';
   rows(document.getElementById('tb'), STD_G, stdIdx, [
-    function(g, k){ return t('alStdOpts')[k]; },
+    function(g, k2){ return t('alStdOpts')[k2]; },
     function(g){ return grams > 0 ? fmt(grams/g,1) + ' ' + t('alUnits') : '—'; }
   ]);
-  Array.prototype.forEach.call(document.getElementById('tb').children, function(tr, k){
+  Array.prototype.forEach.call(document.getElementById('tb').children, function(tr, k2){
     tr.style.cursor = 'pointer';
-    tr.onclick = function(){ stdIdx = k; calc(); };
+    tr.onclick = function(){ stdIdx = k2; calc(); };
   });
   srcList(document.getElementById('srcs'), t('alSrcs'));
 }
-
-/* name -> [cocktail family index, typical serving in ml].
-   A family and a size, not a fixed strength: see the note below the tool. */
-var CK = [
- ['Negroni',0,90],['Martini',0,90],['Dry Martini',0,90],['Old Fashioned',0,90],
- ['Manhattan',0,90],['Sazerac',0,90],['Boulevardier',0,90],['Vieux Carr\u00e9',0,90],
- ['Gin tonic',1,200],['Vodka soda',1,200],['Cuba libre',1,200],['Americano',1,150],
- ['Moscow Mule',1,200],['Dark \u2019n\u2019 Stormy',1,200],['Bloody Mary',1,200],
- ['Paloma',1,200],['Garibaldi',1,200],['Gin fizz',2,200],
- ['Mojito',2,200],['Margarita',2,150],['Daiquiri',2,150],['Caipirinha',2,150],
- ['Whisky sour',2,150],['Pisco sour',2,150],['Cosmopolitan',2,150],['Bramble',2,150],
- ['Spritz',3,150],['Aperol Spritz',3,150],['Hugo',3,150],['Bellini',3,150],
- ['Mimosa',3,150],['Rossini',3,150],['Negroni sbagliato',3,150],['French 75',3,150],
- ['Long Island Iced Tea',4,300],['Sex on the Beach',4,300],['Tequila Sunrise',4,300],
- ['Zombie',4,300],['Mai Tai',4,200],['Hurricane',4,300],
- ['B52',5,90],['Espresso Martini',5,150],['White Russian',5,150],
- ['Pi\u00f1a Colada',5,300],['Alexander',5,150],['Irish Coffee',5,150],['Golden Cadillac',5,150]
-];
-var CKI = 4; /* the cocktail card */
-
-function fillFind(){
-  var dl = document.getElementById('ck');
-  dl.innerHTML = '';
-  CK.map(function(x){ return x[0]; }).sort(function(a,b){ return a.localeCompare(b); })
-    .forEach(function(n){ var o = document.createElement('option'); o.value = n; dl.appendChild(o); });
-}
-function norm(x){ return x.toLowerCase().replace(/[^a-z0-9]/g,''); }
-function applyFind(){
-  var q = norm(document.getElementById('find').value);
-  var note = document.getElementById('treated');
-  if (!q){ note.innerHTML = ''; return; }
-  var hit = null;
-  for (var i=0;i<CK.length;i++){ if (norm(CK[i][0]) === q){ hit = CK[i]; break; } }
-  if (!hit) for (var j=0;j<CK.length;j++){ if (norm(CK[j][0]).indexOf(q) === 0){ hit = CK[j]; break; } }
-  if (!hit){ note.innerHTML = ''; return; }
-  var cat = CATS[CKI];
-  var fi = cat.fmts.indexOf(hit[2]);
-  state[CKI].ty = hit[1];
-  if (fi >= 0) state[CKI].fm = fi;
-  if (!state[CKI].q) state[CKI].q = 1;
-  calc();
-  note.innerHTML = t('alTreated')
-    .replace('{f}', t('alTypes').cocktail[hit[1]])
-    .replace('{v}', size(cat.fmts[state[CKI].fm]));
-}
-document.getElementById('find').addEventListener('input', applyFind);
 
 buildCards();
 fillFind();
