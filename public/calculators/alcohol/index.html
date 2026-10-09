@@ -33,6 +33,10 @@
     <div class="result"><span class="n" id="out">&#8212;</span><span class="u" data-t="alUnit"></span><span class="badge b-none" id="bg">&#8212;</span></div>
     <p class="note" id="sub"></p>
     <p class="note" id="kcal"></p>
+    <div id="pizzaWrap" style="margin-top:.7rem">
+      <div id="pizzas" style="display:flex;flex-wrap:wrap;gap:.3rem;align-items:center"></div>
+      <p class="note" id="pizzaLine" style="margin-top:.45rem"></p>
+    </div>
   </div>
 
   <div class="block sep">
@@ -123,9 +127,40 @@ var CK = [
  ['Alexander',          19.5, 120, 'high',   '30 ml cognac 40% · 30 ml crème de cacao 25% · cream'],
  ['Golden Cadillac',    20.2, 120, 'high',   '30 ml Galliano 42% · 30 ml white cacao 25% · cream'],
  ['Irish Coffee',       16.0, 200, 'high',   '40 ml Irish whiskey 40% · coffee · sugar · cream'],
+ ['Campari Spritz',    16.6, 200, 'high',   '60 ml prosecco 11% \u00b7 40 ml Campari 25% \u00b7 soda'],
+ ['Select Spritz',     13.6, 200, 'high',   '60 ml prosecco 11% \u00b7 40 ml Select 17.5% \u00b7 soda'],
+ ['Limoncello Spritz', 17.8, 200, 'high',   '60 ml prosecco 11% \u00b7 40 ml limoncello 28% \u00b7 soda'],
+ ['Angelo Azzurro',    20.1, 120, 'high',   '30 ml gin 40% \u00b7 15 ml blue cura\u00e7ao 24% \u00b7 15 ml triple sec 30%'],
+ ['Bicicletta',        24.5, 250, 'medium', '50 ml Campari 25% \u00b7 100 ml white wine 12% \u00b7 soda'],
+ ['Milano-Torino',     12.0, 70,  'high',   '30 ml Campari 25% \u00b7 30 ml sweet vermouth 15%'],
+ ['Sgroppino',         13.5, 150, 'high',   '50 ml prosecco 11% \u00b7 20 ml vodka 40% \u00b7 lemon sorbet'],
+ ['Martini Royale',    13.0, 150, 'high',   '50 ml prosecco 11% \u00b7 50 ml Martini Bianco 15%'],
+ ['Puccini',           11.0, 150, 'high',   '100 ml prosecco 11% \u00b7 mandarin juice'],
+ ['Tintoretto',        11.0, 150, 'high',   '100 ml prosecco 11% \u00b7 pomegranate juice'],
+ ['Kir',               12.8, 120, 'high',   '90 ml white wine 12% \u00b7 10 ml cr\u00e8me de cassis 20%'],
+ ['Kir Royale',        12.8, 120, 'high',   '90 ml champagne 12% \u00b7 10 ml cr\u00e8me de cassis 20%'],
+ ['Sangria',           27.5, 200, 'high',   '150 ml red wine 13% \u00b7 20 ml brandy 40% \u00b7 fruit'],
+ ['Screwdriver',       20.0, 250, 'high',   '50 ml vodka 40% \u00b7 orange juice'],
+ ['Gin Lemon',         20.0, 250, 'high',   '50 ml gin 40% \u00b7 lemon soda'],
+ ['Vodka Lemon',       20.0, 250, 'high',   '50 ml vodka 40% \u00b7 lemon soda'],
+ ['Tom Collins',       18.0, 250, 'medium', '45 ml gin 40% \u00b7 sugar \u00b7 lemon \u00b7 soda'],
+ ['Aviation',          24.3, 100, 'medium', '45 ml gin 40% \u00b7 15 ml maraschino 32% \u00b7 7.5 ml violette 20%'],
+ ['Vesper',            33.7, 90,  'low',    '60 ml gin 40% \u00b7 20 ml vodka 40% \u00b7 10 ml Lillet 17%'],
+ ['Last Word',         28.6, 90,  'medium', '22.5 ml each gin 40%, green Chartreuse 55%, maraschino 32%'],
+ ['Corpse Reviver No.2', 21.8, 100, 'medium', '22.5 ml each gin 40%, Cointreau 40%, Lillet 17% \u00b7 lemon'],
+ ['Caipiroska',        24.0, 150, 'high',   '60 ml vodka 40% \u00b7 sugar \u00b7 lime'],
+ ['Black Russian',     24.0, 100, 'high',   '50 ml vodka 40% \u00b7 20 ml coffee liqueur 20%'],
+ ['Blue Lagoon',       20.8, 250, 'high',   '40 ml vodka 40% \u00b7 20 ml blue cura\u00e7ao 24% \u00b7 lemonade'],
+ ['Godfather',         22.4, 90,  'high',   '35 ml scotch 40% \u00b7 35 ml amaretto 24%'],
+ ['Rusty Nail',        28.0, 90,  'high',   '45 ml scotch 40% \u00b7 25 ml Drambuie 40%'],
+ ['Grasshopper',       14.7, 120, 'high',   '30 ml cr\u00e8me de menthe 24% \u00b7 30 ml cr\u00e8me de cacao 25% \u00b7 cream'],
+ ['Painkiller',        24.0, 250, 'high',   '60 ml dark rum 40% \u00b7 pineapple \u00b7 orange \u00b7 coconut'],
+ ['Tequila Boom Boom', 15.2, 150, 'high',   '40 ml tequila 38% \u00b7 lemon soda'],
+ ['J\u00e4gerbomb',        8.8, 275, 'high',   '25 ml J\u00e4germeister 35% \u00b7 energy drink'],
  ['Porn Star Martini',  24.3, 180, 'high',   '40 ml vanilla vodka 40% · 10 ml Passoã 17% · 60 ml prosecco 11%']
 ];
 
+var PIZZA_KCAL = 850;   /* a pizzeria margherita */
 var SUGAR_KCAL = {low:0, medium:20, high:60};
 var STD_G = [10, 12, 8, 14];
 var BANDS = [{max:140, tone:'good'},{max:280, tone:'warn'},{max:Infinity, tone:'flag'}];
@@ -136,7 +171,12 @@ state[CKI].named = -1;
 state[CKI].heavy = false;
 var stdIdx = 0;
 
-function norm(x){ return x.toLowerCase().replace(/[^a-z0-9]/g, ''); }
+/* fold accents so "jagerbomb" finds Jägerbomb and "pina colada" finds Piña Colada */
+function norm(x){
+  var y = x;
+  try { y = x.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); } catch(e) {}
+  return y.toLowerCase().replace(/[^a-z0-9]/g, '');
+}
 function findCk(q){
   q = norm(q); if (!q) return -1;
   var i;
@@ -200,6 +240,40 @@ function fillFind(){
     .forEach(function(n){ var o = document.createElement('option'); o.value = n; dl.appendChild(o); });
 }
 
+/* One pizza per 850 kcal, the last one cut to the remainder. */
+function pizzaSVG(frac){
+  var R = 13, C = 15, clip = '', body;
+  if (frac < 0.999){
+    var a0 = -Math.PI/2, a1 = a0 + 2*Math.PI*frac, big = frac > 0.5 ? 1 : 0;
+    var id = 'pz' + (Math.random()*1e9|0);
+    clip = '<clipPath id="' + id + '"><path d="M' + C + ' ' + C
+         + ' L' + (C+R*Math.cos(a0)).toFixed(2) + ' ' + (C+R*Math.sin(a0)).toFixed(2)
+         + ' A' + R + ' ' + R + ' 0 ' + big + ' 1 '
+         + (C+R*Math.cos(a1)).toFixed(2) + ' ' + (C+R*Math.sin(a1)).toFixed(2) + ' Z"/></clipPath>';
+    body = '<g clip-path="url(#' + id + ')">';
+  } else body = '<g>';
+  return '<svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">' + clip + body
+    + '<circle cx="15" cy="15" r="13" fill="#E8C98A" stroke="#C9A066" stroke-width="1"/>'
+    + '<circle cx="15" cy="15" r="10" fill="#D9503C"/>'
+    + '<circle cx="11" cy="12" r="2.3" fill="#FBF6EC"/><circle cx="19" cy="13" r="2" fill="#FBF6EC"/>'
+    + '<circle cx="14" cy="19" r="2.1" fill="#FBF6EC"/>'
+    + '<circle cx="17.5" cy="17.5" r="1.3" fill="#3F8F4F"/><circle cx="10.5" cy="17" r="1.1" fill="#3F8F4F"/>'
+    + '</g></svg>';
+}
+function drawPizzas(n){
+  var wrap = document.getElementById('pizzaWrap'), host = document.getElementById('pizzas');
+  if (!n){ wrap.style.display = 'none'; return; }
+  wrap.style.display = '';
+  var whole = Math.floor(n), rest = n - whole, html = '', MAXI = 10;
+  for (var i = 0; i < Math.min(whole, MAXI); i++) html += pizzaSVG(1);
+  if (whole <= MAXI && rest > 0.02) html += pizzaSVG(rest);
+  if (whole > MAXI) html += '<span style="font-family:var(--mono);font-size:.8125rem;color:var(--mut)">'
+    + '\u00d7 ' + fmt(n,1) + '</span>';
+  host.innerHTML = html;
+  document.getElementById('pizzaLine').innerHTML =
+    t('alPizza').replace('{n}', fmt(n,1)) + ' <span style="color:var(--faint)">' + t('alPizzaNote') + '</span>';
+}
+
 function calc(){
   var grams = 0, sugar = 0;
   CATS.forEach(function(c, ci){
@@ -250,9 +324,11 @@ function calc(){
   setBadge(document.getElementById('bg'), grams > 0 ? b.tone : null, grams > 0 ? t('alBands')[i] : '—');
   document.getElementById('sub').innerHTML = grams > 0
     ? t('alSub').replace('{u}', fmt(grams / STD_G[stdIdx], 1)) : '';
+  var total = grams*7 + sugar;
   document.getElementById('kcal').textContent = grams > 0
     ? t('alKcal').replace('{a}', fmt(grams*7,0)).replace('{s}', fmt(sugar,0))
-                 .replace('{t}', fmt(grams*7 + sugar,0)) : '';
+                 .replace('{t}', fmt(total,0)) : '';
+  drawPizzas(grams > 0 ? total / PIZZA_KCAL : 0);
   rows(document.getElementById('tb'), STD_G, stdIdx, [
     function(g, k2){ return t('alStdOpts')[k2]; },
     function(g){ return grams > 0 ? fmt(grams/g,1) + ' ' + t('alUnits') : '—'; }
