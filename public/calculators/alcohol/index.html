@@ -28,6 +28,14 @@
 
   <div class="block">
     <h2 class="sec" data-t="alWhat"></h2>
+    <div class="fields" style="margin-bottom:.9rem">
+      <div class="f" style="grid-column:1 / -1">
+        <label for="find" data-t="alFind"></label>
+        <input id="find" type="text" list="ck" autocomplete="off" style="text-align:left">
+        <datalist id="ck"></datalist>
+      </div>
+    </div>
+    <p class="note" id="treated" style="margin-top:-.4rem"></p>
     <div class="cards" id="cards"></div>
     <p class="formula">g = ml &#215; (ABV / 100) &#215; 0.8</p>
     <div class="result"><span class="n" id="out">&#8212;</span><span class="u" data-t="alUnit"></span><span class="badge b-none" id="bg">&#8212;</span></div>
@@ -39,6 +47,7 @@
     <h2 class="sec" data-t="alStd"></h2>
     <table><thead><tr><th data-t="thStd"></th><th data-t="thSameWeek"></th></tr></thead><tbody id="tb"></tbody></table>
     <p class="note" data-t="alNote"></p>
+    <p class="note" data-t="alFamNote"></p>
     <p class="note" data-t="alNote2"></p>
     <ul class="srcs" id="srcs"></ul>
   </div>
@@ -136,7 +145,54 @@ function calc(){
   srcList(document.getElementById('srcs'), t('alSrcs'));
 }
 
+/* name -> [cocktail family index, typical serving in ml].
+   A family and a size, not a fixed strength: see the note below the tool. */
+var CK = [
+ ['Negroni',0,90],['Martini',0,90],['Dry Martini',0,90],['Old Fashioned',0,90],
+ ['Manhattan',0,90],['Sazerac',0,90],['Boulevardier',0,90],['Vieux Carr\u00e9',0,90],
+ ['Gin tonic',1,200],['Vodka soda',1,200],['Cuba libre',1,200],['Americano',1,150],
+ ['Moscow Mule',1,200],['Dark \u2019n\u2019 Stormy',1,200],['Bloody Mary',1,200],
+ ['Paloma',1,200],['Garibaldi',1,200],['Gin fizz',2,200],
+ ['Mojito',2,200],['Margarita',2,150],['Daiquiri',2,150],['Caipirinha',2,150],
+ ['Whisky sour',2,150],['Pisco sour',2,150],['Cosmopolitan',2,150],['Bramble',2,150],
+ ['Spritz',3,150],['Aperol Spritz',3,150],['Hugo',3,150],['Bellini',3,150],
+ ['Mimosa',3,150],['Rossini',3,150],['Negroni sbagliato',3,150],['French 75',3,150],
+ ['Long Island Iced Tea',4,300],['Sex on the Beach',4,300],['Tequila Sunrise',4,300],
+ ['Zombie',4,300],['Mai Tai',4,200],['Hurricane',4,300],
+ ['B52',5,90],['Espresso Martini',5,150],['White Russian',5,150],
+ ['Pi\u00f1a Colada',5,300],['Alexander',5,150],['Irish Coffee',5,150],['Golden Cadillac',5,150]
+];
+var CKI = 4; /* the cocktail card */
+
+function fillFind(){
+  var dl = document.getElementById('ck');
+  dl.innerHTML = '';
+  CK.map(function(x){ return x[0]; }).sort(function(a,b){ return a.localeCompare(b); })
+    .forEach(function(n){ var o = document.createElement('option'); o.value = n; dl.appendChild(o); });
+}
+function norm(x){ return x.toLowerCase().replace(/[^a-z0-9]/g,''); }
+function applyFind(){
+  var q = norm(document.getElementById('find').value);
+  var note = document.getElementById('treated');
+  if (!q){ note.innerHTML = ''; return; }
+  var hit = null;
+  for (var i=0;i<CK.length;i++){ if (norm(CK[i][0]) === q){ hit = CK[i]; break; } }
+  if (!hit) for (var j=0;j<CK.length;j++){ if (norm(CK[j][0]).indexOf(q) === 0){ hit = CK[j]; break; } }
+  if (!hit){ note.innerHTML = ''; return; }
+  var cat = CATS[CKI];
+  var fi = cat.fmts.indexOf(hit[2]);
+  state[CKI].ty = hit[1];
+  if (fi >= 0) state[CKI].fm = fi;
+  if (!state[CKI].q) state[CKI].q = 1;
+  calc();
+  note.innerHTML = t('alTreated')
+    .replace('{f}', t('alTypes').cocktail[hit[1]])
+    .replace('{v}', size(cat.fmts[state[CKI].fm]));
+}
+document.getElementById('find').addEventListener('input', applyFind);
+
 buildCards();
+fillFind();
 initTool(calc);
 </script>
 </body>
