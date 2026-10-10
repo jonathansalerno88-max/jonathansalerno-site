@@ -31,6 +31,11 @@
     <div class="cards" id="cards"></div>
     <p class="formula">g = ml &#215; (ABV / 100) &#215; 0.8</p>
     <div class="result"><span class="n" id="out">&#8212;</span><span class="u" data-t="alUnit"></span><span class="badge b-none" id="bg">&#8212;</span></div>
+    <div id="cmpWrap" style="display:none">
+      <table class="cmp"><thead><tr><th></th><th data-t="cmpYours"></th><th data-t="cmpLimit"></th><th></th></tr></thead>
+        <tbody id="cmp"></tbody></table>
+      <p class="tap" id="cmpSrc"></p>
+    </div>
     <p id="sub"></p>
     <p class="note" id="kcal"></p>
     <div id="pizzaWrap" style="margin-top:.7rem">
@@ -380,9 +385,8 @@ function calc(){
      reminder that no band is a clean bill of health. The two never travel apart. */
   var sub = document.getElementById('sub');
   sub.className = grams > 0 ? 'verdict ' + ['v-ok','v-mid','v-hi'][i] : '';
-  sub.innerHTML = grams > 0
-    ? t('alV')[i].replace('{u}', '<b>' + fmt(grams / STD_G[stdIdx], 1) + '</b>')
-                 .replace('{s}', t('stdShort')[stdIdx]) + ' ' + t('alCal') : '';
+  sub.innerHTML = grams > 0 ? t('alV')[i] + ' ' + t('alCal') : '';
+  drawCmp(grams);
   var total = grams*7 + sugar;
   document.getElementById('kcal').textContent = grams > 0
     ? t('alKcal').replace('{a}', fmt(grams*7,0)).replace('{s}', fmt(sugar,0))
@@ -401,6 +405,31 @@ function calc(){
   });
   drawPop();
   srcList(document.getElementById('srcs'), t('alSrcs'));
+}
+
+/* The week against the one threshold, twice: once in grams, which is the
+   physical quantity, and once in the reader's chosen unit, which is only a way
+   of reporting it. Same comparison, so the two lines always agree. */
+var LIMIT = 140;
+function drawCmp(grams){
+  var wrap = document.getElementById('cmpWrap');
+  if (!(grams > 0)) { wrap.style.display = 'none'; return; }
+  wrap.style.display = '';
+  var g = STD_G[stdIdx], bare = t('stdBare')[stdIdx];
+  function verdict(mine, limit){
+    var k = Math.abs(mine - limit) < limit * 0.005 ? 1 : mine < limit ? 0 : 2;
+    return '<span class="v v' + k + '">' + t('cmpV')[k] + '</span>';
+  }
+  document.getElementById('cmp').innerHTML =
+      '<tr><td>' + t('cmpG') + '</td><td class="n">' + fmt(grams,0) + ' g</td>'
+    +     '<td class="n">' + LIMIT + ' g</td><td>' + verdict(grams, LIMIT) + '</td></tr>'
+    + '<tr><td>' + t('cmpU') + ' ' + bare + '</td>'
+    +     '<td class="n">' + fmt(grams/g,1) + '</td>'
+    +     '<td class="n">' + fmt(LIMIT/g,1) + '</td><td>' + verdict(grams, LIMIT) + '</td></tr>';
+  document.getElementById('cmpSrc').innerHTML =
+    t('cmpSrc').replace('{n}', fmt(LIMIT/10,0))
+               .replace('{a}', '<a href="' + U.audit + '" target="_blank" rel="noopener">')
+               .replace('{/a}', ' \u2197</a>');
 }
 
 /* Which row has its source open, or null. The panel is rebuilt with the table,

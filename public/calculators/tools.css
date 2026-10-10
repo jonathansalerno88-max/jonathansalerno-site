@@ -164,6 +164,20 @@ tr.on td:first-child .i{color:var(--link)}
   font-size:1.1rem; line-height:1; cursor:pointer; padding:.25rem .4rem; border-radius:5px}
 .pop .x:hover{color:var(--ink); background:var(--surface2)}
 
+/* The week against the threshold: grams first, then the same comparison in
+   whichever unit the reader picked. */
+.cmp{margin-top:.9rem; font-size:.9375rem}
+.cmp th{font-size:.6875rem}
+.cmp td{padding:.45rem .5rem .45rem 0; color:var(--ink)}
+.cmp td:first-child{font-family:var(--sans); white-space:normal; color:var(--mut)}
+.cmp td.n{font-family:var(--mono); font-variant-numeric:tabular-nums; text-align:right;
+  white-space:nowrap}
+.cmp td:last-child{text-align:right}
+.cmp .v{font-size:.75rem; font-weight:600; padding:2px 8px; border-radius:999px; white-space:nowrap}
+.cmp .v0{background:var(--goodbg); color:var(--good)}
+.cmp .v1{background:var(--surface2); color:var(--mut)}
+.cmp .v2{background:var(--flagbg); color:var(--flag)}
+
 .note{margin:.95rem 0 0; font-size:.875rem; color:var(--mut); max-width:33rem}
 .note b{color:var(--ink); font-weight:600}
 /* The verdict carries its own colour: the band sets the rule down the left. */
