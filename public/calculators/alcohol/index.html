@@ -32,6 +32,7 @@
     <p class="formula">g = ml &#215; (ABV / 100) &#215; 0.8</p>
     <div class="result"><span class="n" id="out">&#8212;</span><span class="u" data-t="alUnit"></span><span class="badge b-none" id="bg">&#8212;</span></div>
     <p class="note" id="sub"></p>
+    <p class="caveat" id="iarc"></p>
     <p class="note" id="kcal"></p>
     <div id="pizzaWrap" style="margin-top:.7rem">
       <div id="pizzas" style="display:flex;flex-wrap:wrap;gap:.3rem;align-items:center"></div>
@@ -361,8 +362,11 @@ function calc(){
   var b = band(grams, BANDS), i = BANDS.indexOf(b);
   document.getElementById('out').textContent = fmt(grams,0);
   setBadge(document.getElementById('bg'), grams > 0 ? b.tone : null, grams > 0 ? t('alBands')[i] : '—');
+  /* the verdict names the standard the reader picked, and the caveat always follows it */
+  var stdName = t('stdShort')[stdIdx];
   document.getElementById('sub').innerHTML = grams > 0
-    ? t('alSub').replace('{u}', fmt(grams / STD_G[stdIdx], 1)) : '';
+    ? t('alV')[i].replace('{u}', fmt(grams / STD_G[stdIdx], 1)).replace('{s}', stdName) : '';
+  document.getElementById('iarc').innerHTML = grams > 0 ? t('alIarc') : '';
   var total = grams*7 + sugar;
   document.getElementById('kcal').textContent = grams > 0
     ? t('alKcal').replace('{a}', fmt(grams*7,0)).replace('{s}', fmt(sugar,0))
