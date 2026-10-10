@@ -41,7 +41,10 @@
 
   <div class="block sep">
     <h2 class="sec" data-t="alStd"></h2>
-    <table><thead><tr><th data-t="thStd"></th><th data-t="thSameWeek"></th></tr></thead><tbody id="tb"></tbody></table>
+    <div class="tw" id="tw">
+      <table><thead><tr><th data-t="thStd"></th><th data-t="thSameWeek"></th></tr></thead><tbody id="tb"></tbody></table>
+    </div>
+    <p class="tap" data-t="stdTap"></p>
     <p class="note" data-t="alNote"></p>
     <p class="note" data-t="alFamNote"></p>
     <p class="note" data-t="alNote2"></p>
@@ -163,7 +166,9 @@ var CK = [
 
 var PIZZA_KCAL = 850;   /* a pizzeria margherita */
 var SUGAR_KCAL = {low:0, medium:20, high:60};
-var STD_G = [10, 12, 8, 14];
+var STD_G = [10, 12, 8, 14, 20];
+/* the official document behind each definition, in the order of STD_G */
+var STD_URL = [U.audit, U.iss, U.ukUnit, U.niaaa, U.mhlw];
 var BANDS = [{max:140, tone:'good'},{max:280, tone:'warn'},{max:Infinity, tone:'flag'}];
 /* The long labels carry their detail after an em dash or inside brackets.
    The select keeps the short name; the detail goes underneath, where it fits. */
@@ -378,11 +383,47 @@ function calc(){
     function(g){ return grams > 0 ? fmt(grams/g,1) + ' ' + t('alUnits') : '—'; }
   ]);
   Array.prototype.forEach.call(document.getElementById('tb').children, function(tr, k2){
+    tr.className += (tr.className ? ' ' : '') + 'tap-row';
     tr.style.cursor = 'pointer';
-    tr.onclick = function(){ stdIdx = k2; calc(); };
+    var i = document.createElement('span'); i.className = 'i'; i.textContent = '\u24D8';
+    tr.firstChild.appendChild(i);
+    tr.onclick = function(){ popIdx = (popIdx === k2 && stdIdx === k2) ? null : k2; stdIdx = k2; calc(); };
   });
+  drawPop();
   srcList(document.getElementById('srcs'), t('alSrcs'));
 }
+
+/* Which row has its source open, or null. The panel is rebuilt with the table,
+   so it stays under its own row however the numbers change. */
+var popIdx = null;
+function drawPop(){
+  var tb = document.getElementById('tb'), old = tb.querySelector('.poprow');
+  if (old) tb.removeChild(old);
+  if (popIdx === null) return;
+  var tr = tb.children[popIdx];
+  if (!tr) { popIdx = null; return; }
+  var d = t('stdDoc')[popIdx];
+  /* the panel opens as a row of the table itself, so it pushes the rows below
+     down instead of covering them: every definition stays one tap away */
+  var row = document.createElement('tr'), td = document.createElement('td');
+  row.className = 'poprow'; td.colSpan = 2;
+  var p = document.createElement('div');
+  p.className = 'pop'; p.setAttribute('role', 'dialog');
+  p.innerHTML = '<button class="x" type="button" aria-label="' + t('popClose') + '">\u00d7</button>'
+    + '<p>' + d.d + '</p>'
+    + '<a href="' + STD_URL[popIdx] + '" target="_blank" rel="noopener">' + d.s + ' \u2197</a>';
+  p.querySelector('.x').onclick = function(){ popIdx = null; drawPop(); };
+  td.appendChild(p); row.appendChild(td);
+  if (tr.nextSibling) tb.insertBefore(row, tr.nextSibling); else tb.appendChild(row);
+}
+/* Capture phase: the row's own handler rebuilds the table, which would detach
+   the clicked cell and make this look like a click from outside. */
+document.addEventListener('click', function(e){
+  if (popIdx !== null && !e.target.closest('#tw')) { popIdx = null; drawPop(); }
+}, true);
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape' && popIdx !== null) { popIdx = null; drawPop(); }
+});
 
 buildCards();
 fillFind();
