@@ -61,7 +61,7 @@
 /* Generic categories: abv and sugar band per drink type, sizes in ml. */
 var CATS = [
  {k:'beer',     emo:'🍺', types:[[4.5,'medium'],[5,'medium'],[7,'medium'],[9,'medium'],[12,'medium']],
-  fmts:[200,330,400,473,500,568,660,1000], dT:1, dF:1, dQ:2},
+  fmts:[200,250,300,330,330,400,473,500,500,568,568,660,1000], dT:1, dF:3, dQ:2},
  {k:'wine',     emo:'🍷', types:[[7,'high'],[12,'low'],[13,'low'],[17,'high']],
   fmts:[100,125,175,250,750], dT:1, dF:1, dQ:3},
  {k:'spark',    emo:'🥂', types:[[11.5,'low'],[11,'high']],
@@ -226,7 +226,8 @@ function buildCards(){
       +   '<div class="f" id="wty' + ci + '"><label for="ty' + ci + '" id="lty' + ci + '"></label><select id="ty' + ci + '"></select>'
       +     '<p class="hint" id="ex' + ci + '"></p></div>'
       +   '<div class="f" id="wfm' + ci + '"><label id="lfm' + ci + '"></label>'
-      +     '<div class="glasses" id="fm' + ci + '" role="radiogroup"></div></div>'
+      +     '<div class="glasses" id="fm' + ci + '" role="radiogroup"></div>'
+      +     '<p class="hint" id="gh' + ci + '"></p></div>'
       +   '<div class="f"><label for="q' + ci + '" id="lq' + ci + '"></label>'
       +     '<input id="q' + ci + '" type="number" min="0" step="1" value="' + c.dQ + '"></div>'
       + '</div>' + heavy
@@ -291,6 +292,8 @@ function drawPizzas(n){
 }
 
 var LIQUID = {beer:'#E0A33F', wine:'#9B2D3A', spark:'#E3CE6A', spirit:'#B5722A', cocktail:'#D4604E'};
+/* the Irish pint holds a stout, and a stout is not amber */
+var POUR = {guinness:'#241A14'};
 function glassEdge(){
   return getComputedStyle(document.documentElement).getPropertyValue('--mut').trim() || '#55697A';
 }
@@ -300,7 +303,7 @@ function drawGlasses(ci, c, sel){
   c.fmts.forEach(function(m, j){
     var g = GLASSMAP[c.k][j], px = g[1];
     h += '<button type="button" class="gl" role="radio" aria-checked="' + (j === sel) + '" data-i="' + j + '">'
-      +   '<span class="pic">' + glassSVG(g[0], px, fill, edge, g[2]) + '</span>'
+      +   '<span class="pic">' + glassSVG(g[0], px, POUR[g[0]] || fill, edge, g[2]) + '</span>'
       +   '<span class="ml">' + size(m) + '</span>'
       +   '<span class="gn">' + (t('fmtN')[c.k][j] || '') + '</span>'
       + '</button>';
@@ -341,6 +344,7 @@ function calc(){
     document.getElementById('ex' + ci).textContent =
       fmt(ty[0],1) + '%' + (det ? '  ·  ' + det : '');
     drawGlasses(ci, c, s.fm);
+    document.getElementById('gh' + ci).textContent = (c.k === 'beer') ? t('alGlassNote') : '';
 
     if (ci === CKI){
       var typed = document.getElementById('find').value.trim();

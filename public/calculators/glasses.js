@@ -1,6 +1,7 @@
 /* Pixel glassware. Each shape is a grid of characters, one per pixel:
      #  the glass itself
      o  what is in it
+     h  the head on a beer
      .  nothing
    Drawn as plain rects with crisp edges, so it stays pixel art at any size. */
 var GLASS = {
@@ -56,7 +57,7 @@ var GLASS = {
  pint: [
   '#............#',
   '#............#',
-  '#............#',
+  '#hhhhhhhhhhhh#',
   '#oooooooooooo#',
   '#oooooooooooo#',
   '.#oooooooooo#.',
@@ -74,7 +75,7 @@ var GLASS = {
  stein: [
   '#..........#....',
   '#..........#....',
-  '#..........#....',
+  '#hhhhhhhhhh#....',
   '#oooooooooo#....',
   '#oooooooooo#####',
   '#oooooooooo#...#',
@@ -122,7 +123,7 @@ var GLASS = {
  flute: [
   '#........#',
   '#........#',
-  '#oooooooo#',
+  '#hhhhhhhh#',
   '#oooooooo#',
   '#oooooooo#',
   '#oooooooo#',
@@ -177,7 +178,7 @@ var GLASS = {
  tulip: [
   '##......##',
   '.#......#.',
-  '.#oooooo#.',
+  '.#hhhhhh#.',
   '#oooooooo#',
   '#oooooooo#',
   '#oooooooo#',
@@ -191,7 +192,7 @@ var GLASS = {
  tall: [
   '#......#',
   '#......#',
-  '#oooooo#',
+  '#hhhhhh#',
   '#oooooo#',
   '#oooooo#',
   '#oooooo#',
@@ -207,7 +208,7 @@ var GLASS = {
     stacked glasses from locking together. */
  nonic: [
   '.#........#.',
-  '#oooooooooo#',
+  '#hhhhhhhhhh#',
   '#oooooooooo#',
   '.#oooooooo#.',
   '.#oooooooo#.',
@@ -218,6 +219,64 @@ var GLASS = {
   '.#oooooooo#.',
   '.#oooooooo#.',
   '.##########.'],
+
+ /* Weizen: narrow at the waist, flaring to a wide rim that carries the head. */
+ weizen: [
+  '#..........#',
+  '#hhhhhhhhhh#',
+  '#oooooooooo#',
+  '#oooooooooo#',
+  '.#oooooooo#.',
+  '.#oooooooo#.',
+  '..#oooooo#..',
+  '..#oooooo#..',
+  '..#oooooo#..',
+  '..#oooooo#..',
+  '..#oooooo#..',
+  '.#oooooooo#.',
+  '.#oooooooo#.',
+  '..########..'],
+
+ /* Coppa: a deep bowl on a short thick stem. Trappist and abbey beers. */
+ chalice: [
+  '#..........#',
+  '#hhhhhhhhhh#',
+  '#oooooooooo#',
+  '#oooooooooo#',
+  '.#oooooooo#.',
+  '..#oooooo#..',
+  '...######...',
+  '.....##.....',
+  '.....##.....',
+  '..########..'],
+
+ /* Ballon: a sphere with a narrowed mouth, for barley wine and strong ales. */
+ balloon: [
+  '..#......#..',
+  '.#hhhhhhhh#.',
+  '#oooooooooo#',
+  '#oooooooooo#',
+  '#oooooooooo#',
+  '.#oooooooo#.',
+  '..#oooooo#..',
+  '...######...',
+  '.....##.....',
+  '..########..'],
+
+ /* Pinta irlandese: straight sides opening in one smooth flare to the rim. */
+ guinness: [
+  '#..........#',
+  '#hhhhhhhhhh#',
+  '#hhhhhhhhhh#',
+  '#oooooooooo#',
+  '.#oooooooo#.',
+  '.#oooooooo#.',
+  '.#oooooooo#.',
+  '.#oooooooo#.',
+  '..#oooooo#..',
+  '..#oooooo#..',
+  '..#oooooo#..',
+  '..########..'],
 
  carafe: [
   '....####....',
@@ -243,7 +302,7 @@ var GLASS = {
    than a pint even though a third of it is neck. And rather than the bounding
    box, because a stein's handle encloses mostly air. */
 var GLASSMAP = {
- beer:     [['tulip',2.3125],['bottle',2.5],['tall',2.9375],['pint',2.375],['stein',2.5],['nonic',3.1875],['bottle',4],['stein',3.25]],
+ beer:     [['tulip',2.25],['balloon',2.375],['flute',2.1875],['bottle',2.5625],['chalice',2.75],['tall',3.0625],['pint',2.375],['weizen',2.875],['stein',2.5],['nonic',3.1875],['guinness',3.25],['bottle',4],['stein',3.25]],
  wine:     [['wineglass',1.5625],['wineglass',1.6875],['wineglass',1.875],['carafe',2.375],['winebottle',3.5]],
  spark:    [['flute',1.5625],['flute',1.8125],['winebottle',3.5]],
  spirit:   [['shot',4,4],['shot',4,5],['shot',4,7],['shot',4,9]],
@@ -261,6 +320,8 @@ function shotGrid(level){
   return g;
 }
 
+var HEAD = '#F2EADA';   /* the foam, the same on every beer */
+
 /* px: the size of one pixel. fill: what is in the glass. */
 function glassSVG(shape, px, fill, edge, level){
   var g = (shape === 'shot' && level) ? shotGrid(level) : GLASS[shape];
@@ -273,7 +334,7 @@ function glassSVG(shape, px, fill, edge, level){
       if (c === ch && c !== '\0'){ run++; continue; }
       if (run && ch !== '.'){
         r += '<rect x="' + (x - run) + '" y="' + y + '" width="' + run + '" height="1" fill="'
-           + (ch === 'o' ? fill : edge) + '"/>';
+           + (ch === 'o' ? fill : ch === 'h' ? HEAD : edge) + '"/>';
       }
       ch = c; run = 1;
     }
