@@ -142,10 +142,9 @@ var GLASS = {
  bottle: [
   '....##....',
   '....##....',
-  '....##....',
-  '...####...',
-  '...#..#...',
-  '..######..',
+  '...#oo#...',
+  '...#oo#...',
+  '..#oooo#..',
   '.#oooooo#.',
   '.#oooooo#.',
   '.#oooooo#.',
@@ -159,12 +158,11 @@ var GLASS = {
  winebottle: [
   '....##....',
   '....##....',
-  '....##....',
-  '....##....',
-  '....##....',
-  '...####...',
-  '...#..#...',
-  '..######..',
+  '...#oo#...',
+  '...#oo#...',
+  '...#oo#...',
+  '...#oo#...',
+  '..#oooo#..',
   '.#oooooo#.',
   '.#oooooo#.',
   '.#oooooo#.',
@@ -174,6 +172,52 @@ var GLASS = {
   '.#oooooo#.',
   '.#oooooo#.',
   '.########.'],
+
+ /* Tulipano: narrow flared rim over a wide belly. The small Italian beer. */
+ tulip: [
+  '##......##',
+  '.#......#.',
+  '.#oooooo#.',
+  '#oooooooo#',
+  '#oooooooo#',
+  '#oooooooo#',
+  '#oooooooo#',
+  '.#oooooo#.',
+  '.#oooooo#.',
+  '..#oooo#..',
+  '..######..'],
+
+ /* Bicchiere alto: straight-sided, thin and tall. Lager and porter. */
+ tall: [
+  '#......#',
+  '#......#',
+  '#oooooo#',
+  '#oooooo#',
+  '#oooooo#',
+  '#oooooo#',
+  '#oooooo#',
+  '#oooooo#',
+  '#oooooo#',
+  '#oooooo#',
+  '#oooooo#',
+  '#oooooo#',
+  '########'],
+
+ /* Pinta nonick: straight British pint with the bulge below the rim that keeps
+    stacked glasses from locking together. */
+ nonic: [
+  '.#........#.',
+  '#oooooooooo#',
+  '#oooooooooo#',
+  '.#oooooooo#.',
+  '.#oooooooo#.',
+  '.#oooooooo#.',
+  '.#oooooooo#.',
+  '.#oooooooo#.',
+  '.#oooooooo#.',
+  '.#oooooooo#.',
+  '.#oooooooo#.',
+  '.##########.'],
 
  carafe: [
   '....####....',
@@ -192,14 +236,18 @@ var GLASS = {
 };
 
 /* Which glass each serving is drunk from, and how big to draw it.
-   The number is the pixel size, set so the drawn liquid grows with the volume:
-   area goes as volume^(2/3), normalised inside each category. */
+   The number is the pixel size, chosen so the drawn glass grows with the volume:
+   the inked area — every pixel actually painted, glass and liquid together —
+   goes as volume^(2/3), normalised inside each category. Inked area rather than
+   liquid, because the eye compares whole objects: a bottle has to look bigger
+   than a pint even though a third of it is neck. And rather than the bounding
+   box, because a stein's handle encloses mostly air. */
 var GLASSMAP = {
- beer:     [['bottle',2.9375],['tumbler',2.1875],['pint',2.25],['stein',2.375],['pint',2.375],['bottle',3.75],['stein',3]],
- wine:     [['wineglass',1.375],['wineglass',1.4375],['wineglass',1.625],['carafe',1.8125],['winebottle',3.3125]],
- spark:    [['flute',1.3125],['flute',1.5625],['winebottle',3.3125]],
+ beer:     [['tulip',2.3125],['bottle',2.5],['tall',2.9375],['pint',2.375],['stein',2.5],['nonic',3.1875],['bottle',4],['stein',3.25]],
+ wine:     [['wineglass',1.5625],['wineglass',1.6875],['wineglass',1.875],['carafe',2.375],['winebottle',3.5]],
+ spark:    [['flute',1.5625],['flute',1.8125],['winebottle',3.5]],
  spirit:   [['shot',4,4],['shot',4,5],['shot',4,7],['shot',4,9]],
- cocktail: [['coupe',3],['tumbler',2.375],['tumbler',2.625],['highball',2.8125],['highball',3.125]]
+ cocktail: [['coupe',2.25],['tumbler',2.375],['tumbler',2.5625],['highball',2.8125],['highball',3.125]]
 };
 var CATGLASS = {beer:'stein', wine:'wineglass', spark:'flute', spirit:'shot', cocktail:'coupe'};
 
