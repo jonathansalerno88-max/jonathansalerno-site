@@ -59,18 +59,24 @@
 <script src="/calculators/glasses.js"></script>
 <script>
 /* Generic categories: abv and sugar band per drink type, sizes in ml. */
+/* types: [ABV used in the sum, sugar band, low end of the usual range, high end].
+   The range is what the drink is sold at; the single figure is what the
+   arithmetic uses, and the line under the menu says which it is. */
 var CATS = [
- {k:'beer',     emo:'🍺', types:[[4.5,'medium'],[5,'medium'],[7,'medium'],[9,'medium'],[12,'medium']],
+ {k:'beer',     emo:'🍺', types:[[4,'medium',3.5,4.5],[5,'medium',4.5,5.5],[7,'medium',5.5,8],[9,'medium',8,10],[12,'medium',10,14]],
   fmts:[200,250,300,330,330,400,473,500,500,568,568,660,1000], dT:1, dF:3, dQ:2},
- {k:'wine',     emo:'🍷', types:[[7,'high'],[12,'low'],[13,'low'],[17,'high']],
+ {k:'wine',     emo:'🍷', types:[[7,'high',5,9],[12,'low',10.5,13],[13,'low',12,14.5],[17,'high',15,22]],
   fmts:[100,125,175,250,750], dT:1, dF:1, dQ:3},
- {k:'spark',    emo:'🥂', types:[[11.5,'low'],[11,'high']],
+ {k:'spark',    emo:'🥂', types:[[11.5,'low',11,12.5],[11,'high',10.5,12]],
   fmts:[75,125,750], dT:0, dF:1, dQ:0},
- {k:'spirit',   emo:'🥃', types:[[40,'low'],[20,'high'],[31.5,'high'],[31.5,'medium']],
+ {k:'spirit',   emo:'🥃', types:[[40,'low',37.5,45],[20,'high',15,25],[31.5,'high',25,38],[31.5,'medium',25,40]],
   fmts:[25,30,40,50], dT:0, dF:2, dQ:0},
- {k:'cocktail', emo:'🍸', types:[[30,'low'],[10,'medium'],[15,'high'],[9,'high'],[22,'high'],[30,'high']],
+ {k:'cocktail', emo:'🍸', types:[[30,'low',25,35],[10,'medium',8,12],[15,'high',12,18],[9,'high',7,11],[22,'high',18,26],[30,'high',25,35]],
   fmts:[90,150,200,300,400], dT:0, dF:1, dQ:0}
 ];
+/* "4,5–5,5%", in the reader's own decimal mark, with no idle zeros */
+function abv(x){ return fmt(x, x % 1 ? 1 : 0); }
+function abvRange(ty){ return abv(ty[2]) + '–' + abv(ty[3]) + '%'; }
 var CKI = 4;              /* the cocktail card */
 var HEAVY = 1.3;          /* correction when the drink was clearly poured strong */
 
@@ -339,10 +345,10 @@ function calc(){
     document.getElementById('lfm' + ci).textContent = t('alFmt');
     document.getElementById('lq' + ci).textContent = t('alQty');
     opts(document.getElementById('ty' + ci), c.types.map(function(x, j){
-      return splitLabel(t('alTypes')[c.k][j])[0]; }), s.ty);
+      return splitLabel(t('alTypes')[c.k][j])[0] + '  ' + abvRange(x); }), s.ty);
     var det = splitLabel(t('alTypes')[c.k][s.ty])[1];
     document.getElementById('ex' + ci).textContent =
-      fmt(ty[0],1) + '%' + (det ? '  ·  ' + det : '');
+      t('alAt').replace('{v}', abv(ty[0])) + (det ? '  ·  ' + det : '');
     drawGlasses(ci, c, s.fm);
     document.getElementById('gh' + ci).textContent = (c.k === 'beer') ? t('alGlassNote') : '';
 
@@ -363,7 +369,7 @@ function calc(){
       ? (named
           ? fmt(s.q,0) + ' × ' + fmt(named[1] * 0.8, 0) + ' g'
             + (k > 1 ? ' × ' + fmt(k,1) : '') + ' = ' + fmt(g,0) + ' g'
-          : fmt(s.q,0) + ' × ' + size(ml) + ' · ' + fmt(ty[0],1) + '% = ' + fmt(g,0) + ' g')
+          : fmt(s.q,0) + ' × ' + size(ml) + ' · ' + abv(ty[0]) + '% = ' + fmt(g,0) + ' g')
       : '—';
   });
 
