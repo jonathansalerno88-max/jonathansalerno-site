@@ -164,6 +164,15 @@ var PIZZA_KCAL = 850;   /* a pizzeria margherita */
 var SUGAR_KCAL = {low:0, medium:20, high:60};
 var STD_G = [10, 12, 8, 14];
 var BANDS = [{max:140, tone:'good'},{max:280, tone:'warn'},{max:Infinity, tone:'flag'}];
+/* The long labels carry their detail after an em dash or inside brackets.
+   The select keeps the short name; the detail goes underneath, where it fits. */
+function splitLabel(s){
+  var i = s.indexOf(' — ');
+  if (i > 0) return [s.slice(0, i), s.slice(i + 3)];
+  var m = s.match(/^(.*?)\s*\(([^)]*)\)\s*$/);
+  if (m) return [m[1], m[2]];
+  return [s, ''];
+}
 function size(m){ return m >= 1000 ? fmt(m/1000,0) + ' L' : fmt(m,0) + ' ml'; }
 
 var state = CATS.map(function(c){ return {ty:c.dT, fm:c.dF, q:c.dQ}; });
@@ -208,7 +217,8 @@ function buildCards(){
       + '<span class="sug" id="sg' + ci + '"></span></div>'
       + extra
       + '<div class="row">'
-      +   '<div class="f" id="wty' + ci + '"><label for="ty' + ci + '" id="lty' + ci + '"></label><select id="ty' + ci + '"></select></div>'
+      +   '<div class="f" id="wty' + ci + '"><label for="ty' + ci + '" id="lty' + ci + '"></label><select id="ty' + ci + '"></select>'
+      +     '<p class="hint" id="ex' + ci + '"></p></div>'
       +   '<div class="f" id="wfm' + ci + '"><label for="fm' + ci + '" id="lfm' + ci + '"></label><select id="fm' + ci + '"></select></div>'
       +   '<div class="f"><label for="q' + ci + '" id="lq' + ci + '"></label>'
       +     '<input id="q' + ci + '" type="number" min="0" step="1" value="' + c.dQ + '"></div>'
@@ -295,8 +305,13 @@ function calc(){
     document.getElementById('lfm' + ci).textContent = t('alFmt');
     document.getElementById('lq' + ci).textContent = t('alQty');
     opts(document.getElementById('ty' + ci), c.types.map(function(x, j){
-      return t('alTypes')[c.k][j] + ' · ' + fmt(x[0],1) + '%'; }), s.ty);
-    opts(document.getElementById('fm' + ci), c.fmts.map(size), s.fm);
+      return splitLabel(t('alTypes')[c.k][j])[0]; }), s.ty);
+    var det = splitLabel(t('alTypes')[c.k][s.ty])[1];
+    document.getElementById('ex' + ci).textContent =
+      fmt(ty[0],1) + '%' + (det ? '  ·  ' + det : '');
+    opts(document.getElementById('fm' + ci), c.fmts.map(function(m, j){
+      var n = t('fmtN')[c.k][j];
+      return size(m) + (n ? '  \u00b7  ' + n : ''); }), s.fm);
 
     if (ci === CKI){
       var typed = document.getElementById('find').value.trim();
