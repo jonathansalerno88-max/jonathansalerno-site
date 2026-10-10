@@ -190,13 +190,14 @@ var GLASS = {
 };
 
 /* Which glass each serving is drunk from, and how big to draw it.
-   The scale is the share of the tallest icon in its category. */
+   The number is the pixel size, set so the drawn liquid grows with the volume:
+   area goes as volume^(2/3), normalised inside each category. */
 var GLASSMAP = {
- beer:    [['bottle',.82],['tumbler',.82],['pint',.92],['stein',.92],['pint',1],['bottle',1],['stein',1]],
- wine:    [['wineglass',.76],['wineglass',.88],['wineglass',1],['carafe',.94],['winebottle',1]],
- spark:   [['flute',.82],['flute',1],['winebottle',1]],
- spirit:  [['shot',.74],['shot',.86],['shot',1],['tumbler',.80]],
- cocktail:[['coupe',.88],['tumbler',.88],['highball',.92],['highball',1],['highball',1]]
+ beer:     [['bottle',2.9375],['tumbler',2.1875],['pint',2.25],['stein',2.375],['pint',2.375],['bottle',3.75],['stein',3]],
+ wine:     [['wineglass',1.375],['wineglass',1.4375],['wineglass',1.625],['carafe',1.8125],['winebottle',3.3125]],
+ spark:    [['flute',1.3125],['flute',1.5625],['winebottle',3.3125]],
+ spirit:   [['shot',3.1875],['shot',3.375],['shot',3.6875],['shot',4]],
+ cocktail: [['coupe',3],['tumbler',2.375],['tumbler',2.625],['highball',2.8125],['highball',3.125]]
 };
 var CATGLASS = {beer:'stein', wine:'wineglass', spark:'flute', spirit:'shot', cocktail:'coupe'};
 

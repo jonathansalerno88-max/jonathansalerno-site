@@ -293,8 +293,7 @@ function glassEdge(){
 function drawGlasses(ci, c, sel){
   var host = document.getElementById('fm' + ci), edge = glassEdge(), fill = LIQUID[c.k], h = '';
   c.fmts.forEach(function(m, j){
-    /* a touch bigger for the bigger servings, but never too small to read */
-    var g = GLASSMAP[c.k][j], px = Math.round((2.4 + 0.8 * g[1]) * 4) / 4;
+    var g = GLASSMAP[c.k][j], px = g[1];
     h += '<button type="button" class="gl" role="radio" aria-checked="' + (j === sel) + '" data-i="' + j + '">'
       +   '<span class="pic">' + glassSVG(g[0], px, fill, edge) + '</span>'
       +   '<span class="ml">' + size(m) + '</span>'
