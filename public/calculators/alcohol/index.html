@@ -295,7 +295,7 @@ function drawGlasses(ci, c, sel){
   c.fmts.forEach(function(m, j){
     var g = GLASSMAP[c.k][j], px = g[1];
     h += '<button type="button" class="gl" role="radio" aria-checked="' + (j === sel) + '" data-i="' + j + '">'
-      +   '<span class="pic">' + glassSVG(g[0], px, fill, edge) + '</span>'
+      +   '<span class="pic">' + glassSVG(g[0], px, fill, edge, g[2]) + '</span>'
       +   '<span class="ml">' + size(m) + '</span>'
       +   '<span class="gn">' + (t('fmtN')[c.k][j] || '') + '</span>'
       + '</button>';
@@ -323,7 +323,7 @@ function calc(){
     sugar += s.q * (ml/100) * SUGAR_KCAL[sband] * k;
 
     document.getElementById('ce' + ci).innerHTML =
-      glassSVG(CATGLASS[c.k], 2, LIQUID[c.k], glassEdge());
+      glassSVG(CATGLASS[c.k], 2, LIQUID[c.k], glassEdge(), 8);
     document.getElementById('nm' + ci).textContent = named ? named[0] : t('alCats')[ci];
     var sg = document.getElementById('sg' + ci);
     sg.textContent = t('sug')[sband]; sg.className = 'sug s-' + sband;

@@ -7,6 +7,8 @@ var GLASS = {
  shot: [
   '#........#',
   '#........#',
+  '#........#',
+  '#........#',
   '#oooooooo#',
   '#oooooooo#',
   '#oooooooo#',
@@ -196,14 +198,25 @@ var GLASSMAP = {
  beer:     [['bottle',2.9375],['tumbler',2.1875],['pint',2.25],['stein',2.375],['pint',2.375],['bottle',3.75],['stein',3]],
  wine:     [['wineglass',1.375],['wineglass',1.4375],['wineglass',1.625],['carafe',1.8125],['winebottle',3.3125]],
  spark:    [['flute',1.3125],['flute',1.5625],['winebottle',3.3125]],
- spirit:   [['shot',3.1875],['shot',3.375],['shot',3.6875],['shot',4]],
+ spirit:   [['shot',4,4],['shot',4,5],['shot',4,7],['shot',4,9]],
  cocktail: [['coupe',3],['tumbler',2.375],['tumbler',2.625],['highball',2.8125],['highball',3.125]]
 };
 var CATGLASS = {beer:'stein', wine:'wineglass', spark:'flute', spirit:'shot', cocktail:'coupe'};
 
+/* A shot glass is one object: what changes is how far it is poured.
+   level is how many of its ten rows hold liquid. */
+function shotGrid(level){
+  var g = [], n = 10;
+  /* the top row stays glass, so a full measure still reads as a glass */
+  for (var y = 0; y < n; y++) g.push('#' + ((y > 0 && (n - y) <= level) ? 'oooooooo' : '........') + '#');
+  g.push('##########');
+  return g;
+}
+
 /* px: the size of one pixel. fill: what is in the glass. */
-function glassSVG(shape, px, fill, edge){
-  var g = GLASS[shape]; if (!g) return '';
+function glassSVG(shape, px, fill, edge, level){
+  var g = (shape === 'shot' && level) ? shotGrid(level) : GLASS[shape];
+  if (!g) return '';
   var w = g[0].length, h = g.length, r = '';
   for (var y = 0; y < h; y++){
     var row = g[y], run = 0, ch = '';
