@@ -142,9 +142,13 @@ tr.on td:first-child::before{content:"\25B8"; position:absolute; left:-.75rem; c
 
 .note{margin:.95rem 0 0; font-size:.875rem; color:var(--mut); max-width:33rem}
 .note b{color:var(--ink); font-weight:600}
-.caveat{margin:.9rem 0 0; padding:.1rem 0 .1rem .85rem; border-left:3px solid var(--flag);
-  font-size:.875rem; color:var(--mut); max-width:34rem}
-.caveat b{color:var(--ink); font-weight:600}
+/* The verdict carries its own colour: the band sets the rule down the left. */
+.verdict{margin:.95rem 0 0; padding:.15rem 0 .15rem .9rem; border-left:3px solid var(--rule);
+  font-size:.9375rem; color:var(--mut); max-width:34rem}
+.verdict b{color:var(--ink); font-weight:600}
+.v-ok{border-left-color:var(--good)}
+.v-mid{border-left-color:var(--warn)}
+.v-hi{border-left-color:var(--flag)}
 .srcs{margin:.8rem 0 0; padding:0; list-style:none; font-size:.8125rem; color:var(--faint)}
 .srcs li{margin-bottom:.3rem; padding-left:.9rem; position:relative}
 .srcs li::before{content:"\2022"; position:absolute; left:0; color:var(--rule)}
