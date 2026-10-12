@@ -705,7 +705,16 @@ function panelPlane(d){
   if(HL==='cl'){
     /* the plane's axes are the ratios, so the tildes belong here: without them this
        would read as the absolute CLint, not the CLint ratio */
-    o.push(tx(L+8,T+12,'slope = V&#x303;max / K&#x303;m = CLint ratio = '+nf(d.cl,3),col,10.5,'start','s'));
+    o.push(tx(L+8,T+12,'slope = tan &#966; = V&#x303;max / K&#x303;m = CLint ratio = '+nf(d.cl,3),col,10.5,'start','s'));
+    /* phi in red at the origin: the angle the ray makes with the K-axis. Scales are
+       equal, so the arc on screen is the true angle; screen y runs down, hence -phi. */
+    if(!cmp){
+      var phr = d.phi*Math.PI/180, AR = 40, RED = 'var(--flag)';
+      o.push(angArc(px(0),py(0),0,-phr,AR,RED,2.2));
+      var lb = AR + 13;
+      o.push(tx(px(0)+lb*Math.cos(phr/2)+2, py(0)-lb*Math.sin(phr/2)+4,
+                '&#966; = '+nf(d.phi,1)+'&#176;', RED, 10.5, 'start', 's'));
+    }
     /* No example points on the ray: two hollow rings beside the native ring and the
        SAD read as data. The plane shows only the two states actually entered. */
   }
@@ -875,7 +884,7 @@ var CAPS = {
   km:{sat:'the abscissa at half the plateau',            lb:'the x-intercept, &#8722;1 / Km',        pl:'the horizontal coordinate',             ci:'the horizontal leg'},
   vm:{sat:'the plateau the curve approaches',            lb:'the y-intercept, 1 / Vmax',            pl:'the vertical coordinate',               ci:'the vertical leg'},
   cl:{sat:'the initial slope through the origin',        lb:'the reciprocal of the line&rsquo;s slope',
-      pl:'the slope of the ray &mdash; and every point on that ray returns the same value',
+      pl:'the slope of the ray, tan &#966;, where &#966; is its angle to the K&#x303;m axis &mdash; and every point on that ray returns the same value',
       ci:'the tilt of the hypotenuse &mdash; the shape of the triangle, never its size'},
   none:{sat:'',lb:'',pl:'',ci:''}
 };
