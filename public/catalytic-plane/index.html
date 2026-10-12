@@ -237,7 +237,16 @@ tr:last-child th,tr:last-child td{border-bottom:0}
 .cell .x{font-size:10px;color:var(--mut);line-height:1.35}
 .cell .p{font-size:10px;color:var(--ink);line-height:1.35;margin-top:5px;padding-top:5px;
   border-top:1px dashed var(--line)}
-.g22n{margin:8px 0 0;font-size:10.5px;color:var(--mut);line-height:1.4}
+.g22n{margin:8px 0 0;font-size:10.5px;color:var(--mut);line-height:1.5}
+.g22n .org{vertical-align:-2px}
+.cell .bio{display:flex;gap:5px;align-items:flex-start;font-size:10px;color:var(--mut);line-height:1.35;margin-top:4px}
+.cell .bio .org{flex:0 0 auto;margin-top:1px}
+.cell .bio b{color:var(--ink);font-weight:600}
+.ic-gut{color:#B8456F} .ic-liv{color:#8C4528}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ic-gut{color:#E486A8}
+  :root:not([data-theme="light"]) .ic-liv{color:#D9906E}}
+:root[data-theme="dark"] .ic-gut{color:#E486A8}
+:root[data-theme="dark"] .ic-liv{color:#D9906E}
 .cell.on{border-color:var(--accent);border-width:1.5px;background:color-mix(in srgb,var(--accent) 11%,var(--surface));
   box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 16%,transparent)}
 .cell.on .t{color:var(--accent)}
@@ -1019,14 +1028,33 @@ function rows(d){
    The same column reverses meaning between the two rows. */
 var CELLS = {
   'act-con':{s:'Restricted', d:'K-dominant', x:'Activation carried mainly by the fall in Km.',
-             p:'The gain is largest at low substrate and shrinks as the substrate rises towards the plateau.'},
+             p:'The gain is largest at low substrate and shrinks as the substrate rises towards the plateau.',
+             g:'fades at the high local concentrations after an oral dose: first pass barely changes.',
+             l:'clearance rises with the CL<sub>int</sub> ratio; exposure falls.'},
   'act-exp':{s:'Enlarged',   d:'V-dominant', x:'Activation carried mainly by the rise in Vmax.',
-             p:'The gain holds at high substrate: what rose is the plateau itself.'},
+             p:'The gain holds at high substrate: what rose is the plateau itself.',
+             g:'holds at high local concentrations: first pass rises, less drug reaches the blood.',
+             l:'clearance rises with the CL<sub>int</sub> ratio; exposure falls.'},
   'inh-con':{s:'Restricted', d:'V-dominant', x:'Inhibition carried mainly by the fall in Vmax.',
-             p:'Raising the substrate does not undo it: what fell is the plateau itself.'},
+             p:'Raising the substrate does not undo it: what fell is the plateau itself.',
+             g:'persists even at high local concentrations: first pass falls, more drug reaches the blood.',
+             l:'clearance falls with the CL<sub>int</sub> ratio; exposure rises.'},
   'inh-exp':{s:'Enlarged',   d:'K-dominant', x:'Inhibition carried mainly by the rise in Km.',
-             p:'Raising the substrate wears it down: the two curves draw together towards the plateau.'}
+             p:'Raising the substrate wears it down: the two curves draw together towards the plateau.',
+             g:'high local concentrations after an oral dose partly overcome it: first pass falls less than CL<sub>int</sub> suggests.',
+             l:'clearance falls with the CL<sub>int</sub> ratio; exposure rises.'}
 };
+/* two small organ glyphs: the colon framing the loops of the small bowel, and the
+   liver in outline with the falciform line between its lobes */
+var GUT = '<svg class="org ic-gut" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" '
+        + 'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        + '<path d="M3 13.5V4.6A1.6 1.6 0 0 1 4.6 3h6.8A1.6 1.6 0 0 1 13 4.6V13"/>'
+        + '<path d="M5.6 6.2h4.6a1.25 1.25 0 0 1 0 2.5H5.8a1.25 1.25 0 0 0 0 2.5h4.6"/></svg>';
+var LIV = '<svg class="org ic-liv" width="17" height="13" viewBox="0 0 18 14" fill="currentColor" aria-hidden="true">'
+        + '<path d="M1.2 5.4C1.2 2.9 3.8 1.7 7.6 1.7c3.9 0 7.5.5 8.9 1.6.8.7.4 1.6-.7 2.2-1.9 1-3.9 2.1-5.8 3.6'
+        + '-1.6 1.3-3.3 3.1-5.1 3.1-2.3 0-3.7-2.6-3.7-6.8z"/>'
+        + '<path d="M7.2 1.9C7.6 4 8.3 6 10 8.3" fill="none" stroke="var(--surface2)" stroke-width="0.9" stroke-linecap="round"/></svg>';
+
 function grid22(d){
   var row = d.pol==='Activation' ? 'act' : d.pol==='Inhibition' ? 'inh' : null;
   var col = d.circ==='contracted' ? 'con' : d.circ==='expanded' ? 'exp' : null;
@@ -1037,7 +1065,9 @@ function grid22(d){
     return '<div class="cell'+(key===live?' on':'')+'">'+
       '<div class="t">'+c.s+'<br><span style="color:'+dc+'">'+c.d+'</span></div>'+
       '<div class="x">'+c.x+'</div>'+
-      '<div class="p">'+c.p+'</div></div>';
+      '<div class="p">'+c.p+'</div>'+
+      '<div class="bio">'+GUT+'<span><b>Gut</b> &#8212; '+c.g+'</span></div>'+
+      '<div class="bio">'+LIV+'<span><b>Liver</b> &#8212; '+c.l+'</span></div></div>';
   }
   var pc = row==='inh' ? 'X + Y &lt; &#8722;0.05' : 'X + Y &gt; +0.05';
   var cc = col==='con' ? '&#916;A<sub>c</sub>% &lt; &#8722;5' : '&#916;A<sub>c</sub>% &gt; +5';
@@ -1055,8 +1085,10 @@ function grid22(d){
     rhInh+cell('inh-con')+cell('inh-exp')+
     rhAct+cell('act-con')+cell('act-exp')+
   '</div>'+
-  '<p class="g22n">At low substrate, where most drugs sit in vivo, only the CL<sub>int</sub> ratio counts; '+
-  'dominance says what happens to the effect as the substrate rises.</p>'+
+  '<p class="g22n">'+LIV+' In the liver unbound concentrations usually sit well below K<sub>m</sub>, so only the '+
+  'CL<sub>int</sub> ratio counts there. '+GUT+' In the gut wall, after an oral dose, local concentrations can '+
+  'approach saturation, and dominance decides how much of the effect survives. Expected direction for a drug '+
+  'cleared mainly by this enzyme; the AUC section below puts numbers on it.</p>'+
   '<p class="idn">'+note+'</p>';
 }
 
