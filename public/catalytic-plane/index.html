@@ -924,7 +924,9 @@ function caption(k,d){
          + ' = (V<sub>max,mod</sub> / V<sub>max,nat</sub>) / (K<sub>m,mod</sub> / K<sub>m,nat</sub>)'
          + ' = (' + g(F.vmM) + ' / ' + g(F.vmN) + ') / (' + g(F.kmM) + ' / ' + g(F.kmN) + ')'
          + ' = ' + nf(d.V,3) + ' / ' + nf(d.K,3)
-         + ' = tan &#966; = tan ' + nf(d.phi,1) + '&#176; = ' + nf(d.cl,3) + '</b>';
+         /* the angle in the same red as its arc on the plot */
+         + ' = <span style="color:var(--flag)">tan &#966; = tan ' + nf(d.phi,1) + '&#176;</span>'
+         + ' = ' + nf(d.cl,3) + '</b>';
   }
   if(KI && F.I > 0 && d && !isNaN(d.Ki) && !isNaN(d.Kip))
     base += '<br><span style="color:var(--iso)">'+KICAP[k]+'</span>';
