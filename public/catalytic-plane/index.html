@@ -390,7 +390,6 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
   <div class="card pad">
     <p class="eyebrow">Kinetic type</p>
     <div id="g22"></div>
-    <div class="ki" id="ki"></div>
   </div>
 </div>
 
@@ -1354,8 +1353,7 @@ function render(){
   document.getElementById('g22').innerHTML  = grid22(d);
   var kiHtml = kiBlock(d);
   var kiEl = document.getElementById('ki');
-  kiEl.innerHTML = kiHtml;
-  kiEl.className = kiHtml ? 'ki' : '';
+  if(kiEl){ kiEl.innerHTML = kiHtml; kiEl.className = kiHtml ? 'ki' : ''; }
 }
 
 /* ══════════════ wiring ══════════════ */
