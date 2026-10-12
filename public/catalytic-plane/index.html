@@ -219,6 +219,8 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 .panel .cap{font-size:11.5px;color:var(--mut);margin:0 0 8px;min-height:2.6em}
 .lg{display:flex;flex-wrap:wrap;gap:4px 13px;margin:3px 0 6px}
 .lg span{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:var(--mut);white-space:nowrap}
+.lg span span{display:inline;white-space:normal}
+.lg > span{white-space:normal;max-width:100%}
 .lg i{display:inline-block;width:17px;flex:0 0 17px;border-top:2px solid currentColor}
 .lg i.d{border-top-style:dashed}
 .lg b{display:inline-block;width:9px;height:9px;flex:0 0 9px;border-radius:50%;background:currentColor}
@@ -816,6 +818,43 @@ function panelPlane(d){
     o.push(tx(sxp+5,py(0)-6,'K&#x303;m = '+nf(d.K,2),col,10,'start','s'));
     o.push(tx(px(0)+5,syp-5,'V&#x303;max = '+nf(d.V,2),col,10,'start','s'));
   }
+  /* The SAD's path as [I] rises, for the Ki and Ki' of this state. Eliminating [I]
+     between Vmax~ = 1/(1+[I]/Ki') and Km~ = (1+[I]/Ki)/(1+[I]/Ki') leaves
+     Km~ = Vmax~ + (Ki'/Ki)(1 - Vmax~): a straight segment from the native point (1,1)
+     to (Ki'/Ki, 0). Its direction is the mechanism; the ticks are the concentration. */
+  if(!cmp && F.I > 0 && d.Ki !== null && !isNaN(d.Ki) && !isNaN(d.Kip) && (isFinite(d.Ki) || isFinite(d.Kip))){
+    var PC = TXT, ex, ey, endIn;
+    if(isFinite(d.Kip)){ ex = isFinite(d.Ki) ? d.Kip/d.Ki : 0; ey = 0; }
+    else { ex = 1e9; ey = 1; }                       /* competitive: along Vmax~ = 1, no end */
+    /* clip the segment (1,1)->(ex,ey) to the frame */
+    var tmax = 1, dx = ex-1, dy = ey-1;
+    if(1+dx*tmax > M) tmax = (M-1)/dx;
+    if(1+dy*tmax < 0) tmax = Math.min(tmax, -1/dy);
+    endIn = tmax >= 1 - 1e-9;
+    var cx1 = 1+dx*tmax, cy1 = 1+dy*tmax;
+    o.push(ln(px(1),py(1),px(cx1),py(cy1),PC,1.4,'2 3'));
+    var lastL = null, lastD = null;
+    [1,2,5,10,20,50,100,200,500,1000,2000,5000,10000,20000,50000,100000].forEach(function(I){
+      var vv = 1/(1+I/d.Kip), kk = (1+I/d.Ki)/(1+I/d.Kip);
+      if(!isFinite(kk) || kk > M || vv < 0) return;
+      var X = px(kk), Y = py(vv);
+      if(Math.hypot(X-px(1),Y-py(1)) < 8) return;        /* sits on the native ring */
+      if(Math.hypot(X-px(d.K),Y-py(d.V)) < 9) return;    /* the measured SAD is itself a tick */
+      if(lastD && Math.hypot(X-lastD[0],Y-lastD[1]) < 7) return;   /* dots crowd near the end */
+      o.push('<circle cx="'+X.toFixed(1)+'" cy="'+Y.toFixed(1)+'" r="2.3" fill="'+PC+'"/>');
+      lastD=[X,Y];
+      var lead = String(I).charAt(0);
+      if(lead!=='1' && lead!=='5') return;                          /* label 1, 5, 10, 50 ... */
+      if(lastL && Math.hypot(X-lastL[0],Y-lastL[1]) < 26) return;
+      if(Y > py(0)-14 || X < px(0)+30) return;                      /* clear of the axes */
+      /* clear of the radius caption, which sits along the ray */
+      var rlx=px(d.K*0.58)+10, rly=py(d.V*0.58)+4;
+      if(X-30 < rlx+125 && X-4 > rlx-4 && Y+15 > rly-12 && Y+3 < rly+4) return;
+      o.push(tx(X-6,Y+13,(I>=1000?(I/1000)+'k':I),PC,9,'end','m'));
+      lastL=[X,Y];
+    });
+    if(endIn && isFinite(d.Kip)) o.push(ring(px(ex),py(0),PC,3.4));   /* where it ends; the legend names it */
+  }
   o.push(ring(px(1),py(1),NAT,4.4));
   o.push(tx(px(1)-8,py(1)-9,'native',NAT,9.5,'end'));
   o.push(dot(px(d.K),py(d.V),col,5.6));
@@ -985,7 +1024,11 @@ function legends(d){
     sat:nm,
     lb: nm,
     pl: lgItem('<b class="o"></b>',NAT,'native (1, 1)')+lgItem('<b></b>',MOD,'modulated — the SAD')+
-        lgItem('<i></i>',MOD,'ray slope = CL<sub>int</sub> ratio '+nf(d.cl,3)),
+        lgItem('<i></i>',MOD,'ray slope = CL<sub>int</sub> ratio '+nf(d.cl,3))+
+        (PINS.length===0 && F.I>0 && d.Ki!==null && !isNaN(d.Ki) && !isNaN(d.Kip) && (isFinite(d.Ki)||isFinite(d.Kip))
+          ? lgItem('<i class="d"></i>',TXT,'path of the SAD as [I] rises, ticks in µM, '+
+            (isFinite(d.Kip) ? 'ending at (K<sub>i</sub>&prime;/K<sub>i</sub>, 0) = ('+nf(isFinite(d.Ki)?d.Kip/d.Ki:0,2)+', 0)'
+                             : 'no end: K&#x303;m grows without limit')) : ''),
     ci: lgItem('<i class="d"></i>',NAT,'native circle')+
         lgItem('<i></i>',MOD,'modulated circle, r = '+nf(d.r,3))+
         lgItem('<i></i>',MOD,'hypotenuse slope = '+sf(-d.cl,3))
