@@ -539,7 +539,10 @@ function panelSat(d){
   /* Ki is in the drop of the initial slope; Ki-prime is in the drop of the plateau. */
   if(kiShow(d)){
     o.push(tx(L+8,HL==='cl'?T+29:T+15,kiLine(d),ANN,10,'start','s'));
-    /* short stubs of the two initial tangents, and the angle between them */
+    /* short stubs of the two initial tangents, and theta: the angle each makes with
+       the [S] axis. The axes are scaled differently, so these are not the slopes'
+       true angles, but the scale factor cancels in the Ki formula, which is
+       homogeneous in the two tangents. */
     (function(){
       var ox=px(0), oy=py(0), len=78;
       [[F.vmN/F.kmN],[F.vmM/F.kmM]].forEach(function(a){
@@ -550,9 +553,14 @@ function panelSat(d){
       });
       var aN=Math.atan2(py(F.vmN/F.kmN*1)-oy, px(1)-ox);
       var aM=Math.atan2(py(F.vmM/F.kmM*1)-oy, px(1)-ox);
-      o.push(angArc(ox,oy,aN,aM,56,ANN,1.6));
-      var ab=(aN+aM)/2;
-      o.push(tx(ox+Math.cos(ab)*72,oy+Math.sin(ab)*72+4,'&#945;',ANN,11,'middle','s'));
+      /* the tangents are steep at this scale, so the arcs are kept small and each
+         label sits near the top of its own arc, by the tangent it measures */
+      [[aM,26,'mod'],[aN,42,'nat']].forEach(function(t){
+        o.push(angArc(ox,oy,0,t[0],t[1],ANN,1.6));
+        var h=t[0]*0.72, rr=t[1]+9;
+        o.push(tx(ox+Math.cos(h)*rr, oy+Math.sin(h)*rr+4,
+                  '&#952;<tspan dy="3" font-size="8">'+t[2]+'</tspan>',ANN,11,'start','s'));
+      });
     })();
     var gx = L+pw-20;
     if(F.vmN - F.vmM > 1e-9){
@@ -850,23 +858,8 @@ function panelCircle(d){
      measured against the native leg of 1. */
   if(kiShow(d)){
     o.push(tx(L+8,T+13,kiLine(d),ANN,10,'start','s'));
-    /* native hypotenuse always drawn here, so the angle against it can be shown */
+    /* native hypotenuse drawn here as the 45 degree reference that phi is read against */
     o.push(poly([[px(1),py(0)],[px(0),py(1)]],ANN,1.2,'4 3'));
-    (function(){
-      if(Math.abs(d.K-1)<1e-9 && Math.abs(d.V-1)<1e-9) return;
-      var den=(1/d.K-1)+(1-1/d.V);          // intersezione delle due ipotenuse
-      if(Math.abs(den)<1e-9) return;
-      var xc=(1-1/d.V)/((1/d.K-1)+(1-1/d.V))*0+0;
-      // nativa: x + y = 1 ; modulata: x/K + y/V = 1
-      xc=(1-1/d.V)/(1/d.K-1/d.V); var yc=1-xc;
-      if(!(xc>0.02&&yc>0.02&&xc<M&&yc<M)) return;
-      var cx=px(xc), cy=py(yc);
-      var aN=Math.atan2(py(yc-0.3)-cy, px(xc+0.3)-cx);
-      var aM=Math.atan2(py(yc-0.3*d.V/d.K)-cy, px(xc+0.3)-cx);
-      o.push(angArc(cx,cy,aN,aM,44,ANN,1.6));
-      var ab2=(aN+aM)/2;
-      o.push(tx(cx+Math.cos(ab2)*58,cy+Math.sin(ab2)*58+4,'&#945;',ANN,11,'middle','s'));
-    })();
     o.push(ln(px(0)-5,py(1),px(0)+5,py(1),ANN,2));
     if(1 - d.V > 1e-6){
       o.push(ln(px(0),py(d.V),px(0),py(1),ANN,3));
@@ -916,10 +909,10 @@ function legends(d){
 }
 /* where the two inhibition constants are read off, per panel */
 var KICAP = {
-  sat:'K<sub>i</sub> = [I]&#183;tan&#945;<sub>mod</sub> / (tan&#945;<sub>nat</sub> &#8722; tan&#945;<sub>mod</sub>), the angle &#945; between the two initial tangents · K<sub>i</sub>&prime; from the drop in the plateau',
+  sat:'K<sub>i</sub> = [I]&#183;tan&#952;<sub>mod</sub> / (tan&#952;<sub>nat</sub> &#8722; tan&#952;<sub>mod</sub>), &#952; the angle each initial tangent makes with the [S] axis · K<sub>i</sub>&prime; from the drop in the plateau',
   lb: 'K<sub>i</sub> = [I]&#183;slope<sub>nat</sub> / (slope<sub>mod</sub> &#8722; slope<sub>nat</sub>) &#8212; reciprocal axes, so the form flips (Cleland&rsquo;s K<sub>is</sub>) · K<sub>i</sub>&prime; from the change in intercept (K<sub>ii</sub>)',
   pl: 'K<sub>i</sub> = [I]&#183;V&#x303;<sub>max</sub> / (K&#x303;<sub>m</sub> &#8722; V&#x303;<sub>max</sub>), the horizontal gap to the diagonal · K<sub>i</sub>&prime; = [I]&#183;V&#x303;<sub>max</sub> / (1 &#8722; V&#x303;<sub>max</sub>), the vertical gap to the native level',
-  ci: 'K<sub>i</sub> = [I]&#183;tan&#945;<sub>mod</sub> / (tan&#945;<sub>nat</sub> &#8722; tan&#945;<sub>mod</sub>), &#945; against the native hypotenuse at 45&#176; · K<sub>i</sub>&prime; from the vertical leg against the native leg of 1'
+  ci: 'K<sub>i</sub> = [I]&#183;<span style="color:var(--flag)">tan&#966;</span> / (1 &#8722; <span style="color:var(--flag)">tan&#966;</span>), &#966; the tilt of the modulated hypotenuse, 45&#176; that of the native (tan 45&#176; = 1) · K<sub>i</sub>&prime; from the vertical leg against the native leg of 1'
 };
 function caption(k,d){
   var base = HL==='none' ? 'Dashed is native, solid is modulated.'
