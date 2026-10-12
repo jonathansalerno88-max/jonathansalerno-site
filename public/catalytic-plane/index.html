@@ -380,17 +380,6 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
     <p class="hint" id="pasteMsg" style="margin:9px 0 0"></p>
   </div>
 
-  <div class="tool">
-    <h3>Carry it to the AUC ratio</h3>
-    <p class="hint">From K<sub>i</sub> and K<sub>i</sub>&prime; to how many times exposure to the victim drug rises.</p>
-    <div class="mini">
-      <div><label for="fmIn">f<sub>m</sub></label><input type="number" id="fmIn" step="any" min="0" max="1" value="0.9"></div>
-      <div><label for="fgIn">F<sub>g</sub></label><input type="number" id="fgIn" step="any" min="0" max="1" value="0.5"></div>
-      <div><label for="ihIn">[I] liver µM</label><input type="number" id="ihIn" step="any" min="0" value="10"></div>
-      <div><label for="igIn">[I] gut µM</label><input type="number" id="igIn" step="any" min="0" value="50"></div>
-    </div>
-    <div id="aucrOut"></div>
-  </div>
 </div>
 
 <div class="out">
@@ -1241,6 +1230,7 @@ function num(id,dflt){ var v=parseFloat(document.getElementById(id).value); retu
 
 function renderAucr(d){
   var box=document.getElementById('aucrOut');
+  if(!box) return;   /* the AUC ratio tool is off the page for now */
   if(F.I<=0 || d.Ki===null || isNaN(d.Ki) || isNaN(d.Kip)){
     box.innerHTML=aucrFormula(null)+'<p class="hint" style="margin:0">The numbers need an inhibition with a stated [I]: '+
       'enter [I] in the inputs at the top (it is the concentration used to invert K<sub>i</sub> and K<sub>i</sub>&prime;), '+
@@ -1444,7 +1434,7 @@ document.getElementById('pasteBtn').addEventListener('click', function(){
   render();
 });
 ['fmIn','fgIn','ihIn','igIn'].forEach(function(id){
-  document.getElementById(id).addEventListener('input', render);
+  var el=document.getElementById(id); if(el) el.addEventListener('input', render);
 });
 
 document.getElementById('kib').addEventListener('change', function(e){
