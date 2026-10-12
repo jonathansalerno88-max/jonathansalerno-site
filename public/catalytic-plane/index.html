@@ -706,15 +706,8 @@ function panelPlane(d){
     /* the plane's axes are the ratios, so the tildes belong here: without them this
        would read as the absolute CLint, not the CLint ratio */
     o.push(tx(L+8,T+12,'slope = V&#x303;max / K&#x303;m = CLint ratio = '+nf(d.cl,3),col,10.5,'start','s'));
-    /* The fibre of the CLint map: every point on this ray returns the same ratio.
-       Clearance cannot separate them; only the radius can. Dropped once states are
-       pinned — then the panel is a comparison, not a study of one point. */
-    if(!cmp){
-      [0.38,0.68].forEach(function(s){
-        o.push(ring(px(d.K*s),py(d.V*s),col,4));
-      });
-      o.push(tx(px(M*0.04),py(M*0.04),'points on the same ray = same CLint ratio',col,9.5,'start','s'));
-    }
+    /* No example points on the ray: two hollow rings beside the native ring and the
+       SAD read as data. The plane shows only the two states actually entered. */
   }
   if(HL==='km'){
     o.push(ln(px(d.K),py(0),px(d.K),py(d.V),col,2.6));
