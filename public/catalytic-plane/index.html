@@ -1149,10 +1149,7 @@ function grid22(d){
     return '<div class="cell'+(key===live?' on':'')+'">'+
       '<div class="t">'+c.s+'<br><span style="color:'+dc+'">'+c.d+'</span></div>'+
       '<div class="x">'+c.x+'</div>'+
-      '<div class="p"><b>'+c.d+' in brief</b> &#8212; '+c.b+'</div>'+
-      '<div class="pk">Practical consequences</div>'+
-      '<div class="pc"><b>'+c.wl+'</b> &#8212; '+org(c.w)+'</div>'+
-      '<div class="pc"><b>'+c.ul+'</b> &#8212; '+org(c.u)+'</div></div>';
+      '<div class="p"><b>'+c.d+' in brief</b> &#8212; '+c.b+'</div></div>';
   }
   var pc = row==='inh' ? 'X + Y &lt; &#8722;0.05' : 'X + Y &gt; +0.05';
   var cc = col==='con' ? '&#916;A<sub>c</sub>% &lt; &#8722;5' : '&#916;A<sub>c</sub>% &gt; +5';
