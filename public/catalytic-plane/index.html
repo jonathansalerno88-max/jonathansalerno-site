@@ -67,7 +67,22 @@ h1{font-family:var(--sans);font-weight:600;font-size:clamp(1.4rem,3.4vw,2rem);le
 .lede{color:var(--mut);max-width:62ch;margin:0}
 .lede a{color:var(--accent)}
 .eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 0 10px}
-header{border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:24px}
+/* wrap-reverse flips the cross axis, so flex-end is the visual top */
+header{display:flex;flex-wrap:wrap-reverse;align-items:flex-end;justify-content:space-between;
+  gap:16px 24px;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:24px}
+.hgroup{flex:1 1 420px;min-width:0}
+/* The way back. On a wide screen it sits beside the title; when the header wraps
+   it comes out above it, which is where a reader looks for it on a phone. */
+.home{flex:0 0 auto;display:inline-flex;align-items:center;gap:9px;
+  padding:11px 17px;border-radius:9px;background:var(--accent);color:#fff;
+  font-family:var(--sans);font-weight:600;font-size:13.5px;letter-spacing:.005em;
+  text-decoration:none;border:1px solid transparent;white-space:nowrap}
+.home:hover{filter:brightness(1.1)}
+.home:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.home svg{flex:0 0 auto;display:block}
+/* the dark palette's accent is a light blue, so the label goes dark on it */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .home{color:#0E151B}}
+:root[data-theme="dark"] .home{color:#0E151B}
 
 .card{background:var(--surface);border:1px solid var(--line);border-radius:10px}
 .pad{padding:18px}
@@ -124,7 +139,9 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 .warn2 p + p{margin-top:7px}
 
 /* ── three practical tools: pin & compare, paste a table, close the chain ── */
-.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:14px;margin-bottom:20px}
+/* min() so the 330px track collapses instead of pushing the page sideways
+   on a narrow phone */
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:14px;margin-bottom:20px}
 .tool{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
 .tool h3{margin:0 0 3px;font-size:13px;font-weight:600;color:var(--ink)}
 .tool .hint{margin:0 0 12px;font-size:11.5px;color:var(--mut);line-height:1.45}
@@ -235,9 +252,16 @@ code{font-family:var(--mono);font-size:.92em;background:var(--surface2);padding:
 
 <div class="wrap">
 <header>
+  <div class="hgroup">
   <p class="eyebrow">Enzyme modulation · normalised reading</p>
   <h1>Catalytic Plane Reader</h1>
   <p class="lede">Put in a native and a modulated Km–Vmax pair. The same displacement is drawn four ways at once — saturation curve, Lineweaver–Burk, the catalytic plane, the circle and triangle — and classified by the four-level scheme of <a href="https://doi.org/10.1016/j.dmpk.2026.101553" target="_blank" rel="noopener">Salerno 2026</a>.</p>
+  </div>
+  <a class="home" href="https://jonathansalerno.org/">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+         stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M13 8H3"/><path d="M7 4 3 8l4 4"/>
+    </svg>jonathansalerno.org</a>
 </header>
 
 <div class="ctl">
