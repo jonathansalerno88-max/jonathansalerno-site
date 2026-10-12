@@ -749,6 +749,16 @@ function panelPlane(d){
     seen.push({x:lx,y:ly});
     o.push(tx(lx,ly,esc(q.name),q.col,9,'start','s'));
   });
+  /* The SAD's coordinates, always: a dashed drop to each axis with its value.
+     They are the two catheti of the triangle in the last panel, drawn here as a
+     position instead of as lengths. Left out once states are pinned. */
+  if(!cmp){
+    var sxp=px(d.K), syp=py(d.V);
+    o.push(ln(sxp,syp,sxp,py(0),col,1.2,'4 3'));
+    o.push(ln(sxp,syp,px(0),syp,col,1.2,'4 3'));
+    o.push(tx(sxp+5,py(0)-6,'K&#x303;m = '+nf(d.K,2),col,10,'start','s'));
+    o.push(tx(px(0)+5,syp-5,'V&#x303;max = '+nf(d.V,2),col,10,'start','s'));
+  }
   o.push(ring(px(1),py(1),NAT,4.4));
   o.push(tx(px(1)-8,py(1)-9,'native',NAT,9.5,'end'));
   o.push(dot(px(d.K),py(d.V),col,5.6));
