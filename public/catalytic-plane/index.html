@@ -1061,7 +1061,9 @@ function kiBlock(d){
   else if(!isFinite(d.Ki)) arche='uncompetitive — no term on the free enzyme, so the point sits on the isoclearance line';
   else if(ratio>0.5 && ratio<2) arche='non-competitive — the two constants are close';
   else arche = 'mixed — both finite and different, K<sub>i</sub>&prime; / K<sub>i</sub> = '+nf(ratio,2);
-  return '<p class="eyebrow" style="margin:0 0 9px">Inverted at [I] = '+nf(F.I,2)+' µM</p>'+
+  /* the eyebrow is set in capitals, and a capital micro sign is a Greek capital mu,
+     which reads as M: the unit would have said mM. It keeps its own case. */
+  return '<p class="eyebrow" style="margin:0 0 9px">Inverted at [I] = '+nf(F.I,2)+' <span style="text-transform:none">µM</span></p>'+
     '<div class="kirow">'+
     '<div class="kibox"><div class="k"><i>K</i><sub>i</sub></div><div class="n">'+nf(d.Ki,1)+(isFinite(d.Ki)?' µM':'')+
       '</div><div class="d">on the free enzyme · from the ray slope</div></div>'+
