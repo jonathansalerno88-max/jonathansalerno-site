@@ -1,5 +1,13 @@
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
+/
+  Cache-Control: no-cache
+/catalytic-plane/*
+  Cache-Control: no-cache
+/calculators/*
+  Cache-Control: no-cache
+/bio/*
+  Cache-Control: no-cache
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
