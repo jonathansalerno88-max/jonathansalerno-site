@@ -762,7 +762,7 @@ function panelPlane(d){
      Ki' = [I]*Vmax~ / (1 - Vmax~)  : the height over the VERTICAL gap to Vmax~ = 1.
      A gap of zero is a constant of infinity — which is what the picture then shows. */
   if(kiShow(d) && !cmp){
-    o.push(tx(L+8,HL==='cl'?T+27:T+13,kiLine(d),ANN,10,'start','s'));
+    o.push(tx(L+8,T+13,kiLine(d),ANN,10,'start','s'));
     o.push(ln(px(0),py(1),px(M),py(1),ANN,1,'3 3'));
     var gapH = d.K - d.V, gapV = 1 - d.V;
     if(gapH > 1e-6){
@@ -829,17 +829,14 @@ function panelCircle(d){
      angle as the ray's on the plane. Screen y runs down, so from pi round to pi+phi. */
   if(HL==='cl' && PINS.length===0 && d.K>0 && d.V>0){
     var phr = d.phi*Math.PI/180, vx = px(d.K), vy = py(0), RED = 'var(--flag)';
-    var legPx = Math.min(px(d.K)-px(0), py(0)-py(d.V));
-    var AR = Math.max(14, Math.min(34, legPx*0.42));
+    /* sized on the hypotenuse, which the arc sweeps towards: sized on the shorter
+       leg it shrank to nothing on a flat triangle */
+    var hypPx = d.r/M*pw;
+    var AR = Math.max(22, Math.min(64, hypPx*0.33));
     o.push(angArc(vx,vy,Math.PI,Math.PI+phr,AR,RED,2.2));
     /* the label goes just under the axis, beneath its arc: inside the triangle it
        runs into the native circle */
     o.push(tx(vx - AR*0.55, vy + 15, '&#966; = '+nf(d.phi,1)+'&#176;', RED, 10.5, 'middle', 's'));
-  }
-  if(HL==='cl'){
-    /* U+2212, to match the minus in the formula rather than toFixed's hyphen */
-    o.push(tx(L+8,T+12,'hypotenuse slope = &#8722; V&#x303;max / K&#x303;m = &#8722; CLint ratio = &#8722;'+nf(d.cl,3),
-             shadeCol,10,'start','s'));
   }
 
   o.push(dot(px(d.K),py(d.V),shadeCol,5));
@@ -852,7 +849,7 @@ function panelCircle(d){
   /* Ki is in the tilt of the hypotenuse; Ki-prime is in the vertical leg
      measured against the native leg of 1. */
   if(kiShow(d)){
-    o.push(tx(L+8,HL==='cl'?T+27:T+13,kiLine(d),ANN,10,'start','s'));
+    o.push(tx(L+8,T+13,kiLine(d),ANN,10,'start','s'));
     /* native hypotenuse always drawn here, so the angle against it can be shown */
     o.push(poly([[px(1),py(0)],[px(0),py(1)]],ANN,1.2,'4 3'));
     (function(){
@@ -927,12 +924,13 @@ var KICAP = {
 function caption(k,d){
   var base = HL==='none' ? 'Dashed is native, solid is modulated.'
                          : NAMES[HL]+' is <b>'+CAPS[HL][k]+'</b>.';
-  /* on the plane the CLint caption is the whole chain, with this state's numbers:
-     first what the two tilded quantities are, then the ratio built from them */
-  if(HL==='cl' && k==='pl' && d){
+  /* on the plane and on the triangle the CLint caption is the whole chain, with
+     this state's numbers, from the definition down to the number. On the triangle
+     it is the tilt that equals the ratio: the slope itself is its negative, and
+     the legend keeps that sign. */
+  if(HL==='cl' && (k==='pl' || k==='ci') && d){
     var g = function(x){ return isFinite(x) ? String(+x.toFixed(3)) : '&#8734;'; };
-    /* one chain, from the definition down to the number */
-    base = '<b>CL<sub>int</sub> ratio = V&#x303;<sub>max</sub> / K&#x303;<sub>m</sub>'
+    base = '<b>' + (k==='ci' ? 'Hypotenuse tilt = ' : '') + 'CL<sub>int</sub> ratio = V&#x303;<sub>max</sub> / K&#x303;<sub>m</sub>'
          + ' = (V<sub>max,mod</sub> / V<sub>max,nat</sub>) / (K<sub>m,mod</sub> / K<sub>m,nat</sub>)'
          + ' = (' + g(F.vmM) + ' / ' + g(F.vmN) + ') / (' + g(F.kmM) + ' / ' + g(F.kmN) + ')'
          + ' = ' + nf(d.V,3) + ' / ' + nf(d.K,3)
