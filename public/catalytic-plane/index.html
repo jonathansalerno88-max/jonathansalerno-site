@@ -168,6 +168,11 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
   font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pinrow .x{margin-left:auto;border:0;background:none;color:var(--faint);cursor:pointer;padding:0 4px;font-size:14px;line-height:1}
 .pinrow .x:hover{color:var(--flag)}
+.pinrow[data-load]{cursor:pointer;border-radius:6px;padding-left:6px;padding-right:4px}
+.pinrow[data-load]:hover{background:var(--surface2)}
+.pinrow[data-load]:hover .nm{text-decoration:underline}
+.pinrow.on{background:var(--surface2);box-shadow:inset 3px 0 0 var(--accent)}
+.pinrow[data-load]:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .arms{display:grid;gap:7px;margin-top:11px}
 .arm{display:flex;align-items:baseline;gap:9px;padding:8px 10px;border-radius:7px;background:var(--surface2)}
 .arm.lead{background:color-mix(in srgb,var(--accent) 10%,var(--surface));border:1px solid var(--accent)}
@@ -1200,7 +1205,7 @@ function pinFrom(kmN,vmN,kmM,vmM,I,label){
   if(!(K>0&&V>0&&isFinite(K)&&isFinite(V))) return null;
   var dv=1/V-1, ds=K/V-1;
   PINSEQ++;
-  return {K:K, V:V, I:I, cl:V/K, r:Math.hypot(K,V),
+  return {K:K, V:V, I:I, cl:V/K, r:Math.hypot(K,V), raw:[kmN,vmN,kmM,vmM,I||0],
           Ki:  I>0 ? (ds>1e-9 ? I/ds : (ds<-1e-9?NaN:Infinity)) : null,
           Kip: I>0 ? (dv>1e-9 ? I/dv : (dv<-1e-9?NaN:Infinity)) : null,
           name: label || ('S'+PINSEQ),
@@ -1210,7 +1215,9 @@ function renderPins(){
   var box=document.getElementById('pinList');
   if(!PINS.length){ box.innerHTML='<p class="hint" style="margin:0">Nothing pinned yet.</p>'; return; }
   box.innerHTML = PINS.map(function(q,i){
-    return '<div class="pinrow"><span class="sw" style="background:'+q.col+'"></span>'+
+    var on = q.raw && q.raw[0]==F.kmN && q.raw[1]==F.vmN && q.raw[2]==F.kmM && q.raw[3]==F.vmM && q.raw[4]==F.I;
+    return '<div class="pinrow'+(on?' on':'')+'" role="button" tabindex="0" data-load="'+i+'" title="Load this state into the inputs">'+
+      '<span class="sw" style="background:'+q.col+'"></span>'+
       '<span class="nm">'+esc(q.name)+'</span>'+
       '<span class="vv">K&#x303;m '+nf(q.K,3)+' &#183; V&#x303;max '+nf(q.V,3)+
       ' &#183; CL ratio '+nf(q.cl,3)+' &#183; r '+nf(q.r,3)+
@@ -1414,9 +1421,22 @@ document.getElementById('pinBtn').addEventListener('click', function(){
 document.getElementById('pinClear').addEventListener('click', function(){
   PINS=[]; PINSEQ=0; render();
 });
+/* a pinned row loads its state back into the inputs; the cross still removes it */
+function loadPin(i){
+  var q=PINS[i]; if(!q || !q.raw) return;
+  loadPreset({v:q.raw});
+  Array.prototype.forEach.call(document.querySelectorAll('#presets button'),function(x){x.classList.remove('cur');});
+  SWITCHED=false; render();
+}
 document.getElementById('pinList').addEventListener('click', function(e){
-  var b=e.target.closest('button.x'); if(!b) return;
-  PINS.splice(+b.dataset.i,1); render();
+  var b=e.target.closest('button.x');
+  if(b){ PINS.splice(+b.dataset.i,1); render(); return; }
+  var r=e.target.closest('[data-load]'); if(r) loadPin(+r.dataset.load);
+});
+document.getElementById('pinList').addEventListener('keydown', function(e){
+  if(e.key!=='Enter' && e.key!==' ') return;
+  var r=e.target.closest('[data-load]'); if(!r || e.target.closest('button.x')) return;
+  e.preventDefault(); loadPin(+r.dataset.load);
 });
 document.getElementById('pasteBtn').addEventListener('click', function(){
   var r=parsePaste(document.getElementById('pasteBox').value);
