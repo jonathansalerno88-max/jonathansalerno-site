@@ -127,6 +127,15 @@ dl.ids dd{margin:0; color:var(--mut)}
 @media (max-width:26rem){dl.ids{font-size:.8125rem}}
 .links{margin:.6rem 0 0; font-size:.875rem; display:flex; flex-wrap:wrap; gap:.35rem 1.15rem}
 .links span.sep{display:none}
+/* the reader is the one thing on the page you can use, so it gets a capsule:
+   violet and gold, the colours it would carry on a book spine */
+a.pill{display:inline-flex; align-items:center; gap:.5rem; padding:.45rem 1rem .45rem .85rem;
+  border-radius:999px; background:#4A2A82; color:#F2C661; border:1px solid #C9A04A;
+  font-family:var(--sans); font-weight:600; font-size:.8125rem; letter-spacing:.01em;
+  box-shadow:0 1px 0 rgba(255,255,255,.06) inset, 0 2px 8px rgba(74,42,130,.22)}
+a.pill:hover{background:#5A3598; color:#FFD978; border-color:#E3BC5E}
+a.pill:focus-visible{outline:2px solid #C9A04A; outline-offset:3px; border-radius:999px}
+a.pill svg{flex:0 0 auto; display:block}
 
 .sec-note{margin:-.55rem 0 1.15rem; font-size:.8125rem; color:var(--faint)}
 ul.areas{list-style:none; margin:0; padding:0}
@@ -219,7 +228,7 @@ footer p{margin:0}
         <dt>Data</dt>
         <dd><a href="https://doi.org/10.5281/zenodo.20647762">10.5281/zenodo.20647762</a> on Zenodo</dd>
       </dl>
-      <p class="links"><a href="catalytic-plane/">Interactive reader</a></p>
+      <p class="links"><a class="pill" href="catalytic-plane/"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.5 2v11.5H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M2.5 13.5 10 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10.4" cy="5.6" r="1.9" fill="currentColor"/></svg>Interactive reader</a></p>
     </div>
   </section>
 
