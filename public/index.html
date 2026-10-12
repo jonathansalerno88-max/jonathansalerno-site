@@ -82,15 +82,17 @@ figure.plane svg{display:block; width:156px; height:156px}
 .ax{stroke:var(--axis); stroke-width:1}
 .iso{stroke:var(--axis); stroke-width:1; stroke-dasharray:3 4; opacity:.85}
 .ray{stroke:var(--mark); stroke-width:1.2}
+.nat-arc{fill:none; stroke:var(--axis); stroke-width:1; stroke-dasharray:3 4; opacity:.75}
+.arc{fill:none; stroke:var(--link); stroke-width:1.3; opacity:.72}
+.tri{fill:var(--mark); fill-opacity:.09; stroke:none}
+.hyp{stroke:var(--mark); stroke-width:1.1; opacity:.75}
 .pt-nat{fill:var(--link)}
 .pt-mod{fill:var(--mark)}
 .glyph{font-family:var(--serif); font-style:italic; font-size:11px; fill:var(--mut)}
 
 @media (prefers-reduced-motion:no-preference){
-  .ray{stroke-dasharray:120; stroke-dashoffset:120; animation:draw .62s cubic-bezier(.4,0,.2,1) .35s forwards}
-  .pt-mod{opacity:0; animation:pop .3s ease-out .92s forwards}
+  #live{opacity:0; animation:pop .55s ease-out .3s forwards}
 }
-@keyframes draw{to{stroke-dashoffset:0}}
 @keyframes pop{to{opacity:1}}
 
 /* ── prose ──────────────────────────────── */
@@ -159,14 +161,26 @@ footer p{margin:0}
     </div>
 
     <figure class="plane" aria-hidden="true">
-      <svg viewBox="0 0 200 200" role="img">
+      <svg id="plane" viewBox="0 0 200 200" role="img">
         <line class="ax" x1="25" y1="175" x2="181" y2="175"/>
         <line class="ax" x1="25" y1="175" x2="25" y2="19"/>
         <line class="iso" x1="25" y1="175" x2="175" y2="25"/>
-        <line class="ray" x1="25" y1="175" x2="90.6" y2="78.3"/>
-        <circle cx="100" cy="100" r="6.4" fill="none" stroke="var(--link)" stroke-width="1" opacity=".42"/>
+
+        <!-- the native circle, r = √2 through (1,1): the modulated one is read
+             against it, so expansion and contraction are visible at a glance -->
+        <path class="nat-arc" d="M131.07,175 A106.07,106.07 0 0 0 25,68.93"/>
+
+        <!-- the catalytic triangle: right angle at the origin, legs K&#771;m and V&#771;max,
+             hypotenuse tilted by the clearance ratio -->
+        <g id="live">
+          <path id="tri" class="tri" d="M25,175 L90.6,175 L25,78.3 Z"/>
+          <line id="hyp" class="hyp" x1="90.6" y1="175" x2="25" y2="78.3"/>
+          <!-- the circle: radius r = the distance from the origin to the SAD -->
+          <path id="arc" class="arc" d="M141.8,175 A116.8,116.8 0 0 0 25,58.2"/>
+          <line id="ray" class="ray" x1="25" y1="175" x2="90.6" y2="78.3"/>
+          <circle id="sad" class="pt-mod" cx="90.6" cy="78.3" r="3.6"/>
+        </g>
         <circle class="pt-nat" cx="100" cy="100" r="3.1"/>
-        <circle class="pt-mod" cx="90.6" cy="78.3" r="3.6"/>
         <text class="glyph" x="178" y="190" text-anchor="end">K&#771;<tspan dy="2" font-size="8">m</tspan></text>
         <text class="glyph" transform="translate(13,22) rotate(-90)" text-anchor="end">V&#771;<tspan dy="2" font-size="8">max</tspan></text>
       </svg>
@@ -266,5 +280,57 @@ footer p{margin:0}
   </footer>
 
 </div>
+<script>
+/* The catalytic plane, animated. Everything is drawn from one pair of
+   normalised coordinates: K̃m on x, Ṽmax on y, the native state at (1, 1).
+
+     the SAD        the modulated pair itself, (K̃m, Ṽmax)
+     the ray        origin to SAD; its slope is the clearance ratio
+     the circle     radius r = |origin → SAD|, how far the state has moved
+     the triangle   right angle at the origin, legs K̃m and Ṽmax; the
+                    hypotenuse is the same length r, tilted by the same ratio
+
+   So the three are one object seen three ways, and they can only move together. */
+(function(){
+  var sad = document.getElementById('sad');
+  if (!sad) return;
+  var OX = 25, OY = 175, S = 75;
+  var arc = document.getElementById('arc'), tri = document.getElementById('tri'),
+      hyp = document.getElementById('hyp'), ray = document.getElementById('ray');
+
+  function draw(K, V){
+    var x = OX + S*K, y = OY - S*V, R = S*Math.sqrt(K*K + V*V);
+    /* sweep 0: the quarter that bulges through the 45° diagonal */
+    arc.setAttribute('d', 'M' + (OX+R).toFixed(1) + ',' + OY + ' A' + R.toFixed(1) + ','
+      + R.toFixed(1) + ' 0 0 0 ' + OX + ',' + (OY-R).toFixed(1));
+    tri.setAttribute('d', 'M' + OX + ',' + OY + ' L' + x.toFixed(1) + ',' + OY
+      + ' L' + OX + ',' + y.toFixed(1) + ' Z');
+    hyp.setAttribute('x1', x.toFixed(1)); hyp.setAttribute('y1', OY);
+    hyp.setAttribute('x2', OX);           hyp.setAttribute('y2', y.toFixed(1));
+    ray.setAttribute('x2', x.toFixed(1)); ray.setAttribute('y2', y.toFixed(1));
+    sad.setAttribute('cx', x.toFixed(1)); sad.setAttribute('cy', y.toFixed(1));
+  }
+
+  /* Km̃ and Vmax̃ of five readings: the published example, a competitive
+     displacement, a non-competitive one, an activation, and a pair that grows
+     on both axes and so barely leaves the isoclearance diagonal. */
+  var STATES = [[0.875,1.289],[1.62,1.00],[1.00,0.62],[0.70,1.34],[1.30,1.32]];
+  draw(STATES[0][0], STATES[0][1]);
+  var mq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (mq && mq.matches) return;
+
+  var HOLD = 1300, MOVE = 1700, STEP = HOLD + MOVE, t0 = null;
+  function frame(t){
+    if (t0 === null) t0 = t;
+    var e = (t - t0) % (STEP * STATES.length);
+    var i = Math.floor(e / STEP), u = (e % STEP - HOLD) / MOVE;
+    u = u <= 0 ? 0 : u >= 1 ? 1 : u*u*(3 - 2*u);   /* smoothstep: no jolt at either end */
+    var a = STATES[i], b = STATES[(i + 1) % STATES.length];
+    draw(a[0] + (b[0]-a[0])*u, a[1] + (b[1]-a[1])*u);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
 </body>
 </html>
