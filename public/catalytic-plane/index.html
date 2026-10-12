@@ -235,6 +235,9 @@ tr:last-child th,tr:last-child td{border-bottom:0}
 .cell{border:1px solid var(--line);border-radius:7px;padding:9px 10px;background:var(--surface2);min-width:0}
 .cell .t{font-size:11.5px;font-weight:600;line-height:1.25;margin-bottom:3px}
 .cell .x{font-size:10px;color:var(--mut);line-height:1.35}
+.cell .p{font-size:10px;color:var(--ink);line-height:1.35;margin-top:5px;padding-top:5px;
+  border-top:1px dashed var(--line)}
+.g22n{margin:8px 0 0;font-size:10.5px;color:var(--mut);line-height:1.4}
 .cell.on{border-color:var(--accent);border-width:1.5px;background:color-mix(in srgb,var(--accent) 11%,var(--surface));
   box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 16%,transparent)}
 .cell.on .t{color:var(--accent)}
@@ -1015,10 +1018,14 @@ function rows(d){
 /* Polarity against the circle, with the dominance each pairing implies.
    The same column reverses meaning between the two rows. */
 var CELLS = {
-  'act-con':{s:'Restricted', d:'K-dominant', x:'Activation carried mainly by the fall in Km.'},
-  'act-exp':{s:'Enlarged',   d:'V-dominant', x:'Activation carried mainly by the rise in Vmax.'},
-  'inh-con':{s:'Restricted', d:'V-dominant', x:'Inhibition carried mainly by the fall in Vmax.'},
-  'inh-exp':{s:'Enlarged',   d:'K-dominant', x:'Inhibition carried mainly by the rise in Km.'}
+  'act-con':{s:'Restricted', d:'K-dominant', x:'Activation carried mainly by the fall in Km.',
+             p:'The gain is largest at low substrate and shrinks as the substrate rises towards the plateau.'},
+  'act-exp':{s:'Enlarged',   d:'V-dominant', x:'Activation carried mainly by the rise in Vmax.',
+             p:'The gain holds at high substrate: what rose is the plateau itself.'},
+  'inh-con':{s:'Restricted', d:'V-dominant', x:'Inhibition carried mainly by the fall in Vmax.',
+             p:'Raising the substrate does not undo it: what fell is the plateau itself.'},
+  'inh-exp':{s:'Enlarged',   d:'K-dominant', x:'Inhibition carried mainly by the rise in Km.',
+             p:'Raising the substrate wears it down: the two curves draw together towards the plateau.'}
 };
 function grid22(d){
   var row = d.pol==='Activation' ? 'act' : d.pol==='Inhibition' ? 'inh' : null;
@@ -1029,7 +1036,8 @@ function grid22(d){
     var dc = c.d==='V-dominant' ? 'var(--accent)' : 'var(--kdom)';
     return '<div class="cell'+(key===live?' on':'')+'">'+
       '<div class="t">'+c.s+'<br><span style="color:'+dc+'">'+c.d+'</span></div>'+
-      '<div class="x">'+c.x+'</div></div>';
+      '<div class="x">'+c.x+'</div>'+
+      '<div class="p">'+c.p+'</div></div>';
   }
   var pc = row==='inh' ? 'X + Y &lt; &#8722;0.05' : 'X + Y &gt; +0.05';
   var cc = col==='con' ? '&#916;A<sub>c</sub>% &lt; &#8722;5' : '&#916;A<sub>c</sub>% &gt; +5';
@@ -1047,6 +1055,8 @@ function grid22(d){
     rhInh+cell('inh-con')+cell('inh-exp')+
     rhAct+cell('act-con')+cell('act-exp')+
   '</div>'+
+  '<p class="g22n">At low substrate, where most drugs sit in vivo, only the CL<sub>int</sub> ratio counts; '+
+  'dominance says what happens to the effect as the substrate rises.</p>'+
   '<p class="idn">'+note+'</p>';
 }
 
