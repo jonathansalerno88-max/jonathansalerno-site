@@ -705,7 +705,6 @@ function panelPlane(d){
   if(HL==='cl'){
     /* the plane's axes are the ratios, so the tildes belong here: without them this
        would read as the absolute CLint, not the CLint ratio */
-    o.push(tx(L+8,T+12,'CLint ratio = tan &#966; = tan '+nf(d.phi,1)+'&#176; = '+nf(d.cl,3),col,10.5,'start','s'));
     /* phi in red at the origin: the angle the ray makes with the K-axis. Scales are
        equal, so the arc on screen is the true angle; screen y runs down, hence -phi. */
     if(!cmp){
@@ -916,6 +915,10 @@ var KICAP = {
 function caption(k,d){
   var base = HL==='none' ? 'Dashed is native, solid is modulated.'
                          : NAMES[HL]+' is <b>'+CAPS[HL][k]+'</b>.';
+  /* on the plane the CLint caption is the whole chain, with this state's numbers */
+  if(HL==='cl' && k==='pl' && d)
+    base = '<b>CL<sub>int</sub> ratio = V&#x303;<sub>max</sub> / K&#x303;<sub>m</sub> = tan &#966; = tan '
+         + nf(d.phi,1) + '&#176; = ' + nf(d.cl,3) + '</b>';
   if(KI && F.I > 0 && d && !isNaN(d.Ki) && !isNaN(d.Kip))
     base += '<br><span style="color:var(--iso)">'+KICAP[k]+'</span>';
   return base;
