@@ -219,6 +219,10 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 .kbtns button[aria-pressed="true"]{background:var(--iso);color:var(--surface)}
 .kbtns button:focus-visible{outline:2px solid var(--iso);outline-offset:2px}
 .kout:empty{display:none}
+.aucf{margin-top:10px}
+.aucf summary{cursor:pointer;font-size:12.5px;font-weight:600;color:var(--iso)}
+.aucf[open] summary{margin-bottom:8px}
+.aucf .kstep{margin-bottom:7px}
 .kout{margin-top:8px;display:grid;gap:7px}
 .kstep{font-size:11.5px;line-height:1.5;color:var(--ink);background:var(--surface2);border-radius:7px;padding:8px 10px;overflow-wrap:anywhere}
 .kstep .h{font-weight:600;color:var(--iso);display:block;margin-bottom:2px}
@@ -1256,7 +1260,37 @@ function renderAucr(d){
   '<p class="spread">The single-constant answer is not one number but a range, '+
   '<b>'+nf(lo,2)+'</b> to <b>'+nf(hi,2)+'</b> &#8212; a spread of <b>'+nf(hi/lo,2)+'&#215;</b>, '+
   'decided by an assumption rather than a measurement. Which of the three is closest to the clinic '+
-  'is exactly what a validation study would have to settle.</p>';
+  'is exactly what a validation study would have to settle.</p>'+aucrFormula(fm,Fg,Ih,Ig,d,A);
+}
+/* the worked formula, behind a toggle that survives re-rendering */
+var AUF = false;
+function aucrFormula(fm,Fg,Ih,Ig,d,A){
+  var g=function(x){ return isFinite(x) ? String(+x.toFixed(3)) : '&#8734;'; };
+  var kt=function(K){ return isFinite(K) ? g(K) : '&#8734;'; };
+  var Ah=A(Ih,d.Ki), AgP=A(Ig,d.Kip), AgN=A(Ig,d.Ki);
+  var liv=1/(fm*Ah+1-fm);
+  function gut(Ag){ return 1/(Fg+(1-Fg)*Ag); }
+  function arm(title, agTxt, Ag){
+    var G=gut(Ag);
+    return '<div class="kstep"><span class="h">'+title+'</span>'+
+      agTxt+'<br>'+
+      'gut = 1 / ('+g(Fg)+' + '+g(1-Fg)+'&#183;'+g(Ag)+') = '+g(G)+'<br>'+
+      'AUCR = '+g(G)+' &#215; '+g(liv)+' = <span class="r">'+nf(G*liv,2)+'</span></div>';
+  }
+  return '<details class="aucf"'+(AUF?' open':'')+' ontoggle="AUF=this.open">'+
+    '<summary>Show formula</summary>'+
+    '<div class="kstep"><span class="h">The model</span>'+
+    'AUCR = <b>gut</b> &#215; <b>liver</b><br>'+
+    'gut = 1 / (F<sub>g</sub> + (1 &#8722; F<sub>g</sub>)&#183;A<sub>g</sub>) &#160;&#160; liver = 1 / (f<sub>m</sub>&#183;A<sub>h</sub> + 1 &#8722; f<sub>m</sub>)<br>'+
+    'A = 1 / (1 + [I]/K): the fraction of enzyme activity left in that organ<br>'+
+    '<span class="w">F<sub>g</sub>: fraction of the oral dose that escapes the gut wall &#183; f<sub>m</sub>: fraction of the drug cleared by this enzyme &#183; A<sub>h</sub> in the liver is the CL<sub>int</sub> ratio at low [S]</span></div>'+
+    '<div class="kstep"><span class="h">Liver (same in all three)</span>'+
+    'A<sub>h</sub> = 1 / (1 + [I]<sub>liver</sub>/K<sub>i</sub>) = 1 / (1 + '+g(Ih)+'/'+kt(d.Ki)+') = '+g(Ah)+'<br>'+
+    'liver = 1 / ('+g(fm)+'&#183;'+g(Ah)+' + '+g(1-fm)+') = '+g(liv)+'</div>'+
+    arm('With the measured pair', 'A<sub>g</sub> from K<sub>i</sub>&prime;: 1 / (1 + '+g(Ig)+'/'+kt(d.Kip)+') = '+g(AgP), AgP)+
+    arm('Assuming competitive', 'no gut term: A<sub>g</sub> = 1', 1)+
+    arm('Assuming non-competitive', 'A<sub>g</sub> from K<sub>i</sub>: 1 / (1 + '+g(Ig)+'/'+kt(d.Ki)+') = '+g(AgN), AgN)+
+    '</details>';
 }
 
 /* ══════════════ paste a table ══════════════ */
