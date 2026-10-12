@@ -919,13 +919,12 @@ function caption(k,d){
      first what the two tilded quantities are, then the ratio built from them */
   if(HL==='cl' && k==='pl' && d){
     var g = function(x){ return isFinite(x) ? String(+x.toFixed(3)) : '&#8734;'; };
-    base = 'V&#x303;<sub>max</sub> = V<sub>max,mod</sub> / V<sub>max,nat</sub> = '
-         + g(F.vmM) + ' / ' + g(F.vmN) + ' = ' + nf(d.V,3)
-         + ' &#160;&#183;&#160; K&#x303;<sub>m</sub> = K<sub>m,mod</sub> / K<sub>m,nat</sub> = '
-         + g(F.kmM) + ' / ' + g(F.kmN) + ' = ' + nf(d.K,3)
-         + '<br><b>CL<sub>int</sub> ratio = V&#x303;<sub>max</sub> / K&#x303;<sub>m</sub> = '
-         + nf(d.V,3) + ' / ' + nf(d.K,3) + ' = tan &#966; = tan '
-         + nf(d.phi,1) + '&#176; = ' + nf(d.cl,3) + '</b>';
+    /* one chain, from the definition down to the number */
+    base = '<b>CL<sub>int</sub> ratio = V&#x303;<sub>max</sub> / K&#x303;<sub>m</sub>'
+         + ' = (V<sub>max,mod</sub> / V<sub>max,nat</sub>) / (K<sub>m,mod</sub> / K<sub>m,nat</sub>)'
+         + ' = (' + g(F.vmM) + ' / ' + g(F.vmN) + ') / (' + g(F.kmM) + ' / ' + g(F.kmN) + ')'
+         + ' = ' + nf(d.V,3) + ' / ' + nf(d.K,3)
+         + ' = tan &#966; = tan ' + nf(d.phi,1) + '&#176; = ' + nf(d.cl,3) + '</b>';
   }
   if(KI && F.I > 0 && d && !isNaN(d.Ki) && !isNaN(d.Kip))
     base += '<br><span style="color:var(--iso)">'+KICAP[k]+'</span>';
