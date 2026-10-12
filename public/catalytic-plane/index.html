@@ -705,7 +705,7 @@ function panelPlane(d){
   if(HL==='cl'){
     /* the plane's axes are the ratios, so the tildes belong here: without them this
        would read as the absolute CLint, not the CLint ratio */
-    o.push(tx(L+8,T+12,'slope = tan &#966; = V&#x303;max / K&#x303;m = CLint ratio = '+nf(d.cl,3),col,10.5,'start','s'));
+    o.push(tx(L+8,T+12,'CLint ratio = tan &#966; = tan '+nf(d.phi,1)+'&#176; = '+nf(d.cl,3),col,10.5,'start','s'));
     /* phi in red at the origin: the angle the ray makes with the K-axis. Scales are
        equal, so the arc on screen is the true angle; screen y runs down, hence -phi. */
     if(!cmp){
