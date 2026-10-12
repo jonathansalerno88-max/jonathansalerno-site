@@ -848,6 +848,8 @@ function panelCircle(d){
   }
 
   o.push(dot(px(d.K),py(d.V),shadeCol,5));
+  /* the same point as on the plane, so the same name: it sits on the circle at angle phi */
+  o.push(tx(px(d.K)+9,py(d.V)-8,'SAD',shadeCol,11,'start','s'));
   /* beside the hypotenuse, whose length is this same r: pushed straight out from
      the origin past the midpoint of that segment */
   var mx=(px(d.K)+px(0))/2, my=(py(0)+py(d.V))/2;
@@ -1177,14 +1179,28 @@ Object.keys(IDS).forEach(function(k){
   });
 });
 
+/* Data entry shows at least two decimals: 10 reads 10.00. More are kept as typed
+   (3.012 stays 3.012). Applied when a field is left, never while typing. */
+function fmt2(v){
+  var t = String(v).trim();
+  if(t === '' || /e/i.test(t) || !isFinite(Number(t))) return t;
+  var dec = (t.split('.')[1] || '').length;
+  return Number(t).toFixed(Math.max(2, dec));
+}
+function tidy(el){ el.value = fmt2(el.value); }
+
 function loadPreset(p){
   F.kmN=p.v[0]; F.vmN=p.v[1]; F.kmM=p.v[2]; F.vmM=p.v[3]; F.I=p.v[4];
-  document.getElementById('kmN').value=p.v[0];
-  document.getElementById('vmN').value=p.v[1];
-  document.getElementById('kmM').value=p.v[2];
-  document.getElementById('vmM').value=p.v[3];
-  document.getElementById('conc').value=p.v[4];
+  document.getElementById('kmN').value=fmt2(p.v[0]);
+  document.getElementById('vmN').value=fmt2(p.v[1]);
+  document.getElementById('kmM').value=fmt2(p.v[2]);
+  document.getElementById('vmM').value=fmt2(p.v[3]);
+  document.getElementById('conc').value=fmt2(p.v[4]);
 }
+Array.prototype.forEach.call(document.querySelectorAll('input[type=number]'), function(el){
+  tidy(el);
+  el.addEventListener('change', function(){ tidy(el); });
+});
 
 var pbox = document.getElementById('presets');
 PRESETS.forEach(function(p){
