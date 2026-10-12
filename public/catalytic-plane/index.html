@@ -219,7 +219,7 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 .kbtns button[aria-pressed="true"]{background:var(--iso);color:var(--surface)}
 .kbtns button:focus-visible{outline:2px solid var(--iso);outline-offset:2px}
 .kout:empty{display:none}
-.aucf{margin-top:10px}
+.aucf{margin:2px 0 10px}
 .aucf summary{cursor:pointer;font-size:12.5px;font-weight:600;color:var(--iso)}
 .aucf[open] summary{margin-bottom:8px}
 .aucf .kstep{margin-bottom:7px}
@@ -1239,8 +1239,9 @@ function num(id,dflt){ var v=parseFloat(document.getElementById(id).value); retu
 function renderAucr(d){
   var box=document.getElementById('aucrOut');
   if(F.I<=0 || d.Ki===null || isNaN(d.Ki) || isNaN(d.Kip)){
-    box.innerHTML='<p class="hint" style="margin:0">Needs an inhibition with a stated [I]. '+
-      'Load Competitive, Non-competitive or Mixed.</p>'; return;
+    box.innerHTML=aucrFormula(null)+'<p class="hint" style="margin:0">The numbers need an inhibition with a stated [I]: '+
+      'enter [I] in the inputs at the top (it is the concentration used to invert K<sub>i</sub> and K<sub>i</sub>&prime;), '+
+      'or load Competitive, Non-competitive or Mixed.</p>'; return;
   }
   var fm=num('fmIn',0.9), Fg=num('fgIn',0.5), Ih=num('ihIn',10), Ig=num('igIn',50);
   var A=function(I,K){ return isFinite(K) ? 1/(1+I/K) : 1; };
@@ -1253,18 +1254,26 @@ function renderAucr(d){
      v:aucr(fm,Fg,A(Ih,d.Ki),A(Ig,d.Ki))}
   ];
   var vs=arms.map(function(a){return a.v;}), lo=Math.min.apply(null,vs), hi=Math.max.apply(null,vs);
-  box.innerHTML='<div class="arms">'+arms.map(function(a){
+  box.innerHTML=aucrFormula(fm,Fg,Ih,Ig,d,A)+'<div class="arms">'+arms.map(function(a){
     return '<div class="arm'+(a.lead?' lead':'')+'"><div class="lbl"><b>'+a.n+'</b>'+a.s+'</div>'+
            '<div class="num">'+nf(a.v,2)+'</div></div>';
   }).join('')+'</div>'+
   '<p class="spread">The single-constant answer is not one number but a range, '+
   '<b>'+nf(lo,2)+'</b> to <b>'+nf(hi,2)+'</b> &#8212; a spread of <b>'+nf(hi/lo,2)+'&#215;</b>, '+
   'decided by an assumption rather than a measurement. Which of the three is closest to the clinic '+
-  'is exactly what a validation study would have to settle.</p>'+aucrFormula(fm,Fg,Ih,Ig,d,A);
+  'is exactly what a validation study would have to settle.</p>';
 }
 /* the worked formula, behind a toggle that survives re-rendering */
 var AUF = false;
 function aucrFormula(fm,Fg,Ih,Ig,d,A){
+  var MODEL = '<div class="kstep"><span class="h">The model</span>'+
+    'AUCR = <b>gut</b> &#215; <b>liver</b><br>'+
+    'gut = 1 / (F<sub>g</sub> + (1 &#8722; F<sub>g</sub>)&#183;A<sub>g</sub>) &#160;&#160; liver = 1 / (f<sub>m</sub>&#183;A<sub>h</sub> + 1 &#8722; f<sub>m</sub>)<br>'+
+    'A<sub>h</sub> = 1 / (1 + [I]<sub>liver</sub>/K<sub>i</sub>) &#160;&#160; A<sub>g</sub> = 1 / (1 + [I]<sub>gut</sub>/K<sub>i</sub>&prime;)<br>'+
+    '<span class="w">A: the fraction of enzyme activity left in that organ (A<sub>h</sub> is the CL<sub>int</sub> ratio at low [S]) &#183; '+
+    'F<sub>g</sub>: fraction of the oral dose that escapes the gut wall &#183; f<sub>m</sub>: fraction of the drug cleared by this enzyme &#183; '+
+    '[I]<sub>liver</sub>, [I]<sub>gut</sub>: inhibitor concentration at each organ (not the [I] used above to invert the constants)</span></div>';
+  if(fm===null) return '<details class="aucf"'+(AUF?' open':'')+' ontoggle="AUF=this.open"><summary>Show formula</summary>'+MODEL+'</details>';
   var g=function(x){ return isFinite(x) ? String(+x.toFixed(3)) : '&#8734;'; };
   var kt=function(K){ return isFinite(K) ? g(K) : '&#8734;'; };
   var Ah=A(Ih,d.Ki), AgP=A(Ig,d.Kip), AgN=A(Ig,d.Ki);
@@ -1278,12 +1287,7 @@ function aucrFormula(fm,Fg,Ih,Ig,d,A){
       'AUCR = '+g(G)+' &#215; '+g(liv)+' = <span class="r">'+nf(G*liv,2)+'</span></div>';
   }
   return '<details class="aucf"'+(AUF?' open':'')+' ontoggle="AUF=this.open">'+
-    '<summary>Show formula</summary>'+
-    '<div class="kstep"><span class="h">The model</span>'+
-    'AUCR = <b>gut</b> &#215; <b>liver</b><br>'+
-    'gut = 1 / (F<sub>g</sub> + (1 &#8722; F<sub>g</sub>)&#183;A<sub>g</sub>) &#160;&#160; liver = 1 / (f<sub>m</sub>&#183;A<sub>h</sub> + 1 &#8722; f<sub>m</sub>)<br>'+
-    'A = 1 / (1 + [I]/K): the fraction of enzyme activity left in that organ<br>'+
-    '<span class="w">F<sub>g</sub>: fraction of the oral dose that escapes the gut wall &#183; f<sub>m</sub>: fraction of the drug cleared by this enzyme &#183; A<sub>h</sub> in the liver is the CL<sub>int</sub> ratio at low [S]</span></div>'+
+    '<summary>Show formula</summary>'+MODEL+
     '<div class="kstep"><span class="h">Liver (same in all three)</span>'+
     'A<sub>h</sub> = 1 / (1 + [I]<sub>liver</sub>/K<sub>i</sub>) = 1 / (1 + '+g(Ih)+'/'+kt(d.Ki)+') = '+g(Ah)+'<br>'+
     'liver = 1 / ('+g(fm)+'&#183;'+g(Ah)+' + '+g(1-fm)+') = '+g(liv)+'</div>'+
