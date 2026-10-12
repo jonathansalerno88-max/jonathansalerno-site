@@ -382,9 +382,7 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
 
   <div class="tool">
     <h3>Carry it to the AUC ratio</h3>
-    <p class="hint">What the second constant is worth, in the currency the clinic uses. The same
-    state predicted three ways &#8212; with the measured pair, and with the two mechanisms a single
-    constant would have forced you to assume.</p>
+    <p class="hint">From K<sub>i</sub> and K<sub>i</sub>&prime; to how many times exposure to the victim drug rises.</p>
     <div class="mini">
       <div><label for="fmIn">f<sub>m</sub></label><input type="number" id="fmIn" step="any" min="0" max="1" value="0.9"></div>
       <div><label for="fgIn">F<sub>g</sub></label><input type="number" id="fgIn" step="any" min="0" max="1" value="0.5"></div>
@@ -1259,14 +1257,7 @@ function renderAucr(d){
      v:aucr(fm,Fg,A(Ih,d.Ki),A(Ig,d.Ki))}
   ];
   var vs=arms.map(function(a){return a.v;}), lo=Math.min.apply(null,vs), hi=Math.max.apply(null,vs);
-  box.innerHTML=aucrFormula(fm,Fg,Ih,Ig,d,A)+'<div class="arms">'+arms.map(function(a){
-    return '<div class="arm'+(a.lead?' lead':'')+'"><div class="lbl"><b>'+a.n+'</b>'+a.s+'</div>'+
-           '<div class="num">'+nf(a.v,2)+'</div></div>';
-  }).join('')+'</div>'+
-  '<p class="spread">The single-constant answer is not one number but a range, '+
-  '<b>'+nf(lo,2)+'</b> to <b>'+nf(hi,2)+'</b> &#8212; a spread of <b>'+nf(hi/lo,2)+'&#215;</b>, '+
-  'decided by an assumption rather than a measurement. Which of the three is closest to the clinic '+
-  'is exactly what a validation study would have to settle.</p>';
+  box.innerHTML=aucrFormula(fm,Fg,Ih,Ig,d,A);
 }
 /* the worked formula, behind a toggle that survives re-rendering */
 var AUF = true;
