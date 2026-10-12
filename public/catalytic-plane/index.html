@@ -833,12 +833,12 @@ function panelCircle(d){
      ray on the plane; the Lineweaver&#8211;Burk slope is the reciprocal instead. */
   o.push(poly([[px(d.K),py(0)],[px(0),py(d.V)]],shadeCol,HL==='cl'?3:1.8));
   /* phi again, in the same red as on the plane: the triangle's angle at (K~m, 0),
-     between the hypotenuse and the K~m leg. tan of it is V~max / K~m, the same
+     between the hypotenuse and the K~m cathetus. tan of it is V~max / K~m, the same
      angle as the ray's on the plane. Screen y runs down, so from pi round to pi+phi. */
   if(HL==='cl' && PINS.length===0 && d.K>0 && d.V>0){
     var phr = d.phi*Math.PI/180, vx = px(d.K), vy = py(0), RED = 'var(--flag)';
     /* sized on the hypotenuse, which the arc sweeps towards: sized on the shorter
-       leg it shrank to nothing on a flat triangle */
+       cathetus it shrank to nothing on a flat triangle */
     var hypPx = d.r/M*pw;
     var AR = Math.max(22, Math.min(64, hypPx*0.33));
     o.push(angArc(vx,vy,Math.PI,Math.PI+phr,AR,RED,2.2));
@@ -856,8 +856,8 @@ function panelCircle(d){
   var ox=mx-px(0), oy=my-py(0), ol=Math.hypot(ox,oy) || 1;
   o.push(tx(mx+ox/ol*22,my+oy/ol*22+4,'r = hypotenuse length = '+nf(d.r,3),shadeCol,9.5,'start','s'));
 
-  /* Ki is in the tilt of the hypotenuse; Ki-prime is in the vertical leg
-     measured against the native leg of 1. */
+  /* Ki is in the tilt of the hypotenuse; Ki-prime is in the vertical cathetus
+     measured against the native cathetus of 1. */
   if(kiShow(d)){
     o.push(tx(L+8,T+13,kiLine(d),ANN,10,'start','s'));
     /* native hypotenuse drawn here as the 45 degree reference that phi is read against */
@@ -869,11 +869,16 @@ function panelCircle(d){
     }
   }
   if(LAB){
-    o.push(tx(px(d.K/2),py(0)-7,'leg = K&#x303;m',TXT,9.5,'middle','s'));
-    /* high on the leg: at half height it ran into the "same CLint" marker */
-    o.push(tx(px(0)+7,py(d.V*0.72),'leg = V&#x303;max',TXT,9.5,'start','s'));
-    o.push(tx(px(M)-4,py(M)-24,'radius = hypotenuse length',TXT,9.5,'end','s'));
-    o.push(tx(px(M)-4,py(M)-10,'shaded band = change in circle area',TXT,9.5,'end','s'));
+    /* The horizontal cathetus is labelled along the axis from the origin, where the
+       native hypotenuse is still far above; the vertical one outside its axis,
+       turned to run along it. Inside the triangle both crossed the hypotenuses. */
+    o.push(tx(px(0)+6,py(0)-6,'cathetus = K&#x303;m',TXT,9.5,'start','s'));
+    o.push('<text transform="translate('+(px(0)-8).toFixed(1)+','+py(d.V/2).toFixed(1)+') rotate(-90)"'
+         + ' fill="'+TXT+'" font-size="9.5" text-anchor="middle" font-family="var(--serif)"'
+         + ' font-style="italic">cathetus = V&#x303;max</text>');
+    /* the radius already carries its own label on the hypotenuse; the band's goes
+       inside the plot, below the Ki line when that is shown (above T it was cut off) */
+    o.push(tx(px(M)-4,kiShow(d)?T+28:T+13,'shaded band = change in circle area',TXT,9.5,'end','s'));
   }
   o.push(ln(px(0),py(0),px(M),py(0),AX,1.4));
   o.push(ln(px(0),py(0),px(0),py(M),AX,1.4));
@@ -884,8 +889,8 @@ function panelCircle(d){
 
 /* ══════════════ captions ══════════════ */
 var CAPS = {
-  km:{sat:'the abscissa at half the plateau',            lb:'the x-intercept, &#8722;1 / Km',        pl:'the horizontal coordinate',             ci:'the horizontal leg'},
-  vm:{sat:'the plateau the curve approaches',            lb:'the y-intercept, 1 / Vmax',            pl:'the vertical coordinate',               ci:'the vertical leg'},
+  km:{sat:'the abscissa at half the plateau',            lb:'the x-intercept, &#8722;1 / Km',        pl:'the horizontal coordinate',             ci:'the horizontal cathetus'},
+  vm:{sat:'the plateau the curve approaches',            lb:'the y-intercept, 1 / Vmax',            pl:'the vertical coordinate',               ci:'the vertical cathetus'},
   cl:{sat:'the initial slope through the origin',        lb:'the reciprocal of the line&rsquo;s slope',
       pl:'the slope of the ray, tan &#966;, where &#966; is its angle to the K&#x303;m axis &mdash; and every point on that ray returns the same value',
       ci:'the tilt of the hypotenuse &mdash; the shape of the triangle, never its size'},
@@ -914,7 +919,7 @@ var KICAP = {
   sat:'K<sub>i</sub> = [I]&#183;tan&#952;<sub>mod</sub> / (tan&#952;<sub>nat</sub> &#8722; tan&#952;<sub>mod</sub>), &#952; the angle each initial tangent makes with the [S] axis · K<sub>i</sub>&prime; from the drop in the plateau',
   lb: 'K<sub>i</sub> = [I]&#183;slope<sub>nat</sub> / (slope<sub>mod</sub> &#8722; slope<sub>nat</sub>) &#8212; reciprocal axes, so the form flips (Cleland&rsquo;s K<sub>is</sub>) · K<sub>i</sub>&prime; from the change in intercept (K<sub>ii</sub>)',
   pl: 'K<sub>i</sub> = [I]&#183;V&#x303;<sub>max</sub> / (K&#x303;<sub>m</sub> &#8722; V&#x303;<sub>max</sub>), the horizontal gap to the diagonal · K<sub>i</sub>&prime; = [I]&#183;V&#x303;<sub>max</sub> / (1 &#8722; V&#x303;<sub>max</sub>), the vertical gap to the native level',
-  ci: 'K<sub>i</sub> = [I]&#183;<span style="color:var(--flag)">tan&#966;</span> / (1 &#8722; <span style="color:var(--flag)">tan&#966;</span>), &#966; the tilt of the modulated hypotenuse, 45&#176; that of the native (tan 45&#176; = 1) · K<sub>i</sub>&prime; from the vertical leg against the native leg of 1'
+  ci: 'K<sub>i</sub> = [I]&#183;<span style="color:var(--flag)">tan&#966;</span> / (1 &#8722; <span style="color:var(--flag)">tan&#966;</span>), &#966; the tilt of the modulated hypotenuse, 45&#176; that of the native (tan 45&#176; = 1) · K<sub>i</sub>&prime; from the vertical cathetus against the native cathetus of 1'
 };
 function caption(k,d){
   var base = HL==='none' ? 'Dashed is native, solid is modulated.'
