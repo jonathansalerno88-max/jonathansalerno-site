@@ -211,6 +211,20 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 .lg b.o{background:var(--surface);border:1.8px solid currentColor;width:10px;height:10px;flex-basis:10px}
 .panel .cap b{color:var(--accent);font-weight:500}
 .panel svg{display:block;width:100%;height:auto;max-width:100%}
+/* per-panel worked inversion: two buttons, each opens its own chain */
+.kcalc{margin-top:8px;border-top:1px solid var(--line);padding-top:8px}
+.kbtns{display:flex;flex-wrap:wrap;gap:6px}
+.kbtns button{font:inherit;font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--iso);background:transparent;color:var(--iso)}
+.kbtns button[aria-pressed="true"]{background:var(--iso);color:var(--surface)}
+.kbtns button:focus-visible{outline:2px solid var(--iso);outline-offset:2px}
+.kout:empty{display:none}
+.kout{margin-top:8px;display:grid;gap:7px}
+.kstep{font-size:11.5px;line-height:1.5;color:var(--ink);background:var(--surface2);border-radius:7px;padding:8px 10px;overflow-wrap:anywhere}
+.kstep .h{font-weight:600;color:var(--iso);display:block;margin-bottom:2px}
+.kstep .r{font-family:var(--mono);font-weight:600;font-size:13px;white-space:nowrap}
+.kstep .w{color:var(--mut)}
+
 
 /* ── readout ──────────────────────────────── */
 .out{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
@@ -324,10 +338,10 @@ code{font-family:var(--mono);font-size:.92em;background:var(--surface2);padding:
 </div>
 
 <div class="grid">
-  <div class="panel"><h2>Classical saturation</h2><div class="lg" id="lg-sat"></div><p class="cap" id="cap-sat"></p><div id="p-sat"></div></div>
-  <div class="panel"><h2>Lineweaver–Burk</h2><div class="lg" id="lg-lb"></div><p class="cap" id="cap-lb"></p><div id="p-lb"></div></div>
-  <div class="panel"><h2>Catalytic plane</h2><div class="lg" id="lg-pl"></div><p class="cap" id="cap-pl"></p><div id="p-pl"></div></div>
-  <div class="panel"><h2>Circle and triangle</h2><div class="lg" id="lg-ci"></div><p class="cap" id="cap-ci"></p><div id="p-ci"></div></div>
+  <div class="panel"><h2>Classical saturation</h2><div class="lg" id="lg-sat"></div><p class="cap" id="cap-sat"></p><div id="p-sat"></div><div class="kcalc" data-k="sat"><div class="kbtns"><button type="button" data-q="ki" aria-pressed="false">Calculate K<sub>i</sub></button><button type="button" data-q="kip" aria-pressed="false">Calculate K<sub>i</sub>&prime;</button></div><div class="kout" id="ko-sat"></div></div></div>
+  <div class="panel"><h2>Lineweaver–Burk</h2><div class="lg" id="lg-lb"></div><p class="cap" id="cap-lb"></p><div id="p-lb"></div><div class="kcalc" data-k="lb"><div class="kbtns"><button type="button" data-q="ki" aria-pressed="false">Calculate K<sub>i</sub></button><button type="button" data-q="kip" aria-pressed="false">Calculate K<sub>i</sub>&prime;</button></div><div class="kout" id="ko-lb"></div></div></div>
+  <div class="panel"><h2>Catalytic plane</h2><div class="lg" id="lg-pl"></div><p class="cap" id="cap-pl"></p><div id="p-pl"></div><div class="kcalc" data-k="pl"><div class="kbtns"><button type="button" data-q="ki" aria-pressed="false">Calculate K<sub>i</sub></button><button type="button" data-q="kip" aria-pressed="false">Calculate K<sub>i</sub>&prime;</button></div><div class="kout" id="ko-pl"></div></div></div>
+  <div class="panel"><h2>Circle and triangle</h2><div class="lg" id="lg-ci"></div><p class="cap" id="cap-ci"></p><div id="p-ci"></div><div class="kcalc" data-k="ci"><div class="kbtns"><button type="button" data-q="ki" aria-pressed="false">Calculate K<sub>i</sub></button><button type="button" data-q="kip" aria-pressed="false">Calculate K<sub>i</sub>&prime;</button></div><div class="kout" id="ko-ci"></div></div></div>
 </div>
 
 <div class="warn2" id="warn2"></div>
@@ -955,6 +969,72 @@ var KICAP = {
   pl: 'K<sub>i</sub> = [I]&#183;V&#x303;<sub>max</sub> / (K&#x303;<sub>m</sub> &#8722; V&#x303;<sub>max</sub>), the horizontal gap to the diagonal · K<sub>i</sub>&prime; = [I]&#183;V&#x303;<sub>max</sub> / (1 &#8722; V&#x303;<sub>max</sub>), the vertical gap to the native level',
   ci: 'K<sub>i</sub> = [I]&#183;<span style="color:var(--flag)">tan&#966;</span> / (1 &#8722; <span style="color:var(--flag)">tan&#966;</span>), &#966; the tilt of the modulated hypotenuse, 45&#176; that of the native (tan 45&#176; = 1) · K<sub>i</sub>&prime; from the vertical cathetus against the native cathetus of 1'
 };
+var KC = {sat:{ki:false,kip:false}, lb:{ki:false,kip:false}, pl:{ki:false,kip:false}, ci:{ki:false,kip:false}};
+/* One inversion per button, written in the geometry of its own panel: the same two
+   numbers come out of all four, which is the point of having the button in each. */
+function kcalc(k,d){
+  var g = function(x){ return isFinite(x) ? String(+x.toFixed(3)) : '&#8734;'; };
+  var I = F.I, kn=F.kmN, vn=F.vmN, km=F.kmM, vm=F.vmM, out='';
+  var RED = function(t){ return '<span style="color:var(--flag)">'+t+'</span>'; };
+  function step(title, sym, num, a, b, what){
+    /* a/b: numerator factor and denominator of [I]*a/b */
+    var res;
+    if(!(I > 0)) res = '<span class="w">Enter a modulator concentration [I] above: without it there is nothing to invert.</span>';
+    else if(Math.abs(b) < 1e-9) res = '<span class="r">&#8594; &#8734;</span> <span class="w">&#8212; denominator zero: '+what[1]+'.</span>';
+    else if(b < 0) res = '<span class="w">Not defined: the denominator is negative, so this is an activation on this term, not an inhibition.</span>';
+    else res = '= '+num+' = <span class="r">'+nf(I*a/b,2)+' µM</span>';
+    if(!(I > 0) && sym.indexOf('<br>')>0) sym = sym.slice(0, sym.indexOf('<br>'));
+    return '<div class="kstep"><span class="h">'+title+' &#183; '+what[0]+'</span>'+sym+(I>0?' '+res:'<br>'+res)+'</div>';
+  }
+  var Iv = g(I);
+  var KI_W  = ['on the free enzyme', 'no term on the free enzyme (uncompetitive)'];
+  var KIP_W = ['on the ES complex',  'no term on the ES complex (competitive)'];
+  if(KC[k].ki){
+    if(k==='sat'){
+      var tn=vn/kn, tm=vm/km;
+      out += step('K<sub>i</sub>',
+        'K<sub>i</sub> = [I]&#183;tan&#952;<sub>mod</sub> / (tan&#952;<sub>nat</sub> &#8722; tan&#952;<sub>mod</sub>), tan&#952; = V<sub>max</sub>/K<sub>m</sub> (initial slope)<br>'+
+        '= '+Iv+'&#183;('+g(vm)+'/'+g(km)+') / (('+g(vn)+'/'+g(kn)+') &#8722; ('+g(vm)+'/'+g(km)+'))',
+        Iv+'&#183;'+g(tm)+' / ('+g(tn)+' &#8722; '+g(tm)+')', tm, tn-tm, KI_W);
+    } else if(k==='lb'){
+      var sn=kn/vn, sm=km/vm;
+      out += step('K<sub>i</sub>',
+        'K<sub>i</sub> = [I]&#183;slope<sub>nat</sub> / (slope<sub>mod</sub> &#8722; slope<sub>nat</sub>), slope = K<sub>m</sub>/V<sub>max</sub><br>'+
+        '= '+Iv+'&#183;('+g(kn)+'/'+g(vn)+') / (('+g(km)+'/'+g(vm)+') &#8722; ('+g(kn)+'/'+g(vn)+'))',
+        Iv+'&#183;'+g(sn)+' / ('+g(sm)+' &#8722; '+g(sn)+')', sn, sm-sn, KI_W);
+    } else if(k==='pl'){
+      out += step('K<sub>i</sub>',
+        'K<sub>i</sub> = [I]&#183;V&#x303;<sub>max</sub> / (K&#x303;<sub>m</sub> &#8722; V&#x303;<sub>max</sub>)<br>'+
+        '= '+Iv+'&#183;('+g(vm)+'/'+g(vn)+') / (('+g(km)+'/'+g(kn)+') &#8722; ('+g(vm)+'/'+g(vn)+'))',
+        Iv+'&#183;'+g(d.V)+' / ('+g(d.K)+' &#8722; '+g(d.V)+')', d.V, d.K-d.V, KI_W);
+    } else {
+      out += step('K<sub>i</sub>',
+        'K<sub>i</sub> = [I]&#183;'+RED('tan&#966;')+' / (1 &#8722; '+RED('tan&#966;')+'), 1 = tan 45&#176; (native hypotenuse)<br>'+
+        '= '+Iv+'&#183;'+RED('tan '+nf(d.phi,1)+'&#176;')+' / (1 &#8722; '+RED('tan '+nf(d.phi,1)+'&#176;')+')',
+        Iv+'&#183;'+g(d.cl)+' / (1 &#8722; '+g(d.cl)+')', d.cl, 1-d.cl, KI_W);
+    }
+  }
+  if(KC[k].kip){
+    if(k==='sat'){
+      out += step('K<sub>i</sub>&prime;',
+        'K<sub>i</sub>&prime; = [I]&#183;V<sub>max,mod</sub> / (V<sub>max,nat</sub> &#8722; V<sub>max,mod</sub>) (drop in the plateau)',
+        Iv+'&#183;'+g(vm)+' / ('+g(vn)+' &#8722; '+g(vm)+')', vm, vn-vm, KIP_W);
+    } else if(k==='lb'){
+      var jn=1/vn, jm=1/vm;
+      out += step('K<sub>i</sub>&prime;',
+        'K<sub>i</sub>&prime; = [I]&#183;int<sub>nat</sub> / (int<sub>mod</sub> &#8722; int<sub>nat</sub>), int = 1/V<sub>max</sub> (y-intercept)<br>'+
+        '= '+Iv+'&#183;(1/'+g(vn)+') / ((1/'+g(vm)+') &#8722; (1/'+g(vn)+'))',
+        Iv+'&#183;'+g(jn)+' / ('+g(jm)+' &#8722; '+g(jn)+')', jn, jm-jn, KIP_W);
+    } else {
+      out += step('K<sub>i</sub>&prime;',
+        'K<sub>i</sub>&prime; = [I]&#183;V&#x303;<sub>max</sub> / (1 &#8722; V&#x303;<sub>max</sub>), '+
+        (k==='ci' ? 'V&#x303;<sub>max</sub> = vertical cathetus, 1 = native cathetus' : '1 = native level')+'<br>'+
+        '= '+Iv+'&#183;('+g(vm)+'/'+g(vn)+') / (1 &#8722; '+g(vm)+'/'+g(vn)+')',
+        Iv+'&#183;'+g(d.V)+' / (1 &#8722; '+g(d.V)+')', d.V, 1-d.V, KIP_W);
+    }
+  }
+  return out;
+}
 function caption(k,d){
   var base = HL==='none' ? 'Dashed is native, solid is modulated.'
                          : NAMES[HL]+' is <b>'+CAPS[HL][k]+'</b>.';
@@ -1213,6 +1293,7 @@ function render(){
   document.getElementById('cap-lb').innerHTML  = caption('lb',d);
   document.getElementById('cap-pl').innerHTML  = caption('pl',d);
   document.getElementById('cap-ci').innerHTML  = caption('ci',d);
+  ['sat','lb','pl','ci'].forEach(function(k){ document.getElementById('ko-'+k).innerHTML = kcalc(k,d); });
   renderPins();
   renderAucr(d);
 
@@ -1345,6 +1426,19 @@ document.getElementById('seg').addEventListener('click', function(e){
 });
 
 render();
+
+/* per-panel Ki / Ki' buttons */
+Array.prototype.forEach.call(document.querySelectorAll('.kcalc'), function(box){
+  var k = box.getAttribute('data-k');
+  Array.prototype.forEach.call(box.querySelectorAll('button'), function(b){
+    b.addEventListener('click', function(){
+      var q = b.getAttribute('data-q');
+      KC[k][q] = !KC[k][q];
+      b.setAttribute('aria-pressed', KC[k][q] ? 'true' : 'false');
+      render();
+    });
+  });
+});
 </script>
 </body>
 </html>
