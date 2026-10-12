@@ -854,9 +854,19 @@ function panelCircle(d){
     o.push(angArc(vx,vy,Math.PI,Math.PI+phr,AR,RED,2.2));
     /* the label goes just under the axis, beneath its arc: inside the triangle it
        runs into the native circle */
-    o.push(tx(vx - AR*0.55, vy + 15, '&#966; = '+nf(d.phi,1)+'&#176;', RED, 10.5, 'middle', 's'));
+    o.push(tx(vx - 31, vy + 15, '&#966; = '+nf(d.phi,1)+'&#176;', RED, 10.5, 'end', 's'));
   }
 
+  /* The SAD's coordinates, as on the plane. Dropped to the axes they land on the
+     triangle's two outer corners: the catheti are the SAD's coordinates, and the
+     dashes close the rectangle they span. */
+  if(PINS.length===0){
+    var cxp=px(d.K), cyp=py(d.V);
+    o.push(ln(cxp,cyp,cxp,py(0),shadeCol,1.2,'4 3'));
+    o.push(ln(cxp,cyp,px(0),cyp,shadeCol,1.2,'4 3'));
+    o.push(tx(cxp,py(0)+15,'K&#x303;m = '+nf(d.K,2),shadeCol,10,'middle','s'));
+    o.push(tx(px(0)+5,cyp-5,'V&#x303;max = '+nf(d.V,2),shadeCol,10,'start','s'));
+  }
   o.push(dot(px(d.K),py(d.V),shadeCol,5));
   /* the same point as on the plane, so the same name: it sits on the circle at angle phi */
   o.push(tx(px(d.K)+9,py(d.V)-8,'SAD',shadeCol,11,'start','s'));
