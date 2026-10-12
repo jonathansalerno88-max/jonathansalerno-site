@@ -148,6 +148,15 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 /* ── three practical tools: pin & compare, paste a table, close the chain ── */
 /* min() so the 330px track collapses instead of pushing the page sideways
    on a narrow phone */
+.tool.wide{grid-column:1/-1}
+#aucr2 .route{display:inline-flex;flex-wrap:wrap}
+#aucr2 .mini label{height:17px;line-height:17px;overflow:visible}
+#aucr2:not(.po) .po-only{display:none}
+.a2grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:8px}
+.a2grid .kstep{margin:0}
+.a2res{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--surface2);border-left:3px solid var(--iso)}
+.a2res .big{font-family:var(--mono);font-size:22px;font-weight:600}
+.a2res .w{color:var(--mut);font-size:12px}
 .tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:14px;margin-bottom:20px}
 .tool{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
 .tool h3{margin:0 0 3px;font-size:13px;font-weight:600;color:var(--ink)}
@@ -383,6 +392,26 @@ code{font-family:var(--mono);font-size:.92em;background:var(--surface2);padding:
 placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&#10;4, 10, 6, 5, 10, mixed"></textarea>
     <div style="display:flex;gap:8px;margin-top:9px"><button type="button" id="pasteBtn">Plot these rows</button></div>
     <p class="hint" id="pasteMsg" style="margin:9px 0 0"></p>
+  </div>
+
+  <div class="tool wide" id="aucr2">
+    <h3>From K<sub>i</sub> and K<sub>i</sub>&prime; to the AUC ratio</h3>
+    <p class="hint">How many times exposure to the victim drug rises. K<sub>i</sub> and K<sub>i</sub>&prime; follow the state above
+    until you type your own; the fractions and concentrations come from the literature.</p>
+    <div class="segbtns route" role="group" aria-label="Route of administration">
+      <button type="button" data-r="iv" aria-pressed="true">Liver only &#183; IV</button>
+      <button type="button" data-r="po" aria-pressed="false">Liver + gut &#183; oral</button>
+    </div>
+    <div class="mini" style="margin-top:12px">
+      <div><label for="a2ki">K<sub>i</sub> µM</label><input type="number" id="a2ki" step="any" min="0" placeholder="&#8734;"></div>
+      <div class="po-only"><label for="a2kip">K<sub>i</sub>&prime; µM</label><input type="number" id="a2kip" step="any" min="0" placeholder="&#8734;"></div>
+      <div><label for="a2fm">f<sub>m</sub></label><input type="number" id="a2fm" step="any" min="0" max="1" value="0.9"></div>
+      <div class="po-only"><label for="a2fg">F<sub>g</sub></label><input type="number" id="a2fg" step="any" min="0" max="1" value="0.5"></div>
+      <div><label for="a2ih">[I] liver µM</label><input type="number" id="a2ih" step="any" min="0" value="10"></div>
+      <div class="po-only"><label for="a2ig">[I] gut µM</label><input type="number" id="a2ig" step="any" min="0" value="50"></div>
+    </div>
+    <p class="hint" style="margin:-2px 0 10px"><span id="a2src"></span> Leave K<sub>i</sub> or K<sub>i</sub>&prime; blank for &#8734;.</p>
+    <div id="a2out"></div>
   </div>
 
 </div>
@@ -1295,6 +1324,68 @@ function aucrFormula(fm,Fg,Ih,Ig,d,A){
   return h;
 }
 
+/* ══════════════ the AUC ratio, by hand ══════════════ */
+var A2 = {route:'iv', own:false};
+function a2val(id){ var t=document.getElementById(id).value.trim(); if(t==='') return Infinity; var v=parseFloat(t); return isNaN(v)?NaN:v; }
+function renderA2(d){
+  var box=document.getElementById('a2out'); if(!box) return;
+  var wrap=document.getElementById('aucr2');
+  wrap.classList.toggle('po', A2.route==='po');
+  var src=document.getElementById('a2src');
+  /* follow the reader until the user types a constant of their own */
+  if(!A2.own){
+    var ok = d && F.I>0 && d.Ki!==null && !isNaN(d.Ki) && !isNaN(d.Kip);
+    document.getElementById('a2ki').value  = ok && isFinite(d.Ki)  ? d.Ki.toFixed(2)  : '';
+    document.getElementById('a2kip').value = ok && isFinite(d.Kip) ? d.Kip.toFixed(2) : '';
+    src.innerHTML = ok ? 'K<sub>i</sub> and K<sub>i</sub>&prime; taken from the state above.'
+                       : 'No inhibition with a stated [I] above: type K<sub>i</sub> and K<sub>i</sub>&prime; yourself.';
+  } else {
+    src.innerHTML = 'Your own K<sub>i</sub> and K<sub>i</sub>&prime;. <a href="#" id="a2reset">Take them from the state above</a>.';
+  }
+  var Ki=a2val('a2ki'), Kp=a2val('a2kip'), fm=a2val('a2fm'), Fg=a2val('a2fg'), Ih=a2val('a2ih'), Ig=a2val('a2ig');
+  var po = A2.route==='po';
+  var bad=[];
+  if(isNaN(Ki)||Ki<=0) bad.push('K<sub>i</sub> must be above zero');
+  if(!(fm>=0&&fm<=1)) bad.push('f<sub>m</sub> must be between 0 and 1');
+  if(!(Ih>=0)||!isFinite(Ih)) bad.push('[I] liver must be a number &#8805; 0');
+  if(po){
+    if(isNaN(Kp)||Kp<=0) bad.push('K<sub>i</sub>&prime; must be above zero');
+    if(!(Fg>=0&&Fg<=1)) bad.push('F<sub>g</sub> must be between 0 and 1');
+    if(!(Ig>=0)||!isFinite(Ig)) bad.push('[I] gut must be a number &#8805; 0');
+  }
+  if(bad.length){ box.innerHTML='<p class="hint" style="margin:0;color:var(--flag)">'+bad.join(' &#183; ')+'.</p>'; return; }
+  var g=function(x){ return isFinite(x) ? String(+x.toFixed(2)) : '&#8734;'; };
+  var Ah = 1/(1+Ih/Ki), liv = 1/(fm*Ah+1-fm);
+  var h = '<div class="a2grid"><div class="kstep"><span class="h">Step 1 &#183; liver</span>'+
+    'Enzyme still active: 1 / (1 + [I]/K<sub>i</sub>) = 1 / (1 + '+g(Ih)+'/'+g(Ki)+') = <b>'+g(Ah)+'</b><br>'+
+    'Liver factor: 1 / (f<sub>m</sub> &#183; '+g(Ah)+' + 1 &#8722; f<sub>m</sub>) = 1 / ('+g(fm)+' &#183; '+g(Ah)+' + '+g(1-fm)+') = <b>'+g(liv)+'</b></div>';
+  var tot = liv;
+  if(po){
+    var Ag = 1/(1+Ig/Kp), gut = 1/(Fg+(1-Fg)*Ag);
+    tot = liv*gut;
+    h += '<div class="kstep"><span class="h">Step 2 &#183; gut</span>'+
+      'Enzyme still active: 1 / (1 + [I]/K<sub>i</sub>&prime;) = 1 / (1 + '+g(Ig)+'/'+g(Kp)+') = <b>'+g(Ag)+'</b><br>'+
+      'Gut factor: 1 / (F<sub>g</sub> + (1 &#8722; F<sub>g</sub>) &#183; '+g(Ag)+') = 1 / ('+g(Fg)+' + '+g(1-Fg)+' &#183; '+g(Ag)+') = <b>'+g(gut)+'</b></div>'+
+      '<div class="kstep"><span class="h">Step 3 &#183; they are in series, so multiply</span>'+
+      'AUCR = '+g(liv)+' &#215; '+g(gut)+' = <b>'+nf(tot,2)+'</b></div>';
+  } else {
+    h += '<div class="kstep"><span class="h">Step 2 &#183; that is all</span>'+
+      'Given IV, the drug skips the gut wall: no first pass there, so the liver factor is the AUC ratio.</div>';
+  }
+  h += '</div><div class="a2res"><span class="big">AUCR '+nf(tot,2)+'</span>'+
+       '<span class="w">exposure to the victim drug rises about '+nf(tot,1)+'-fold</span></div>';
+  if(po){
+    var WARN = '<svg width="16" height="15" viewBox="0 0 16 15" aria-hidden="true" style="flex:0 0 16px;margin-top:2px">'+
+      '<path d="M8 1 L15.2 14 H0.8 Z" fill="#F2C200" stroke="#8A6D00" stroke-width="1" stroke-linejoin="round"/>'+
+      '<rect x="7.2" y="5" width="1.6" height="5" rx=".6" fill="#1A1A1A"/><circle cx="8" cy="11.8" r=".95" fill="#1A1A1A"/></svg>';
+    h += '<div class="kstep kwarn" style="margin-top:10px"><span class="h" style="display:flex;gap:7px;align-items:flex-start">'+WARN+
+      '<span>Why K<sub>i</sub> in the liver and K<sub>i</sub>&prime; in the gut &#8212; still to be demonstrated</span></span>'+
+      '&#8226; <b>Liver.</b> Little substrate, [S] &#8810; K<sub>m</sub>. Only the CL<sub>int</sub> ratio counts, and there K<sub>i</sub>&prime; cancels out: only K<sub>i</sub> is left.<br>'+
+      '&#8226; <b>Gut.</b> After an oral dose there is plenty of substrate and the enzyme works at V<sub>max</sub>. Only the fall in V<sub>max</sub> counts, i.e. K<sub>i</sub>&prime;.</div>';
+  }
+  box.innerHTML = h;
+}
+
 /* ══════════════ paste a table ══════════════ */
 function parsePaste(txt){
   var out=[], bad=0;
@@ -1332,6 +1423,7 @@ function render(){
   ['sat','lb','pl','ci'].forEach(function(k){ document.getElementById('ko-'+k).innerHTML = kcalc(k,d); });
   renderPins();
   renderAucr(d);
+  renderA2(d);
 
   var kn = document.getElementById('kinote'), msg = '';
   if(KI && SWITCHED)
@@ -1486,6 +1578,25 @@ Array.prototype.forEach.call(document.querySelectorAll('.kcalc'), function(box){
       render();
     });
   });
+});
+
+/* AUC ratio by hand */
+Array.prototype.forEach.call(document.querySelectorAll('#aucr2 .route button'), function(b){
+  b.addEventListener('click', function(){
+    A2.route=b.getAttribute('data-r');
+    Array.prototype.forEach.call(document.querySelectorAll('#aucr2 .route button'), function(x){
+      x.setAttribute('aria-pressed', x===b ? 'true' : 'false'); });
+    render();
+  });
+});
+['a2ki','a2kip'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', function(){ A2.own=true; render(); });
+});
+['a2fm','a2fg','a2ih','a2ig'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', render);
+});
+document.getElementById('aucr2').addEventListener('click', function(e){
+  if(e.target.id==='a2reset'){ e.preventDefault(); A2.own=false; render(); }
 });
 </script>
 </body>
