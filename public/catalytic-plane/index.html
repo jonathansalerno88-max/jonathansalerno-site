@@ -824,6 +824,18 @@ function panelCircle(d){
      &#8722;Vmax&#x303;/Km&#x303; &#8212; the CLint ratio with the sign flipped. Same magnitude as the
      ray on the plane; the Lineweaver&#8211;Burk slope is the reciprocal instead. */
   o.push(poly([[px(d.K),py(0)],[px(0),py(d.V)]],shadeCol,HL==='cl'?3:1.8));
+  /* phi again, in the same red as on the plane: the triangle's angle at (K~m, 0),
+     between the hypotenuse and the K~m leg. tan of it is V~max / K~m, the same
+     angle as the ray's on the plane. Screen y runs down, so from pi round to pi+phi. */
+  if(HL==='cl' && PINS.length===0 && d.K>0 && d.V>0){
+    var phr = d.phi*Math.PI/180, vx = px(d.K), vy = py(0), RED = 'var(--flag)';
+    var legPx = Math.min(px(d.K)-px(0), py(0)-py(d.V));
+    var AR = Math.max(14, Math.min(34, legPx*0.42));
+    o.push(angArc(vx,vy,Math.PI,Math.PI+phr,AR,RED,2.2));
+    /* the label goes just under the axis, beneath its arc: inside the triangle it
+       runs into the native circle */
+    o.push(tx(vx - AR*0.55, vy + 15, '&#966; = '+nf(d.phi,1)+'&#176;', RED, 10.5, 'middle', 's'));
+  }
   if(HL==='cl'){
     /* U+2212, to match the minus in the formula rather than toFixed's hyphen */
     o.push(tx(L+8,T+12,'hypotenuse slope = &#8722; V&#x303;max / K&#x303;m = &#8722; CLint ratio = &#8722;'+nf(d.cl,3),
