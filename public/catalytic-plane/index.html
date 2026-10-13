@@ -841,7 +841,10 @@ function panelPlane(d){
       if(Math.hypot(X-px(1),Y-py(1)) < 8) return;        /* sits on the native ring */
       if(Math.hypot(X-px(d.K),Y-py(d.V)) < 9) return;    /* the measured SAD is itself a tick */
       if(lastD && Math.hypot(X-lastD[0],Y-lastD[1]) < 7) return;   /* dots crowd near the end */
-      o.push('<circle cx="'+X.toFixed(1)+'" cy="'+Y.toFixed(1)+'" r="2.3" fill="'+PC+'"/>');
+      /* hover: a wider transparent target carries the tooltip */
+      o.push('<g class="tick"><circle cx="'+X.toFixed(1)+'" cy="'+Y.toFixed(1)+'" r="2.3" fill="'+PC+'"/>'+
+        '<circle cx="'+X.toFixed(1)+'" cy="'+Y.toFixed(1)+'" r="7" fill="transparent" style="cursor:help">'+
+        '<title>Inhibitor concentration [I] = '+I+' µM\nK̃m = '+kk.toFixed(2)+' · Ṽmax = '+vv.toFixed(2)+'</title></circle></g>');
       lastD=[X,Y];
       var lead = String(I).charAt(0);
       if(lead!=='1' && lead!=='5') return;                          /* label 1, 5, 10, 50 ... */
@@ -858,6 +861,9 @@ function panelPlane(d){
   o.push(ring(px(1),py(1),NAT,4.4));
   o.push(tx(px(1)-8,py(1)-9,'native',NAT,9.5,'end'));
   o.push(dot(px(d.K),py(d.V),col,5.6));
+  o.push('<circle cx="'+px(d.K).toFixed(1)+'" cy="'+py(d.V).toFixed(1)+'" r="9" fill="transparent" style="cursor:help"><title>'+
+    (F.I>0 ? 'Yours: the measured SAD, at [I] = '+String(+F.I.toFixed(2))+' µM\n' : 'Yours: the measured SAD\n')+
+    'K̃m = '+d.K.toFixed(2)+' · Ṽmax = '+d.V.toFixed(2)+'</title></circle>');
   var sx=px(d.K)+9, sy=py(d.V)-8;
   for(var g2=0; g2<4; g2++){   /* capped: better slightly close than floating off the point */
     var h2=seen.some(function(t){ return Math.abs(t.y-sy)<12 && Math.abs(t.x-sx)<78; });
