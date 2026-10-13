@@ -178,7 +178,12 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 .a2res{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--surface2);border-left:3px solid var(--iso)}
 .a2res .big{font-family:var(--mono);font-size:22px;font-weight:600}
 .a2res .w{color:var(--mut);font-size:12px}
-.a2cmp{margin-top:10px}
+.a2res.two{display:grid;grid-template-columns:auto auto 1fr;align-items:end;gap:6px 22px}
+.a2res.two .lbl{display:block;font-size:11px;color:var(--mut)}
+.a2res.two .s .big{color:var(--mut)}
+.a2res.two .vd{margin:0;align-self:center}
+@media (max-width:560px){.a2res.two{grid-template-columns:1fr 1fr}.a2res.two .vd{grid-column:1/-1}}
+.kstep.std{border-left:3px solid var(--faint)}
 .a2vs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 .a2vs > div{padding:9px 12px;border-radius:8px;background:var(--surface2)}
 .a2vs > div:first-child{border-left:3px solid var(--iso)}
@@ -1508,22 +1513,23 @@ function renderA2(d){
     h += '<div class="kstep"><span class="h">Step 2 &#183; that is all</span>'+
       'Given IV, the drug skips the gut wall: no first pass there, so the liver factor is the AUC ratio.</div>';
   }
-  h += '</div><div class="a2res"><span class="big">AUCR '+nf(tot,2)+'</span>'+
-       '<span class="w">exposure to the victim drug rises about '+nf(tot,1)+'-fold</span></div>';
-  /* the same numbers through the standard static model, which uses Ki in both organs */
-  if(po){
+  if(!po){
+    h += '</div><div class="a2res"><span class="big">AUCR '+nf(tot,2)+'</span>'+
+         '<span class="w">exposure to the victim drug rises about '+nf(tot,1)+'-fold</span></div>';
+  } else {
+    /* the same numbers through the standard static model, which uses Ki in both organs */
     var AgS = 1/(1+Ig/Ki), gutS = 1/(Fg+(1-Fg)*AgS), totS = liv*gutS, rr = totS/tot;
     var verdict = Math.abs(rr-1) < 0.005 ? 'The two models agree: K<sub>i</sub> and K<sub>i</sub>&prime; carry the same weight here.'
       : (rr > 1 ? 'The standard model gives <b>'+nf(rr,2)+'&#215; more</b>: if the gut really follows K<sub>i</sub>&prime;, it overestimates this inhibitor.'
                 : 'The standard model gives <b>'+nf(1/rr,2)+'&#215; less</b>: if the gut really follows K<sub>i</sub>&prime;, it underestimates this inhibitor.');
-    h += '<div class="a2cmp">'+
-      '<div class="kstep"><span class="h">Standard model &#183; K<sub>i</sub> in both organs</span>'+
+    h += '<div class="kstep std"><span class="h">Standard model &#183; K<sub>i</sub> in both organs</span>'+
       'Gut, enzyme still active: 1 / (1 + '+g(Ig)+'/'+g(Ki)+') = <b>'+g(AgS)+'</b><br>'+
       'Gut factor: 1 / ('+g(Fg)+' + '+g(1-Fg)+' &#183; '+g(AgS)+') = <b>'+g(gutS)+'</b><br>'+
       'AUCR = '+g(liv)+' &#215; '+g(gutS)+' = <b>'+nf(totS,2)+'</b></div>'+
-      '<div class="a2vs"><div><span class="lbl">K<sub>i</sub> liver &#183; K<sub>i</sub>&prime; gut</span><span class="big">'+nf(tot,2)+'</span></div>'+
-      '<div><span class="lbl">K<sub>i</sub> in both (standard)</span><span class="big">'+nf(totS,2)+'</span></div></div>'+
-      '<p class="hint" style="margin:6px 0 0">'+verdict+'</p></div>';
+      '</div><div class="a2res two">'+
+        '<div><span class="lbl">K<sub>i</sub> liver &#183; K<sub>i</sub>&prime; gut</span><span class="big">AUCR '+nf(tot,2)+'</span></div>'+
+        '<div class="s"><span class="lbl">standard &#183; K<sub>i</sub> in both</span><span class="big">AUCR '+nf(totS,2)+'</span></div>'+
+        '<p class="w vd">'+verdict+'</p></div>';
   }
   if(po){
     var WARN = '<svg width="16" height="15" viewBox="0 0 16 15" aria-hidden="true" style="flex:0 0 16px;margin-top:2px">'+
