@@ -165,7 +165,10 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 .a2pre label{display:block;font-size:11px;color:var(--mut);margin-bottom:3px}
 .a2pre select{font:inherit;font-size:12.5px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);max-width:100%}
 .a2pre .hint{margin:5px 0 0}
-#aucr2:not(.po) .po-only{display:none}
+#aucr2:not(.po) .mini .po-only{opacity:.45}
+#aucr2:not(.po) .mini .po-only input{pointer-events:none}
+#aucr2 .nu{display:none;font-size:10px;color:var(--faint);margin-top:2px}
+#aucr2:not(.po) .nu{display:block}
 .a2def{margin:0 0 12px;padding:9px 12px;border-radius:8px;background:var(--surface2);font-size:11.5px;line-height:1.5}
 .a2def p{margin:0 0 6px}
 .a2def p:last-child{margin:0}
@@ -443,11 +446,11 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
     <p class="a2key"><span class="k inh">inhibitor</span><span class="k vic">victim drug</span></p>
     <div class="mini" style="margin-top:6px">
       <div><label for="a2ki">K<sub>i</sub> µM</label><input class="inh" type="number" id="a2ki" step="any" min="0" placeholder="&#8734;"></div>
-      <div class="po-only"><label for="a2kip">K<sub>i</sub>&prime; µM</label><input class="inh" type="number" id="a2kip" step="any" min="0" placeholder="&#8734;"></div>
+      <div class="po-only"><label for="a2kip">K<sub>i</sub>&prime; µM</label><input class="inh" type="number" id="a2kip" step="any" min="0" placeholder="&#8734;"><span class="nu">not used for IV</span></div>
       <div><label for="a2fm">f<sub>m</sub> &#183; fraction metabolized by this enzyme</label><input class="vic" type="number" id="a2fm" step="any" min="0" max="1" value="0.9"></div>
-      <div class="po-only"><label for="a2fg">F<sub>g</sub> &#183; fraction escaping the gut wall</label><input class="vic" type="number" id="a2fg" step="any" min="0" max="1" value="0.5"></div>
+      <div class="po-only"><label for="a2fg">F<sub>g</sub> &#183; fraction escaping the gut wall</label><input class="vic" type="number" id="a2fg" step="any" min="0" max="1" value="0.5"><span class="nu">not used for IV</span></div>
       <div><label for="a2ih">[I] liver, unbound µM</label><input class="inh" type="number" id="a2ih" step="any" min="0" value="0.0075"></div>
-      <div class="po-only"><label for="a2ig">[I] gut µM</label><input class="inh" type="number" id="a2ig" step="any" min="0" value="555"></div>
+      <div class="po-only"><label for="a2ig">[I] gut µM</label><input class="inh" type="number" id="a2ig" step="any" min="0" value="555"><span class="nu">not used for IV</span></div>
     </div>
     <p class="hint" style="margin:-2px 0 10px"><span id="a2src"></span> Leave K<sub>i</sub> or K<sub>i</sub>&prime; blank for &#8734;.</p>
     <div id="a2out"></div>
@@ -1455,6 +1458,7 @@ function renderA2(d){
   var box=document.getElementById('a2out'); if(!box) return;
   var wrap=document.getElementById('aucr2');
   wrap.classList.toggle('po', A2.route==='po');
+  ['a2kip','a2fg','a2ig'].forEach(function(id){ var el=document.getElementById(id); el.disabled = A2.route!=='po'; el.tabIndex = A2.route==='po'?0:-1; });
   var src=document.getElementById('a2src');
   /* follow the reader until the user types a constant of their own */
   if(!A2.own){
