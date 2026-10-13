@@ -434,7 +434,13 @@ code{font-family:var(--mono);font-size:.92em;background:var(--surface2);padding:
     <textarea id="pasteBox" spellcheck="false"
 placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&#10;4, 10, 6, 5, 10, mixed"></textarea>
     <div style="display:flex;gap:8px;margin-top:9px;flex-wrap:wrap"><button type="button" id="pasteBtn">Plot these rows</button>
-    <button type="button" id="pasteDemo" title="Five inhibitors on the same enzyme at [I] = 10 µM, one per direction of the fan">Launch example set A&ndash;E</button></div>
+    <button type="button" id="pasteDemo" title="Five inhibitors on the same enzyme at [I] = 10 µM, one per direction of the fan">Launch example set A&ndash;E</button>
+    <button type="button" id="pasteKeto" title="Ketoconazole on five CYP3A marker reactions, from the published Ki and alpha (Greenblatt 2011), at [I] = 0.1 µM">Launch ketoconazole &#183; real data</button></div>
+    <p class="hint" id="pasteSrc" style="margin:9px 0 0" hidden>Ketoconazole on human liver microsomes, K<sub>m</sub>, K<sub>i</sub> and &#945; as published in Table 2 of
+    <a href="https://doi.org/10.1111/j.2042-7158.2010.01202.x">Greenblatt et al., <i>J Pharm Pharmacol</i> 2011;63:214&ndash;221</a>
+    (equation 1, mean of n = 4 livers). Their model is v = V<sub>max</sub>[S] / ([S](1 + [I]/&#945;K<sub>i</sub>) + K<sub>m</sub>(1 + [I]/K<sub>i</sub>)),
+    so K<sub>i</sub>&prime; = &#945;&#183;K<sub>i</sub>. The modulated pair is computed from K<sub>i</sub> and &#945; at [I] = 0.1 µM, inside the 0.01&ndash;1.0 µM range they studied;
+    V<sub>max,nat</sub> is set to 10 because the table reports no V<sub>max</sub>, and the plane reads ratios only. Nifedipine: K<sub>m</sub> not reported, so K<sub>m,nat</sub> = 10 is a placeholder &#8212; its ratios still hold.</p>
     <p class="hint" id="pasteMsg" style="margin:9px 0 0"></p>
   </div>
 
@@ -452,6 +458,7 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
         <option value="rtv">Ritonavir 100 mg &#183; booster (e.g. Paxlovid)</option>
         <option value="cobi">Cobicistat 150 mg once daily &#183; booster</option>
         <option value="itra">Itraconazole 200 mg once daily</option>
+        <option value="keto">Ketoconazole 200 mg &#183; index inhibitor</option>
         <option value="custom">Custom</option>
       </select>
       <p class="hint" id="a2note"></p>
@@ -582,6 +589,8 @@ function nf(x,d){
   return x.toFixed(d===undefined?3:d);
 }
 function sf(x,d){ return (x>0?'+':'')+nf(x,d); }
+/* three significant figures, trailing zeros dropped: these constants span 0.01 to 3000 */
+function sig3(x){ if(!isFinite(x)) return '∞'; return String(+Number(x).toPrecision(3)); }
 
 /* One rule across all four panels: blue and dashed = native, orange and solid = modulated.
    A highlight is carried by stroke weight, never by a third colour. */
@@ -1231,7 +1240,7 @@ function warnBlock(d){
 function kiTxt(x){
   if(x === null || isNaN(x)) return '&#8212;';
   if(!isFinite(x)) return '&#8594; &#8734;';
-  return nf(x,1)+' µM';
+  return sig3(x)+' µM';
 }
 
 function rows(d){
@@ -1473,6 +1482,11 @@ var A2PRE = {
     note:'Gut: 200 mg / 250 mL / 705.6 g/mol. Liver: steady-state C<sub>max</sub> 1.1 µg/mL &#215; 0.2% unbound (99.8% bound) '+
       '(<a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/020083s063lbl.pdf">Sporanox US label</a>). '+
       'Its metabolites also inhibit CYP3A and are not counted here.'},
+  keto:{ih:0.066, ig:1505,
+    note:'Gut: 200 mg / 250 mL / 531.4 g/mol. Liver: C<sub>max</sub> 3.5 µg/mL &#215; 1% unbound (99% bound) '+
+      '(<a href="https://www.taro.com/sites/default/files/USA-Products-Rx/KetoconazoleTabletsPrescribingInformation-Sep2023.pdf">US label</a>). '+
+      'Oral ketoconazole was withdrawn for systemic infections, but it remains the index strong CYP3A inhibitor in interaction studies &#8212; '+
+      'and the one inhibitor with both constants published, so pair it with the real-data states.'},
   custom:{note:'Your own concentrations.'}
 };
 /* victim drugs: Fg from Davies et al. 2020 (suppl. Table 1, observed human fg, compiled incl. Gertz 2010);
@@ -1506,8 +1520,8 @@ function renderA2(d){
   /* follow the reader until the user types a constant of their own */
   if(!A2.own){
     var ok = d && F.I>0 && d.Ki!==null && !isNaN(d.Ki) && !isNaN(d.Kip);
-    document.getElementById('a2ki').value  = ok && isFinite(d.Ki)  ? d.Ki.toFixed(2)  : '';
-    document.getElementById('a2kip').value = ok && isFinite(d.Kip) ? d.Kip.toFixed(2) : '';
+    document.getElementById('a2ki').value  = ok && isFinite(d.Ki)  ? fmt2(sig3(d.Ki))  : '';
+    document.getElementById('a2kip').value = ok && isFinite(d.Kip) ? fmt2(sig3(d.Kip)) : '';
     src.innerHTML = ok ? 'K<sub>i</sub> and K<sub>i</sub>&prime; taken from the state above.'
                        : 'No inhibition with a stated [I] above: type K<sub>i</sub> and K<sub>i</sub>&prime; yourself.';
   } else {
@@ -1654,8 +1668,11 @@ Object.keys(IDS).forEach(function(k){
 function fmt2(v){
   var t = String(v).trim();
   if(t === '' || /e/i.test(t) || !isFinite(Number(t))) return t;
-  var dec = (t.split('.')[1] || '').length;
-  return Number(t).toFixed(Math.max(2, dec));
+  var n = Number(t), dec = (t.split('.')[1] || '').length;
+  /* two decimals as a floor, but never at the cost of a small value's digits:
+     a Ki of 0.011 µM must not be shown as 0.01 */
+  if(n !== 0 && Math.abs(n) < 1) return String(+n.toPrecision(3));
+  return n.toFixed(Math.max(2, dec));
 }
 function tidy(el){ el.value = fmt2(el.value); }
 
@@ -1823,6 +1840,21 @@ document.getElementById('a2vic').addEventListener('change', function(e){ a2victi
   });
 });
 a2victim('mdz'); render();
+
+/* ketoconazole, from the published Ki and alpha; see the note under the buttons */
+document.getElementById('pasteKeto').addEventListener('click', function(){
+  document.getElementById('pasteBox').value =
+    '63.10, 10, 106.35, 3.99, 0.1, TRZa triazolam a-OH\n'+
+    '319.00, 10, 500.63, 4.87, 0.1, TRZ4 triazolam 4-OH\n'+
+    '3.34, 10, 13.80, 4.09, 0.1, MDZ1 midazolam 1-OH\n'+
+    '51.30, 10, 321.30, 10.00, 0.1, MDZ4 midazolam 4-OH\n'+
+    '69.00, 10, 159.21, 3.68, 0.1, TST testosterone 6b-OH\n'+
+    '10.00, 10, 18.00, 7.54, 0.1, NIF nifedipine oxidation';
+  var n0=PINS.length;
+  document.getElementById('pasteBtn').click();
+  document.getElementById('pasteSrc').hidden = false;
+  if(PINS.length>=n0+3) loadPin(n0+2);   /* midazolam 1'-OH: the strongest case */
+});
 </script>
 </body>
 </html>
