@@ -510,26 +510,6 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
         <option value="custom">Custom</option>
       </select>
       <p class="hint" id="a2vnote"></p>
-      <details class="kstep kwarn wfold" style="margin:8px 0 0">
-        <summary class="h" style="display:flex;gap:7px;align-items:flex-start"><svg width="16" height="15" viewBox="0 0 16 15" aria-hidden="true" style="flex:0 0 16px;margin-top:2px"><path d="M8 1 L15.2 14 H0.8 Z" fill="#F2C200" stroke="#8A6D00" stroke-width="1" stroke-linejoin="round"/><rect x="7.2" y="5" width="1.6" height="5" rx=".6" fill="#1A1A1A"/><circle cx="8" cy="11.8" r=".95" fill="#1A1A1A"/></svg><span>Note &#183; how this is done in practice, and where it is weak</span></summary>
-        The box above is the standard calculation, and every interaction-prediction tool does the same thing. Three weaknesses are built into it.<br>
-        &#8226; <b>One generic K<sub>i</sub>, treated as a property of the drug.</b> Interaction software and PBPK libraries carry a single
-        K<sub>i</sub> per inhibitor and enzyme. That one number is then applied to every victim drug, at every concentration, in both the
-        liver and the gut.<br>
-        &#8226; <b>It comes from one probe, and no probe represents every mechanism.</b> Greenblatt&rsquo;s ketoconazole K<sub>i</sub> runs from
-        <b>0.011 to 0.072 µM</b> across five CYP3A marker reactions &#8212; and the mechanism itself changes with the probe: mixed on
-        midazolam 1&prime;-hydroxylation, purely competitive on midazolam 4-hydroxylation, the same drug and the same enzyme. A K<sub>i</sub>
-        averaged over that, or simply taken from whichever probe a laboratory happened to use, carries none of it forward.<br>
-        &#8226; <b>f<sub>m</sub> and F<sub>g</sub> come from somewhere else again.</b> They are read from clinical studies that have nothing
-        to do with that in vitro experiment, and the same drug often carries several published values: midazolam F<sub>g</sub> is reported
-        between <b>0.39 and 0.57</b>, while the gut term can never exceed 1/F<sub>g</sub>. So the intestinal half of the prediction rests on
-        a parameter known to within about 50%.<br>
-        &#8226; <b>Work in progress, not a result.</b> One line of work here is to take the second point seriously: measure one inhibitor
-        across several probe substrates, separate the probe-to-probe disagreement into its K<sub>m</sub> and V<sub>max</sub> components on
-        this plane, and ask whether it is structured rather than noise &#8212; and if it is, what mechanism produces it. The aim is a firmer
-        basis for in vitro&ndash;in vivo extrapolation than one averaged K<sub>i</sub>. The six reactions behind the
-        <i>ketoconazole &#183; real data</i> button are the start of that set.
-      </details>
       <span class="lit" id="lit">
         <button type="button" class="littrig" aria-expanded="false" aria-controls="litpan">Supporting literature &#9662;</button>
         <div class="litpan" id="litpan" role="group" aria-label="Sources">
@@ -570,6 +550,26 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
     </div>
     <p class="hint" style="margin:-2px 0 10px"><span id="a2src"></span></p>
     <div id="a2out"></div>
+      <details class="kstep kwarn wfold" style="margin:8px 0 0">
+        <summary class="h" style="display:flex;gap:7px;align-items:flex-start"><svg width="16" height="15" viewBox="0 0 16 15" aria-hidden="true" style="flex:0 0 16px;margin-top:2px"><path d="M8 1 L15.2 14 H0.8 Z" fill="#F2C200" stroke="#8A6D00" stroke-width="1" stroke-linejoin="round"/><rect x="7.2" y="5" width="1.6" height="5" rx=".6" fill="#1A1A1A"/><circle cx="8" cy="11.8" r=".95" fill="#1A1A1A"/></svg><span>Note &#183; how this is done in practice, and where it is weak</span></summary>
+        The box above is the standard calculation, and every interaction-prediction tool does the same thing. Three weaknesses are built into it.<br>
+        &#8226; <b>One generic K<sub>i</sub>, treated as a property of the drug.</b> Interaction software and PBPK libraries carry a single
+        K<sub>i</sub> per inhibitor and enzyme. That one number is then applied to every victim drug, at every concentration, in both the
+        liver and the gut.<br>
+        &#8226; <b>It comes from one probe, and no probe represents every mechanism.</b> Greenblatt&rsquo;s ketoconazole K<sub>i</sub> runs from
+        <b>0.011 to 0.072 µM</b> across five CYP3A marker reactions &#8212; and the mechanism itself changes with the probe: mixed on
+        midazolam 1&prime;-hydroxylation, purely competitive on midazolam 4-hydroxylation, the same drug and the same enzyme. A K<sub>i</sub>
+        averaged over that, or simply taken from whichever probe a laboratory happened to use, carries none of it forward.<br>
+        &#8226; <b>f<sub>m</sub> and F<sub>g</sub> come from somewhere else again.</b> They are read from clinical studies that have nothing
+        to do with that in vitro experiment, and the same drug often carries several published values: midazolam F<sub>g</sub> is reported
+        between <b>0.39 and 0.57</b>, while the gut term can never exceed 1/F<sub>g</sub>. So the intestinal half of the prediction rests on
+        a parameter known to within about 50%.<br>
+        &#8226; <b>Work in progress, not a result.</b> One line of work here is to take the second point seriously: measure one inhibitor
+        across several probe substrates, separate the probe-to-probe disagreement into its K<sub>m</sub> and V<sub>max</sub> components on
+        this plane, and ask whether it is structured rather than noise &#8212; and if it is, what mechanism produces it. The aim is a firmer
+        basis for in vitro&ndash;in vivo extrapolation than one averaged K<sub>i</sub>. The six reactions behind the
+        <i>ketoconazole &#183; real data</i> button are the start of that set.
+      </details>
   </div>
 
 </div>
@@ -1648,22 +1648,6 @@ function renderA2(d){
       'nothing else, and the AUCR here runs <b>'+nf(liv*gHi,2)+'</b> to <b>'+nf(liv*gLo,2)+'</b> instead of '+nf(tot,2)+'.</div>';
   }
 
-  /* The open question, stated as a question: the regime of the gut enzyme is substrate-dependent
-     and undetermined. Two hypotheses were tested against published data today and not supported;
-     both are named here so the page does not advertise either. */
-  var WARN = '<svg width="16" height="15" viewBox="0 0 16 15" aria-hidden="true" style="flex:0 0 16px;margin-top:2px">'+
-    '<path d="M8 1 L15.2 14 H0.8 Z" fill="#F2C200" stroke="#8A6D00" stroke-width="1" stroke-linejoin="round"/>'+
-    '<rect x="7.2" y="5" width="1.6" height="5" rx=".6" fill="#1A1A1A"/><circle cx="8" cy="11.8" r=".95" fill="#1A1A1A"/></svg>';
-  h += '<div class="kstep kwarn" style="margin-top:10px"><span class="h" style="display:flex;gap:7px;align-items:flex-start">'+WARN+
-    '<span>Open question &#183; which regime is the gut enzyme in?</span></span>'+
-    'Both terms above use K<sub>i</sub>, which assumes the enzyme is working well below its K<sub>m</sub> in both organs. '+
-    'In the liver that is not in doubt. In the enterocyte during absorption the substrate concentration is not measured, '+
-    'and the answer appears to differ by drug: midazolam shows no saturation of gut CYP3A over a 1000-fold dose range '+
-    '(gut extraction 0.53 at 3 µg vs 0.61 at 3 mg, Hohmann 2015), while the non-linear absorption of verapamil and quinidine '+
-    'is attributed to saturation of intestinal CYP3A, and modelled F<sub>g</sub> for dabigatran etexilate is dose-dependent.<br>'+
-    '<b>Two hypotheses tested and not supported:</b> that the gut term should run on K<sub>i</sub>&prime; rather than K<sub>i</sub> '+
-    '&#8212; itraconazole, a reversible inhibitor, abolishes gut CYP3A activity anyway; and that F<sub>g</sub> should rise with the oral dose '+
-    '&#8212; it does not, for midazolam. Neither is built into the arithmetic above.</div>';
   box.innerHTML = h;
 }
 
