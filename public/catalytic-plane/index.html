@@ -407,7 +407,8 @@ code{font-family:var(--mono);font-size:.92em;background:var(--surface2);padding:
     Every row is pinned at once &#8212; the working end of a retrospective survey.</p>
     <textarea id="pasteBox" spellcheck="false"
 placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&#10;4, 10, 6, 5, 10, mixed"></textarea>
-    <div style="display:flex;gap:8px;margin-top:9px"><button type="button" id="pasteBtn">Plot these rows</button></div>
+    <div style="display:flex;gap:8px;margin-top:9px;flex-wrap:wrap"><button type="button" id="pasteBtn">Plot these rows</button>
+    <button type="button" id="pasteDemo" title="Five inhibitors on the same enzyme at [I] = 10 µM, one per direction of the fan">Launch example set A&ndash;E</button></div>
     <p class="hint" id="pasteMsg" style="margin:9px 0 0"></p>
   </div>
 
@@ -1725,6 +1726,17 @@ document.getElementById('a2preset').addEventListener('change', function(e){ a2pr
   });
 });
 a2preset('rtv'); render();
+
+/* the A-E teaching set: same native enzyme and [I], one inhibitor per direction */
+document.getElementById('pasteDemo').addEventListener('click', function(){
+  document.getElementById('pasteBox').value =
+    '4, 10, 8, 10, 10, A competitive\n'+
+    '4, 10, 10, 8, 10, B mixed liver-heavy\n'+
+    '4, 10, 4, 5, 10, C non-competitive\n'+
+    '4, 10, 3, 5, 10, D mixed gut-heavy\n'+
+    '4, 10, 2, 5, 10, E uncompetitive';
+  document.getElementById('pasteBtn').click();
+});
 </script>
 </body>
 </html>
