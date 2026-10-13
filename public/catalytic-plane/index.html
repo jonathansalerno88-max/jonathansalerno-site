@@ -185,6 +185,8 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 .a2res.two .lbl{display:block;font-size:11px;color:var(--mut)}
 .a2res.two .s .big{color:var(--mut)}
 .a2res.two .vd{margin:0;align-self:center}
+.a2res.two .pl{grid-column:1/-1;margin:2px 0 0}
+@media (max-width:560px){.a2res.two .pl{margin-top:0}}
 @media (max-width:560px){.a2res.two{grid-template-columns:1fr 1fr}.a2res.two .vd{grid-column:1/-1}}
 .kstep.std{border-left:3px solid var(--faint)}
 .a2vs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
@@ -1509,10 +1511,10 @@ var A2PRE = {
 var VSRC = 'F<sub>g</sub>: <a href="https://doi.org/10.1124/dmd.120.000111">Davies et al., <i>Drug Metab Dispos</i> 2020</a> (compiled from clinical data, incl. Gertz 2010) &#183; '+
   'f<sub>m</sub>: <a href="https://doi.org/10.1208/s12248-014-9663-y">Loue &amp; Tod, <i>AAPS J</i> 2014</a>.';
 var A2VIC = {
-  mdz: {fm:0.91, fg:0.55, extra:' Midazolam F<sub>g</sub> varies with the method (about 0.35&ndash;0.57 across studies).'},
-  sim: {fm:0.97, fg:0.29}, felo:{fm:0.87, fg:0.42}, nif:{fm:0.72, fg:0.71},
-  bus: {fm:0.99, fg:0.18, extra:' Low F<sub>g</sub>: the gut matters most here.'},
-  ato: {fm:0.68, fg:0.40},
+  mdz: {nm:'midazolam', fm:0.91, fg:0.55, extra:' Midazolam F<sub>g</sub> varies with the method (about 0.35&ndash;0.57 across studies).'},
+  sim: {nm:'simvastatin', fm:0.97, fg:0.29}, felo:{nm:'felodipine', fm:0.87, fg:0.42}, nif:{nm:'nifedipine', fm:0.72, fg:0.71},
+  bus: {nm:'buspirone', fm:0.99, fg:0.18, extra:' Low F<sub>g</sub>: the gut matters most here.'},
+  ato: {nm:'atorvastatin', fm:0.68, fg:0.40},
   custom:{}
 };
 /* whole scenarios: one choice sets the kinetic state, the inhibitor exposure and the victim.
@@ -1553,6 +1555,18 @@ function a2scenario(k){
   document.getElementById('a2preset').value=c.inh; a2preset(c.inh);
   document.getElementById('a2vic').value=c.vic;    a2victim(c.vic);
   n.innerHTML=c.note;
+}
+/* what the number means for one patient, in words */
+function a2vname(){
+  var el=document.getElementById('a2vic'); if(!el) return 'the victim drug';
+  var v=A2VIC[el.value]; return (v && v.nm) ? v.nm : 'the victim drug';
+}
+function a2plain(x){
+  /* why, in one clause: both first passes for an oral dose, the liver alone for IV */
+  var why = A2.route==='po'
+    ? '&#8212; less of it is destroyed on the way in, and what gets in leaves more slowly.'
+    : '&#8212; it leaves more slowly, the gut wall playing no part when the dose goes straight into a vein.';
+  return 'Same dose, about <b>'+nf(x,1)+'&#215; more '+a2vname()+' in the body</b> than in a patient not taking the inhibitor '+why;
 }
 function a2victim(k){
   var v=A2VIC[k], n=document.getElementById('a2vnote');
@@ -1614,7 +1628,7 @@ function renderA2(d){
   }
   if(!po){
     h += '</div><div class="a2res"><span class="big">AUCR '+nf(tot,2)+'</span>'+
-         '<span class="w">exposure to the victim drug rises about '+nf(tot,1)+'-fold</span></div>';
+         '<span class="w">'+a2plain(tot)+'</span></div>';
   } else {
     /* the same numbers through the standard static model, which uses Ki in both organs */
     var AgS = 1/(1+Ig/Ki), gutS = 1/(Fg+(1-Fg)*AgS), totS = liv*gutS, rr = totS/tot;
@@ -1628,7 +1642,8 @@ function renderA2(d){
       '</div><div class="a2res two">'+
         '<div><span class="lbl">K<sub>i</sub> liver &#183; K<sub>i</sub>&prime; gut</span><span class="big">AUCR '+nf(tot,2)+'</span></div>'+
         '<div class="s"><span class="lbl">standard &#183; K<sub>i</sub> in both</span><span class="big">AUCR '+nf(totS,2)+'</span></div>'+
-        '<p class="w vd">'+verdict+'</p></div>';
+        '<p class="w vd">'+verdict+'</p>'+
+        '<p class="w pl">'+a2plain(tot)+' On the standard model it would be about '+nf(totS,1)+'&#215;.</p></div>';
   }
   if(po){
     var WARN = '<svg width="16" height="15" viewBox="0 0 16 15" aria-hidden="true" style="flex:0 0 16px;margin-top:2px">'+
