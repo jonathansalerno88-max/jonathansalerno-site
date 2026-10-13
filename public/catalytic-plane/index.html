@@ -879,6 +879,16 @@ function panelPlane(d){
   // isoclearance
   o.push(ln(px(0),py(0),px(M),py(M),'var(--iso)',1.6));
   o.push(tx(px(M*0.97),py(M*0.97)-7,'isoclearance','var(--iso)',9.5,'end'));
+  /* the line is the whole point of the plane, so it says what it is on hover:
+     a wide transparent line over it carries the tooltip */
+  var ISO = 'Isoclearance: K̃m = Ṽmax, so the CLint ratio is exactly 1.\n\n'+
+    'A state on this line has had both Km and Vmax changed, by the same factor, and its intrinsic clearance '+
+    'is unchanged. At low substrate concentrations it behaves exactly like the native enzyme, so the classical '+
+    'chain — saturation curve, Lineweaver–Burk, CLint — reports no effect at all, while two parameters have moved.\n\n'+
+    'Above the line the clearance has risen (activation), below it has fallen (inhibition). The further a point '+
+    'sits from the line, the larger the change in clearance; how far along the line it sits says nothing about clearance.';
+  o.push('<line x1="'+px(0).toFixed(1)+'" y1="'+py(0).toFixed(1)+'" x2="'+px(M).toFixed(1)+'" y2="'+py(M).toFixed(1)+
+    '" stroke="transparent" stroke-width="13" style="cursor:help"><title>'+ISO+'</title></line>');
 
   var col = MOD;
 
