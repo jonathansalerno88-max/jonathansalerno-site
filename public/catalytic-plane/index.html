@@ -221,6 +221,9 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 .a2res.two .s .big{color:var(--mut)}
 .a2res.two .vd{margin:0;align-self:center}
 .a2res.two .pl{grid-column:1/-1;margin:2px 0 0}
+.a2test{grid-column:1/-1;margin-top:9px;padding:9px 11px;border-radius:8px;background:var(--surface);
+  border:1px solid var(--line);font-size:11.5px;line-height:1.5}
+.a2test .h{display:block;font-weight:600;color:var(--iso);margin-bottom:3px}
 @media (max-width:560px){.a2res.two .pl{margin-top:0}}
 @media (max-width:560px){.a2res.two{grid-template-columns:1fr 1fr}.a2res.two .vd{grid-column:1/-1}}
 .kstep.std{border-left:3px solid var(--faint)}
@@ -1727,7 +1730,16 @@ function renderA2(d){
         '<div><span class="lbl">K<sub>i</sub> liver &#183; K<sub>i</sub>&prime; gut</span><span class="big">AUCR '+nf(tot,2)+'</span></div>'+
         '<div class="s"><span class="lbl">standard &#183; K<sub>i</sub> in both</span><span class="big">AUCR '+nf(totS,2)+'</span></div>'+
         '<p class="w vd">'+verdict+'</p>'+
-        '<p class="w pl">'+a2plain(tot)+' On the standard model it would be about '+nf(totS,1)+'&#215;.</p></div>';
+        '<p class="w pl">'+a2plain(tot)+' On the standard model it would be about '+nf(totS,1)+'&#215;.</p>'+
+        '<div class="a2test"><span class="h">The falsifiable part &#183; what a paired oral/IV study would see</span>'+
+        'An intravenous dose skips the gut wall, so AUCR<sub>oral</sub> / AUCR<sub>IV</sub> <b>is</b> the gut factor. '+
+        'Give the same inhibitor with the victim once by mouth and once by vein, and that ratio is measured directly, '+
+        'with f<sub>m</sub>, F<sub>g</sub> and the liver cancelling out.<br>'+
+        'Predicted here: <b>'+nf(gut,2)+'</b> &#215; with K<sub>i</sub>&prime; in the gut, <b>'+nf(gutS,2)+'</b>&#215; with K<sub>i</sub> in both. '+
+        (isFinite(Kp) ? 'For a mixed inhibitor the two are close, so the design cannot separate the models.'
+                      : 'For a purely competitive inhibitor this model predicts <b>no gut contribution at all</b>: the ratio should be 1.00, '+
+                        'while the standard model expects up to 1/F<sub>g</sub> = '+nf(1/Fg,2)+'. That is the whole claim, in one measurable number.')+
+        '</div></div>';
   }
   if(po){
     var WARN = '<svg width="16" height="15" viewBox="0 0 16 15" aria-hidden="true" style="flex:0 0 16px;margin-top:2px">'+
