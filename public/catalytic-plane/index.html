@@ -1505,6 +1505,20 @@ function a2victim(k){
   document.getElementById('a2fm').value=fmt2(v.fm); document.getElementById('a2fg').value=fmt2(v.fg);
   n.innerHTML='f<sub>m,CYP3A</sub> '+v.fm+' &#183; F<sub>g</sub> '+v.fg+'. '+VSRC+(v.extra||'');
 }
+/* While a state from the ketoconazole dataset is loaded, the inhibitor is not a free
+   choice: the Ki on screen is ketoconazole's. Lock the picker and say why. */
+var INHLOCK = false;
+function inhLock(on){
+  INHLOCK = on;
+  var sel=document.getElementById('a2preset'); if(!sel) return;
+  if(on){ sel.value='keto'; }
+  a2preset(sel.value);          /* rewrites the note either way, so it never goes stale */
+  sel.disabled = on;
+  sel.title = on ? 'Locked: the loaded state is ketoconazole on CYP3A' : '';
+  var n=document.getElementById('a2note');
+  if(on && n) n.innerHTML = '<b>Locked to ketoconazole.</b> The state loaded above is ketoconazole on a CYP3A marker reaction, '+
+    'so its K<sub>i</sub> and the inhibitor here are the same molecule. Load another state, or clear the pins, to choose again.<br>'+n.innerHTML;
+}
 function a2preset(k){
   var p=A2PRE[k]; document.getElementById('a2note').innerHTML=p.note;
   if(p.ih!==undefined){ document.getElementById('a2ih').value=fmt2(p.ih); document.getElementById('a2ig').value=fmt2(p.ig); }
@@ -1715,7 +1729,10 @@ document.getElementById('pinBtn').addEventListener('click', function(){
   if(q){ PINS.push(q); render(); }
 });
 document.getElementById('pinClear').addEventListener('click', function(){
-  PINS=[]; PINSEQ=0; render();
+  PINS=[]; PINSEQ=0;
+  if(INHLOCK) inhLock(false);
+  document.getElementById('pasteSrc').hidden = true;
+  render();
 });
 /* a pinned row loads its state back into the inputs; the cross still removes it */
 function loadPin(i){
@@ -1837,6 +1854,7 @@ document.getElementById('pasteDemo').addEventListener('click', function(){
     'is the <b>inhibitor</b>, one per direction of the fan: A competitive, E uncompetitive, C non-competitive, B and D mixed. '+
     'Invented round numbers chosen to span the directions — not measurements.';
   sr.hidden = false;
+  inhLock(false);
   if(PINS.length>=n0+2) loadPin(n0+1);
 });
 
@@ -1871,6 +1889,7 @@ document.getElementById('pasteKeto').addEventListener('click', function(){
     '0.01&ndash;1.0 µM range they studied; V<sub>max,nat</sub> is set to 10 because the table reports no V<sub>max</sub>, and the plane reads ratios only. '+
     'Nifedipine: K<sub>m</sub> not reported, so K<sub>m,nat</sub> = 10 is a placeholder — its ratios still hold.';
   sk.hidden = false;
+  inhLock(true);
   if(PINS.length>=n0+3) loadPin(n0+2);   /* midazolam 1'-OH: the strongest case */
 });
 
@@ -1895,6 +1914,12 @@ document.getElementById('pasteKeto').addEventListener('click', function(){
     if(e.key==='Escape'){ w.classList.remove('open'); t.setAttribute('aria-expanded','false'); }
   });
 })();
+
+/* a hand edit of the kinetic state means it is no longer the loaded dataset */
+['kmN','vmN','kmM','vmM','conc'].forEach(function(id){
+  var el=document.getElementById(id);
+  if(el) el.addEventListener('input', function(){ if(INHLOCK) { inhLock(false); render(); } });
+});
 </script>
 </body>
 </html>
