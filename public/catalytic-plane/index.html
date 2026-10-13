@@ -174,6 +174,31 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 .a2pre label{display:block;font-size:11px;color:var(--mut);margin-bottom:3px}
 .a2pre select{font:inherit;font-size:12.5px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);max-width:100%}
 .a2pre .hint{margin:5px 0 0}
+/* sources: opens on hover, and on click for touch; the panel sits inside the
+   wrapper so moving the pointer onto a link keeps it open */
+.lit{position:relative;display:inline-block;margin-top:5px}
+.littrig{font:inherit;font-size:11px;font-weight:600;padding:2px 9px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--vic-bd);background:var(--vic-bg);color:var(--ink)}
+.littrig:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.litpan{display:none;position:absolute;z-index:40;left:0;top:calc(100% + 5px);width:min(31rem,88vw);
+  background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 13px;
+  box-shadow:0 10px 28px rgba(0,0,0,.18);font-size:11px;line-height:1.5;max-height:60vh;overflow:auto}
+.lit.open .litpan{display:block}
+/* hover only where there is a real pointer; on touch the trigger is a tap */
+@media (hover:hover) and (pointer:fine){ .lit:hover .litpan{display:block} }
+.litpan .h{margin:7px 0 3px;font-weight:600;color:var(--iso);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em}
+.litpan .h:first-child{margin-top:0}
+.litpan ul{margin:0;padding-left:16px}
+.litpan li{margin-bottom:4px}
+.litpan a{color:var(--accent);font-weight:600}
+.litpan .w{margin:8px 0 0;color:var(--mut)}
+.litclose{display:none;position:absolute;top:6px;right:8px;border:0;background:none;color:var(--mut);
+  font-size:20px;line-height:1;cursor:pointer;padding:2px 6px}
+/* on a phone an absolutely positioned panel runs off the edge: dock it to the bottom instead */
+@media (max-width:560px){
+  .litpan{position:fixed;left:8px;right:8px;top:auto;bottom:8px;width:auto;max-height:72vh}
+  .litclose{display:block}
+}
 #aucr2:not(.po) .mini .po-only{opacity:.45}
 #aucr2:not(.po) .mini .po-only input{pointer-events:none}
 #aucr2 .nu{display:none;font-size:10px;color:var(--faint);margin-top:2px}
@@ -503,6 +528,35 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
         <option value="custom">Custom</option>
       </select>
       <p class="hint" id="a2vnote"></p>
+      <span class="lit" id="lit">
+        <button type="button" class="littrig" aria-expanded="false" aria-controls="litpan">Supporting literature &#9662;</button>
+        <div class="litpan" id="litpan" role="group" aria-label="Sources">
+          <button type="button" class="litclose" aria-label="close">&#215;</button>
+          <p class="h">Victim drug &#183; f<sub>m</sub> and F<sub>g</sub></p>
+          <ul>
+            <li><a href="https://doi.org/10.1124/dmd.120.000111">Davies M, et al. <i>Drug Metab Dispos</i> 2020;48:1169&ndash;1182</a> &#8212; observed human F<sub>g</sub>, supplemental table; the source of the F<sub>g</sub> values used here.</li>
+            <li><a href="https://doi.org/10.1124/dmd.110.032649">Gertz M, et al. <i>Drug Metab Dispos</i> 2010;38:1147&ndash;1158</a> &#8212; F<sub>g</sub> for 25 CYP3A substrates; the primary compilation behind the above.</li>
+            <li><a href="https://doi.org/10.1208/s12248-014-9663-y">Loue C, Tod M. <i>AAPS J</i> 2014;16:1309&ndash;1320</a> &#8212; CR<sub>CYP3A4</sub>, i.e. f<sub>m</sub>, Table IV; values partly from the Ohno compilation cited therein, partly back-calculated from interaction studies.</li>
+          </ul>
+          <p class="h">Inhibition constants &#183; K<sub>i</sub> and K<sub>i</sub>&prime;</p>
+          <ul>
+            <li><a href="https://doi.org/10.1111/j.2042-7158.2010.01202.x">Greenblatt DJ, et al. <i>J Pharm Pharmacol</i> 2011;63:214&ndash;221</a> &#8212; ketoconazole K<sub>i</sub> and &#945; on five CYP3A marker reactions, Table 2. K<sub>i</sub>&prime; = &#945;&#183;K<sub>i</sub>.</li>
+          </ul>
+          <p class="h">Inhibitor exposure</p>
+          <ul>
+            <li><a href="https://www.taro.com/sites/default/files/USA-Products-Rx/KetoconazoleTabletsPrescribingInformation-Sep2023.pdf">Ketoconazole, US prescribing information 2023</a> &#8212; C<sub>max</sub> 3.5 µg/mL after 200 mg, 99% protein bound, M<sub>r</sub> 531.44.</li>
+            <li><a href="https://vaccin-covid.canada.ca/info/pdf/paxlovid-pm-en.pdf">Paxlovid product monograph</a> &#8212; ritonavir C<sub>max</sub> 0.36 µg/mL after 100 mg, 98&ndash;99% bound.</li>
+            <li><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2021/203100s036lbl.pdf">Tybost (cobicistat), US label 2021</a> &#8212; steady-state C<sub>max</sub> 0.99 µg/mL, 97&ndash;98% bound, M<sub>r</sub> 776.0.</li>
+            <li><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/020083s063lbl.pdf">Sporanox (itraconazole), US label 2019</a> &#8212; steady-state C<sub>max</sub> 1.1 µg/mL at 200 mg, 99.8% bound, M<sub>r</sub> 705.64.</li>
+          </ul>
+          <p class="h">The model, and the clinical yardstick</p>
+          <ul>
+            <li><a href="https://pubmed.ncbi.nlm.nih.gov/?term=Fahmi+2009+Comparison+of+different+algorithms+for+predicting+clinical+drug-drug+interactions+CYP3A4">Fahmi OA, et al. <i>Drug Metab Dispos</i> 2009</a> &#8212; the mechanistic static model whose two factors are multiplied here.</li>
+            <li><a href="https://www.mdpi.com/1999-4923/15/2/679">Marok FZ, et al. <i>Pharmaceutics</i> 2023;15:679</a> &#8212; quotes the observed interaction: about a 15-fold rise in oral midazolam AUC with ketoconazole 400 mg, and 11-fold for triazolam. A secondary source: for publication, cite the original clinical studies.</li>
+          </ul>
+          <p class="w">Every number in this box comes from one of these; nothing is estimated here. Values borrowed across drugs are flagged in the scenario note.</p>
+        </div>
+      </span>
     </div>
     <p class="a2key"><span class="k inh">inhibitor</span><span class="k vic">victim drug</span></p>
     <div class="mini" style="margin-top:6px">
@@ -1955,6 +2009,28 @@ Array.prototype.forEach.call(document.querySelectorAll('.a2quick button'), funct
     document.getElementById('a2scn').value=k; a2scenario(k); render();
   });
 });
+
+/* the sources panel: hover handled in CSS, click for touch, and it closes on
+   outside click or Escape without swallowing the links inside it */
+(function(){
+  var w=document.getElementById('lit'); if(!w) return;
+  var t=w.querySelector('.littrig');
+  var cl=w.querySelector('.litclose');
+  if(cl) cl.addEventListener('click', function(e){
+    e.stopPropagation(); w.classList.remove('open'); t.setAttribute('aria-expanded','false');
+  });
+  t.addEventListener('click', function(e){
+    e.stopPropagation();
+    var on=w.classList.toggle('open');
+    t.setAttribute('aria-expanded', on ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(e){
+    if(!w.contains(e.target)){ w.classList.remove('open'); t.setAttribute('aria-expanded','false'); }
+  }, true);
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){ w.classList.remove('open'); t.setAttribute('aria-expanded','false'); }
+  });
+})();
 </script>
 </body>
 </html>
