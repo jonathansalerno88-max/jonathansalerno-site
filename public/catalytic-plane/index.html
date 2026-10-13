@@ -744,7 +744,7 @@ function panelPlane(d){
   var W=380,H=288,T=16,B=36, ph=H-T-B, pw=ph, L=(W-pw)/2, R=L;
   var cmp = VIS().length > 0;      /* con dei pin il pannello serve a confrontare, non a studiare un punto */
   var span = Math.max(d.K,d.V,1);
-  VIS().forEach(function(q){ span=Math.max(span,q.K,q.V); });
+  (cmp?VISALL():[]).forEach(function(q){ span=Math.max(span,q.K,q.V); });
   var M = Math.max(1.45, 1.22*span);
   var px=function(x){return L+x/M*pw;}, py=function(y){return T+ph-y/M*ph;};
   var o=[];
@@ -802,7 +802,7 @@ function panelPlane(d){
 
   /* every pinned state in the same frame: the whole point of the plane */
   var seen=[];
-  VIS().forEach(function(q){
+  (cmp?VISALL():[]).forEach(function(q){
     if(q.K>M || q.V>M) return;
     o.push(ln(px(0),py(0),px(q.K),py(q.V),q.col,1.1));
     o.push(dot(px(q.K),py(q.V),q.col,4.2));
@@ -1280,7 +1280,11 @@ function kiBlock(d){
 
 /* ══════════════ pinned states ══════════════ */
 var PINS = [], PINSEQ = 0;
-function VIS(){ return PINS.filter(function(q){ return !q.hidden; }); }
+function isCur(q){ return q.raw && q.raw[0]==F.kmN && q.raw[1]==F.vmN && q.raw[2]==F.kmM && q.raw[3]==F.vmM && q.raw[4]==F.I; }
+/* pins drawn for comparison: visible ones, minus the one already on screen as the live state.
+   With only that one left, the plane goes back to studying a single point. */
+function VIS(){ return PINS.filter(function(q){ return !q.hidden && !isCur(q); }); }
+function VISALL(){ return PINS.filter(function(q){ return !q.hidden; }); }
 var PINCOL = ['#7B4EA8','#1F6B4A','#B3261E','#8A5A11','#1565C0','#C2185B','#00838F','#5D4037'];
 
 function pinFrom(kmN,vmN,kmM,vmM,I,label){
@@ -1588,7 +1592,7 @@ document.getElementById('pinList').addEventListener('click', function(e){
   var ev=e.target.closest('button.eye');
   if(ev){ var q=PINS[+ev.dataset.v]; q.hidden=!q.hidden; render(); return; }
   var eo=e.target.closest('button.only');
-  if(eo){ var k=+eo.dataset.o; PINS.forEach(function(q,j){ q.hidden = j!==k; }); render(); return; }
+  if(eo){ var k=+eo.dataset.o; PINS.forEach(function(q,j){ q.hidden = j!==k; }); loadPin(k); return; }
   var b=e.target.closest('button.x');
   if(b){ PINS.splice(+b.dataset.i,1); render(); return; }
   var r=e.target.closest('[data-load]'); if(r) loadPin(+r.dataset.load);
