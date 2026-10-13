@@ -420,8 +420,8 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
       <div class="po-only"><label for="a2kip">K<sub>i</sub>&prime; µM</label><input type="number" id="a2kip" step="any" min="0" placeholder="&#8734;"></div>
       <div><label for="a2fm">f<sub>m</sub></label><input type="number" id="a2fm" step="any" min="0" max="1" value="0.9"></div>
       <div class="po-only"><label for="a2fg">F<sub>g</sub></label><input type="number" id="a2fg" step="any" min="0" max="1" value="0.5"></div>
-      <div><label for="a2ih">[I] liver µM</label><input type="number" id="a2ih" step="any" min="0" value="10"></div>
-      <div class="po-only"><label for="a2ig">[I] gut µM</label><input type="number" id="a2ig" step="any" min="0" value="50"></div>
+      <div><label for="a2ih">[I] liver µM</label><input type="number" id="a2ih" step="any" min="0" value="0.23"></div>
+      <div class="po-only"><label for="a2ig">[I] gut µM</label><input type="number" id="a2ig" step="any" min="0" value="3330"></div>
     </div>
     <p class="hint" style="margin:-2px 0 10px"><span id="a2src"></span> Leave K<sub>i</sub> or K<sub>i</sub>&prime; blank for &#8734;.</p>
     <div class="a2def">
@@ -433,6 +433,15 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
       <span class="w">Where to find it: from intravenous and oral data of the same drug (F = F<sub>a</sub>&#183;F<sub>g</sub>&#183;F<sub>h</sub>),
       or published compilations, e.g. <a href="https://doi.org/10.1124/dmd.110.032649">Gertz et al., <i>Drug Metab Dispos</i> 2010</a>
       (25 CYP3A substrates).</span></p>
+      <p><b>Default concentrations: ritonavir 600 mg every 12 h.</b>
+      <span class="w">[I] gut = dose / 250 mL = 600 mg / 250 mL / 720.9 g/mol &#8776; 3330 µM.
+      [I] liver = unbound C<sub>max</sub>: 11.2 µg/mL (&#8776; 15.5 µM total;
+      <a href="https://doi.org/10.1093/jac/dkh029">Zeldin &amp; Petruschke, <i>J Antimicrob Chemother</i> 2004</a>)
+      &#215; f<sub>u</sub> &#8776; 0.015 (98&ndash;99% bound, product label) &#8776; 0.23 µM.
+      f<sub>m</sub> 0.9 and F<sub>g</sub> 0.5 are generic illustrative values for a CYP3A substrate, not a specific drug.</span></p>
+      <p class="w"><b>Caveat.</b> Ritonavir is a mechanism-based (time-dependent) inactivator of CYP3A: it destroys the enzyme
+      rather than binding reversibly, so this reversible model underestimates it. And K<sub>i</sub>, K<sub>i</sub>&prime;
+      here are those of the state above, not ritonavir&rsquo;s.</p>
       <p class="w">The two factors multiplied are the mechanistic static model
       (<a href="https://pubmed.ncbi.nlm.nih.gov/?term=Fahmi+2009+Comparison+of+different+algorithms+for+predicting+clinical+drug-drug+interactions+CYP3A4">Fahmi et al., <i>Drug Metab Dispos</i> 2009</a>).</p>
     </div>
