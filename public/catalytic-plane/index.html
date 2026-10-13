@@ -154,6 +154,12 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 .a2pre{margin-top:12px}
 .a2scn{margin-top:0;margin-bottom:12px}
 .a2scn select{width:100%}
+.a2quick{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+.a2quick button{font:inherit;font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--iso);background:transparent;color:var(--iso)}
+.a2quick button:hover{background:var(--surface2)}
+.a2quick button[aria-pressed="true"]{background:var(--iso);color:var(--surface)}
+.a2quick button:focus-visible{outline:2px solid var(--iso);outline-offset:2px}
 :root{--inh-bg:#F1EAF8;--inh-bd:#B79AD6;--vic-bg:#E6F3EC;--vic-bd:#86C1A2}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--inh-bg:#2C2338;--inh-bd:#6E5690;--vic-bg:#1D3128;--vic-bd:#3F7A5C}}
 :root[data-theme="dark"]{--inh-bg:#2C2338;--inh-bd:#6E5690;--vic-bg:#1D3128;--vic-bd:#3F7A5C}
@@ -463,6 +469,11 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
         <option value="s5">Ketoconazole &#8594; buspirone &#183; constants from midazolam 1&prime;-OH (mixed)</option>
         <option value="s6">Ketoconazole &#8594; nifedipine &#183; constants from nifedipine oxidation (mixed)</option>
       </select>
+      <div class="a2quick">
+        <button type="button" data-s="s4" title="Competitive constants on the victim with the heaviest gut first pass: the two models are furthest apart here">Buspirone &#183; widest gap</button>
+        <button type="button" data-s="s2" title="Same drug and enzyme as the main route, but the competitive 4-OH pathway">Midazolam &#183; competitive route</button>
+        <button type="button" data-s="s1" title="The main midazolam route, mixed inhibition: here the two models agree">Midazolam &#183; main route</button>
+      </div>
       <p class="hint" id="a2snote"></p>
     </div>
     <div class="segbtns route" role="group" aria-label="Route of administration">
@@ -1555,6 +1566,8 @@ function a2scenario(k){
   document.getElementById('a2preset').value=c.inh; a2preset(c.inh);
   document.getElementById('a2vic').value=c.vic;    a2victim(c.vic);
   n.innerHTML=c.note;
+  Array.prototype.forEach.call(document.querySelectorAll('.a2quick button'), function(b){
+    b.setAttribute('aria-pressed', b.getAttribute('data-s')===k ? 'true' : 'false'); });
 }
 /* what the number means for one patient, in words */
 function a2vname(){
@@ -1931,7 +1944,15 @@ document.getElementById('a2scn').addEventListener('change', function(e){ a2scena
   var el=document.getElementById(id);
   if(el) el.addEventListener('input', function(){
     var sc=document.getElementById('a2scn');
-    if(sc && sc.value){ sc.value=''; document.getElementById('a2snote').innerHTML=''; }
+    if(sc && sc.value){ sc.value=''; document.getElementById('a2snote').innerHTML='';
+      Array.prototype.forEach.call(document.querySelectorAll('.a2quick button'), function(b){ b.setAttribute('aria-pressed','false'); }); }
+  });
+});
+
+Array.prototype.forEach.call(document.querySelectorAll('.a2quick button'), function(b){
+  b.addEventListener('click', function(){
+    var k=b.getAttribute('data-s');
+    document.getElementById('a2scn').value=k; a2scenario(k); render();
   });
 });
 </script>
