@@ -152,6 +152,8 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 #aucr2 .route{display:inline-flex;flex-wrap:wrap}
 #aucr2 .mini > div{display:flex;flex-direction:column;justify-content:flex-end;flex:1 1 140px}
 .a2pre{margin-top:12px}
+.a2scn{margin-top:0;margin-bottom:12px}
+.a2scn select{width:100%}
 :root{--inh-bg:#F1EAF8;--inh-bd:#B79AD6;--vic-bg:#E6F3EC;--vic-bd:#86C1A2}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--inh-bg:#2C2338;--inh-bd:#6E5690;--vic-bg:#1D3128;--vic-bd:#3F7A5C}}
 :root[data-theme="dark"]{--inh-bg:#2C2338;--inh-bd:#6E5690;--vic-bg:#1D3128;--vic-bd:#3F7A5C}
@@ -448,6 +450,19 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
     <h3>From K<sub>i</sub> and K<sub>i</sub>&prime; to the AUC ratio</h3>
     <p class="hint">How many times exposure to the victim drug rises. K<sub>i</sub> and K<sub>i</sub>&prime; follow the state above
     until you type your own; the fractions and concentrations come from the literature.</p>
+    <div class="a2pre a2scn">
+      <label for="a2scn">Ready-made scenario &#183; published data</label>
+      <select id="a2scn">
+        <option value="">(none &#8212; set it yourself)</option>
+        <option value="s1">Ketoconazole &#8594; midazolam &#183; constants from midazolam 1&prime;-OH (mixed)</option>
+        <option value="s2">Ketoconazole &#8594; midazolam &#183; constants from midazolam 4-OH (competitive)</option>
+        <option value="s3">Ketoconazole &#8594; simvastatin &#183; constants from midazolam 4-OH (competitive)</option>
+        <option value="s4">Ketoconazole &#8594; buspirone &#183; constants from midazolam 4-OH (competitive)</option>
+        <option value="s5">Ketoconazole &#8594; buspirone &#183; constants from midazolam 1&prime;-OH (mixed)</option>
+        <option value="s6">Ketoconazole &#8594; nifedipine &#183; constants from nifedipine oxidation (mixed)</option>
+      </select>
+      <p class="hint" id="a2snote"></p>
+    </div>
     <div class="segbtns route" role="group" aria-label="Route of administration">
       <button type="button" data-r="iv" aria-pressed="true">Liver only &#183; IV</button>
       <button type="button" data-r="po" aria-pressed="false">Liver + gut &#183; oral</button>
@@ -1500,6 +1515,45 @@ var A2VIC = {
   ato: {fm:0.68, fg:0.40},
   custom:{}
 };
+/* whole scenarios: one choice sets the kinetic state, the inhibitor exposure and the victim.
+   Inhibition constants: Greenblatt 2011 Table 2 (Ki and alpha, Ki' = alpha*Ki), converted to a
+   modulated pair at [I] = 0.1 µM. Victim fm and Fg: Loue & Tod 2014 and Davies 2020. */
+var A2SCN = {
+  s1:{st:[3.34,10,13.80,4.09,0.1], inh:'keto', vic:'mdz',
+      note:'The main midazolam route. Mixed inhibition (K<sub>i</sub> 0.011, &#945; 6.30 &#8594; K<sub>i</sub>&prime; 0.069 µM). '+
+        'Observed clinically: about a <b>15-fold</b> rise in oral midazolam AUC with ketoconazole '+
+        '(<a href="https://www.mdpi.com/1999-4923/15/2/679">quoted in Marok et al. 2023</a>), so both models underpredict &#8212; '+
+        'expected for a static model, and ketoconazole also has a time-dependent component.'},
+  s2:{st:[51.30,10,321.30,10.00,0.1], inh:'keto', vic:'mdz',
+      note:'The same drug and the same enzyme, but the 4-OH route: Greenblatt found it <b>purely competitive</b> '+
+        '(&#945; very large, so K<sub>i</sub>&prime; &#8594; &#8734;). This is where the two models part company.'},
+  s3:{st:[51.30,10,321.30,10.00,0.1], inh:'keto', vic:'sim',
+      note:'Competitive constants on a victim with a heavier gut first pass (F<sub>g</sub> 0.29). '+
+        'The constants were measured on midazolam 4-OH, not on simvastatin &#8212; the usual assumption that one enzyme K<sub>i</sub> '+
+        'serves every substrate, which Greenblatt&rsquo;s own substrate-to-substrate spread (0.011&ndash;0.072 µM) calls into question.'},
+  s4:{st:[51.30,10,321.30,10.00,0.1], inh:'keto', vic:'bus',
+      note:'The widest divergence available: competitive constants (no gut term at all in this model) on the lowest F<sub>g</sub> '+
+        'victim, 0.18. The gap is exactly 1/F<sub>g</sub>. Constants borrowed from midazolam 4-OH, as in the scenario above.'},
+  s5:{st:[3.34,10,13.80,4.09,0.1], inh:'keto', vic:'bus',
+      note:'Same victim, mixed constants instead: now the gut is shut down in both models, so they agree &#8212; and the predicted '+
+        'interaction is large. Compare with the scenario above to see how much rides on the mechanism alone.'},
+  s6:{st:[10.00,10,18.00,7.54,0.1], inh:'keto', vic:'nif',
+      note:'The internally consistent one: the constants were measured on nifedipine oxidation and nifedipine is also the victim. '+
+        'Its K<sub>m</sub> is not reported, so K<sub>m,nat</sub> = 10 is a placeholder; the ratios are unaffected.'}
+};
+function a2scenario(k){
+  var n=document.getElementById('a2snote');
+  if(!k){ n.innerHTML=''; return; }
+  var c=A2SCN[k];
+  loadPreset({v:c.st});
+  Array.prototype.forEach.call(document.querySelectorAll('#presets button'),function(x){x.classList.remove('cur');});
+  SWITCHED=false; A2.own=false; A2.route='po';
+  Array.prototype.forEach.call(document.querySelectorAll('#aucr2 .route button'), function(x){
+    x.setAttribute('aria-pressed', x.getAttribute('data-r')==='po' ? 'true' : 'false'); });
+  document.getElementById('a2preset').value=c.inh; a2preset(c.inh);
+  document.getElementById('a2vic').value=c.vic;    a2victim(c.vic);
+  n.innerHTML=c.note;
+}
 function a2victim(k){
   var v=A2VIC[k], n=document.getElementById('a2vnote');
   if(v.fm===undefined){ n.innerHTML='Your own f<sub>m</sub> and F<sub>g</sub>.'; return; }
@@ -1854,6 +1908,16 @@ document.getElementById('pasteKeto').addEventListener('click', function(){
   document.getElementById('pasteBtn').click();
   document.getElementById('pasteSrc').hidden = false;
   if(PINS.length>=n0+3) loadPin(n0+2);   /* midazolam 1'-OH: the strongest case */
+});
+
+document.getElementById('a2scn').addEventListener('change', function(e){ a2scenario(e.target.value); render(); });
+/* touching anything by hand means the scenario no longer describes what is on screen */
+['a2ki','a2kip','a2fm','a2fg','a2ih','a2ig','kmN','vmN','kmM','vmM','conc'].forEach(function(id){
+  var el=document.getElementById(id);
+  if(el) el.addEventListener('input', function(){
+    var sc=document.getElementById('a2scn');
+    if(sc && sc.value){ sc.value=''; document.getElementById('a2snote').innerHTML=''; }
+  });
 });
 </script>
 </body>
