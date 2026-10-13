@@ -150,7 +150,11 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
    on a narrow phone */
 .tool.wide{grid-column:1/-1}
 #aucr2 .route{display:inline-flex;flex-wrap:wrap}
-#aucr2 .mini label{height:17px;line-height:17px;overflow:visible}
+#aucr2 .mini > div{display:flex;flex-direction:column;justify-content:flex-end;flex:1 1 140px}
+.a2pre{margin-top:12px}
+.a2pre label{display:block;font-size:11px;color:var(--mut);margin-bottom:3px}
+.a2pre select{font:inherit;font-size:12.5px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);max-width:100%}
+.a2pre .hint{margin:5px 0 0}
 #aucr2:not(.po) .po-only{display:none}
 .a2def{margin:0 0 12px;padding:9px 12px;border-radius:8px;background:var(--surface2);font-size:11.5px;line-height:1.5}
 .a2def p{margin:0 0 6px}
@@ -415,36 +419,24 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
       <button type="button" data-r="iv" aria-pressed="true">Liver only &#183; IV</button>
       <button type="button" data-r="po" aria-pressed="false">Liver + gut &#183; oral</button>
     </div>
+    <div class="a2pre">
+      <label for="a2preset">Inhibitor concentrations</label>
+      <select id="a2preset">
+        <option value="rtv">Ritonavir 600 mg every 12 h</option>
+        <option value="keto">Ketoconazole 200 mg</option>
+        <option value="custom">Custom</option>
+      </select>
+      <p class="hint" id="a2note"></p>
+    </div>
     <div class="mini" style="margin-top:12px">
       <div><label for="a2ki">K<sub>i</sub> µM</label><input type="number" id="a2ki" step="any" min="0" placeholder="&#8734;"></div>
       <div class="po-only"><label for="a2kip">K<sub>i</sub>&prime; µM</label><input type="number" id="a2kip" step="any" min="0" placeholder="&#8734;"></div>
-      <div><label for="a2fm">f<sub>m</sub></label><input type="number" id="a2fm" step="any" min="0" max="1" value="0.9"></div>
-      <div class="po-only"><label for="a2fg">F<sub>g</sub></label><input type="number" id="a2fg" step="any" min="0" max="1" value="0.5"></div>
-      <div><label for="a2ih">[I] liver µM</label><input type="number" id="a2ih" step="any" min="0" value="0.23"></div>
+      <div><label for="a2fm">f<sub>m</sub> &#183; fraction metabolized by this enzyme</label><input type="number" id="a2fm" step="any" min="0" max="1" value="0.9"></div>
+      <div class="po-only"><label for="a2fg">F<sub>g</sub> &#183; fraction escaping the gut wall</label><input type="number" id="a2fg" step="any" min="0" max="1" value="0.5"></div>
+      <div><label for="a2ih">[I] liver, unbound µM</label><input type="number" id="a2ih" step="any" min="0" value="0.23"></div>
       <div class="po-only"><label for="a2ig">[I] gut µM</label><input type="number" id="a2ig" step="any" min="0" value="3330"></div>
     </div>
     <p class="hint" style="margin:-2px 0 10px"><span id="a2src"></span> Leave K<sub>i</sub> or K<sub>i</sub>&prime; blank for &#8734;.</p>
-    <div class="a2def">
-      <p><b>f<sub>m</sub></b> &#8212; fraction of the victim drug&rsquo;s clearance that runs through this enzyme (0&ndash;1).
-      <span class="w">Where to find it: human ADME and in vitro reaction-phenotyping data in the drug&rsquo;s label or
-      assessment report, or back-calculated from a clinical study with a strong inhibitor of the enzyme
-      (f<sub>m</sub> &#8776; 1 &#8722; 1/AUCR) or from genetic poor metabolizers.</span></p>
-      <p class="po-only"><b>F<sub>g</sub></b> &#8212; fraction of an oral dose that escapes metabolism in the gut wall (0&ndash;1; 1 = no gut first pass).
-      <span class="w">Where to find it: from intravenous and oral data of the same drug (F = F<sub>a</sub>&#183;F<sub>g</sub>&#183;F<sub>h</sub>),
-      or published compilations, e.g. <a href="https://doi.org/10.1124/dmd.110.032649">Gertz et al., <i>Drug Metab Dispos</i> 2010</a>
-      (25 CYP3A substrates).</span></p>
-      <p><b>Default concentrations: ritonavir 600 mg every 12 h.</b>
-      <span class="w">[I] gut = dose / 250 mL = 600 mg / 250 mL / 720.9 g/mol &#8776; 3330 µM.
-      [I] liver = unbound C<sub>max</sub>: 11.2 µg/mL (&#8776; 15.5 µM total;
-      <a href="https://doi.org/10.1093/jac/dkh029">Zeldin &amp; Petruschke, <i>J Antimicrob Chemother</i> 2004</a>)
-      &#215; f<sub>u</sub> &#8776; 0.015 (98&ndash;99% bound, product label) &#8776; 0.23 µM.
-      f<sub>m</sub> 0.9 and F<sub>g</sub> 0.5 are generic illustrative values for a CYP3A substrate, not a specific drug.</span></p>
-      <p class="w"><b>Caveat.</b> Ritonavir is a mechanism-based (time-dependent) inactivator of CYP3A: it destroys the enzyme
-      rather than binding reversibly, so this reversible model underestimates it. And K<sub>i</sub>, K<sub>i</sub>&prime;
-      here are those of the state above, not ritonavir&rsquo;s.</p>
-      <p class="w">The two factors multiplied are the mechanistic static model
-      (<a href="https://pubmed.ncbi.nlm.nih.gov/?term=Fahmi+2009+Comparison+of+different+algorithms+for+predicting+clinical+drug-drug+interactions+CYP3A4">Fahmi et al., <i>Drug Metab Dispos</i> 2009</a>).</p>
-    </div>
     <div id="a2out"></div>
   </div>
 
@@ -1426,6 +1418,21 @@ function aucrFormula(fm,Fg,Ih,Ig,d,A){
 
 /* ══════════════ the AUC ratio, by hand ══════════════ */
 var A2 = {route:'iv', own:false};
+/* inhibitor exposure presets. [I] gut = dose / 250 mL; [I] liver = unbound Cmax. */
+var A2PRE = {
+  rtv: {ih:0.23, ig:3330,
+    note:'Gut: 600 mg / 250 mL / 720.9 g/mol. Liver: C<sub>max</sub> 11.2 µg/mL '+
+      '(<a href="https://doi.org/10.1093/jac/dkh029">Zeldin &amp; Petruschke 2004</a>) &#215; 1.5% unbound. '+
+      'Ritonavir destroys CYP3A (time-dependent), so this reversible model underestimates it.'},
+  keto:{ih:0.066, ig:1505,
+    note:'Gut: 200 mg / 250 mL / 531.4 g/mol. Liver: C<sub>max</sub> 3.5 µg/mL &#215; 1% unbound '+
+      '(<a href="https://www.taro.com/sites/default/files/USA-Products-Rx/KetoconazoleTabletsPrescribingInformation-Sep2023.pdf">US label</a>).'},
+  custom:{note:'Your own concentrations.'}
+};
+function a2preset(k){
+  var p=A2PRE[k]; document.getElementById('a2note').innerHTML=p.note;
+  if(p.ih!==undefined){ document.getElementById('a2ih').value=fmt2(p.ih); document.getElementById('a2ig').value=fmt2(p.ig); }
+}
 function a2val(id){ var t=document.getElementById(id).value.trim(); if(t==='') return Infinity; var v=parseFloat(t); return isNaN(v)?NaN:v; }
 function renderA2(d){
   var box=document.getElementById('a2out'); if(!box) return;
@@ -1705,6 +1712,14 @@ Array.prototype.forEach.call(document.querySelectorAll('#aucr2 .route button'), 
 document.getElementById('aucr2').addEventListener('click', function(e){
   if(e.target.id==='a2reset'){ e.preventDefault(); A2.own=false; render(); }
 });
+
+document.getElementById('a2preset').addEventListener('change', function(e){ a2preset(e.target.value); render(); });
+['a2ih','a2ig'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', function(){
+    var sel=document.getElementById('a2preset'); if(sel.value!=='custom'){ sel.value='custom'; a2preset('custom'); }
+  });
+});
+a2preset('rtv'); render();
 </script>
 </body>
 </html>
