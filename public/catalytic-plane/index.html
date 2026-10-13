@@ -155,6 +155,7 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 :root{--inh-bg:#F1EAF8;--inh-bd:#B79AD6;--vic-bg:#E6F3EC;--vic-bd:#86C1A2}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--inh-bg:#2C2338;--inh-bd:#6E5690;--vic-bg:#1D3128;--vic-bd:#3F7A5C}}
 :root[data-theme="dark"]{--inh-bg:#2C2338;--inh-bd:#6E5690;--vic-bg:#1D3128;--vic-bd:#3F7A5C}
+#aucr2 input.vic,#a2vic{background:var(--vic-bg);border-color:var(--vic-bd)}
 #aucr2 input.inh,#a2preset{background:var(--inh-bg);border-color:var(--inh-bd)}
 #aucr2 input.vic{background:var(--vic-bg);border-color:var(--vic-bd)}
 .a2key{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 0;font-size:11px;color:var(--mut)}
@@ -455,12 +456,25 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
       </select>
       <p class="hint" id="a2note"></p>
     </div>
+    <div class="a2pre">
+      <label for="a2vic">Victim drug</label>
+      <select id="a2vic">
+        <option value="mdz">Midazolam (oral)</option>
+        <option value="sim">Simvastatin</option>
+        <option value="felo">Felodipine</option>
+        <option value="nif">Nifedipine</option>
+        <option value="bus">Buspirone</option>
+        <option value="ato">Atorvastatin</option>
+        <option value="custom">Custom</option>
+      </select>
+      <p class="hint" id="a2vnote"></p>
+    </div>
     <p class="a2key"><span class="k inh">inhibitor</span><span class="k vic">victim drug</span></p>
     <div class="mini" style="margin-top:6px">
       <div><label for="a2ki">K<sub>i</sub> µM</label><input class="inh" type="number" id="a2ki" step="any" min="0" placeholder="&#8734;"></div>
       <div class="po-only"><label for="a2kip">K<sub>i</sub>&prime; µM</label><input class="inh" type="number" id="a2kip" step="any" min="0" placeholder="&#8734;"><span class="nu">not used for IV</span></div>
-      <div><label for="a2fm">f<sub>m</sub> &#183; fraction metabolized by this enzyme</label><input class="vic" type="number" id="a2fm" step="any" min="0" max="1" value="0.9"></div>
-      <div class="po-only"><label for="a2fg">F<sub>g</sub> &#183; fraction escaping the gut wall</label><input class="vic" type="number" id="a2fg" step="any" min="0" max="1" value="0.5"><span class="nu">not used for IV</span></div>
+      <div><label for="a2fm">f<sub>m</sub> &#183; fraction metabolized by this enzyme</label><input class="vic" type="number" id="a2fm" step="any" min="0" max="1" value="0.91"></div>
+      <div class="po-only"><label for="a2fg">F<sub>g</sub> &#183; fraction escaping the gut wall</label><input class="vic" type="number" id="a2fg" step="any" min="0" max="1" value="0.55"><span class="nu">not used for IV</span></div>
       <div><label for="a2ih">[I] liver, unbound µM</label><input class="inh" type="number" id="a2ih" step="any" min="0" value="0.0075"></div>
       <div class="po-only"><label for="a2ig">[I] gut µM</label><input class="inh" type="number" id="a2ig" step="any" min="0" value="555"><span class="nu">not used for IV</span></div>
     </div>
@@ -1461,6 +1475,23 @@ var A2PRE = {
       'Its metabolites also inhibit CYP3A and are not counted here.'},
   custom:{note:'Your own concentrations.'}
 };
+/* victim drugs: Fg from Davies et al. 2020 (suppl. Table 1, observed human fg, compiled incl. Gertz 2010);
+   fm,CYP3A from Loue & Tod 2014 (Table IV, CR_CYP3A4) */
+var VSRC = 'F<sub>g</sub>: <a href="https://doi.org/10.1124/dmd.120.000111">Davies et al., <i>Drug Metab Dispos</i> 2020</a> (compiled from clinical data, incl. Gertz 2010) &#183; '+
+  'f<sub>m</sub>: <a href="https://doi.org/10.1208/s12248-014-9663-y">Loue &amp; Tod, <i>AAPS J</i> 2014</a>.';
+var A2VIC = {
+  mdz: {fm:0.91, fg:0.55, extra:' Midazolam F<sub>g</sub> varies with the method (about 0.35&ndash;0.57 across studies).'},
+  sim: {fm:0.97, fg:0.29}, felo:{fm:0.87, fg:0.42}, nif:{fm:0.72, fg:0.71},
+  bus: {fm:0.99, fg:0.18, extra:' Low F<sub>g</sub>: the gut matters most here.'},
+  ato: {fm:0.68, fg:0.40},
+  custom:{}
+};
+function a2victim(k){
+  var v=A2VIC[k], n=document.getElementById('a2vnote');
+  if(v.fm===undefined){ n.innerHTML='Your own f<sub>m</sub> and F<sub>g</sub>.'; return; }
+  document.getElementById('a2fm').value=fmt2(v.fm); document.getElementById('a2fg').value=fmt2(v.fg);
+  n.innerHTML='f<sub>m,CYP3A</sub> '+v.fm+' &#183; F<sub>g</sub> '+v.fg+'. '+VSRC+(v.extra||'');
+}
 function a2preset(k){
   var p=A2PRE[k]; document.getElementById('a2note').innerHTML=p.note;
   if(p.ih!==undefined){ document.getElementById('a2ih').value=fmt2(p.ih); document.getElementById('a2ig').value=fmt2(p.ig); }
@@ -1784,6 +1815,14 @@ document.getElementById('pasteDemo').addEventListener('click', function(){
   /* put B on screen too, so the panels and the AUC box have an inhibition to work on */
   if(PINS.length>=n0+2) loadPin(n0+1);
 });
+
+document.getElementById('a2vic').addEventListener('change', function(e){ a2victim(e.target.value); render(); });
+['a2fm','a2fg'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', function(){
+    var sel=document.getElementById('a2vic'); if(sel.value!=='custom'){ sel.value='custom'; a2victim('custom'); }
+  });
+});
+a2victim('mdz'); render();
 </script>
 </body>
 </html>
