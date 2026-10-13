@@ -148,10 +148,69 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 /* ── three practical tools: pin & compare, paste a table, close the chain ── */
 /* min() so the 330px track collapses instead of pushing the page sideways
    on a narrow phone */
-  border:1px solid var(--iso);background:transparent;color:var(--iso)}
+.tool.wide{grid-column:1/-1}
+#aucr2 .route{display:inline-flex;flex-wrap:wrap}
+#aucr2 .mini > div{display:flex;flex-direction:column;justify-content:flex-end;flex:1 1 140px}
+.a2pre{margin-top:12px}
+:root{--inh-bg:#F1EAF8;--inh-bd:#B79AD6;--vic-bg:#E6F3EC;--vic-bd:#86C1A2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--inh-bg:#2C2338;--inh-bd:#6E5690;--vic-bg:#1D3128;--vic-bd:#3F7A5C}}
+:root[data-theme="dark"]{--inh-bg:#2C2338;--inh-bd:#6E5690;--vic-bg:#1D3128;--vic-bd:#3F7A5C}
+#aucr2 input.vic,#a2vic{background:var(--vic-bg);border-color:var(--vic-bd)}
+#aucr2 input.inh,#a2preset{background:var(--inh-bg);border-color:var(--inh-bd)}
+#aucr2 input.vic{background:var(--vic-bg);border-color:var(--vic-bd)}
+.a2key{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 0;font-size:11px;color:var(--mut)}
+.a2key .k{display:inline-flex;align-items:center;gap:5px}
+.a2key .k::before{content:"";width:12px;height:12px;border-radius:3px;border:1px solid}
+.a2key .inh::before{background:var(--inh-bg);border-color:var(--inh-bd)}
+.a2key .vic::before{background:var(--vic-bg);border-color:var(--vic-bd)}
+.a2pre label{display:block;font-size:11px;color:var(--mut);margin-bottom:3px}
+.a2pre select{font:inherit;font-size:12.5px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);max-width:100%}
+.a2pre .hint{margin:5px 0 0}
 /* sources: opens on hover, and on click for touch; the panel sits inside the
    wrapper so moving the pointer onto a link keeps it open */
+.lit{position:relative;display:inline-block;margin-top:5px}
+.littrig{font:inherit;font-size:11px;font-weight:600;padding:2px 9px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--vic-bd);background:var(--vic-bg);color:var(--ink)}
+.littrig:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.litpan{display:none;position:absolute;z-index:40;left:0;top:calc(100% + 5px);width:min(31rem,88vw);
+  background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 13px;
+  box-shadow:0 10px 28px rgba(0,0,0,.18);font-size:11px;line-height:1.5;max-height:60vh;overflow:auto}
+.lit.open .litpan{display:block}
 /* hover only where there is a real pointer; on touch the trigger is a tap */
+@media (hover:hover) and (pointer:fine){ .lit:hover .litpan{display:block} }
+.litpan .h{margin:7px 0 3px;font-weight:600;color:var(--iso);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em}
+.litpan .h:first-child{margin-top:0}
+.litpan ul{margin:0;padding-left:16px}
+.litpan li{margin-bottom:4px}
+.litpan a{color:var(--accent);font-weight:600}
+.litpan .w{margin:8px 0 0;color:var(--mut)}
+.litclose{display:none;position:absolute;top:6px;right:8px;border:0;background:none;color:var(--mut);
+  font-size:20px;line-height:1;cursor:pointer;padding:2px 6px}
+/* on a phone an absolutely positioned panel runs off the edge: dock it to the bottom instead */
+@media (max-width:560px){
+  .litpan{position:fixed;left:8px;right:8px;top:auto;bottom:8px;width:auto;max-height:72vh}
+  .litclose{display:block}
+}
+#aucr2:not(.po) .mini .po-only{opacity:.45}
+#aucr2:not(.po) .mini .po-only input{pointer-events:none}
+#aucr2 .nu{display:none;font-size:10px;color:var(--faint);margin-top:2px}
+#aucr2:not(.po) .nu{display:block}
+.a2def{margin:0 0 12px;padding:9px 12px;border-radius:8px;background:var(--surface2);font-size:11.5px;line-height:1.5}
+.a2def p{margin:0 0 6px}
+.a2def p:last-child{margin:0}
+.a2def .w{color:var(--mut)}
+.a2grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:8px}
+.a2grid .kstep{margin:0}
+.a2res{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--surface2);border-left:3px solid var(--iso)}
+.a2res .big{font-family:var(--mono);font-size:22px;font-weight:600}
+.a2res .w{color:var(--mut);font-size:12px}
+.kstep.lim{border-left:3px solid var(--iso)}
+.a2vs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.a2vs > div{padding:9px 12px;border-radius:8px;background:var(--surface2)}
+.a2vs > div:first-child{border-left:3px solid var(--iso)}
+.a2vs > div:last-child{border-left:3px solid var(--faint)}
+.a2vs .lbl{display:block;font-size:11px;color:var(--mut)}
+.a2vs .big{font-family:var(--mono);font-size:18px;font-weight:600}
 .tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:14px;margin-bottom:20px}
 .tool{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
 .tool h3{margin:0 0 3px;font-size:13px;font-weight:600;color:var(--ink)}
@@ -405,6 +464,78 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
     <p class="hint" id="pasteMsg" style="margin:9px 0 0"></p>
   </div>
 
+  <div class="tool wide" id="aucr2">
+    <h3>From K<sub>i</sub> to the AUC ratio</h3>
+    <p class="hint">The mechanistic static model, as it is normally applied: K<sub>i</sub> in both organs. K<sub>i</sub> follows the state above until you type your own; the fractions and concentrations come from the literature. What the model cannot do is shown under the result.</p>
+    <div class="segbtns route" role="group" aria-label="Route of administration">
+      <button type="button" data-r="iv" aria-pressed="true">Liver only &#183; IV</button>
+      <button type="button" data-r="po" aria-pressed="false">Liver + gut &#183; oral</button>
+    </div>
+    <div class="a2pre">
+      <label for="a2preset">Inhibitor concentrations</label>
+      <select id="a2preset">
+        <option value="rtv">Ritonavir 100 mg &#183; booster (e.g. Paxlovid)</option>
+        <option value="cobi">Cobicistat 150 mg once daily &#183; booster</option>
+        <option value="itra">Itraconazole 200 mg once daily</option>
+        <option value="keto">Ketoconazole 200 mg &#183; index inhibitor</option>
+        <option value="ideal">Hypothetical inhibitor, 100 mg &#183; invented</option>
+        <option value="custom">Custom</option>
+      </select>
+      <p class="hint" id="a2note"></p>
+    </div>
+    <div class="a2pre">
+      <label for="a2vic">Victim drug</label>
+      <select id="a2vic">
+        <option value="mdz">Midazolam (oral)</option>
+        <option value="sim">Simvastatin</option>
+        <option value="felo">Felodipine</option>
+        <option value="nif">Nifedipine</option>
+        <option value="bus">Buspirone</option>
+        <option value="ato">Atorvastatin</option>
+        <option value="custom">Custom</option>
+      </select>
+      <p class="hint" id="a2vnote"></p>
+      <span class="lit" id="lit">
+        <button type="button" class="littrig" aria-expanded="false" aria-controls="litpan">Supporting literature &#9662;</button>
+        <div class="litpan" id="litpan" role="group" aria-label="Sources">
+          <button type="button" class="litclose" aria-label="close">&#215;</button>
+          <p class="h">Victim drug &#183; f<sub>m</sub> and F<sub>g</sub></p>
+          <ul>
+            <li><a href="https://doi.org/10.1124/dmd.120.000111">Davies M, et al. <i>Drug Metab Dispos</i> 2020;48:1169&ndash;1182</a> &#8212; observed human F<sub>g</sub>, supplemental table; the source of the F<sub>g</sub> values used here.</li>
+            <li><a href="https://doi.org/10.1124/dmd.110.032649">Gertz M, et al. <i>Drug Metab Dispos</i> 2010;38:1147&ndash;1158</a> &#8212; F<sub>g</sub> for 25 CYP3A substrates; the primary compilation behind the above.</li>
+            <li><a href="https://doi.org/10.1208/s12248-014-9663-y">Loue C, Tod M. <i>AAPS J</i> 2014;16:1309&ndash;1320</a> &#8212; CR<sub>CYP3A4</sub>, i.e. f<sub>m</sub>, Table IV; values partly from the Ohno compilation cited therein, partly back-calculated from interaction studies.</li>
+          </ul>
+          <p class="h">Inhibition constants &#183; K<sub>i</sub> and K<sub>i</sub>&prime;</p>
+          <ul>
+            <li><a href="https://doi.org/10.1111/j.2042-7158.2010.01202.x">Greenblatt DJ, et al. <i>J Pharm Pharmacol</i> 2011;63:214&ndash;221</a> &#8212; ketoconazole K<sub>i</sub> and &#945; on five CYP3A marker reactions, Table 2. K<sub>i</sub>&prime; = &#945;&#183;K<sub>i</sub>.</li>
+          </ul>
+          <p class="h">Inhibitor exposure</p>
+          <ul>
+            <li><a href="https://www.taro.com/sites/default/files/USA-Products-Rx/KetoconazoleTabletsPrescribingInformation-Sep2023.pdf">Ketoconazole, US prescribing information 2023</a> &#8212; C<sub>max</sub> 3.5 µg/mL after 200 mg, 99% protein bound, M<sub>r</sub> 531.44.</li>
+            <li><a href="https://vaccin-covid.canada.ca/info/pdf/paxlovid-pm-en.pdf">Paxlovid product monograph</a> &#8212; ritonavir C<sub>max</sub> 0.36 µg/mL after 100 mg, 98&ndash;99% bound.</li>
+            <li><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2021/203100s036lbl.pdf">Tybost (cobicistat), US label 2021</a> &#8212; steady-state C<sub>max</sub> 0.99 µg/mL, 97&ndash;98% bound, M<sub>r</sub> 776.0.</li>
+            <li><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/020083s063lbl.pdf">Sporanox (itraconazole), US label 2019</a> &#8212; steady-state C<sub>max</sub> 1.1 µg/mL at 200 mg, 99.8% bound, M<sub>r</sub> 705.64.</li>
+          </ul>
+          <p class="h">The model, and the clinical yardstick</p>
+          <ul>
+            <li><a href="https://pubmed.ncbi.nlm.nih.gov/?term=Fahmi+2009+Comparison+of+different+algorithms+for+predicting+clinical+drug-drug+interactions+CYP3A4">Fahmi OA, et al. <i>Drug Metab Dispos</i> 2009</a> &#8212; the mechanistic static model whose two factors are multiplied here.</li>
+            <li><a href="https://www.mdpi.com/1999-4923/15/2/679">Marok FZ, et al. <i>Pharmaceutics</i> 2023;15:679</a> &#8212; quotes the observed interaction: about a 15-fold rise in oral midazolam AUC with ketoconazole 400 mg, and 11-fold for triazolam. A secondary source: for publication, cite the original clinical studies.</li>
+          </ul>
+          <p class="w">Every number in this box comes from one of these; nothing is estimated here. Values borrowed across drugs are flagged in the scenario note.</p>
+        </div>
+      </span>
+    </div>
+    <p class="a2key"><span class="k inh">inhibitor</span><span class="k vic">victim drug</span></p>
+    <div class="mini" style="margin-top:6px">
+      <div><label for="a2ki">K<sub>i</sub> µM</label><input class="inh" type="number" id="a2ki" step="any" min="0" placeholder="&#8734;"></div>
+      <div><label for="a2fm">f<sub>m</sub> &#183; fraction metabolized by this enzyme</label><input class="vic" type="number" id="a2fm" step="any" min="0" max="1" value="0.91"></div>
+      <div class="po-only"><label for="a2fg">F<sub>g</sub> &#183; fraction escaping the gut wall</label><input class="vic" type="number" id="a2fg" step="any" min="0" max="1" value="0.55"><span class="nu">not used for IV</span></div>
+      <div><label for="a2ih">[I] liver, unbound µM</label><input class="inh" type="number" id="a2ih" step="any" min="0" value="0.0075"></div>
+      <div class="po-only"><label for="a2ig">[I] gut µM</label><input class="inh" type="number" id="a2ig" step="any" min="0" value="555"><span class="nu">not used for IV</span></div>
+    </div>
+    <p class="hint" style="margin:-2px 0 10px"><span id="a2src"></span></p>
+    <div id="a2out"></div>
+  </div>
 
 </div>
 
@@ -1312,6 +1443,148 @@ function renderPins(){
   }).join('');
 }
 
+/* ══════════════ the AUC ratio ══════════════ */
+function num(id,dflt){ var v=parseFloat(document.getElementById(id).value); return isNaN(v)?dflt:v; }
+
+/* ══════════════ the AUC ratio, by hand ══════════════ */
+var A2 = {route:'iv', own:false};
+/* inhibitor exposure presets. [I] gut = dose / 250 mL; [I] liver = unbound Cmax. */
+var A2PRE = {
+  rtv: {ih:0.0075, ig:555,
+    note:'Gut: 100 mg / 250 mL / 720.9 g/mol. Liver: C<sub>max</sub> 0.36 µg/mL after 100 mg '+
+      '(<a href="https://vaccin-covid.canada.ca/info/pdf/paxlovid-pm-en.pdf">Paxlovid product monograph</a>) &#215; 1.5% unbound (98&ndash;99% bound). '+
+      'Ritonavir destroys CYP3A (time-dependent), so this reversible model underestimates it.'},
+  cobi:{ih:0.032, ig:773,
+    note:'Gut: 150 mg / 250 mL / 776.0 g/mol. Liver: steady-state C<sub>max</sub> 0.99 µg/mL &#215; 2.5% unbound (97&ndash;98% bound) '+
+      '(<a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2021/203100s036lbl.pdf">Tybost US label</a>).'},
+  itra:{ih:0.0031, ig:1134,
+    note:'Gut: 200 mg / 250 mL / 705.6 g/mol. Liver: steady-state C<sub>max</sub> 1.1 µg/mL &#215; 0.2% unbound (99.8% bound) '+
+      '(<a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/020083s063lbl.pdf">Sporanox US label</a>). '+
+      'Its metabolites also inhibit CYP3A and are not counted here.'},
+  keto:{ih:0.066, ig:1505,
+    note:'Gut: 200 mg / 250 mL / 531.4 g/mol. Liver: C<sub>max</sub> 3.5 µg/mL &#215; 1% unbound (99% bound) '+
+      '(<a href="https://www.taro.com/sites/default/files/USA-Products-Rx/KetoconazoleTabletsPrescribingInformation-Sep2023.pdf">US label</a>). '+
+      'Oral ketoconazole was withdrawn for systemic infections, but it remains the index strong CYP3A inhibitor in interaction studies &#8212; '+
+      'and the one inhibitor with both constants published, so pair it with the real-data states.'},
+  ideal:{ih:0.1, ig:800,
+    note:'<b>Invented, not measured.</b> A 100 mg oral dose of a molecule of M<sub>r</sub> 500 gives 100 mg / 250 mL / 500 g/mol = 800 µM in the gut; '+
+      'the liver figure, 0.1 µM unbound, is simply a plausible round number for a potent inhibitor. Nothing here comes from a study.'},
+  custom:{note:'Your own concentrations.'}
+};
+/* victim drugs: Fg from Davies et al. 2020 (suppl. Table 1, observed human fg, compiled incl. Gertz 2010);
+   fm,CYP3A from Loue & Tod 2014 (Table IV, CR_CYP3A4) */
+var VSRC = 'F<sub>g</sub>: <a href="https://doi.org/10.1124/dmd.120.000111">Davies et al., <i>Drug Metab Dispos</i> 2020</a> (compiled from clinical data, incl. Gertz 2010) &#183; '+
+  'f<sub>m</sub>: <a href="https://doi.org/10.1208/s12248-014-9663-y">Loue &amp; Tod, <i>AAPS J</i> 2014</a>.';
+var A2VIC = {
+  mdz: {nm:'midazolam', fm:0.91, fg:0.55, extra:' Midazolam F<sub>g</sub> varies with the method (about 0.35&ndash;0.57 across studies).'},
+  sim: {nm:'simvastatin', fm:0.97, fg:0.29}, felo:{nm:'felodipine', fm:0.87, fg:0.42}, nif:{nm:'nifedipine', fm:0.72, fg:0.71},
+  bus: {nm:'buspirone', fm:0.99, fg:0.18, extra:' Low F<sub>g</sub>: the gut matters most here.'},
+  ato: {nm:'atorvastatin', fm:0.68, fg:0.40},
+  custom:{}
+};
+/* what the number means for one patient, in words */
+function a2vname(){
+  var el=document.getElementById('a2vic'); if(!el) return 'the victim drug';
+  var v=A2VIC[el.value]; return (v && v.nm) ? v.nm : 'the victim drug';
+}
+function a2plain(x){
+  var why = A2.route==='po'
+    ? '&#8212; less of it is destroyed on the way in, and what gets in leaves more slowly.'
+    : '&#8212; it leaves more slowly, the gut wall playing no part when the dose goes straight into a vein.';
+  return 'Same dose, about <b>'+nf(x,1)+'&#215; more '+a2vname()+' in the body</b> than in a patient not taking the inhibitor '+why;
+}
+function a2victim(k){
+  var v=A2VIC[k], n=document.getElementById('a2vnote');
+  if(v.fm===undefined){ n.innerHTML='Your own f<sub>m</sub> and F<sub>g</sub>.'; return; }
+  document.getElementById('a2fm').value=fmt2(v.fm); document.getElementById('a2fg').value=fmt2(v.fg);
+  n.innerHTML='f<sub>m,CYP3A</sub> '+v.fm+' &#183; F<sub>g</sub> '+v.fg+'. '+VSRC+(v.extra||'');
+}
+function a2preset(k){
+  var p=A2PRE[k]; document.getElementById('a2note').innerHTML=p.note;
+  if(p.ih!==undefined){ document.getElementById('a2ih').value=fmt2(p.ih); document.getElementById('a2ig').value=fmt2(p.ig); }
+}
+function a2val(id){ var t=document.getElementById(id).value.trim(); if(t==='') return Infinity; var v=parseFloat(t); return isNaN(v)?NaN:v; }
+function renderA2(d){
+  var box=document.getElementById('a2out'); if(!box) return;
+  var wrap=document.getElementById('aucr2');
+  wrap.classList.toggle('po', A2.route==='po');
+  ['a2fg','a2ig'].forEach(function(id){ var el=document.getElementById(id); el.disabled = A2.route!=='po'; el.tabIndex = A2.route==='po'?0:-1; });
+  var src=document.getElementById('a2src');
+  /* follow the reader until the user types a constant of their own */
+  if(!A2.own){
+    var ok = d && F.I>0 && d.Ki!==null && !isNaN(d.Ki) && !isNaN(d.Kip);
+    document.getElementById('a2ki').value = ok && isFinite(d.Ki) ? fmt2(sig3(d.Ki)) : '';
+    src.innerHTML = ok ? 'K<sub>i</sub> taken from the state above.'
+                       : 'No inhibition with a stated [I] above: type a K<sub>i</sub> yourself.';
+  } else {
+    src.innerHTML = 'Your own K<sub>i</sub>. <a href="#" id="a2reset">Take it from the state above</a>.';
+  }
+  var Ki=a2val('a2ki'), fm=a2val('a2fm'), Fg=a2val('a2fg'), Ih=a2val('a2ih'), Ig=a2val('a2ig');
+  var po = A2.route==='po';
+  var bad=[];
+  if(isNaN(Ki)||Ki<=0) bad.push('K<sub>i</sub> must be above zero');
+  if(!(fm>=0&&fm<=1)) bad.push('f<sub>m</sub> must be between 0 and 1');
+  if(!(Ih>=0)||!isFinite(Ih)) bad.push('[I] liver must be a number &#8805; 0');
+  if(po){
+    if(!(Fg>=0&&Fg<=1)) bad.push('F<sub>g</sub> must be between 0 and 1');
+    if(!(Ig>=0)||!isFinite(Ig)) bad.push('[I] gut must be a number &#8805; 0');
+  }
+  if(bad.length){ box.innerHTML='<p class="hint" style="margin:0;color:var(--flag)">'+bad.join(' &#183; ')+'.</p>'; return; }
+  /* three significant figures: concentrations here run from 0.003 to 3000 µM */
+  var g=function(x){ if(!isFinite(x)) return '&#8734;'; return Math.abs(x)>=1000 ? x.toFixed(0) : x.toPrecision(3); };
+  var Ah = 1/(1+Ih/Ki), liv = 1/(fm*Ah+1-fm);
+  var h = '<div class="a2grid"><div class="kstep"><span class="h">Step 1 &#183; liver</span>'+
+    'Enzyme still active: 1 / (1 + [I]/K<sub>i</sub>) = 1 / (1 + '+g(Ih)+'/'+g(Ki)+') = <b>'+g(Ah)+'</b><br>'+
+    'Liver factor: 1 / (f<sub>m</sub> &#183; '+g(Ah)+' + 1 &#8722; f<sub>m</sub>) = 1 / ('+g(fm)+' &#183; '+g(Ah)+' + '+g(1-fm)+') = <b>'+g(liv)+'</b></div>';
+  var tot = liv, gut = 1, ceil = isFinite(1/Fg) ? 1/Fg : Infinity;
+  if(po){
+    var Ag = 1/(1+Ig/Ki);
+    gut = 1/(Fg+(1-Fg)*Ag);
+    tot = liv*gut;
+    h += '<div class="kstep"><span class="h">Step 2 &#183; gut</span>'+
+      'Enzyme still active: 1 / (1 + [I]/K<sub>i</sub>) = 1 / (1 + '+g(Ig)+'/'+g(Ki)+') = <b>'+g(Ag)+'</b><br>'+
+      'Gut factor: 1 / (F<sub>g</sub> + (1 &#8722; F<sub>g</sub>) &#183; '+g(Ag)+') = 1 / ('+g(Fg)+' + '+g(1-Fg)+' &#183; '+g(Ag)+') = <b>'+g(gut)+'</b></div>'+
+      '<div class="kstep"><span class="h">Step 3 &#183; they are in series, so multiply</span>'+
+      'AUCR = '+g(liv)+' &#215; '+g(gut)+' = <b>'+nf(tot,2)+'</b></div>';
+  } else {
+    h += '<div class="kstep"><span class="h">Step 2 &#183; that is all</span>'+
+      'Given IV, the drug skips the gut wall: no first pass there, so the liver factor is the AUC ratio.</div>';
+  }
+  h += '</div><div class="a2res"><span class="big">AUCR '+nf(tot,2)+'</span>'+
+       '<span class="w">'+a2plain(tot)+'</span></div>';
+
+  /* What the model structurally cannot do, and the parameter it is most sensitive to.
+     Both are facts about the model, not proposals. */
+  if(po){
+    var lo = Fg*0.75, hi = Math.min(0.999, Fg*1.25);
+    var gLo = 1/(lo+(1-lo)*Ag), gHi = 1/(hi+(1-hi)*Ag);
+    h += '<div class="kstep lim"><span class="h">The gut term is bounded by 1/F<sub>g</sub></span>'+
+      'With the gut enzyme completely shut down the gut factor is 1/F<sub>g</sub> = <b>'+g(ceil)+'</b>, and no value of [I] can beat it: '+
+      'the entire intestinal contribution the model can ever produce is set by F<sub>g</sub> alone. Here it already stands at '+g(gut)+'.<br>'+
+      'And F<sub>g</sub> is read from the literature, where one drug often carries several values &#8212; midazolam is reported between '+
+      '<b>0.39</b>, measured directly against an intravenous dose (Hohmann 2015), and <b>0.57</b>. Move this F<sub>g</sub> by a quarter either way, '+
+      'nothing else, and the AUCR here runs <b>'+nf(liv*gHi,2)+'</b> to <b>'+nf(liv*gLo,2)+'</b> instead of '+nf(tot,2)+'.</div>';
+  }
+
+  /* The open question, stated as a question: the regime of the gut enzyme is substrate-dependent
+     and undetermined. Two hypotheses were tested against published data today and not supported;
+     both are named here so the page does not advertise either. */
+  var WARN = '<svg width="16" height="15" viewBox="0 0 16 15" aria-hidden="true" style="flex:0 0 16px;margin-top:2px">'+
+    '<path d="M8 1 L15.2 14 H0.8 Z" fill="#F2C200" stroke="#8A6D00" stroke-width="1" stroke-linejoin="round"/>'+
+    '<rect x="7.2" y="5" width="1.6" height="5" rx=".6" fill="#1A1A1A"/><circle cx="8" cy="11.8" r=".95" fill="#1A1A1A"/></svg>';
+  h += '<div class="kstep kwarn" style="margin-top:10px"><span class="h" style="display:flex;gap:7px;align-items:flex-start">'+WARN+
+    '<span>Open question &#183; which regime is the gut enzyme in?</span></span>'+
+    'Both terms above use K<sub>i</sub>, which assumes the enzyme is working well below its K<sub>m</sub> in both organs. '+
+    'In the liver that is not in doubt. In the enterocyte during absorption the substrate concentration is not measured, '+
+    'and the answer appears to differ by drug: midazolam shows no saturation of gut CYP3A over a 1000-fold dose range '+
+    '(gut extraction 0.53 at 3 µg vs 0.61 at 3 mg, Hohmann 2015), while the non-linear absorption of verapamil and quinidine '+
+    'is attributed to saturation of intestinal CYP3A, and modelled F<sub>g</sub> for dabigatran etexilate is dose-dependent.<br>'+
+    '<b>Two hypotheses tested and not supported:</b> that the gut term should run on K<sub>i</sub>&prime; rather than K<sub>i</sub> '+
+    '&#8212; itraconazole, a reversible inhibitor, abolishes gut CYP3A activity anyway; and that F<sub>g</sub> should rise with the oral dose '+
+    '&#8212; it does not, for midazolam. Neither is built into the arithmetic above.</div>';
+  box.innerHTML = h;
+}
+
 /* ══════════════ paste a table ══════════════ */
 function parsePaste(txt){
   var out=[], bad=0;
@@ -1348,6 +1621,7 @@ function render(){
   document.getElementById('cap-ci').innerHTML  = caption('ci',d);
   ['sat','lb','pl','ci'].forEach(function(k){ document.getElementById('ko-'+k).innerHTML = kcalc(k,d); });
   renderPins();
+  renderA2(d);
 
   var kn = document.getElementById('kinote'), msg = '';
   if(KI && SWITCHED)
@@ -1514,6 +1788,33 @@ Array.prototype.forEach.call(document.querySelectorAll('.kcalc'), function(box){
   });
 });
 
+/* AUC ratio by hand */
+Array.prototype.forEach.call(document.querySelectorAll('#aucr2 .route button'), function(b){
+  b.addEventListener('click', function(){
+    A2.route=b.getAttribute('data-r');
+    Array.prototype.forEach.call(document.querySelectorAll('#aucr2 .route button'), function(x){
+      x.setAttribute('aria-pressed', x===b ? 'true' : 'false'); });
+    render();
+  });
+});
+['a2ki'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', function(){ A2.own=true; render(); });
+});
+['a2fm','a2fg','a2ih','a2ig'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', render);
+});
+document.getElementById('aucr2').addEventListener('click', function(e){
+  if(e.target.id==='a2reset'){ e.preventDefault(); A2.own=false; render(); }
+});
+
+document.getElementById('a2preset').addEventListener('change', function(e){ a2preset(e.target.value); render(); });
+['a2ih','a2ig'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', function(){
+    var sel=document.getElementById('a2preset'); if(sel.value!=='custom'){ sel.value='custom'; a2preset('custom'); }
+  });
+});
+a2preset('rtv'); render();
+
 /* the A-E teaching set: same native enzyme and [I], one inhibitor per direction */
 document.getElementById('pasteDemo').addEventListener('click', function(){
   document.getElementById('pasteBox').value =
@@ -1524,9 +1825,17 @@ document.getElementById('pasteDemo').addEventListener('click', function(){
     '4, 10, 2, 5, 10, E uncompetitive';
   var n0=PINS.length;
   document.getElementById('pasteBtn').click();
-  /* put B on screen too, so the panels open on an inhibition */
+  /* put B on screen too, so the panels and the AUC box have an inhibition to work on */
   if(PINS.length>=n0+2) loadPin(n0+1);
 });
+
+document.getElementById('a2vic').addEventListener('change', function(e){ a2victim(e.target.value); render(); });
+['a2fm','a2fg'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', function(){
+    var sel=document.getElementById('a2vic'); if(sel.value!=='custom'){ sel.value='custom'; a2victim('custom'); }
+  });
+});
+a2victim('mdz'); render();
 
 /* ketoconazole, from the published Ki and alpha; see the note under the buttons */
 document.getElementById('pasteKeto').addEventListener('click', function(){
@@ -1543,6 +1852,27 @@ document.getElementById('pasteKeto').addEventListener('click', function(){
   if(PINS.length>=n0+3) loadPin(n0+2);   /* midazolam 1'-OH: the strongest case */
 });
 
+/* the sources panel: hover handled in CSS, click for touch, and it closes on
+   outside click or Escape without swallowing the links inside it */
+(function(){
+  var w=document.getElementById('lit'); if(!w) return;
+  var t=w.querySelector('.littrig');
+  var cl=w.querySelector('.litclose');
+  if(cl) cl.addEventListener('click', function(e){
+    e.stopPropagation(); w.classList.remove('open'); t.setAttribute('aria-expanded','false');
+  });
+  t.addEventListener('click', function(e){
+    e.stopPropagation();
+    var on=w.classList.toggle('open');
+    t.setAttribute('aria-expanded', on ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(e){
+    if(!w.contains(e.target)){ w.classList.remove('open'); t.setAttribute('aria-expanded','false'); }
+  }, true);
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){ w.classList.remove('open'); t.setAttribute('aria-expanded','false'); }
+  });
+})();
 </script>
 </body>
 </html>
