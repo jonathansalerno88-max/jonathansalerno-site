@@ -177,6 +177,12 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
   font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pinrow .x{margin-left:auto;border:0;background:none;color:var(--faint);cursor:pointer;padding:0 4px;font-size:14px;line-height:1}
 .pinrow .x:hover{color:var(--flag)}
+.pinrow .eye{border:0;background:none;color:var(--mut);cursor:pointer;padding:0 2px;line-height:0;flex:0 0 auto}
+.pinrow .eye:hover{color:var(--ink)}
+.pinrow .only{border:1px solid var(--line);background:none;color:var(--mut);cursor:pointer;font:inherit;font-size:10.5px;
+  padding:1px 7px;border-radius:999px;flex:0 0 auto}
+.pinrow .only:hover{color:var(--ink);border-color:var(--mut)}
+.pinrow.off .sw,.pinrow.off .nm,.pinrow.off .vv{opacity:.4}
 .pinrow[data-load]{cursor:pointer;border-radius:6px;padding-left:6px;padding-right:4px}
 .pinrow[data-load]:hover{background:var(--surface2)}
 .pinrow[data-load]:hover .nm{text-decoration:underline}
@@ -357,7 +363,7 @@ code{font-family:var(--mono);font-size:.92em;background:var(--surface2);padding:
     <button data-h="none" aria-pressed="false">None</button>
   </div>
   <label class="chk" for="lab"><input type="checkbox" id="lab"> Show labels</label>
-  <label class="chk" for="kib"><input type="checkbox" id="kib"> Show K<sub>i</sub> / K<sub>i</sub>&prime;</label>
+  <label class="chk" for="kib"><input type="checkbox" id="kib"> <span>Show K<sub>i</sub> / K<sub>i</sub>&prime;</span></label>
   <p id="kinote" class="note" hidden></p>
 </div>
 </div>
@@ -381,6 +387,7 @@ code{font-family:var(--mono);font-size:.92em;background:var(--surface2);padding:
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
       <button type="button" id="pinBtn">Pin this state</button>
       <button type="button" id="pinClear">Clear all</button>
+      <button type="button" id="pinAll" hidden>Show all</button>
     </div>
     <div id="pinList"></div>
   </div>
@@ -735,9 +742,9 @@ function panelLB(d){
 function panelPlane(d){
   /* equal scales on both axes, or the 45 degree diagonal is not at 45 degrees */
   var W=380,H=288,T=16,B=36, ph=H-T-B, pw=ph, L=(W-pw)/2, R=L;
-  var cmp = PINS.length > 0;      /* con dei pin il pannello serve a confrontare, non a studiare un punto */
+  var cmp = VIS().length > 0;      /* con dei pin il pannello serve a confrontare, non a studiare un punto */
   var span = Math.max(d.K,d.V,1);
-  PINS.forEach(function(q){ span=Math.max(span,q.K,q.V); });
+  VIS().forEach(function(q){ span=Math.max(span,q.K,q.V); });
   var M = Math.max(1.45, 1.22*span);
   var px=function(x){return L+x/M*pw;}, py=function(y){return T+ph-y/M*ph;};
   var o=[];
@@ -795,7 +802,7 @@ function panelPlane(d){
 
   /* every pinned state in the same frame: the whole point of the plane */
   var seen=[];
-  PINS.forEach(function(q){
+  VIS().forEach(function(q){
     if(q.K>M || q.V>M) return;
     o.push(ln(px(0),py(0),px(q.K),py(q.V),q.col,1.1));
     o.push(dot(px(q.K),py(q.V),q.col,4.2));
@@ -947,7 +954,7 @@ function panelCircle(d){
   /* phi again, in the same red as on the plane: the triangle's angle at (K~m, 0),
      between the hypotenuse and the K~m cathetus. tan of it is V~max / K~m, the same
      angle as the ray's on the plane. Screen y runs down, so from pi round to pi+phi. */
-  if(HL==='cl' && PINS.length===0 && d.K>0 && d.V>0){
+  if(HL==='cl' && VIS().length===0 && d.K>0 && d.V>0){
     var phr = d.phi*Math.PI/180, vx = px(d.K), vy = py(0), RED = 'var(--flag)';
     /* sized on the hypotenuse, which the arc sweeps towards: sized on the shorter
        cathetus it shrank to nothing on a flat triangle */
@@ -962,7 +969,7 @@ function panelCircle(d){
   /* The SAD's coordinates, as on the plane. Dropped to the axes they land on the
      triangle's two outer corners: the catheti are the SAD's coordinates, and the
      dashes close the rectangle they span. */
-  if(PINS.length===0){
+  if(VIS().length===0){
     var cxp=px(d.K), cyp=py(d.V);
     o.push(ln(cxp,cyp,cxp,py(0),shadeCol,1.2,'4 3'));
     o.push(ln(cxp,cyp,px(0),cyp,shadeCol,1.2,'4 3'));
@@ -1031,7 +1038,7 @@ function legends(d){
     lb: nm,
     pl: lgItem('<b class="o"></b>',NAT,'native (1, 1)')+lgItem('<b></b>',MOD,'modulated — the SAD')+
         lgItem('<i></i>',MOD,'ray slope = CL<sub>int</sub> ratio '+nf(d.cl,3))+
-        (PINS.length===0 && F.I>0 && d.Ki!==null && !isNaN(d.Ki) && !isNaN(d.Kip) && (isFinite(d.Ki)||isFinite(d.Kip))
+        (VIS().length===0 && F.I>0 && d.Ki!==null && !isNaN(d.Ki) && !isNaN(d.Kip) && (isFinite(d.Ki)||isFinite(d.Kip))
           ? lgItem('<i class="d"></i>',TXT,'path of the SAD as [I] rises, ticks in µM, '+
             (isFinite(d.Kip) ? 'ending at (K<sub>i</sub>&prime;/K<sub>i</sub>, 0) = ('+nf(isFinite(d.Ki)?d.Kip/d.Ki:0,2)+', 0)'
                              : 'no end: K&#x303;m grows without limit')) : ''),
@@ -1273,6 +1280,7 @@ function kiBlock(d){
 
 /* ══════════════ pinned states ══════════════ */
 var PINS = [], PINSEQ = 0;
+function VIS(){ return PINS.filter(function(q){ return !q.hidden; }); }
 var PINCOL = ['#7B4EA8','#1F6B4A','#B3261E','#8A5A11','#1565C0','#C2185B','#00838F','#5D4037'];
 
 function pinFrom(kmN,vmN,kmM,vmM,I,label){
@@ -1288,16 +1296,23 @@ function pinFrom(kmN,vmN,kmM,vmM,I,label){
 }
 function renderPins(){
   var box=document.getElementById('pinList');
+  var sa=document.getElementById('pinAll');
+  if(sa) sa.hidden = !PINS.some(function(q){ return q.hidden; });
   if(!PINS.length){ box.innerHTML='<p class="hint" style="margin:0">Nothing pinned yet.</p>'; return; }
   box.innerHTML = PINS.map(function(q,i){
     var on = q.raw && q.raw[0]==F.kmN && q.raw[1]==F.vmN && q.raw[2]==F.kmM && q.raw[3]==F.vmM && q.raw[4]==F.I;
-    return '<div class="pinrow'+(on?' on':'')+'" role="button" tabindex="0" data-load="'+i+'" title="Load this state into the inputs">'+
+    return '<div class="pinrow'+(on?' on':'')+(q.hidden?' off':'')+'" role="button" tabindex="0" data-load="'+i+'" title="Load this state into the inputs">'+
+      '<button class="eye" data-v="'+i+'" aria-pressed="'+(q.hidden?'false':'true')+'" title="'+(q.hidden?'Show':'Hide')+' on the plane" aria-label="'+(q.hidden?'show':'hide')+'">'+
+        (q.hidden ? '<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8s-2.4 4.5-6.5 4.5S1.5 8 1.5 8z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.5 2.5l11 11" stroke="currentColor" stroke-width="1.4"/></svg>'
+                  : '<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8s-2.4 4.5-6.5 4.5S1.5 8 1.5 8z" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2.1" fill="currentColor"/></svg>')+
+      '</button>'+
       '<span class="sw" style="background:'+q.col+'"></span>'+
       '<span class="nm">'+esc(q.name)+'</span>'+
       '<span class="vv">K&#x303;m '+nf(q.K,3)+' &#183; V&#x303;max '+nf(q.V,3)+
       ' &#183; CL ratio '+nf(q.cl,3)+' &#183; r '+nf(q.r,3)+
       (q.Ki!==null && !isNaN(q.Ki) ? ' &#183; Ki '+kiTxt(q.Ki)+' &#183; Ki&#8242; '+kiTxt(q.Kip) : '')+
-      '</span><button class="x" data-i="'+i+'" aria-label="remove">&#215;</button></div>';
+      '</span><button class="only" data-o="'+i+'" title="Show only this one">only</button>'+
+      '<button class="x" data-i="'+i+'" aria-label="remove">&#215;</button></div>';
   }).join('');
 }
 
@@ -1566,14 +1581,21 @@ function loadPin(i){
   Array.prototype.forEach.call(document.querySelectorAll('#presets button'),function(x){x.classList.remove('cur');});
   SWITCHED=false; render();
 }
+document.getElementById('pinAll').addEventListener('click', function(){
+  PINS.forEach(function(q){ q.hidden=false; }); render();
+});
 document.getElementById('pinList').addEventListener('click', function(e){
+  var ev=e.target.closest('button.eye');
+  if(ev){ var q=PINS[+ev.dataset.v]; q.hidden=!q.hidden; render(); return; }
+  var eo=e.target.closest('button.only');
+  if(eo){ var k=+eo.dataset.o; PINS.forEach(function(q,j){ q.hidden = j!==k; }); render(); return; }
   var b=e.target.closest('button.x');
   if(b){ PINS.splice(+b.dataset.i,1); render(); return; }
   var r=e.target.closest('[data-load]'); if(r) loadPin(+r.dataset.load);
 });
 document.getElementById('pinList').addEventListener('keydown', function(e){
   if(e.key!=='Enter' && e.key!==' ') return;
-  var r=e.target.closest('[data-load]'); if(!r || e.target.closest('button.x')) return;
+  var r=e.target.closest('[data-load]'); if(!r || e.target.closest('button')) return;
   e.preventDefault(); loadPin(+r.dataset.load);
 });
 document.getElementById('pasteBtn').addEventListener('click', function(){
