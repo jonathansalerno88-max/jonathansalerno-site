@@ -456,11 +456,7 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
     <div style="display:flex;gap:8px;margin-top:9px;flex-wrap:wrap"><button type="button" id="pasteBtn">Plot these rows</button>
     <button type="button" id="pasteDemo" title="Five inhibitors on the same enzyme at [I] = 10 µM, one per direction of the fan">Launch example set A&ndash;E</button>
     <button type="button" id="pasteKeto" title="Ketoconazole on five CYP3A marker reactions, from the published Ki and alpha (Greenblatt 2011), at [I] = 0.1 µM">Launch ketoconazole &#183; real data</button></div>
-    <p class="hint" id="pasteSrc" style="margin:9px 0 0" hidden>Ketoconazole on human liver microsomes, K<sub>m</sub>, K<sub>i</sub> and &#945; as published in Table 2 of
-    <a href="https://doi.org/10.1111/j.2042-7158.2010.01202.x">Greenblatt et al., <i>J Pharm Pharmacol</i> 2011;63:214&ndash;221</a>
-    (equation 1, mean of n = 4 livers). Their model is v = V<sub>max</sub>[S] / ([S](1 + [I]/&#945;K<sub>i</sub>) + K<sub>m</sub>(1 + [I]/K<sub>i</sub>)),
-    so K<sub>i</sub>&prime; = &#945;&#183;K<sub>i</sub>. The modulated pair is computed from K<sub>i</sub> and &#945; at [I] = 0.1 µM, inside the 0.01&ndash;1.0 µM range they studied;
-    V<sub>max,nat</sub> is set to 10 because the table reports no V<sub>max</sub>, and the plane reads ratios only. Nifedipine: K<sub>m</sub> not reported, so K<sub>m,nat</sub> = 10 is a placeholder &#8212; its ratios still hold.</p>
+    <p class="hint" id="pasteSrc" style="margin:9px 0 0" hidden></p>
     <p class="hint" id="pasteMsg" style="margin:9px 0 0"></p>
   </div>
 
@@ -1835,7 +1831,12 @@ document.getElementById('pasteDemo').addEventListener('click', function(){
     '4, 10, 2, 5, 10, E uncompetitive';
   var n0=PINS.length;
   document.getElementById('pasteBtn').click();
-  /* put B on screen too, so the panels and the AUC box have an inhibition to work on */
+  var sr=document.getElementById('pasteSrc');
+  sr.innerHTML = '<b>Five inhibitors, one probe.</b> The enzyme and the probe substrate are the same in every row '+
+    '(native K<sub>m</sub> 4, V<sub>max</sub> 10), and so is the modulator concentration, [I] = 10 µM. What changes from row to row '+
+    'is the <b>inhibitor</b>, one per direction of the fan: A competitive, E uncompetitive, C non-competitive, B and D mixed. '+
+    'Invented round numbers chosen to span the directions — not measurements.';
+  sr.hidden = false;
   if(PINS.length>=n0+2) loadPin(n0+1);
 });
 
@@ -1858,7 +1859,18 @@ document.getElementById('pasteKeto').addEventListener('click', function(){
     '10.00, 10, 18.00, 7.54, 0.1, NIF nifedipine oxidation';
   var n0=PINS.length;
   document.getElementById('pasteBtn').click();
-  document.getElementById('pasteSrc').hidden = false;
+  var sk=document.getElementById('pasteSrc');
+  sk.innerHTML = '<b>One inhibitor, six probes.</b> The inhibitor is <b>ketoconazole</b> in every row, at [I] = 0.1 µM. '+
+    'What changes is the <b>probe substrate</b> the enzyme is working on — triazolam, midazolam, testosterone, nifedipine. '+
+    'A probe is measured in vitro to characterise the enzyme; it is not the victim drug of a patient, which is chosen separately '+
+    'in the AUC ratio box below. That one inhibitor yields K<sub>i</sub> from 0.011 to 0.072 µM depending on the probe is the point of the set.<br>'+
+    'K<sub>m</sub>, K<sub>i</sub> and &#945; as published in Table 2 of '+
+    '<a href="https://doi.org/10.1111/j.2042-7158.2010.01202.x">Greenblatt et al., <i>J Pharm Pharmacol</i> 2011;63:214&ndash;221</a> '+
+    '(equation 1, mean of n = 4 livers). Their model is v = V<sub>max</sub>[S] / ([S](1 + [I]/&#945;K<sub>i</sub>) + K<sub>m</sub>(1 + [I]/K<sub>i</sub>)), '+
+    'so K<sub>i</sub>&prime; = &#945;&#183;K<sub>i</sub>. The modulated pair is computed from K<sub>i</sub> and &#945; at [I] = 0.1 µM, inside the '+
+    '0.01&ndash;1.0 µM range they studied; V<sub>max,nat</sub> is set to 10 because the table reports no V<sub>max</sub>, and the plane reads ratios only. '+
+    'Nifedipine: K<sub>m</sub> not reported, so K<sub>m,nat</sub> = 10 is a placeholder — its ratios still hold.';
+  sk.hidden = false;
   if(PINS.length>=n0+3) loadPin(n0+2);   /* midazolam 1'-OH: the strongest case */
 });
 
