@@ -152,6 +152,10 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 #aucr2 .route{display:inline-flex;flex-wrap:wrap}
 #aucr2 .mini label{height:17px;line-height:17px;overflow:visible}
 #aucr2:not(.po) .po-only{display:none}
+.a2def{margin:0 0 12px;padding:9px 12px;border-radius:8px;background:var(--surface2);font-size:11.5px;line-height:1.5}
+.a2def p{margin:0 0 6px}
+.a2def p:last-child{margin:0}
+.a2def .w{color:var(--mut)}
 .a2grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:8px}
 .a2grid .kstep{margin:0}
 .a2res{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--surface2);border-left:3px solid var(--iso)}
@@ -420,6 +424,18 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
       <div class="po-only"><label for="a2ig">[I] gut µM</label><input type="number" id="a2ig" step="any" min="0" value="50"></div>
     </div>
     <p class="hint" style="margin:-2px 0 10px"><span id="a2src"></span> Leave K<sub>i</sub> or K<sub>i</sub>&prime; blank for &#8734;.</p>
+    <div class="a2def">
+      <p><b>f<sub>m</sub></b> &#8212; fraction of the victim drug&rsquo;s clearance that runs through this enzyme (0&ndash;1).
+      <span class="w">Where to find it: human ADME and in vitro reaction-phenotyping data in the drug&rsquo;s label or
+      assessment report, or back-calculated from a clinical study with a strong inhibitor of the enzyme
+      (f<sub>m</sub> &#8776; 1 &#8722; 1/AUCR) or from genetic poor metabolizers.</span></p>
+      <p class="po-only"><b>F<sub>g</sub></b> &#8212; fraction of an oral dose that escapes metabolism in the gut wall (0&ndash;1; 1 = no gut first pass).
+      <span class="w">Where to find it: from intravenous and oral data of the same drug (F = F<sub>a</sub>&#183;F<sub>g</sub>&#183;F<sub>h</sub>),
+      or published compilations, e.g. <a href="https://doi.org/10.1124/dmd.110.032649">Gertz et al., <i>Drug Metab Dispos</i> 2010</a>
+      (25 CYP3A substrates).</span></p>
+      <p class="w">The two factors multiplied are the mechanistic static model
+      (<a href="https://pubmed.ncbi.nlm.nih.gov/?term=Fahmi+2009+Comparison+of+different+algorithms+for+predicting+clinical+drug-drug+interactions+CYP3A4">Fahmi et al., <i>Drug Metab Dispos</i> 2009</a>).</p>
+    </div>
     <div id="a2out"></div>
   </div>
 
