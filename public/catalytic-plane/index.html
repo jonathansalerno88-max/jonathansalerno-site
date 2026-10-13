@@ -156,6 +156,7 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--inh-bg:#2C2338;--inh-bd:#6E5690;--vic-bg:#1D3128;--vic-bd:#3F7A5C}}
 :root[data-theme="dark"]{--inh-bg:#2C2338;--inh-bd:#6E5690;--vic-bg:#1D3128;--vic-bd:#3F7A5C}
 #aucr2 input.vic,#a2vic{background:var(--vic-bg);border-color:var(--vic-bd)}
+#a2probe{background:var(--surface2);border-color:var(--line)}
 #aucr2 input.inh,#a2preset{background:var(--inh-bg);border-color:var(--inh-bd)}
 #aucr2 input.vic{background:var(--vic-bg);border-color:var(--vic-bd)}
 .a2key{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 0;font-size:11px;color:var(--mut)}
@@ -466,6 +467,19 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
     <div class="segbtns route" role="group" aria-label="Route of administration">
       <button type="button" data-r="iv" aria-pressed="true">Liver only &#183; IV</button>
       <button type="button" data-r="po" aria-pressed="false">Liver + gut &#183; oral</button>
+    </div>
+    <div class="a2pre">
+      <label for="a2probe">Probe substrate &#183; the reaction the enzyme is measured on</label>
+      <select id="a2probe">
+        <option value="">&#8212; your own K<sub>m</sub> and V<sub>max</sub>, from the fields at the top</option>
+        <option value="mdz1">Midazolam 1&prime;-hydroxylation</option>
+        <option value="mdz4">Midazolam 4-hydroxylation</option>
+        <option value="trza">Triazolam &#945;-hydroxylation</option>
+        <option value="trz4">Triazolam 4-hydroxylation</option>
+        <option value="tst">Testosterone 6&#946;-hydroxylation</option>
+        <option value="nif">Nifedipine oxidation</option>
+      </select>
+      <p class="hint" id="a2pnote"></p>
     </div>
     <div class="a2pre">
       <label for="a2preset">Inhibitor concentrations</label>
@@ -1505,6 +1519,29 @@ function a2victim(k){
   document.getElementById('a2fm').value=fmt2(v.fm); document.getElementById('a2fg').value=fmt2(v.fg);
   n.innerHTML='f<sub>m,CYP3A</sub> '+v.fm+' &#183; F<sub>g</sub> '+v.fg+'. '+VSRC+(v.extra||'');
 }
+/* The probe substrate: the reaction the enzyme was measured on. These six are the
+   Greenblatt ketoconazole set, so picking one also fixes the inhibitor. */
+var A2PROBE = {
+  mdz1:{nm:"midazolam 1'-OH", st:[3.34,10,13.80,4.09,0.1], ki:'0.011', a:'6.30'},
+  mdz4:{nm:'midazolam 4-OH',  st:[51.30,10,321.30,10.00,0.1], ki:'0.019', a:'very large'},
+  trza:{nm:'triazolam α-OH',  st:[63.10,10,106.35,3.99,0.1], ki:'0.031', a:'2.14'},
+  trz4:{nm:'triazolam 4-OH',  st:[319.00,10,500.63,4.87,0.1], ki:'0.045', a:'2.11'},
+  tst: {nm:'testosterone 6β-OH', st:[69.00,10,159.21,3.68,0.1], ki:'0.019', a:'3.07'},
+  nif: {nm:'nifedipine oxidation', st:[10.00,10,18.00,7.54,0.1], ki:'0.072', a:'4.25'}
+};
+function a2probe(k, loadIt){
+  var n=document.getElementById('a2pnote'), sel=document.getElementById('a2probe');
+  if(sel) sel.value = k || '';
+  if(!k){ if(n) n.innerHTML='The four fields at the top are the probe: whatever K<sub>m</sub> and V<sub>max</sub> you put there.'; return; }
+  var pr=A2PROBE[k];
+  if(loadIt){
+    loadPreset({v:pr.st});
+    Array.prototype.forEach.call(document.querySelectorAll('#presets button'),function(x){x.classList.remove('cur');});
+    SWITCHED=false; A2.own=false;
+  }
+  if(n) n.innerHTML='CYP3A measured on <b>'+pr.nm+'</b>, inhibited by ketoconazole: K<sub>i</sub> '+pr.ki+' µM, &#945; '+pr.a+
+    ' (Greenblatt 2011, Table 2). The fields at the top hold this reaction&rsquo;s K<sub>m</sub> and V<sub>max</sub>, native and with the inhibitor.';
+}
 /* While a state from the ketoconazole dataset is loaded, the inhibitor is not a free
    choice: the Ki on screen is ketoconazole's. Lock the picker and say why. */
 var INHLOCK = false;
@@ -1731,6 +1768,7 @@ document.getElementById('pinBtn').addEventListener('click', function(){
 document.getElementById('pinClear').addEventListener('click', function(){
   PINS=[]; PINSEQ=0;
   if(INHLOCK) inhLock(false);
+  a2probe('', false);
   document.getElementById('pasteSrc').hidden = true;
   render();
 });
@@ -1855,6 +1893,7 @@ document.getElementById('pasteDemo').addEventListener('click', function(){
     'Invented round numbers chosen to span the directions — not measurements.';
   sr.hidden = false;
   inhLock(false);
+  a2probe('', false);
   if(PINS.length>=n0+2) loadPin(n0+1);
 });
 
@@ -1890,6 +1929,7 @@ document.getElementById('pasteKeto').addEventListener('click', function(){
     'Nifedipine: K<sub>m</sub> not reported, so K<sub>m,nat</sub> = 10 is a placeholder — its ratios still hold.';
   sk.hidden = false;
   inhLock(true);
+  a2probe('mdz1', false);
   if(PINS.length>=n0+3) loadPin(n0+2);   /* midazolam 1'-OH: the strongest case */
 });
 
@@ -1918,8 +1958,21 @@ document.getElementById('pasteKeto').addEventListener('click', function(){
 /* a hand edit of the kinetic state means it is no longer the loaded dataset */
 ['kmN','vmN','kmM','vmM','conc'].forEach(function(id){
   var el=document.getElementById(id);
-  if(el) el.addEventListener('input', function(){ if(INHLOCK) { inhLock(false); render(); } });
+  if(el) el.addEventListener('input', function(){
+    if(document.getElementById('a2probe').value) a2probe('', false);
+    if(INHLOCK) { inhLock(false); }
+    render();
+  });
 });
+
+/* the probe picker: choosing one loads that reaction's kinetics and fixes the inhibitor */
+document.getElementById('a2probe').addEventListener('change', function(e){
+  var k=e.target.value;
+  a2probe(k, true);
+  inhLock(!!k);
+  render();
+});
+a2probe('', false);
 </script>
 </body>
 </html>
