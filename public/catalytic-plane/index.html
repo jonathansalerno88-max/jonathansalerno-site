@@ -1751,7 +1751,10 @@ document.getElementById('pasteDemo').addEventListener('click', function(){
     '4, 10, 4, 5, 10, C non-competitive\n'+
     '4, 10, 3, 5, 10, D mixed gut-heavy\n'+
     '4, 10, 2, 5, 10, E uncompetitive';
+  var n0=PINS.length;
   document.getElementById('pasteBtn').click();
+  /* put B on screen too, so the panels and the AUC box have an inhibition to work on */
+  if(PINS.length>=n0+2) loadPin(n0+1);
 });
 </script>
 </body>
