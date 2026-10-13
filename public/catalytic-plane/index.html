@@ -876,7 +876,9 @@ function panelPlane(d){
     var h2=seen.some(function(t){ return Math.abs(t.y-sy)<12 && Math.abs(t.x-sx)<78; });
     if(!h2) break; sy-=12;
   }
-  o.push(tx(sx,sy,'SAD',col,11,'start','s'));
+  /* with the Ki construction on, its Ki' label sits just above the point: go below */
+  if(!cmp && kiShow(d)) sy = py(d.V)+18;
+  o.push(tx(sx,sy,'SAD'+(cmp?'':curName()),col,11,'start','s'));
 
   if(LAB){
     /* hard into the corners: the ray caption runs along the bottom of this plot */
@@ -978,7 +980,8 @@ function panelCircle(d){
   }
   o.push(dot(px(d.K),py(d.V),shadeCol,5));
   /* the same point as on the plane, so the same name: it sits on the circle at angle phi */
-  o.push(tx(px(d.K)+9,py(d.V)-8,'SAD',shadeCol,11,'start','s'));
+  var cn=curName(), far=cn && px(d.K)>L+pw*0.55;
+  o.push(tx(px(d.K)+(far?-9:9),py(d.V)-8,'SAD'+cn,shadeCol,11,far?'end':'start','s'));
   /* beside the hypotenuse, whose length is this same r: pushed straight out from
      the origin past the midpoint of that segment */
   var mx=(px(d.K)+px(0))/2, my=(py(0)+py(d.V))/2;
@@ -1036,7 +1039,7 @@ function legends(d){
   return {
     sat:nm,
     lb: nm,
-    pl: lgItem('<b class="o"></b>',NAT,'native (1, 1)')+lgItem('<b></b>',MOD,'modulated — the SAD')+
+    pl: lgItem('<b class="o"></b>',NAT,'native (1, 1)')+lgItem('<b></b>',MOD,'modulated — the SAD'+(VIS().length===0&&curPin()?' = '+esc(curPin().name):''))+
         lgItem('<i></i>',MOD,'ray slope = CL<sub>int</sub> ratio '+nf(d.cl,3))+
         (VIS().length===0 && F.I>0 && d.Ki!==null && !isNaN(d.Ki) && !isNaN(d.Kip) && (isFinite(d.Ki)||isFinite(d.Kip))
           ? lgItem('<i class="d"></i>',TXT,'path of the SAD as [I] rises, ticks in µM, '+
@@ -1284,6 +1287,10 @@ function isCur(q){ return q.raw && q.raw[0]==F.kmN && q.raw[1]==F.vmN && q.raw[2
 /* pins drawn for comparison: visible ones, minus the one already on screen as the live state.
    With only that one left, the plane goes back to studying a single point. */
 function VIS(){ return PINS.filter(function(q){ return !q.hidden && !isCur(q); }); }
+/* the name of the pinned state now on screen, if any, so the SAD keeps its label */
+function curPin(){ return PINS.filter(function(q){ return !q.hidden && isCur(q); })[0]; }
+/* on the plot only the first word (A, B, S3 ...), the full name goes in the legend */
+function curName(){ var q=curPin(); if(!q) return ''; var w=String(q.name).trim().split(/\s+/)[0].slice(0,10); return ' \u00b7 '+esc(w); }
 function VISALL(){ return PINS.filter(function(q){ return !q.hidden; }); }
 var PINCOL = ['#7B4EA8','#1F6B4A','#B3261E','#8A5A11','#1565C0','#C2185B','#00838F','#5D4037'];
 
