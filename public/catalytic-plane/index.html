@@ -152,6 +152,16 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 #aucr2 .route{display:inline-flex;flex-wrap:wrap}
 #aucr2 .mini > div{display:flex;flex-direction:column;justify-content:flex-end;flex:1 1 140px}
 .a2pre{margin-top:12px}
+:root{--inh-bg:#F1EAF8;--inh-bd:#B79AD6;--vic-bg:#E6F3EC;--vic-bd:#86C1A2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--inh-bg:#2C2338;--inh-bd:#6E5690;--vic-bg:#1D3128;--vic-bd:#3F7A5C}}
+:root[data-theme="dark"]{--inh-bg:#2C2338;--inh-bd:#6E5690;--vic-bg:#1D3128;--vic-bd:#3F7A5C}
+#aucr2 input.inh,#a2preset{background:var(--inh-bg);border-color:var(--inh-bd)}
+#aucr2 input.vic{background:var(--vic-bg);border-color:var(--vic-bd)}
+.a2key{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 0;font-size:11px;color:var(--mut)}
+.a2key .k{display:inline-flex;align-items:center;gap:5px}
+.a2key .k::before{content:"";width:12px;height:12px;border-radius:3px;border:1px solid}
+.a2key .inh::before{background:var(--inh-bg);border-color:var(--inh-bd)}
+.a2key .vic::before{background:var(--vic-bg);border-color:var(--vic-bd)}
 .a2pre label{display:block;font-size:11px;color:var(--mut);margin-bottom:3px}
 .a2pre select{font:inherit;font-size:12.5px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);max-width:100%}
 .a2pre .hint{margin:5px 0 0}
@@ -430,13 +440,14 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
       </select>
       <p class="hint" id="a2note"></p>
     </div>
-    <div class="mini" style="margin-top:12px">
-      <div><label for="a2ki">K<sub>i</sub> µM</label><input type="number" id="a2ki" step="any" min="0" placeholder="&#8734;"></div>
-      <div class="po-only"><label for="a2kip">K<sub>i</sub>&prime; µM</label><input type="number" id="a2kip" step="any" min="0" placeholder="&#8734;"></div>
-      <div><label for="a2fm">f<sub>m</sub> &#183; fraction metabolized by this enzyme</label><input type="number" id="a2fm" step="any" min="0" max="1" value="0.9"></div>
-      <div class="po-only"><label for="a2fg">F<sub>g</sub> &#183; fraction escaping the gut wall</label><input type="number" id="a2fg" step="any" min="0" max="1" value="0.5"></div>
-      <div><label for="a2ih">[I] liver, unbound µM</label><input type="number" id="a2ih" step="any" min="0" value="0.0075"></div>
-      <div class="po-only"><label for="a2ig">[I] gut µM</label><input type="number" id="a2ig" step="any" min="0" value="555"></div>
+    <p class="a2key"><span class="k inh">inhibitor</span><span class="k vic">victim drug</span></p>
+    <div class="mini" style="margin-top:6px">
+      <div><label for="a2ki">K<sub>i</sub> µM</label><input class="inh" type="number" id="a2ki" step="any" min="0" placeholder="&#8734;"></div>
+      <div class="po-only"><label for="a2kip">K<sub>i</sub>&prime; µM</label><input class="inh" type="number" id="a2kip" step="any" min="0" placeholder="&#8734;"></div>
+      <div><label for="a2fm">f<sub>m</sub> &#183; fraction metabolized by this enzyme</label><input class="vic" type="number" id="a2fm" step="any" min="0" max="1" value="0.9"></div>
+      <div class="po-only"><label for="a2fg">F<sub>g</sub> &#183; fraction escaping the gut wall</label><input class="vic" type="number" id="a2fg" step="any" min="0" max="1" value="0.5"></div>
+      <div><label for="a2ih">[I] liver, unbound µM</label><input class="inh" type="number" id="a2ih" step="any" min="0" value="0.0075"></div>
+      <div class="po-only"><label for="a2ig">[I] gut µM</label><input class="inh" type="number" id="a2ig" step="any" min="0" value="555"></div>
     </div>
     <p class="hint" style="margin:-2px 0 10px"><span id="a2src"></span> Leave K<sub>i</sub> or K<sub>i</sub>&prime; blank for &#8734;.</p>
     <div id="a2out"></div>
@@ -1467,7 +1478,8 @@ function renderA2(d){
     if(!(Ig>=0)||!isFinite(Ig)) bad.push('[I] gut must be a number &#8805; 0');
   }
   if(bad.length){ box.innerHTML='<p class="hint" style="margin:0;color:var(--flag)">'+bad.join(' &#183; ')+'.</p>'; return; }
-  var g=function(x){ return isFinite(x) ? String(+x.toFixed(2)) : '&#8734;'; };
+  /* three significant figures: concentrations here run from 0.003 to 3000 µM */
+  var g=function(x){ if(!isFinite(x)) return '&#8734;'; return Math.abs(x)>=1000 ? x.toFixed(0) : x.toPrecision(3); };
   var Ah = 1/(1+Ih/Ki), liv = 1/(fm*Ah+1-fm);
   var h = '<div class="a2grid"><div class="kstep"><span class="h">Step 1 &#183; liver</span>'+
     'Enzyme still active: 1 / (1 + [I]/K<sub>i</sub>) = 1 / (1 + '+g(Ih)+'/'+g(Ki)+') = <b>'+g(Ah)+'</b><br>'+
