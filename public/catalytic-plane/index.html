@@ -160,6 +160,10 @@ input[type=number]:focus-visible{outline:2px solid var(--accent);outline-offset:
 .a2quick button:hover{background:var(--surface2)}
 .a2quick button[aria-pressed="true"]{background:var(--iso);color:var(--surface)}
 .a2quick button:focus-visible{outline:2px solid var(--iso);outline-offset:2px}
+.a2quick button.hypo{border-color:#8A6D00;color:#6B5300;background:#FFF6D1}
+.a2quick button.hypo[aria-pressed="true"]{background:#8A6D00;color:#FFF6D1}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .a2quick button.hypo{background:#3A3010;border-color:#8A7420;color:#F2D45C}}
+:root[data-theme="dark"] .a2quick button.hypo{background:#3A3010;border-color:#8A7420;color:#F2D45C}
 :root{--inh-bg:#F1EAF8;--inh-bd:#B79AD6;--vic-bg:#E6F3EC;--vic-bd:#86C1A2}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--inh-bg:#2C2338;--inh-bd:#6E5690;--vic-bg:#1D3128;--vic-bd:#3F7A5C}}
 :root[data-theme="dark"]{--inh-bg:#2C2338;--inh-bd:#6E5690;--vic-bg:#1D3128;--vic-bd:#3F7A5C}
@@ -493,11 +497,13 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
         <option value="s4">Ketoconazole &#8594; buspirone &#183; constants from midazolam 4-OH (competitive)</option>
         <option value="s5">Ketoconazole &#8594; buspirone &#183; constants from midazolam 1&prime;-OH (mixed)</option>
         <option value="s6">Ketoconazole &#8594; nifedipine &#183; constants from nifedipine oxidation (mixed)</option>
+        <option value="s7">&#9888; Hypothetical pure competitive inhibitor &#8594; buspirone &#183; invented, no data</option>
       </select>
       <div class="a2quick">
         <button type="button" data-s="s4" title="Competitive constants on the victim with the heaviest gut first pass: the two models are furthest apart here">Buspirone &#183; widest gap</button>
         <button type="button" data-s="s2" title="Same drug and enzyme as the main route, but the competitive 4-OH pathway">Midazolam &#183; competitive route</button>
         <button type="button" data-s="s1" title="The main midazolam route, mixed inhibition: here the two models agree">Midazolam &#183; main route</button>
+        <button type="button" data-s="s7" class="hypo" title="An invented pure competitive inhibitor: what the thesis predicts, with no data behind it">&#9888; Hypothetical competitor</button>
       </div>
       <p class="hint" id="a2snote"></p>
     </div>
@@ -512,6 +518,7 @@ placeholder="4, 10, 8, 10, 10, competitive&#10;4, 10, 4, 5, 10, non-competitive&
         <option value="cobi">Cobicistat 150 mg once daily &#183; booster</option>
         <option value="itra">Itraconazole 200 mg once daily</option>
         <option value="keto">Ketoconazole 200 mg &#183; index inhibitor</option>
+        <option value="ideal">Hypothetical inhibitor, 100 mg &#183; invented</option>
         <option value="custom">Custom</option>
       </select>
       <p class="hint" id="a2note"></p>
@@ -1569,6 +1576,9 @@ var A2PRE = {
       '(<a href="https://www.taro.com/sites/default/files/USA-Products-Rx/KetoconazoleTabletsPrescribingInformation-Sep2023.pdf">US label</a>). '+
       'Oral ketoconazole was withdrawn for systemic infections, but it remains the index strong CYP3A inhibitor in interaction studies &#8212; '+
       'and the one inhibitor with both constants published, so pair it with the real-data states.'},
+  ideal:{ih:0.1, ig:800,
+    note:'<b>Invented, not measured.</b> A 100 mg oral dose of a molecule of M<sub>r</sub> 500 gives 100 mg / 250 mL / 500 g/mol = 800 µM in the gut; '+
+      'the liver figure, 0.1 µM unbound, is simply a plausible round number for a potent inhibitor. Nothing here comes from a study.'},
   custom:{note:'Your own concentrations.'}
 };
 /* victim drugs: Fg from Davies et al. 2020 (suppl. Table 1, observed human fg, compiled incl. Gertz 2010);
@@ -1604,6 +1614,13 @@ var A2SCN = {
   s5:{st:[3.34,10,13.80,4.09,0.1], inh:'keto', vic:'bus',
       note:'Same victim, mixed constants instead: now the gut is shut down in both models, so they agree &#8212; and the predicted '+
         'interaction is large. Compare with the scenario above to see how much rides on the mechanism alone.'},
+  s7:{st:[5.00,10,15.00,10.00,0.1], inh:'ideal', vic:'bus',
+      note:'<b>Hypothetical, with no data behind it.</b> A perfectly competitive reversible inhibitor: V<sub>max</sub> untouched, K<sub>m</sub> tripled at '+
+        '[I] = 0.1 µM, which inverts to K<sub>i</sub> 0.05 µM and K<sub>i</sub>&prime; &#8594; &#8734;. Paired with buspirone, the victim with the heaviest gut first pass. '+
+        'This is what the thesis predicts for a class of inhibitor that the CYP3A literature does not clearly document &#8212; '+
+        'the clinically studied inhibitors (itraconazole, erythromycin, diltiazem, verapamil, grapefruit) all inactivate the enzyme or carry '+
+        'inhibitory metabolites, so K<sub>i</sub>&prime; is finite for them and the two models agree. Treat the numbers below as a thought experiment, '+
+        'not a prediction about any real drug.'},
   s6:{st:[10.00,10,18.00,7.54,0.1], inh:'keto', vic:'nif',
       note:'The internally consistent one: the constants were measured on nifedipine oxidation and nifedipine is also the victim. '+
         'Its K<sub>m</sub> is not reported, so K<sub>m,nat</sub> = 10 is a placeholder; the ratios are unaffected.'}
