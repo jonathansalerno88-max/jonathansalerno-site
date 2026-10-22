@@ -16,12 +16,14 @@
 .tag text{font-size:12px}
 .tag .v{font-size:13px;font-weight:500}
 .tbl{overflow-x:auto;margin-top:12px}
-table{border-collapse:collapse;width:100%;min-width:560px;font-size:13px}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:13px}
 th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:top}
 th{font-weight:500;color:var(--text-secondary);font-size:12px}
 td.u b{font-weight:600}
 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
 td.val{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:500}
+td.rad{font-variant-numeric:tabular-nums;color:var(--text-secondary)}
+td.rad b{color:var(--text-primary);font-weight:500}
 tr.chg td.val{background:#FCEEDD}
 .same{font-size:12px;color:var(--text-secondary)}
 .note{font-size:12.5px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
@@ -32,6 +34,10 @@ tr.chg td.val{background:#FCEEDD}
 <div class="ctl">
 <button id="bSem" onclick="moved=!moved;upd()">Togli il semaforo</button>
 <button id="bSnow" onclick="snow=!snow;upd()">Metti la neve</button>
+<span style="flex:1"></span>
+<span>Unità</span>
+<button id="uL" onclick="rad=false;upd()">Luce (lumen, lux…)</button>
+<button id="uW" onclick="rad=true;upd()">Energia (watt)</button>
 </div>
 <svg width="100%" viewBox="0 0 680 425">
 <line x1="0" y1="332" x2="680" y2="332" stroke="var(--b)" stroke-width="0.5"/>
@@ -62,13 +68,13 @@ tr.chg td.val{background:#FCEEDD}
 </svg>
 <div class="tbl">
 <table>
-<thead><tr><th>Grandezza</th><th>Unità</th><th>Che cosa misura</th><th>Dove</th><th>Qui</th></tr></thead>
+<thead><tr><th>Grandezza</th><th>Unità</th><th>Che cosa misura</th><th>Dove</th><th>Qui</th><th>Gemella in energia</th></tr></thead>
 <tbody id="tb"></tbody>
 </table>
 </div>
 <p class="note" id="note"></p>
 <script>
-var moved=false,snow=false;
+var moved=false,snow=false,rad=false;
 var C={phi:'#534AB7',int:'#185FA5',lum:'#0F6E56',ill:'#B5520C',td:'#A32D2D'};
 function tag(x,y,w,col,name,val,anc){
   var x0=anc==='end'?x-w:x;
@@ -80,6 +86,9 @@ function upd(){
   var rho=snow?0.85:0.2,E=10000,Ls=Math.round(rho*E/Math.PI/100)*100;
   var pd=moved?2:(snow?2.5:3),pa=moved?3:(snow?5:7);
   var Eeye=moved?40000:0,tdRoad=Ls*pa,tdSun=moved?'≈ 5×10⁹':'—';
+  var Rs=(Ls/100),irrRet=(Rs*pa*1e-6/2.79e-4);
+  function f2(x){return x<1?x.toFixed(2).replace('.',','):fmt(Math.round(x));}
+  ['uL','uW'].forEach(function(id){document.getElementById(id).classList.toggle('act',(id==='uW')===rad);});
   document.getElementById('sem').style.opacity=moved?0:1;
   document.getElementById('direct').setAttribute('opacity',moved?1:0);
   document.getElementById('road').setAttribute('fill',snow?'#F1EFE8':'#5F5E5A');
@@ -93,6 +102,7 @@ function upd(){
   document.getElementById('bSnow').textContent=snow?'Togli la neve':'Metti la neve';
   document.getElementById('bSem').classList.toggle('act',moved);document.getElementById('bSnow').classList.toggle('act',snow);
   var t='';
+  if(!rad){
   t+=tag(10,8,180,C.phi,'flusso luminoso Φ','3,6×10²⁸ lumen');
   t+=tag(10,52,180,C.int,'intensità I','2,9×10²⁷ candele');
   t+=tag(10,96,180,C.lum,'luminanza L sole','≈ 1,6×10⁹ nit');
@@ -100,23 +110,32 @@ function upd(){
   t+=tag(218,378,190,C.lum,'luminanza L strada','≈ '+fmt(Ls)+' nit');
   t+=tag(426,378,250,C.td,'illuminanza retinica',fmt(tdRoad)+' troland'+(moved?' · sole '+tdSun:''));
   t+=tag(530,100,145,C.ill,'illuminanza E occhio',(moved?fmt(Eeye):'≈ 0')+' lux');
-  t+='<path d="M190 115 Q215 130 95 168" fill="none" stroke="'+C.lum+'" stroke-width="1"/>';
+  }else{
+  t+=tag(10,8,180,C.phi,'flusso radiante','3,6×10²⁶ watt');
+  t+=tag(10,52,180,C.int,'intensità radiante','2,9×10²⁵ W/sr');
+  t+=tag(10,96,180,C.lum,'radianza sole','≈ 1,6×10⁷ W/(m²·sr)');
+  t+=tag(10,378,190,C.ill,'irradianza strada','≈ 100 W/m²');
+  t+=tag(218,378,190,C.lum,'radianza strada','≈ '+f2(Rs)+' W/(m²·sr)');
+  t+=tag(426,378,250,C.td,'irradianza retinica',f2(irrRet)+' W/m²'+(moved?' · sole ≈ 2×10⁵ W/m²':''));
+  t+=tag(530,100,145,C.ill,'irradianza occhio',(moved?'≈ 400':'≈ 0')+' W/m²');
+  }
+  t+='<line x1="70" y1="134" x2="70" y2="151" stroke="'+C.lum+'" stroke-width="1"/>';
   t+='<line x1="580" y1="138" x2="556" y2="182" stroke="'+C.ill+'" stroke-width="1"/>';
   t+='<line x1="640" y1="378" x2="648" y2="252" stroke="'+C.td+'" stroke-width="1"/>';
   t+='<line x1="313" y1="378" x2="420" y2="342" stroke="'+C.lum+'" stroke-width="1"/>';
   t+='<line x1="105" y1="378" x2="200" y2="340" stroke="'+C.ill+'" stroke-width="1"/>';
   document.getElementById('tags').innerHTML=t;
   var rows=[
-   ['phi','Flusso luminoso Φ','<b>lumen</b> (lm)','quanta luce emette la sorgente in tutto, in tutte le direzioni','sole','3,6×10²⁸ lm',false],
-   ['int','Intensità luminosa I','<b>candela</b> (cd) = lm/sr','quanta ne emette in una direzione, per unità di angolo solido; I = Φ / 4π','sole','2,9×10²⁷ cd',false],
-   ['lum','Luminanza L','<b>nit</b> = cd/m²','quanto è concentrata l\'emissione: intensità divisa per l\'area apparente. È di chi emette o riflette','sole','≈ 1,6×10⁹ nit',false],
-   ['ill','Illuminanza E','<b>lux</b> (lx) = lm/m²','quanta luce arriva su una superficie; E = I / d² (circa 130.000 lx fuori dall\'atmosfera, molto meno a terra con il sole basso)','strada','10.000 lx',false],
-   ['lum','Luminanza L','<b>nit</b> = cd/m²','quanta ne riemette la strada verso di te; L ≈ ρ · E / π','strada','≈ '+fmt(Ls)+' nit',snow],
-   ['ill','Illuminanza E','<b>lux</b> (lx) = lm/m²','quanta luce del sole arriva sull\'occhio: decide l\'abbagliamento','occhio','≈ '+(moved?fmt(Eeye):'0')+' lx',moved],
-   ['td','Illuminanza retinica','<b>troland</b> (Td) = nit × mm²','quanta luce arriva su un punto della retina: luminanza di ciò che guardi × area della pupilla. Decide il danno','retina','strada '+fmt(tdRoad)+' Td'+(moved?'<br>sole ≈ 5×10⁹ Td':''),snow||moved]];
-  var h='';rows.forEach(function(r){h+='<tr'+(r[6]?' class="chg"':'')+'><td><span class="dot" style="background:'+C[r[0]]+'"></span>'+r[1]+'</td><td class="u">'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td><td class="val">'+r[5]+'</td></tr>';});
+   ['phi','Flusso luminoso Φ','<b>lumen</b> (lm)','quanta luce emette la sorgente in tutto, in tutte le direzioni','sole','3,6×10²⁸ lm',false,'flusso radiante, <b>watt</b>: 3,6×10²⁶ W'],
+   ['int','Intensità luminosa I','<b>candela</b> (cd) = lm/sr','quanta ne emette in una direzione, per unità di angolo solido; I = Φ / 4π','sole','2,9×10²⁷ cd',false,'intensità radiante, <b>W/sr</b>: 2,9×10²⁵ W/sr'],
+   ['lum','Luminanza L','<b>nit</b> = cd/m²','quanto è concentrata l\'emissione: intensità divisa per l\'area apparente. È di chi emette o riflette','sole','≈ 1,6×10⁹ nit',false,'radianza, <b>W/(m²·sr)</b>: ≈ 1,6×10⁷'],
+   ['ill','Illuminanza E','<b>lux</b> (lx) = lm/m²','quanta luce arriva su una superficie; E = I / d² (circa 130.000 lx fuori dall\'atmosfera, molto meno a terra con il sole basso)','strada','10.000 lx',false,'irradianza, <b>W/m²</b>: ≈ 100 W/m²'],
+   ['lum','Luminanza L','<b>nit</b> = cd/m²','quanta ne riemette la strada verso di te; L ≈ ρ · E / π','strada','≈ '+fmt(Ls)+' nit',snow,'radianza, <b>W/(m²·sr)</b>: ≈ '+f2(Rs)],
+   ['ill','Illuminanza E','<b>lux</b> (lx) = lm/m²','quanta luce del sole arriva sull\'occhio: decide l\'abbagliamento','occhio','≈ '+(moved?fmt(Eeye):'0')+' lx',moved,'irradianza, <b>W/m²</b>: ≈ '+(moved?'400':'0')+' W/m²'],
+   ['td','Illuminanza retinica','<b>troland</b> (Td) = nit × mm²','quanta luce arriva su un punto della retina: luminanza di ciò che guardi × area della pupilla. Decide il danno','retina','strada '+fmt(tdRoad)+' Td'+(moved?'<br>sole ≈ 5×10⁹ Td':''),snow||moved,'irradianza retinica, <b>W/m²</b>: strada ≈ '+f2(irrRet)+(moved?'<br>sole ≈ 2×10⁵ W/m² (≈ 20 W/cm²)':'')]];
+  var h='';rows.forEach(function(r){h+='<tr'+(r[6]?' class="chg"':'')+'><td><span class="dot" style="background:'+C[r[0]]+'"></span>'+r[1]+'</td><td class="u">'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td><td class="val">'+r[5]+'</td><td class="rad">'+r[7]+'</td></tr>';});
   document.getElementById('tb').innerHTML=h;
-  document.getElementById('note').innerHTML='Stesso colore, stessa grandezza e stessa unità. Le tre grandezze del sole non cambiano mai: né il semaforo né la neve toccano il sole. '+(moved?'Senza semaforo la luce diretta arriva sull\'occhio: <b>40.000 lux</b> di illuminanza (abbaglia) e, se lo fissi, un\'immagine del sole a circa <b>5×10⁹ troland</b> sulla retina (danneggia). La pupilla si stringe a 2 mm.':'Dietro il semaforo cambia solo ciò che arriva a te: la luce del sole sull\'occhio scende a circa 0 lux.')+(snow?' Con la neve sale la luminanza della strada, e con essa i troland, anche se la pupilla si stringe.':'')+' Valori: ordini di grandezza, sole basso all\'alba; sull\'occhio arriva anche qualche migliaio di lux dalla strada e dal cielo, non conteggiato qui.';
+  document.getElementById('note').innerHTML='Stesso colore, stessa grandezza e stessa unità. Le tre grandezze del sole non cambiano mai: né il semaforo né la neve toccano il sole. '+(moved?'Senza semaforo la luce diretta arriva sull\'occhio: <b>40.000 lux</b> di illuminanza (abbaglia) e, se lo fissi, un\'immagine del sole a circa <b>5×10⁹ troland</b> sulla retina (danneggia). La pupilla si stringe a 2 mm.':'Dietro il semaforo cambia solo ciò che arriva a te: la luce del sole sull\'occhio scende a circa 0 lux.')+(snow?' Con la neve sale la luminanza della strada, e con essa i troland, anche se la pupilla si stringe.':'')+' Per passare dalla luce all\'energia, per la luce solare: circa <b>100 lumen per watt</b> (efficacia luminosa). Valori: ordini di grandezza, sole basso all\'alba; sull\'occhio arriva anche qualche migliaio di lux dalla strada e dal cielo, non conteggiato qui.';
 }
 upd();
 </script>
