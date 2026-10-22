@@ -7,6 +7,8 @@ wrangler.jsonc         Cloudflare config — serves public/ as the site
 public/index.html      the site itself
 public/calculators/    clinical thresholds — BMI, pack-years, alcohol, activity
 public/catalytic-plane/  interactive reader for Salerno 2026 (DMPK)
+public/didattica/      teaching material (Italian); each interactive figure is
+                       its own page under w/, shown in an iframe
 public/fonts/          self-hosted IBM Plex, so no third-party request is made
 public/_headers        cache and security headers for Cloudflare
 ```

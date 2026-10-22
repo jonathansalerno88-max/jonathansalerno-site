@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Parallasse nell'occhio</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;font-size:14px;color:var(--text-secondary)}
+.ctl button{font:inherit;font-size:13px;padding:6px 12px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.ctl button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+.note{font-size:13px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Occhio visto dall'alto con pupilla d'entrata, punto nodale posteriore N′, centro di rotazione e lunghezza focale fino alla retina; ruotando l'occhio attorno a uno dei tre punti si confronta la parallasse fra un oggetto vicino e uno lontano.</h2>
+<div class="ctl">
+<span>Ruota attorno a</span>
+<button id="pR" onclick="piv='R';upd()">Centro di rotazione (reale)</button>
+<button id="pN" onclick="piv='N';upd()">Punto nodale posteriore N′</button>
+<button id="pE" onclick="piv='E';upd()">Pupilla d'entrata</button>
+<span style="flex:1"></span>
+<button id="play" onclick="toggle()">Fai ruotare</button>
+</div>
+<div class="ctl"><span>Rotazione</span><input type="range" id="rot" min="-25" max="25" value="0" style="flex:1" oninput="stop();upd()"><span id="rotL" style="min-width:40px;text-align:right;color:var(--text-primary)">0°</span></div>
+<svg width="100%" viewBox="0 0 680 400">
+<text class="th" x="20" y="24">Vista dall'alto</text>
+<g id="fov"></g><g id="sight"></g>
+<circle id="blue" r="8" fill="#378ADD"/><circle id="red" r="8" fill="#E24B4A"/>
+<text class="ts" id="blueL" text-anchor="middle">vicino</text><text class="ts" id="redL" text-anchor="middle">lontano</text>
+<g id="eye"></g><g id="pivot"></g><g id="labels"></g>
+<line class="leader" x1="20" y1="302" x2="660" y2="302"/>
+<text class="th" x="20" y="324">Cosa vede l'occhio</text>
+<rect x="120" y="334" width="440" height="44" rx="6" fill="none" stroke="var(--b)" stroke-width="0.5"/>
+<line x1="340" y1="334" x2="340" y2="378" stroke="var(--b)" stroke-width="0.5" stroke-dasharray="3 3"/>
+<circle id="dR" cx="340" cy="356" r="7" fill="#E24B4A"/><circle id="dB" cx="340" cy="356" r="7" fill="#378ADD"/>
+<text class="ts" id="sepL" x="560" y="394" text-anchor="end"> </text>
+</svg>
+<p class="note" id="note"></p>
+<script>
+var piv='R',O={x:330,y:170},K=7,anim=null,t0=0;
+var EX=-3.0*K,NX=-7.3*K,RX=-13.5*K,RET=-24*K;
+var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function L(x1,y1,x2,y2,c,w,d,o){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+(w||1)+'"'+(d?' stroke-dasharray="'+d+'"':'')+(o!=null?' opacity="'+o+'"':'')+'/>';}
+function stop(){if(anim){cancelAnimationFrame(anim);anim=null;document.getElementById('play').textContent='Fai ruotare';}}
+function toggle(){if(anim){stop();return;}
+if(reduce){var r=document.getElementById('rot');r.value=(parseFloat(r.value)>=0?-20:20);upd();return;}
+document.getElementById('play').textContent='Ferma';t0=performance.now();
+var step=function(t){document.getElementById('rot').value=Math.round(22*Math.sin((t-t0)/900));upd();anim=requestAnimationFrame(step);};anim=requestAnimationFrame(step);}
+function upd(){
+['R','N','E'].forEach(function(k){document.getElementById('p'+k).classList.toggle('act',piv===k);});
+var deg=parseFloat(document.getElementById('rot').value),phi=deg*Math.PI/180;document.getElementById('rotL').textContent=deg+'°';
+var pl=piv==='R'?RX:piv==='N'?NX:EX,P={x:O.x+pl,y:O.y},c=Math.cos(phi),s=Math.sin(phi);
+function W(lx,ly){var dx=lx-pl,dy=ly;return {x:P.x+c*dx-s*dy,y:P.y+s*dx+c*dy};}
+var EP0={x:O.x+EX,y:O.y},psi=-8*Math.PI/180;
+var B={x:EP0.x+140*Math.cos(psi),y:EP0.y+140*Math.sin(psi)},R={x:EP0.x+320*Math.cos(psi),y:EP0.y+320*Math.sin(psi)};
+var EP=W(EX,0),NP=W(NX,0),CR=W(RX,0),FV=W(RET,0);
+var g='<g transform="translate('+P.x+','+P.y+') rotate('+deg+') translate('+(-pl)+',0)">';
+g+='<circle cx="'+(-12*K)+'" cy="0" r="'+(12*K)+'" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>';
+var a=0.75,rx=12*K;g+='<path d="M'+(-12*K-rx*Math.cos(a))+' '+(-rx*Math.sin(a))+' A'+rx+' '+rx+' 0 0 0 '+(-12*K-rx*Math.cos(a))+' '+(rx*Math.sin(a))+'" fill="none" stroke="#D85A30" stroke-width="3"/>';
+g+='<path d="M'+(-3*K)+' -40 Q'+(2*K)+' 0 '+(-3*K)+' 40" fill="#E6F1FB" stroke="#888780" stroke-width="1"/>';
+g+='<ellipse cx="'+(-5.6*K)+'" cy="0" rx="'+(2*K)+'" ry="30" fill="#B5D4F4" opacity="0.6" stroke="#378ADD" stroke-width="0.5"/>';
+g+='<rect x="'+(-3.6*K-2)+'" y="-36" width="4" height="26" fill="#854F0B"/><rect x="'+(-3.6*K-2)+'" y="10" width="4" height="26" fill="#854F0B"/>';
+g+=L(RET,60,NX,60,'#D85A30',1.5)+L(RET,54,RET,66,'#D85A30',1.5)+L(NX,54,NX,66,'#D85A30',1.5);
+g+='<circle cx="'+RET+'" cy="0" r="3" fill="#A32D2D"/>';
+g+='<circle cx="'+RX+'" cy="0" r="4" fill="none" stroke="#5F5E5A" stroke-width="1.5"/>';
+g+='<circle cx="'+NX+'" cy="0" r="4.5" fill="#D85A30"/>';
+g+='<circle cx="'+EX+'" cy="0" r="5" fill="none" stroke="#0F6E56" stroke-width="2"/>';
+g+='</g>';
+document.getElementById('eye').innerHTML=g;
+var f='';[-26,26].forEach(function(a2){var r=(deg+a2)*Math.PI/180;f+=L(EP.x,EP.y,EP.x+600*Math.cos(r),EP.y+600*Math.sin(r),'#97C459',1.5);});
+document.getElementById('fov').innerHTML=f;
+document.getElementById('sight').innerHTML=L(EP.x,EP.y,R.x,R.y,'#888780',1,'3 3',0.7);
+[['blue',B],['red',R]].forEach(function(p){var e=document.getElementById(p[0]);e.setAttribute('cx',p[1].x);e.setAttribute('cy',p[1].y);var l=document.getElementById(p[0]+'L');l.setAttribute('x',p[1].x);l.setAttribute('y',p[1].y-14);});
+document.getElementById('pivot').innerHTML='<path d="M'+(P.x-9)+' '+P.y+' L'+(P.x+9)+' '+P.y+' M'+P.x+' '+(P.y-9)+' L'+P.x+' '+(P.y+9)+'" stroke="#A32D2D" stroke-width="2"/>';
+var FM=W((RET+NX)/2,78);
+var lab='<text class="ts" x="'+FM.x+'" y="'+(FM.y+8)+'" text-anchor="middle" fill="#D85A30">f = N′ → retina = 16,7 mm</text>';
+lab+='<text class="ts" x="'+EP.x+'" y="'+(EP.y-56)+'" text-anchor="start" fill="#0F6E56">pupilla d\'entrata (3 mm)</text>';
+lab+='<text class="ts" x="'+NP.x+'" y="'+(NP.y-74)+'" text-anchor="middle" fill="#D85A30">N′ (7,3 mm)</text>';
+lab+=L(NP.x,NP.y-66,NP.x,NP.y-8,'#D85A30',0.5);
+lab+='<text class="ts" x="'+CR.x+'" y="'+(CR.y-96)+'" text-anchor="middle">centro di rotazione (13,5 mm)</text>'+L(CR.x,CR.y-88,CR.x,CR.y-8,'var(--b)',0.5);
+lab+='<text class="ts" x="'+(FV.x-8)+'" y="'+(FV.y+4)+'" text-anchor="end">fovea</text>';
+lab+='<text class="ts" x="'+P.x+'" y="'+(P.y+108)+'" text-anchor="middle" fill="#A32D2D">asse di rotazione</text>';
+document.getElementById('labels').innerHTML=lab;
+function ang(o){return Math.atan2(o.y-EP.y,o.x-EP.x)*180/Math.PI-deg;}
+var aB=ang(B),aR=ang(R);
+document.getElementById('dB').setAttribute('cx',340+aB/26*220);document.getElementById('dR').setAttribute('cx',340+aR/26*220);
+var sep=Math.abs(aB-aR);
+document.getElementById('sepL').textContent=sep<0.05?'vicino e lontano allineati: nessuna parallasse':'scarto fra vicino e lontano: '+sep.toFixed(1).replace('.',',')+'°';
+var n=piv==='R'?'Come si muove davvero l\'occhio: ruota attorno al centro di rotazione, circa 13,5 mm dietro la cornea. La pupilla d\'entrata descrive un arco ampio, quindi c\'è parallasse: è la parallasse oculare, piccola ma reale.':piv==='N'?'Rotazione attorno a N′: la pupilla d\'entrata sta 4 mm più avanti e si sposta, quindi la parallasse resta, anche se più piccola. Come nella fotocamera, il nodale non è il punto giusto.':'Rotazione attorno alla pupilla d\'entrata: il punto di vista resta fermo, vicino e lontano restano sovrapposti. Nessuna parallasse, ma l\'occhio vero non ruota così.';
+document.getElementById('note').innerHTML=n+' Distanze in mm dalla cornea; gli oggetti sono molto più vicini che nella realtà, per rendere visibile l\'effetto.';
+}
+upd();
+</script>
+</body>
+</html>

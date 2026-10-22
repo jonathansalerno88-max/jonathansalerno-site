@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L'occhio: difetti, accomodazione, farmaci</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;font-size:14px;color:var(--text-secondary)}
+.ctl button{font:inherit;font-size:13px;padding:6px 12px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.ctl button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+.ctl button:disabled{opacity:.35;cursor:default}
+.info{font-size:13px;color:var(--text-secondary);margin:6px 0 0;line-height:1.6}
+.info b{color:var(--text-primary);font-weight:500}
+.eq{font-size:14px;color:var(--text-primary);background:var(--surface-1);border-radius:var(--radius);padding:10px 12px;margin-top:8px;line-height:1.7}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Ray diagram dell'occhio con quote di distanza dell'oggetto d0, distanza dell'immagine di e lunghezza focale f misurate dal punto nodale posteriore; equazione delle lenti e ingrandimento calcolati in tempo reale al variare di oggetto, accomodazione, farmaci, difetti refrattivi e lente correttiva.</h2>
+<div class="ctl">
+<button id="cE" onclick="setC('E')">Emmetrope</button>
+<button id="cM" onclick="setC('M')">Miopia (−5 D)</button>
+<button id="cH" onclick="setC('H')">Ipermetropia (+2 D)</button>
+<button id="cA" onclick="setC('A')">Astigmatismo</button>
+<span style="flex:1"></span>
+<button id="lensBtn" onclick="lens=!lens;upd()">Metti la lente giusta</button>
+</div>
+<div class="ctl">
+<span>Oggetto</span>
+<button id="o0" onclick="setM('inf')">all'infinito</button>
+<button id="o1" onclick="setM(2.5)">oltre 2F</button>
+<button id="o2" onclick="setM(2)">in 2F</button>
+<button id="o3" onclick="setM(1.5)">tra F e 2F</button>
+<button id="o4" onclick="setM(1)">in F</button>
+<button id="o5" onclick="setM(0.7)">prima di F</button>
+<input type="range" id="ox" min="330" max="650" value="582" style="flex:1;min-width:110px" oninput="objM=null;upd()">
+</div>
+<div class="ctl">
+<span>Farmaco</span>
+<button id="dN" onclick="drug='N';upd()">Nessuno</button>
+<button id="dP" onclick="drug='P';upd()">Pilocarpina</button>
+<button id="dC" onclick="drug='C';upd()">Cicloplegico (atropina)</button>
+</div>
+<div class="ctl">
+<span>Muscolo ciliare: rilassato</span>
+<input type="range" id="acc" min="0" max="10" step="0.5" value="3" style="flex:1" oninput="upd()">
+<span>contratto</span>
+<span id="accL" style="min-width:150px;text-align:right;color:var(--text-primary)"></span>
+</div>
+<svg width="100%" viewBox="0 0 680 455">
+<defs>
+<filter id="fIso" x="-100%" y="-50%" width="300%" height="200%"><feGaussianBlur id="gIso" stdDeviation="3.5"/></filter>
+<filter id="fAst" x="-100%" y="-50%" width="300%" height="200%"><feGaussianBlur id="gAst" stdDeviation="0.3 6"/></filter>
+<filter id="fIso2" x="-100%" y="-50%" width="300%" height="200%"><feGaussianBlur id="gIso2" stdDeviation="3.5"/></filter>
+<filter id="fAst2" x="-100%" y="-50%" width="300%" height="200%"><feGaussianBlur id="gAst2" stdDeviation="0.3 6"/></filter>
+</defs>
+<text class="th" id="cap" x="20" y="24">Emmetrope</text>
+<text class="ts" id="cap2" x="20" y="44"> </text>
+<line x1="0" y1="160" x2="680" y2="160" stroke="var(--b)" stroke-width="0.5" stroke-dasharray="4 4"/>
+<circle cx="190" cy="160" r="120" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<path d="M130 56 A120 120 0 0 0 130 264" fill="none" stroke="#D85A30" stroke-width="3"/>
+<path d="M300 100 Q340 160 300 220" fill="#E6F1FB" stroke="#888780" stroke-width="1"/>
+<rect id="irT" x="300" y="100" width="4" height="28" fill="#854F0B"/>
+<rect id="irB" x="300" y="192" width="4" height="28" fill="#854F0B"/>
+<g id="zon"></g>
+<ellipse id="cil1" cx="284" cy="96" rx="12" ry="6" fill="#F0997B" stroke="#993C1D" stroke-width="0.5"/>
+<ellipse id="cil2" cx="284" cy="224" rx="12" ry="6" fill="#F0997B" stroke="#993C1D" stroke-width="0.5"/>
+<ellipse id="crys" cx="284" cy="160" rx="14" ry="45" fill="#B5D4F4" opacity="0.6" stroke="#378ADD" stroke-width="0.5"/>
+<circle cx="70" cy="160" r="3" fill="#A32D2D"/>
+<text class="ts" x="62" y="152" text-anchor="end">fovea</text>
+<text class="ts" id="cilLbl" x="250" y="74" text-anchor="end">muscolo ciliare</text>
+<text class="ts" id="zonLbl" x="250" y="92" text-anchor="end">zonula</text>
+<text class="ts" x="262" y="244" text-anchor="end">cristallino</text>
+<text class="ts" x="118" y="262" text-anchor="middle">retina</text>
+<g id="specs"></g>
+<g id="rays"></g>
+<g id="retImg"></g>
+<g id="foci"></g>
+<circle cx="270" cy="160" r="4" fill="#185FA5" stroke="#fff" stroke-width="1"/>
+<line x1="270" y1="166" x2="270" y2="198" stroke="#185FA5" stroke-width="0.5"/>
+<text class="th" x="270" y="212" text-anchor="middle" fill="#185FA5">N′</text>
+<g id="obj"></g>
+<g id="quote"></g>
+<rect x="430" y="340" width="220" height="88" rx="8" fill="none" stroke="var(--b)" stroke-width="0.5"/>
+<text class="ts" x="442" y="360">Come la vedi</text>
+<g id="seen">
+<line x1="560" y1="418" x2="560" y2="368" stroke="var(--t)" stroke-width="3"/>
+<path d="M553 378 L560 364 L567 378 Z" fill="var(--t)"/>
+<path d="M553 412 L560 420 L567 412 M553 404 L560 412 L567 404" fill="none" stroke="var(--t)" stroke-width="2"/>
+</g>
+<text class="ts" id="seenLbl" x="442" y="380"> </text>
+<text class="ts" id="pupLbl" x="442" y="398"> </text>
+<line x1="24" y1="364" x2="44" y2="364" stroke="#BA7517" stroke-width="2"/>
+<text class="ts" x="50" y="368">raggi dalla punta A</text>
+<line x1="24" y1="386" x2="44" y2="386" stroke="#185FA5" stroke-width="2" stroke-dasharray="5 3"/>
+<text class="ts" x="50" y="390">raggi dalla coda B</text>
+<text class="ts" id="astLeg" x="24" y="410"> </text>
+<text class="ts" x="24" y="446">Quote misurate da N′ · lunghezze nel disegno non in scala, valori reali</text>
+</svg>
+<div class="eq" id="eqBox"></div>
+<p class="info" id="caseInfo"></p>
+<p class="info" id="drugInfo"></p>
+<script>
+var cond='E',lens=false,drug='N',objM=null,TH=0.25;
+var C={x:190,y:160,r:120},X0=270,XP=300,Y0=160,H=100,DI=270-78.7,S=945,PE=1/(270-78.7),XS=404,XR=680,PX=1.058;
+var excess={E:[0],M:[5],H:[-2],A:[1,-1]};
+var info={E:'Emmetrope',M:'Miopia (−5 D)',H:'Ipermetropia (+2 D)',A:'Astigmatismo (meridiani −1 D e +1 D)'};
+var lensName={M:['Menisco divergente','−5 D · spesso ai bordi'],H:['Menisco convergente','+2 D · spesso al centro'],A:['Menisco torico','corregge i due meridiani']};
+var shapes={M:'M396 95 L408 95 Q420 160 408 225 L396 225 Q428 160 396 95 Z',H:'M396 95 L402 95 Q426 160 402 225 L396 225 Q412 160 396 95 Z',A:'M396 95 L404 95 Q420 160 404 225 L396 225 Q414 160 396 95 Z'};
+var dInfo={N:'',
+P:'<b>Pilocarpina</b> (agonista muscarinico): muscolo ciliare bloccato in contrazione (≈ 6 D, indicativo), zonula lassa, miosi. La pupilla piccola riduce la sfocatura (effetto foro stenopeico).',
+C:'<b>Cicloplegico</b> (antagonista muscarinico: atropina, ciclopentolato, tropicamide): muscolo ciliare paralizzato, zonula tesa, accomodazione 0, midriasi. La pupilla larga aumenta la sfocatura.'};
+function setC(c){cond=c;lens=false;upd();}
+function setM(m){objM=m;upd();}
+function accVal(){return drug==='P'?6:drug==='C'?0:parseFloat(document.getElementById('acc').value);}
+function useL(){return lens&&cond!=='E';}
+function Psys(i){var ex=excess[cond][i];return PE+(ex+accVal()+(useL()?-ex:0))/S;}
+function hit(p,d){var dx=d.x-p.x,dy=d.y-p.y,ox=p.x-C.x,oy=p.y-C.y;var A2=dx*dx+dy*dy,B2=2*(ox*dx+oy*dy),C2=ox*ox+oy*oy-C.r*C.r;var D2=B2*B2-4*A2*C2;if(!(D2>=0)||!(A2>0))return {x:p.x,y:p.y,t:0};var t=(-B2+Math.sqrt(D2))/(2*A2);return {x:p.x+t*dx,y:p.y+t*dy,t:t};}
+function image(src,P){var dO=src.x-X0,den=P-1/dO;if(Math.abs(den)<1e-6)return {inf:true,x:-1e5,y:Y0+(Y0-src.y)*1e5/dO,virt:false,di:1e9};var di=1/den;
+if(di>0)return {x:X0-di,y:Y0+(Y0-src.y)*di/dO,virt:false,di:di};
+return {x:X0-di,y:Y0-(Y0-src.y)*(-di)/dO,virt:true,di:di};}
+function imageInf(th,P){var di=1/P;return {x:X0-di,y:Y0+th*di,virt:false,di:di};}
+function seg(x1,y1,x2,y2,col,dash,op,w){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+col+'" stroke-width="'+(w||1.3)+'" '+dash+' opacity="'+op+'"/>';}
+function inner(p,I,col,dash,op){var s='';var d=I.inf?{x:p.x-100,y:p.y+(I.y-Y0)/1000}:(I.virt?{x:2*p.x-I.x,y:2*p.y-I.y}:I);var h=hit(p,d);
+s+=seg(p.x,p.y,h.x,h.y,col,dash,op);
+if(!I.inf&&!I.virt&&h.t<1&&I.x>-400)s+=seg(h.x,h.y,I.x,I.y,col,'stroke-dasharray="2 3"',op*0.6,1);
+if(I.virt)s+=seg(p.x,p.y,I.x,I.y,col,'stroke-dasharray="2 4"',op*0.4,1);return s;}
+function endMark(I,col,op){return (!I.inf&&I.x>-400&&I.x<1100)?'<circle cx="'+I.x+'" cy="'+I.y+'" r="3.5" fill="none" stroke="'+col+'" stroke-width="1.5" opacity="'+op+'"/>':'';}
+function bundle(src,I,col,dash,op,pw,Ls){
+var s='',pts=[Y0-pw,Y0,Y0+pw];var sp=null;
+if(Ls&&src.x>420){var u=src.x-XS,V2=-1/u+Ls/S;var vx=Math.abs(V2)<1e-9?1e6:XS-1/V2;var vy=Y0+(src.y-Y0)*(vx-XS)/(src.x-XS);sp={x:vx,y:vy};}
+pts.forEach(function(py){var from=sp?sp:src;var y0=from.y+(py-from.y)*(X0-from.x)/(XP-from.x);
+if(sp){var sy=sp.y+(py-sp.y)*(XS-sp.x)/(XP-sp.x);s+=seg(src.x,src.y,XS,sy,col,dash,op)+seg(XS,sy,X0,y0,col,dash,op);}
+else s+=seg(src.x,src.y,X0,y0,col,dash,op);
+s+=inner({x:X0,y:y0},I,col,dash,op);});
+return s+endMark(I,col,op);}
+function bundleInf(th,I,col,dash,op,pw,Ls){
+var s='',pts=[Y0-pw,Y0,Y0+pw];var Q=null;
+if(Ls){var p=Ls/S;Q={x:XS-1/p,y:Y0+th/p};}
+pts.forEach(function(py){var y0;
+if(Q){var sy=Q.y+(py-Q.y)*(XS-Q.x)/(XP-Q.x);y0=Q.y+(py-Q.y)*(X0-Q.x)/(XP-Q.x);s+=seg(XR,sy-th*(XR-XS),XS,sy,col,dash,op)+seg(XS,sy,X0,y0,col,dash,op);}
+else{y0=py+th*(XP-X0);s+=seg(XR,py-th*(XR-XP),X0,y0,col,dash,op);}
+s+=inner({x:X0,y:y0},I,col,dash,op);});
+return s+endMark(I,col,op);}
+function mark(x,lbl,op,below){
+if(x<6)return '<text class="th" x="8" y="'+(below?180:146)+'" opacity="'+op+'" fill="#3C3489">← '+lbl+'</text>';
+if(x>674)return '<text class="th" x="672" y="'+(below?180:146)+'" text-anchor="end" opacity="'+op+'" fill="#3C3489">'+lbl+' →</text>';
+return '<line x1="'+x+'" y1="152" x2="'+x+'" y2="168" stroke="#534AB7" stroke-width="2" opacity="'+op+'"/><text class="th" x="'+x+'" y="'+(below?182:146)+'" text-anchor="middle" fill="#3C3489" opacity="'+op+'">'+lbl+'</text>';}
+function arcPt(r,t){return {x:C.x+r*Math.cos(t),y:C.y+r*Math.sin(t)};}
+function retArrow(sTip,sTail){
+var N={x:X0,y:Y0};
+var tipH=hit(N,{x:X0-100,y:Y0+sTip*100}),tailH=hit(N,{x:X0-100,y:Y0+sTail*100});
+var tt=Math.atan2(tipH.y-C.y,tipH.x-C.x),tl=Math.atan2(tailH.y-C.y,tailH.x-C.x);if(tl<0)tl+=2*Math.PI;if(tt<0)tt+=2*Math.PI;
+var r=113,p0=arcPt(r,tl),p1=arcPt(r,tt),big=Math.abs(tl-tt)>Math.PI?1:0;
+var s='<path d="M'+p0.x+' '+p0.y+' A'+r+' '+r+' 0 '+big+' 0 '+p1.x+' '+p1.y+'" fill="none" stroke="#2C2C2A" stroke-width="3"/>';
+var pb=arcPt(r,tt+0.09),nx=(p1.x-pb.x),ny=(p1.y-pb.y),L=Math.sqrt(nx*nx+ny*ny);nx/=L;ny/=L;
+s+='<path d="M'+(p1.x+nx*6)+' '+(p1.y+ny*6)+' L'+(pb.x-ny*6)+' '+(pb.y+nx*6)+' L'+(pb.x+ny*6)+' '+(pb.y-nx*6)+' Z" fill="#2C2C2A"/>';
+[0.05,0.1].forEach(function(dt){var q=arcPt(r,tl-dt),q2=arcPt(r,tl-dt+0.04);var mx=q.x-q2.x,my=q.y-q2.y,l=Math.sqrt(mx*mx+my*my);mx/=l;my/=l;
+s+='<path d="M'+(q2.x-my*6)+' '+(q2.y+mx*6)+' L'+q.x+' '+q.y+' L'+(q2.x+my*6)+' '+(q2.y-mx*6)+'" fill="none" stroke="#2C2C2A" stroke-width="1.5"/>';});
+return s;}
+function zonula(A,cx){
+var slack=A/10,ry=45-A*1.2,top=Y0-ry,bot=Y0+ry,y1=100+A*0.5,y2=220-A*0.5,col=slack<0.2?'#444441':'#888780',w=slack<0.2?1.6:1;
+var s='';[[cx-6,-1],[cx+6,1]].forEach(function(z){var x=z[0],o=z[1]*8*slack;
+s+='<path d="M'+x+' '+y1+' Q'+(x+o)+' '+((y1+top)/2)+' '+x+' '+top+'" fill="none" stroke="'+col+'" stroke-width="'+w+'"/>';
+s+='<path d="M'+x+' '+y2+' Q'+(x+o)+' '+((y2+bot)/2)+' '+x+' '+bot+'" fill="none" stroke="'+col+'" stroke-width="'+w+'"/>';});
+return s;}
+function fmt(x,d){return x.toFixed(d).replace('.',',');}
+function q(x1,x2,y,lbl,col,dash,arrowL,arrowR){var c=col,s='';
+s+='<line x1="'+x1+'" y1="'+y+'" x2="'+x2+'" y2="'+y+'" stroke="'+c+'" stroke-width="1.5"'+(dash?' stroke-dasharray="4 3"':'')+'/>';
+s+=arrowL?'<path d="M'+(x1+8)+' '+(y-5)+' L'+x1+' '+y+' L'+(x1+8)+' '+(y+5)+'" fill="none" stroke="'+c+'" stroke-width="1.5"/>':'<line x1="'+x1+'" y1="'+(y-6)+'" x2="'+x1+'" y2="'+(y+6)+'" stroke="'+c+'" stroke-width="1.5"/>';
+s+=arrowR?'<path d="M'+(x2-8)+' '+(y-5)+' L'+x2+' '+y+' L'+(x2-8)+' '+(y+5)+'" fill="none" stroke="'+c+'" stroke-width="1.5"/>':'<line x1="'+x2+'" y1="'+(y-6)+'" x2="'+x2+'" y2="'+(y+6)+'" stroke="'+c+'" stroke-width="1.5"/>';
+return s+'<text class="th" x="'+((x1+x2)/2)+'" y="'+(y-7)+'" text-anchor="middle" fill="'+c+'">'+lbl+'</text>';}
+function upd(){
+var sl=document.getElementById('acc');sl.disabled=drug!=='N';
+var A=accVal(),pw=drug==='P'?12:drug==='C'?42:30,uL=useL(),isInf=objM==='inf';
+var P1=Psys(0),fs0=1/P1;
+var oxEl=document.getElementById('ox'),ox,clamped=false;
+if(!isInf&&objM!==null){ox=X0+objM*fs0;if(ox>650){ox=650;clamped=true;}if(ox<330){ox=330;clamped=true;}oxEl.value=ox;}else ox=parseFloat(oxEl.value);
+document.getElementById('accL').textContent='accomodazione '+fmt(A,1)+' D'+(drug!=='N'?' (bloccata)':'');
+['E','M','H','A'].forEach(function(k){document.getElementById('c'+k).classList.toggle('act',cond===k);});
+['N','P','C'].forEach(function(k){document.getElementById('d'+k).classList.toggle('act',drug===k);});
+document.getElementById('o0').classList.toggle('act',isInf);
+[[1,2.5],[2,2],[3,1.5],[4,1],[5,0.7]].forEach(function(o){var x=X0+o[1]*fs0,b=document.getElementById('o'+o[0]);b.disabled=(x>650||x<330);b.classList.toggle('act',objM===o[1]);});
+var lb=document.getElementById('lensBtn');lb.disabled=cond==='E';lb.textContent=cond==='E'?'Nessuna lente serve':(lens?'Togli la lente':'Metti la lente giusta');
+var src={x:ox,y:Y0-H},srcB={x:ox,y:Y0+H},s='',fo='',imgs=[];
+var Lsv=uL?(-excess[cond][0]):0;
+for(var i=excess[cond].length-1;i>=0;i--){var P=Psys(i),op=i===0?1:0.4,IA,IB;
+if(isInf){IA=imageInf(TH,P);IB=imageInf(-TH,P);s+=bundleInf(TH,IA,'#BA7517','',op,pw,Lsv)+bundleInf(-TH,IB,'#185FA5','stroke-dasharray="5 3"',op,pw,Lsv);}
+else{IA=image(src,P);IB=image(srcB,P);s+=bundle(src,IA,'#BA7517','',op,pw,Lsv)+bundle(srcB,IB,'#185FA5','stroke-dasharray="5 3"',op,pw,Lsv);}
+imgs[i]=IA;
+var f=1/P,sub=excess[cond].length>1?(i===0?'₁':'₂'):'';
+fo+=mark(X0-f,'F′'+sub,op,i===0)+mark(X0-2*f,'2F′'+sub,op,i===0)+mark(X0+f,'F'+sub,op,i===0)+mark(X0+2*f,'2F'+sub,op,i===0);}
+document.getElementById('rays').innerHTML=s;document.getElementById('foci').innerHTML=fo;
+if(isInf){document.getElementById('obj').innerHTML='<text class="th" x="660" y="160" text-anchor="end" dominant-baseline="central" style="font-size:22px">∞</text>';}
+else{document.getElementById('obj').innerHTML='<line x1="'+ox+'" y1="60" x2="'+ox+'" y2="260" stroke="var(--t)" stroke-width="2.5"/><path d="M'+(ox-6)+' 72 L'+ox+' 58 L'+(ox+6)+' 72 Z" fill="var(--t)"/><path d="M'+(ox-6)+' 246 L'+ox+' 254 L'+(ox+6)+' 246 M'+(ox-6)+' 238 L'+ox+' 246 L'+(ox+6)+' 238" fill="none" stroke="var(--t)" stroke-width="1.5"/><text class="th" x="'+(ox+12)+'" y="66">A</text><text class="th" x="'+(ox+12)+'" y="264">B</text>';}
+document.getElementById('specs').innerHTML=uL?'<path d="'+shapes[cond]+'" fill="#B5D4F4" opacity="0.8" stroke="#185FA5" stroke-width="0.8"/><text class="th" x="404" y="68" text-anchor="middle">'+lensName[cond][0]+'</text><text class="ts" x="404" y="86" text-anchor="middle">'+lensName[cond][1]+'</text>':'';
+document.getElementById('irT').setAttribute('height',(Y0-pw)-100);
+document.getElementById('irB').setAttribute('y',Y0+pw);document.getElementById('irB').setAttribute('height',220-(Y0+pw));
+var rx=14+A*0.6,cx=X0+rx;
+var cr=document.getElementById('crys');cr.setAttribute('rx',rx);cr.setAttribute('cx',cx);cr.setAttribute('ry',45-A*1.2);
+['cil1','cil2'].forEach(function(id){var e=document.getElementById(id);e.setAttribute('cx',cx);e.setAttribute('ry',6+A*0.7);});
+document.getElementById('cil1').setAttribute('cy',96+A*0.5);document.getElementById('cil2').setAttribute('cy',224-A*0.5);
+document.getElementById('zon').innerHTML=zonula(A,cx);
+document.getElementById('cilLbl').textContent='muscolo ciliare: '+(A<0.5?'rilassato':A<6?'contratto in parte':'contratto');
+document.getElementById('zonLbl').textContent='zonula (sospensori): '+(A<2?'tesa':A<6?'in parte lassa':'lassa');
+document.getElementById('retImg').innerHTML=isInf?retArrow(TH,-TH):retArrow((Y0-(Y0-H))/(ox-X0),(Y0-(Y0+H))/(ox-X0));
+var Pr=60+excess[cond][0]+A+(uL?-excess[cond][0]:0),fR=1000/Pr,d0mm=isInf?Infinity:(ox-X0)*PX,V0=isInf?0:1000/d0mm,Vi=Pr-V0,diR=Math.abs(Vi)<1e-6?Infinity:1000/Vi;
+var I0=imgs[0],qt='';
+qt+=isInf?q(X0,672,300,'d₀ = ∞','var(--t)',false,false,true):q(X0,ox,300,'d₀ = '+fmt(d0mm/10,1)+' cm','var(--t)');
+if(I0.inf||!isFinite(diR))qt+=q(8,X0,300,'dᵢ = ∞','#BA7517',false,true,false);
+else if(!I0.virt){var xi=Math.max(8,I0.x);qt+=q(xi,X0,300,'dᵢ = '+fmt(diR,1)+' mm','#BA7517',false,I0.x<8,false);}
+else{var xv=Math.min(672,I0.x);qt+=q(X0,xv,318,'dᵢ = '+fmt(diR,1)+' mm (virtuale)','#BA7517',true,false,I0.x>672);}
+var xf=Math.max(8,X0-fs0);qt+=q(xf,X0,336,'f = '+fmt(fR,1)+' mm','#534AB7',false,X0-fs0<8,false);
+qt+='<line x1="78.7" y1="292" x2="78.7" y2="308" stroke="#D85A30" stroke-width="2"/>';
+document.getElementById('quote').innerHTML=qt;
+var eq='<b>1/f = 1/d₀ + 1/dᵢ</b> → '+fmt(Pr,2)+' D = '+(isInf?'0':fmt(V0,2))+' D + '+(isFinite(diR)?fmt(1000/diR,2):'0')+' D';
+if(isInf)eq+='<br><b>m</b> → 0 (oggetto all\'infinito): conta l\'angolo, l\'immagine è alta f × tan θ';
+else if(!isFinite(diR))eq+='<br><b>m</b> → ∞: immagine all\'infinito';
+else{var m=-diR/d0mm;eq+='<br><b>m = −dᵢ / d₀</b> = −'+fmt(diR,1)+' / '+fmt(d0mm,0)+' = '+(Math.abs(m)<0.01?m.toExponential(1).replace('.',','):fmt(m,3))+' → '+(m<0?'capovolta':'dritta')+', '+(Math.abs(m)<1?'rimpicciolita '+fmt(1/Math.abs(m),0)+' volte':'ingrandita '+fmt(Math.abs(m),1)+' volte');}
+eq+='<br>retina a 16,7 mm da N′: a fuoco se dᵢ = 16,7 mm';
+if(excess[cond].length>1){var Pr2=60+excess[cond][1]+A+(uL?-excess[cond][1]:0),di2=1000/(Pr2-V0);eq+=' · meridiano 2: f = '+fmt(1000/Pr2,1)+' mm, dᵢ = '+fmt(di2,1)+' mm';}
+document.getElementById('eqBox').innerHTML=eq;
+var stat=function(I){if(I.inf)return 'raggi paralleli: fuoco all\'infinito, nessun punto a fuoco';if(I.virt)return 'immagine virtuale: nessun fuoco sulla retina';var e=I.di/DI-1;return Math.abs(e)<0.02?'a fuoco sulla retina':e<0?'fuoco davanti alla retina':'fuoco dietro la retina';};
+var errs=imgs.map(function(I){return (I.inf||I.virt)?9:Math.abs(I.di/DI-1);}),worst=Math.max.apply(null,errs);
+document.getElementById('cap').textContent=info[cond]+(uL?' + lente':'')+(drug==='P'?' + pilocarpina':drug==='C'?' + cicloplegico':'');
+document.getElementById('cap2').textContent=imgs.length>1?('meridiano 1: '+stat(imgs[0])+' · meridiano 2: '+stat(imgs[1])):stat(imgs[0]);
+var ci;
+if(isInf)ci='<b>All\'infinito</b>: raggi paralleli, l\'immagine si forma in F′ (dᵢ = f).';
+else{var r=(ox-X0)/fs0;
+if(r>2.05)ci='<b>Oltre 2F</b>: immagine reale, capovolta, rimpicciolita, fra F′ e 2F′.';
+else if(r>1.95)ci='<b>In 2F</b>: immagine reale, capovolta, della stessa grandezza, in 2F′.';
+else if(r>1.03)ci='<b>Fra F e 2F</b>: immagine reale, capovolta, ingrandita, oltre 2F′.';
+else if(r>0.97)ci='<b>In F</b>: l\'immagine va all\'infinito.';
+else ci='<b>Prima di F</b>: immagine virtuale, dritta, ingrandita, dalla parte dell\'oggetto.';
+ci+=' (Le posizioni F e 2F nel disegno sono didattiche: nell\'occhio vero F sta a circa 17 mm dalla cornea.)';}
+document.getElementById('caseInfo').innerHTML=ci;
+var bl=Math.min(8,40*worst*(pw/30)),sharp=bl<0.6,ast=cond==='A'&&!uL;
+var fid=sharp?'':(ast?'url(#fAst)':'url(#fIso)'),fid2=sharp?'':(ast?'url(#fAst2)':'url(#fIso2)');
+['gIso','gIso2'].forEach(function(id){document.getElementById(id).setAttribute('stdDeviation',bl);});
+['gAst','gAst2'].forEach(function(id){document.getElementById(id).setAttribute('stdDeviation','0.3 '+bl);});
+document.getElementById('seen').setAttribute('filter',fid);document.getElementById('retImg').setAttribute('filter',fid2);
+document.getElementById('seenLbl').textContent=sharp?(worst<0.02?'nitida':'quasi nitida (pupilla piccola)'):(ast?'striata in una direzione':(bl<2.5?'poco sfocata':'sfocata'));
+document.getElementById('pupLbl').textContent=drug==='P'?'pupilla stretta (miosi)':drug==='C'?'pupilla dilatata (midriasi)':'';
+document.getElementById('astLeg').textContent=(cond==='A'&&!uL)?'raggi chiari e fuochi ₂: secondo meridiano':'';
+document.getElementById('drugInfo').innerHTML=dInfo[drug];
+}
+upd();
+</script>
+</body>
+</html>

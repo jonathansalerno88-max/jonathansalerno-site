@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fisica delle lenti — Jonathan Salerno</title>
+<meta name="description" content="Materiale didattico interattivo: luminanza e illuminanza, danno alla retina, l'occhio come sistema ottico, miopia e ipermetropia, lunghezza focale, parallasse, lenti sottili e immagini reali e virtuali.">
+<meta name="author" content="Jonathan Salerno">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fisica delle lenti">
+<meta property="og:description" content="Materiale didattico interattivo sull'ottica dell'occhio e delle lenti.">
+<style>
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-ext-600-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-greek-400-normal.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-ext-500-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+:root{
+  --paper:#FBFCFD; --ink:#16222E; --mut:#55697A; --faint:#8696A4;
+  --rule:#DDE4EA; --link:#1456A8; --mark:#B5520C; --axis:#9DACB9; --card:#F1F4F7;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0E151B; --ink:#E2E9EF; --mut:#9BAAB7; --faint:#6C7D8C;
+  --rule:#27343F; --link:#6FA8EA; --mark:#F08A3C; --axis:#50616F; --card:#16212A;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#0E151B; --ink:#E2E9EF; --mut:#9BAAB7; --faint:#6C7D8C;
+  --rule:#27343F; --link:#6FA8EA; --mark:#F08A3C; --axis:#50616F; --card:#16212A;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans);
+  font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased}
+.page{max-width:47rem; margin:0 auto; padding:clamp(2rem,6vw,4.5rem) 16px clamp(3rem,8vw,6rem)}
+a{color:var(--link); font-weight:600; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:.2em}
+a:hover{text-decoration-thickness:2px}
+a:focus-visible{outline:2px solid var(--link); outline-offset:3px; border-radius:2px}
+
+.back{font-size:.875rem; margin:0 0 1.6rem}
+.kicker{font-family:var(--mono); font-size:.75rem; color:var(--faint); letter-spacing:.04em; margin:0 0 .4rem}
+h1{font-family:var(--serif); font-weight:500; font-size:clamp(2.2rem,6vw,3rem); line-height:1.08;
+  letter-spacing:-.02em; margin:0 0 .9rem}
+.lede{max-width:38rem; color:var(--ink); font-size:1.0625rem}
+.lede p{margin:0 0 .8rem}
+
+nav.toc{margin:2rem 0 0; padding:1rem 1.2rem; background:var(--card); border-radius:10px}
+nav.toc h2{margin:0 0 .5rem; padding:0; border:0}
+nav.toc ol{margin:0; padding-left:1.4rem; font-size:.9375rem; columns:2 17rem; column-gap:2rem}
+nav.toc li{margin:.15rem 0; break-inside:avoid}
+nav.toc a{font-weight:500}
+
+section{margin-top:clamp(2.8rem,7vw,4rem); scroll-margin-top:1rem}
+h2{font-family:var(--sans); font-weight:600; font-size:.8125rem; color:var(--mut);
+  margin:0 0 1rem; padding-bottom:.5rem; border-bottom:1px solid var(--rule); letter-spacing:.005em}
+h3{font-family:var(--serif); font-weight:500; font-size:1.45rem; line-height:1.25; margin:0 0 .8rem; letter-spacing:-.01em}
+section p, section ul, section ol{max-width:38rem}
+section p{margin:0 0 .85rem}
+section ul{padding-left:1.2rem; margin:0 0 .9rem}
+section li{margin:.25rem 0}
+.formula{font-family:var(--mono); font-size:.9rem; background:var(--card); border-radius:6px;
+  padding:.55rem .8rem; display:inline-block; margin:.1rem 0 .9rem}
+.try{font-size:.9375rem; color:var(--mut); border-left:3px solid var(--axis); padding:.1rem 0 .1rem .9rem; margin:1rem 0}
+.try b{color:var(--ink); font-weight:600}
+
+figure.w{margin:1.4rem 0 1.2rem}
+figure.w iframe{display:block; width:100%; height:560px; border:1px solid var(--rule);
+  border-radius:10px; background:#FBFCFD}
+figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
+figure.w figcaption a{font-weight:500}
+
+table{border-collapse:collapse; font-size:.9rem; margin:.4rem 0 1rem; width:100%; max-width:38rem}
+th,td{text-align:left; padding:.45rem .6rem; border-bottom:1px solid var(--rule); vertical-align:top}
+th{font-weight:600; color:var(--mut); font-size:.8125rem}
+
+ol.refs{font-size:.875rem; color:var(--mut); padding-left:1.2rem}
+ol.refs li{margin:.45rem 0}
+.caveat{font-size:.875rem; color:var(--mut)}
+footer{margin-top:clamp(3rem,8vw,4.5rem); padding-top:1.1rem; border-top:1px solid var(--rule);
+  color:var(--faint); font-size:.8125rem}
+footer p{margin:0}
+</style>
+</head>
+<body>
+<div class="page">
+
+<p class="back"><a href="/">Jonathan Salerno</a></p>
+
+<header>
+  <p class="kicker">MATERIALE DIDATTICO</p>
+  <h1>Fisica delle lenti</h1>
+  <div class="lede">
+    <p>Dall'abbagliamento del sole basso sulla strada fino alla lente d'ingrandimento: un percorso
+    sull'ottica dell'occhio e delle lenti, costruito per domande successive. Ogni sezione ha un
+    disegno interattivo da usare, non solo da guardare.</p>
+    <p class="caveat">I numeri nei disegni sono ordini di grandezza calcolati con modelli
+    semplificati, salvo dove è citata una fonte. Servono a capire i rapporti fra le grandezze,
+    non a fare diagnosi.</p>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sommario">
+  <h2>Sommario</h2>
+  <ol>
+    <li><a href="#luce">Luminanza, illuminanza e abbagliamento</a></li>
+    <li><a href="#danno">Come si danneggia la retina</a></li>
+    <li><a href="#occhio-ridotto">L'occhio come sistema ottico</a></li>
+    <li><a href="#difetti">Difetti visivi, accomodazione, farmaci</a></li>
+    <li><a href="#occhiali">Le lenti degli occhiali</a></li>
+    <li><a href="#focale">Lunghezza focale: occhio, fotocamera, telescopio</a></li>
+    <li><a href="#parallasse">Parallasse: punto nodale o pupilla d'entrata</a></li>
+    <li><a href="#animali">Focale e pupilla negli animali</a></li>
+    <li><a href="#lente-sottile">La lente sottile</a></li>
+    <li><a href="#reale-virtuale">Immagine reale o virtuale</a></li>
+    <li><a href="#fonti">Fonti</a></li>
+  </ol>
+</nav>
+
+<!-- 1 -->
+<section id="luce">
+  <h2>1 · Luminanza, illuminanza e abbagliamento</h2>
+  <h3>Che cosa misurano lumen, candele, nit, lux e troland</h3>
+  <p>Le grandezze della luce non sono alternative fra loro: descrivono la stessa luce in punti diversi.</p>
+  <ul>
+    <li><b>Lumen</b> (flusso luminoso): quanta luce emette la sorgente in tutto.</li>
+    <li><b>Candela</b> (intensità): quanta ne emette in una direzione, per unità di angolo solido.</li>
+    <li><b>Nit</b>, cioè candele al metro quadro (luminanza): quanto è <em>concentrata</em> l'emissione, l'intensità divisa per l'area apparente della sorgente. Il sole sta intorno a 10⁹ nit, uno smartphone a 1.000–2.000.</li>
+    <li><b>Lux</b>, cioè lumen al metro quadro (illuminanza): quanta luce <em>arriva</em> su una superficie. Il sole pieno dà circa 100.000 lux.</li>
+    <li><b>Troland</b> (illuminanza sulla retina): luminanza in nit × area della pupilla in mm².</li>
+  </ul>
+  <p>Ogni sorgente, diretta o riflessa, ha sempre una luminanza e produce sempre un'illuminanza su
+  ciò che colpisce. Una superficie opaca illuminata diventa a sua volta una sorgente:</p>
+  <p class="formula">L ≈ ρ · E / π</p>
+  <p>dove ρ è la riflettanza. Un asfalto chiaro (ρ ≈ 0,2) sotto 10.000 lux ha circa 600 nit; la neve
+  fresca (ρ ≈ 0,85) circa quattro volte tanto.</p>
+  <p>Per una sorgente estesa, l'illuminanza sulla retina dipende solo dalla luminanza e dalla pupilla,
+  non dalla distanza: l'angolo solido si semplifica.</p>
+  <p class="formula">E<sub>retina</sub> ∝ L · A<sub>pupilla</sub> / f²</p>
+  <p>Da qui la distinzione che conta: <b>l'abbagliamento</b> dipende dall'illuminanza che la sorgente
+  produce sull'occhio, divisa circa per il quadrato dell'angolo dalla linea di vista; <b>il danno
+  alla retina</b> dipende dalla luminanza di ciò che si fissa e dal tempo.</p>
+  <figure class="w">
+    <iframe src="w/01-semaforo.html" title="Semaforo all'alba: strada asfaltata e innevata, luce diretta, troland e soglia di sicurezza" loading="lazy"></iframe>
+    <figcaption>Sposta il semaforo e attiva la neve. <a href="w/01-semaforo.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <p class="try"><b>Da provare.</b> Dietro il semaforo il sole non cambia: lumen, candele e luminanza
+  restano gli stessi. Crolla solo l'illuminanza sul tuo occhio, ed è per questo che l'abbagliamento
+  sparisce. Con la neve la strada sale di circa 4 volte in luminanza ma resta sotto la soglia di
+  10⁴ nit: abbaglia, non danneggia.</p>
+</section>
+
+<!-- 2 -->
+<section id="danno">
+  <h2>2 · Come si danneggia la retina</h2>
+  <h3>Dose fotochimica, soglia termica, e la trappola dell'eclissi</h3>
+  <p>Ci sono due meccanismi distinti.</p>
+  <ul>
+    <li><b>Fotochimico</b> (luce blu): conta la dose, cioè irradianza × tempo sullo stesso punto della
+    retina. Si accumula: un'esposizione intensa e breve equivale a una debole e lunga. È il meccanismo
+    della retinopatia solare. Il limite di esposizione ICNIRP/ACGIH è una radianza pesata sulla luce
+    blu, 100 J/(cm²·sr) nell'arco di una giornata; fissando il sole lo si supera nell'ordine dei secondi.</li>
+    <li><b>Termico</b>: conta la potenza istantanea, perché il calore si dissipa. O superi la soglia
+    subito o non succede nulla. È il rischio dei laser, che entrano collimati e si concentrano in un
+    punto di circa 0,02 mm.</li>
+  </ul>
+  <p>Per la luce bianca esiste una regola pratica dell'ICNIRP: sotto 10⁴ cd/m² di luminanza non serve
+  nemmeno una valutazione dettagliata del rischio. La soglia vera però si esprime in radianza pesata
+  sullo spettro blu, non in nit.</p>
+  <p><b>L'eclissi.</b> La parte di sole visibile ha la stessa luminanza del sole pieno; cala solo
+  l'illuminanza sull'occhio. Il danno lo fa la luminanza, ma il campanello d'allarme lo suona
+  l'illuminanza: senza fastidio il riflesso di distogliere lo sguardo non scatta, la pupilla si
+  dilata, e la retina non ha recettori del dolore. Si fissa a lungo una sorgente che brucia come
+  il sole pieno.</p>
+  <figure class="w">
+    <iframe src="w/02-danno.html" title="Sole, eclissi parziale, puntatore laser e schermo: danno fotochimico, danno termico e orologio biologico" loading="lazy"></iframe>
+    <figcaption>Cambia sorgente, togli l'ostacolo e muovi il tempo di esposizione. <a href="w/02-danno.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <p><b>Lo schermo.</b> Il rischio per la retina è trascurabile, con o senza filtro. L'effetto reale è
+  sull'orologio biologico: leggendo circa 4 ore a sera per 5 sere su un tablet, rispetto a un libro
+  di carta, Chang e colleghi hanno misurato melatonina serale ridotta del 55%, inizio della secrezione
+  ritardato di oltre 1,5 ore, addormentamento più lento di circa 10 minuti e minore vigilanza al
+  mattino. L'effetto che conta è lo spostamento dell'orologio, che con una sveglia fissa diventa un
+  <em>jet lag sociale</em>. Le condizioni dello studio (luminosità massima, stanza poco illuminata)
+  sono state criticate come esagerate, e gli autori hanno replicato; la questione è aperta.</p>
+  <p>Sui filtri per la luce blu, la revisione Cochrane del 2023 conclude che probabilmente non
+  riducono l'affaticamento visivo da computer e che l'effetto sul sonno è incerto, con evidenza di
+  certezza molto bassa.</p>
+</section>
+
+<!-- 3 -->
+<section id="occhio-ridotto">
+  <h2>3 · L'occhio come sistema ottico</h2>
+  <h3>L'occhio ridotto</h3>
+  <p>Per i calcoli l'occhio si può trattare come una sola superficie che rifrange, con potere di circa
+  60 diottrie a riposo, l'interno a indice 4/3 e un punto nodale per cui passano senza deviare i
+  raggi principali. È l'<em>occhio ridotto</em>. Un dato da tenere a mente: un grado di campo visivo
+  occupa circa 0,29 mm di retina, e il sole fissato forma un dischetto di circa 0,15 mm.</p>
+  <figure class="w">
+    <iframe src="w/03-occhio-ridotto.html" title="Calcolatore dell'occhio ridotto" loading="lazy"></iframe>
+    <figcaption>Scegli un oggetto e cambia pupilla, difetto refrattivo e ampiezza accomodativa. <a href="w/03-occhio-ridotto.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <p class="try"><b>Da provare.</b> Miopia a −3 D e persona a 10 m: l'immagine cade davanti alla
+  retina e il cerchio di sfocatura cresce con la pupilla, per questo strizzare gli occhi aiuta.
+  Ampiezza accomodativa a 1–2 D e telefono a 25 cm: il punto prossimo si allontana, ed è la presbiopia.</p>
+</section>
+
+<!-- 4 -->
+<section id="difetti">
+  <h2>4 · Difetti visivi, accomodazione, farmaci</h2>
+  <h3>Dove cade il fuoco rispetto alla retina</h3>
+  <p>La distanza che decide tutto è quella fra il <b>punto nodale posteriore</b> N′, sulla faccia
+  posteriore del cristallino, e il fuoco F′. Fissa la grandezza dell'immagine sulla retina e,
+  confrontata con la distanza fissa N′–retina (circa 16,7 mm), dice se l'occhio rilassato mette a
+  fuoco l'infinito.</p>
+  <ul>
+    <li><b>Emmetrope</b>: a riposo F′ cade sulla retina.</li>
+    <li><b>Miope</b>: F′ cade davanti. Accomodare non aiuta, perché aggiunge potere.</li>
+    <li><b>Ipermetrope</b>: F′ cade dietro. Da giovane compensa accomodando, con fatica.</li>
+    <li><b>Astigmatico</b>: due poteri, due fuochi, uno per meridiano. Accomodando ne metti a fuoco uno alla volta.</li>
+  </ul>
+  <p>Regola pratica: circa <b>3 diottrie per millimetro</b>. Un occhio più lungo di 1 mm è miope di
+  circa −3 D; per lo stesso motivo un errore di 1 mm nella biometria prima della cataratta diventa
+  circa 3 D di errore nella lente intraoculare.</p>
+  <p>Per un oggetto vicino non deve stare sulla retina F′, ma l'<em>immagine</em>. Il muscolo ciliare
+  si contrae, la zonula (i legamenti sospensori) si allenta, il cristallino si arrotonda, il potere
+  sale e F′ avanza davanti alla retina. La relazione è l'equazione delle lenti, con le distanze
+  misurate da N′:</p>
+  <p class="formula">1/f = 1/d₀ + 1/dᵢ &nbsp;&nbsp; m = −dᵢ / d₀</p>
+  <figure class="w">
+    <iframe src="w/04-occhio.html" title="Occhio interattivo: miopia, ipermetropia, astigmatismo, lente correttiva, accomodazione, farmaci, quote d0, di e f" loading="lazy"></iframe>
+    <figcaption>Il disegno principale: difetto, lente correttiva, posizione dell'oggetto, farmaco, muscolo ciliare. <a href="w/04-occhio.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <p class="try"><b>Da provare.</b> Emmetrope, oggetto all'infinito, muscolo rilassato: nitido.
+  Alza l'accomodazione e l'infinito si sfoca. Ipermetropia e cicloplegico: l'accomodazione che
+  compensava sparisce, ed è per questo che il ciclopentolato si usa per misurare la vista ai
+  bambini. Emmetrope e pilocarpina: l'accomodazione è bloccata troppo alta, ma la pupilla stretta
+  limita la sfocatura (effetto foro stenopeico).</p>
+  <p>I farmaci agiscono sul muscolo ciliare, che è liscio e comandato dal parasimpatico attraverso
+  recettori muscarinici. Per questo l'opposto della pilocarpina non sono i miorilassanti, che
+  agiscono sul muscolo scheletrico, ma i cicloplegici (atropina, ciclopentolato, tropicamide).</p>
+</section>
+
+<!-- 5 -->
+<section id="occhiali">
+  <h2>5 · Le lenti degli occhiali</h2>
+  <h3>Menischi, e perché non sono biconvessi</h3>
+  <p>Che una lente sia convergente o divergente lo decide dove è più spessa, non la forma delle facce:
+  più spessa al centro converge, più spessa ai bordi diverge. Gli occhiali sono quasi sempre
+  <b>menischi</b>, con le due facce curvate dalla stessa parte (da μηνίσκος, piccola luna).</p>
+  <figure class="w">
+    <iframe src="w/05-forme-lenti.html" title="Forme delle lenti convergenti e divergenti" loading="lazy"></iframe>
+  </figure>
+  <p>La forma a menisco non serve contro l'aberrazione sferica, che con un fascio largo quanto la
+  pupilla è trascurabile. Serve contro l'<b>astigmatismo obliquo</b>: l'occhio ruota dietro la lente,
+  e una lente attraversata di sbieco si comporta come se avesse due poteri. Curvandola attorno al
+  centro di rotazione dell'occhio, lo sguardo laterale la attraversa quasi perpendicolare.</p>
+  <figure class="w">
+    <iframe src="w/06-astigmatismo-obliquo.html" title="Astigmatismo obliquo: lente piatta contro menisco" loading="lazy"></iframe>
+    <figcaption>Muovi lo sguardo e alterna le due lenti. <a href="w/06-astigmatismo-obliquo.html">Apri a schermo intero</a></figcaption>
+  </figure>
+</section>
+
+<!-- 6 -->
+<section id="focale">
+  <h2>6 · Lunghezza focale: occhio, fotocamera, telescopio</h2>
+  <h3>Dove cominciano e dove finiscono i millimetri</h3>
+  <p>La lunghezza focale va da un punto dell'obiettivo (il punto principale posteriore, che in aria
+  coincide con il nodale) al fuoco, dove convergono i raggi paralleli. Decide quanto è grande
+  l'immagine: un oggetto che sottende un angolo θ produce un'immagine alta circa f · tan θ.</p>
+  <p>Non va confusa con il <b>numero f</b> (f/1,4, f/8…), che è un rapporto: focale divisa per il
+  diametro dell'apertura. Il primo decide la geometria dell'immagine, il secondo quanta luce
+  arriva (va come 1/N²) e la profondità di campo.</p>
+  <figure class="w">
+    <iframe src="w/07-focale.html" title="Lunghezza focale in occhio, fotocamera e telescopio" loading="lazy"></iframe>
+    <figcaption>Alterna i tre strumenti e cambia le focali. <a href="w/07-focale.html">Apri a schermo intero</a></figcaption>
+  </figure>
+</section>
+
+<!-- 7 -->
+<section id="parallasse">
+  <h2>7 · Parallasse: punto nodale o pupilla d'entrata</h2>
+  <h3>Attorno a cosa ruotare per non avere errori</h3>
+  <p>Fra i fotografi panoramici si dice di ruotare la fotocamera attorno al "punto nodale". È
+  un'imprecisione storica: la parallasse dipende solo dal <b>centro di prospettiva</b>, cioè dal
+  punto da cui partono le linee di vista verso gli oggetti, e quel punto è la <b>pupilla
+  d'entrata</b>, l'immagine del diaframma vista dalle lenti anteriori. Con una lente singola e il
+  diaframma appoggiato i due punti coincidono, ed è da lì che nasce la regola; in un obiettivo
+  composto si separano, anche di centimetri nei grandangolari.</p>
+  <p>Il punto nodale posteriore resta importante per un'altra ragione: insieme al piano focale
+  definisce la lunghezza focale.</p>
+  <figure class="w">
+    <iframe src="w/08-parallasse-fotocamera.html" title="Fotocamera: rotazione sul punto nodale o sulla pupilla d'entrata" loading="lazy"></iframe>
+    <figcaption>Scegli obiettivo e asse, poi fai ruotare. <a href="w/08-parallasse-fotocamera.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <p>L'occhio vero ruota attorno al suo centro di rotazione, circa 13,5 mm dietro la cornea: il
+  punto "sbagliato" per la fotografia panoramica. La pupilla d'entrata sta a circa 3 mm, N′ a circa
+  7 mm. Muovendo lo sguardo, gli oggetti vicini scorrono un poco rispetto a quelli lontani: è la
+  parallasse oculare, che il cervello compensa.</p>
+  <figure class="w">
+    <iframe src="w/09-parallasse-occhio.html" title="Occhio: pupilla d'entrata, punto nodale e centro di rotazione" loading="lazy"></iframe>
+    <figcaption><a href="w/09-parallasse-occhio.html">Apri a schermo intero</a></figcaption>
+  </figure>
+</section>
+
+<!-- 8 -->
+<section id="animali">
+  <h2>8 · Focale e pupilla negli animali</h2>
+  <h3>Dettaglio, campo e luce non si ottengono insieme</h3>
+  <p>A parità di coni, allungare N′F′ ingrandisce l'immagine: lo stesso dettaglio copre più
+  fotorecettori, ma il campo coperto dalla fovea si restringe, come con un teleobiettivo. Se la
+  pupilla non cresce, l'immagine diventa anche più scura, perché la luminosità sulla retina va con
+  l'inverso del quadrato del numero f.</p>
+  <ul>
+    <li><b>Rapaci</b>: focale lunga, immagine grande e dettagliata, ma serve molta luce.</li>
+    <li><b>Gatto</b>: focale corta e pupilla enorme, molta luce ma immagine piccola.</li>
+    <li><b>Gufo</b>: entrambe le cose, con un occhio tubolare. Il prezzo è un campo ristretto e occhi
+    che non ruotano nell'orbita: ruota la testa.</li>
+  </ul>
+  <figure class="w">
+    <iframe src="w/10-occhi-animali.html" title="Variare la distanza nodale–fuoco: uomo, gatto, rapace, gufo" loading="lazy"></iframe>
+    <figcaption>Valori indicativi, scelti per mostrare le strategie. <a href="w/10-occhi-animali.html">Apri a schermo intero</a></figcaption>
+  </figure>
+</section>
+
+<!-- 9 -->
+<section id="lente-sottile">
+  <h2>9 · La lente sottile</h2>
+  <h3>Il ray diagram classico</h3>
+  <p>Bastano tre raggi: quello parallelo all'asse, che dopo la lente passa per F′; quello per il
+  centro, che non devia; quello per F, che esce parallelo. Dove si incrociano c'è la punta
+  dell'immagine. Se dopo la lente divergono, li si prolunga all'indietro e si trova un'immagine
+  virtuale.</p>
+  <table>
+    <thead><tr><th>Lente</th><th>Oggetto</th><th>Immagine</th></tr></thead>
+    <tbody>
+      <tr><td>Convergente</td><td>oltre 2F</td><td>reale, capovolta, rimpicciolita, fra F′ e 2F′</td></tr>
+      <tr><td>Convergente</td><td>in 2F</td><td>reale, capovolta, stessa grandezza (m = −1)</td></tr>
+      <tr><td>Convergente</td><td>fra F e 2F</td><td>reale, capovolta, ingrandita, oltre 2F′</td></tr>
+      <tr><td>Convergente</td><td>in F</td><td>all'infinito</td></tr>
+      <tr><td>Convergente</td><td>dentro F</td><td>virtuale, dritta, ingrandita</td></tr>
+      <tr><td>Divergente</td><td>ovunque</td><td>virtuale, dritta, rimpicciolita</td></tr>
+    </tbody>
+  </table>
+  <p>La <b>lente d'ingrandimento</b> è una lente convergente usata con l'oggetto dentro il fuoco.
+  Ingrandisce circa 25 cm / f. Gli occhiali da lettura fanno la stessa cosa, ma sono dieci volte
+  più deboli; quelli da miope sono divergenti e rimpiccioliscono.</p>
+  <figure class="w">
+    <iframe src="w/11-ray-diagram.html" title="Ray diagram della lente sottile con oggetto trascinabile" loading="lazy"></iframe>
+    <figcaption>Trascina la freccia nera. <a href="w/11-ray-diagram.html">Apri a schermo intero</a></figcaption>
+  </figure>
+</section>
+
+<!-- 10 -->
+<section id="reale-virtuale">
+  <h2>10 · Immagine reale o virtuale</h2>
+  <h3>La prova del foglio</h3>
+  <p>Un'immagine è <b>reale</b> quando la luce passa davvero da quel punto: un foglio messo lì la
+  raccoglie, e chiunque nella stanza la vede, perché il foglio diffonde la luce in tutte le
+  direzioni. È <b>virtuale</b> quando i raggi divergono come se venissero da un punto in cui non
+  sono mai passati: la vede solo chi mette l'occhio sulla loro traiettoria, e su un foglio non
+  compare mai.</p>
+  <p>Con una lente o uno specchio singoli, capovolta vuol dire reale e dritta vuol dire virtuale.
+  Con più elementi la regola non vale più: nel telescopio astronomico l'immagine finale è capovolta
+  ma virtuale.</p>
+  <figure class="w">
+    <iframe src="w/12-prova-foglio.html" title="La prova del foglio con lente convergente e divergente" loading="lazy"></iframe>
+    <figcaption>Muovi il foglio nei tre casi. <a href="w/12-prova-foglio.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <p class="try"><b>Da fare a casa.</b> Di fronte a una finestra, tieni un foglio bianco e mettici
+  davanti una lente d'ingrandimento, poi allontanala piano: a qualche centimetro compare la finestra,
+  piccola e capovolta. Con gli occhiali da miope non compare mai; con quelli da lettura compare, ma
+  a 30 cm–1 m dalla lente.</p>
+  <p>Immagini virtuali di ogni giorno: lo specchio del bagno, lo specchietto laterale dell'auto, lo
+  spioncino della porta, il fondo della piscina che sembra più vicino. Immagini reali: lo schermo del
+  proiettore, il sensore della fotocamera, la retina, il puntino del sole concentrato da una lente.</p>
+</section>
+
+<section id="fonti">
+  <h2>Fonti</h2>
+  <ol class="refs">
+    <li>O'Hagan JB, Khazova M, Price LLA. Low-energy light bulbs, computers, tablets and the blue light
+    hazard. <i>Eye</i> 2016. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4763136/">PMC4763136</a>
+    — regola pratica ICNIRP dei 10⁴ cd/m².</li>
+    <li>Rischio fotochimico da luce blu e limiti di esposizione ACGIH (100 J/(cm²·sr)). NASA Technical
+    Reports Server, documento <a href="https://ntrs.nasa.gov/api/citations/19960011703/downloads/19960011703.pdf">19960011703</a>.</li>
+    <li>Chang AM, Aeschbach D, Duffy JF, Czeisler CA. Evening use of light-emitting eReaders negatively
+    affects sleep, circadian timing, and next-morning alertness. <i>PNAS</i> 2015;112(4):1232–7.
+    <a href="https://doi.org/10.1073/pnas.1418490112">doi:10.1073/pnas.1418490112</a></li>
+    <li>Zeitzer JM. Real life trumps laboratory in matters of public health. <i>PNAS</i> 2015.
+    <a href="https://doi.org/10.1073/pnas.1500717112">doi:10.1073/pnas.1500717112</a> · Risposta di
+    Chang AM, Czeisler CA. <a href="https://doi.org/10.1073/pnas.1501544112">doi:10.1073/pnas.1501544112</a></li>
+    <li>Singh S, Keller PR, Busija L, et al. Blue-light filtering spectacle lenses for visual
+    performance, sleep, and macular health in adults. <i>Cochrane Database Syst Rev</i> 2023;(8):CD013244.
+    <a href="https://doi.org/10.1002/14651858.CD013244.pub2">doi:10.1002/14651858.CD013244.pub2</a></li>
+  </ol>
+  <p class="caveat">Tutti gli altri valori (luminanze, troland, irradianze, posizioni dei punti
+  cardinali, parametri degli occhi animali) sono ordini di grandezza da modelli semplificati,
+  l'occhio ridotto in primo luogo.</p>
+</section>
+
+<footer>
+  <p>Jonathan Salerno · Firenze · <a href="/">jonathansalerno.org</a></p>
+</footer>
+
+</div>
+<script>
+/* Each figure is a page of its own in an iframe from this site, so the frame
+   can be sized to its content and kept in step as the figure changes. */
+(function(){
+  var frames = document.querySelectorAll('figure.w iframe');
+  Array.prototype.forEach.call(frames, function(f){
+    function fit(){
+      try{
+        var d = f.contentDocument;
+        if (d && d.documentElement) f.style.height = Math.ceil(d.documentElement.offsetHeight) + 2 + 'px';
+      }catch(e){}
+    }
+    f.addEventListener('load', function(){
+      fit();
+      try{
+        if ('ResizeObserver' in window) new ResizeObserver(fit).observe(f.contentDocument.body);
+      }catch(e){}
+    });
+  });
+})();
+</script>
+</body>
+</html>

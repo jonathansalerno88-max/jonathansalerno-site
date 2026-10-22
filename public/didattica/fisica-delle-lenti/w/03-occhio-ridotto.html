@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calcolatore dell'occhio ridotto</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.ctl{display:grid;grid-template-columns:150px 1fr 110px;align-items:center;gap:6px 10px;margin:8px 0;font-size:13px;color:var(--text-secondary)}
+.ctl output{color:var(--text-primary);text-align:right}
+@media (max-width:480px){.ctl{grid-template-columns:1fr 90px}.ctl span{grid-column:1/-1}}
+.pre{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.pre button{font:inherit;font-size:13px;padding:5px 10px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:8px}
+.card{background:var(--surface-1);border-radius:var(--radius);padding:10px 12px;font-size:13px;color:var(--text-secondary)}
+.card b{font-weight:500;color:var(--text-primary)}
+.card .v{font-size:18px;font-weight:500;color:var(--text-primary);margin-top:2px}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Calcolatore interattivo del ray diagram dell'occhio umano con il modello dell'occhio ridotto: distanza e altezza dell'oggetto, pupilla, errore refrattivo e accomodazione; calcola posizione dell'immagine, dimensione sulla retina, cerchio di sfocatura, punto prossimo e remoto.</h2>
+<div class="pre">
+<button onclick="pre(1.5e11,1.39e9)">Sole</button>
+<button onclick="pre(10,1.75)">Persona a 10 m</button>
+<button onclick="pre(0.4,0.003)">Lettera a 40 cm</button>
+<button onclick="pre(0.25,0.15)">Telefono a 25 cm</button>
+<button onclick="pre(0.1,0.023)">Moneta a 10 cm</button>
+</div>
+<svg width="100%" viewBox="0 0 680 300">
+<line x1="20" y1="150" x2="660" y2="150" stroke="var(--b)" stroke-width="0.5" stroke-dasharray="4 4"/>
+<ellipse id="globe" cx="440" cy="150" rx="130" ry="96" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<path id="retina" d="" fill="none" stroke="#D85A30" stroke-width="3"/>
+<path d="M310 92 Q286 150 310 208" fill="#E6F1FB" stroke="#888780" stroke-width="1"/>
+<rect id="irT" x="312" y="66" width="4" height="50" fill="#854F0B"/>
+<rect id="irB" x="312" y="184" width="4" height="50" fill="#854F0B"/>
+<g id="rays"></g>
+<line x1="50" y1="150" x2="50" y2="74" stroke="var(--t)" stroke-width="2.5"/>
+<path d="M44 82 L50 70 L56 82 Z" fill="var(--t)"/>
+<text class="ts" x="50" y="176" text-anchor="middle">oggetto</text>
+<text class="ts" x="50" y="192" text-anchor="middle">(non in scala)</text>
+<text class="ts" id="dLbl" x="175" y="276" text-anchor="middle">distanza</text>
+<line x1="50" y1="262" x2="300" y2="262" stroke="var(--b)" stroke-width="0.5"/>
+<circle id="Fpt" cx="100" cy="150" r="3" fill="var(--t)"/>
+<text class="ts" id="FLbl" x="100" y="170" text-anchor="middle">F</text>
+<text class="ts" x="300" y="246" text-anchor="middle">P</text>
+<circle id="Npt" cx="367" cy="150" r="3.5" fill="#185FA5"/>
+<text class="ts" id="NLbl" x="367" y="170" text-anchor="middle">N</text>
+<circle id="F2pt" cx="566" cy="150" r="3" fill="var(--t)"/>
+<text class="ts" id="F2Lbl" x="566" y="132" text-anchor="middle">F′</text>
+<rect id="blur" x="0" y="0" width="5" height="0" fill="#E24B4A"/>
+<text class="ts" id="rLbl" x="600" y="270" text-anchor="middle">retina</text>
+</svg>
+<div class="ctl">
+<span>Distanza oggetto</span><input type="range" id="dS" min="-130" max="1120" value="100" oninput="upd()"><output id="dO"></output>
+<span>Altezza oggetto (m)</span><input type="number" id="hI" value="1.75" step="any" oninput="upd()" style="width:100%"><output id="hO"></output>
+<span>Pupilla</span><input type="range" id="pS" min="2" max="8" step="0.5" value="4" oninput="upd()"><output id="pO"></output>
+<span>Errore refrattivo</span><input type="range" id="rS" min="-6" max="4" step="0.25" value="0" oninput="upd()"><output id="rO"></output>
+<span>Ampiezza accomodativa</span><input type="range" id="aS" min="0" max="12" step="0.5" value="8" oninput="upd()"><output id="aO"></output>
+</div>
+<div class="grid">
+<div class="card">Potere dell'occhio<div class="v" id="oP"></div><span id="oA"></span></div>
+<div class="card">Dove si forma l'immagine<div class="v" id="oX"></div><span id="oS"></span></div>
+<div class="card">Immagine sulla retina<div class="v" id="oH"></div><span id="oT"></span></div>
+<div class="card">Cerchio di sfocatura<div class="v" id="oB"></div><span id="oBn"></span></div>
+<div class="card">Punto prossimo · remoto<div class="v" id="oNF"></div><span>distanze nitide possibili</span></div>
+</div>
+<p style="font-size:12px;color:var(--text-secondary);margin:8px 0 0">Modello: occhio ridotto (una superficie, n = 4/3, raggio 5,56 mm, potere 60 diottrie a riposo, N = punto nodale). Lato oggetto e altezze non in scala; 1° ≈ 0,29 mm sulla retina.</p>
+<script>
+var n=4/3,RN=0.00556,SX=12,SY=8,XP=300,XO=50,YO=74;
+var Bo=function(u){return '<b>'+u+'</b>';};
+function pre(d,h){document.getElementById('dS').value=Math.round(Math.log10(d)*100);document.getElementById('hI').value=h;upd();}
+function fD(d){if(d<1)return (d*100).toFixed(d<0.1?1:0).replace('.',',')+' '+Bo('cm');if(d<1000)return (d<10?d.toFixed(1):Math.round(d)).toString().replace('.',',')+' '+Bo('m');var k=d/1000;if(k<1e6)return Math.round(k).toLocaleString('it-IT')+' '+Bo('km');return (k/1e6).toFixed(0)+' milioni di '+Bo('km');}
+function fL(mm){if(mm<1)return Math.round(mm*1000)+' '+Bo('µm');return mm.toFixed(2).replace('.',',')+' '+Bo('mm');}
+function upd(){
+var d=Math.pow(10,document.getElementById('dS').value/100);
+var h=Math.abs(parseFloat(document.getElementById('hI').value))||0.001;
+var p=parseFloat(document.getElementById('pS').value),Rx=parseFloat(document.getElementById('rS').value),amp=parseFloat(document.getElementById('aS').value);
+document.getElementById('dO').innerHTML=fD(d);
+document.getElementById('hO').innerHTML=fD(h);
+document.getElementById('pO').innerHTML=p.toString().replace('.',',')+' '+Bo('mm');
+document.getElementById('rO').innerHTML=(Rx>0?'+':'')+Rx.toString().replace('.',',')+' '+Bo('D')+(Rx<0?' (miopia)':Rx>0?' (ipermetropia)':'');
+document.getElementById('aO').innerHTML=amp.toString().replace('.',',')+' '+Bo('D');
+var V=-1/d,Areq=Rx+1/d,A=Math.min(Math.max(Areq,0),amp),Pt=60+A,Vp=V+Pt,xp=n/Vp,L=n/(60+Rx);
+var hi=h*(L-RN)/(d+RN),th=2*Math.atan(h/2/d)*180/Math.PI;
+var bl=p*Math.abs(xp-L)/xp;
+var xR=XP+L*1000*SX,xN=XP+RN*1000*SX,xI=XP+Math.min(Math.max(xp*1000,12),40)*SX;
+var yI=150+(150-YO)*(xI-xN)/(xN-XO);
+var g=document.getElementById('globe');g.setAttribute('cx',(306+xR)/2);g.setAttribute('rx',(xR-306)/2+2);
+var cx=(306+xR)/2,rx=(xR-306)/2+2,ry=96,a1=-0.85,a2=0.85;
+document.getElementById('retina').setAttribute('d','M'+(cx+rx*Math.cos(a1))+' '+(150+ry*Math.sin(a1))+' A'+rx+' '+ry+' 0 0 1 '+(cx+rx*Math.cos(a2))+' '+(150+ry*Math.sin(a2)));
+var rp=p/2*SY;
+document.getElementById('irT').setAttribute('height',150-rp-66);
+document.getElementById('irB').setAttribute('y',150+rp);document.getElementById('irB').setAttribute('height',234-(150+rp));
+var xF2=XP+n/Pt*1000*SX,xF=XP-1/Pt*1000*SX;
+document.getElementById('F2pt').setAttribute('cx',xF2);document.getElementById('F2Lbl').setAttribute('x',xF2);
+document.getElementById('Fpt').setAttribute('cx',xF);document.getElementById('FLbl').setAttribute('x',xF);
+document.getElementById('Npt').setAttribute('cx',xN);document.getElementById('NLbl').setAttribute('x',xN);
+document.getElementById('rLbl').setAttribute('x',xR);
+document.getElementById('dLbl').innerHTML='distanza: '+fD(d);
+var s='',ys=[150-rp,150,150+rp],hits=[];
+ys.forEach(function(y0){
+s+='<line x1="'+XO+'" y1="'+YO+'" x2="'+XP+'" y2="'+y0+'" stroke="#EF9F27" stroke-width="1.5"/>';
+var yR=y0+(yI-y0)*(xR-XP)/(xI-XP);hits.push(yR);
+if(xI<=xR){s+='<line x1="'+XP+'" y1="'+y0+'" x2="'+xR+'" y2="'+yR+'" stroke="#EF9F27" stroke-width="1.5"/>';}
+else{s+='<line x1="'+XP+'" y1="'+y0+'" x2="'+xR+'" y2="'+yR+'" stroke="#EF9F27" stroke-width="1.5"/><line x1="'+xR+'" y1="'+yR+'" x2="'+xI+'" y2="'+yI+'" stroke="#EF9F27" stroke-width="1" stroke-dasharray="3 3" opacity="0.6"/>';}
+});
+var yRc=YO+(150-YO)*(xR-XO)/(xN-XO);
+s+='<line x1="'+XO+'" y1="'+YO+'" x2="'+xR+'" y2="'+yRc+'" stroke="#185FA5" stroke-width="1" stroke-dasharray="5 3"/>';
+s+='<circle cx="'+xI+'" cy="'+yI+'" r="3" fill="none" stroke="#A32D2D" stroke-width="1.5"/>';
+document.getElementById('rays').innerHTML=s;
+var top=Math.min.apply(null,hits),bot=Math.max.apply(null,hits);
+var bb=document.getElementById('blur');bb.setAttribute('x',xR-2.5);bb.setAttribute('y',top-1);bb.setAttribute('height',Math.max(bot-top,2)+2);
+document.getElementById('oP').innerHTML=Pt.toFixed(1).replace('.',',')+' '+Bo('D');
+document.getElementById('oA').innerHTML='accomodazione usata '+A.toFixed(1).replace('.',',')+' '+Bo('D')+(Areq>amp?' (al massimo: non basta)':Areq<0?' (a riposo: troppo potente)':'');
+document.getElementById('oX').innerHTML=(xp*1000).toFixed(2).replace('.',',')+' '+Bo('mm');
+var df=(xp-L)*1000,st=Math.abs(df)<0.01?'a fuoco sulla retina ('+(L*1000).toFixed(1).replace('.',',')+' mm)':df<0?'davanti alla retina di '+Math.abs(df).toFixed(2).replace('.',',')+' mm':'dietro la retina di '+df.toFixed(2).replace('.',',')+' mm';
+document.getElementById('oS').textContent=st;
+document.getElementById('oH').innerHTML=fL(hi*1000);
+document.getElementById('oT').innerHTML='angolo sotteso '+(th<0.1?th.toFixed(3):th<10?th.toFixed(2):th.toFixed(1)).replace('.',',')+'°, capovolta';
+document.getElementById('oB').innerHTML=bl<0.001?'≈ 0':fL(bl);
+document.getElementById('oBn').textContent=bl<0.005?'immagine nitida':'cresce con la pupilla: prova a stringerla';
+var np=amp-Rx>0?1/(amp-Rx):Infinity,fp=Rx<0?1/(-Rx):Infinity;
+document.getElementById('oNF').innerHTML=(np===Infinity?'—':fD(np))+' · '+(fp===Infinity?'∞':fD(fp));
+}
+upd();
+</script>
+</body>
+</html>

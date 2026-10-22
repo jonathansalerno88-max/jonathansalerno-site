@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sole, eclissi, laser, schermo</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:8px 0;font-size:14px;color:var(--text-secondary)}
+.ctl button{font:inherit;padding:6px 12px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.ctl button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+#b1,#b2,#b3{transition:width .3s ease}
+@media (prefers-reduced-motion: reduce){#b1,#b2,#b3{transition:none}}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Confronto interattivo fra sole, eclissi parziale, puntatore laser e schermo. Nell'eclissi la luminanza della parte visibile del sole resta invariata mentre cala l'illuminanza: diminuisce il fastidio, la pupilla si dilata e la dose sulla retina cresce.</h2>
+<div class="ctl">
+<button id="sSun" onclick="setSrc('sun')">Sole</button>
+<button id="sEcl" onclick="setSrc('ecl')">Eclissi parziale</button>
+<button id="sLaser" onclick="setSrc('laser')">Puntatore laser</button>
+<button id="sScreen" onclick="setSrc('screen')">Schermo PC</button>
+<button id="obsBtn" onclick="obs=!obs;upd()">Togli il semaforo</button>
+</div>
+<div class="ctl" id="covRow">
+<span>Copertura della Luna</span>
+<input type="range" id="cov" min="0" max="99" value="90" style="flex:1" oninput="upd()">
+<span id="covL" style="min-width:50px;text-align:right;color:var(--text-primary)">90%</span>
+</div>
+<svg width="100%" viewBox="0 0 680 572">
+<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#7F77DD" stroke-width="3"/></pattern><clipPath id="sunClip"><circle cx="90" cy="150" r="22"/></clipPath></defs>
+<text class="th" id="src1" x="40" y="30">Sole</text>
+<text class="ts" id="src2" x="40" y="48">luminanza</text>
+<g id="gSun"><circle cx="90" cy="150" r="22" fill="#FAC775" stroke="#BA7517" stroke-width="0.5"/><circle id="moon" cx="90" cy="150" r="22" fill="#2C2C2A" clip-path="url(#sunClip)"/></g>
+<g id="gLaser"><rect x="48" y="144" width="48" height="12" rx="3" fill="#444441"/><circle cx="99" cy="150" r="3" fill="#639922"/></g>
+<g id="gScreen"><rect x="60" y="105" width="62" height="80" rx="4" fill="#2C2C2A"/><rect x="64" y="109" width="54" height="68" fill="#B5D4F4"/><rect x="87" y="185" width="8" height="14" fill="#5F5E5A"/><rect x="72" y="199" width="38" height="4" fill="#5F5E5A"/></g>
+<g id="preSun" stroke="#EF9F27" stroke-width="2"><line x1="112" y1="140" x2="284" y2="143"/><line x1="113" y1="150" x2="284" y2="150"/><line x1="112" y1="160" x2="284" y2="157"/></g>
+<g id="postSun" stroke="#EF9F27" stroke-width="2"><line x1="284" y1="143" x2="486" y2="146"/><line x1="284" y1="150" x2="486" y2="150"/><line x1="284" y1="157" x2="486" y2="154"/><line x1="486" y1="146" x2="628" y2="150"/><line x1="486" y1="150" x2="628" y2="150"/><line x1="486" y1="154" x2="628" y2="150"/><circle cx="626" cy="150" r="5" fill="#E24B4A" stroke="none"/></g>
+<g id="preLaser"><line x1="102" y1="150" x2="284" y2="150" stroke="#639922" stroke-width="2"/></g>
+<g id="postLaser"><line x1="284" y1="150" x2="486" y2="150" stroke="#639922" stroke-width="2"/><line x1="486" y1="149" x2="627" y2="150" stroke="#639922" stroke-width="1"/><line x1="486" y1="151" x2="627" y2="150" stroke="#639922" stroke-width="1"/><circle cx="626" cy="150" r="7" fill="#97C459" opacity="0.5"/><circle cx="626" cy="150" r="1.8" fill="#173404"/></g>
+<g id="preScreen"><line x1="124" y1="146" x2="296" y2="146" stroke="#EF9F27" stroke-width="3"/><line x1="124" y1="154" x2="296" y2="154" stroke="#378ADD" stroke-width="3"/></g>
+<g id="postScreen"><line x1="304" y1="146" x2="486" y2="147" stroke="#EF9F27" stroke-width="3"/><line id="blueLine" x1="304" y1="154" x2="486" y2="153" stroke="#378ADD" stroke-width="3"/><line x1="486" y1="147" x2="626" y2="150" stroke="#EF9F27" stroke-width="1.5"/><line id="blueIn" x1="486" y1="153" x2="626" y2="150" stroke="#378ADD" stroke-width="1.5"/><circle cx="626" cy="150" r="4" fill="#E24B4A" opacity="0.7"/></g>
+<g id="gSem"><rect x="297" y="190" width="6" height="60" fill="#5F5E5A"/><rect x="285" y="110" width="30" height="80" rx="4" fill="#2C2C2A"/><circle cx="300" cy="127" r="8" fill="#E24B4A"/><circle cx="300" cy="150" r="8" fill="#EF9F27"/><circle cx="300" cy="173" r="8" fill="#639922"/></g>
+<g id="gFilt"><rect x="296" y="100" width="8" height="100" rx="2" fill="#378ADD" opacity="0.3" stroke="#185FA5" stroke-width="0.5"/><text class="ts" x="300" y="90" text-anchor="middle">filtro luce blu</text></g>
+<g id="gGlass"><rect x="292" y="128" width="16" height="44" rx="4" fill="#2C2C2A" opacity="0.9"/><text class="ts" x="300" y="112" text-anchor="middle">occhiali da eclisse</text></g>
+<circle cx="560" cy="150" r="68" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<path d="M500 116 Q476 150 500 184" fill="none" stroke="#888780" stroke-width="1"/>
+<path d="M594 91 A68 68 0 0 1 594 209" fill="none" stroke="#D85A30" stroke-width="3"/>
+<rect id="irT" x="503" y="118" width="4" height="26" fill="#854F0B"/>
+<rect id="irB" x="503" y="156" width="4" height="26" fill="#854F0B"/>
+<ellipse cx="516" cy="150" rx="7" ry="18" fill="#85B7EB" opacity="0.45"/>
+<text class="ts" x="626" y="76" text-anchor="middle">fovea</text>
+<line class="leader" x1="626" y1="80" x2="626" y2="140"/>
+<text class="ts" id="pup" x="560" y="240" text-anchor="middle">pupilla</text>
+<text class="th" id="ret1" x="560" y="260" text-anchor="middle">retina</text>
+<text class="ts" id="ret2" x="560" y="278" text-anchor="middle"> </text>
+<line class="leader" x1="40" y1="292" x2="640" y2="292"/>
+<text class="ts" x="40" y="314">Danno fotochimico (luce blu): dose = irradianza × tempo, si accumula</text>
+<text class="th" id="v1" x="640" y="314" text-anchor="end">0%</text>
+<rect x="40" y="322" width="560" height="14" rx="3" fill="#D3D1C7" opacity="0.6"/>
+<rect id="b1" x="40" y="322" width="0" height="14" rx="3" fill="#EF9F27"/>
+<line x1="413" y1="316" x2="413" y2="342" stroke="#A32D2D" stroke-width="2"/>
+<text class="ts" x="413" y="356" text-anchor="middle">limite</text>
+<text class="ts" x="40" y="378">Danno termico: conta la potenza istantanea, non si accumula</text>
+<text class="th" id="v2" x="640" y="378" text-anchor="end">0%</text>
+<rect x="40" y="386" width="560" height="14" rx="3" fill="#D3D1C7" opacity="0.6"/>
+<rect id="b2" x="40" y="386" width="0" height="14" rx="3" fill="#EF9F27"/>
+<line x1="413" y1="380" x2="413" y2="406" stroke="#A32D2D" stroke-width="2"/>
+<text class="ts" x="413" y="420" text-anchor="middle">soglia</text>
+<text class="ts" id="lab3" x="40" y="442">Orologio biologico in ritardo → jet lag sociale (sveglia fissa)</text>
+<text class="th" id="v3" x="640" y="460" text-anchor="end">—</text>
+<rect x="40" y="466" width="560" height="14" rx="3" fill="#D3D1C7" opacity="0.6"/>
+<rect id="b3" x="40" y="466" width="0" height="14" rx="3" fill="url(#hatch)" stroke="#534AB7" stroke-width="0.5" stroke-dasharray="3 2"/>
+<g id="chg">
+<circle cx="320" cy="473" r="6" fill="#534AB7"/>
+<text class="ts" x="320" y="500" text-anchor="middle">misurato da Chang: ritardo ≈ 1,5 h (5 sere × ≈ 4 ore)</text>
+<text class="ts" x="320" y="518" text-anchor="middle" font-style="italic">jet lag sociale = ridotta vigilanza mattutina</text>
+<circle cx="46" cy="538" r="5" fill="#534AB7"/>
+<text class="ts" x="58" y="542">misurato: Chang et al., PNAS 2015 · doi:10.1073/pnas.1418490112</text>
+<rect x="40" y="552" width="14" height="10" fill="url(#hatch)" stroke="#534AB7" stroke-width="0.5" stroke-dasharray="3 2"/>
+<text class="ts" x="62" y="561">stima: valori intermedi e traduzione in fusi orari (lo studio non li misura)</text>
+</g>
+<g id="eclN">
+<text class="ts" x="40" y="500">La parte di sole visibile ha la stessa luminanza (≈ 10⁹ <tspan font-weight="500">nit</tspan>): cala solo l'illuminanza (<tspan font-weight="500">lux</tspan>).</text>
+<text class="ts" x="40" y="518" font-style="italic">meno fastidio + pupilla più larga + retina senza dolore = si fissa più a lungo</text>
+<text class="ts" x="40" y="542">Occhiali conformi ISO 12312-2: lasciano passare circa lo 0,003% della luce visibile.</text>
+</g>
+</svg>
+<div class="ctl">
+<span id="tLab">Tempo di fissazione</span>
+<input type="range" id="tS" min="0" max="100" value="30" style="flex:1" oninput="upd()">
+<span id="tL" style="min-width:90px;text-align:right;color:var(--text-primary)">1 s</span>
+</div>
+<p style="font-size:12px;color:var(--text-secondary);margin:4px 0 0">Scala del tempo logaritmica (0,1 s → 4 ore). Valori fisici (sole, eclissi, laser, schermo): ordini di grandezza stimati, non misure.</p>
+<script>
+var src='sun',obs=true,TMAX=14400;
+var B=function(u){return '<tspan font-weight="500">'+u+'</tspan>';};
+var SUP={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'};
+function sci(x){if(x<1000)return String(Math.round(x));var e=Math.floor(Math.log10(x)),m=x/Math.pow(10,e);var ms=m.toFixed(m<10?(m<2?1:0):0).replace('.',',');return (ms==='1'?'':ms+'×')+'10'+String(e).split('').map(function(ch){return SUP[ch];}).join('');}
+function setSrc(s){src=s;obs=true;upd();}
+function fmtT(t){if(t<1)return String(t.toFixed(1)).replace('.',',')+' s';if(t<60)return Math.round(t)+' s';if(t<3600)return Math.round(t/60)+' min';return String((t/3600).toFixed(1)).replace('.',',')+' ore';}
+function fmtP(p){if(p===0)return '0%';if(p<0.0001)return '< 0,01%';var v=p*100;return (v<10?v.toFixed(1):Math.round(v)).toString().replace('.',',')+'%';}
+function show(id,on){document.getElementById(id).style.display=on?'':'none';}
+function upd(){
+var t=0.1*Math.pow(10,Math.log10(TMAX/0.1)*document.getElementById('tS').value/100);
+document.getElementById('tL').textContent=fmtT(t);
+var isSunLike=(src==='sun'||src==='ecl');
+document.getElementById('tLab').textContent=src==='screen'?'Schermo ogni sera':'Tempo di fissazione';
+[['sun','sSun'],['ecl','sEcl'],['laser','sLaser'],['screen','sScreen']].forEach(function(k){document.getElementById(k[1]).classList.toggle('act',src===k[0]);});
+show('covRow',src==='ecl');
+show('gSun',isSunLike);show('moon',src==='ecl');show('gLaser',src==='laser');show('gScreen',src==='screen');
+show('preSun',isSunLike);show('postSun',(src==='sun'&&!obs)||src==='ecl');
+show('preLaser',src==='laser');show('postLaser',src==='laser'&&!obs);
+show('preScreen',src==='screen');show('postScreen',src==='screen');
+show('gSem',(src==='sun'||src==='laser')&&obs);show('gFilt',src==='screen'&&obs);show('gGlass',src==='ecl'&&obs);
+show('chg',src==='screen');show('eclN',src==='ecl');
+document.getElementById('postSun').setAttribute('opacity',(src==='ecl'&&obs)?0.12:1);
+document.getElementById('blueLine').setAttribute('opacity',obs?0.35:1);
+document.getElementById('blueIn').setAttribute('opacity',obs?0.35:1);
+var btn=document.getElementById('obsBtn');
+btn.textContent=src==='screen'?(obs?'Togli il filtro':'Metti il filtro'):src==='ecl'?(obs?'Togli gli occhiali':'Metti gli occhiali'):(obs?'Togli il semaforo':'Metti il semaforo');
+var s1=document.getElementById('src1'),s2=document.getElementById('src2'),pup=document.getElementById('pup'),r1=document.getElementById('ret1'),r2=document.getElementById('ret2');
+var lab3=document.getElementById('lab3'),v3=document.getElementById('v3'),b3=document.getElementById('b3');
+var rate=0,th=0,gap=12,d=2;
+if(src==='sun'){
+s1.textContent='Sole';s2.innerHTML='luminanza ≈ 10⁹ '+B('nit')+' · sorgente estesa: immagine = disco';
+gap=6;pup.innerHTML='pupilla Ø 2 '+B('mm')+' ≈ 3 '+B('mm²');
+if(obs){r1.textContent='nessuna immagine';r2.textContent='luce diretta bloccata';}
+else{rate=1/3;th=0.15;r1.innerHTML='≈ 3×10⁹ '+B('troland');r2.innerHTML='≈ 30 '+B('W/cm²')+' su un disco di 0,15 '+B('mm');}
+}else if(src==='ecl'){
+var c=document.getElementById('cov').value/100;document.getElementById('covL').textContent=Math.round(c*100)+'%';
+document.getElementById('moon').setAttribute('cx',90+44*(1-c));
+var lux=100000*(1-c),T=obs?3e-5:1;d=2+3*Math.pow(c,3);var A=Math.PI*d*d/4,k=(d/2)*(d/2);
+gap=Math.max(4,Math.round(d*3));
+s1.textContent='Eclissi parziale';s2.innerHTML='parte visibile: luminanza ≈ 10⁹ '+B('nit')+' (invariata) · sull\'occhio ≈ '+sci(lux)+' '+B('lux');
+pup.innerHTML='pupilla Ø '+d.toFixed(1).replace('.',',')+' '+B('mm')+' ≈ '+Math.round(A)+' '+B('mm²')+' (si dilata col buio)';
+rate=(1/3)*k*T;th=0.15*k*T;
+r1.innerHTML='≈ '+sci(1e9*A*T)+' '+B('troland')+' sulla falce';
+r2.innerHTML=obs?'con occhiali: dose trascurabile':'≈ '+Math.round(30*k)+' '+B('W/cm²')+(k>1.05?': più che a sole pieno':'');
+lab3.textContent='Fastidio (abbagliamento): segue l\'illuminanza sull\'occhio, non la luminanza';
+var le=lux*T;b3.setAttribute('width',Math.min(le/100000,1)*560);b3.setAttribute('opacity',1);
+var g=le>20000?'forte: distogli lo sguardo':le>2000?'moderato':'debole: riesci a fissarlo';
+v3.innerHTML='≈ '+sci(le)+' '+B('lux')+' → '+g;
+}else if(src==='laser'){
+s1.textContent='Puntatore laser (5 mW, verde)';s2.innerHTML='potenza 5 '+B('milliwatt')+' · fascio collimato: entra tutto';
+gap=12;pup.innerHTML='fascio Ø ≈ 1 '+B('mm')+', più stretto della pupilla';
+if(obs){r1.textContent='nessuna immagine';r2.textContent='fascio bloccato';}
+else{rate=1/30;th=5;r1.innerHTML='spot ≈ 0,02 '+B('mm')+': ≈ 1.500 '+B('W/cm²');r2.innerHTML='i '+B('troland')+' non servono: sorgente puntiforme';}
+}else{
+s1.textContent='Schermo PC';s2.innerHTML='luminanza ≈ 250 '+B('nit');
+gap=16;pup.innerHTML='pupilla Ø 4 '+B('mm')+' ≈ 12 '+B('mm²');
+rate=obs?0.7e-8:1e-8;th=0;
+r1.innerHTML='≈ 3.000 '+B('troland');r2.innerHTML=obs?'luce blu ridotta di circa il 30%':'luce blu piena';
+}
+document.getElementById('irT').setAttribute('height',150-gap/2-118);
+document.getElementById('irB').setAttribute('y',150+gap/2);
+document.getElementById('irB').setAttribute('height',182-(150+gap/2));
+var dd=rate*t;
+var w1=Math.min(dd,1.5)/1.5*560,w2=Math.min(th,1.5)/1.5*560;
+var b1=document.getElementById('b1'),b2=document.getElementById('b2');
+b1.setAttribute('width',w1);b1.setAttribute('fill',dd>=1?'#E24B4A':'#EF9F27');
+b2.setAttribute('width',w2);b2.setAttribute('fill',th>=1?'#E24B4A':'#EF9F27');
+document.getElementById('v1').textContent=fmtP(dd)+' del limite';
+document.getElementById('v2').textContent=fmtP(th)+(th>=1?' subito':' della soglia');
+if(src==='screen'){
+lab3.textContent='Orologio biologico in ritardo → jet lag sociale (sveglia fissa)';
+var f=Math.min(t/TMAX,1),h=1.5*f,end=f>=0.999;
+var hs=(h<0.1?h.toFixed(2):h.toFixed(1)).replace('.',',');
+var note=obs?' · filtro: non dimostrato':'';
+b3.setAttribute('width',h/3*560);b3.setAttribute('opacity',obs?0.55:1);
+v3.innerHTML='ritardo ≈ '+hs+' '+B('ore')+(end?' (misurato)':' (stima)')+' = come volare '+hs+' fusi orari verso est'+note;
+}else if(src!=='ecl'){lab3.textContent='Orologio biologico / fastidio';b3.setAttribute('width',0);v3.textContent='non applicabile';}
+}
+upd();
+</script>
+</body>
+</html>

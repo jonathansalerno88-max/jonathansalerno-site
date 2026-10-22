@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La prova del foglio</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;font-size:14px;color:var(--text-secondary)}
+.ctl button{font:inherit;font-size:13px;padding:6px 12px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.ctl button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+.note{font-size:13px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Prova del foglio con lente convergente o divergente e osservatore fermo dal lato dell'oggetto: con l'oggetto oltre F l'immagine reale compare nitida e capovolta in un punto preciso; con l'oggetto dentro F, o con la lente divergente, sul foglio arriva solo una macchia di luce.</h2>
+<div class="ctl">
+<button id="cR" onclick="cs='R';upd()">Convergente, oggetto oltre F</button>
+<button id="cV" onclick="cs='V';upd()">Convergente, oggetto dentro F</button>
+<button id="cD" onclick="cs='D';upd()">Divergente</button>
+</div>
+<div class="ctl"><span>Sposta il foglio</span><input type="range" id="xs" min="100" max="345" value="180" style="flex:1" oninput="upd()"></div>
+<svg width="100%" viewBox="0 0 680 380">
+<defs><filter id="bl" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur id="gb" stdDeviation="0"/></filter></defs>
+<g id="sc"></g>
+</svg>
+<p class="note" id="note"></p>
+<script>
+var cs='R',LX=360,AY=180,EX=600,EY=22;
+function L(x1,y1,x2,y2,c,w,d,o){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+(w||1.4)+'"'+(d?' stroke-dasharray="'+d+'"':'')+(o!=null?' opacity="'+o+'"':'')+'/>';}
+function T(x,y,t,cls,anc,col){return '<text class="'+(cls||'ts')+'" x="'+x+'" y="'+y+'"'+(anc?' text-anchor="'+anc+'"':'')+(col?' fill="'+col+'"':'')+'>'+t+'</text>';}
+function arrow(x,y0,y1,col,dash){var up=y1<y0,s=L(x,y0,x,y1,col,2.5,dash);var hy=y1+(up?9:-9);return s+'<path d="M'+(x-5)+' '+hy+' L'+x+' '+y1+' L'+(x+5)+' '+hy+(dash?'" fill="none" stroke="'+col+'" stroke-width="1.5"':' Z" fill="'+col+'"')+'/>';}
+function eye(cx,cy,ang){return '<g transform="rotate('+ang+' '+cx+' '+cy+')"><ellipse cx="'+cx+'" cy="'+cy+'" rx="16" ry="10" fill="#F1EFE8" stroke="#888780" stroke-width="1"/><circle cx="'+(cx-7)+'" cy="'+cy+'" r="4.5" fill="#2C2C2A"/></g>';}
+function upd(){
+['R','V','D'].forEach(function(k){document.getElementById('c'+k).classList.toggle('act',cs===k);});
+var xs=parseFloat(document.getElementById('xs').value);
+var F=cs==='D'?-60:60,d0=cs==='V'?36:150,h=cs==='V'?30:50,xo=LX+d0,yt=AY-h;
+var di=1/(1/F-1/d0),m=-di/d0,xi=LX-di,yi=AY-m*h;
+var s=L(20,AY,670,AY,'var(--b)',0.6,'4 4');
+if(cs==='D')s+='<path d="M'+(LX-10)+' 104 L'+(LX+10)+' 104 Q'+(LX+2)+' '+AY+' '+(LX+10)+' 256 L'+(LX-10)+' 256 Q'+(LX-2)+' '+AY+' '+(LX-10)+' 104 Z" fill="#B5D4F4" opacity="0.7" stroke="#185FA5" stroke-width="1"/>';
+else s+='<path d="M'+LX+' 104 Q'+(LX+14)+' '+AY+' '+LX+' 256 Q'+(LX-14)+' '+AY+' '+LX+' 104 Z" fill="#B5D4F4" opacity="0.7" stroke="#185FA5" stroke-width="1"/>';
+s+=T(LX,276,cs==='D'?'lente divergente':'lente convergente','ts','middle');
+s+=L(LX+F,AY-5,LX+F,AY+5,'#534AB7',2)+T(LX+F,AY+20,'F','th','middle','#534AB7');
+s+=L(LX-F,AY-5,LX-F,AY+5,'#534AB7',2)+T(LX-F,AY+20,'F′','th','middle','#534AB7');
+var pts=[AY-60,AY-20,AY+20,AY+60],hits=[];
+pts.forEach(function(yL){
+s+=L(xo,yt,LX,yL,'#EF9F27',1.2);
+var k;if(di>0)k=(yi-yL)/(xi-LX);else k=(yL-yi)/(LX-xi);
+var yS=yL+k*(xs-LX);hits.push(yS);
+s+=L(LX,yL,xs,yS,'#EF9F27',1.2);
+if(di<0)s+=L(xi,yi,LX,yL,'#EF9F27',1,'3 4',0.5);});
+s+=arrow(xo,AY,yt,'var(--t)')+T(xo,yt-12,'oggetto','ts','middle');
+if(di>0){s+='<circle cx="'+xi+'" cy="'+yi+'" r="4" fill="none" stroke="#D85A30" stroke-width="1.5"/>';}
+else{s+=arrow(xi,AY,yi,'#D85A30','5 4')+T(xi,AY+40,'immagine virtuale','ts','middle','#D85A30');}
+s+='<rect x="'+(xs-4)+'" y="60" width="8" height="240" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="1"/>'+T(xs-10,320,'foglio','th','end');
+var ymin=Math.min.apply(null,hits),ymax=Math.max.apply(null,hits),spread=ymax-ymin,ym=(ymin+ymax)/2;
+s+='<line x1="'+xs+'" y1="'+Math.max(60,ymin)+'" x2="'+xs+'" y2="'+Math.min(300,ymax)+'" stroke="#EF9F27" stroke-width="5" opacity="0.6"/>';
+[-60,-30,0,30,60].forEach(function(a){var r=a*Math.PI/180;s+=L(xs+4,ym,xs+4+26*Math.cos(r),ym+26*Math.sin(r),'#BA7517',1,'2 3',0.7);});
+var tx=xs+4,ty=72,ang=Math.atan2(ty-EY,tx-EX)*180/Math.PI+180;
+s+=L(EX-14,EY+4,tx,ty,'#888780',1,'4 3');
+s+=eye(EX,EY,ang)+T(EX,EY+28,'osservatore (fermo)','ts','middle');
+s+='<rect x="470" y="250" width="190" height="120" rx="8" fill="none" stroke="var(--b)" stroke-width="0.5"/>'+T(482,270,'L\'osservatore vede','th');
+var sharp=di>0&&spread<4,blurV=Math.min(14,spread*0.25);
+document.getElementById('gb').setAttribute('stdDeviation',sharp?0:blurV);
+if(di>0){s+='<g filter="url(#bl)">'+arrow(565,300,340,'#2C2C2A')+'</g>';}
+else{s+='<g filter="url(#bl)"><circle cx="565" cy="320" r="'+Math.min(40,8+spread*0.15)+'" fill="#FAC775" opacity="0.8"/></g>';}
+s+=T(565,362,di>0?(sharp?'immagine nitida e capovolta':'una macchia: sposta il foglio'):'solo una macchia di luce','ts','middle');
+document.getElementById('sc').innerHTML=s;
+var n;
+if(cs==='D')n='Lente divergente: i raggi escono sempre più aperti di come sono entrati e non si incontrano mai. Comunque sposti il foglio, l\'osservatore vede solo una macchia di luce che si allarga. L\'immagine c\'è, ma è virtuale: piccola, dritta, dalla parte dell\'oggetto, fra la lente e F′. La vede solo chi guarda attraverso la lente. Ed è così per qualunque distanza dell\'oggetto.';
+else if(cs==='R')n='Lente convergente, oggetto oltre F: i raggi si incontrano. Quando il foglio arriva lì, l\'osservatore, fermo dal lato dell\'oggetto, vede sulla faccia illuminata del foglio la freccia nitida e capovolta: immagine reale. Il foglio diffonde la luce in tutte le direzioni (tratteggi corti), per questo si vede anche di lato.';
+else n='Lente convergente, oggetto dentro F: i raggi divergono come con la lente divergente. Sul foglio solo una macchia; l\'immagine virtuale ingrandita la vede solo chi guarda nella lente.';
+document.getElementById('note').textContent=n;
+}
+upd();
+</script>
+</body>
+</html>

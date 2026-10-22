@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Semaforo all'alba</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+#sem,.iris,#roadMk{transition:transform 1.2s ease-in-out}
+#direct{transition:opacity .4s ease 0s}
+#direct.on{transition:opacity .4s ease 1s}
+#veil,#sunspot,#sunMk{transition:opacity .5s ease}
+@media (prefers-reduced-motion: reduce){#sem,.iris,#roadMk,#direct,#direct.on,#veil,#sunspot,#sunMk{transition:none}}
+.ctl{display:flex;align-items:center;gap:16px;margin-top:10px;font-size:14px;color:var(--text-secondary)}
+.ctl button{font:inherit;padding:6px 14px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Animazione: il semaforo si sposta, la luce diretta del sole entra nell'occhio; una scala logaritmica di luminanza mostra strada e sole rispetto alla soglia di sicurezza ICNIRP di 10 alla 4 nit.</h2>
+<svg width="100%" viewBox="0 0 680 425">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="th" id="ttl" x="40" y="36">Strada asfaltata</text>
+<text class="ts" id="sub" x="40" y="54">riflettanza ≈ 0,2</text>
+<text class="ts" x="40" y="74">Sole: lumen (lm) · candele (cd) · luminanza ≈ 10⁹ nit</text>
+<circle cx="90" cy="110" r="20" fill="#FAC775" stroke="#BA7517" stroke-width="0.5"/>
+<line x1="100" y1="128" x2="160" y2="260" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="106" y1="125" x2="280" y2="260" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="110" y1="120" x2="400" y2="260" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="110" y1="113" x2="300" y2="143" stroke="#EF9F27" stroke-width="2"/>
+<line id="direct" x1="300" y1="143" x2="486" y2="172" stroke="#EF9F27" stroke-width="2" opacity="0"/>
+<ellipse id="road" cx="270" cy="274" rx="190" ry="14" fill="#5F5E5A" stroke="#444441" stroke-width="0.5"/>
+<g id="sem">
+<rect x="312" y="215" width="6" height="59" fill="#5F5E5A"/>
+<rect x="300" y="135" width="30" height="80" rx="4" fill="#2C2C2A"/>
+<circle cx="315" cy="152" r="8" fill="#E24B4A"/>
+<circle cx="315" cy="175" r="8" fill="#EF9F27"/>
+<circle cx="315" cy="198" r="8" fill="#639922"/>
+</g>
+<circle cx="560" cy="170" r="68" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<circle id="veil" cx="560" cy="170" r="66" fill="#FAC775" opacity="0"/>
+<path d="M500 136 Q476 170 500 204" fill="none" stroke="#888780" stroke-width="1"/>
+<path d="M594 111 A68 68 0 0 1 594 229" fill="none" stroke="#D85A30" stroke-width="3"/>
+<rect class="iris" id="irT" x="503" y="140" width="4" height="24" fill="#854F0B"/>
+<rect class="iris" id="irB" x="503" y="180" width="4" height="24" fill="#854F0B"/>
+<ellipse cx="516" cy="172" rx="7" ry="18" fill="#85B7EB" opacity="0.6"/>
+<g id="refl" stroke="#BA7517" stroke-width="1" opacity="0.7">
+<line x1="320" y1="264" x2="486" y2="167" stroke-dasharray="4 4"/>
+<line x1="380" y1="264" x2="486" y2="173" stroke-dasharray="4 4"/>
+<line x1="430" y1="264" x2="486" y2="179" stroke-dasharray="4 4"/>
+<line x1="486" y1="167" x2="624" y2="150"/>
+<line x1="486" y1="173" x2="624" y2="150"/>
+<line x1="486" y1="179" x2="624" y2="150"/>
+</g>
+<circle cx="624" cy="150" r="3" fill="#E24B4A"/>
+<g id="sunspot" opacity="0">
+<line x1="486" y1="172" x2="622" y2="194" stroke="#EF9F27" stroke-width="2"/>
+<circle cx="622" cy="194" r="5" fill="#E24B4A"/>
+</g>
+<text class="ts" id="pup" x="560" y="90" text-anchor="middle">pupilla Ø 3 mm ≈ 7 mm²</text>
+<text class="ts" id="roadTd" x="660" y="258" text-anchor="end">immagine strada ≈ 4.200 troland</text>
+<text class="th" id="sunTd" x="660" y="278" text-anchor="end">immagine sole: nessuna</text>
+<text class="ts" id="eyeLux" x="660" y="298" text-anchor="end">sole sull'occhio ≈ 0 lux</text>
+<text class="ts" x="250" y="306" text-anchor="middle">illuminanza strada ≈ 10.000 lux (lumen/m²)</text>
+<line class="leader" x1="40" y1="318" x2="640" y2="318"/>
+<text class="th" x="40" y="338">Luminanza di ciò che hai nel campo visivo (scala logaritmica)</text>
+<rect x="60" y="362" width="160" height="12" fill="#97C459" opacity="0.6"/>
+<rect x="220" y="362" width="400" height="12" fill="#F09595" opacity="0.7"/>
+<line x1="220" y1="356" x2="220" y2="380" stroke="#A32D2D" stroke-width="2"/>
+<g id="roadMk">
+<path d="M116 350 L128 350 L122 359 Z" fill="#5F5E5A"/>
+<text class="ts" x="122" y="346" text-anchor="middle">strada</text>
+</g>
+<g id="sunMk" opacity="0.35">
+<path d="M614 350 L626 350 L620 359 Z" fill="#E24B4A"/>
+<text class="ts" x="606" y="354" text-anchor="end">sole ≈ 10⁹ nit</text>
+</g>
+<text class="ts" x="60" y="394" text-anchor="middle">10² nit</text>
+<text class="ts" x="220" y="394" text-anchor="middle">10⁴ nit</text>
+<text class="ts" x="420" y="394" text-anchor="middle">10⁶ nit</text>
+<text class="ts" x="620" y="394" text-anchor="middle">10⁹ nit</text>
+<text class="ts" x="140" y="414" text-anchor="middle">sicuro (sotto soglia ICNIRP)</text>
+<text class="ts" x="620" y="414" text-anchor="end">sole fissato: dose limite in meno di 3 s</text>
+</svg>
+<div class="ctl">
+<button id="btn" onclick="moved=!moved;upd()">Sposta il semaforo</button>
+<label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="snow" onchange="upd()">Neve</label>
+</div>
+<script>
+var moved=false;
+function upd(){
+var s=document.getElementById('snow').checked;
+var L=s?2700:600;
+var pd=moved?2:(s?2.5:3), pa=moved?3:(s?5:7), sh=moved?3:(s?1.5:0);
+document.getElementById('sem').style.transform=moved?'translateX(-140px)':'none';
+document.getElementById('direct').classList.toggle('on',moved);
+document.getElementById('direct').setAttribute('opacity',moved?1:0);
+document.getElementById('sunspot').setAttribute('opacity',moved?1:0);
+document.getElementById('veil').setAttribute('opacity',moved?0.3:0);
+document.getElementById('sunMk').setAttribute('opacity',moved?1:0.35);
+document.getElementById('roadMk').style.transform=s?'translateX(52px)':'none';
+document.getElementById('irT').style.transform='translateY('+sh+'px)';
+document.getElementById('irB').style.transform='translateY('+(-sh)+'px)';
+document.getElementById('road').setAttribute('fill',s?'#F1EFE8':'#5F5E5A');
+document.getElementById('road').setAttribute('stroke',s?'#888780':'#444441');
+var r=document.getElementById('refl');r.setAttribute('stroke-width',s?3:1);r.setAttribute('opacity',s?1:0.7);
+document.getElementById('ttl').textContent=s?'Strada innevata':'Strada asfaltata';
+document.getElementById('sub').textContent=s?'riflettanza ≈ 0,85 · luminanza strada ≈ 2.700 nit':'riflettanza ≈ 0,2 · luminanza strada ≈ 600 nit';
+document.getElementById('pup').textContent='pupilla Ø '+String(pd).replace('.',',')+' mm ≈ '+pa+' mm²';
+document.getElementById('roadTd').textContent='immagine strada ≈ '+(L*pa).toLocaleString('it-IT')+' troland';
+document.getElementById('sunTd').textContent=moved?'immagine sole ≈ 3×10⁹ troland':'immagine sole: nessuna';
+document.getElementById('eyeLux').textContent=moved?'sole sull\'occhio ≈ 40.000 lux':'sole sull\'occhio ≈ 0 lux';
+document.getElementById('btn').textContent=moved?'Rimetti il semaforo':'Sposta il semaforo';
+}
+upd();
+</script>
+</body>
+</html>

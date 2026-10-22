@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lunghezza focale</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;font-size:14px;color:var(--text-secondary)}
+.ctl button{font:inherit;font-size:13px;padding:6px 12px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.ctl button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-top:8px}
+.card{background:var(--surface-1);border-radius:var(--radius);padding:10px 12px;font-size:13px;color:var(--text-secondary)}
+.card .v{font-size:18px;font-weight:500;color:var(--text-primary);margin-top:2px}
+.note{font-size:12px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Confronto della lunghezza focale in occhio, fotocamera e telescopio: estremi della focale (punto principale o nodale posteriore e piano focale), grandezza dell'immagine della Luna, campo visivo e ingrandimento al variare delle focali.</h2>
+<div class="ctl">
+<button id="mE" onclick="mode='E';upd()">Occhio</button>
+<button id="mC" onclick="mode='C';upd()">Fotocamera</button>
+<button id="mT" onclick="mode='T';upd()">Telescopio</button>
+</div>
+<div class="ctl" id="rowC"><span>Focale dell'obiettivo</span><input type="range" id="fC" min="0" max="100" value="45" style="flex:1" oninput="upd()"><span id="fCL" style="min-width:70px;text-align:right;color:var(--text-primary)"></span></div>
+<div class="ctl" id="rowT1"><span>Focale obiettivo</span><input type="range" id="fO" min="400" max="2000" step="50" value="1000" style="flex:1" oninput="upd()"><span id="fOL" style="min-width:70px;text-align:right;color:var(--text-primary)"></span></div>
+<div class="ctl" id="rowT2"><span>Focale oculare</span><input type="range" id="fE" min="5" max="40" step="1" value="20" style="flex:1" oninput="upd()"><span id="fEL" style="min-width:70px;text-align:right;color:var(--text-primary)"></span></div>
+<svg width="100%" viewBox="0 0 680 360"><g id="scene"></g></svg>
+<div class="grid">
+<div class="card"><span id="k1"></span><div class="v" id="v1"></div></div>
+<div class="card"><span id="k2"></span><div class="v" id="v2"></div></div>
+<div class="card"><span id="k3"></span><div class="v" id="v3"></div></div>
+</div>
+<p class="note" id="note"></p>
+<script>
+var mode='C',Y=180,T=Math.tan(4*Math.PI/180),MOON=0.52;
+function L(x1,y1,x2,y2,c,w,d,o){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+(w||1.3)+'"'+(d?' stroke-dasharray="'+d+'"':'')+(o!=null?' opacity="'+o+'"':'')+'/>';}
+function Tx(x,y,t,cls,anc,col){return '<text class="'+(cls||'ts')+'" x="'+x+'" y="'+y+'"'+(anc?' text-anchor="'+anc+'"':'')+(col?' fill="'+col+'"':'')+'>'+t+'</text>';}
+function brk(x1,x2,y,lbl,col){var c=col||'#534AB7';return L(x1,y,x2,y,c,1.5)+L(x1,y-6,x1,y+6,c,1.5)+L(x2,y-6,x2,y+6,c,1.5)+Tx((x1+x2)/2,y+16,lbl,'th','middle',c);}
+function fmt(x,d){return x.toFixed(d).replace('.',',');}
+function rays(xH,yI,pts,xr){var s='';pts.forEach(function(yh){s+=L(xr,yh-T*(xr-xH),xH,yh,'#EF9F27')+L(xH,yh,80,yI,'#EF9F27');});
+pts.forEach(function(yh){s+=L(xr,yh+0,xH,yh,'#888780',1,null,0.6)+L(xH,yh,80,Y,'#888780',1,null,0.6);});return s;}
+function upd(){
+['E','C','T'].forEach(function(k){document.getElementById('m'+k).classList.toggle('act',mode===k);});
+document.getElementById('rowC').style.display=mode==='C'?'':'none';
+document.getElementById('rowT1').style.display=mode==='T'?'':'none';
+document.getElementById('rowT2').style.display=mode==='T'?'':'none';
+var s=L(10,Y,670,Y,'var(--b)',0.6,'4 4');
+if(mode==='C'){
+var f=Math.round(14*Math.pow(200/14,document.getElementById('fC').value/100));document.getElementById('fCL').textContent=f+' mm';
+var sc=2.2,xH=80+f*sc,flange=177,Lp=f<50?70-(f-14)*0.3:0.7*f,xb2=flange+Lp*sc,yI=Y+f*sc*T;
+s+='<rect x="40" y="130" width="'+(flange-40)+'" height="100" rx="8" fill="#D3D1C7" stroke="#888780" stroke-width="0.5"/>';
+s+='<rect x="'+flange+'" y="150" width="'+(xb2-flange)+'" height="60" rx="4" fill="#B5D4F4" opacity="0.5" stroke="#185FA5" stroke-width="0.5"/>';
+s+='<rect x="78" y="'+(Y-26.4)+'" width="4" height="52.8" fill="#2C2C2A"/>';
+s+=Tx(108,124,'corpo','ts','middle')+Tx((flange+xb2)/2,144,'obiettivo','ts','middle');
+s+=rays(xH,yI,[Y-14,Y,Y+14],672);
+s+=L(xH,136,xH,224,'#0F6E56',1.5,'4 3')+Tx(xH,226+12,'H′ = N′','th','middle','#0F6E56');
+s+='<circle cx="80" cy="'+Y+'" r="4" fill="#534AB7"/>'+Tx(80,248,'F′ = sensore','th','middle','#534AB7');
+s+='<circle cx="80" cy="'+yI+'" r="3" fill="#E24B4A"/>';
+s+=brk(80,xH,272,'f = '+f+' mm');
+var nt=f<35?'Grandangolo retrofocus: H′ cade dietro l\'obiettivo, dentro la fotocamera.':f>100?'Teleobiettivo: H′ cade davanti alla lente frontale, quindi l\'obiettivo è più corto della sua focale.':'Obiettivo "normale": H′ cade dentro l\'obiettivo.';
+s+=Tx(20,320,nt);
+document.getElementById('k1').textContent='Luna sul sensore';document.getElementById('v1').textContent=fmt(f*Math.tan(MOON*Math.PI/180),2)+' mm';
+document.getElementById('k2').textContent='Campo orizzontale (pieno formato)';document.getElementById('v2').textContent=fmt(2*Math.atan(18/f)*180/Math.PI,0)+'°';
+document.getElementById('k3').textContent='Immagine rispetto all\'occhio';document.getElementById('v3').textContent='× '+fmt(f/16.7,1);
+document.getElementById('note').textContent='Gli estremi della focale sono H′ (punto principale posteriore, che in aria coincide con il nodale N′) e F′, dove convergono i raggi paralleli: il sensore quando metti a fuoco all\'infinito. Raggi grigi = punto sull\'asse, raggi arancioni = punta dell\'oggetto. Angoli esagerati nel disegno; valori reali nei riquadri.';
+}else if(mode==='E'){
+var sc=10.4,xN=80+16.7*sc,xHe=80+22.3*sc,yI=Y+16.7*sc*T;
+s+='<circle cx="205" cy="'+Y+'" r="125" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>';
+s+='<path d="M140 73 A125 125 0 0 0 140 287" fill="none" stroke="#D85A30" stroke-width="3"/>';
+s+='<path d="M318 120 Q350 180 318 240" fill="#E6F1FB" stroke="#888780" stroke-width="1"/>';
+s+='<ellipse cx="'+(xN+14)+'" cy="'+Y+'" rx="14" ry="45" fill="#B5D4F4" opacity="0.6" stroke="#378ADD" stroke-width="0.5"/>';
+s+='<rect x="'+(xN+30)+'" y="120" width="4" height="44" fill="#854F0B"/><rect x="'+(xN+30)+'" y="196" width="4" height="44" fill="#854F0B"/>';
+var pts=[Y-12,Y,Y+12];pts.forEach(function(yh){s+=L(672,yh-T*(672-xHe),xHe,yh,'#EF9F27')+L(xHe,yh,80,yI,'#EF9F27');s+=L(672,yh,xHe,yh,'#888780',1,null,0.6)+L(xHe,yh,80,Y,'#888780',1,null,0.6);});
+s+=L(672,Y-T*(672-xN),80,yI,'#185FA5',1,'2 3');
+s+=L(xHe,120,xHe,240,'#0F6E56',1,'4 3',0.6)+Tx(xHe+6,112,'H′','ts','start','#0F6E56');
+s+='<circle cx="'+xN+'" cy="'+Y+'" r="4" fill="#185FA5"/>'+Tx(xN,Y-12,'N′','th','middle','#185FA5');
+s+='<circle cx="80" cy="'+Y+'" r="4" fill="#534AB7"/>'+Tx(62,Y+4,'F′','th','end','#534AB7');
+s+=brk(80,xN,316,'f = N′F′ = 16,7 mm');
+s+=L(80,345,xHe,345,'#0F6E56',1,null,0.6)+Tx((80+xHe)/2,340,'H′F′ = 22,3 mm (f′, misurata nel vitreo)','ts','middle','#0F6E56');
+document.getElementById('k1').textContent='Luna sulla retina';document.getElementById('v1').textContent='0,15 mm';
+document.getElementById('k2').textContent='Su retina, 1 grado vale';document.getElementById('v2').textContent='≈ 0,29 mm';
+document.getElementById('k3').textContent='Zoom possibile';document.getElementById('v3').textContent='nessuno';
+document.getElementById('note').textContent='Nell\'occhio gli estremi della focale sono N′ (punto nodale posteriore, sulla faccia posteriore del cristallino) e F′ (sulla retina, nell\'emmetrope rilassato). Dentro l\'occhio c\'è il vitreo e non l\'aria, quindi H′ e N′ non coincidono: da H′ la distanza è 22,3 mm. Per gli oggetti lontani la focale è fissa: l\'occhio non zooma. Il raggio blu punteggiato passa per N′ senza deviare.';
+}else{
+var fo=parseFloat(document.getElementById('fO').value),fe=parseFloat(document.getElementById('fE').value);
+document.getElementById('fOL').textContent=fo+' mm';document.getElementById('fEL').textContent=fe+' mm';
+var Td=Math.tan(2*Math.PI/180),xo=620,L1=200+(fo-400)/1600*250,L2=20+(fe-5)/35*60,xf=xo-L1,xe=xf-L2,Py=Y+L1*Td;
+s+='<path d="M'+xo+' 120 Q'+(xo+14)+' 180 '+xo+' 240 Q'+(xo-14)+' 180 '+xo+' 120 Z" fill="#B5D4F4" opacity="0.8" stroke="#185FA5" stroke-width="0.8"/>';
+s+='<path d="M'+xe+' 150 Q'+(xe+8)+' 180 '+xe+' 210 Q'+(xe-8)+' 180 '+xe+' 150 Z" fill="#B5D4F4" opacity="0.8" stroke="#185FA5" stroke-width="0.8"/>';
+s+='<rect x="'+(xe-4)+'" y="118" width="'+(xo-xe+8)+'" height="124" rx="4" fill="none" stroke="#888780" stroke-width="0.5" stroke-dasharray="3 3"/>';
+var ex=xe-50,m=(Y-Py)/L2;
+s+='<circle cx="'+ex+'" cy="'+Y+'" r="24" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>';
+var rIm=Math.max(-20,Math.min(20,34*(-m)));
+[Y-12,Y,Y+12].forEach(function(yh){var ye=yh+(Py-yh)*(xo-xe)/(xo-xf);var yp=ye+m*(xe-(ex+24));
+s+=L(672,yh-Td*(672-xo),xo,yh,'#EF9F27')+L(xo,yh,xe,ye,'#EF9F27')+L(xe,ye,ex+24,yp,'#EF9F27')+L(ex+24,yp,ex-22,Y-rIm,'#EF9F27',1);
+var ya=yh+(Y-yh)*(xo-xe)/(xo-xf);s+=L(672,yh,xo,yh,'#888780',1,null,0.6)+L(xo,yh,xe,ya,'#888780',1,null,0.6)+L(xe,ya,ex+24,ya,'#888780',1,null,0.6);});
+s+=L(xf,124,xf,236,'#534AB7',1.5,'4 3')+Tx(xf,116,'piano focale comune','ts','middle','#534AB7');
+s+='<circle cx="'+xf+'" cy="'+Py+'" r="3" fill="#E24B4A"/>';
+s+=Tx(xo,254,'obiettivo','ts','middle')+Tx(xe,254,'oculare','ts','middle')+Tx(ex,226,'occhio','ts','middle');
+s+=brk(xf,xo,282,'f obiettivo = '+fo+' mm');
+s+=L(xe,312,xf,312,'#0F6E56',1.5)+L(xe,306,xe,318,'#0F6E56',1.5)+L(xf,306,xf,318,'#0F6E56',1.5)+Tx(xf+6,334,'f oculare = '+fe+' mm','th','start','#0F6E56');
+var M=fo/fe,app=MOON*M,appC=Math.min(app,55);
+document.getElementById('k1').textContent='Ingrandimento = f obiettivo / f oculare';document.getElementById('v1').textContent='× '+fmt(M,0);
+document.getElementById('k2').textContent='Luna vista nel telescopio';document.getElementById('v2').textContent=fmt(app,0)+'°'+(app>55?' (non entra tutta)':'');
+document.getElementById('k3').textContent='Luna sulla retina';document.getElementById('v3').textContent=fmt(2*16.7*Math.tan(appC/2*Math.PI/180),1)+' mm'+(app>55?' (solo una parte)':'');
+document.getElementById('note').textContent='Le due focali condividono lo stesso piano focale. f obiettivo va dal punto principale dell\'obiettivo al piano focale; f oculare dal piano focale al punto principale dell\'oculare. I raggi escono di nuovo paralleli ma con un angolo moltiplicato per l\'ingrandimento, e l\'occhio li mette a fuoco come se guardasse all\'infinito. L\'immagine è capovolta. Disegno non in scala.';
+}
+document.getElementById('scene').innerHTML=s;
+}
+upd();
+</script>
+</body>
+</html>
