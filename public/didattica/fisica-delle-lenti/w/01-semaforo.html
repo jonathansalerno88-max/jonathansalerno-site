@@ -85,7 +85,7 @@ function fmt(n){return n.toLocaleString('it-IT');}
 function upd(){
   var rho=snow?0.85:0.2,E=10000,Ls=Math.round(rho*E/Math.PI/100)*100;
   var pd=moved?2:(snow?2.5:3),pa=moved?3:(snow?5:7);
-  var Eeye=moved?40000:0,tdRoad=Ls*pa,tdSun=moved?'≈ 5×10⁹':'—';
+  var Eroad=Math.round(Math.PI/2*Ls/100)*100,Eeye=Eroad+(moved?40000:0),tdRoad=Ls*pa,tdSun=moved?'≈ 5×10⁹':'—';
   var Rs=(Ls/100),irrRet=(Rs*pa*1e-6/2.79e-4);
   function f2(x){return x<1?x.toFixed(2).replace('.',','):fmt(Math.round(x));}
   ['uL','uW'].forEach(function(id){document.getElementById(id).classList.toggle('act',(id==='uW')===rad);});
@@ -109,7 +109,7 @@ function upd(){
   t+=tag(10,378,190,C.ill,'illuminanza E strada',fmt(E)+' lux');
   t+=tag(218,378,190,C.lum,'luminanza L strada','≈ '+fmt(Ls)+' nit');
   t+=tag(426,378,250,C.td,'illuminanza retinica',fmt(tdRoad)+' troland'+(moved?' · sole '+tdSun:''));
-  t+=tag(530,100,145,C.ill,'illuminanza E occhio',(moved?fmt(Eeye):'≈ 0')+' lux');
+  t+=tag(470,100,205,C.ill,'illuminanza E occhio','≈ '+fmt(Eeye)+' lux'+(moved?' (40.000 dal sole)':''));
   }else{
   t+=tag(10,8,180,C.phi,'flusso radiante','3,6×10²⁶ watt');
   t+=tag(10,52,180,C.int,'intensità radiante','2,9×10²⁵ W/sr');
@@ -117,7 +117,7 @@ function upd(){
   t+=tag(10,378,190,C.ill,'irradianza strada','≈ 100 W/m²');
   t+=tag(218,378,190,C.lum,'radianza strada','≈ '+f2(Rs)+' W/(m²·sr)');
   t+=tag(426,378,250,C.td,'irradianza retinica',f2(irrRet)+' W/m²'+(moved?' · sole ≈ 2×10⁵ W/m²':''));
-  t+=tag(530,100,145,C.ill,'irradianza occhio',(moved?'≈ 400':'≈ 0')+' W/m²');
+  t+=tag(470,100,205,C.ill,'irradianza occhio','≈ '+fmt(Eeye/100)+' W/m²'+(moved?' (400 dal sole)':''));
   }
   t+='<line x1="70" y1="134" x2="70" y2="151" stroke="'+C.lum+'" stroke-width="1"/>';
   t+='<line x1="580" y1="138" x2="556" y2="182" stroke="'+C.ill+'" stroke-width="1"/>';
@@ -131,11 +131,11 @@ function upd(){
    ['lum','Luminanza L','<b>nit</b> = cd/m²','quanto è concentrata l\'emissione: intensità divisa per l\'area apparente. È di chi emette o riflette','sole','≈ 1,6×10⁹ nit',false,'radianza, <b>W/(m²·sr)</b>: ≈ 1,6×10⁷'],
    ['ill','Illuminanza E','<b>lux</b> (lx) = lm/m²','quanta luce arriva su una superficie; E = I / d² (circa 130.000 lx fuori dall\'atmosfera, molto meno a terra con il sole basso)','strada','10.000 lx',false,'irradianza, <b>W/m²</b>: ≈ 100 W/m²'],
    ['lum','Luminanza L','<b>nit</b> = cd/m²','quanta ne riemette la strada verso di te; L ≈ ρ · E / π','strada','≈ '+fmt(Ls)+' nit',snow,'radianza, <b>W/(m²·sr)</b>: ≈ '+f2(Rs)],
-   ['ill','Illuminanza E','<b>lux</b> (lx) = lm/m²','quanta luce del sole arriva sull\'occhio: decide l\'abbagliamento','occhio','≈ '+(moved?fmt(Eeye):'0')+' lx',moved,'irradianza, <b>W/m²</b>: ≈ '+(moved?'400':'0')+' W/m²'],
+   ['ill','Illuminanza E','<b>lux</b> (lx) = lm/m²','quanta luce arriva sull\'occhio: quella riflessa dalla strada (≈ π·L/2 se la strada riempie metà del campo visivo) e, senza semaforo, quella diretta del sole, che decide l\'abbagliamento','occhio','≈ '+fmt(Eeye)+' lx'+(moved?'<br>di cui 40.000 dal sole':''),moved||snow,'irradianza, <b>W/m²</b>: ≈ '+fmt(Eeye/100)+' W/m²'],
    ['td','Illuminanza retinica','<b>troland</b> (Td) = nit × mm²','quanta luce arriva su un punto della retina: luminanza di ciò che guardi × area della pupilla. Decide il danno','retina','strada '+fmt(tdRoad)+' Td'+(moved?'<br>sole ≈ 5×10⁹ Td':''),snow||moved,'irradianza retinica, <b>W/m²</b>: strada ≈ '+f2(irrRet)+(moved?'<br>sole ≈ 2×10⁵ W/m² (≈ 20 W/cm²)':'')]];
   var h='';rows.forEach(function(r){h+='<tr'+(r[6]?' class="chg"':'')+'><td><span class="dot" style="background:'+C[r[0]]+'"></span>'+r[1]+'</td><td class="u">'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td><td class="val">'+r[5]+'</td><td class="rad">'+r[7]+'</td></tr>';});
   document.getElementById('tb').innerHTML=h;
-  document.getElementById('note').innerHTML='Stesso colore, stessa grandezza e stessa unità. Le tre grandezze del sole non cambiano mai: né il semaforo né la neve toccano il sole. '+(moved?'Senza semaforo la luce diretta arriva sull\'occhio: <b>40.000 lux</b> di illuminanza (abbaglia) e, se lo fissi, un\'immagine del sole a circa <b>5×10⁹ troland</b> sulla retina (danneggia). La pupilla si stringe a 2 mm.':'Dietro il semaforo cambia solo ciò che arriva a te: la luce del sole sull\'occhio scende a circa 0 lux.')+(snow?' Con la neve sale la luminanza della strada, e con essa i troland, anche se la pupilla si stringe.':'')+' Per passare dalla luce all\'energia, per la luce solare: circa <b>100 lumen per watt</b> (efficacia luminosa). Valori: ordini di grandezza, sole basso all\'alba; sull\'occhio arriva anche qualche migliaio di lux dalla strada e dal cielo, non conteggiato qui.';
+  document.getElementById('note').innerHTML='Stesso colore, stessa grandezza e stessa unità. Le tre grandezze del sole non cambiano mai: né il semaforo né la neve toccano il sole. '+(moved?'Senza semaforo alla luce della strada si somma quella diretta del sole: <b>40.000 lux</b> in più sull\'occhio (abbaglia) e, se lo fissi, un\'immagine del sole a circa <b>5×10⁹ troland</b> sulla retina (danneggia). La pupilla si stringe a 2 mm.':'Dietro il semaforo cambia solo ciò che arriva a te: sparisce la luce diretta del sole, e sull\'occhio resta solo quella riflessa dalla strada, circa '+fmt(Eroad)+' lux.')+(snow?' Con la neve sale la luminanza della strada, e con essa i troland, anche se la pupilla si stringe.':'')+' Per passare dalla luce all\'energia, per la luce solare: circa <b>100 lumen per watt</b> (efficacia luminosa). Valori: ordini di grandezza, sole basso all\'alba; la luce del cielo, che arriva anch\'essa sull\'occhio, non è conteggiata.';
 }
 upd();
 </script>
