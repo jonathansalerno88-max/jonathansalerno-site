@@ -7,12 +7,12 @@
 <link rel="alternate" hreflang="it" href="/didattica/fisica-delle-lenti/">
 <link rel="alternate" hreflang="en" href="/teaching/lens-physics/">
 <link rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
-<meta name="description" content="Materiale didattico interattivo: luminanza e illuminanza, danno alla retina, l'occhio come sistema ottico, miopia e ipermetropia, pupilla e aberrazioni, parallasse, lenti sottili e immagini reali e virtuali.">
+<meta name="description" content="Supporto allo studio interattivo: luminanza e illuminanza, danno alla retina, l'occhio come sistema ottico, miopia e ipermetropia, pupilla e aberrazioni, parallasse, lenti sottili e immagini reali e virtuali.">
 <meta name="author" content="Jonathan Salerno">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Fisica delle lenti">
-<meta property="og:description" content="Materiale didattico interattivo sull'ottica dell'occhio e delle lenti.">
+<meta property="og:description" content="Supporto allo studio interattivo sull'ottica dell'occhio e delle lenti.">
 <style>
 @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 @font-face{font-family:'IBM Plex Sans';font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
@@ -78,6 +78,8 @@ section li{margin:.25rem 0}
 .formula{font-family:var(--mono); font-size:.9rem; background:var(--card); border-radius:6px;
   padding:.55rem .8rem; display:inline-block; margin:.1rem 0 .9rem}
 .try{font-size:.9375rem; color:var(--mut); border-left:3px solid var(--axis); padding:.1rem 0 .1rem .9rem; margin:1rem 0}
+.try ul{margin:.35rem 0 0; padding-left:1.1rem}
+.try li{margin:.15rem 0}
 .try b{color:var(--ink); font-weight:600}
 
 figure.w{margin:1.4rem 0 1.2rem}
@@ -105,7 +107,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <p class="back"><a href="/">Jonathan Salerno</a> · <a href="/teaching/lens-physics/" hreflang="en" lang="en">English</a></p>
 
 <header>
-  <p class="kicker">MATERIALE DIDATTICO</p>
+  <p class="kicker">SUPPORTO ALLO STUDIO</p>
   <h1>Fisica delle lenti</h1>
   <div class="lede">
     <p>Da una luce per bicicletta fino alla lente d'ingrandimento: un percorso
@@ -158,10 +160,11 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/00-bici.html" title="Due luci da bici: lumen, candele, lux sulla strada e luminanza della lente" loading="lazy"></iframe>
     <figcaption>Cambia flusso, ampiezza del fascio e distanza. <a href="w/00-bici.html">Apri a schermo intero</a></figcaption>
   </figure>
-  <p>Nell'esempio, la luce con meno lumen ma un fascio di 10° ha sei volte le candele di quella da
-  1.000 lumen e 40°: a 10 m mette sulla strada circa 170 lux contro 26, e arriva due volte e mezzo più
-  lontano. La luce con più lumen illumina invece una striscia di strada più larga. Quindi, per vedere
-  lontano, contano le candele o i lux a 10 m; per vedere ai lati, i lumen distribuiti su un fascio largo.</p>
+  <p>Nell'esempio del thread, la luce A ha 1.000 lumen in un fascio di 40°, la luce B 400 lumen in un
+  fascio di 10°. B ha meno lumen ma circa sei volte le candele di A: a 10 m mette sulla strada circa
+  170 lux contro 26, e arriva due volte e mezzo più lontano. A, in compenso, illumina una striscia di
+  strada più larga. Per vedere lontano contano le candele, o i lux a 10 m; per vedere ai lati, i lumen
+  distribuiti su un fascio largo.</p>
   <p><b>Ora tocca a te.</b> Devi illuminare la tua corsia dove ti serve vedere: allo spazio di
   arresto, cioè 1 s di reazione più la frenata. A 22 km/h sono circa 10 m. Lì ti servono almeno 60 lux
   su 3,5 m di larghezza, senza accecare il ciclista che arriva in senso opposto né il pedone che
@@ -171,28 +174,23 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/00b-missione.html" title="Gioco: regola una luce da bici per illuminare la strada fino allo spazio di arresto" loading="lazy"></iframe>
     <figcaption>Regola flusso, fascio, lente e taglio. <a href="w/00b-missione.html">Apri a schermo intero</a></figcaption>
   </figure>
-  <p class="try"><b>Da provare.</b> Senza taglio del fascio, allarga il fascio oltre i 33° circa: il
-  pedone a 8 m entra nel cono e gli arrivano negli occhi una ventina di lux. Non conta quanto è
-  brillante la lente in nit: conta il velo di luce diffusa che quei lux stendono sulla sua retina,
-  che la figura misura in nit e confronta con la luminanza della strada. Il taglio, che tiene la luce
-  sotto l'altezza degli occhi, risolve per tutti, e c'è di più: la metà di luce che il fascio tondo
-  sprecava verso l'alto finisce sulla strada, quindi a parità di lumen i lux raddoppiano. Guarda la
-  vista di lato mentre premi il pulsante. Con il fascio tondo, per avere 60 lux su 3,5 m servono
-  almeno circa 560 lumen e la batteria non arriva a due ore; con il taglio ne bastano circa 280.
-  Infine rimpicciolisci la lente: sotto un certo diametro il fascio non si stringe più, perché un
-  LED di un millimetro quadrato non si può concentrare in un angolo piccolo a piacere. Il diametro non
-  entra nei lux, ma decide quante candele puoi tirare fuori dai tuoi lumen.
-  Infine alza la velocità a 40 km/h: lo spazio di arresto sale a circa 23 m, e per coprire la
-  corsia laggiù basta un fascio di 9° circa. Con un cono uniforme i lumen necessari restano quasi gli
-  stessi (lux per area illuminata è sempre il flusso), ma il fascio diventa stretto e lascia al buio
-  la strada vicino alla ruota e le curve. Per questo chi va veloce monta una seconda luce larga, e le
-  luci StVZO concentrano l'intensità appena sotto il taglio, dove la strada è lontana.
-  E prova a ottenere sei faccine felici: non ci si riesce, perché il taglio costa. Ogni luce è un
-  compromesso, e i numeri sulla scatola servono a scegliere quale.</p>
-  <p>Una precisazione su una delle risposte del thread, che dice che per usare i cd/m² bisogna conoscere
-  la distanza. Vale per i lux, non per la luminanza: la luminanza non dipende dalla distanza, ed è
-  lo stesso motivo per cui il sole, visto dalla Terra o da Marte, brucia la retina con la stessa
-  intensità. Lo vediamo nella prossima sezione.</p>
+  <div class="try"><b>Da provare.</b>
+  <ul>
+    <li>Allarga il fascio oltre i 33°: il pedone viene abbagliato. Premi «Sì, come le luci StVZO»:
+    l'abbagliamento sparisce e i lux sulla strada raddoppiano.</li>
+    <li>Con il taglio, quanti lumen ti servono per vincere? Circa la metà: 280 invece di 560.</li>
+    <li>Rimpicciolisci la lente: sotto un certo diametro il fascio non si stringe più.</li>
+    <li>Alza la velocità a 40 km/h: devi vedere a 23 m, e il fascio diventa stretto.</li>
+    <li>Sei faccine felici? Non ci si riesce: ogni luce è un compromesso.</li>
+  </ul></div>
+  <p><b>Quindi, quale luce comprare?</b> Per chi pedala dove c'è altra gente (città, ciclabili,
+  strade): una luce con <b>taglio del fascio</b>, cioè omologata StVZO. Mette la luce sulla strada e
+  non negli occhi di chi arriva, e con gli stessi lumen illumina di più. Fra due luci così, confronta i
+  <b>lux a 10 m</b> dichiarati: più alti vuol dire che vedi meglio. Per chi va forte di notte fuori
+  strada, da solo, va bene anche un fascio tondo: lì guardi le <b>candele</b> per la distanza e i lumen
+  per i lati, e conviene montare due luci, una stretta e una larga. I lumen da soli non bastano mai per
+  scegliere, e i «cd/m²» della domanda iniziale sono quasi certamente un errore per «candele».</p>
+
 </section>
 
 <!-- 1 -->
