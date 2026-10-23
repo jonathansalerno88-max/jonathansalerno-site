@@ -14,6 +14,9 @@
 .out{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin:6px 0 0}
 .out div{background:var(--surface-1);border-radius:var(--radius);padding:8px 12px;font-size:12.5px;color:var(--text-secondary);line-height:1.45}
 .out b{display:block;font-size:17px;font-weight:500;color:var(--text-primary)}
+.take{background:var(--surface-1);border-radius:var(--radius);padding:10px 14px;margin:10px 0 0;font-size:13.5px;color:var(--text-primary);line-height:1.5}
+.take ul{margin:4px 0 0;padding-left:18px}
+.take li{margin:3px 0}
 .note{font-size:12.5px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
 </style>
 </head>
@@ -31,7 +34,15 @@
 <svg width="100%" viewBox="0 0 680 318"><g id="zm"></g></svg>
 <div class="out" id="out"></div>
 <p class="note" id="nt"></p>
-<p class="note">Riquadri in scala vera su 8 primi d'arco di fovea: coni ogni 2,5 µm circa, focale N′F′ 16,7 mm. Diffrazione calcolata (larghezza a metà intensità circa 1,03·λ·f/D, λ = 550 nm); le grandezze in µm sono larghezze a metà intensità. Le macchie dei difetti usano valori indicativi: 1,5 D per il presbite, aberrazioni tipiche di un occhio sano; nell'aberrazione cromatica ogni colore è sfocato in proporzione alla sua distanza dal giallo-verde. Il cono centrale diviso a spicchi mostra i colori che ci arrivano concentrati. Nei riquadri il colore va dal rosso scuro (poca luce) all'arancione fino al bianco (molta luce); ogni riquadro ha la sua esposizione: conta la forma della macchia, non la luminosità assoluta.</p>
+<div class="take"><b>In sintesi</b>
+<ul>
+<li><b>Presbite</b>: stringere la pupilla rimpicciolisce la macchia, ma non sposta il fuoco. La correzione vera sono gli occhiali da lettura.</li>
+<li><b>Se stringi troppo</b> (sotto circa 2 mm): comanda la diffrazione, la macchia torna a crescere e la luce cala.</li>
+<li><b>Aberrazione sferica</b>: stringere la toglie quasi tutta (cala come D³). Nelle lenti si corregge con superfici asferiche.</li>
+<li><b>Aberrazione cromatica</b>: stringere la riduce (cala come D), e la fovea centrale il blu quasi non lo vede. Nelle ottiche si corregge accoppiando due vetri (doppietto acromatico).</li>
+<li><b>Occhio sano</b>: la pupilla migliore è circa 2,5–3 mm.</li>
+</ul></div>
+<p class="note">Riquadri in scala vera: 8 primi d'arco di fovea, un cono ogni 2,5 µm. La diffrazione è calcolata, le macchie dei difetti sono indicative. Colore = quanta luce, dal rosso scuro al bianco; ogni riquadro ha la sua esposizione.</p>
 <script>
 var mode=0,real=false,CY=126,PX=200,RX=560,K=14; // K: px per mm of pupil height
 function nf(x,d){return x.toLocaleString('it-IT',{maximumFractionDigits:d});}
@@ -146,11 +157,11 @@ function upd(){
   '<div>Luce che entra<b>×'+nf(r*r,2)+'</b>rispetto a 4 mm: segue l\'area, cioè D²</div>'+
   '<div>Pupilla con la macchia più piccola<b>'+(best>=7.95?'la più grande':best<=1.55?'1,5 mm o meno':'≈ '+nf(best,1)+' mm')+'</b>'+(mode===3?'senza difetti vince la pupilla larga; in un occhio vero ≈ 2,5–3 mm':'qui il difetto e la diffrazione si bilanciano')+'</div>'+
   '<div>Macchia sulla retina dell\'uomo<b>'+um(tot)+', '+cn(tot,2.5)+'</b>'+(mode===3?'solo diffrazione: segue 1/D, cresce stringendo':'il difetto segue '+(mode===1?'D³':'D')+'; la diffrazione 1/D')+'</div>';
- var nt=mode===3?'Occhio senza difetti: tutti i raggi arrivano nello stesso punto della retina, e il punto resta un dischetto solo per la diffrazione. A metà intensità è largo meno di un cono a 8 mm e circa due o tre coni a 1,5 mm: stringere toglie luce e allarga il punto. Una macchia più piccola di un cono non servirebbe, perché la retina non distingue dettagli più fini. Un occhio vero ha sempre un po\' di aberrazioni, per questo a fuoco il compromesso migliore è una pupilla di circa 2,5–3 mm.':mode===0?'Il presbite non vede le cose più grandi: le vede sfocate, perché ogni punto diventa una macchiolina. Con 1,5 D di errore, come chi legge a 40 cm senza accomodare abbastanza, la macchia è circa 25 µm per ogni mm di pupilla: 100 µm a 4 mm, 45 µm a 1,8 mm (aceclidina). Il fuoco resta dietro la retina: la pupilla piccola non lo sposta, restringe il cono.'
-  :mode===1?'Nell\'aberrazione sferica i raggi periferici vengono piegati troppo. Chiudendo la pupilla si tolgono proprio quelli: dimezzando il diametro la macchia scende a circa un ottavo.'
-  :'L\'indice di rifrazione cambia con il colore, quindi l\'occhio ha un fuoco per ogni colore: fra blu e rosso circa 2 D di differenza. Se il verde-giallo, il colore a cui siamo più sensibili, è a fuoco, giallo e arancione si allargano poco, il rosso un po\' di più, il blu e il viola molto: un punto bianco diventa un cono centrale giallo e verde (gli spicchi), un anello arancione e un alone blu-viola largo. Con l\'ottica perfetta tutti i colori cadono nello stesso cono: gli spicchi sono tutti lì. L\'alone si riduce in proporzione al diametro della pupilla: il cerchio tratteggiato ne segna il bordo. A pupilla larga è largo ma debole, quasi invisibile; a pupilla stretta è piccolo, e sembra più acceso solo perché la diffrazione allarga anche il centro.';
- if(D<2.5&&mode!==3)nt+=' <b>Guarda il riquadro centrale</b>, lo stesso occhio con un\'ottica perfetta (un confronto ideale: ogni occhio vero ha un po\' di aberrazioni): stringendo, il punto si allarga per la diffrazione. Sotto i 2 mm circa è lei a comandare.';
- if(real)nt+=' <b>Coni veri:</b> ogni cono risponde solo al suo colore. Nel centro della fovea ci sono solo coni L e M, in proporzione di circa 2 a 1 (varia molto da persona a persona); i coni S, quelli del blu, mancano in una zona larga circa 20 primi. '+(mode===2?'Per questo l\'alone blu quasi sparisce: cade su coni che il blu lo vedono appena.':'');
+ var nt=mode===3?'Occhio senza difetti: c\'è solo la diffrazione, quindi stringere allarga il punto e toglie luce.':mode===0?'Il presbite vede sfocato, non più grande: ogni punto diventa una macchiolina, circa 25 µm per ogni mm di pupilla. Il fuoco resta dietro la retina.'
+  :mode===1?'I raggi periferici vengono piegati troppo: stringendo la pupilla si tolgono proprio quelli.'
+  :'Ogni colore ha il suo fuoco: il giallo-verde è sulla retina, il blu e il viola si spalmano di più.';
+ if(D<2.5&&mode!==3)nt+=' <b>Sotto i 2 mm</b> comanda la diffrazione: guarda il riquadro centrale.';
+ if(real)nt+=' <b>Coni veri:</b> nel centro della fovea ci sono solo coni L e M, niente coni S per il blu.';
  document.getElementById('nt').innerHTML=nt;
 }
 upd();

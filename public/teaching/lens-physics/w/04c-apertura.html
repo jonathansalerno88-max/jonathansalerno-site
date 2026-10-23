@@ -14,6 +14,9 @@
 .out{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin:6px 0 0}
 .out div{background:var(--surface-1);border-radius:var(--radius);padding:8px 12px;font-size:12.5px;color:var(--text-secondary);line-height:1.45}
 .out b{display:block;font-size:17px;font-weight:500;color:var(--text-primary)}
+.take{background:var(--surface-1);border-radius:var(--radius);padding:10px 14px;margin:10px 0 0;font-size:13.5px;color:var(--text-primary);line-height:1.5}
+.take ul{margin:4px 0 0;padding-left:18px}
+.take li{margin:3px 0}
 .note{font-size:12.5px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
 </style>
 </head>
@@ -31,7 +34,15 @@
 <svg width="100%" viewBox="0 0 680 318"><g id="zm"></g></svg>
 <div class="out" id="out"></div>
 <p class="note" id="nt"></p>
-<p class="note">Panels at true scale over 8 arcminutes of fovea: cones about every 2.5 µm, focal length N′F′ 16.7 mm. Diffraction is calculated (width at half intensity about 1.03·λ·f/D, λ = 550 nm); sizes in µm are widths at half intensity. The defect spots use indicative values: 1.5 D for the presbyope, typical aberrations of a healthy eye; in chromatic aberration each colour is blurred in proportion to its distance from yellow-green. The central cone divided into wedges shows the colours that reach it concentrated. In the panels the colour runs from dark red (little light) through orange to white (a lot of light); each panel has its own exposure: what matters is the shape of the spot, not the absolute brightness.</p>
+<div class="take"><b>Take-home points</b>
+<ul>
+<li><b>Presbyope</b>: constricting the pupil shrinks the spot but does not move the focus. The real correction is reading glasses.</li>
+<li><b>Constrict too much</b> (below about 2 mm): diffraction takes over, the spot grows again and the light drops.</li>
+<li><b>Spherical aberration</b>: constricting removes almost all of it (it falls as D³). In lenses it is corrected with aspheric surfaces.</li>
+<li><b>Chromatic aberration</b>: constricting reduces it (it falls as D), and the central fovea barely sees blue. In optics it is corrected by pairing two glasses (an achromatic doublet).</li>
+<li><b>Healthy eye</b>: the best pupil is about 2.5–3 mm.</li>
+</ul></div>
+<p class="note">Panels at true scale: 8 arcminutes of fovea, one cone every 2.5 µm. Diffraction is calculated; the defect spots are indicative. Colour = how much light, from dark red to white; each panel has its own exposure.</p>
 <script>
 var mode=0,real=false,CY=126,PX=200,RX=560,K=14; // K: px per mm of pupil height
 function nf(x,d){return x.toLocaleString('en-GB',{maximumFractionDigits:d});}
@@ -146,11 +157,11 @@ function upd(){
   '<div>Light entering<b>×'+nf(r*r,2)+'</b>relative to 4 mm: follows the area, i.e. D²</div>'+
   '<div>Pupil with the smallest spot<b>'+(best>=7.95?'the largest':best<=1.55?'1.5 mm or less':'≈ '+nf(best,1)+' mm')+'</b>'+(mode===3?'with no defects the wide pupil wins; in a real eye ≈ 2.5–3 mm':'here the defect and diffraction balance out')+'</div>'+
   '<div>Spot on the human retina<b>'+um(tot)+', '+cn(tot,2.5)+'</b>'+(mode===3?'diffraction only: follows 1/D, grows as the pupil narrows':'the defect follows '+(mode===1?'D³':'D')+'; diffraction 1/D')+'</div>';
- var nt=mode===3?'Eye without defects: all rays arrive at the same point on the retina, and the point remains a small disc only because of diffraction. At half intensity it is narrower than one cone at 8 mm and about two or three cones wide at 1.5 mm: constricting removes light and widens the point. A spot smaller than a cone would be of no use, because the retina cannot resolve finer detail. A real eye always has some aberrations, which is why, in focus, the best compromise is a pupil of about 2.5–3 mm.':mode===0?'The presbyope does not see things larger: they see them blurred, because each point becomes a small spot. With 1.5 D of error, as for someone reading at 40 cm without accommodating enough, the spot is about 25 µm for every mm of pupil: 100 µm at 4 mm, 45 µm at 1.8 mm (aceclidine). The focus stays behind the retina: the small pupil does not move it, it narrows the cone.'
-  :mode===1?'In spherical aberration the peripheral rays are bent too much. Closing the pupil removes exactly those: halving the diameter brings the spot down to about an eighth.'
-  :'The refractive index changes with colour, so the eye has a focus for each colour: about 2 D of difference between blue and red. If green-yellow, the colour we are most sensitive to, is in focus, yellow and orange spread a little, red a bit more, blue and violet a lot: a white point becomes a yellow and green central cone (the wedges), an orange ring and a wide blue-violet halo. With perfect optics all the colours fall on the same cone: the wedges are all there. The halo shrinks in proportion to the pupil diameter: the dashed circle marks its edge. With a wide pupil it is wide but faint, almost invisible; with a narrow pupil it is small, and looks brighter only because diffraction also widens the centre.';
- if(D<2.5&&mode!==3)nt+=' <b>Look at the central panel</b>, the same eye with perfect optics (an ideal comparison: every real eye has some aberrations): as the pupil narrows, the point widens because of diffraction. Below about 2 mm, diffraction is in charge.';
- if(real)nt+=' <b>Real cones:</b> each cone responds only to its own colour. In the centre of the fovea there are only L and M cones, in a ratio of about 2 to 1 (it varies a lot from person to person); S cones, the blue ones, are missing from a zone about 20 arcminutes wide. '+(mode===2?'This is why the blue halo almost disappears: it falls on cones that barely see blue.':'');
+ var nt=mode===3?'Eye without defects: there is only diffraction, so constricting widens the point and costs light.':mode===0?'A presbyope sees things blurred, not larger: every point becomes a small spot, about 25 µm per mm of pupil. The focus stays behind the retina.'
+  :mode===1?'The peripheral rays are bent too much: constricting the pupil removes exactly those.'
+  :'Each colour has its own focus: yellow-green is on the retina, blue and violet spread the most.';
+ if(D<2.5&&mode!==3)nt+=' <b>Below 2 mm</b> diffraction takes over: look at the central panel.';
+ if(real)nt+=' <b>Real cones:</b> the centre of the fovea has only L and M cones, no S cones for blue.';
  document.getElementById('nt').innerHTML=nt;
 }
 upd();
