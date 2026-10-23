@@ -32,7 +32,7 @@
 <g id="board"></g>
 <g id="side"></g>
 </svg>
-<p class="note">La fisica è vera, semplificata: fascio uniforme in un cono, candele = lumen / steradianti, lux a 10 m = candele / 100. Il taglio è modellato come metà inferiore del cono: la luce che andrebbe sopra l'orizzonte finisce sulla strada, quindi a parità di lumen candele e lux raddoppiano. I fari StVZO veri sono ancora più piatti e larghi, ma il principio è questo. <b>Il prezzo è inventato per l'esercizio</b> (cresce con i lumen, con le ottiche a fascio stretto, con il taglio del fascio e con la lente), e l'autonomia assume una batteria da circa 10 Wh e un LED da 100 lumen per watt. Le soglie delle faccine sono indicative.</p>
+<p class="note">La fisica è vera, semplificata: fascio uniforme in un cono, candele = lumen / steradianti, lux a 10 m = candele / 100. Il taglio è modellato come metà inferiore del cono: la luce che andrebbe sopra l'orizzonte finisce sulla strada, quindi a parità di lumen candele e lux raddoppiano. I fari StVZO veri sono ancora più piatti e larghi, ma il principio è questo. <b>Il prezzo è inventato per l'esercizio</b> (cresce con i lumen, con le ottiche a fascio stretto, con il taglio del fascio e con la lente), e l'autonomia assume una batteria da circa 10 Wh e un LED da 100 lumen per watt. Abbagliamento: la luce negli occhi (lux) crea nell'occhio un velo di luminanza L<sub>velo</sub> = 10·E<sub>occhio</sub>/θ² nit (Stiles-Holladay, θ in gradi tra la tua luce e la direzione in cui guardano, lungo la strada e 1° in basso). Il velo si confronta con la strada, qui 1 nit (strada di notte con lampioni; al buio va peggio), con l'aumento di soglia TI = 65·L<sub>velo</sub>/L<sub>strada</sub><sup>0,8</sup> delle norme sull'illuminazione stradale: TI 50 % vuol dire che un ostacolo deve avere il 50 % di contrasto in più per essere visto. Faccina felice fino al 15 %, limite tipico per i lampioni; triste sopra il 50 %, soglia scelta per l'esercizio. Le altre soglie delle faccine sono indicative.</p>
 <script>
 var cut=false,Y0=380,S=16,XR=200,LANE=3.5;
 function v(id){return parseFloat(document.getElementById(id).value);}
@@ -50,10 +50,16 @@ function upd(){
   document.getElementById('cutN').classList.toggle('act',!cut);document.getElementById('cutY').classList.toggle('act',cut);
   var a=A/2*Math.PI/180,O=2*Math.PI*(1-Math.cos(a))*(cut?0.5:1),I=Lm/O,E=I/100,W=2*10*Math.tan(a);
   var area=Math.PI*Math.pow(D/2000,2),nit=I/area;
+  // disability glare: Stiles-Holladay veil + threshold increment (CIE road-lighting convention:
+  // observer looks along the road, 1 deg down; road luminance LAV)
+  var LAV=1;
   function glare(dx,dz,dy){var d=Math.sqrt(dx*dx+dy*dy+dz*dz),off=Math.atan(Math.sqrt(dx*dx+dy*dy)/dz);
-    var inB=off<=a;return {inB:inB,E:(cut||!inB)?0:I/(d*d)};}
-  var gR=glare(3.5,14,0.5), gP=glare(2.25,8,0.6);
-  function sc(g){return cut?2:(!g.inB?2:(g.E>=20?0:1));}
+    var inB=off<=a,c1=Math.cos(Math.PI/180),s1=Math.sin(Math.PI/180);
+    var th=Math.acos((dz*c1+dy*s1)/d)*180/Math.PI,thc=Math.max(1.5,th);
+    var E=(cut||!inB)?0:I/(d*d)*Math.cos(th*Math.PI/180),Lv=10*E/(thc*thc),TI=65*Lv/Math.pow(LAV,0.8);
+    return {inB:inB,E:E,th:th,Lv:Lv,TI:TI};}
+  var gR=glare(3.5,14,0.6), gP=glare(2.25,8,0.8);
+  function sc(g){return g.TI<=15?2:(g.TI<=50?1:0);}
   var price=15+0.04*Lm+(A<15?12:A<25?5:0)+(cut?9:0)+0.3*D;
   var hours=10/(Lm/100);
   // scores
@@ -82,10 +88,10 @@ function upd(){
   s+=T(ox-10,oy-14,'chi arriva','ts','#D3D1C7','end');
   if(gR.E>1){for(var k=-1;k<=1;k++)s+='<line x1="'+(lx-2)+'" y1="'+(ly-6)+'" x2="'+(ox+k*3)+'" y2="'+(oy-14)+'" stroke="#EF9F27" stroke-width="1.2" opacity="'+Math.min(0.95,0.3+gR.E/60)+'"/>';}
   // pedestrian on the sidewalk, same side, walking towards you
-  var px=lx+2.25*S,py=ry(8),pc=gP.E>=20?'#F09595':'#E6F1FB';
+  var px=lx+2.25*S,py=ry(8),pc=gP.TI>50?'#F09595':'#E6F1FB';
   if(gP.E>1){for(var k2=-1;k2<=1;k2++)s+='<line x1="'+(lx+2)+'" y1="'+(ly-6)+'" x2="'+(px+k2*3)+'" y2="'+(py-12)+'" stroke="#EF9F27" stroke-width="1.2" opacity="'+Math.min(0.95,0.3+gP.E/60)+'"/>';}
   s+='<circle cx="'+px+'" cy="'+(py-12)+'" r="5" fill="'+pc+'"/><rect x="'+(px-3.5)+'" y="'+(py-6)+'" width="7" height="14" rx="3" fill="'+pc+'"/><line x1="'+(px-2)+'" y1="'+(py+8)+'" x2="'+(px-4)+'" y2="'+(py+15)+'" stroke="'+pc+'" stroke-width="2"/><line x1="'+(px+2)+'" y1="'+(py+8)+'" x2="'+(px+4)+'" y2="'+(py+15)+'" stroke="'+pc+'" stroke-width="2"/>';
-  if(gP.E>=20){s+='<path d="M'+(px-9)+' '+(py-22)+' l-4 -4 M'+px+' '+(py-24)+' l0 -6 M'+(px+9)+' '+(py-22)+' l4 -4" stroke="#F09595" stroke-width="1.5" fill="none"/>';}
+  if(gP.TI>50){s+='<path d="M'+(px-9)+' '+(py-22)+' l-4 -4 M'+px+' '+(py-24)+' l0 -6 M'+(px+9)+' '+(py-22)+' l4 -4" stroke="#F09595" stroke-width="1.5" fill="none"/>';}
   s+=T(px-10,py+30,'pedone','ts','#D3D1C7','end');
   // rider
   s+='<rect x="'+(lx-4)+'" y="'+(Y0-2)+'" width="8" height="26" rx="3" fill="#E6F1FB"/><circle cx="'+lx+'" cy="'+(Y0+2)+'" r="6" fill="#E6F1FB"/><circle cx="'+lx+'" cy="'+(ly)+'" r="3.5" fill="#FAC775"/>';
@@ -93,19 +99,23 @@ function upd(){
   document.getElementById('scene').innerHTML=s;
   document.getElementById('sv').classList.toggle('ride',win);
   // board
+  function n2(x){return x<0.1?it(x,2):it(x,1);}
+  function gl(g){if(cut)return ['il taglio tiene la luce sotto gli occhi'];if(!g.inB)return ['fuori dal fascio'];
+    return [it(g.E,0)+' lux negli occhi → velo '+n2(g.Lv)+' nit','TI '+it(g.TI,0)+' % (lampioni: max 15 %)'];}
   var b='',bx=420,rows=[
    [sE,'Luce sulla strada a 10 m',it(E,E<10?1:0)+' lux ('+it(I,0)+' cd / 100)'],
    [sW,'Strada coperta a 10 m',it(W,1)+' m su una corsia di '+it(LANE,1)],
-   [sG,'Ciclista che arriva',cut?'il taglio tiene la luce sulla strada':(!gR.inB?'fuori dal fascio':'riceve '+it(gR.E,0)+' lux negli occhi')],
-   [sPd,'Pedone sul marciapiede',cut?'il taglio tiene la luce sulla strada':(!gP.inB?'fuori dal fascio':'riceve '+it(gP.E,0)+' lux negli occhi')],
+   [sG,'Ciclista che arriva'].concat(gl(gR)),
+   [sPd,'Pedone sul marciapiede'].concat(gl(gP)),
    [sP,'Prezzo (inventato)','≈ '+it(Math.round(price/5)*5)+' €'],
    [sH,'Autonomia','≈ '+it(hours,1)+' ore']];
   b+=T(bx,22,'Il giudizio','th');
-  rows.forEach(function(r,i){var y=56+i*50;b+=face(bx+16,y,r[0])+T(bx+40,y-3,r[1],'th')+T(bx+40,y+14,r[2],'ts');});
+  rows.forEach(function(r,i){var y=54+i*51;b+=face(bx+16,y,r[0])+T(bx+40,y-3,r[1],'th')+T(bx+40,y+14,r[2],'ts');
+    if(r[3])b+=T(bx+40,y+28,r[3],'ts','#888780');});
   b+='<rect x="'+bx+'" y="338" width="250" height="52" rx="8" fill="'+(win?'#EAF3DE':'#F1EFE8')+'" stroke="'+(win?'#3B6D11':'#B4B2A9')+'" stroke-width="1"/>';
   b+=T(bx+12,359,win?'Missione compiuta!':'Obiettivo a 10 m: 60 lux su 3,5 m','th',win?'#27500A':'#444441');
   b+=T(bx+12,378,win?'Ora guarda prezzo e autonomia.':'senza accecare ciclisti e pedoni.','ts',win?'#3B6D11':'#5F5E5A');
-  b+=T(bx,412,'lente: '+(nit>=1e6?(nit/1e6).toFixed(1).replace('.',',')+' milioni di':it(nit))+' nit','ts')+T(bx,426,'(quanto abbaglia vista in faccia)','ts');
+  b+=T(bx,412,'lente: '+(nit>=1e6?(nit/1e6).toFixed(1).replace('.',',')+' milioni di':it(nit))+' nit','ts')+T(bx,426,'(luminanza del puntino, non l\'abbaglio)','ts');
   document.getElementById('board').innerHTML=b;
   // side view: what the cut-off changes
   var G=532,K=18,X0=36,ty=G-0.9*K,sx=function(m){return X0+m*K;},q='';
@@ -119,7 +129,7 @@ function upd(){
   q+=T(12,466,'Vista di lato','th','#FFFFFF');
   function fig(x,hm,col){var hy=G-hm*K;return '<circle cx="'+x+'" cy="'+(hy+3)+'" r="3.5" fill="'+col+'"/><line x1="'+x+'" y1="'+(hy+7)+'" x2="'+x+'" y2="'+(G-1)+'" stroke="'+col+'" stroke-width="3" stroke-linecap="round"/>';}
   q+=fig(sx(8),1.6,pc)+T(sx(8),G+17,'pedone 8 m','ts','#D3D1C7','middle');
-  q+=fig(sx(14),1.5,gR.E>=20?'#F09595':'#B5D4F4')+T(sx(14),G+17,'ciclista 14 m','ts','#D3D1C7','middle');
+  q+=fig(sx(14),1.5,gR.TI>50?'#F09595':'#B5D4F4')+T(sx(14),G+17,'ciclista 14 m','ts','#D3D1C7','middle');
   q+='<rect x="'+(X0-14)+'" y="'+(G-22)+'" width="10" height="20" rx="3" fill="#E6F1FB"/><circle cx="'+X0+'" cy="'+ty+'" r="3.5" fill="#FAC775"/>'+T(X0-9,G+17,'tu','ts','#FFFFFF','middle');
   var t3=cut?['Con il taglio la metà di sopra del','fascio è ripiegata sulla strada: stessi','lumen in metà angolo, candele e lux ×2.']
             :['Fascio tondo: metà della luce va sopra','l\'orizzonte, verso gli occhi di chi','arriva, e non illumina la strada.'];
