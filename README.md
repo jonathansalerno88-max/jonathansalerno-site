@@ -9,6 +9,7 @@ public/calculators/    clinical thresholds — BMI, pack-years, alcohol, activit
 public/catalytic-plane/  interactive reader for Salerno 2026 (DMPK)
 public/didattica/      teaching material (Italian); each interactive figure is
                        its own page under w/, shown in an iframe
+public/teaching/       the same teaching material in English, same layout
 public/fonts/          self-hosted IBM Plex, so no third-party request is made
 public/_headers        cache and security headers for Cloudflare
 ```

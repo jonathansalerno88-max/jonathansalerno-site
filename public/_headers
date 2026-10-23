@@ -10,6 +10,8 @@
   Cache-Control: no-cache
 /didattica/*
   Cache-Control: no-cache
+/teaching/*
+  Cache-Control: no-cache
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
