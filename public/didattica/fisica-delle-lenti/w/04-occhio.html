@@ -12,10 +12,6 @@
 .ctl button:disabled{opacity:.35;cursor:default}
 .info{font-size:13px;color:var(--text-secondary);margin:6px 0 0;line-height:1.6}
 .info b{color:var(--text-primary);font-weight:500}
-.ret{margin-top:14px;border-top:0.5px solid var(--border);padding-top:10px}
-.ret h3{font-size:14px;font-weight:500;margin:0 0 6px;color:var(--text-primary)}
-.ret .res{font-size:13px;color:var(--text-secondary);line-height:1.6;margin:6px 0 0}
-.ret .res b{color:var(--text-primary);font-weight:500}
 .eq{font-size:14px;color:var(--text-primary);background:var(--surface-1);border-radius:var(--radius);padding:10px 12px;margin-top:8px;line-height:1.7}
 </style>
 </head>
@@ -104,18 +100,6 @@
 </svg>
 <div class="eq" id="eqBox"></div>
 <p class="info" id="caseInfo"></p>
-<div class="ret">
-<h3>Quanto è grande sulla retina</h3>
-<div class="ctl" style="margin-bottom:4px">
-<button id="r0" onclick="setR(0)">Lettera E 10/10 a 6 m</button>
-<button id="r1" onclick="setR(1)">Lettera di giornale a 40 cm</button>
-<button id="r2" onclick="setR(2)">Sole</button>
-<button id="r3" onclick="setR(3)">Persona a 10 m</button>
-<button id="r4" onclick="setR(4)">Telefono a 25 cm</button>
-</div>
-<svg width="100%" viewBox="0 0 680 104" id="rsv"></svg>
-<p class="res" id="rres"></p>
-</div>
 <p class="info" id="drugInfo"></p>
 <script>
 var cond='E',lens=false,drug='N',objM=null,TH=0.25;
@@ -129,28 +113,7 @@ P:'<b>Pilocarpina</b> (agonista muscarinico): muscolo ciliare bloccato in contra
 M:'<b>Collirio miotico selettivo</b> (aceclidina 1,44 %, approvata dalla FDA a luglio 2025 per la presbiopia): agonista muscarinico che agisce quasi solo sullo sfintere dell\'iride e stringe la pupilla sotto i 2 mm, stimolando poco il muscolo ciliare. L\'accomodazione resta quella che scegli tu, senza spostamento miopico: aumenta solo la profondità di campo (effetto foro stenopeico). La pilocarpina invece contrae tutti e due.',
 C:'<b>Cicloplegico</b> (antagonista muscarinico: atropina, ciclopentolato, tropicamide): muscolo ciliare paralizzato, zonula tesa, accomodazione 0, midriasi. La pupilla larga aumenta la sfocatura.'};
 function setC(c){cond=c;lens=false;upd();}
-// retinal image size through N' (N'-retina 16.7 mm); foveal cones ~2.5 um apart
-var RO=[['la lettera E della tabella a 6 m (10/10)',0.00873,6],['una lettera di giornale',0.002,0.4],['il sole',1.39e9,1.496e11],['una persona',1.75,10],['un telefono',0.15,0.25]],rsel=0;
-function setR(i){rsel=i;retina();}
-function nf(x,d){return x.toLocaleString('it-IT',{maximumFractionDigits:d});}
-function retina(){
- RO.forEach(function(o,i){document.getElementById('r'+i).classList.toggle('act',i===rsel);});
- var o=RO[rsel],th=2*Math.atan(o[1]/2/o[2]),deg=th*180/Math.PI,mm=2*16.7*Math.tan(th/2),um=mm*1000,cones=um/2.5;
- var X=340,K=300,s='';
- s+='<rect x="'+(X-0.75*K)+'" y="30" width="'+(1.5*K)+'" height="34" fill="#FCEBEB" stroke="#D85A30" stroke-width="0.5"/>';
- s+='<rect x="'+(X-0.175*K)+'" y="30" width="'+(0.35*K)+'" height="34" fill="#F5C4B3"/>';
- s+='<text class="ts" x="'+(X-0.75*K+6)+'" y="24">fovea, ≈ 1,5 mm</text><text class="ts" x="'+X+'" y="24" text-anchor="middle">foveola, ≈ 0,35 mm</text>';
- var w=mm*K,x1=Math.max(4,X-w/2),x2=Math.min(676,X+w/2);
- s+='<rect x="'+x1+'" y="40" width="'+Math.max(1.5,x2-x1)+'" height="14" fill="#EF9F27"/>';
- if(X-w/2<4)s+='<text class="ts" x="6" y="24">← continua</text><text class="ts" x="674" y="24" text-anchor="end">continua →</text>';
- for(var m=-1;m<=1;m+=0.5){var xm=X+m*K;s+='<line x1="'+xm+'" y1="66" x2="'+xm+'" y2="72" stroke="var(--b)" stroke-width="1"/><text class="ts" x="'+xm+'" y="86" text-anchor="middle">'+nf(m,1)+' mm</text>';}
- s+='<text class="ts" x="'+X+'" y="100" text-anchor="middle" fill="#888780">in arancio l\'immagine, alla stessa scala della fovea</text>';
- document.getElementById('rsv').innerHTML=s;
- var ang=deg<1?nf(deg*60,1)+' primi d\'arco':nf(deg,deg<10?2:1)+'°';
- var size=um<1000?nf(um,0)+' µm':nf(mm,2)+' mm';
- var where=mm<=0.35?(rsel===2?'Sta tutto nella foveola, la zona dei coni più fitti.':'Sta tutta nella foveola: la vedi nitida senza muovere gli occhi.'):mm<=1.5?'Esce dalla foveola ma sta nella fovea.':'Esce dalla fovea, dove i coni si diradano: per vedere nitido tutto l\'oggetto devi muovere gli occhi.';
- var extra=rsel===0?' Ogni tratto della E è 1 primo, circa 4,9 µm, cioè circa due coni: il limite di risoluzione.':rsel===2?' È il dischetto che nella sezione sul danno concentra la luce del sole.':'';
- document.getElementById('rres').innerHTML='<b>'+o[0].charAt(0).toUpperCase()+o[0].slice(1)+'</b> sottende '+ang+'. Il raggio che passa per N′ non si piega, quindi sulla retina, a 16,7 mm da N′, è <b>'+size+'</b>'+(mm<=0.35?', circa <b>'+nf(Math.round(cones),0)+' coni</b> in fila (nella foveola uno ogni 2,5 µm circa)':'')+'. '+where+extra+' Regola: 1° ≈ 0,29 mm.';}
+
 
 function setM(m){objM=m;upd();}
 function accVal(){return drug==='P'?6:drug==='C'?0:parseFloat(document.getElementById('acc').value);}
@@ -290,7 +253,7 @@ document.getElementById('pupLbl').textContent=mio?'pupilla stretta (collirio)':d
 document.getElementById('astLeg').textContent=(cond==='A'&&!uL)?'raggi chiari e fuochi ₂: secondo meridiano':'';
 document.getElementById('drugInfo').innerHTML=mio?dInfo.M:(drug!=='N'?dInfo[drug]+' Il collirio che stringe solo la pupilla qui non si aggiunge: '+(drug==='P'?'la pupilla è già stretta.':'l\'atropina blocca gli stessi recettori muscarinici dello sfintere dell\'iride su cui agisce.'):'');
 }
-upd();retina();
+upd();
 </script>
 </body>
 </html>
