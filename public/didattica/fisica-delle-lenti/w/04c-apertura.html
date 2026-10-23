@@ -89,13 +89,17 @@ function upd(){
   var cx=x0+W/2,cy=y0+W/2,nC=Math.ceil(W/pp/2)+1,rh=pp*0.866;
   for(var j=-nC;j<=nC;j++)for(var i=-nC;i<=nC;i++){var px=cx+i*pp+(j%2?pp/2:0),py=cy+j*rh;
    var rU=Math.sqrt(Math.pow((px-cx)/pp*pitch,2)+Math.pow((py-cy)/pp*pitch,2)),col;
-   if(real&&human){var gL=Math.exp(-rU*rU/(2*sg*sg)),RL=gL,GL=gL,BL=gL;
-    if(chrom){RL=Math.exp(-rU*rU/(2*chrom[0]*chrom[0]))*Math.pow(sg/chrom[0],0.3);BL=Math.exp(-rU*rU/(2*chrom[1]*chrom[1]))*Math.pow(sg/chrom[1],0.3);}
-    var isL=(Math.abs(Math.sin(i*12.9898+j*78.233)*43758.5453)%1)<0.64;
-    var v=isL?(0.9*RL+0.6*GL+0.02*BL)/1.5:(0.35*RL+1.0*GL+0.05*BL)/1.4,k=Math.sqrt(Math.min(1,v)),tint=isL?[255,140,110]:[140,235,120];
-    col='rgb('+tint.map(function(t){return Math.round(48+(t-48)*k);}).join(',')+')';}
-   else if(chrom){var g1=Math.exp(-rU*rU/(2*sg*sg)),r1=Math.exp(-rU*rU/(2*chrom[0]*chrom[0]))*Math.pow(sg/chrom[0],0.3),b1=Math.exp(-rU*rU/(2*chrom[1]*chrom[1]))*Math.pow(sg/chrom[1],0.3);
-    var ch3=[0.5*g1+0.5*r1,g1,0.5*g1+0.5*b1].map(function(v){return Math.round(48+207*Math.sqrt(Math.min(1,v)));});col='rgb('+ch3.join(',')+')';}
+   if(chrom){ // chrom: list of colour bands {s: sigma, c: rgb, L, M}
+    var I=chrom.map(function(b){return Math.exp(-rU*rU/(2*b.s*b.s))*Math.pow(sg/b.s,1);});
+    if(real&&human){var isL=(Math.abs(Math.sin(i*12.9898+j*78.233)*43758.5453)%1)<0.64,num=0,den=0;
+     chrom.forEach(function(b,n){var w=isL?b.L:b.M;num+=w*I[n];den+=w;});
+     var k=Math.sqrt(Math.min(1,1.6*num/den)),tint=isL?[255,140,110]:[140,235,120];
+     col='rgb('+tint.map(function(t){return Math.round(48+(t-48)*k);}).join(',')+')';}
+    else{var wS=0,mx=0,acc=[0,0,0];chrom.forEach(function(b,m){var w=I[m]*I[m];wS+=w;mx=Math.max(mx,I[m]);acc[0]+=w*b.c[0];acc[1]+=w*b.c[1];acc[2]+=w*b.c[2];});
+     var br=Math.sqrt(Math.min(1,mx*2.2)),allEq=chrom[0].s===chrom[2].s;
+     col='rgb('+acc.map(function(a){var hue=wS>0?a/wS:48;if(allEq)hue=235;return Math.round(48+(hue-48)*br);}).join(',')+')';}}
+   else if(real&&human){var gL=Math.exp(-rU*rU/(2*sg*sg)),isL2=(Math.abs(Math.sin(i*12.9898+j*78.233)*43758.5453)%1)<0.64,k2=Math.sqrt(Math.min(1,gL)),tint2=isL2?[255,140,110]:[140,235,120];
+    col='rgb('+tint2.map(function(t){return Math.round(48+(t-48)*k2);}).join(',')+')';}
    else{var bb=Math.exp(-rU*rU/(2*sg*sg));col='rgb('+Math.round(62+188*bb)+','+Math.round(62+137*bb)+','+Math.round(58+59*bb)+')';}
    q+='<circle cx="'+px.toFixed(1)+'" cy="'+py.toFixed(1)+'" r="'+(pp*0.44).toFixed(2)+'" fill="'+col+'"/>';}
   return q+'</g>';}
@@ -107,8 +111,10 @@ function upd(){
   z+=T(225,246,'Uomo, a fuoco','th',null,'middle')+T(225,264,um(airy)+', '+cn(airy,2.5),'ts',null,'middle')+T(225,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
   z+=T(455,246,'Aquila, a fuoco','th',null,'middle')+T(455,264,um(eAiry)+', '+cn(eAiry,2),'ts',null,'middle')+T(455,282,'N′F′ ≈ 24 mm · 1 cono = 0,29′','ts','#534AB7','middle');
  }else{
-  var ch=mode===2?[sig(3*D,airy),sig(6*D,airy)]:null;
-  z+=mosaic(12,'zA',16.7,2.5,mode===2?h0:hS,ch,true)+mosaic(245,'zB',16.7,2.5,h0,mode===2?[h0,h0]:null,true)+mosaic(478,'zC',EF,2,eS,null,false);
+  var BANDS=[[-1.3,[150,70,255],0.01,0.01],[-0.8,[60,120,255],0.05,0.08],[0,[190,255,70],1,0.95],[0.06,[255,235,60],1,0.8],[0.14,[255,150,40],0.9,0.45],[0.28,[255,60,50],0.45,0.1]];
+  function bands(Dp){return BANDS.map(function(b){return {s:sig(7.5*Dp*Math.abs(b[0]),airy),c:b[1],L:b[2],M:b[3]};});}
+  var ch=mode===2?bands(D):null,ch0=mode===2?BANDS.map(function(b){return {s:h0,c:b[1],L:b[2],M:b[3]};}):null;
+  z+=mosaic(12,'zA',16.7,2.5,mode===2?h0:hS,ch,true)+mosaic(245,'zB',16.7,2.5,h0,ch0,true)+mosaic(478,'zC',EF,2,eS,null,false);
   z+=T(107,246,mode===0?'Uomo, presbite':mode===1?'Uomo, aberrazione sferica':'Uomo, aberrazione cromatica','th',null,'middle')+T(107,264,um(tot)+', '+cn(tot,2.5),'ts',null,'middle')+T(107,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
   z+=T(340,246,mode===0?'Stesso occhio, a fuoco':'Stesso occhio, ottica perfetta','th',null,'middle')+T(340,264,um(airy)+', '+cn(airy,2.5),'ts',null,'middle')+T(340,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
   z+=T(573,246,'Aquila, a fuoco','th',null,'middle')+T(573,264,um(eAiry)+', '+cn(eAiry,2),'ts',null,'middle')+T(573,282,'N′F′ ≈ 24 mm · 1 cono = 0,29′','ts','#534AB7','middle');
@@ -125,7 +131,7 @@ function upd(){
   '<div>Macchia sulla retina dell\'uomo<b>'+um(tot)+', '+cn(tot,2.5)+'</b>'+(mode===3?'solo diffrazione: segue 1/D, cresce stringendo':'il difetto segue '+(mode===1?'D³':'D')+'; la diffrazione 1/D')+'</div>';
  var nt=mode===3?'Occhio senza difetti: tutti i raggi arrivano nello stesso punto della retina, e il punto resta un dischetto solo per la diffrazione. A metà intensità è largo meno di un cono a 8 mm e circa due o tre coni a 1,5 mm: stringere toglie luce e allarga il punto. Una macchia più piccola di un cono non servirebbe, perché la retina non distingue dettagli più fini. Un occhio vero ha sempre un po\' di aberrazioni, per questo a fuoco il compromesso migliore è una pupilla di circa 2,5–3 mm.':mode===0?'Il presbite non vede le cose più grandi: le vede sfocate, perché ogni punto diventa una macchiolina. Con 1,5 D di errore, come chi legge a 40 cm senza accomodare abbastanza, la macchia è circa 25 µm per ogni mm di pupilla: 100 µm a 4 mm, 45 µm a 1,8 mm (aceclidina). Il fuoco resta dietro la retina: la pupilla piccola non lo sposta, restringe il cono.'
   :mode===1?'Nell\'aberrazione sferica i raggi periferici vengono piegati troppo. Chiudendo la pupilla si tolgono proprio quelli: dimezzando il diametro la macchia scende a circa un ottavo.'
-  :'L\'indice di rifrazione cambia con il colore, quindi l\'occhio ha un fuoco per ogni colore: fra blu e rosso circa 2 D di differenza. Se il verde-giallo, il colore a cui siamo più sensibili, è a fuoco, il blu si allarga di più e il rosso un po\' meno: un punto bianco diventa un centro bianco con un alone blu-viola. Nel riquadro centrale tutti i colori cadono nello stesso punto e il punto resta bianco. L\'alone si riduce in proporzione al diametro della pupilla.';
+  :'L\'indice di rifrazione cambia con il colore, quindi l\'occhio ha un fuoco per ogni colore: fra blu e rosso circa 2 D di differenza. Se il verde-giallo, il colore a cui siamo più sensibili, è a fuoco, giallo e arancione si allargano poco, il rosso un po\' di più, il blu e il viola molto: un punto bianco diventa un centro giallo-verde, un anello arancione-rosso e un alone blu-viola largo. Nel riquadro centrale tutti i colori cadono nello stesso punto e il punto resta bianco. L\'alone si riduce in proporzione al diametro della pupilla.';
  if(D<2.5&&mode!==3)nt+=' <b>Guarda il riquadro centrale</b>, lo stesso occhio con un\'ottica perfetta (un confronto ideale: ogni occhio vero ha un po\' di aberrazioni): stringendo, il punto si allarga per la diffrazione. Sotto i 2 mm circa è lei a comandare.';
  if(real)nt+=' <b>Coni veri:</b> ogni cono risponde solo al suo colore. Nel centro della fovea ci sono solo coni L e M, in proporzione di circa 2 a 1 (varia molto da persona a persona); i coni S, quelli del blu, mancano in una zona larga circa 20 primi. '+(mode===2?'Per questo l\'alone blu quasi sparisce: cade su coni che il blu lo vedono appena.':'L\'aquila resta disegnata a pixel omogenei.');
  document.getElementById('nt').innerHTML=nt;
