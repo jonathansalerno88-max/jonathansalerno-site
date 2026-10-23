@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Missione: illumina a 10 metri</title>
+<title>Missione: illumina lo spazio di arresto</title>
 <link rel="stylesheet" href="widget.css">
 <style>
 .ctl{display:grid;grid-template-columns:118px 1fr 78px;align-items:center;gap:6px 10px;margin:0 0 6px;font-size:13px;color:var(--text-secondary)}
@@ -22,7 +22,9 @@
 </style>
 </head>
 <body>
-<h2 class="sr-only">Gioco: regola flusso in lumen, ampiezza del fascio, diametro della lente e taglio del fascio di una luce da bici per illuminare la strada a 10 metri. Sei faccine giudicano luce sulla strada, larghezza coperta, abbagliamento del ciclista che arriva e del pedone sul marciapiede, prezzo e autonomia.</h2>
+<h2 class="sr-only">Gioco: regola flusso in lumen, ampiezza del fascio, diametro della lente e taglio del fascio di una luce da bici per illuminare la strada fino allo spazio di arresto, che dipende dalla velocità. Sei faccine giudicano luce sulla strada, larghezza coperta, abbagliamento del ciclista che arriva e del pedone sul marciapiede, prezzo e autonomia.</h2>
+<div class="ctl"><span>Velocità</span><input type="range" id="V" min="10" max="45" step="1" value="22" oninput="upd()"><output id="Vo"></output></div>
+<p class="lim" id="sd"></p>
 <div class="ctl"><span>Flusso</span><input type="range" id="L" min="100" max="1500" step="25" value="300" oninput="upd()"><output id="Lo"></output></div>
 <div class="ctl"><span>Ampiezza fascio</span><input type="range" id="A" min="6" max="70" step="1" value="60" oninput="upd()"><output id="Ao"></output></div>
 <div class="ctl"><span>Diametro lente</span><input type="range" id="D" min="10" max="50" step="1" value="20" oninput="upd()"><output id="Do"></output></div>
@@ -36,9 +38,9 @@
 <g id="board"></g>
 <g id="side"></g>
 </svg>
-<p class="note">La fisica è vera, semplificata: fascio uniforme in un cono, candele = lumen / steradianti, lux a 10 m = candele / 100. Il taglio è modellato come metà inferiore del cono: la luce che andrebbe sopra l'orizzonte finisce sulla strada, quindi a parità di lumen candele e lux raddoppiano. I fari StVZO veri sono ancora più piatti e larghi, ma il principio è questo. Limite ottico: area per angolo solido non si può ridurre con nessuna lente (étendue), quindi un LED da 1 mm² che emette in un mezzo spazio, étendue π·1 mm², dietro una lente di area A esce in almeno π·1 mm²/A steradianti. Detto altrimenti: la lente non può apparire più luminosa del LED. <b>Il prezzo è inventato per l'esercizio</b> (cresce con i lumen, con le ottiche a fascio stretto, con il taglio del fascio e con la lente), e l'autonomia assume una batteria da circa 10 Wh e un LED da 100 lumen per watt. Abbagliamento: la luce negli occhi (lux) crea nell'occhio un velo di luminanza L<sub>velo</sub> = 10·E<sub>occhio</sub>/θ² nit (Stiles-Holladay, θ in gradi tra la tua luce e la direzione in cui guardano, lungo la strada e 1° in basso). Il velo si confronta con la strada, qui 1 nit (strada di notte con lampioni; al buio va peggio), con l'aumento di soglia TI = 65·L<sub>velo</sub>/L<sub>strada</sub><sup>0,8</sup> delle norme sull'illuminazione stradale: TI 50 % vuol dire che un ostacolo deve avere il 50 % di contrasto in più per essere visto. Faccina felice fino al 15 %, limite tipico per i lampioni; triste sopra il 50 %, soglia scelta per l'esercizio. Le altre soglie delle faccine sono indicative.</p>
+<p class="note">La fisica è vera, semplificata: fascio uniforme in un cono, candele = lumen / steradianti, lux alla distanza d = candele / d². Il taglio è modellato come metà inferiore del cono: la luce che andrebbe sopra l'orizzonte finisce sulla strada, quindi a parità di lumen candele e lux raddoppiano. I fari StVZO veri sono ancora più piatti e larghi, ma il principio è questo. Limite ottico: area per angolo solido non si può ridurre con nessuna lente (étendue), quindi un LED da 1 mm² che emette in un mezzo spazio, étendue π·1 mm², dietro una lente di area A esce in almeno π·1 mm²/A steradianti. Detto altrimenti: la lente non può apparire più luminosa del LED. <b>Il prezzo è inventato per l'esercizio</b> (cresce con i lumen, con le ottiche a fascio stretto, con il taglio del fascio e con la lente), e l'autonomia assume una batteria da circa 10 Wh e un LED da 100 lumen per watt. Abbagliamento: la luce negli occhi (lux) crea nell'occhio un velo di luminanza L<sub>velo</sub> = 10·E<sub>occhio</sub>/θ² nit (Stiles-Holladay, θ in gradi tra la tua luce e la direzione in cui guardano, lungo la strada e 1° in basso). Il velo si confronta con la strada, qui 1 nit (strada di notte con lampioni; al buio va peggio), con l'aumento di soglia TI = 65·L<sub>velo</sub>/L<sub>strada</sub><sup>0,8</sup> delle norme sull'illuminazione stradale: TI 50 % vuol dire che un ostacolo deve avere il 50 % di contrasto in più per essere visto. Faccina felice fino al 15 %, limite tipico per i lampioni; triste sopra il 50 %, soglia scelta per l'esercizio. Le altre soglie delle faccine sono indicative.</p>
 <script>
-var cut=false,lock=false,Y0=380,S=16,XR=200,LANE=3.5;
+var cut=false,lock=false,Y0=380,S=11,XR=200,LANE=3.5;
 function v(id){return parseFloat(document.getElementById(id).value);}
 function it(x,d){return x.toLocaleString('it-IT',{maximumFractionDigits:d||0});}
 function face(x,y,m,col){
@@ -49,7 +51,9 @@ function face(x,y,m,col){
   '<path d="'+mouth+'" fill="none" stroke="'+c+'" stroke-width="1.8" stroke-linecap="round"/>';}
 function T(x,y,t,cls,col,anc){return '<text class="'+(cls||'ts')+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+'>'+t+'</text>';}
 function upd(){
-  var Lm=v('L'),A=v('A'),D=v('D');
+  var Lm=v('L'),A=v('A'),D=v('D'),V=v('V'),vm=V/3.6,DR=vm*1,DB=vm*vm/(2*5),DT=DR+DB,dt=it(DT,0)+' m';
+  document.getElementById('Vo').textContent=V+' km/h';
+  document.getElementById('sd').textContent='Spazio di arresto: 1 s di reazione ('+it(DR,1)+' m) + frenata a 5 m/s² ('+it(DB,1)+' m) = '+it(DT,1)+' m. È lì che devi vedere un ostacolo.';
   // etendue: a 1 mm2 Lambertian LED (etendue pi*1 mm2) cannot be squeezed into a beam with
   // solid angle below pi*1/(lens area) = 4/D^2 sr (D in mm)
   var Om=4/(D*D),Oc=Om*(cut?2:1),Amin=2*Math.acos(1-Oc/(2*Math.PI))*180/Math.PI,atLim=false;
@@ -61,7 +65,7 @@ function upd(){
   et.textContent='Limite ottico: un LED da 1 mm² dietro una lente da '+D+' mm non fa un fascio più stretto di '+it(Amin,1)+'°'+(lock?'. Ora gira il diametro: lente più grande, fascio più stretto, più candele, più lux al centro, ma strada più stretta.':(atLim?'. Sei al limite: per stringere ancora serve una lente più grande.':'.'));
   document.getElementById('Lo').textContent=it(Lm)+' lm';document.getElementById('Ao').textContent=it(A,lock?1:0)+'°';document.getElementById('Do').textContent=D+' mm';
   document.getElementById('cutN').classList.toggle('act',!cut);document.getElementById('cutY').classList.toggle('act',cut);
-  var a=A/2*Math.PI/180,O=2*Math.PI*(1-Math.cos(a))*(cut?0.5:1),I=Lm/O,E=I/100,W=2*10*Math.tan(a);
+  var a=A/2*Math.PI/180,O=2*Math.PI*(1-Math.cos(a))*(cut?0.5:1),I=Lm/O,E=I/(DT*DT),W=2*DT*Math.tan(a);
   var area=Math.PI*Math.pow(D/2000,2),nit=I/area;
   // disability glare: Stiles-Holladay veil + threshold increment (CIE road-lighting convention:
   // observer looks along the road, 1 deg down; road luminance LAV)
@@ -83,18 +87,18 @@ function upd(){
   s+='<rect x="'+(XR-LANE*S)+'" y="34" width="'+(2*LANE*S)+'" height="'+(Y0-34+14)+'" fill="#4A5059"/>';
   s+='<rect x="'+(XR+LANE*S)+'" y="34" width="26" height="'+(Y0-34+14)+'" fill="#6B6F75"/><line x1="'+(XR+LANE*S)+'" y1="34" x2="'+(XR+LANE*S)+'" y2="'+(Y0+14)+'" stroke="#B4B2A9" stroke-width="1.5"/>';
   s+='<line id="dash" x1="'+XR+'" y1="'+(Y0+14)+'" x2="'+XR+'" y2="34" stroke="#D3D1C7" stroke-width="2"/>';
-  for(var m=0;m<=20;m+=5){s+='<line x1="'+(XR+LANE*S+26)+'" y1="'+ry(m)+'" x2="'+(XR+LANE*S+34)+'" y2="'+ry(m)+'" stroke="#B4B2A9" stroke-width="1"/>'+T(XR+LANE*S+38,ry(m)+4,m+' m','ts','#D3D1C7');}
+  for(var m=0;m<=25;m+=5){s+='<line x1="'+(XR+LANE*S+26)+'" y1="'+ry(m)+'" x2="'+(XR+LANE*S+34)+'" y2="'+ry(m)+'" stroke="#B4B2A9" stroke-width="1"/>'+T(XR+LANE*S+38,ry(m)+4,m+' m','ts','#D3D1C7');}
   s+=T(XR+LANE*S+13,46,'marciapiede','ts','#D3D1C7','middle');
   var lx=XR+LANE*S/2,ly=Y0-6,h=Math.tan(a)*(Y0-34);
   var op=Math.max(0.08,Math.min(0.9,0.12+0.2*Math.log10(Math.max(E,1)/1)));
   s+='<defs><clipPath id="rc"><rect x="0" y="34" width="400" height="'+(Y0-34+14)+'"/></clipPath></defs>';
   s+='<g clip-path="url(#rc)"><polygon points="'+lx+','+ly+' '+(lx-h)+',34 '+(lx+h)+',34" fill="#FAC775" opacity="'+op+'"/></g>';
-  var w10=Math.tan(a)*10*S;
-  s+='<line x1="'+(lx-w10)+'" y1="'+ry(10)+'" x2="'+(lx+w10)+'" y2="'+ry(10)+'" stroke="#EF9F27" stroke-width="4"/>';
-  s+='<line x1="'+XR+'" y1="'+ry(10)+'" x2="'+(XR+LANE*S)+'" y2="'+ry(10)+'" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="4 3"/>';
-  s+=T(14,ry(10)-8,'10 m: qui devi vedere →','ts','#FFFFFF');
-  s+=T(14,ry(10)+16,it(E,E<10?1:0)+' lux al centro','th','#FAC775');
-  s+=T(14,ry(10)+32,'largo '+it(W,1)+' m','ts','#FAC775');
+  var w10=Math.tan(a)*DT*S;
+  s+='<line x1="'+(lx-w10)+'" y1="'+ry(DT)+'" x2="'+(lx+w10)+'" y2="'+ry(DT)+'" stroke="#EF9F27" stroke-width="4"/>';
+  s+='<line x1="'+XR+'" y1="'+ry(DT)+'" x2="'+(XR+LANE*S)+'" y2="'+ry(DT)+'" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="4 3"/>';
+  s+=T(14,ry(DT)-8,dt+': qui devi vedere →','ts','#FFFFFF');
+  s+=T(14,ry(DT)+16,it(E,E<10?1:0)+' lux al centro','th','#FAC775');
+  s+=T(14,ry(DT)+32,'largo '+it(W,1)+' m','ts','#FAC775');
   // oncoming rider
   var ox=XR-LANE*S/2,oy=ry(14);
   s+='<rect x="'+(ox-4)+'" y="'+(oy-12)+'" width="8" height="24" rx="3" fill="#B5D4F4"/><circle cx="'+ox+'" cy="'+(oy-14)+'" r="5" fill="#B5D4F4"/>';
@@ -116,8 +120,8 @@ function upd(){
   function gl(g){if(cut)return ['il taglio tiene la luce sotto gli occhi'];if(!g.inB)return ['fuori dal fascio'];
     return [it(g.E,0)+' lux negli occhi → velo '+n2(g.Lv)+' nit','TI '+it(g.TI,0)+' % (lampioni: max 15 %)'];}
   var b='',bx=420,rows=[
-   [sE,'Luce sulla strada a 10 m',it(E,E<10?1:0)+' lux ('+it(I,0)+' cd / 100)'],
-   [sW,'Strada coperta a 10 m',it(W,1)+' m su una corsia di '+it(LANE,1)],
+   [sE,'Luce sulla strada a '+dt,it(E,E<10?1:0)+' lux ('+it(I,0)+' cd / '+it(DT*DT,0)+' m²)'],
+   [sW,'Strada coperta a '+dt,it(W,1)+' m su una corsia di '+it(LANE,1)],
    [sG,'Ciclista che arriva'].concat(gl(gR)),
    [sPd,'Pedone sul marciapiede'].concat(gl(gP)),
    [sP,'Prezzo (inventato)','≈ '+it(Math.round(price/5)*5)+' €'],
@@ -126,7 +130,7 @@ function upd(){
   rows.forEach(function(r,i){var y=54+i*51;b+=face(bx+16,y,r[0])+T(bx+40,y-3,r[1],'th')+T(bx+40,y+14,r[2],'ts');
     if(r[3])b+=T(bx+40,y+28,r[3],'ts','#888780');});
   b+='<rect x="'+bx+'" y="338" width="250" height="52" rx="8" fill="'+(win?'#EAF3DE':'#F1EFE8')+'" stroke="'+(win?'#3B6D11':'#B4B2A9')+'" stroke-width="1"/>';
-  b+=T(bx+12,359,win?'Missione compiuta!':'Obiettivo a 10 m: 60 lux su 3,5 m','th',win?'#27500A':'#444441');
+  b+=T(bx+12,359,win?'Missione compiuta!':'Obiettivo a '+dt+': 60 lux su 3,5 m','th',win?'#27500A':'#444441');
   b+=T(bx+12,378,win?'Ora guarda prezzo e autonomia.':'senza accecare ciclisti e pedoni.','ts',win?'#3B6D11':'#5F5E5A');
   b+=T(bx,412,'lente: '+(nit>=1e6?(nit/1e6).toFixed(1).replace('.',',')+' milioni di':it(nit))+' nit','ts')+T(bx,426,'(luminanza del puntino, non l\'abbaglio)','ts');
   document.getElementById('board').innerHTML=b;
