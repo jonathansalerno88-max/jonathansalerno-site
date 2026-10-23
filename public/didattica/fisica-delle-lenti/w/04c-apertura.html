@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stringere l'apertura</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+h3{font-size:14px;font-weight:500;margin:4px 0 6px;color:var(--text-primary)}
+.ctl{display:grid;grid-template-columns:160px 1fr 80px;align-items:center;gap:6px 10px;margin:0 0 6px;font-size:13px;color:var(--text-secondary)}
+.ctl output{text-align:right;color:var(--text-primary);font-weight:500;font-variant-numeric:tabular-nums}
+.pre{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 8px}
+.pre button{font:inherit;font-size:13px;padding:5px 10px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.out{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:6px 10px;margin:6px 0 4px}
+.out div{background:var(--surface-1);border-radius:var(--radius);padding:8px 10px;font-size:12.5px;color:var(--text-secondary);line-height:1.45}
+.out b{display:block;font-size:15px;font-weight:500;color:var(--text-primary)}
+.sep{border:0;border-top:0.5px solid var(--border);margin:16px 0 12px}
+.note{font-size:12px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Due disegni interattivi sull'apertura. Luce da bici: cambiando il diametro della lente cambia il fascio più stretto possibile e quindi le candele, mentre i lumen restano gli stessi. Occhio: cambiando il diametro della pupilla e l'errore di fuoco cambiano la luce sulla retina e la sfocatura di un punto, somma di sfocatura geometrica, diffrazione e aberrazioni, con il diametro ottimo.</h2>
+
+<h3>Luce da bici: la lente</h3>
+<div class="ctl"><span>Diametro della lente</span><input type="range" id="Dl" min="10" max="50" step="1" value="20" oninput="upd()"><output id="DlO"></output></div>
+<svg width="100%" viewBox="0 0 680 170" id="bk"></svg>
+<div class="out" id="bkO"></div>
+
+<hr class="sep">
+<h3>Occhio: la pupilla</h3>
+<div class="pre">
+<button onclick="setE(4,0)">Pupilla normale, a fuoco</button>
+<button onclick="setE(1.8,0)">Pupilla con aceclidina</button>
+<button onclick="setE(4,1.5)">Presbite che legge a 40 cm</button>
+<button onclick="setE(1.8,1.5)">Presbite con aceclidina</button>
+</div>
+<div class="ctl"><span>Diametro della pupilla</span><input type="range" id="Dp" min="1" max="8" step="0.1" value="4" oninput="upd()"><output id="DpO"></output></div>
+<div class="ctl"><span>Errore di fuoco</span><input type="range" id="dD" min="0" max="3" step="0.25" value="0" oninput="upd()"><output id="dDO"></output></div>
+<svg width="100%" viewBox="0 0 680 300" id="ey">
+<defs><clipPath id="ptc"><rect x="440" y="10" width="84" height="84" rx="8"/></clipPath><filter id="bl" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur id="blg" stdDeviation="1"/></filter></defs>
+<g id="eyG"></g>
+</svg>
+<div class="out" id="eyO"></div>
+<p class="note">Una fotocamera funziona come l'occhio: chiudere il diaframma da f/4 a f/9 dà più profondità di campo e meno luce. Modello: punto lontano, focale dell'occhio 17 mm, luce verde (550 nm). Sfocatura geometrica = pupilla × errore di fuoco; diffrazione = 1,22·λ/D; aberrazioni modellate come crescenti con D³, con un coefficiente indicativo per un occhio sano; le tre si sommano in quadratura. Nel disegno dei raggi le distanze non sono in scala. Nella luce da bici il LED è di 1 mm² e i lumen sono 300.</p>
+<script>
+function v(id){return parseFloat(document.getElementById(id).value);}
+function nf(x,d){return x.toLocaleString('it-IT',{maximumFractionDigits:d});}
+function T(x,y,t,cls,col,anc){return '<text class="'+cls+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+'>'+t+'</text>';}
+function setE(d,e){document.getElementById('Dp').value=d;document.getElementById('dD').value=e;upd();}
+var LM=300,LAM=550e-6; // lumens; wavelength in mm
+function blurs(D,dd){var geo=D*dd*3.438,dif=1.22*LAM/D*3437.7,ab=0.0285*D*D*D;return {geo:geo,dif:dif,ab:ab,tot:Math.sqrt(geo*geo+dif*dif+ab*ab)};}
+function upd(){
+ // --- bike lens: etendue limit, 1 mm2 Lambertian LED
+ var Dl=v('Dl');document.getElementById('DlO').textContent=Dl+' mm';
+ var Om=4/(Dl*Dl),a=Math.acos(1-Om/(2*Math.PI)),full=2*a*180/Math.PI,I=LM/Om,E=I/100,Lled=LM/(Math.PI*1e-6);
+ var s='',CY=85,LX=150,hl=Dl*1.6,EX=4; // EX: angle exaggeration in the drawing
+ s+='<line x1="20" y1="'+CY+'" x2="670" y2="'+CY+'" stroke="var(--b)" stroke-width="0.5" stroke-dasharray="4 4"/>';
+ var spread=Math.tan(a*EX)*(670-LX);
+ s+='<polygon points="'+LX+','+(CY-hl)+' 670,'+(CY-hl-spread)+' 670,'+(CY+hl+spread)+' '+LX+','+(CY+hl)+'" fill="#FAC775" opacity="0.55"/>';
+ [-1,-0.5,0,0.5,1].forEach(function(f){var y=CY+f*hl;s+='<line x1="52" y1="'+CY+'" x2="'+LX+'" y2="'+y+'" stroke="#EF9F27" stroke-width="1"/>';
+  s+='<line x1="'+LX+'" y1="'+y+'" x2="670" y2="'+(y+f*spread)+'" stroke="#EF9F27" stroke-width="1"/>';});
+ s+='<rect x="38" y="'+(CY-8)+'" width="14" height="16" rx="2" fill="#FAC775" stroke="#BA7517"/>'+T(45,CY+28,'LED','ts',null,'middle')+T(45,CY+42,'1 mm²','ts',null,'middle');
+ s+='<ellipse cx="'+LX+'" cy="'+CY+'" rx="6" ry="'+hl+'" fill="#B5D4F4" stroke="#378ADD" stroke-width="1"/>'+T(LX,CY-hl-8,'lente '+Dl+' mm','ts',null,'middle');
+ s+=T(668,16,'fascio più stretto possibile: '+nf(full,1)+'° (angoli ingranditi ×'+EX+')','ts',null,'end');
+ document.getElementById('bk').innerHTML=s;
+ document.getElementById('bkO').innerHTML=
+  '<div>Luce<b>'+LM+' lumen</b>con qualunque lente: li decide il LED</div>'+
+  '<div>Candele massime<b>'+nf(Math.round(I/100)*100,0)+' cd</b>→ '+nf(E,0)+' lux a 10 m, con il fascio più stretto</div>'+
+  '<div>Luminanza della lente<b>'+nf(Lled/1e6,0)+' milioni di nit</b>sempre quella del LED: nessuna lente la aumenta</div>';
+ // --- eye pupil
+ var D=v('Dp'),dd=v('dD');document.getElementById('DpO').textContent=nf(D,1)+' mm';document.getElementById('dDO').textContent=nf(dd,2)+' D';
+ var b=blurs(D,dd),fN=17/D,lightK=D*D/16;
+ var best=1,bv=1e9;for(var x=1;x<=8.001;x+=0.05){var t=blurs(x,dd).tot;if(t<bv){bv=t;best=x;}}
+ var e='',cy=120,PX=110,FX=330,RX=FX+dd/3*48,hp=D/2*11;
+ e+='<line x1="10" y1="'+cy+'" x2="410" y2="'+cy+'" stroke="var(--b)" stroke-width="0.5" stroke-dasharray="4 4"/>';
+ [-1,-0.5,0,0.5,1].forEach(function(f){var y0=cy+f*hp,yR=y0+(cy-y0)*(RX-PX)/(FX-PX);
+  e+='<line x1="14" y1="'+y0+'" x2="'+PX+'" y2="'+y0+'" stroke="#EF9F27" stroke-width="1"/>';
+  e+='<line x1="'+PX+'" y1="'+y0+'" x2="'+RX+'" y2="'+yR+'" stroke="#EF9F27" stroke-width="1"/>';});
+ e+='<rect x="'+(PX-2)+'" y="'+(cy-62)+'" width="4" height="'+(62-hp)+'" fill="#854F0B"/><rect x="'+(PX-2)+'" y="'+(cy+hp)+'" width="4" height="'+(62-hp)+'" fill="#854F0B"/>';
+ e+='<ellipse cx="'+(PX+8)+'" cy="'+cy+'" rx="5" ry="50" fill="#B5D4F4" opacity="0.6" stroke="#378ADD" stroke-width="0.6"/>';
+ e+=T(PX,cy-70,'pupilla '+nf(D,1)+' mm','ts',null,'middle')+T(PX,cy+82,'f/'+nf(fN,1),'th',null,'middle');
+ e+='<circle cx="'+FX+'" cy="'+cy+'" r="2.5" fill="#16222E"/>'+T(FX,cy+82,'fuoco','ts',null,'middle');
+ var ys=hp*(RX-FX)/(FX-PX);
+ e+='<line x1="'+RX+'" y1="'+(cy-66)+'" x2="'+RX+'" y2="'+(cy+66)+'" stroke="#D85A30" stroke-width="3"/>'+T(RX+6,cy-56,'retina','ts');
+ e+='<line x1="'+RX+'" y1="'+(cy-Math.max(ys,1.5))+'" x2="'+RX+'" y2="'+(cy+Math.max(ys,1.5))+'" stroke="#E24B4A" stroke-width="7" opacity="0.8"/>';
+ e+=T(14,24,dd>0?'errore di fuoco '+nf(dd,2)+' D: i raggi si incrociano prima della retina':'a fuoco: i raggi si incrociano sulla retina','ts');
+ e+=T(14,288,'luce dalla sinistra: un punto lontano · distanze non in scala','ts','#888780');
+ // point appearance
+ var r=Math.max(1.2,b.tot*2.2);document.getElementById('blg').setAttribute('stdDeviation',Math.max(0.3,r*0.45));
+ e+='<rect x="440" y="10" width="84" height="84" rx="8" fill="#16222E"/>';
+ e+='<circle cx="482" cy="52" r="'+Math.min(34,r)+'" fill="#FFF6D6" opacity="'+Math.max(0.12,Math.min(1,lightK))+'" filter="url(#bl)" clip-path="url(#ptc)"/>';
+ e+=T(534,40,'un punto lontano,','ts')+T(534,56,'come lo vedi','ts');
+ // curve: total blur vs D
+ var mx=0;for(var x3=1;x3<=8.001;x3+=0.1)mx=Math.max(mx,blurs(x3,dd).tot);var YM=mx<=4?4:mx<=12?12:mx<=30?30:mx<=60?60:100;
+ var gx0=470,gx1=668,gy0=240,gy1=126;
+ function gx(x){return gx0+(x-1)/7*(gx1-gx0);} function gy(y){return gy0-Math.min(y,YM)/YM*(gy0-gy1);}
+ e+='<line x1="'+gx0+'" y1="'+gy0+'" x2="'+gx1+'" y2="'+gy0+'" stroke="var(--b)"/><line x1="'+gx0+'" y1="'+gy0+'" x2="'+gx0+'" y2="'+gy1+'" stroke="var(--b)"/>';
+ var pt='',pd='',pg='';for(var x2=1;x2<=8.001;x2+=0.1){var q=blurs(x2,dd);pt+=(pt?' L':'M')+gx(x2)+' '+gy(q.tot);pd+=(pd?' L':'M')+gx(x2)+' '+gy(q.dif);pg+=(pg?' L':'M')+gx(x2)+' '+gy(Math.sqrt(q.geo*q.geo+q.ab*q.ab));}
+ e+='<path d="'+pd+'" fill="none" stroke="#534AB7" stroke-width="1.2" stroke-dasharray="4 3"/><path d="'+pg+'" fill="none" stroke="#185FA5" stroke-width="1.2" stroke-dasharray="2 3"/><path d="'+pt+'" fill="none" stroke="#B5520C" stroke-width="2"/>';
+ e+='<line x1="'+gx(best)+'" y1="'+gy0+'" x2="'+gx(best)+'" y2="'+gy(bv)+'" stroke="#3B6D11" stroke-width="1" stroke-dasharray="3 3"/>';
+ e+='<circle cx="'+gx(D)+'" cy="'+gy(b.tot)+'" r="4.5" fill="#B5520C"/>';
+ [1,4,8].forEach(function(t){e+=T(gx(t),gy0+14,t,'ts',null,'middle');});e+=T((gx0+gx1)/2,gy0+28,'pupilla (mm)','ts',null,'middle');
+ e+=T(gx0-4,gy1+4,YM+'′','ts',null,'end')+T(gx0-4,gy0,'0','ts',null,'end');
+ e+=T(gx0,gy1-10,'sfocatura di un punto (primi d\'arco)','ts');
+ e+=T(410,288,'— totale','ts','#B5520C')+T(472,288,'- - diffrazione','ts','#534AB7')+T(560,288,'··· fuoco, aberrazioni','ts','#185FA5');
+ document.getElementById('eyG').innerHTML=e;
+ document.getElementById('eyO').innerHTML=
+  '<div>Luce sulla retina<b>×'+nf(lightK,2)+'</b>rispetto a una pupilla di 4 mm (cresce con l\'area)</div>'+
+  '<div>Sfocatura di un punto<b>'+nf(b.tot,1)+' primi d\'arco</b>fuoco '+nf(b.geo,1)+'′ · diffrazione '+nf(b.dif,1)+'′ · aberrazioni '+nf(b.ab,1)+'′</div>'+
+  '<div>Pupilla migliore per questo errore<b>≈ '+nf(best,1)+' mm'+(best<1.03?' o meno':'')+'</b>'+(dd===0?'a fuoco vince l\'equilibrio fra diffrazione e aberrazioni':'con l\'errore di fuoco conviene stringere, finché la diffrazione non ferma')+'</div>';
+}
+upd();
+</script>
+</body>
+</html>
