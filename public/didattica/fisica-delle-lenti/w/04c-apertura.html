@@ -27,7 +27,7 @@
 </div>
 <div class="sl"><span>Diametro della pupilla</span><input type="range" id="D" min="1.5" max="8" step="0.1" value="6" oninput="upd()"><output id="DO"></output></div>
 <svg width="100%" viewBox="0 0 680 250"><g id="g"></g></svg>
-<svg width="100%" viewBox="0 0 680 300"><g id="zm"></g></svg>
+<svg width="100%" viewBox="0 0 680 318"><g id="zm"></g></svg>
 <div class="out" id="out"></div>
 <p class="note" id="nt"></p>
 <p class="note">Riquadri in scala vera, tutti sullo stesso angolo di 8 primi. Diffrazione calcolata (larghezza a metà intensità circa 1,03·λ·f/D, λ = 550 nm); le grandezze in µm sono larghezze a metà intensità; macchie dei difetti con valori indicativi (1,5 D per il presbite, aberrazioni tipiche di un occhio sano). Uomo: coni foveali ogni 2,5 µm circa, focale 16,7 mm. Aquila: fotorecettori foveali di circa 2 µm e occhio lungo circa 35 mm contro 24 (Reymond e Wolfe 1981), quindi focale stimata intorno ai 24 mm; pupilla supposta di 6 mm. Ogni riquadro ha la sua esposizione: conta la forma della macchia, non la luminosità.</p>
@@ -64,10 +64,14 @@ function upd(){
  // iris and lens
  s+='<rect x="'+(PX-4)+'" y="'+(CY-70)+'" width="7" height="'+(70-hp)+'" fill="#854F0B"/><rect x="'+(PX-4)+'" y="'+(CY+hp)+'" width="7" height="'+(70-hp)+'" fill="#854F0B"/>';
  s+='<ellipse cx="'+(PX+12)+'" cy="'+CY+'" rx="7" ry="66" fill="#B5D4F4" opacity="0.55" stroke="#378ADD" stroke-width="0.6"/>';
- s+=T(PX-10,CY-58,'iride','ts',null,'end')+T(PX+12,CY+84,'cristallino','ts',null,'start');
+ s+=T(PX-10,CY-58,'iride','ts',null,'end')+T(PX+22,CY-60,'cristallino','ts',null,'start');
  s+=T(16,46,mode===0?'raggi da un punto vicino (libro a 40 cm)':'raggi da un punto lontano','ts');
  if(mode===0)s+='<circle cx="16" cy="'+CY+'" r="3" fill="#16222E"/>';
- s+=T(16,CY+100,'in grigio: raggi fermati dall\'iride','ts','#888780');
+ s+=T(16,CY+108,'in grigio: raggi fermati dall\'iride','ts','#888780');
+ // posterior nodal point and N'-retina distance
+ var NX=PX+20;s+='<circle cx="'+NX+'" cy="'+CY+'" r="4" fill="#185FA5" stroke="#fff" stroke-width="1"/>'+T(NX+6,CY-8,'N′','th','#185FA5');
+ var qy=CY+88;s+=L(NX,qy,RX,qy,'#534AB7',1.5)+L(NX,qy-6,NX,qy+6,'#534AB7',1.5)+L(RX,qy-6,RX,qy+6,'#534AB7',1.5);
+ s+=T((NX+RX)/2,qy-6,'N′–retina = 16,7 mm: la distanza focale N′F′'+(mode===0?' (per un oggetto lontano)':''),'ts','#534AB7','middle');
  // retina and spot
  s+=L(RX,CY-84,RX,CY+84,'#D85A30',3)+T(RX+8,CY-70,'retina','ts');
  var top=Math.min.apply(null,hits),bot=Math.max.apply(null,hits);
@@ -93,20 +97,20 @@ function upd(){
  var hS=sig(geo,airy),h0=sig(0,airy),eS=sig(0,eAiry);
  if(mode===3){
   z+=mosaic(130,'zA',16.7,2.5,h0,null)+mosaic(360,'zB',EF,2,eS,null);
-  z+=T(225,246,'Uomo, a fuoco','th',null,'middle')+T(225,264,um(airy)+', '+cn(airy,2.5),'ts',null,'middle');
-  z+=T(455,246,'Aquila, a fuoco','th',null,'middle')+T(455,264,um(eAiry)+', '+cn(eAiry,2),'ts',null,'middle');
+  z+=T(225,246,'Uomo, a fuoco','th',null,'middle')+T(225,264,um(airy)+', '+cn(airy,2.5),'ts',null,'middle')+T(225,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
+  z+=T(455,246,'Aquila, a fuoco','th',null,'middle')+T(455,264,um(eAiry)+', '+cn(eAiry,2),'ts',null,'middle')+T(455,282,'N′F′ ≈ 24 mm · 1 cono = 0,29′','ts','#534AB7','middle');
  }else{
   var ch=mode===2?[sig(5*D,airy),sig(5*D*0.45,airy)]:null;
   z+=mosaic(12,'zA',16.7,2.5,hS,ch)+mosaic(245,'zB',16.7,2.5,h0,null)+mosaic(478,'zC',EF,2,eS,null);
-  z+=T(107,246,'Uomo, con il difetto','th',null,'middle')+T(107,264,um(tot)+', '+cn(tot,2.5),'ts',null,'middle');
-  z+=T(340,246,'Uomo, senza il difetto','th',null,'middle')+T(340,264,um(airy)+', '+cn(airy,2.5),'ts',null,'middle');
-  z+=T(573,246,'Aquila, a fuoco','th',null,'middle')+T(573,264,um(eAiry)+', '+cn(eAiry,2),'ts',null,'middle');
+  z+=T(107,246,'Uomo, con il difetto','th',null,'middle')+T(107,264,um(tot)+', '+cn(tot,2.5),'ts',null,'middle')+T(107,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
+  z+=T(340,246,'Uomo, senza il difetto','th',null,'middle')+T(340,264,um(airy)+', '+cn(airy,2.5),'ts',null,'middle')+T(340,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
+  z+=T(573,246,'Aquila, a fuoco','th',null,'middle')+T(573,264,um(eAiry)+', '+cn(eAiry,2),'ts',null,'middle')+T(573,282,'N′F′ ≈ 24 mm · 1 cono = 0,29′','ts','#534AB7','middle');
  }
- z+=T(340,290,'L\'aquila ha coni più piccoli e una focale più lunga: nello stesso angolo ha quasi il doppio dei pixel per lato.','ts','#888780','middle');
+ z+=T(340,310,'angolo di un cono = larghezza del cono / N′F′: per questo l\'aquila ha quasi il doppio dei pixel','ts','#888780','middle');
  document.getElementById('zm').innerHTML=z;
  var lab=mode===3?'tutti i raggi vanno a fuoco sulla retina':mode===0?'fuoco dietro la retina: manca accomodazione':mode===1?'i raggi periferici vanno a fuoco prima di quelli centrali':'il blu va a fuoco prima, il rosso dopo; il verde sulla retina';
  s+=T(16,22,lab,'th');
- s+=T(16,244,'raggi: distanze non in scala; i riquadri sotto sono in scala vera','ts','#888780');
+ s+=T(300,CY+108,'raggi: distanze non in scala; i riquadri sotto sono in scala vera','ts','#888780');
  document.getElementById('g').innerHTML=s;
  var r=D/4,sp=mode===3?1/r:mode===1?r*r*r:r;
  document.getElementById('out').innerHTML=
