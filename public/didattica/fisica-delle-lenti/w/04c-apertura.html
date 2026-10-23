@@ -25,6 +25,7 @@
 <button id="m1" onclick="mode=1;upd()">Aberrazione sferica</button>
 <button id="m2" onclick="mode=2;upd()">Aberrazione cromatica</button>
 </div>
+<div class="ctl"><span style="min-width:150px">Coni nei riquadri</span><button id="v0" onclick="real=false;upd()">Pixel omogenei: dove arriva la luce</button><button id="v1" onclick="real=true;upd()">Coni veri: come la percepisci</button></div>
 <div class="sl"><span>Diametro della pupilla</span><input type="range" id="D" min="1.5" max="8" step="0.1" value="6" oninput="upd()"><output id="DO"></output></div>
 <svg width="100%" viewBox="0 0 680 250"><g id="g"></g></svg>
 <svg width="100%" viewBox="0 0 680 318"><g id="zm"></g></svg>
@@ -32,13 +33,14 @@
 <p class="note" id="nt"></p>
 <p class="note">Riquadri in scala vera, tutti sullo stesso angolo di 8 primi. Diffrazione calcolata (larghezza a metà intensità circa 1,03·λ·f/D, λ = 550 nm); le grandezze in µm sono larghezze a metà intensità; macchie dei difetti con valori indicativi (1,5 D per il presbite, aberrazioni tipiche di un occhio sano). Uomo: coni foveali ogni 2,5 µm circa, focale 16,7 mm. Aquila: fotorecettori foveali di circa 2 µm e occhio lungo circa 35 mm contro 24 (Reymond e Wolfe 1981), quindi focale stimata intorno ai 24 mm; pupilla supposta di 6 mm. Ogni riquadro ha la sua esposizione: conta la forma della macchia, non la luminosità.</p>
 <script>
-var mode=0,CY=126,PX=200,RX=560,K=14; // K: px per mm of pupil height
+var mode=0,real=false,CY=126,PX=200,RX=560,K=14; // K: px per mm of pupil height
 function nf(x,d){return x.toLocaleString('it-IT',{maximumFractionDigits:d});}
 function T(x,y,t,cls,col,anc){return '<text class="'+cls+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+'>'+t+'</text>';}
 function L(x1,y1,x2,y2,c,w,op,da){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+(w||1.2)+'" opacity="'+(op==null?1:op)+'"'+(da?' stroke-dasharray="'+da+'"':'')+'/>';}
 function upd(){
  var D=parseFloat(document.getElementById('D').value);document.getElementById('DO').textContent=nf(D,1)+' mm';
  for(var i=0;i<4;i++)document.getElementById('m'+i).classList.toggle('act',mode===i);
+ document.getElementById('v0').classList.toggle('act',!real);document.getElementById('v1').classList.toggle('act',real);
  var s='',hp=D/2*K,hits=[];
  s+=L(10,CY,600,CY,'#9DACB9',0.5,1,'4 4');
  // rays at heights from -4 to 4 mm (the whole 8 mm pupil)
@@ -71,7 +73,7 @@ function upd(){
  // posterior nodal point and N'-retina distance
  var NX=PX+20;s+='<circle cx="'+NX+'" cy="'+CY+'" r="4" fill="#185FA5" stroke="#fff" stroke-width="1"/>'+T(NX+6,CY-8,'N′','th','#185FA5');
  var qy=CY+88;s+=L(NX,qy,RX,qy,'#534AB7',1.5)+L(NX,qy-6,NX,qy+6,'#534AB7',1.5)+L(RX,qy-6,RX,qy+6,'#534AB7',1.5);
- s+=T((NX+RX)/2,qy-6,'N′–retina = 16,7 mm: la distanza focale N′F′'+(mode===0?' (per un oggetto lontano)':''),'ts','#534AB7','middle');
+ s+=T((NX+RX)/2,qy-6,'N′–retina = 16,7 mm: la distanza focale N′F′'+(mode===0?' (oggetto lontano)':''),'ts','#534AB7','middle');
  // retina and spot
  s+=L(RX,CY-84,RX,CY+84,'#D85A30',3)+T(RX+8,CY-70,'retina','ts');
  var top=Math.min.apply(null,hits),bot=Math.max.apply(null,hits);
@@ -82,26 +84,31 @@ function upd(){
  function cn(dia,pitch){var n=dia/pitch;return n<1.5?'circa un cono':'circa '+nf(n,0)+' coni';}
  function um(dia){return '≈ '+nf(dia,dia<10?1:0)+' µm';}
  function sig(geoD,airyD){return Math.sqrt(Math.pow(airyD/2.355,2)+Math.pow(geoD/4,2));}
- function mosaic(x0,id,f,pitch,sg,chrom){var W=190,y0=34,fieldUm=ARC*f*1000,pp=W/fieldUm*pitch,q='<defs><clipPath id="'+id+'"><rect x="'+x0+'" y="'+y0+'" width="'+W+'" height="'+W+'" rx="8"/></clipPath></defs>';
+ function mosaic(x0,id,f,pitch,sg,chrom,human){var W=190,y0=34,fieldUm=ARC*f*1000,pp=W/fieldUm*pitch,q='<defs><clipPath id="'+id+'"><rect x="'+x0+'" y="'+y0+'" width="'+W+'" height="'+W+'" rx="8"/></clipPath></defs>';
   q+='<rect x="'+x0+'" y="'+y0+'" width="'+W+'" height="'+W+'" rx="8" fill="#1E1E1C"/><g clip-path="url(#'+id+')">';
   var cx=x0+W/2,cy=y0+W/2,nC=Math.ceil(W/pp/2)+1,rh=pp*0.866;
   for(var j=-nC;j<=nC;j++)for(var i=-nC;i<=nC;i++){var px=cx+i*pp+(j%2?pp/2:0),py=cy+j*rh;
    var rU=Math.sqrt(Math.pow((px-cx)/pp*pitch,2)+Math.pow((py-cy)/pp*pitch,2)),col;
-   if(chrom){var g1=Math.exp(-rU*rU/(2*sg*sg)),r1=Math.exp(-rU*rU/(2*chrom[0]*chrom[0]))*Math.pow(sg/chrom[0],0.3),b1=Math.exp(-rU*rU/(2*chrom[1]*chrom[1]))*Math.pow(sg/chrom[1],0.3);
+   if(real&&human){var gL=Math.exp(-rU*rU/(2*sg*sg)),RL=gL,GL=gL,BL=gL;
+    if(chrom){RL=Math.exp(-rU*rU/(2*chrom[0]*chrom[0]))*Math.pow(sg/chrom[0],0.3);BL=Math.exp(-rU*rU/(2*chrom[1]*chrom[1]))*Math.pow(sg/chrom[1],0.3);}
+    var isL=(Math.abs(Math.sin(i*12.9898+j*78.233)*43758.5453)%1)<0.64;
+    var v=isL?(0.9*RL+0.6*GL+0.02*BL)/1.5:(0.35*RL+1.0*GL+0.05*BL)/1.4,k=Math.sqrt(Math.min(1,v)),tint=isL?[255,140,110]:[140,235,120];
+    col='rgb('+tint.map(function(t){return Math.round(48+(t-48)*k);}).join(',')+')';}
+   else if(chrom){var g1=Math.exp(-rU*rU/(2*sg*sg)),r1=Math.exp(-rU*rU/(2*chrom[0]*chrom[0]))*Math.pow(sg/chrom[0],0.3),b1=Math.exp(-rU*rU/(2*chrom[1]*chrom[1]))*Math.pow(sg/chrom[1],0.3);
     var ch3=[0.5*g1+0.5*r1,g1,0.5*g1+0.5*b1].map(function(v){return Math.round(48+207*Math.sqrt(Math.min(1,v)));});col='rgb('+ch3.join(',')+')';}
    else{var bb=Math.exp(-rU*rU/(2*sg*sg));col='rgb('+Math.round(62+188*bb)+','+Math.round(62+137*bb)+','+Math.round(58+59*bb)+')';}
    q+='<circle cx="'+px.toFixed(1)+'" cy="'+py.toFixed(1)+'" r="'+(pp*0.44).toFixed(2)+'" fill="'+col+'"/>';}
   return q+'</g>';}
  var z='';
- z+=T(340,20,'Gli stessi 8 primi d\'arco su retine diverse: ogni cerchietto è un cono, che si accende come un pixel','ts',null,'middle');
+ z+=T(340,20,real?'Coni veri: L (rossi) e M (verdi); i coni S (blu) mancano nel centro della fovea, circa 20 primi':'Gli stessi 8 primi d\'arco su retine diverse: ogni cerchietto è un cono, che si accende come un pixel','ts',null,'middle');
  var hS=sig(geo,airy),h0=sig(0,airy),eS=sig(0,eAiry);
  if(mode===3){
-  z+=mosaic(130,'zA',16.7,2.5,h0,null)+mosaic(360,'zB',EF,2,eS,null);
+  z+=mosaic(130,'zA',16.7,2.5,h0,null,true)+mosaic(360,'zB',EF,2,eS,null,false);
   z+=T(225,246,'Uomo, a fuoco','th',null,'middle')+T(225,264,um(airy)+', '+cn(airy,2.5),'ts',null,'middle')+T(225,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
   z+=T(455,246,'Aquila, a fuoco','th',null,'middle')+T(455,264,um(eAiry)+', '+cn(eAiry,2),'ts',null,'middle')+T(455,282,'N′F′ ≈ 24 mm · 1 cono = 0,29′','ts','#534AB7','middle');
  }else{
   var ch=mode===2?[sig(3*D,airy),sig(6*D,airy)]:null;
-  z+=mosaic(12,'zA',16.7,2.5,mode===2?h0:hS,ch)+mosaic(245,'zB',16.7,2.5,h0,mode===2?[h0,h0]:null)+mosaic(478,'zC',EF,2,eS,null);
+  z+=mosaic(12,'zA',16.7,2.5,mode===2?h0:hS,ch,true)+mosaic(245,'zB',16.7,2.5,h0,mode===2?[h0,h0]:null,true)+mosaic(478,'zC',EF,2,eS,null,false);
   z+=T(107,246,mode===0?'Uomo, presbite':mode===1?'Uomo, aberrazione sferica':'Uomo, aberrazione cromatica','th',null,'middle')+T(107,264,um(tot)+', '+cn(tot,2.5),'ts',null,'middle')+T(107,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
   z+=T(340,246,mode===0?'Stesso occhio, a fuoco':'Stesso occhio, ottica perfetta','th',null,'middle')+T(340,264,um(airy)+', '+cn(airy,2.5),'ts',null,'middle')+T(340,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
   z+=T(573,246,'Aquila, a fuoco','th',null,'middle')+T(573,264,um(eAiry)+', '+cn(eAiry,2),'ts',null,'middle')+T(573,282,'N′F′ ≈ 24 mm · 1 cono = 0,29′','ts','#534AB7','middle');
@@ -120,6 +127,7 @@ function upd(){
   :mode===1?'Nell\'aberrazione sferica i raggi periferici vengono piegati troppo. Chiudendo la pupilla si tolgono proprio quelli: dimezzando il diametro la macchia scende a circa un ottavo.'
   :'L\'indice di rifrazione cambia con il colore, quindi l\'occhio ha un fuoco per ogni colore: fra blu e rosso circa 2 D di differenza. Se il verde-giallo, il colore a cui siamo più sensibili, è a fuoco, il blu si allarga di più e il rosso un po\' meno: un punto bianco diventa un centro bianco con un alone blu-viola. Nel riquadro centrale tutti i colori cadono nello stesso punto e il punto resta bianco. L\'alone si riduce in proporzione al diametro della pupilla.';
  if(D<2.5&&mode!==3)nt+=' <b>Guarda il riquadro centrale</b>, lo stesso occhio con un\'ottica perfetta (un confronto ideale: ogni occhio vero ha un po\' di aberrazioni): stringendo, il punto si allarga per la diffrazione. Sotto i 2 mm circa è lei a comandare.';
+ if(real)nt+=' <b>Coni veri:</b> ogni cono risponde solo al suo colore. Nel centro della fovea ci sono solo coni L e M, in proporzione di circa 2 a 1 (varia molto da persona a persona); i coni S, quelli del blu, mancano in una zona larga circa 20 primi. '+(mode===2?'Per questo l\'alone blu quasi sparisce: cade su coni che il blu lo vedono appena.':'L\'aquila resta disegnata a pixel omogenei.');
  document.getElementById('nt').innerHTML=nt;
 }
 upd();
