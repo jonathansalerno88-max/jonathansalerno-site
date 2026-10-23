@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Missione: illumina a 10 metri</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.ctl{display:grid;grid-template-columns:118px 1fr 78px;align-items:center;gap:6px 10px;margin:0 0 6px;font-size:13px;color:var(--text-secondary)}
+.ctl output{text-align:right;color:var(--text-primary);font-variant-numeric:tabular-nums;font-weight:500}
+.tog{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);margin:2px 0 10px}
+.tog button{font:inherit;font-size:13px;padding:5px 12px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.tog button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+#dash{stroke-dasharray:14 12}
+.ride #dash{animation:ride .7s linear infinite}
+@keyframes ride{to{stroke-dashoffset:26}}
+@media (prefers-reduced-motion:reduce){.ride #dash{animation:none}}
+#win{transition:opacity .4s}
+.note{font-size:12.5px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Gioco: regola flusso in lumen, ampiezza del fascio, diametro della lente e taglio del fascio di una luce da bici per illuminare la strada a 10 metri. Cinque faccine giudicano luce sulla strada, larghezza coperta, abbagliamento di chi arriva, prezzo e autonomia.</h2>
+<div class="ctl"><span>Flusso</span><input type="range" id="L" min="100" max="1500" step="25" value="300" oninput="upd()"><output id="Lo"></output></div>
+<div class="ctl"><span>Ampiezza fascio</span><input type="range" id="A" min="6" max="70" step="1" value="60" oninput="upd()"><output id="Ao"></output></div>
+<div class="ctl"><span>Diametro lente</span><input type="range" id="D" min="10" max="50" step="1" value="20" oninput="upd()"><output id="Do"></output></div>
+<div class="tog"><span style="width:118px">Taglio del fascio</span><button id="cutN" onclick="cut=false;upd()">No, fascio tondo</button><button id="cutY" onclick="cut=true;upd()">Sì, come le luci StVZO</button></div>
+<svg width="100%" viewBox="0 0 680 436" id="sv">
+<text class="th" x="20" y="22">Vista dall'alto</text>
+<rect x="0" y="34" width="400" height="360" fill="#2C3138"/>
+<g id="scene"></g>
+<g id="board"></g>
+</svg>
+<p class="note">La fisica è vera: fascio uniforme in un cono, candele = lumen / steradianti, lux a 10 m = candele / 100. <b>Il prezzo è inventato per l'esercizio</b> (cresce con i lumen, con le ottiche a fascio stretto, con il taglio del fascio e con la lente), e l'autonomia assume una batteria da circa 10 Wh e un LED da 100 lumen per watt. Le soglie delle faccine sono indicative.</p>
+<script>
+var cut=false,Y0=380,S=16,XR=200,LANE=3.5;
+function v(id){return parseFloat(document.getElementById(id).value);}
+function it(x,d){return x.toLocaleString('it-IT',{maximumFractionDigits:d||0});}
+function face(x,y,m,col){
+  var c={2:'#3B6D11',1:'#854F0B',0:'#A32D2D'}[m],f={2:'#EAF3DE',1:'#FAEEDA',0:'#FCEBEB'}[m];
+  var mouth=m===2?'M'+(x-7)+' '+(y+4)+' Q'+x+' '+(y+11)+' '+(x+7)+' '+(y+4):m===1?'M'+(x-7)+' '+(y+6)+' L'+(x+7)+' '+(y+6):'M'+(x-7)+' '+(y+9)+' Q'+x+' '+(y+2)+' '+(x+7)+' '+(y+9);
+  return '<circle cx="'+x+'" cy="'+y+'" r="15" fill="'+f+'" stroke="'+c+'" stroke-width="1.5"/>'+
+  '<circle cx="'+(x-5)+'" cy="'+(y-4)+'" r="1.8" fill="'+c+'"/><circle cx="'+(x+5)+'" cy="'+(y-4)+'" r="1.8" fill="'+c+'"/>'+
+  '<path d="'+mouth+'" fill="none" stroke="'+c+'" stroke-width="1.8" stroke-linecap="round"/>';}
+function T(x,y,t,cls,col,anc){return '<text class="'+(cls||'ts')+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+'>'+t+'</text>';}
+function upd(){
+  var Lm=v('L'),A=v('A'),D=v('D');
+  document.getElementById('Lo').textContent=it(Lm)+' lm';document.getElementById('Ao').textContent=A+'°';document.getElementById('Do').textContent=D+' mm';
+  document.getElementById('cutN').classList.toggle('act',!cut);document.getElementById('cutY').classList.toggle('act',cut);
+  var a=A/2*Math.PI/180,O=2*Math.PI*(1-Math.cos(a)),I=Lm/O,E=I/100,W=2*10*Math.tan(a);
+  var area=Math.PI*Math.pow(D/2000,2),nit=I/area;
+  var Eoth=cut?0:E;
+  var price=15+0.04*Lm+(A<15?12:A<25?5:0)+(cut?9:0)+0.3*D;
+  var hours=10/(Lm/100);
+  // scores
+  var sE=E>=60?2:E>=20?1:0, sW=W>=LANE?2:W>=1.5?1:0, sG=cut?2:(Eoth>=20?0:1), sP=price<40?2:price<70?1:0, sH=hours>=3?2:hours>=1.5?1:0;
+  var win=sE===2&&sW===2&&sG===2;
+  // scene
+  var s='',ry=function(m){return Y0-m*S;};
+  s+='<rect x="'+(XR-LANE*S)+'" y="34" width="'+(2*LANE*S)+'" height="'+(Y0-34+14)+'" fill="#4A5059"/>';
+  s+='<line id="dash" x1="'+XR+'" y1="'+(Y0+14)+'" x2="'+XR+'" y2="34" stroke="#D3D1C7" stroke-width="2"/>';
+  for(var m=0;m<=20;m+=5){s+='<line x1="'+(XR+LANE*S)+'" y1="'+ry(m)+'" x2="'+(XR+LANE*S+8)+'" y2="'+ry(m)+'" stroke="#B4B2A9" stroke-width="1"/>'+T(XR+LANE*S+12,ry(m)+4,m+' m','ts','#D3D1C7');}
+  var lx=XR+LANE*S/2,ly=Y0-6,h=Math.tan(a)*(Y0-34);
+  var op=Math.max(0.08,Math.min(0.9,0.12+0.2*Math.log10(Math.max(E,1)/1)));
+  s+='<defs><clipPath id="rc"><rect x="0" y="34" width="400" height="'+(Y0-34+14)+'"/></clipPath></defs>';
+  s+='<g clip-path="url(#rc)"><polygon points="'+lx+','+ly+' '+(lx-h)+',34 '+(lx+h)+',34" fill="#FAC775" opacity="'+op+'"/></g>';
+  var w10=Math.tan(a)*10*S;
+  s+='<line x1="'+(lx-w10)+'" y1="'+ry(10)+'" x2="'+(lx+w10)+'" y2="'+ry(10)+'" stroke="#EF9F27" stroke-width="4"/>';
+  s+='<line x1="'+XR+'" y1="'+ry(10)+'" x2="'+(XR+LANE*S)+'" y2="'+ry(10)+'" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="4 3"/>';
+  s+=T(14,ry(10)-8,'10 m: qui devi vedere →','ts','#FFFFFF');
+  s+=T(14,ry(10)+16,it(E,E<10?1:0)+' lux al centro','th','#FAC775');
+  s+=T(14,ry(10)+32,'largo '+it(W,1)+' m','ts','#FAC775');
+  // oncoming rider
+  var ox=XR-LANE*S/2,oy=ry(14);
+  s+='<rect x="'+(ox-4)+'" y="'+(oy-12)+'" width="8" height="24" rx="3" fill="#B5D4F4"/><circle cx="'+ox+'" cy="'+(oy-14)+'" r="5" fill="#B5D4F4"/>';
+  s+=T(ox-10,oy-14,'chi arriva','ts','#D3D1C7','end');
+  if(!cut&&E>5){for(var k=-1;k<=1;k++)s+='<line x1="'+(lx+4)+'" y1="'+(ly-6)+'" x2="'+(ox-6+k*3)+'" y2="'+(oy-12)+'" stroke="#EF9F27" stroke-width="1" opacity="'+Math.min(0.9,E/60)+'"/>';}
+  // rider
+  s+='<rect x="'+(lx-4)+'" y="'+(Y0-2)+'" width="8" height="26" rx="3" fill="#E6F1FB"/><circle cx="'+lx+'" cy="'+(Y0+2)+'" r="6" fill="#E6F1FB"/><circle cx="'+lx+'" cy="'+(ly)+'" r="3.5" fill="#FAC775"/>';
+  s+=T(lx+12,Y0+10,'tu','ts','#FFFFFF');
+  document.getElementById('scene').innerHTML=s;
+  document.getElementById('sv').classList.toggle('ride',win);
+  // board
+  var b='',bx=420,rows=[
+   [sE,'Luce sulla strada a 10 m',it(E,E<10?1:0)+' lux ('+it(I,0)+' cd / 100)'],
+   [sW,'Strada coperta a 10 m',it(W,1)+' m su una corsia di '+it(LANE,1)],
+   [sG,'Chi ti viene incontro',cut?'il taglio tiene la luce sulla strada':'riceve '+it(Eoth,0)+' lux negli occhi'],
+   [sP,'Prezzo (inventato)','≈ '+it(Math.round(price/5)*5)+' €'],
+   [sH,'Autonomia','≈ '+it(hours,1)+' ore']];
+  b+=T(bx,22,'Il giudizio','th');
+  rows.forEach(function(r,i){var y=60+i*58;b+=face(bx+16,y,r[0])+T(bx+40,y-3,r[1],'th')+T(bx+40,y+14,r[2],'ts');});
+  b+='<rect x="'+bx+'" y="342" width="250" height="52" rx="8" fill="'+(win?'#EAF3DE':'#F1EFE8')+'" stroke="'+(win?'#3B6D11':'#B4B2A9')+'" stroke-width="1"/>';
+  b+=T(bx+12,363,win?'Missione compiuta!':'Obiettivo a 10 m: 60 lux su 3,5 m','th',win?'#27500A':'#444441');
+  b+=T(bx+12,382,win?'Ora guarda prezzo e autonomia.':'e senza accecare chi arriva.','ts',win?'#3B6D11':'#5F5E5A');
+  b+=T(bx,412,'lente: '+(nit>=1e6?(nit/1e6).toFixed(1).replace('.',',')+' milioni di':it(nit))+' nit','ts')+T(bx,426,'(quanto abbaglia vista in faccia)','ts');
+  document.getElementById('board').innerHTML=b;
+}
+upd();
+</script>
+</body>
+</html>
