@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>I due muscoli dell'iride</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:0 0 8px;font-size:13px;color:var(--text-secondary)}
+.ctl .lb{min-width:74px}
+.ctl button{font:inherit;font-size:13px;padding:5px 10px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.ctl button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+.info{font-size:13px;color:var(--text-secondary);line-height:1.6;margin:8px 0 0}
+.info b{color:var(--text-primary);font-weight:500}
+.note{font-size:12px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
+</style>
+</head>
+<body>
+<h2 class="sr-only">L'iride vista di fronte con i suoi due muscoli: lo sfintere, circolare, comandato dal parasimpatico attraverso il terzo nervo cranico, il ganglio ciliare e i recettori muscarinici M3; il dilatatore, radiale, comandato dal simpatico attraverso il centro cilio-spinale, il ganglio cervicale superiore e i recettori alfa-1. Si possono scegliere luce o penombra, un collirio o una lesione, e vedere il diametro della pupilla.</h2>
+<div class="ctl"><span class="lb">Luce</span>
+<button id="lB" onclick="light='B';upd()">Piena luce</button>
+<button id="lD" onclick="light='D';upd()">Penombra (come nell'eclissi)</button></div>
+<div class="ctl"><span class="lb">Collirio</span>
+<button id="d0" onclick="setD(0)">Nessuno</button>
+<button id="d1" onclick="setD(1)">Pilocarpina</button>
+<button id="d2" onclick="setD(2)">Aceclidina</button>
+<button id="d3" onclick="setD(3)">Tropicamide / atropina</button>
+<button id="d4" onclick="setD(4)">Fenilefrina</button>
+<button id="d5" onclick="setD(5)">Fentolamina</button>
+<button id="d6" onclick="setD(6)">Brimonidina</button></div>
+<div class="ctl"><span class="lb">Lesione</span>
+<button id="d7" onclick="setD(7)">Via simpatica interrotta (Horner)</button>
+<button id="d8" onclick="setD(8)">III nervo interrotto</button></div>
+<svg width="100%" viewBox="0 0 680 470">
+<defs>
+<marker id="aP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#185FA5"/></marker>
+<marker id="aS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#A32D2D"/></marker>
+</defs>
+<text class="th" x="20" y="22">L'iride vista di fronte</text>
+<g id="iris"></g>
+<g id="path"></g>
+</svg>
+<p class="info" id="info"></p>
+<p class="note">Diametri della pupilla indicativi: il disegno mostra la direzione e l'ordine di grandezza dell'effetto, non i valori di un paziente. Lo sfintere è più forte del dilatatore, per questo un agonista muscarinico stringe la pupilla anche al buio. Colori: <b style="color:#185FA5">blu</b> parasimpatico, <b style="color:#A32D2D">rosso</b> simpatico.</p>
+<script>
+var light='B',drug=0,CX=150,CY=230,PXMM=18,RI=108;
+var P='#185FA5',S='#A32D2D';
+// s = sphincter drive, d = dilator drive (0 none, 1 normal maximum), cil = ciliary muscle state
+var D=[
+ {n:'Nessun collirio',s:null,d:null,cil:'segue l\'accomodazione',rec:['',''],txt:'Lo sfintere e il dilatatore tirano in direzioni opposte: la pupilla è il risultato del loro equilibrio. La luce aumenta il tono parasimpatico (riflesso fotomotore), la penombra quello simpatico.'},
+ {n:'Pilocarpina',s:3,d:null,cil:'contratto: accomodazione forzata, la vista si sposta verso il vicino',rec:['+ agonista M3',''],txt:'<b>Pilocarpina</b>: agonista dei recettori muscarinici M3. Contrae lo sfintere (miosi forte, anche al buio) e il muscolo ciliare, che ha gli stessi recettori: accomodazione forzata, mal di testa, raramente trazione sulla retina. Usi: glaucoma ad angolo chiuso; a basso dosaggio, presbiopia.'},
+ {n:'Aceclidina',s:3,d:null,cil:'quasi a riposo: poco effetto sull\'accomodazione',rec:['+ agonista M3',''],txt:'<b>Aceclidina</b> 1,44 %: agonista muscarinico che agisce quasi solo sullo sfintere e poco sul muscolo ciliare. Miosi senza spostamento miopico: aumenta la profondità di campo. Uso: presbiopia, approvata dalla FDA a luglio 2025.'},
+ {n:'Tropicamide / atropina',s:0,d:null,cil:'paralizzato: niente accomodazione (cicloplegia)',rec:['× antagonista M3',''],txt:'<b>Tropicamide, ciclopentolato, atropina</b>: antagonisti muscarinici. Bloccano lo sfintere (midriasi) e il muscolo ciliare (cicloplegia). Il dilatatore resta libero e allarga la pupilla. Usi: esame del fondo dell\'occhio (tropicamide, poche ore), misura della vista nei bambini (ciclopentolato), uveiti e ambliopia (atropina, giorni).'},
+ {n:'Fenilefrina',s:null,d:1.5,cil:'segue l\'accomodazione',rec:['','+ agonista α1'],txt:'<b>Fenilefrina</b>: agonista α1. Contrae il dilatatore (midriasi) senza toccare il muscolo ciliare: l\'accomodazione resta. Si associa spesso alla tropicamide per l\'esame del fondo, perché agisce sull\'altro muscolo.'},
+ {n:'Fentolamina',s:null,d:0.2,cil:'segue l\'accomodazione',rec:['','× antagonista α1'],txt:'<b>Fentolamina</b>: antagonista α1. Rilassa il dilatatore: la pupilla si stringe poco in piena luce, dove conta già lo sfintere, ma molto in penombra, perché non riesce più ad allargarsi. Uso: far tornare normale una pupilla dilatata con i colliri dopo la visita.'},
+ {n:'Brimonidina',s:null,d:'b',cil:'segue l\'accomodazione',rec:['','+ α2: meno noradrenalina'],txt:'<b>Brimonidina</b>: agonista α2. I recettori α2 stanno sulla terminazione nervosa simpatica e frenano il rilascio di noradrenalina: il dilatatore riceve meno segnale. Miosi lieve, soprattutto in penombra. Usi: glaucoma (riduce la produzione di umore acqueo) e aloni notturni.'},
+ {n:'Horner',s:null,d:0.15,cil:'segue l\'accomodazione',rec:['','nessun segnale'],txt:'<b>Sindrome di Horner</b>: la via simpatica è interrotta in uno dei tre neuroni (ipotalamo-midollo, midollo-ganglio cervicale superiore, ganglio-occhio). Il dilatatore non riceve segnale: miosi, ptosi lieve, a volte anidrosi del volto. L\'anisocoria è più evidente in penombra, quando l\'occhio sano si dilata e quello malato no.'},
+ {n:'III nervo',s:0,d:null,cil:'paralizzato',rec:['nessun segnale',''],txt:'<b>Lesione del III nervo cranico</b>: le fibre parasimpatiche viaggiano in superficie sul nervo, quindi una compressione (per esempio un aneurisma della comunicante posteriore) le colpisce presto. Lo sfintere non riceve segnale: midriasi fissa, che non risponde alla luce. L\'anisocoria è più evidente in piena luce, quando l\'occhio sano si stringe.'}
+];
+function setD(i){drug=i;upd();}
+function nf(x,d){return x.toLocaleString('it-IT',{maximumFractionDigits:d});}
+function pupil(s,d){return 1.5+7*d/(d+3*s+0.1);}
+function T(x,y,t,cls,col,anc,extra){return '<text class="'+cls+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+(extra||'')+'>'+t+'</text>';}
+function box(x,y,w,l1,l2,col,on){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+(l2?38:24)+'" rx="5" fill="#FFFFFF" stroke="'+col+'" stroke-width="'+(on?1.2:0.8)+'" opacity="'+(on?1:0.45)+'"/>'+
+ T(x+8,y+16,l1,'ts',on?'#16222E':'#888780')+(l2?T(x+8,y+31,l2,'ts',on?col:'#B4B2A9'):'');}
+function upd(){
+ document.getElementById('lB').classList.toggle('act',light==='B');document.getElementById('lD').classList.toggle('act',light==='D');
+ for(var i=0;i<9;i++)document.getElementById('d'+i).classList.toggle('act',drug===i);
+ var g=D[drug],s0=light==='B'?0.8:0.2,d0=light==='B'?0.3:0.8;
+ var s=g.s===null?s0:g.s,d=g.d===null?d0:(g.d==='b'?d0*0.5:g.d);
+ var dm=pupil(s,d),dmN=pupil(s0,d0),rp=dm/2*PXMM,rs=rp+1*PXMM;
+ var sAct=Math.min(1,s/1),dAct=Math.min(1,d/1);
+ // iris
+ var q='<circle cx="'+CX+'" cy="'+CY+'" r="'+(RI+14)+'" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1"/>';
+ q+='<circle cx="'+CX+'" cy="'+CY+'" r="'+RI+'" fill="#D9C4A3"/>';
+ for(var k=0;k<36;k++){var a=k*Math.PI/18;q+='<line x1="'+(CX+rs*Math.cos(a))+'" y1="'+(CY+rs*Math.sin(a))+'" x2="'+(CX+(RI-3)*Math.cos(a))+'" y2="'+(CY+(RI-3)*Math.sin(a))+'" stroke="'+S+'" stroke-width="'+(1+1.6*dAct)+'" opacity="'+(0.2+0.75*dAct)+'"/>';}
+ for(var r=rp+3;r<rs;r+=3.2)q+='<circle cx="'+CX+'" cy="'+CY+'" r="'+r+'" fill="none" stroke="'+P+'" stroke-width="'+(1+1.4*sAct)+'" opacity="'+(0.2+0.75*sAct)+'"/>';
+ q+='<circle cx="'+CX+'" cy="'+CY+'" r="'+rp+'" fill="#16222E"/><circle cx="'+(CX-rp*0.35)+'" cy="'+(CY-rp*0.35)+'" r="'+Math.max(2,rp*0.15)+'" fill="#FFFFFF" opacity="0.7"/>';
+ // labels with leaders
+ q+='<line x1="'+(CX+rs*0.7)+'" y1="'+(CY+rs*0.7)+'" x2="96" y2="384" class="leader" style="stroke:'+P+'"/>'+T(20,398,'sfintere: fibre circolari','ts',P)+T(20,414,'stringe la pupilla (miosi)','ts',P);
+ q+='<line x1="'+(CX-(RI-20)*0.3)+'" y1="'+(CY-(RI-20)*0.95)+'" x2="130" y2="74" class="leader" style="stroke:'+S+'"/>'+T(20,52,'dilatatore: fibre radiali','ts',S)+T(20,68,'allarga la pupilla (midriasi)','ts',S);
+ q+=T(CX,446,'pupilla ≈ '+nf(dm,1)+' mm','th',null,'middle');
+ var ratio=(dm*dm)/(dmN*dmN);
+ q+=T(CX,464,drug===0?'area ≈ '+nf(Math.PI*dm*dm/4,1)+' mm²':'area ×'+nf(ratio,ratio<1?2:1)+(drug>=7?' rispetto all\'occhio sano':' rispetto a nessun collirio'),'ts',null,'middle');
+ document.getElementById('iris').innerHTML=q;
+ // pathways: parasympathetic column x 300, sympathetic column x 492
+ var px=300,sx=492,w=176,p='',pOn=!(drug===8),sOn=!(drug===7);
+ p+=T(px,22,'Parasimpatico','th',P)+T(sx,22,'Simpatico','th',S);
+ var pb=[['Nucleo di Edinger-Westphal','mesencefalo'],['III nervo cranico','(oculomotore)'],['Ganglio ciliare','nell\'orbita'],['Nervi ciliari brevi','']];
+ var sb=[['Ipotalamo',''],['Centro cilio-spinale','midollo C8–T2'],['Ganglio cervicale superiore','poi lungo la carotide interna'],['Nervi ciliari lunghi','']];
+ var y=36;pb.forEach(function(b,i){var h=b[1]?38:24,cut=(drug===8&&i===1);p+=box(px,y,w,b[0],b[1],P,pOn||i===0);
+  if(i<pb.length-1)p+='<line x1="'+(px+w/2)+'" y1="'+(y+h)+'" x2="'+(px+w/2)+'" y2="'+(y+h+12)+'" stroke="'+P+'" stroke-width="1.5" marker-end="url(#aP)" opacity="'+(pOn?1:0.35)+'"/>';
+  if(cut)p+='<path d="M'+(px+w/2-10)+' '+(y+h+2)+' l20 8 M'+(px+w/2+10)+' '+(y+h+2)+' l-20 8" stroke="#16222E" stroke-width="2"/>';
+  y+=h+14;});
+ var ys=36;sb.forEach(function(b,i){var h=b[1]?38:24,cut=(drug===7&&i===1);p+=box(sx,ys,w,b[0],b[1],S,sOn||i===0);
+  if(i<sb.length-1)p+='<line x1="'+(sx+w/2)+'" y1="'+(ys+h)+'" x2="'+(sx+w/2)+'" y2="'+(ys+h+12)+'" stroke="'+S+'" stroke-width="1.5" marker-end="url(#aS)" opacity="'+(sOn?1:0.35)+'"/>';
+  if(cut)p+='<path d="M'+(sx+w/2-10)+' '+(ys+h+2)+' l20 8 M'+(sx+w/2+10)+' '+(ys+h+2)+' l-20 8" stroke="#16222E" stroke-width="2"/>';
+  ys+=h+14;});
+ // receptor boxes
+ var ry=y+4;
+ p+='<rect x="'+px+'" y="'+ry+'" width="'+w+'" height="58" rx="5" fill="#E6F1FB" stroke="'+P+'" stroke-width="1"/>'+T(px+8,ry+17,'acetilcolina → recettori M3','ts','#16222E')+T(px+8,ry+33,'sfintere + muscolo ciliare','ts',P);
+ if(g.rec[0])p+=T(px+8,ry+50,g.rec[0],'th',g.rec[0].charAt(0)==='+'?'#3B6D11':'#5F5E5A');
+ var rys=ys+4;
+ p+='<rect x="'+sx+'" y="'+rys+'" width="'+w+'" height="58" rx="5" fill="#FCEBEB" stroke="'+S+'" stroke-width="1"/>'+T(sx+8,rys+17,'noradrenalina → recettori α1','ts','#16222E')+T(sx+8,rys+33,'dilatatore','ts',S);
+ if(g.rec[1])p+=T(sx+8,rys+50,g.rec[1],g.rec[1].length>20?'ts':'th',g.rec[1].charAt(0)==='+'?'#3B6D11':'#5F5E5A');
+ // links to the iris
+ var yl=Math.max(ry,rys)+58;
+ p+='<path d="M'+(px+30)+' '+(ry+58)+' L'+(px+30)+' '+(yl+20)+' L'+(CX+rs+4)+' '+(yl+20)+' L'+(CX+rs*0.75)+' '+(CY+rs*0.75)+'" fill="none" stroke="'+P+'" stroke-width="1.2" stroke-dasharray="4 3" opacity="'+(pOn?0.9:0.3)+'"/>';
+ p+='<path d="M'+(sx+30)+' '+(rys+58)+' L'+(sx+30)+' '+(yl+36)+' L'+(CX+RI*0.6)+' '+(yl+36)+' L'+(CX+RI*0.62)+' '+(CY+RI*0.62)+'" fill="none" stroke="'+S+'" stroke-width="1.2" stroke-dasharray="4 3" opacity="'+(sOn?0.9:0.3)+'"/>';
+ // ciliary muscle
+ p+=T(px,yl+60,'Muscolo ciliare: '+g.cil,'ts',P);
+ document.getElementById('path').innerHTML=p;
+ document.getElementById('info').innerHTML=g.txt+(light==='D'&&drug===0?' In penombra il simpatico prevale e la pupilla si allarga: è quello che succede durante un\'eclissi.':'');
+}
+upd();
+</script>
+</body>
+</html>
