@@ -29,6 +29,7 @@
 <svg width="100%" viewBox="0 0 680 290"><g id="g"></g></svg>
 <div class="out" id="out"></div>
 <p class="note" id="nt"></p>
+<p class="note">Nello zoom il dischetto di diffrazione è calcolato (2,44·λ·f/D, con λ = 550 nm e f = 16,7 mm); le macchie dei difetti usano valori indicativi: 1,5 D per il presbite, un'aberrazione sferica e una cromatica tipiche di un occhio sano.</p>
 <script>
 var mode=0,CY=140,PX=180,RX=430,K=14; // K: px per mm of pupil height
 function nf(x,d){return x.toLocaleString('it-IT',{maximumFractionDigits:d});}
@@ -70,27 +71,34 @@ function upd(){
  s+=L(RX,CY-84,RX,CY+84,'#D85A30',3)+T(RX,CY+100,'retina','ts',null,'middle');
  var top=Math.min.apply(null,hits),bot=Math.max.apply(null,hits);
  s+='<rect x="'+(RX-4)+'" y="'+(top-1)+'" width="8" height="'+Math.max(2,bot-top+2)+'" fill="#E24B4A" opacity="0.8"/>';
- var half=(bot-top)/2,dif=7.5/D,rW=Math.min(40,Math.sqrt(half*half+dif*dif)*1.2),r0=Math.min(40,dif*1.2);
- function spot(cx,r,chrom){var q='<rect x="'+(cx-46)+'" y="70" width="92" height="92" rx="8" fill="#16222E"/>';
-  if(chrom)q+='<circle cx="'+cx+'" cy="116" r="'+r+'" fill="#E24B4A" opacity="0.55"/><circle cx="'+cx+'" cy="116" r="'+Math.max(r0,r*0.6)+'" fill="#378ADD" opacity="0.6"/><circle cx="'+cx+'" cy="116" r="'+Math.max(1.5,r0)+'" fill="#C0DD97"/>';
-  else q+='<circle cx="'+cx+'" cy="116" r="'+Math.max(1.2,r)+'" fill="#FAC775" opacity="0.9"/>';return q;}
- s+=T(568,40,'zoom sulla retina: dove finisce','ts',null,'middle')+T(568,56,'la luce di un solo punto','ts',null,'middle');
- if(mode===3){s+=spot(568,r0,false)+T(568,180,'occhio emmetrope:','ts',null,'middle')+T(568,196,'resta solo la diffrazione','ts',null,'middle');}
- else{s+=spot(518,rW,mode===2)+spot(618,r0,false);
-  s+=T(518,180,mode===0?'con la sfocatura':'con l\'aberrazione','ts',null,'middle')+T(518,196,mode===0?'':mode===1?'sferica':'cromatica','ts',null,'middle');
-  s+=T(618,180,mode===0?'a fuoco':'senza aberrazione','ts',null,'middle')+T(618,196,mode===0?'(se accomodasse)':mode===1?'sferica':'cromatica','ts',null,'middle');}
- var lab=mode===3?'tutti i raggi vanno a fuoco sulla retina':mode===0?'il fuoco cade dietro la retina: senza accomodazione manca potere':mode===1?'i raggi periferici vanno a fuoco prima di quelli centrali':'il blu va a fuoco prima, il rosso dopo; il verde sulla retina';
+ // zoom on the retina at true scale: 40 um field, foveal cones every 2.5 um
+ var airy=22.4/D,geo=mode===0?25*D:mode===1?0.08*D*D*D:mode===2?5*D:0,tot=Math.sqrt(geo*geo+airy*airy),PU=2.6;
+ function zoom(cx,dia,chrom,id){var x0=cx-52,y0=66,q='<defs><clipPath id="'+id+'"><rect x="'+x0+'" y="'+y0+'" width="104" height="104" rx="8"/></clipPath></defs>';
+  q+='<rect x="'+x0+'" y="'+y0+'" width="104" height="104" rx="8" fill="#2C2C2A"/><g clip-path="url(#'+id+')">';
+  for(var row=0;row<19;row++)for(var col=0;col<18;col++){var px=x0+col*6.5+(row%2?3.25:0),py=y0+row*5.63;q+='<circle cx="'+px+'" cy="'+py+'" r="2.5" fill="#5F5E5A"/>';}
+  var r=dia/2*PU;
+  if(chrom)q+='<circle cx="'+cx+'" cy="'+(y0+52)+'" r="'+r+'" fill="#E24B4A" opacity="0.5"/><circle cx="'+cx+'" cy="'+(y0+52)+'" r="'+(r*0.45)+'" fill="#378ADD" opacity="0.6"/><circle cx="'+cx+'" cy="'+(y0+52)+'" r="'+(airy/2*PU)+'" fill="#C0DD97"/>';
+  else q+='<circle cx="'+cx+'" cy="'+(y0+52)+'" r="'+Math.max(1,r)+'" fill="#FAC775" opacity="0.85"/>';
+  return q+'</g>';}
+ function cn(dia){var n=dia/2.5;return n<1.5?'circa un cono':'circa '+nf(n,0)+' coni';}
+ function um(dia){return '≈ '+nf(dia,dia<10?1:0)+' µm';}
+ s+=T(566,24,'zoom sulla retina, in scala vera:','ts',null,'middle')+T(566,40,'40 µm, ogni cerchietto grigio è un cono','ts',null,'middle')+T(566,56,'arancio: la luce di un solo punto','ts','#BA7517','middle');
+ if(mode===3){s+=zoom(566,airy,false,'z0')+T(566,188,'solo diffrazione','ts',null,'middle')+T(566,204,um(airy)+', '+cn(airy),'th',null,'middle');}
+ else{s+=zoom(512,tot,mode===2,'z1')+zoom(622,airy,false,'z2');
+  s+=T(512,188,'con il difetto','ts',null,'middle')+T(512,204,um(tot),'th',null,'middle')+T(512,220,cn(tot),'ts',null,'middle');
+  s+=T(622,188,'senza il difetto','ts',null,'middle')+T(622,204,um(airy),'th',null,'middle')+T(622,220,cn(airy),'ts',null,'middle');}
+ var lab=mode===3?'tutti i raggi vanno a fuoco sulla retina':mode===0?'fuoco dietro la retina: manca accomodazione':mode===1?'i raggi periferici vanno a fuoco prima di quelli centrali':'il blu va a fuoco prima, il rosso dopo; il verde sulla retina';
  s+=T(16,22,lab,'th');
- s+=T(16,282,'distanze non in scala: il disegno mostra le proporzioni, non i millimetri','ts','#888780');
+ s+=T(16,282,'raggi: distanze non in scala · zoom: in scala vera','ts','#888780');
  document.getElementById('g').innerHTML=s;
  var r=D/4,sp=mode===3?1/r:mode===1?r*r*r:r;
  document.getElementById('out').innerHTML=
   '<div>Luce che entra<b>×'+nf(r*r,2)+'</b>rispetto a 4 mm: segue l\'area, cioè D²</div>'+
-  '<div>Macchia sulla retina<b>×'+nf(sp,2)+'</b>rispetto a 4 mm: segue '+(mode===3?'1/D: la diffrazione, che cresce stringendo':mode===1?'D³ (i bordi sbagliano molto di più)':'D')+'</div>';
- var nt=mode===3?'Occhio senza difetti: tutti i raggi arrivano nello stesso punto della retina. Qui stringere la pupilla non aiuta: toglie luce e la diffrazione allarga il punto (1,22·λ/D). Un occhio vero ha sempre un po\' di aberrazioni, per questo a fuoco il compromesso migliore è una pupilla di circa 2,5–3 mm.':mode===0?'Il presbite non vede le cose più grandi: le vede sfocate, perché ogni punto diventa una macchiolina. Con 1,5 D di errore, come chi legge a 40 cm senza accomodare abbastanza, la macchia è circa 25 µm per ogni mm di pupilla: 100 µm a 4 mm, 45 µm a 1,8 mm (aceclidina). Il fuoco resta dietro la retina: la pupilla piccola non lo sposta, restringe il cono.'
+  '<div>Macchia sulla retina<b>'+um(tot)+', '+cn(tot)+'</b>'+(mode===3?'solo diffrazione: segue 1/D, cresce stringendo':'il difetto segue '+(mode===1?'D³':'D')+'; la diffrazione 1/D')+'</div>';
+ var nt=mode===3?'Occhio senza difetti: tutti i raggi arrivano nello stesso punto della retina, e il punto resta un dischetto solo per la diffrazione. A 8 mm è largo circa un cono, a 1,5 mm circa sei: stringere toglie luce e allarga il punto. Una macchia più piccola di un cono non servirebbe, perché la retina non distingue dettagli più fini. Un occhio vero ha sempre un po\' di aberrazioni, per questo a fuoco il compromesso migliore è una pupilla di circa 2,5–3 mm.':mode===0?'Il presbite non vede le cose più grandi: le vede sfocate, perché ogni punto diventa una macchiolina. Con 1,5 D di errore, come chi legge a 40 cm senza accomodare abbastanza, la macchia è circa 25 µm per ogni mm di pupilla: 100 µm a 4 mm, 45 µm a 1,8 mm (aceclidina). Il fuoco resta dietro la retina: la pupilla piccola non lo sposta, restringe il cono.'
   :mode===1?'Nell\'aberrazione sferica i raggi periferici vengono piegati troppo. Chiudendo la pupilla si tolgono proprio quelli: dimezzando il diametro la macchia scende a circa un ottavo.'
   :'L\'indice di rifrazione cambia con il colore: fra blu e rosso l\'occhio ha circa 2 D di differenza. La macchia colorata, come la sfocatura, si riduce in proporzione al diametro.';
- if(D<2&&mode!==3)nt+=' <b>Sotto i 2 mm circa</b> però comanda la diffrazione, che il disegno non mostra: il buco piccolo allarga la luce e la macchia smette di rimpicciolirsi.';
+ if(D<2.5&&mode!==3)nt+=' <b>Guarda il riquadro di destra:</b> stringendo, il punto senza difetti si allarga per la diffrazione. Sotto i 2 mm circa è lei a comandare.';
  document.getElementById('nt').innerHTML=nt;
 }
 upd();
