@@ -31,7 +31,7 @@
 <svg width="100%" viewBox="0 0 680 318"><g id="zm"></g></svg>
 <div class="out" id="out"></div>
 <p class="note" id="nt"></p>
-<p class="note">Riquadri in scala vera su 8 primi d'arco di fovea: coni ogni 2,5 µm circa, focale N′F′ 16,7 mm. Diffrazione calcolata (larghezza a metà intensità circa 1,03·λ·f/D, λ = 550 nm); le grandezze in µm sono larghezze a metà intensità. Le macchie dei difetti usano valori indicativi: 1,5 D per il presbite, aberrazioni tipiche di un occhio sano; nell'aberrazione cromatica ogni colore è sfocato in proporzione alla sua distanza dal giallo-verde. Il cono centrale diviso a spicchi mostra i colori che ci arrivano concentrati. Ogni riquadro ha la sua esposizione: conta la forma della macchia, non la luminosità.</p>
+<p class="note">Riquadri in scala vera su 8 primi d'arco di fovea: coni ogni 2,5 µm circa, focale N′F′ 16,7 mm. Diffrazione calcolata (larghezza a metà intensità circa 1,03·λ·f/D, λ = 550 nm); le grandezze in µm sono larghezze a metà intensità. Le macchie dei difetti usano valori indicativi: 1,5 D per il presbite, aberrazioni tipiche di un occhio sano; nell'aberrazione cromatica ogni colore è sfocato in proporzione alla sua distanza dal giallo-verde. Il cono centrale diviso a spicchi mostra i colori che ci arrivano concentrati. Nei riquadri il colore va dal rosso scuro (poca luce) all'arancione fino al bianco (molta luce); ogni riquadro ha la sua esposizione: conta la forma della macchia, non la luminosità assoluta.</p>
 <script>
 var mode=0,real=false,CY=126,PX=200,RX=560,K=14; // K: px per mm of pupil height
 function nf(x,d){return x.toLocaleString('it-IT',{maximumFractionDigits:d});}
@@ -90,8 +90,11 @@ function upd(){
  function cn(dia,pitch){var n=dia/pitch;return n<1.5?'circa un cono':'circa '+nf(n,0)+' coni';}
  function um(dia){return '≈ '+nf(dia,dia<10?1:0)+' µm';}
  function sig(geoD,airyD){return Math.sqrt(Math.pow(airyD/2.355,2)+Math.pow(geoD/4,2));}
+ function heat(v){var st=[[0,34,34,32],[0.2,110,35,25],[0.45,215,95,30],[0.7,255,180,55],[1,255,250,225]];v=Math.max(0,Math.min(1,v));
+  for(var n=1;n<st.length;n++)if(v<=st[n][0]){var a=st[n-1],b=st[n],t=(v-a[0])/(b[0]-a[0]);return 'rgb('+[1,2,3].map(function(c){return Math.round(a[c]+(b[c]-a[c])*t);}).join(',')+')';}
+  return 'rgb(255,250,225)';}
  function mosaic(x0,id,f,pitch,sg,chrom,human){var W=190,y0=34,fieldUm=ARC*f*1000,pp=W/fieldUm*pitch,q='<defs><clipPath id="'+id+'"><rect x="'+x0+'" y="'+y0+'" width="'+W+'" height="'+W+'" rx="8"/></clipPath></defs>';
-  q+='<rect x="'+x0+'" y="'+y0+'" width="'+W+'" height="'+W+'" rx="8" fill="#1E1E1C"/><g clip-path="url(#'+id+')">';
+  q+='<rect x="'+x0+'" y="'+y0+'" width="'+W+'" height="'+W+'" rx="8" fill="#141413"/><g clip-path="url(#'+id+')">';
   var cx=x0+W/2,cy=y0+W/2,nC=Math.ceil(W/pp/2)+1,rh=pp*0.866;
   for(var j=-nC;j<=nC;j++)for(var i=-nC;i<=nC;i++){var px=cx+i*pp+(j%2?pp/2:0),py=cy+j*rh;
    var rU=Math.sqrt(Math.pow((px-cx)/pp*pitch,2)+Math.pow((py-cy)/pp*pitch,2)),col;
@@ -99,14 +102,14 @@ function upd(){
     var I=chrom.map(function(b){return Math.exp(-rU*rU/(2*b.s*b.s))*Math.pow(sg/b.s,1);});
     if(real&&human){var isL=(Math.abs(Math.sin(i*12.9898+j*78.233)*43758.5453)%1)<0.64,num=0,den=0;
      chrom.forEach(function(b,n){var w=isL?b.L:b.M;num+=w*I[n];den+=w;});
-     var k=Math.sqrt(Math.min(1,1.6*num/den)),tint=isL?[255,140,110]:[140,235,120];
-     col='rgb('+tint.map(function(t){return Math.round(48+(t-48)*k);}).join(',')+')';}
+     var k=Math.pow(Math.min(1,1.6*num/den),1.2),tint=isL?[255,140,110]:[140,235,120];
+     col='rgb('+tint.map(function(t){return Math.round(34+(t-34)*k);}).join(',')+')';}
     else{var wS=0,mx=0,acc=[0,0,0];chrom.forEach(function(b,m){var w=I[m]*I[m];wS+=w;mx=Math.max(mx,I[m]);acc[0]+=w*b.c[0];acc[1]+=w*b.c[1];acc[2]+=w*b.c[2];});
-     var br=Math.sqrt(Math.min(1,mx*2.2)),allEq=chrom[0].s===chrom[2].s&&chrom[0].s===chrom[5].s;
-     col='rgb('+acc.map(function(a){var hue=wS>0?a/wS:48;if(allEq)hue=235;return Math.round(48+(hue-48)*br);}).join(',')+')';}}
-   else if(real&&human){var gL=Math.exp(-rU*rU/(2*sg*sg)),isL2=(Math.abs(Math.sin(i*12.9898+j*78.233)*43758.5453)%1)<0.64,k2=Math.sqrt(Math.min(1,gL)),tint2=isL2?[255,140,110]:[140,235,120];
-    col='rgb('+tint2.map(function(t){return Math.round(48+(t-48)*k2);}).join(',')+')';}
-   else{var bb=Math.exp(-rU*rU/(2*sg*sg));col='rgb('+Math.round(62+188*bb)+','+Math.round(62+137*bb)+','+Math.round(58+59*bb)+')';}
+     var br=Math.pow(Math.min(1,mx*4),0.75),allEq=chrom[0].s===chrom[2].s&&chrom[0].s===chrom[5].s;
+     col='rgb('+acc.map(function(a){var hue=wS>0?a/wS:48;if(allEq)hue=235;return Math.round(34+(hue-34)*br);}).join(',')+')';}}
+   else if(real&&human){var gL=Math.exp(-rU*rU/(2*sg*sg)),isL2=(Math.abs(Math.sin(i*12.9898+j*78.233)*43758.5453)%1)<0.64,k2=Math.pow(Math.min(1,gL),1.2),tint2=isL2?[255,140,110]:[140,235,120];
+    col='rgb('+tint2.map(function(t){return Math.round(34+(t-34)*k2);}).join(',')+')';}
+   else{col=heat(Math.exp(-rU*rU/(2*sg*sg)));}
    var rc=pp*0.44;
    if(chrom&&!(real&&human)&&i===0&&j===0){var foc=chrom.filter(function(b){return b.s<Math.max(1.3,sg*1.1);});
     if(foc.length>1){q+='<circle cx="'+px+'" cy="'+py+'" r="'+(rc+1.5)+'" fill="#FFFFFF"/>';foc.forEach(function(b,n){var a0=n/foc.length*2*Math.PI-Math.PI/2,a1=(n+1)/foc.length*2*Math.PI-Math.PI/2;
