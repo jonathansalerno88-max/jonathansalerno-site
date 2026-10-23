@@ -44,6 +44,7 @@
 <button id="dN" onclick="drug='N';upd()">Nessuno</button>
 <button id="dP" onclick="drug='P';upd()">Pilocarpina</button>
 <button id="dC" onclick="drug='C';upd()">Cicloplegico (atropina)</button>
+<label style="display:flex;align-items:center;gap:6px;margin-left:6px"><input type="checkbox" id="mio" onchange="upd()"> <span id="mioL">+ collirio che stringe solo la pupilla</span></label>
 </div>
 <div class="ctl">
 <span>Muscolo ciliare: rilassato</span>
@@ -125,6 +126,7 @@ var lensName={M:['Menisco divergente','−5 D · spesso ai bordi'],H:['Menisco c
 var shapes={M:'M396 95 L408 95 Q420 160 408 225 L396 225 Q428 160 396 95 Z',H:'M396 95 L402 95 Q426 160 402 225 L396 225 Q412 160 396 95 Z',A:'M396 95 L404 95 Q420 160 404 225 L396 225 Q414 160 396 95 Z'};
 var dInfo={N:'',
 P:'<b>Pilocarpina</b> (agonista muscarinico): muscolo ciliare bloccato in contrazione (≈ 6 D, indicativo), zonula lassa, miosi. La pupilla piccola riduce la sfocatura (effetto foro stenopeico).',
+M:'<b>Collirio miotico selettivo</b> (aceclidina 1,44 %, approvata dalla FDA a luglio 2025 per la presbiopia): agonista muscarinico che agisce quasi solo sullo sfintere dell\'iride e stringe la pupilla sotto i 2 mm, stimolando poco il muscolo ciliare. L\'accomodazione resta quella che scegli tu, senza spostamento miopico: aumenta solo la profondità di campo (effetto foro stenopeico). La pilocarpina invece contrae tutti e due.',
 C:'<b>Cicloplegico</b> (antagonista muscarinico: atropina, ciclopentolato, tropicamide): muscolo ciliare paralizzato, zonula tesa, accomodazione 0, midriasi. La pupilla larga aumenta la sfocatura.'};
 function setC(c){cond=c;lens=false;upd();}
 // retinal image size through N' (N'-retina 16.7 mm); foveal cones ~2.5 um apart
@@ -211,7 +213,9 @@ s+=arrowR?'<path d="M'+(x2-8)+' '+(y-5)+' L'+x2+' '+y+' L'+(x2-8)+' '+(y+5)+'" f
 return s+'<text class="th" x="'+((x1+x2)/2)+'" y="'+(y-7)+'" text-anchor="middle" fill="'+c+'">'+lbl+'</text>';}
 function upd(){
 var sl=document.getElementById('acc');sl.disabled=drug!=='N';
-var A=accVal(),pw=drug==='P'?12:drug==='C'?42:30,uL=useL(),isInf=objM==='inf';
+var mb=document.getElementById('mio');mb.disabled=drug!=='N';if(drug!=='N')mb.checked=false;var mio=mb.checked;
+  document.getElementById('mioL').style.opacity=drug!=='N'?0.4:1;
+  var A=accVal(),pw=drug==='P'?12:drug==='C'?42:mio?12:30,uL=useL(),isInf=objM==='inf';
 var P1=Psys(0),fs0=1/P1;
 var oxEl=document.getElementById('ox'),ox,clamped=false;
 if(!isInf&&objM!==null){ox=X0+objM*fs0;if(ox>650){ox=650;clamped=true;}if(ox<330){ox=330;clamped=true;}oxEl.value=ox;}else ox=parseFloat(oxEl.value);
@@ -259,10 +263,13 @@ else{var m=-diR/d0mm;eq+='<br><b>m = −dᵢ / d₀</b> = −'+fmt(diR,1)+' / '+
 eq+='<br>retina a 16,7 mm da N′: a fuoco se dᵢ = 16,7 mm';
 if(excess[cond].length>1){var Pr2=60+excess[cond][1]+A+(uL?-excess[cond][1]:0),di2=1000/(Pr2-V0);eq+=' · meridiano 2: f = '+fmt(1000/Pr2,1)+' mm, dᵢ = '+fmt(di2,1)+' mm';}
 document.getElementById('eqBox').innerHTML=eq;
-var stat=function(I){if(I.inf)return 'raggi paralleli: fuoco all\'infinito, nessun punto a fuoco';if(I.virt)return 'immagine virtuale: nessun fuoco sulla retina';var e=I.di/DI-1;return Math.abs(e)<0.02?'a fuoco sulla retina':e<0?'fuoco davanti alla retina':'fuoco dietro la retina';};
-var errs=imgs.map(function(I){return (I.inf||I.virt)?9:Math.abs(I.di/DI-1);}),worst=Math.max.apply(null,errs);
-document.getElementById('cap').textContent=info[cond]+(uL?' + lente':'')+(drug==='P'?' + pilocarpina':drug==='C'?' + cicloplegico':'');
-document.getElementById('cap2').textContent=imgs.length>1?('meridiano 1: '+stat(imgs[0])+' · meridiano 2: '+stat(imgs[1])):stat(imgs[0]);
+var stat=function(I,i){if(!I.inf&&!I.virt&&i!=null){var e=dDs[i];return Math.abs(e)<0.25?'a fuoco sulla retina':e>0?'fuoco davanti alla retina ('+fmt(e,2)+' D di troppo)':'fuoco dietro la retina ('+fmt(-e,2)+' D in meno)';}if(I.inf)return 'raggi paralleli: fuoco all\'infinito, nessun punto a fuoco';if(I.virt)return 'immagine virtuale: nessun fuoco sulla retina';var e=I.di/DI-1;return Math.abs(e)<0.02?'a fuoco sulla retina':e<0?'fuoco davanti alla retina':'fuoco dietro la retina';};
+var pmm=drug==='P'?1.6:drug==='C'?7:mio?1.8:4;
+var dDs=excess[cond].map(function(ex){return 60+ex+A+(uL?-ex:0)-60-(isInf?0:V0);});
+var errs=imgs.map(function(I,i){return (I.inf||I.virt)?99:Math.abs(dDs[i]);}),worst=Math.max.apply(null,errs);
+var bAm=worst>=99?99:pmm*worst*3.44; // blur angle in arcmin: pupil (mm) x defocus (D) = mrad
+document.getElementById('cap').textContent=info[cond]+(uL?' + lente':'')+(drug==='P'?' + pilocarpina':drug==='C'?' + cicloplegico':'')+(mio?' + collirio miotico':'');
+document.getElementById('cap2').textContent=imgs.length>1?('meridiano 1: '+stat(imgs[0],0)+' · meridiano 2: '+stat(imgs[1],1)):stat(imgs[0],0);
 var ci;
 if(isInf)ci='<b>All\'infinito</b>: raggi paralleli, l\'immagine si forma in F′ (dᵢ = f).';
 else{var r=(ox-X0)/fs0;
@@ -273,15 +280,15 @@ else if(r>0.97)ci='<b>In F</b>: l\'immagine va all\'infinito.';
 else ci='<b>Prima di F</b>: immagine virtuale, dritta, ingrandita, dalla parte dell\'oggetto.';
 ci+=' (Le posizioni F e 2F nel disegno sono didattiche: nell\'occhio vero F sta a circa 17 mm dalla cornea.)';}
 document.getElementById('caseInfo').innerHTML=ci;
-var bl=Math.min(8,40*worst*(pw/30)),sharp=bl<0.6,ast=cond==='A'&&!uL;
+var bl=Math.min(8,bAm*0.3),sharp=bAm<1.5,ast=cond==='A'&&!uL;
 var fid=sharp?'':(ast?'url(#fAst)':'url(#fIso)'),fid2=sharp?'':(ast?'url(#fAst2)':'url(#fIso2)');
 ['gIso','gIso2'].forEach(function(id){document.getElementById(id).setAttribute('stdDeviation',bl);});
 ['gAst','gAst2'].forEach(function(id){document.getElementById(id).setAttribute('stdDeviation','0.3 '+bl);});
 document.getElementById('seen').setAttribute('filter',fid);document.getElementById('retImg').setAttribute('filter',fid2);
-document.getElementById('seenLbl').textContent=sharp?(worst<0.02?'nitida':'quasi nitida (pupilla piccola)'):(ast?'striata in una direzione':(bl<2.5?'poco sfocata':'sfocata'));
-document.getElementById('pupLbl').textContent=drug==='P'?'pupilla stretta (miosi)':drug==='C'?'pupilla dilatata (midriasi)':'';
+document.getElementById('seenLbl').textContent=(bAm<1?'nitida':bAm<3?'quasi nitida':(ast?'striata in una direzione':(bAm<8?'poco sfocata':'sfocata')))+(bAm<99?' · sfocatura '+(bAm<1?'< 1':fmt(bAm,0))+'′':'');
+document.getElementById('pupLbl').textContent=mio?'pupilla stretta (collirio)':drug==='P'?'pupilla stretta (miosi)':drug==='C'?'pupilla dilatata (midriasi)':'';
 document.getElementById('astLeg').textContent=(cond==='A'&&!uL)?'raggi chiari e fuochi ₂: secondo meridiano':'';
-document.getElementById('drugInfo').innerHTML=dInfo[drug];
+document.getElementById('drugInfo').innerHTML=mio?dInfo.M:(drug!=='N'?dInfo[drug]+' Il collirio che stringe solo la pupilla qui non si aggiunge: '+(drug==='P'?'la pupilla è già stretta.':'l\'atropina blocca gli stessi recettori muscarinici dello sfintere dell\'iride su cui agisce.'):'');
 }
 upd();retina();
 </script>
