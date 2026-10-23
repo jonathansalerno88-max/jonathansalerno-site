@@ -102,8 +102,8 @@ function upd(){
  }else{
   var ch=mode===2?[sig(3*D,airy),sig(6*D,airy)]:null;
   z+=mosaic(12,'zA',16.7,2.5,mode===2?h0:hS,ch)+mosaic(245,'zB',16.7,2.5,h0,mode===2?[h0,h0]:null)+mosaic(478,'zC',EF,2,eS,null);
-  z+=T(107,246,'Uomo, con il difetto','th',null,'middle')+T(107,264,um(tot)+', '+cn(tot,2.5),'ts',null,'middle')+T(107,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
-  z+=T(340,246,'Uomo, senza il difetto','th',null,'middle')+T(340,264,um(airy)+', '+cn(airy,2.5),'ts',null,'middle')+T(340,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
+  z+=T(107,246,mode===0?'Uomo, presbite':mode===1?'Uomo, aberrazione sferica':'Uomo, aberrazione cromatica','th',null,'middle')+T(107,264,um(tot)+', '+cn(tot,2.5),'ts',null,'middle')+T(107,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
+  z+=T(340,246,mode===0?'Stesso occhio, a fuoco':'Stesso occhio, ottica perfetta','th',null,'middle')+T(340,264,um(airy)+', '+cn(airy,2.5),'ts',null,'middle')+T(340,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
   z+=T(573,246,'Aquila, a fuoco','th',null,'middle')+T(573,264,um(eAiry)+', '+cn(eAiry,2),'ts',null,'middle')+T(573,282,'N′F′ ≈ 24 mm · 1 cono = 0,29′','ts','#534AB7','middle');
  }
  z+=T(340,310,'angolo di un cono = larghezza del cono / N′F′: per questo l\'aquila ha quasi il doppio dei pixel','ts','#888780','middle');
@@ -119,7 +119,7 @@ function upd(){
  var nt=mode===3?'Occhio senza difetti: tutti i raggi arrivano nello stesso punto della retina, e il punto resta un dischetto solo per la diffrazione. A metà intensità è largo meno di un cono a 8 mm e circa due o tre coni a 1,5 mm: stringere toglie luce e allarga il punto. Una macchia più piccola di un cono non servirebbe, perché la retina non distingue dettagli più fini. Un occhio vero ha sempre un po\' di aberrazioni, per questo a fuoco il compromesso migliore è una pupilla di circa 2,5–3 mm.':mode===0?'Il presbite non vede le cose più grandi: le vede sfocate, perché ogni punto diventa una macchiolina. Con 1,5 D di errore, come chi legge a 40 cm senza accomodare abbastanza, la macchia è circa 25 µm per ogni mm di pupilla: 100 µm a 4 mm, 45 µm a 1,8 mm (aceclidina). Il fuoco resta dietro la retina: la pupilla piccola non lo sposta, restringe il cono.'
   :mode===1?'Nell\'aberrazione sferica i raggi periferici vengono piegati troppo. Chiudendo la pupilla si tolgono proprio quelli: dimezzando il diametro la macchia scende a circa un ottavo.'
   :'L\'indice di rifrazione cambia con il colore, quindi l\'occhio ha un fuoco per ogni colore: fra blu e rosso circa 2 D di differenza. Se il verde-giallo, il colore a cui siamo più sensibili, è a fuoco, il blu si allarga di più e il rosso un po\' meno: un punto bianco diventa un centro bianco con un alone blu-viola. Nel riquadro centrale tutti i colori cadono nello stesso punto e il punto resta bianco. L\'alone si riduce in proporzione al diametro della pupilla.';
- if(D<2.5&&mode!==3)nt+=' <b>Guarda il riquadro centrale:</b> stringendo, il punto senza difetti si allarga per la diffrazione. Sotto i 2 mm circa è lei a comandare.';
+ if(D<2.5&&mode!==3)nt+=' <b>Guarda il riquadro centrale</b>, lo stesso occhio con un\'ottica perfetta (un confronto ideale: ogni occhio vero ha un po\' di aberrazioni): stringendo, il punto si allarga per la diffrazione. Sotto i 2 mm circa è lei a comandare.';
  document.getElementById('nt').innerHTML=nt;
 }
 upd();
