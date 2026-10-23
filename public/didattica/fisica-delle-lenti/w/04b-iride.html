@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>I due muscoli dell'iride</title>
+<title>Iride e muscolo ciliare</title>
 <link rel="stylesheet" href="widget.css">
 <style>
 .ctl{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:0 0 8px;font-size:13px;color:var(--text-secondary)}
@@ -16,10 +16,13 @@
 </style>
 </head>
 <body>
-<h2 class="sr-only">L'iride vista di fronte con i suoi due muscoli: lo sfintere, circolare, comandato dal parasimpatico attraverso il terzo nervo cranico, il ganglio ciliare e i recettori muscarinici M3; il dilatatore, radiale, comandato dal simpatico attraverso il centro cilio-spinale, il ganglio cervicale superiore e i recettori alfa-1. Si possono scegliere luce o penombra, un collirio o una lesione, e vedere il diametro della pupilla.</h2>
+<h2 class="sr-only">L'iride vista di fronte con i suoi due muscoli: lo sfintere, circolare, comandato dal parasimpatico attraverso il terzo nervo cranico, il ganglio ciliare e i recettori muscarinici M3; il dilatatore, radiale, comandato dal simpatico attraverso il centro cilio-spinale, il ganglio cervicale superiore e i recettori alfa-1. Sotto, il muscolo ciliare visto di lato con zonula e cristallino: riceve quasi tutte le fibre parasimpatiche del ganglio ciliare e un piccolo ramo simpatico beta-2. Si possono scegliere luce o penombra, sguardo lontano o vicino, un collirio o una lesione.</h2>
 <div class="ctl"><span class="lb">Luce</span>
 <button id="lB" onclick="light='B';upd()">Piena luce</button>
 <button id="lD" onclick="light='D';upd()">Penombra (come nell'eclissi)</button></div>
+<div class="ctl"><span class="lb">Guardi</span>
+<button id="gF" onclick="near=false;upd()">Lontano</button>
+<button id="gN" onclick="near=true;upd()">Vicino (40 cm)</button></div>
 <div class="ctl"><span class="lb">Collirio</span>
 <button id="d0" onclick="setD(0)">Nessuno</button>
 <button id="d1" onclick="setD(1)">Pilocarpina</button>
@@ -31,7 +34,7 @@
 <div class="ctl"><span class="lb">Lesione</span>
 <button id="d7" onclick="setD(7)">Via simpatica interrotta (Horner)</button>
 <button id="d8" onclick="setD(8)">III nervo interrotto</button></div>
-<svg width="100%" viewBox="0 0 680 470">
+<svg width="100%" viewBox="0 0 680 750">
 <defs>
 <marker id="aP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#185FA5"/></marker>
 <marker id="aS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#A32D2D"/></marker>
@@ -41,21 +44,21 @@
 <g id="path"></g>
 </svg>
 <p class="info" id="info"></p>
-<p class="note">Diametri della pupilla indicativi: il disegno mostra la direzione e l'ordine di grandezza dell'effetto, non i valori di un paziente. Lo sfintere è più forte del dilatatore, per questo un agonista muscarinico stringe la pupilla anche al buio. Colori: <b style="color:#185FA5">blu</b> parasimpatico, <b style="color:#A32D2D">rosso</b> simpatico.</p>
+<p class="note">Diametri della pupilla indicativi: il disegno mostra la direzione e l'ordine di grandezza dell'effetto, non i valori di un paziente. Lo sfintere è più forte del dilatatore, per questo un agonista muscarinico stringe la pupilla anche al buio. La quota di fibre per il ciliare (circa 97 %) è la stima classica sugli studi anatomici del ganglio ciliare. Colori: <b style="color:#185FA5">blu</b> parasimpatico, <b style="color:#A32D2D">rosso</b> simpatico.</p>
 <script>
-var light='B',drug=0,CX=150,CY=230,PXMM=18,RI=108;
+var light='B',near=false,drug=0,CX=150,CY=230,PXMM=18,RI=108;
 var P='#185FA5',S='#A32D2D';
 // s = sphincter drive, d = dilator drive (0 none, 1 normal maximum), cil = ciliary muscle state
 var D=[
- {n:'Nessun collirio',s:null,d:null,cil:'segue l\'accomodazione',rec:['',''],txt:'Lo sfintere e il dilatatore tirano in direzioni opposte: la pupilla è il risultato del loro equilibrio. La luce aumenta il tono parasimpatico (riflesso fotomotore), la penombra quello simpatico.'},
- {n:'Pilocarpina',s:3,d:null,cil:'contratto: accomodazione forzata, la vista si sposta verso il vicino',rec:['+ agonista M3',''],txt:'<b>Pilocarpina</b>: agonista dei recettori muscarinici M3. Contrae lo sfintere (miosi forte, anche al buio) e il muscolo ciliare, che ha gli stessi recettori: accomodazione forzata, mal di testa, raramente trazione sulla retina. Usi: glaucoma ad angolo chiuso; a basso dosaggio, presbiopia.'},
- {n:'Aceclidina',s:3,d:null,cil:'quasi a riposo: poco effetto sull\'accomodazione',rec:['+ agonista M3',''],txt:'<b>Aceclidina</b> 1,44 %: agonista muscarinico che agisce quasi solo sullo sfintere e poco sul muscolo ciliare. Miosi senza spostamento miopico: aumenta la profondità di campo. Uso: presbiopia, approvata dalla FDA a luglio 2025.'},
- {n:'Tropicamide / atropina',s:0,d:null,cil:'paralizzato: niente accomodazione (cicloplegia)',rec:['× antagonista M3',''],txt:'<b>Tropicamide, ciclopentolato, atropina</b>: antagonisti muscarinici. Bloccano lo sfintere (midriasi) e il muscolo ciliare (cicloplegia). Il dilatatore resta libero e allarga la pupilla. Usi: esame del fondo dell\'occhio (tropicamide, poche ore), misura della vista nei bambini (ciclopentolato), uveiti e ambliopia (atropina, giorni).'},
- {n:'Fenilefrina',s:null,d:1.5,cil:'segue l\'accomodazione',rec:['','+ agonista α1'],txt:'<b>Fenilefrina</b>: agonista α1. Contrae il dilatatore (midriasi) senza toccare il muscolo ciliare: l\'accomodazione resta. Si associa spesso alla tropicamide per l\'esame del fondo, perché agisce sull\'altro muscolo.'},
- {n:'Fentolamina',s:null,d:0.2,cil:'segue l\'accomodazione',rec:['','× antagonista α1'],txt:'<b>Fentolamina</b>: antagonista α1. Rilassa il dilatatore: la pupilla si stringe poco in piena luce, dove conta già lo sfintere, ma molto in penombra, perché non riesce più ad allargarsi. Uso: far tornare normale una pupilla dilatata con i colliri dopo la visita.'},
- {n:'Brimonidina',s:null,d:'b',cil:'segue l\'accomodazione',rec:['','+ α2: meno noradrenalina'],txt:'<b>Brimonidina</b>: agonista α2. I recettori α2 stanno sulla terminazione nervosa simpatica e frenano il rilascio di noradrenalina: il dilatatore riceve meno segnale. Miosi lieve, soprattutto in penombra. Usi: glaucoma (riduce la produzione di umore acqueo) e aloni notturni.'},
- {n:'Horner',s:null,d:0.15,cil:'segue l\'accomodazione',rec:['','nessun segnale'],txt:'<b>Sindrome di Horner</b>: la via simpatica è interrotta in uno dei tre neuroni (ipotalamo-midollo, midollo-ganglio cervicale superiore, ganglio-occhio). Il dilatatore non riceve segnale: miosi, ptosi lieve, a volte anidrosi del volto. L\'anisocoria è più evidente in penombra, quando l\'occhio sano si dilata e quello malato no.'},
- {n:'III nervo',s:0,d:null,cil:'paralizzato',rec:['nessun segnale',''],txt:'<b>Lesione del III nervo cranico</b>: le fibre parasimpatiche viaggiano in superficie sul nervo, quindi una compressione (per esempio un aneurisma della comunicante posteriore) le colpisce presto. Lo sfintere non riceve segnale: midriasi fissa, che non risponde alla luce. L\'anisocoria è più evidente in piena luce, quando l\'occhio sano si stringe.'}
+ {n:'Nessun collirio',c:null,s:null,d:null,cil:'segue l\'accomodazione',rec:['',''],txt:'Lo sfintere e il dilatatore tirano in direzioni opposte: la pupilla è il risultato del loro equilibrio. La luce aumenta il tono parasimpatico (riflesso fotomotore), la penombra quello simpatico.'},
+ {n:'Pilocarpina',c:'F',s:3,d:null,cil:'contratto: accomodazione forzata, la vista si sposta verso il vicino',rec:['+ agonista M3',''],txt:'<b>Pilocarpina</b>: agonista dei recettori muscarinici M3. Contrae lo sfintere (miosi forte, anche al buio) e il muscolo ciliare, che ha gli stessi recettori: accomodazione forzata, mal di testa, raramente trazione sulla retina. Usi: glaucoma ad angolo chiuso; a basso dosaggio, presbiopia.'},
+ {n:'Aceclidina',c:'S',s:3,d:null,cil:'quasi a riposo: poco effetto sull\'accomodazione',rec:['+ agonista M3',''],txt:'<b>Aceclidina</b> 1,44 %: agonista muscarinico che agisce quasi solo sullo sfintere e poco sul muscolo ciliare. Miosi senza spostamento miopico: aumenta la profondità di campo. Uso: presbiopia, approvata dalla FDA a luglio 2025.'},
+ {n:'Tropicamide / atropina',c:'X',s:0,d:null,cil:'paralizzato: niente accomodazione (cicloplegia)',rec:['× antagonista M3',''],txt:'<b>Tropicamide, ciclopentolato, atropina</b>: antagonisti muscarinici. Bloccano lo sfintere (midriasi) e il muscolo ciliare (cicloplegia). Il dilatatore resta libero e allarga la pupilla. Usi: esame del fondo dell\'occhio (tropicamide, poche ore), misura della vista nei bambini (ciclopentolato), uveiti e ambliopia (atropina, giorni).'},
+ {n:'Fenilefrina',c:null,s:null,d:1.5,cil:'segue l\'accomodazione',rec:['','+ agonista α1'],txt:'<b>Fenilefrina</b>: agonista α1. Contrae il dilatatore (midriasi) senza toccare il muscolo ciliare: l\'accomodazione resta. Si associa spesso alla tropicamide per l\'esame del fondo, perché agisce sull\'altro muscolo.'},
+ {n:'Fentolamina',c:null,s:null,d:0.2,cil:'segue l\'accomodazione',rec:['','× antagonista α1'],txt:'<b>Fentolamina</b>: antagonista α1. Rilassa il dilatatore: la pupilla si stringe poco in piena luce, dove conta già lo sfintere, ma molto in penombra, perché non riesce più ad allargarsi. Uso: far tornare normale una pupilla dilatata con i colliri dopo la visita.'},
+ {n:'Brimonidina',c:null,s:null,d:'b',cil:'segue l\'accomodazione',rec:['','+ α2: meno noradrenalina'],txt:'<b>Brimonidina</b>: agonista α2. I recettori α2 stanno sulla terminazione nervosa simpatica e frenano il rilascio di noradrenalina: il dilatatore riceve meno segnale. Miosi lieve, soprattutto in penombra. Usi: glaucoma (riduce la produzione di umore acqueo) e aloni notturni.'},
+ {n:'Horner',c:null,s:null,d:0.15,cil:'segue l\'accomodazione',rec:['','nessun segnale'],txt:'<b>Sindrome di Horner</b>: la via simpatica è interrotta in uno dei tre neuroni (ipotalamo-midollo, midollo-ganglio cervicale superiore, ganglio-occhio). Il dilatatore non riceve segnale: miosi, ptosi lieve, a volte anidrosi del volto. L\'anisocoria è più evidente in penombra, quando l\'occhio sano si dilata e quello malato no.'},
+ {n:'III nervo',c:'X',s:0,d:null,cil:'paralizzato',rec:['nessun segnale',''],txt:'<b>Lesione del III nervo cranico</b>: le fibre parasimpatiche viaggiano in superficie sul nervo, quindi una compressione (per esempio un aneurisma della comunicante posteriore) le colpisce presto. Lo sfintere non riceve segnale: midriasi fissa, che non risponde alla luce. L\'anisocoria è più evidente in piena luce, quando l\'occhio sano si stringe.'}
 ];
 function setD(i){drug=i;upd();}
 function nf(x,d){return x.toLocaleString('it-IT',{maximumFractionDigits:d});}
@@ -66,7 +69,8 @@ function box(x,y,w,l1,l2,col,on){return '<rect x="'+x+'" y="'+y+'" width="'+w+'"
 function upd(){
  document.getElementById('lB').classList.toggle('act',light==='B');document.getElementById('lD').classList.toggle('act',light==='D');
  for(var i=0;i<9;i++)document.getElementById('d'+i).classList.toggle('act',drug===i);
- var g=D[drug],s0=light==='B'?0.8:0.2,d0=light==='B'?0.3:0.8;
+ document.getElementById('gF').classList.toggle('act',!near);document.getElementById('gN').classList.toggle('act',near);
+ var g=D[drug],s0=(light==='B'?0.8:0.2)+(near?0.5:0),d0=light==='B'?0.3:0.8;
  var s=g.s===null?s0:g.s,d=g.d===null?d0:(g.d==='b'?d0*0.5:g.d);
  var dm=pupil(s,d),dmN=pupil(s0,d0),rp=dm/2*PXMM,rs=rp+1*PXMM;
  var sAct=Math.min(1,s/1),dAct=Math.min(1,d/1);
@@ -106,11 +110,35 @@ function upd(){
  // links to the iris
  var yl=Math.max(ry,rys)+58;
  p+='<path d="M'+(px+30)+' '+(ry+58)+' L'+(px+30)+' '+(yl+20)+' L'+(CX+rs+4)+' '+(yl+20)+' L'+(CX+rs*0.75)+' '+(CY+rs*0.75)+'" fill="none" stroke="'+P+'" stroke-width="1.2" stroke-dasharray="4 3" opacity="'+(pOn?0.9:0.3)+'"/>';
+ p+=T(258,yl+15,'≈ 3 %','ts',P);
  p+='<path d="M'+(sx+30)+' '+(rys+58)+' L'+(sx+30)+' '+(yl+36)+' L'+(CX+RI*0.6)+' '+(yl+36)+' L'+(CX+RI*0.62)+' '+(CY+RI*0.62)+'" fill="none" stroke="'+S+'" stroke-width="1.2" stroke-dasharray="4 3" opacity="'+(sOn?0.9:0.3)+'"/>';
  // ciliary muscle
- p+=T(px,yl+60,'Muscolo ciliare: '+g.cil,'ts',P);
+ // ciliary muscle, side view
+ var base=near?2.5:0.5,Ac=g.c==='F'?Math.max(6,base):g.c==='S'?base+0.3:g.c==='X'?0:base;
+ var LX=170,LY=636,lry=54,lrx=10+Ac*2.6,off=88-Ac*2,slack=Math.min(1,Ac/6),rpS=Math.max(6,dm/2*7);
+ p+=T(20,500,'Il muscolo ciliare visto di lato','th')+T(20,516,'la luce arriva da sinistra','ts');
+ p+='<line x1="20" y1="'+LY+'" x2="300" y2="'+LY+'" stroke="var(--b)" stroke-width="0.5" stroke-dasharray="4 4"/>';
+ p+='<path d="M'+(LX-46)+' '+(LY-108)+' Q'+(LX-128)+' '+LY+' '+(LX-46)+' '+(LY+108)+'" fill="#E6F1FB" fill-opacity="0.5" stroke="#888780" stroke-width="1"/>'+T(LX-96,LY-70,'cornea','ts',null,'end');
+ p+='<ellipse cx="'+LX+'" cy="'+LY+'" rx="'+lrx+'" ry="'+lry+'" fill="#B5D4F4" opacity="0.7" stroke="#378ADD" stroke-width="0.8"/>';
+ [-1,1].forEach(function(sg){var cy=LY+sg*off,ey=LY+sg*lry,col=slack<0.2?'#444441':'#888780',w=slack<0.2?1.6:1;
+  p+='<line x1="'+(LX-lrx-6)+'" y1="'+(LY+sg*rpS)+'" x2="'+(LX-lrx-6)+'" y2="'+(cy-sg*4)+'" stroke="#854F0B" stroke-width="4"/>';
+  [-7,7].forEach(function(dx){var o=(dx<0?-1:1)*10*slack;p+='<path d="M'+(LX+dx)+' '+(cy-sg*9)+' Q'+(LX+dx+o)+' '+((cy+ey)/2)+' '+(LX+dx*0.6)+' '+ey+'" fill="none" stroke="'+col+'" stroke-width="'+w+'"/>';});
+  p+='<ellipse cx="'+LX+'" cy="'+cy+'" rx="22" ry="'+(10+Ac)+'" fill="#F0997B" stroke="#993C1D" stroke-width="0.6" opacity="'+(g.c==='X'?0.45:1)+'"/>';});
+ p+=T(LX+28,LY+off+5,'muscolo ciliare','ts')+T(LX+26,LY-lry-8,'zonula','ts')+T(LX+lrx+8,LY+4,'cristallino','ts')+T(LX-lrx-12,LY+off-14,'iride','ts',null,'end');
+ var cyT=LY-off;
+ p+='<path d="M'+(px+140)+' '+(ry+58)+' L'+(px+140)+' 520 L'+(LX+36)+' 520 L'+(LX+14)+' '+(cyT-6)+'" fill="none" stroke="'+P+'" stroke-width="4" opacity="'+(pOn&&g.c!=='X'?0.85:0.3)+'"/>';
+ p+=T(px+146,512,'≈ 97 % delle fibre','ts',P);
+ p+='<path d="M'+(sx+140)+' '+(rys+58)+' L'+(sx+140)+' 538 L'+(LX+50)+' 538 L'+(LX+16)+' '+(cyT+2)+'" fill="none" stroke="'+S+'" stroke-width="1" stroke-dasharray="3 3" opacity="'+(sOn?0.85:0.3)+'"/>';
+ p+=T(420,556,'β2: rilassa poco','ts',S);
+ var st=g.c==='F'?'contratto (forzato)':g.c==='X'?'paralizzato':Ac>1?'contratto':'quasi rilassato (tono di fondo)';
+ var tx=320,ty=600,L2=[['Muscolo ciliare: '+st,'th','#16222E'],
+  ['accomodazione ≈ '+nf(Ac,1)+' D · zonula '+(slack<0.2?'tesa':'lassa')+' · cristallino '+(Ac<1?'piatto':'arrotondato'),'ts',null],
+  ['Riceve quasi tutte le fibre parasimpatiche del ganglio','ts',P],['ciliare, circa il 97 %: allo sfintere ne arriva il 3 %.','ts',P],
+  ['Se il ganglio si danneggia, ricrescendo molte fibre del','ts',P],['ciliare finiscono sullo sfintere: pupilla tonica di Adie.','ts',P],
+  ['Il ramo simpatico β2 lo rilassa poco e lentamente.','ts',S]];
+ L2.forEach(function(l,i){p+=T(tx,ty+i*17+(i>0?4:0),l[0],l[1],l[2]);});
  document.getElementById('path').innerHTML=p;
- document.getElementById('info').innerHTML=g.txt+(light==='D'&&drug===0?' In penombra il simpatico prevale e la pupilla si allarga: è quello che succede durante un\'eclissi.':'');
+ document.getElementById('info').innerHTML=g.txt+(light==='D'&&drug===0&&!near?' In penombra il simpatico prevale e la pupilla si allarga: è quello che succede durante un\'eclissi.':'')+(near&&g.c!=='X'?' <b>Guardando vicino</b> il nucleo di Edinger-Westphal comanda insieme tre cose: accomodazione (muscolo ciliare), miosi (sfintere) e convergenza (retti mediali, sempre III nervo). È la triade del vicino.':'');
 }
 upd();
 </script>
