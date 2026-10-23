@@ -26,12 +26,13 @@
 <button id="m2" onclick="mode=2;upd()">Aberrazione cromatica</button>
 </div>
 <div class="sl"><span>Diametro della pupilla</span><input type="range" id="D" min="1.5" max="8" step="0.1" value="6" oninput="upd()"><output id="DO"></output></div>
-<svg width="100%" viewBox="0 0 680 290"><g id="g"></g></svg>
+<svg width="100%" viewBox="0 0 680 250"><g id="g"></g></svg>
+<svg width="100%" viewBox="0 0 680 300"><g id="zm"></g></svg>
 <div class="out" id="out"></div>
 <p class="note" id="nt"></p>
-<p class="note">Nello zoom il dischetto di diffrazione è calcolato (2,44·λ·f/D, con λ = 550 nm e f = 16,7 mm); le macchie dei difetti usano valori indicativi: 1,5 D per il presbite, un'aberrazione sferica e una cromatica tipiche di un occhio sano.</p>
+<p class="note">Riquadri in scala vera, tutti sullo stesso angolo di 8 primi. Diffrazione calcolata (larghezza a metà intensità circa 1,03·λ·f/D, λ = 550 nm); le grandezze in µm sono larghezze a metà intensità; macchie dei difetti con valori indicativi (1,5 D per il presbite, aberrazioni tipiche di un occhio sano). Uomo: coni foveali ogni 2,5 µm circa, focale 16,7 mm. Aquila: fotorecettori foveali di circa 2 µm e occhio lungo circa 35 mm contro 24 (Reymond e Wolfe 1981), quindi focale stimata intorno ai 24 mm; pupilla supposta di 6 mm. Ogni riquadro ha la sua esposizione: conta la forma della macchia, non la luminosità.</p>
 <script>
-var mode=0,CY=140,PX=180,RX=430,K=14; // K: px per mm of pupil height
+var mode=0,CY=126,PX=200,RX=560,K=14; // K: px per mm of pupil height
 function nf(x,d){return x.toLocaleString('it-IT',{maximumFractionDigits:d});}
 function T(x,y,t,cls,col,anc){return '<text class="'+cls+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+'>'+t+'</text>';}
 function L(x1,y1,x2,y2,c,w,op,da){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+(w||1.2)+'" opacity="'+(op==null?1:op)+'"'+(da?' stroke-dasharray="'+da+'"':'')+'/>';}
@@ -39,7 +40,7 @@ function upd(){
  var D=parseFloat(document.getElementById('D').value);document.getElementById('DO').textContent=nf(D,1)+' mm';
  for(var i=0;i<4;i++)document.getElementById('m'+i).classList.toggle('act',mode===i);
  var s='',hp=D/2*K,hits=[];
- s+=L(10,CY,456,CY,'#9DACB9',0.5,1,'4 4');
+ s+=L(10,CY,600,CY,'#9DACB9',0.5,1,'4 4');
  // rays at heights from -4 to 4 mm (the whole 8 mm pupil)
  var hs=[-4,-3.25,-2.5,-1.75,-1,-0.35,0.35,1,1.75,2.5,3.25,4];
  hs.forEach(function(h){
@@ -50,9 +51,9 @@ function upd(){
   cols.forEach(function(c){
    var fx;
    if(mode===3)fx=RX;
-   else if(mode===0)fx=RX+80;                       // near object, no accommodation: focus behind the retina
-   else if(mode===1)fx=RX-6.8*h*h;             // marginal rays focus closer (spherical aberration)
-   else fx=RX+c[1]*1.7;                            // blue in front, red behind; green on the retina
+   else if(mode===0)fx=RX+100;                       // near object, no accommodation: focus behind the retina
+   else if(mode===1)fx=RX-9*h*h;             // marginal rays focus closer (spherical aberration)
+   else fx=RX+c[1]*1.8;                            // blue in front, red behind; green on the retina
    var yR=y0+(CY-y0)*(RX-PX)/(fx-PX);
    s+=L(sx0,mode===0?CY:y0+(mode===2?(c[1]<0?-1:1):0),PX,y0,c[0],1.2);
    s+=L(PX,y0,RX,yR,c[0],1.2);
@@ -63,42 +64,58 @@ function upd(){
  // iris and lens
  s+='<rect x="'+(PX-4)+'" y="'+(CY-70)+'" width="7" height="'+(70-hp)+'" fill="#854F0B"/><rect x="'+(PX-4)+'" y="'+(CY+hp)+'" width="7" height="'+(70-hp)+'" fill="#854F0B"/>';
  s+='<ellipse cx="'+(PX+12)+'" cy="'+CY+'" rx="7" ry="66" fill="#B5D4F4" opacity="0.55" stroke="#378ADD" stroke-width="0.6"/>';
- s+=T(PX,CY-78,'iride','ts',null,'middle')+T(PX+12,CY+84,'cristallino','ts',null,'start');
- s+=T(16,CY-100,mode===0?'raggi da un punto vicino (libro a 40 cm)':'raggi da un punto lontano','ts');
+ s+=T(PX-10,CY-58,'iride','ts',null,'end')+T(PX+12,CY+84,'cristallino','ts',null,'start');
+ s+=T(16,46,mode===0?'raggi da un punto vicino (libro a 40 cm)':'raggi da un punto lontano','ts');
  if(mode===0)s+='<circle cx="16" cy="'+CY+'" r="3" fill="#16222E"/>';
- s+=T(16,CY+108,'in grigio: raggi fermati dall\'iride','ts','#888780');
+ s+=T(16,CY+100,'in grigio: raggi fermati dall\'iride','ts','#888780');
  // retina and spot
- s+=L(RX,CY-84,RX,CY+84,'#D85A30',3)+T(RX,CY+100,'retina','ts',null,'middle');
+ s+=L(RX,CY-84,RX,CY+84,'#D85A30',3)+T(RX+8,CY-70,'retina','ts');
  var top=Math.min.apply(null,hits),bot=Math.max.apply(null,hits);
  s+='<rect x="'+(RX-4)+'" y="'+(top-1)+'" width="8" height="'+Math.max(2,bot-top+2)+'" fill="#E24B4A" opacity="0.8"/>';
- // zoom on the retina at true scale: 40 um field, foveal cones every 2.5 um
- var airy=22.4/D,geo=mode===0?25*D:mode===1?0.08*D*D*D:mode===2?5*D:0,tot=Math.sqrt(geo*geo+airy*airy),PU=2.6;
- function zoom(cx,dia,chrom,id){var x0=cx-52,y0=66,q='<defs><clipPath id="'+id+'"><rect x="'+x0+'" y="'+y0+'" width="104" height="104" rx="8"/></clipPath></defs>';
-  q+='<rect x="'+x0+'" y="'+y0+'" width="104" height="104" rx="8" fill="#2C2C2A"/><g clip-path="url(#'+id+')">';
-  for(var row=0;row<19;row++)for(var col=0;col<18;col++){var px=x0+col*6.5+(row%2?3.25:0),py=y0+row*5.63;q+='<circle cx="'+px+'" cy="'+py+'" r="2.5" fill="#5F5E5A"/>';}
-  var r=dia/2*PU;
-  if(chrom)q+='<circle cx="'+cx+'" cy="'+(y0+52)+'" r="'+r+'" fill="#E24B4A" opacity="0.5"/><circle cx="'+cx+'" cy="'+(y0+52)+'" r="'+(r*0.45)+'" fill="#378ADD" opacity="0.6"/><circle cx="'+cx+'" cy="'+(y0+52)+'" r="'+(airy/2*PU)+'" fill="#C0DD97"/>';
-  else q+='<circle cx="'+cx+'" cy="'+(y0+52)+'" r="'+Math.max(1,r)+'" fill="#FAC775" opacity="0.85"/>';
-  return q+'</g>';}
- function cn(dia){var n=dia/2.5;return n<1.5?'circa un cono':'circa '+nf(n,0)+' coni';}
+ // pixel view: same 8 arcmin on human and eagle retina, cones light up like pixels
+ var airy=0.42*22.4/D,geo=mode===0?25*D:mode===1?0.08*D*D*D:mode===2?5*D:0,tot=Math.sqrt(geo*geo+airy*airy);
+ var EF=24,EP=6,eAiry=1.03*0.55*EF/EP,ARC=8/60*Math.PI/180;
+ function cn(dia,pitch){var n=dia/pitch;return n<1.5?'circa un cono':'circa '+nf(n,0)+' coni';}
  function um(dia){return '≈ '+nf(dia,dia<10?1:0)+' µm';}
- s+=T(566,24,'zoom sulla retina, in scala vera:','ts',null,'middle')+T(566,40,'40 µm, ogni cerchietto grigio è un cono','ts',null,'middle')+T(566,56,'arancio: la luce di un solo punto','ts','#BA7517','middle');
- if(mode===3){s+=zoom(566,airy,false,'z0')+T(566,188,'solo diffrazione','ts',null,'middle')+T(566,204,um(airy)+', '+cn(airy),'th',null,'middle');}
- else{s+=zoom(512,tot,mode===2,'z1')+zoom(622,airy,false,'z2');
-  s+=T(512,188,'con il difetto','ts',null,'middle')+T(512,204,um(tot),'th',null,'middle')+T(512,220,cn(tot),'ts',null,'middle');
-  s+=T(622,188,'senza il difetto','ts',null,'middle')+T(622,204,um(airy),'th',null,'middle')+T(622,220,cn(airy),'ts',null,'middle');}
+ function sig(geoD,airyD){return Math.sqrt(Math.pow(airyD/2.355,2)+Math.pow(geoD/4,2));}
+ function mosaic(x0,id,f,pitch,sg,chrom){var W=190,y0=34,fieldUm=ARC*f*1000,pp=W/fieldUm*pitch,q='<defs><clipPath id="'+id+'"><rect x="'+x0+'" y="'+y0+'" width="'+W+'" height="'+W+'" rx="8"/></clipPath></defs>';
+  q+='<rect x="'+x0+'" y="'+y0+'" width="'+W+'" height="'+W+'" rx="8" fill="#1E1E1C"/><g clip-path="url(#'+id+')">';
+  var cx=x0+W/2,cy=y0+W/2,nC=Math.ceil(W/pp/2)+1,rh=pp*0.866;
+  for(var j=-nC;j<=nC;j++)for(var i=-nC;i<=nC;i++){var px=cx+i*pp+(j%2?pp/2:0),py=cy+j*rh;
+   var rU=Math.sqrt(Math.pow((px-cx)/pp*pitch,2)+Math.pow((py-cy)/pp*pitch,2)),col;
+   if(chrom){var r1=Math.exp(-rU*rU/(2*chrom[0]*chrom[0])),b1=Math.exp(-rU*rU/(2*chrom[1]*chrom[1])),g1=Math.exp(-rU*rU/(2*sg*sg));
+    col='rgb('+Math.round(60+195*Math.max(r1,g1))+','+Math.round(60+170*g1+60*b1*0.3)+','+Math.round(60+195*Math.max(b1,g1*0.6))+')';}
+   else{var bb=Math.exp(-rU*rU/(2*sg*sg));col='rgb('+Math.round(62+188*bb)+','+Math.round(62+137*bb)+','+Math.round(58+59*bb)+')';}
+   q+='<circle cx="'+px.toFixed(1)+'" cy="'+py.toFixed(1)+'" r="'+(pp*0.44).toFixed(2)+'" fill="'+col+'"/>';}
+  return q+'</g>';}
+ var z='';
+ z+=T(340,20,'Gli stessi 8 primi d\'arco su retine diverse: ogni cerchietto è un cono, che si accende come un pixel','ts',null,'middle');
+ var hS=sig(geo,airy),h0=sig(0,airy),eS=sig(0,eAiry);
+ if(mode===3){
+  z+=mosaic(130,'zA',16.7,2.5,h0,null)+mosaic(360,'zB',EF,2,eS,null);
+  z+=T(225,246,'Uomo, a fuoco','th',null,'middle')+T(225,264,um(airy)+', '+cn(airy,2.5),'ts',null,'middle');
+  z+=T(455,246,'Aquila, a fuoco','th',null,'middle')+T(455,264,um(eAiry)+', '+cn(eAiry,2),'ts',null,'middle');
+ }else{
+  var ch=mode===2?[sig(5*D,airy),sig(5*D*0.45,airy)]:null;
+  z+=mosaic(12,'zA',16.7,2.5,hS,ch)+mosaic(245,'zB',16.7,2.5,h0,null)+mosaic(478,'zC',EF,2,eS,null);
+  z+=T(107,246,'Uomo, con il difetto','th',null,'middle')+T(107,264,um(tot)+', '+cn(tot,2.5),'ts',null,'middle');
+  z+=T(340,246,'Uomo, senza il difetto','th',null,'middle')+T(340,264,um(airy)+', '+cn(airy,2.5),'ts',null,'middle');
+  z+=T(573,246,'Aquila, a fuoco','th',null,'middle')+T(573,264,um(eAiry)+', '+cn(eAiry,2),'ts',null,'middle');
+ }
+ z+=T(340,290,'L\'aquila ha coni più piccoli e una focale più lunga: nello stesso angolo ha quasi il doppio dei pixel per lato.','ts','#888780','middle');
+ document.getElementById('zm').innerHTML=z;
  var lab=mode===3?'tutti i raggi vanno a fuoco sulla retina':mode===0?'fuoco dietro la retina: manca accomodazione':mode===1?'i raggi periferici vanno a fuoco prima di quelli centrali':'il blu va a fuoco prima, il rosso dopo; il verde sulla retina';
  s+=T(16,22,lab,'th');
- s+=T(16,282,'raggi: distanze non in scala · zoom: in scala vera','ts','#888780');
+ s+=T(16,244,'raggi: distanze non in scala; i riquadri sotto sono in scala vera','ts','#888780');
  document.getElementById('g').innerHTML=s;
  var r=D/4,sp=mode===3?1/r:mode===1?r*r*r:r;
  document.getElementById('out').innerHTML=
   '<div>Luce che entra<b>×'+nf(r*r,2)+'</b>rispetto a 4 mm: segue l\'area, cioè D²</div>'+
-  '<div>Macchia sulla retina<b>'+um(tot)+', '+cn(tot)+'</b>'+(mode===3?'solo diffrazione: segue 1/D, cresce stringendo':'il difetto segue '+(mode===1?'D³':'D')+'; la diffrazione 1/D')+'</div>';
- var nt=mode===3?'Occhio senza difetti: tutti i raggi arrivano nello stesso punto della retina, e il punto resta un dischetto solo per la diffrazione. A 8 mm è largo circa un cono, a 1,5 mm circa sei: stringere toglie luce e allarga il punto. Una macchia più piccola di un cono non servirebbe, perché la retina non distingue dettagli più fini. Un occhio vero ha sempre un po\' di aberrazioni, per questo a fuoco il compromesso migliore è una pupilla di circa 2,5–3 mm.':mode===0?'Il presbite non vede le cose più grandi: le vede sfocate, perché ogni punto diventa una macchiolina. Con 1,5 D di errore, come chi legge a 40 cm senza accomodare abbastanza, la macchia è circa 25 µm per ogni mm di pupilla: 100 µm a 4 mm, 45 µm a 1,8 mm (aceclidina). Il fuoco resta dietro la retina: la pupilla piccola non lo sposta, restringe il cono.'
+  '<div>Macchia sulla retina dell\'uomo<b>'+um(tot)+', '+cn(tot,2.5)+'</b>'+(mode===3?'solo diffrazione: segue 1/D, cresce stringendo':'il difetto segue '+(mode===1?'D³':'D')+'; la diffrazione 1/D')+'</div>';
+ var nt=mode===3?'Occhio senza difetti: tutti i raggi arrivano nello stesso punto della retina, e il punto resta un dischetto solo per la diffrazione. A metà intensità è largo meno di un cono a 8 mm e circa due o tre coni a 1,5 mm: stringere toglie luce e allarga il punto. Una macchia più piccola di un cono non servirebbe, perché la retina non distingue dettagli più fini. Un occhio vero ha sempre un po\' di aberrazioni, per questo a fuoco il compromesso migliore è una pupilla di circa 2,5–3 mm.':mode===0?'Il presbite non vede le cose più grandi: le vede sfocate, perché ogni punto diventa una macchiolina. Con 1,5 D di errore, come chi legge a 40 cm senza accomodare abbastanza, la macchia è circa 25 µm per ogni mm di pupilla: 100 µm a 4 mm, 45 µm a 1,8 mm (aceclidina). Il fuoco resta dietro la retina: la pupilla piccola non lo sposta, restringe il cono.'
   :mode===1?'Nell\'aberrazione sferica i raggi periferici vengono piegati troppo. Chiudendo la pupilla si tolgono proprio quelli: dimezzando il diametro la macchia scende a circa un ottavo.'
   :'L\'indice di rifrazione cambia con il colore: fra blu e rosso l\'occhio ha circa 2 D di differenza. La macchia colorata, come la sfocatura, si riduce in proporzione al diametro.';
- if(D<2.5&&mode!==3)nt+=' <b>Guarda il riquadro di destra:</b> stringendo, il punto senza difetti si allarga per la diffrazione. Sotto i 2 mm circa è lei a comandare.';
+ if(D<2.5&&mode!==3)nt+=' <b>Guarda il riquadro centrale:</b> stringendo, il punto senza difetti si allarga per la diffrazione. Sotto i 2 mm circa è lei a comandare.';
  document.getElementById('nt').innerHTML=nt;
 }
 upd();
