@@ -152,7 +152,7 @@ if(src==='sun'){
  var c=document.getElementById('cov').value/100;document.getElementById('covL').textContent=Math.round(c*100)+'%';
  document.getElementById('moon').setAttribute('cx',90+44*(1-c));
  var T=obs?3e-5:1,dN=2+3*Math.pow(c,3),d=mio?Math.min(DM,dN):dN,A=Math.PI*d*d/4,k=(d/2)*(d/2);
- if(mio)mioN='Il collirio blocca la dilatazione: senza, la pupilla sarebbe '+dN.toFixed(1).replace('.',',')+' mm e la dose '+(dN>d?Math.round((dN*dN)/(d*d)*10)/10:1).toString().replace('.',',')+' volte più alta.+' Protegge, ma non rende sicuro guardare: ogni punto della falce resta brillante come il sole pieno.';
+ if(mio)mioN='Il collirio blocca la dilatazione: senza, la pupilla sarebbe '+dN.toFixed(1).replace('.',',')+' mm e la dose '+(dN>d?Math.round((dN*dN)/(d*d)*10)/10:1).toString().replace('.',',')+' volte più alta. Protegge, ma non rende sicuro guardare: ogni punto della falce resta brillante come il sole pieno.';
  Eeye=100000*(1-c)*T;gap=Math.max(4,Math.round(d*3));
  s1.textContent='Eclissi parziale';s2.textContent='La Luna copre una parte del disco, ma non attenua quella che resta.';
  pup.textContent=mio?pTxt(d,dN):'pupilla Ø '+d.toFixed(1).replace('.',',')+' mm, area ≈ '+Math.round(A)+' mm² (si dilata col buio)';
