@@ -11,7 +11,7 @@
 .ctl button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
 .sl{display:grid;grid-template-columns:150px 1fr 70px;align-items:center;gap:10px;font-size:13px;color:var(--text-secondary);margin:0 0 8px}
 .sl output{text-align:right;color:var(--text-primary);font-weight:500}
-.out{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 0}
+.out{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin:6px 0 0}
 .out div{background:var(--surface-1);border-radius:var(--radius);padding:8px 12px;font-size:12.5px;color:var(--text-secondary);line-height:1.45}
 .out b{display:block;font-size:17px;font-weight:500;color:var(--text-primary)}
 .note{font-size:12.5px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
@@ -78,6 +78,12 @@ function upd(){
  s+=L(RX,CY-84,RX,CY+84,'#D85A30',3)+T(RX+8,CY-70,'retina','ts');
  var top=Math.min.apply(null,hits),bot=Math.max.apply(null,hits);
  s+='<rect x="'+(RX-4)+'" y="'+(top-1)+'" width="8" height="'+Math.max(2,bot-top+2)+'" fill="#E24B4A" opacity="0.8"/>';
+ // diffraction: the small hole spreads the light, which the straight rays do not show
+ var aF=0.42*22.4/D,gh=aF*2.8;
+ s+='<defs><filter id="dg" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="'+(gh*0.35+0.5)+'"/></filter></defs>';
+ s+='<ellipse cx="'+RX+'" cy="'+CY+'" rx="'+(3+gh*0.25)+'" ry="'+gh+'" fill="#EF9F27" opacity="0.55" filter="url(#dg)"/>';
+ if(D<3.2){s+=L(PX+4,CY-hp,RX,CY-gh,'#EF9F27',1,0.5,'2 3')+L(PX+4,CY+hp,RX,CY+gh,'#EF9F27',1,0.5,'2 3');
+  s+=T(RX-10,CY-gh-10,'diffrazione: il buco piccolo allarga la luce','ts','#BA7517','end');}
  // pixel view: same 8 arcmin on human and eagle retina, cones light up like pixels
  var airy=0.42*22.4/D,geo=mode===0?25*D:mode===1?0.08*D*D*D:mode===2?6*D:0,tot=Math.sqrt(geo*geo+airy*airy);
  var ARC=8/60*Math.PI/180;
@@ -128,8 +134,10 @@ function upd(){
  s+=T(300,CY+108,'raggi: distanze non in scala; i riquadri sotto sono in scala vera','ts','#888780');
  document.getElementById('g').innerHTML=s;
  var r=D/4,sp=mode===3?1/r:mode===1?r*r*r:r;
+ var best=1.5,bv=1e9;for(var x=1.5;x<=8.001;x+=0.05){var gx=mode===0?25*x:mode===1?0.08*x*x*x:mode===2?6*x:0,ax=0.42*22.4/x,tx=Math.sqrt(gx*gx+ax*ax);if(tx<bv){bv=tx;best=x;}}
  document.getElementById('out').innerHTML=
   '<div>Luce che entra<b>×'+nf(r*r,2)+'</b>rispetto a 4 mm: segue l\'area, cioè D²</div>'+
+  '<div>Pupilla con la macchia più piccola<b>'+(best>=7.95?'la più grande':best<=1.55?'1,5 mm o meno':'≈ '+nf(best,1)+' mm')+'</b>'+(mode===3?'senza difetti vince la pupilla larga; in un occhio vero ≈ 2,5–3 mm':'qui il difetto e la diffrazione si bilanciano')+'</div>'+
   '<div>Macchia sulla retina dell\'uomo<b>'+um(tot)+', '+cn(tot,2.5)+'</b>'+(mode===3?'solo diffrazione: segue 1/D, cresce stringendo':'il difetto segue '+(mode===1?'D³':'D')+'; la diffrazione 1/D')+'</div>';
  var nt=mode===3?'Occhio senza difetti: tutti i raggi arrivano nello stesso punto della retina, e il punto resta un dischetto solo per la diffrazione. A metà intensità è largo meno di un cono a 8 mm e circa due o tre coni a 1,5 mm: stringere toglie luce e allarga il punto. Una macchia più piccola di un cono non servirebbe, perché la retina non distingue dettagli più fini. Un occhio vero ha sempre un po\' di aberrazioni, per questo a fuoco il compromesso migliore è una pupilla di circa 2,5–3 mm.':mode===0?'Il presbite non vede le cose più grandi: le vede sfocate, perché ogni punto diventa una macchiolina. Con 1,5 D di errore, come chi legge a 40 cm senza accomodare abbastanza, la macchia è circa 25 µm per ogni mm di pupilla: 100 µm a 4 mm, 45 µm a 1,8 mm (aceclidina). Il fuoco resta dietro la retina: la pupilla piccola non lo sposta, restringe il cono.'
   :mode===1?'Nell\'aberrazione sferica i raggi periferici vengono piegati troppo. Chiudendo la pupilla si tolgono proprio quelli: dimezzando il diametro la macchia scende a circa un ottavo.'
