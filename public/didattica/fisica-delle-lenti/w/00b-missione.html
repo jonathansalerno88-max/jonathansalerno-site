@@ -16,6 +16,8 @@
 @keyframes ride{to{stroke-dashoffset:26}}
 @media (prefers-reduced-motion:reduce){.ride #dash{animation:none}}
 #win{transition:opacity .4s}
+.lim{font-size:12.5px;color:var(--text-secondary);margin:-4px 0 10px;line-height:1.45}
+.lim.at{color:#B5520C}
 .note{font-size:12.5px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
 </style>
 </head>
@@ -25,6 +27,7 @@
 <div class="ctl"><span>Ampiezza fascio</span><input type="range" id="A" min="6" max="70" step="1" value="60" oninput="upd()"><output id="Ao"></output></div>
 <div class="ctl"><span>Diametro lente</span><input type="range" id="D" min="10" max="50" step="1" value="20" oninput="upd()"><output id="Do"></output></div>
 <div class="tog"><span style="width:118px">Taglio del fascio</span><button id="cutN" onclick="cut=false;upd()">No, fascio tondo</button><button id="cutY" onclick="cut=true;upd()">Sì, come le luci StVZO</button></div>
+<p class="lim" id="et"></p>
 <svg width="100%" viewBox="0 0 680 560" id="sv">
 <text class="th" x="20" y="22">Vista dall'alto</text>
 <rect x="0" y="34" width="400" height="360" fill="#2C3138"/>
@@ -32,7 +35,7 @@
 <g id="board"></g>
 <g id="side"></g>
 </svg>
-<p class="note">La fisica è vera, semplificata: fascio uniforme in un cono, candele = lumen / steradianti, lux a 10 m = candele / 100. Il taglio è modellato come metà inferiore del cono: la luce che andrebbe sopra l'orizzonte finisce sulla strada, quindi a parità di lumen candele e lux raddoppiano. I fari StVZO veri sono ancora più piatti e larghi, ma il principio è questo. <b>Il prezzo è inventato per l'esercizio</b> (cresce con i lumen, con le ottiche a fascio stretto, con il taglio del fascio e con la lente), e l'autonomia assume una batteria da circa 10 Wh e un LED da 100 lumen per watt. Abbagliamento: la luce negli occhi (lux) crea nell'occhio un velo di luminanza L<sub>velo</sub> = 10·E<sub>occhio</sub>/θ² nit (Stiles-Holladay, θ in gradi tra la tua luce e la direzione in cui guardano, lungo la strada e 1° in basso). Il velo si confronta con la strada, qui 1 nit (strada di notte con lampioni; al buio va peggio), con l'aumento di soglia TI = 65·L<sub>velo</sub>/L<sub>strada</sub><sup>0,8</sup> delle norme sull'illuminazione stradale: TI 50 % vuol dire che un ostacolo deve avere il 50 % di contrasto in più per essere visto. Faccina felice fino al 15 %, limite tipico per i lampioni; triste sopra il 50 %, soglia scelta per l'esercizio. Le altre soglie delle faccine sono indicative.</p>
+<p class="note">La fisica è vera, semplificata: fascio uniforme in un cono, candele = lumen / steradianti, lux a 10 m = candele / 100. Il taglio è modellato come metà inferiore del cono: la luce che andrebbe sopra l'orizzonte finisce sulla strada, quindi a parità di lumen candele e lux raddoppiano. I fari StVZO veri sono ancora più piatti e larghi, ma il principio è questo. Limite ottico: area per angolo solido non si può ridurre con nessuna lente (étendue), quindi un LED da 1 mm² che emette in un mezzo spazio, étendue π·1 mm², dietro una lente di area A esce in almeno π·1 mm²/A steradianti. Detto altrimenti: la lente non può apparire più luminosa del LED. <b>Il prezzo è inventato per l'esercizio</b> (cresce con i lumen, con le ottiche a fascio stretto, con il taglio del fascio e con la lente), e l'autonomia assume una batteria da circa 10 Wh e un LED da 100 lumen per watt. Abbagliamento: la luce negli occhi (lux) crea nell'occhio un velo di luminanza L<sub>velo</sub> = 10·E<sub>occhio</sub>/θ² nit (Stiles-Holladay, θ in gradi tra la tua luce e la direzione in cui guardano, lungo la strada e 1° in basso). Il velo si confronta con la strada, qui 1 nit (strada di notte con lampioni; al buio va peggio), con l'aumento di soglia TI = 65·L<sub>velo</sub>/L<sub>strada</sub><sup>0,8</sup> delle norme sull'illuminazione stradale: TI 50 % vuol dire che un ostacolo deve avere il 50 % di contrasto in più per essere visto. Faccina felice fino al 15 %, limite tipico per i lampioni; triste sopra il 50 %, soglia scelta per l'esercizio. Le altre soglie delle faccine sono indicative.</p>
 <script>
 var cut=false,Y0=380,S=16,XR=200,LANE=3.5;
 function v(id){return parseFloat(document.getElementById(id).value);}
@@ -46,6 +49,12 @@ function face(x,y,m,col){
 function T(x,y,t,cls,col,anc){return '<text class="'+(cls||'ts')+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+'>'+t+'</text>';}
 function upd(){
   var Lm=v('L'),A=v('A'),D=v('D');
+  // etendue: a 1 mm2 Lambertian LED (etendue pi*1 mm2) cannot be squeezed into a beam with
+  // solid angle below pi*1/(lens area) = 4/D^2 sr (D in mm)
+  var Om=4/(D*D),Oc=Om*(cut?2:1),Amin=2*Math.acos(1-Oc/(2*Math.PI))*180/Math.PI,atLim=false;
+  if(A<Amin){A=Math.ceil(Amin);document.getElementById('A').value=A;atLim=true;}
+  var et=document.getElementById('et');et.classList.toggle('at',atLim);
+  et.textContent='Limite ottico: un LED da 1 mm² dietro una lente da '+D+' mm non fa un fascio più stretto di '+it(Amin,1)+'°'+(atLim?'. Sei al limite: per stringere ancora serve una lente più grande.':'.');
   document.getElementById('Lo').textContent=it(Lm)+' lm';document.getElementById('Ao').textContent=A+'°';document.getElementById('Do').textContent=D+' mm';
   document.getElementById('cutN').classList.toggle('act',!cut);document.getElementById('cutY').classList.toggle('act',cut);
   var a=A/2*Math.PI/180,O=2*Math.PI*(1-Math.cos(a))*(cut?0.5:1),I=Lm/O,E=I/100,W=2*10*Math.tan(a);
