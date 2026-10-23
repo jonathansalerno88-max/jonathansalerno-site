@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Fisica delle lenti — Jonathan Salerno</title>
-<meta name="description" content="Materiale didattico interattivo: luminanza e illuminanza, danno alla retina, l'occhio come sistema ottico, miopia e ipermetropia, lunghezza focale, parallasse, lenti sottili e immagini reali e virtuali.">
+<meta name="description" content="Materiale didattico interattivo: luminanza e illuminanza, danno alla retina, l'occhio come sistema ottico, miopia e ipermetropia, pupilla e aberrazioni, parallasse, lenti sottili e immagini reali e virtuali.">
 <meta name="author" content="Jonathan Salerno">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
@@ -121,7 +121,6 @@ footer p{margin:0}
     <li><a href="#danno">Come si danneggia la retina</a></li>
     <li><a href="#occhio">L'occhio: modello, difetti, accomodazione, farmaci</a></li>
     <li><a href="#occhiali">Le lenti degli occhiali</a></li>
-    <li><a href="#focale">Lunghezza focale: occhio, fotocamera, telescopio</a></li>
     <li><a href="#parallasse">Parallasse: punto nodale o pupilla d'entrata</a></li>
     <li><a href="#animali">Focale e pupilla negli animali</a></li>
     <li><a href="#lente-sottile">La lente sottile</a></li>
@@ -415,24 +414,8 @@ footer p{margin:0}
 </section>
 
 <!-- 5 -->
-<section id="focale">
-  <h2>5 · Lunghezza focale: occhio, fotocamera, telescopio</h2>
-  <h3>Dove cominciano e dove finiscono i millimetri</h3>
-  <p>La lunghezza focale va da un punto dell'obiettivo (il punto principale posteriore, che in aria
-  coincide con il nodale) al fuoco, dove convergono i raggi paralleli. Decide quanto è grande
-  l'immagine: un oggetto che sottende un angolo θ produce un'immagine alta circa f · tan θ.</p>
-  <p>Non va confusa con il <b>numero f</b> (f/1,4, f/8…), che è un rapporto: focale divisa per il
-  diametro dell'apertura. Il primo decide la geometria dell'immagine, il secondo quanta luce
-  arriva (va come 1/N²) e la profondità di campo.</p>
-  <figure class="w">
-    <iframe src="w/07-focale.html" title="Lunghezza focale in occhio, fotocamera e telescopio" loading="lazy"></iframe>
-    <figcaption>Alterna i tre strumenti e cambia le focali. <a href="w/07-focale.html">Apri a schermo intero</a></figcaption>
-  </figure>
-</section>
-
-<!-- 6 -->
 <section id="parallasse">
-  <h2>6 · Parallasse: punto nodale o pupilla d'entrata</h2>
+  <h2>5 · Parallasse: punto nodale o pupilla d'entrata</h2>
   <h3>Attorno a cosa ruotare per non avere errori</h3>
   <p>Fra i fotografi panoramici si dice di ruotare la fotocamera attorno al "punto nodale". È
   un'imprecisione storica: la parallasse dipende solo dal <b>centro di prospettiva</b>, cioè dal
@@ -456,14 +439,15 @@ footer p{margin:0}
   </figure>
 </section>
 
-<!-- 7 -->
+<!-- 6 -->
 <section id="animali">
-  <h2>7 · Focale e pupilla negli animali</h2>
+  <h2>6 · Focale e pupilla negli animali</h2>
   <h3>Dettaglio, campo e luce non si ottengono insieme</h3>
   <p>A parità di coni, allungare N′F′ ingrandisce l'immagine: lo stesso dettaglio copre più
   fotorecettori, ma il campo coperto dalla fovea si restringe, come con un teleobiettivo. Se la
   pupilla non cresce, l'immagine diventa anche più scura, perché la luminosità sulla retina va con
-  l'inverso del quadrato del numero f.</p>
+  l'inverso del quadrato del <b>numero f</b>, cioè la focale divisa per il diametro della pupilla
+  (come in fotografia: f/2 è luminoso, f/8 è scuro).</p>
   <ul>
     <li><b>Rapaci</b>: focale lunga, immagine grande e dettagliata, ma serve molta luce.</li>
     <li><b>Gatto</b>: focale corta e pupilla enorme, molta luce ma immagine piccola.</li>
@@ -476,9 +460,9 @@ footer p{margin:0}
   </figure>
 </section>
 
-<!-- 8 -->
+<!-- 7 -->
 <section id="lente-sottile">
-  <h2>8 · La lente sottile</h2>
+  <h2>7 · La lente sottile</h2>
   <h3>Il ray diagram classico</h3>
   <p>Bastano tre raggi: quello parallelo all'asse, che dopo la lente passa per F′; quello per il
   centro, che non devia; quello per F, che esce parallelo. Dove si incrociano c'è la punta
@@ -504,9 +488,9 @@ footer p{margin:0}
   </figure>
 </section>
 
-<!-- 9 -->
+<!-- 8 -->
 <section id="reale-virtuale">
-  <h2>9 · Immagine reale o virtuale</h2>
+  <h2>8 · Immagine reale o virtuale</h2>
   <h3>La prova del foglio</h3>
   <p>Un'immagine è <b>reale</b> quando la luce passa davvero da quel punto: un foglio messo lì la
   raccoglie, e chiunque nella stanza la vede, perché il foglio diffonde la luce in tutte le
