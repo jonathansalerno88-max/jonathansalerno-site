@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Focal length and pupil in animal eyes</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;font-size:14px;color:var(--text-secondary)}
+.ctl button{font:inherit;font-size:13px;padding:6px 12px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.ctl button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:8px}
+.card{background:var(--surface-1);border-radius:var(--radius);padding:10px 12px;font-size:13px;color:var(--text-secondary)}
+.card .v{font-size:18px;font-weight:500;color:var(--text-primary);margin-top:2px}
+.note{font-size:12px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Effect of the distance between the posterior nodal point and the focus, with presets for human, cat, raptor and owl; the owl has a tubular eye with a long focal length and a huge pupil, which combines a large and bright image.</h2>
+<div class="ctl">
+<button id="b0" onclick="pre(0)">Human (day)</button>
+<button id="b1" onclick="pre(1)">Human (dark)</button>
+<button id="b2" onclick="pre(2)">Cat (dark)</button>
+<button id="b3" onclick="pre(3)">Diurnal raptor</button>
+<button id="b4" onclick="pre(4)">Owl (dark)</button>
+</div>
+<div class="ctl"><span>N′ → F′</span><input type="range" id="fS" min="6" max="40" step="0.1" value="16.7" style="flex:1" oninput="sel=-1;upd()"><span id="fL" style="min-width:70px;text-align:right;color:var(--text-primary)"></span></div>
+<div class="ctl"><span>Pupil</span><input type="range" id="dS" min="1" max="15" step="0.5" value="4" style="flex:1" oninput="sel=-1;upd()"><span id="dL" style="min-width:70px;text-align:right;color:var(--text-primary)"></span></div>
+<svg width="100%" viewBox="0 0 680 300">
+<defs><clipPath id="box"><rect x="400" y="80" width="260" height="170" rx="6"/></clipPath></defs>
+<g id="eye"></g>
+<text class="th" x="400" y="52">Fovea, magnified</text>
+<text class="ts" x="400" y="70">each dot is a cone (fixed spacing)</text>
+<rect x="400" y="80" width="260" height="170" rx="6" fill="none" stroke="var(--b)" stroke-width="0.5"/>
+<g clip-path="url(#box)"><g id="cones"></g><g id="img"></g></g>
+<text class="ts" id="imgL" x="530" y="272" text-anchor="middle"> </text>
+</svg>
+<div class="grid">
+<div class="card">f-number (N′F′ / pupil)<div class="v" id="v1"></div></div>
+<div class="card">Retinal brightness<div class="v" id="v2"></div><span>relative to the human by day</span></div>
+<div class="card">Moon on the retina<div class="v" id="v3"></div></div>
+<div class="card">Field covered by the fovea<div class="v" id="v4"></div><span>fovea 1.5 mm wide</span></div>
+</div>
+<p class="note" id="note"></p>
+<script>
+var K=4.5,Y=165,TD=Math.tan(6*Math.PI/180),CONE=0.0025,ANG=0.1*Math.PI/180,sel=0;
+var P=[[16.7,4,'round'],[16.7,8,'round'],[12.5,14,'round'],[30,6,'round'],[20,15,'tube']];
+var notes=['Human by day: small pupil, high f-number, a sharp and reasonably bright image.','Human in the dark: the pupil dilates to about 8 mm. More light, but the focal length does not change.','Cat: short focal length and huge pupil, f-number around 0.9. A great deal of light, but a small image: less detail.','Diurnal raptor: long focal length and moderate pupil. A large image, rich in detail, but it only works with plenty of light.','Owl: tubular eye, long focal length and huge pupil, f-number around 1.3. It combines a large and bright image. The price: eyes so large that they do not rotate in the orbit (the head turns instead) and a narrow visual field.'];
+function pre(i){sel=i;document.getElementById('fS').value=P[i][0];document.getElementById('dS').value=P[i][1];upd();}
+function fmt(x,d){return x.toFixed(d);}
+var cg='';for(var r=0;r<17;r++){for(var c=0;c<27;c++){var x=405+c*10+(r%2?5:0),y=85+r*10;cg+='<circle cx="'+x+'" cy="'+y+'" r="3" fill="#D3D1C7"/>';}}
+document.getElementById('cones').innerHTML=cg;
+function upd(){
+for(var i=0;i<5;i++)document.getElementById('b'+i).classList.toggle('act',sel===i);
+var f=parseFloat(document.getElementById('fS').value),D=parseFloat(document.getElementById('dS').value),tube=sel===4;
+document.getElementById('fL').textContent=fmt(f,1)+' mm';document.getElementById('dL').textContent=fmt(D,1)+' mm';
+var fk=f*K,cor=370,N=cor-0.437*fk,ret=N-fk,xp=cor-0.18*fk;
+var rel=Math.pow(D/f,2)/Math.pow(4/16.7,2),op=Math.max(0.08,Math.min(0.85,0.35*Math.sqrt(rel)));
+var yI=Y+fk*TD,s='';
+s+='<line x1="10" y1="'+Y+'" x2="390" y2="'+Y+'" stroke="var(--b)" stroke-width="0.5" stroke-dasharray="4 4"/>';
+var ph,ry;
+if(!tube){var xc=(cor+ret)/2,r=(cor-ret)/2;ry=Math.min(r,120);ph=Math.min(D/2*K,ry*0.85);
+s+='<ellipse cx="'+xc+'" cy="'+Y+'" rx="'+r+'" ry="'+ry+'" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>';
+s+='<path d="M'+(xc-r*0.7)+' '+(Y-ry*0.71)+' A'+r+' '+ry+' 0 0 0 '+(xc-r*0.7)+' '+(Y+ry*0.71)+'" fill="none" stroke="#D85A30" stroke-width="3"/>';
+s+='<rect x="'+(xp-2)+'" y="'+(Y-ry*0.75)+'" width="4" height="'+Math.max(0,ry*0.75-ph)+'" fill="#854F0B"/><rect x="'+(xp-2)+'" y="'+(Y+ph)+'" width="4" height="'+Math.max(0,ry*0.75-ph)+'" fill="#854F0B"/>';}
+else{ph=D/2*K;var R2=0.55*fk,cx2=ret+R2,ry2=Math.min(R2,ph+18),fr=ph+10,wx=N+4;ry=fr+10;
+s+='<path d="M'+xp+' '+(Y-fr)+' L'+wx+' '+(Y-ry2*0.8)+' L'+wx+' '+(Y+ry2*0.8)+' L'+xp+' '+(Y+fr)+' Z" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>';
+s+='<ellipse cx="'+cx2+'" cy="'+Y+'" rx="'+R2+'" ry="'+ry2+'" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>';
+s+='<rect x="'+(wx-1)+'" y="'+(Y-ry2*0.8)+'" width="'+(xp-wx)+'" height="'+(ry2*1.6)+'" fill="#F1EFE8"/>';
+s+='<path d="M'+xp+' '+(Y-fr)+' Q'+(cor+6)+' '+Y+' '+xp+' '+(Y+fr)+'" fill="#E6F1FB" stroke="#888780" stroke-width="1"/>';
+s+='<path d="M'+(cx2-R2*0.6)+' '+(Y-ry2*0.8)+' A'+R2+' '+ry2+' 0 0 0 '+(cx2-R2*0.6)+' '+(Y+ry2*0.8)+'" fill="none" stroke="#D85A30" stroke-width="3"/>';
+s+='<rect x="'+(xp-2)+'" y="'+(Y-fr)+'" width="4" height="'+Math.max(0,fr-ph)+'" fill="#854F0B"/><rect x="'+(xp-2)+'" y="'+(Y+ph)+'" width="4" height="'+Math.max(0,fr-ph)+'" fill="#854F0B"/>';
+s+='<text class="ts" x="'+((xp+wx)/2)+'" y="'+(Y-fr-10)+'" text-anchor="middle">tubular eye</text>';}
+s+='<polygon points="'+xp+','+(Y-ph)+' '+xp+','+(Y+ph)+' '+ret+','+yI+'" fill="#FAC775" opacity="'+op+'"/>';
+[Y-ph,Y,Y+ph].forEach(function(yh){s+='<line x1="395" y1="'+(yh-TD*(395-xp))+'" x2="'+xp+'" y2="'+yh+'" stroke="#EF9F27" stroke-width="1.2"/><line x1="'+xp+'" y1="'+yh+'" x2="'+ret+'" y2="'+yI+'" stroke="#EF9F27" stroke-width="1.2"/>';});
+s+='<circle cx="'+N+'" cy="'+Y+'" r="4" fill="#D85A30"/><text class="ts" x="'+N+'" y="'+(Y-10)+'" text-anchor="middle" fill="#D85A30">N′</text>';
+s+='<circle cx="'+ret+'" cy="'+yI+'" r="3.5" fill="#E24B4A"/>';
+var by=Math.min(Y+Math.max(ry,ph)+18,272);
+s+='<line x1="'+ret+'" y1="'+by+'" x2="'+N+'" y2="'+by+'" stroke="#D85A30" stroke-width="1.5"/><line x1="'+ret+'" y1="'+(by-6)+'" x2="'+ret+'" y2="'+(by+6)+'" stroke="#D85A30" stroke-width="1.5"/><line x1="'+N+'" y1="'+(by-6)+'" x2="'+N+'" y2="'+(by+6)+'" stroke="#D85A30" stroke-width="1.5"/>';
+s+='<text class="th" x="'+((ret+N)/2)+'" y="'+(by+20)+'" text-anchor="middle" fill="#D85A30">N′F′ = '+fmt(f,1)+' mm</text>';
+document.getElementById('eye').innerHTML=s;
+var len=f*ANG/CONE,lp=len*10;
+document.getElementById('img').innerHTML='<line x1="'+(530-lp/2)+'" y1="165" x2="'+(530+lp/2)+'" y2="165" stroke="#BA7517" stroke-width="5" stroke-linecap="round" opacity="'+Math.max(0.15,Math.min(1,0.75*Math.sqrt(rel)))+'"/>';
+document.getElementById('imgL').textContent='a 0.1° detail covers ≈ '+fmt(len,1)+' cones';
+document.getElementById('v1').textContent='f/'+fmt(f/D,1);
+document.getElementById('v2').textContent='× '+fmt(rel,1);
+document.getElementById('v3').textContent=fmt(f*Math.tan(0.52*Math.PI/180)*1000,0)+' µm';
+document.getElementById('v4').textContent=fmt(2*Math.atan(0.75/f)*180/Math.PI,1)+'°';
+document.getElementById('note').textContent=(sel>=0?notes[sel]+' ':'')+'The animal values are indicative, chosen to show the strategies, not measurements of a particular species. For simplicity the cone density is the same for all; in reality it varies greatly between species.';
+}
+upd();
+</script>
+</body>
+</html>

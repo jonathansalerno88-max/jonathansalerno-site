@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mission: light the stopping distance</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.ctl{display:grid;grid-template-columns:118px 1fr 78px;align-items:center;gap:6px 10px;margin:0 0 6px;font-size:13px;color:var(--text-secondary)}
+.ctl output{text-align:right;color:var(--text-primary);font-variant-numeric:tabular-nums;font-weight:500}
+.tog{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);margin:2px 0 10px}
+.tog button{font:inherit;font-size:13px;padding:5px 12px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.tog button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+#dash{stroke-dasharray:14 12}
+.ride #dash{animation:ride .7s linear infinite}
+@keyframes ride{to{stroke-dashoffset:26}}
+@media (prefers-reduced-motion:reduce){.ride #dash{animation:none}}
+#win{transition:opacity .4s}
+.lim{font-size:12.5px;color:var(--text-secondary);margin:-4px 0 10px;line-height:1.45}
+.lim.at{color:#B5520C}
+.note{font-size:12.5px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Game: set the flux in lumens, beam width, lens diameter and cut-off beam of a bike light to light the road out to the stopping distance, which depends on speed. Six smiley faces judge the light on the road, the width covered, the glare for the oncoming cyclist and for the pedestrian on the pavement, the price and the battery life.</h2>
+<div class="ctl"><span>Speed</span><input type="range" id="V" min="10" max="45" step="1" value="22" oninput="upd()"><output id="Vo"></output></div>
+<p class="lim" id="sd"></p>
+<div class="ctl"><span>Flux</span><input type="range" id="L" min="100" max="1500" step="25" value="300" oninput="upd()"><output id="Lo"></output></div>
+<div class="ctl"><span>Beam width</span><input type="range" id="A" min="6" max="70" step="1" value="60" oninput="upd()"><output id="Ao"></output></div>
+<div class="ctl"><span>Lens diameter</span><input type="range" id="D" min="10" max="50" step="1" value="20" oninput="upd()"><output id="Do"></output></div>
+<div class="tog"><span style="width:118px">Cut-off beam</span><button id="cutN" onclick="cut=false;upd()">No, round beam</button><button id="cutY" onclick="cut=true;upd()">Yes, like StVZO lights</button></div>
+<div class="tog"><span style="width:118px">Width</span><button id="lkN" onclick="lock=false;upd()">I choose it</button><button id="lkY" onclick="lock=true;upd()">Narrowest the lens allows</button></div>
+<p class="lim" id="et"></p>
+<svg width="100%" viewBox="0 0 680 560" id="sv">
+<text class="th" x="20" y="22">Top view</text>
+<rect x="0" y="34" width="400" height="360" fill="#2C3138"/>
+<g id="scene"></g>
+<g id="board"></g>
+<g id="side"></g>
+</svg>
+<p class="note">The physics is real, simplified: uniform beam in a cone, candela = lumens / steradians, lux at distance d = candela / d². The cut-off is modelled as the lower half of the cone: the light that would go above the horizon ends up on the road, so for the same lumens candela and lux double. Real StVZO lights are even flatter and wider, but the principle is this. Optical limit: area times solid angle cannot be reduced by any lens (étendue), so a 1 mm² LED emitting into a half-space, étendue π·1 mm², comes out behind a lens of area A into at least π·1 mm²/A steradians. Put another way: the lens cannot look brighter than the LED. <b>The price is made up for the exercise</b> (it rises with lumens, with narrow-beam optics, with the cut-off beam and with the lens), and the battery life assumes a battery of about 10 Wh and an LED giving 100 lumens per watt. Glare: the light in the eyes (lux) creates in the eye a veiling luminance L<sub>veil</sub> = 10·E<sub>eye</sub>/θ² nit (Stiles–Holladay, θ in degrees between your light and the direction they are looking, along the road and 1° down). The veiling luminance is compared with the road, here 1 nit (a road at night with street lighting; in the dark it is worse), through the threshold increment TI = 65·L<sub>veil</sub>/L<sub>road</sub><sup>0.8</sup> of the road-lighting standards: TI 50% means an obstacle needs 50% more contrast to be seen. Happy face up to 15%, the typical limit for street lighting; sad above 50%, a threshold chosen for the exercise. The other smiley-face thresholds are indicative.</p>
+<script>
+var cut=false,lock=false,Y0=380,S=11,XR=200,LANE=3.5;
+function v(id){return parseFloat(document.getElementById(id).value);}
+function it(x,d){return x.toLocaleString('en-GB',{maximumFractionDigits:d||0});}
+function face(x,y,m,col){
+  var c={2:'#3B6D11',1:'#854F0B',0:'#A32D2D'}[m],f={2:'#EAF3DE',1:'#FAEEDA',0:'#FCEBEB'}[m];
+  var mouth=m===2?'M'+(x-7)+' '+(y+4)+' Q'+x+' '+(y+11)+' '+(x+7)+' '+(y+4):m===1?'M'+(x-7)+' '+(y+6)+' L'+(x+7)+' '+(y+6):'M'+(x-7)+' '+(y+9)+' Q'+x+' '+(y+2)+' '+(x+7)+' '+(y+9);
+  return '<circle cx="'+x+'" cy="'+y+'" r="15" fill="'+f+'" stroke="'+c+'" stroke-width="1.5"/>'+
+  '<circle cx="'+(x-5)+'" cy="'+(y-4)+'" r="1.8" fill="'+c+'"/><circle cx="'+(x+5)+'" cy="'+(y-4)+'" r="1.8" fill="'+c+'"/>'+
+  '<path d="'+mouth+'" fill="none" stroke="'+c+'" stroke-width="1.8" stroke-linecap="round"/>';}
+function T(x,y,t,cls,col,anc){return '<text class="'+(cls||'ts')+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+'>'+t+'</text>';}
+function upd(){
+  var Lm=v('L'),A=v('A'),D=v('D'),V=v('V'),vm=V/3.6,DR=vm*1,DB=vm*vm/(2*5),DT=DR+DB,dt=it(DT,0)+' m';
+  document.getElementById('Vo').textContent=V+' km/h';
+  document.getElementById('sd').textContent='Stopping distance: 1 s of reaction ('+it(DR,1)+' m) + braking at 5 m/s² ('+it(DB,1)+' m) = '+it(DT,1)+' m. That is where you need to see an obstacle.';
+  // etendue: a 1 mm2 Lambertian LED (etendue pi*1 mm2) cannot be squeezed into a beam with
+  // solid angle below pi*1/(lens area) = 4/D^2 sr (D in mm)
+  var Om=4/(D*D),Oc=Om*(cut?2:1),Amin=2*Math.acos(1-Oc/(2*Math.PI))*180/Math.PI,atLim=false;
+  var As=document.getElementById('A');As.disabled=lock;
+  document.getElementById('lkN').classList.toggle('act',!lock);document.getElementById('lkY').classList.toggle('act',lock);
+  if(lock){A=Amin;As.value=Math.round(A);atLim=true;}
+  else if(A<Amin){A=Math.ceil(Amin);As.value=A;atLim=true;}
+  var et=document.getElementById('et');et.classList.toggle('at',atLim);
+  et.textContent='Optical limit: a 1 mm² LED behind a '+D+' mm lens cannot make a beam narrower than '+it(Amin,1)+'°'+(lock?'. Now turn the diameter: bigger lens, narrower beam, more candela, more lux at the centre, but a narrower strip of road.':(atLim?'. You are at the limit: to narrow it further you need a bigger lens.':'.'));
+  document.getElementById('Lo').textContent=it(Lm)+' lm';document.getElementById('Ao').textContent=it(A,lock?1:0)+'°';document.getElementById('Do').textContent=D+' mm';
+  document.getElementById('cutN').classList.toggle('act',!cut);document.getElementById('cutY').classList.toggle('act',cut);
+  var a=A/2*Math.PI/180,O=2*Math.PI*(1-Math.cos(a))*(cut?0.5:1),I=Lm/O,E=I/(DT*DT),W=2*DT*Math.tan(a);
+  var area=Math.PI*Math.pow(D/2000,2),nit=I/area;
+  // disability glare: Stiles-Holladay veil + threshold increment (CIE road-lighting convention:
+  // observer looks along the road, 1 deg down; road luminance LAV)
+  var LAV=1;
+  function glare(dx,dz,dy){var d=Math.sqrt(dx*dx+dy*dy+dz*dz),off=Math.atan(Math.sqrt(dx*dx+dy*dy)/dz);
+    var inB=off<=a,c1=Math.cos(Math.PI/180),s1=Math.sin(Math.PI/180);
+    var th=Math.acos((dz*c1+dy*s1)/d)*180/Math.PI,thc=Math.max(1.5,th);
+    var E=(cut||!inB)?0:I/(d*d)*Math.cos(th*Math.PI/180),Lv=10*E/(thc*thc),TI=65*Lv/Math.pow(LAV,0.8);
+    return {inB:inB,E:E,th:th,Lv:Lv,TI:TI};}
+  var gR=glare(3.5,14,0.6), gP=glare(2.25,8,0.8);
+  function sc(g){return g.TI<=15?2:(g.TI<=50?1:0);}
+  var price=15+0.04*Lm+(A<15?12:A<25?5:0)+(cut?9:0)+0.3*D;
+  var hours=10/(Lm/100);
+  // scores
+  var sE=E>=60?2:E>=20?1:0, sW=W>=LANE?2:W>=1.5?1:0, sG=sc(gR), sPd=sc(gP), sP=price<40?2:price<70?1:0, sH=hours>=3?2:hours>=1.5?1:0;
+  var win=sE===2&&sW===2&&sG===2&&sPd===2;
+  // scene
+  var s='',ry=function(m){return Y0-m*S;};
+  s+='<rect x="'+(XR-LANE*S)+'" y="34" width="'+(2*LANE*S)+'" height="'+(Y0-34+14)+'" fill="#4A5059"/>';
+  s+='<rect x="'+(XR+LANE*S)+'" y="34" width="26" height="'+(Y0-34+14)+'" fill="#6B6F75"/><line x1="'+(XR+LANE*S)+'" y1="34" x2="'+(XR+LANE*S)+'" y2="'+(Y0+14)+'" stroke="#B4B2A9" stroke-width="1.5"/>';
+  s+='<line id="dash" x1="'+XR+'" y1="'+(Y0+14)+'" x2="'+XR+'" y2="34" stroke="#D3D1C7" stroke-width="2"/>';
+  for(var m=0;m<=25;m+=5){s+='<line x1="'+(XR+LANE*S+26)+'" y1="'+ry(m)+'" x2="'+(XR+LANE*S+34)+'" y2="'+ry(m)+'" stroke="#B4B2A9" stroke-width="1"/>'+T(XR+LANE*S+38,ry(m)+4,m+' m','ts','#D3D1C7');}
+  s+=T(XR+LANE*S+13,46,'pavement','ts','#D3D1C7','middle');
+  var lx=XR+LANE*S/2,ly=Y0-6,h=Math.tan(a)*(Y0-34);
+  var op=Math.max(0.08,Math.min(0.9,0.12+0.2*Math.log10(Math.max(E,1)/1)));
+  s+='<defs><clipPath id="rc"><rect x="0" y="34" width="400" height="'+(Y0-34+14)+'"/></clipPath></defs>';
+  s+='<g clip-path="url(#rc)"><polygon points="'+lx+','+ly+' '+(lx-h)+',34 '+(lx+h)+',34" fill="#FAC775" opacity="'+op+'"/></g>';
+  var w10=Math.tan(a)*DT*S;
+  s+='<line x1="'+(lx-w10)+'" y1="'+ry(DT)+'" x2="'+(lx+w10)+'" y2="'+ry(DT)+'" stroke="#EF9F27" stroke-width="4"/>';
+  s+='<line x1="'+XR+'" y1="'+ry(DT)+'" x2="'+(XR+LANE*S)+'" y2="'+ry(DT)+'" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="4 3"/>';
+  s+=T(14,ry(DT)-8,dt+': you must see here →','ts','#FFFFFF');
+  s+=T(14,ry(DT)+16,it(E,E<10?1:0)+' lux at the centre','th','#FAC775');
+  s+=T(14,ry(DT)+32,it(W,1)+' m wide','ts','#FAC775');
+  // oncoming rider
+  var ox=XR-LANE*S/2,oy=ry(14);
+  s+='<rect x="'+(ox-4)+'" y="'+(oy-12)+'" width="8" height="24" rx="3" fill="#B5D4F4"/><circle cx="'+ox+'" cy="'+(oy-14)+'" r="5" fill="#B5D4F4"/>';
+  s+=T(ox-10,oy-14,'oncoming','ts','#D3D1C7','end');
+  if(gR.E>1){for(var k=-1;k<=1;k++)s+='<line x1="'+(lx-2)+'" y1="'+(ly-6)+'" x2="'+(ox+k*3)+'" y2="'+(oy-14)+'" stroke="#EF9F27" stroke-width="1.2" opacity="'+Math.min(0.95,0.3+gR.E/60)+'"/>';}
+  // pedestrian on the sidewalk, same side, walking towards you
+  var px=lx+2.25*S,py=ry(8),pc=gP.TI>50?'#F09595':'#E6F1FB';
+  if(gP.E>1){for(var k2=-1;k2<=1;k2++)s+='<line x1="'+(lx+2)+'" y1="'+(ly-6)+'" x2="'+(px+k2*3)+'" y2="'+(py-12)+'" stroke="#EF9F27" stroke-width="1.2" opacity="'+Math.min(0.95,0.3+gP.E/60)+'"/>';}
+  s+='<circle cx="'+px+'" cy="'+(py-12)+'" r="5" fill="'+pc+'"/><rect x="'+(px-3.5)+'" y="'+(py-6)+'" width="7" height="14" rx="3" fill="'+pc+'"/><line x1="'+(px-2)+'" y1="'+(py+8)+'" x2="'+(px-4)+'" y2="'+(py+15)+'" stroke="'+pc+'" stroke-width="2"/><line x1="'+(px+2)+'" y1="'+(py+8)+'" x2="'+(px+4)+'" y2="'+(py+15)+'" stroke="'+pc+'" stroke-width="2"/>';
+  if(gP.TI>50){s+='<path d="M'+(px-9)+' '+(py-22)+' l-4 -4 M'+px+' '+(py-24)+' l0 -6 M'+(px+9)+' '+(py-22)+' l4 -4" stroke="#F09595" stroke-width="1.5" fill="none"/>';}
+  s+=T(px-10,py+30,'pedestrian','ts','#D3D1C7','end');
+  // rider
+  s+='<rect x="'+(lx-4)+'" y="'+(Y0-2)+'" width="8" height="26" rx="3" fill="#E6F1FB"/><circle cx="'+lx+'" cy="'+(Y0+2)+'" r="6" fill="#E6F1FB"/><circle cx="'+lx+'" cy="'+(ly)+'" r="3.5" fill="#FAC775"/>';
+  s+=T(lx+12,Y0+10,'you','ts','#FFFFFF');
+  document.getElementById('scene').innerHTML=s;
+  document.getElementById('sv').classList.toggle('ride',win);
+  // board
+  function n2(x){return x<0.1?it(x,2):it(x,1);}
+  function gl(g){if(cut)return ['cut-off keeps the light below the eyes'];if(!g.inB)return ['outside the beam'];
+    return [it(g.E,0)+' lux in the eyes → veil '+n2(g.Lv)+' nit','TI '+it(g.TI,0)+'% (street lighting: max 15%)'];}
+  var b='',bx=420,rows=[
+   [sE,'Light on the road at '+dt,it(E,E<10?1:0)+' lux ('+it(I,0)+' cd / '+it(DT*DT,0)+' m²)'],
+   [sW,'Road covered at '+dt,it(W,1)+' m of a '+it(LANE,1)+' m lane'],
+   [sG,'Oncoming cyclist'].concat(gl(gR)),
+   [sPd,'Pedestrian on the pavement'].concat(gl(gP)),
+   [sP,'Price (made up)','≈ €'+it(Math.round(price/5)*5)],
+   [sH,'Battery life','≈ '+it(hours,1)+' hours']];
+  b+=T(bx,22,'The verdict','th');
+  rows.forEach(function(r,i){var y=54+i*51;b+=face(bx+16,y,r[0])+T(bx+40,y-3,r[1],'th')+T(bx+40,y+14,r[2],'ts');
+    if(r[3])b+=T(bx+40,y+28,r[3],'ts','#888780');});
+  b+='<rect x="'+bx+'" y="338" width="250" height="52" rx="8" fill="'+(win?'#EAF3DE':'#F1EFE8')+'" stroke="'+(win?'#3B6D11':'#B4B2A9')+'" stroke-width="1"/>';
+  b+=T(bx+12,359,win?'Mission accomplished!':'Goal at '+dt+': 60 lux over 3.5 m','th',win?'#27500A':'#444441');
+  b+=T(bx+12,378,win?'Now look at price and battery life.':'without blinding cyclists or pedestrians.','ts',win?'#3B6D11':'#5F5E5A');
+  b+=T(bx,412,'lens: '+(nit>=1e6?(nit/1e6).toFixed(1)+' million':it(nit))+' nit','ts')+T(bx,426,'(luminance of the dot, not the glare)','ts');
+  document.getElementById('board').innerHTML=b;
+  // side view: what the cut-off changes
+  var G=532,K=18,X0=36,ty=G-0.9*K,sx=function(m){return X0+m*K;},q='';
+  q+='<rect x="0" y="446" width="400" height="112" fill="#2C3138"/>';
+  q+='<defs><clipPath id="sc2"><rect x="0" y="446" width="400" height="'+(G-446)+'"/></clipPath></defs>';
+  var far=400-X0,top=cut?ty:ty-Math.tan(a)*far,bot=ty+Math.tan(a)*far;
+  q+='<g clip-path="url(#sc2)"><polygon points="'+X0+','+ty+' 400,'+top+' 400,'+bot+'" fill="#FAC775" opacity="'+op+'"/></g>';
+  q+='<line x1="0" y1="'+G+'" x2="400" y2="'+G+'" stroke="#888780" stroke-width="1.5"/>';
+  var ey=G-1.5*K;q+='<line x1="'+X0+'" y1="'+ey+'" x2="400" y2="'+ey+'" stroke="#D3D1C7" stroke-width="1" stroke-dasharray="4 4"/>'+T(396,ey-5,'eyes at 1.5 m','ts','#D3D1C7','end');
+  if(cut)q+='<line x1="'+X0+'" y1="'+ty+'" x2="400" y2="'+ty+'" stroke="#EF9F27" stroke-width="1.5"/>';
+  q+=T(12,466,'Side view','th','#FFFFFF');
+  function fig(x,hm,col){var hy=G-hm*K;return '<circle cx="'+x+'" cy="'+(hy+3)+'" r="3.5" fill="'+col+'"/><line x1="'+x+'" y1="'+(hy+7)+'" x2="'+x+'" y2="'+(G-1)+'" stroke="'+col+'" stroke-width="3" stroke-linecap="round"/>';}
+  q+=fig(sx(8),1.6,pc)+T(sx(8),G+17,'pedestrian 8 m','ts','#D3D1C7','middle');
+  q+=fig(sx(14),1.5,gR.TI>50?'#F09595':'#B5D4F4')+T(sx(14),G+17,'cyclist 14 m','ts','#D3D1C7','middle');
+  q+='<rect x="'+(X0-14)+'" y="'+(G-22)+'" width="10" height="20" rx="3" fill="#E6F1FB"/><circle cx="'+X0+'" cy="'+ty+'" r="3.5" fill="#FAC775"/>'+T(X0-9,G+17,'you','ts','#FFFFFF','middle');
+  var t3=cut?['With the cut-off the top half of the','beam is folded onto the road: same lumens','in half the angle, candela and lux ×2.']
+            :['Round beam: half the light goes above the','horizon, into the eyes of oncoming','riders, and does not light the road.'];
+  t3.forEach(function(l,i){q+=T(420,474+i*17,l,'ts');});
+  q+=T(420,474+3*17+4,'(both are also off to the side)','ts','#888780');
+  document.getElementById('side').innerHTML=q;
+}
+upd();
+</script>
+</body>
+</html>

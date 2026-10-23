@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Two bike lights</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px 22px;margin:0 0 10px}
+@media (max-width:560px){.grid2{grid-template-columns:1fr}}
+.col h3{font-size:14px;font-weight:500;margin:0 0 4px}
+.row{display:grid;grid-template-columns:96px 1fr 72px;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary)}
+.row output{text-align:right;color:var(--text-primary);font-variant-numeric:tabular-nums}
+.dist{display:grid;grid-template-columns:96px 1fr 72px;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);margin:2px 0 10px}
+.dist output{text-align:right;color:var(--text-primary);font-weight:500}
+.tbl{overflow-x:auto;margin-top:10px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:13px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-weight:500;color:var(--text-secondary);font-size:12px}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+td.win{font-weight:600;background:#FCEEDD}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.note{font-size:12.5px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
+.ctlbtn{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px}
+.ctlbtn button{font:inherit;font-size:13px;padding:6px 12px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Two bike lights compared: flux in lumens, beam width, intensity in candela, lens luminance in nits and illuminance in lux on the road at a chosen distance, with the range according to the ANSI FL1 standard.</h2>
+<div class="ctlbtn">
+<button onclick="preset(0)">Thread example: more lumens versus more candela</button>
+<button onclick="preset(1)">Same lumens, different beam</button>
+</div>
+<div class="grid2">
+<div class="col"><h3 style="color:#185FA5">Light A</h3>
+<div class="row"><span>Flux</span><input type="range" id="aL" min="100" max="2000" step="50" oninput="upd()"><output id="aLo"></output></div>
+<div class="row"><span>Beam width</span><input type="range" id="aA" min="4" max="80" step="1" oninput="upd()"><output id="aAo"></output></div>
+<div class="row"><span>Lens diameter</span><input type="range" id="aD" min="10" max="50" step="1" oninput="upd()"><output id="aDo"></output></div>
+</div>
+<div class="col"><h3 style="color:#854F0B">Light B</h3>
+<div class="row"><span>Flux</span><input type="range" id="bL" min="100" max="2000" step="50" oninput="upd()"><output id="bLo"></output></div>
+<div class="row"><span>Beam width</span><input type="range" id="bA" min="4" max="80" step="1" oninput="upd()"><output id="bAo"></output></div>
+<div class="row"><span>Lens diameter</span><input type="range" id="bD" min="10" max="50" step="1" oninput="upd()"><output id="bDo"></output></div>
+</div>
+</div>
+<div class="dist"><span>Distance</span><input type="range" id="dS" min="2" max="50" step="1" value="10" oninput="upd()"><output id="dO"></output></div>
+<svg width="100%" viewBox="0 0 680 400">
+<defs>
+<clipPath id="cA"><rect x="0" y="22" width="680" height="160"/></clipPath>
+<clipPath id="cB"><rect x="0" y="206" width="680" height="160"/></clipPath>
+</defs>
+<g id="sc"></g>
+</svg>
+<div class="tbl"><table>
+<thead><tr><th>Quantity</th><th>Unit</th><th>What it says about a bike light</th><th>Light A</th><th>Light B</th></tr></thead>
+<tbody id="tb"></tbody>
+</table></div>
+<p class="note">Colours as in the rest of the page: <b style="color:#534AB7">purple</b> flux (lumens), <b style="color:#185FA5">blue</b> intensity (candela), <b style="color:#0F6E56">green</b> luminance (nit = cd/m²), <b style="color:#B5520C">orange</b> illuminance (lux). In bold, for each row, the light that wins. Simplification: uniform beam inside a cone; in real lights the centre is more intense than the average, so the stated peak candela are higher than these.</p>
+<script>
+var X0=62,SC=11.4,YA=102,YB=286,C={n:'#888780',phi:'#534AB7',int:'#185FA5',lum:'#0F6E56',ill:'#B5520C'};
+var P=[{a:[1000,40,25],b:[400,10,20]},{a:[600,40,25],b:[600,12,25]}];
+function preset(i){var p=P[i];['L','A','D'].forEach(function(k,j){document.getElementById('a'+k).value=p.a[j];document.getElementById('b'+k).value=p.b[j];});upd();}
+function v(id){return parseFloat(document.getElementById(id).value);}
+function it(x,d){return x.toLocaleString('en-GB',{maximumFractionDigits:d||0});}
+function sig(x){if(x>=1e6){var e=Math.floor(Math.log10(x)),m=x/Math.pow(10,e);return m.toFixed(1)+'×10'+String(e).split('').map(function(c){return '⁰¹²³⁴⁵⁶⁷⁸⁹'[c];}).join('');}
+ var p=Math.pow(10,Math.max(0,Math.floor(Math.log10(Math.max(x,1)))-1));return it(Math.round(x/p)*p);}
+function calc(L,A,D,d){var a=A/2*Math.PI/180,O=2*Math.PI*(1-Math.cos(a)),I=L/O,area=Math.PI*Math.pow(D/2000,2);
+ return {L:L,A:A,D:D,I:I,lum:I/area,E:I/(d*d),R:2*Math.sqrt(I),W:2*d*Math.tan(a)};}
+function T(x,y,t,col,anc,cls){return '<text class="'+(cls||'ts')+'" x="'+x+'" y="'+y+'"'+(anc?' text-anchor="'+anc+'"':'')+' fill="'+col+'">'+t+'</text>';}
+function beam(r,yc,name,col,clip,d){
+ var xw=X0+d*SC,a=r.A/2*Math.PI/180,lens=r.D/2*0.9,s='';
+ var h=lens+Math.tan(a)*(xw-X0),op=Math.max(0.12,Math.min(0.85,0.15+0.17*Math.log10(r.I/300)));
+ s+='<g clip-path="url(#'+clip+')">';
+ s+='<polygon points="'+X0+','+(yc-lens)+' '+xw+','+(yc-h)+' '+xw+','+(yc+h)+' '+X0+','+(yc+lens)+'" fill="#FAC775" opacity="'+op+'"/>';
+ s+='<line x1="'+X0+'" y1="'+yc+'" x2="'+xw+'" y2="'+yc+'" stroke="'+C.int+'" stroke-width="1" stroke-dasharray="3 3"/>';
+ var eo=Math.max(0.15,Math.min(1,0.2+0.27*Math.log10(Math.max(r.E,1))));
+ s+='<line x1="'+xw+'" y1="'+(yc-h)+'" x2="'+xw+'" y2="'+(yc+h)+'" stroke="#EF9F27" stroke-width="6" opacity="'+eo+'"/>';
+ s+='</g>';
+ s+='<line x1="'+xw+'" y1="'+(yc-78)+'" x2="'+xw+'" y2="'+(yc+78)+'" stroke="#888780" stroke-width="1"/>';
+ s+='<rect x="16" y="'+(yc-lens-4)+'" width="'+(X0-16)+'" height="'+(2*lens+8)+'" rx="5" fill="#2C2C2A"/>';
+ s+='<rect x="'+(X0-3)+'" y="'+(yc-lens)+'" width="5" height="'+(2*lens)+'" rx="2" fill="#E6F1FB" stroke="'+C.lum+'" stroke-width="1.2"/>';
+ s+=T(16,yc-78+12,name,col,'start','th');
+ s+=T(16,yc+lens+20,it(r.L)+' lumens',C.phi)+T(16,yc+lens+36,'lens '+sig(r.lum)+' nit',C.lum);
+ var lx=Math.min(xw-8,X0+190);s+=T(Math.max(X0+70,(X0+lx)/2),yc-6,sig(r.I)+' candela',C.int,'middle');
+ var tx=xw+8,anc='start';if(xw>560){tx=xw-8;anc='end';}
+ s+=T(tx,yc-60,it(r.E,r.E<10?1:0)+' lux',C.ill,anc,'th')+T(tx,yc-44,'at '+it(d)+' m',C.ill,anc);
+ return s;}
+function upd(){
+ var d=v('dS');document.getElementById('dO').textContent=d+' m';
+ var A=calc(v('aL'),v('aA'),v('aD'),d),B=calc(v('bL'),v('bA'),v('bD'),d);
+ [['a',A],['b',B]].forEach(function(q){document.getElementById(q[0]+'Lo').textContent=it(q[1].L)+' lm';document.getElementById(q[0]+'Ao').textContent=q[1].A+'°';document.getElementById(q[0]+'Do').textContent=q[1].D+' mm';});
+ var s='';
+ s+=beam(A,YA,'Light A','#185FA5','cA',d)+beam(B,YB,'Light B','#854F0B','cB',d);
+ s+='<line x1="'+X0+'" y1="384" x2="'+(X0+50*SC)+'" y2="384" stroke="var(--b)" stroke-width="1"/>';
+ for(var m=0;m<=50;m+=10){var x=X0+m*SC;s+='<line x1="'+x+'" y1="380" x2="'+x+'" y2="388" stroke="var(--b)" stroke-width="1"/>'+T(x,399,m+' m','#55697A','middle');}
+ document.getElementById('sc').innerHTML=s;
+ var rows=[
+  ['phi','Luminous flux','<b>lumen</b> (lm)','all the light emitted, in all directions: it does not say where it goes',A.L,B.L,it(A.L),it(B.L)],
+  ['int','Intensity at the beam centre','<b>candela</b> (cd = lm/sr)','how much light goes straight ahead: the same flux in a narrower beam gives more candela',A.I,B.I,sig(A.I),sig(B.I)],
+  ['ill','Illuminance on the road at '+d+' m','<b>lux</b> (lx = lm/m²) = cd / d²','how much light reaches what you need to see. StVZO-approved lights state the lux at 10 m',A.E,B.E,it(A.E,A.E<10?1:0),it(B.E,B.E<10?1:0)],
+  ['ill','Range according to ANSI FL1','<b>metres</b> = 2·√cd','distance at which the beam centre drops to 0.25 lux, about a full moon',A.R,B.R,it(A.R),it(B.R)],
+  ['n','Lit width at '+d+' m','<b>metres</b>','how much road you cover to the sides',A.W,B.W,it(A.W,1),it(B.W,1)],
+  ['lum','Lens luminance','<b>nit</b> (cd/m²) = cd / lens area','how dazzling the lamp is when seen head-on; it does not depend on distance and does not say how much it lights up',null,null,sig(A.lum),sig(B.lum)]];
+ var h='';rows.forEach(function(r){var wa=r[4]!=null&&r[4]>r[5]*1.02,wb=r[4]!=null&&r[5]>r[4]*1.02;
+  h+='<tr><td><span class="dot" style="background:'+C[r[0]]+'"></span>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td class="n'+(wa?' win':'')+'">'+r[6]+'</td><td class="n'+(wb?' win':'')+'">'+r[7]+'</td></tr>';});
+ document.getElementById('tb').innerHTML=h;
+}
+preset(0);
+</script>
+</body>
+</html>

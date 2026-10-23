@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The quantities of light</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+:root{--phi:#534AB7; --int:#185FA5; --lum:#0F6E56; --ill:#B5520C; --td:#A32D2D}
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 10px;font-size:14px;color:var(--text-secondary)}
+.ctl button{font:inherit;font-size:13px;padding:6px 12px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.ctl button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+#sem{transition:opacity .6s ease}
+@media (prefers-reduced-motion:reduce){#sem{transition:none}}
+.tag rect{stroke-width:1.2}
+.tag text{font-size:12px}
+.tag .v{font-size:13px;font-weight:500}
+.tbl{overflow-x:auto;margin-top:12px}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:13px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-weight:500;color:var(--text-secondary);font-size:12px}
+td.u b{font-weight:600}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+td.val{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:500}
+td.rad{font-variant-numeric:tabular-nums;color:var(--text-secondary)}
+td.rad b{color:var(--text-primary);font-weight:500}
+tr.chg td.val{background:#FCEEDD}
+.same{font-size:12px;color:var(--text-secondary)}
+.note{font-size:12.5px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
+</style>
+</head>
+<body>
+<h2 class="sr-only">The quantities of light along the path from the sun to the eye: luminous flux in lumens, intensity in candela and luminance in nits of the sun; illuminance in lux and luminance in nits of the road; illuminance in lux at the eye; retinal illuminance in trolands. One colour for each unit.</h2>
+<div class="ctl">
+<button id="bSem" onclick="moved=!moved;upd()">Remove the traffic light</button>
+<button id="bSnow" onclick="snow=!snow;upd()">Add snow</button>
+<span style="flex:1"></span>
+<span>Units</span>
+<button id="uL" onclick="rad=false;upd()">Light (lumens, lux…)</button>
+<button id="uW" onclick="rad=true;upd()">Energy (watts)</button>
+</div>
+<svg width="100%" viewBox="0 0 680 440">
+<line x1="0" y1="332" x2="680" y2="332" stroke="var(--b)" stroke-width="0.5"/>
+<circle cx="70" cy="178" r="26" fill="#FAC775" stroke="#BA7517" stroke-width="0.8"/>
+<text class="th" x="110" y="168">Sun</text>
+<g stroke="#EF9F27" stroke-width="1.4">
+<line x1="82" y1="201" x2="230" y2="324"/><line x1="88" y1="199" x2="330" y2="324"/><line x1="93" y1="195" x2="430" y2="324"/>
+</g>
+<line x1="96" y1="182" x2="300" y2="196" stroke="#EF9F27" stroke-width="2"/>
+<line id="direct" x1="300" y1="196" x2="546" y2="214" stroke="#EF9F27" stroke-width="2"/>
+<ellipse id="road" cx="330" cy="334" rx="210" ry="13" fill="#5F5E5A"/>
+<text class="ts" id="roadLbl" x="330" y="362" text-anchor="middle">asphalt road, reflectance ρ ≈ 0.2</text>
+<g id="sem">
+<rect x="312" y="230" width="6" height="98" fill="#5F5E5A"/>
+<rect x="300" y="154" width="30" height="78" rx="4" fill="#2C2C2A"/>
+<circle cx="315" cy="170" r="7.5" fill="#E24B4A"/><circle cx="315" cy="193" r="7.5" fill="#EF9F27"/><circle cx="315" cy="216" r="7.5" fill="#639922"/>
+</g>
+<g id="refl" stroke="#BA7517" stroke-dasharray="4 4" stroke-width="1">
+<line x1="380" y1="324" x2="548" y2="210"/><line x1="450" y1="324" x2="550" y2="214"/><line x1="510" y1="324" x2="553" y2="218"/>
+</g>
+<circle cx="600" cy="210" r="52" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<path d="M632 169 A52 52 0 0 1 632 251" fill="none" stroke="#D85A30" stroke-width="3"/>
+<path d="M552 184 Q536 210 552 236" fill="#E6F1FB" stroke="#888780" stroke-width="1"/>
+<rect id="irT" x="555" y="184" width="3.5" height="18" fill="#854F0B"/>
+<rect id="irB" x="555" y="218" width="3.5" height="18" fill="#854F0B"/>
+<text class="ts" x="600" y="276" text-anchor="middle">eye</text>
+<g id="tags"></g>
+</svg>
+<div class="tbl">
+<table>
+<thead><tr><th>Quantity</th><th>Unit</th><th>What it measures</th><th>Where</th><th>Here</th><th>Energy twin</th></tr></thead>
+<tbody id="tb"></tbody>
+</table>
+</div>
+<p class="note" id="note"></p>
+<script>
+var moved=false,snow=false,rad=false;
+var C={phi:'#534AB7',int:'#185FA5',lum:'#0F6E56',ill:'#B5520C',td:'#A32D2D'};
+function tag(x,y,w,col,name,val,unit,extra){
+  var h=extra?54:38;
+  return '<g class="tag"><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="6" fill="#FFFFFF" stroke="'+col+'"/>'+
+  '<text x="'+(x+9)+'" y="'+(y+15)+'" fill="'+col+'">'+name+'</text>'+
+  '<text class="v" x="'+(x+9)+'" y="'+(y+31)+'" fill="#16222E">'+val+(unit?' <tspan font-size="11" font-weight="400" fill="'+col+'">'+unit+'</tspan>':'')+'</text>'+
+  (extra?'<text x="'+(x+9)+'" y="'+(y+47)+'" fill="#55697A" font-size="11">'+extra+'</text>':'')+'</g>';}
+function fmt(n){return n.toLocaleString('en-GB');}
+function upd(){
+  var rho=snow?0.85:0.2,E=10000,Ls=Math.round(rho*E/Math.PI/100)*100;
+  var pd=moved?2:(snow?2.5:3),pa=moved?3:(snow?5:7);
+  var Eroad=Math.round(Math.PI/2*Ls/100)*100,Eeye=Eroad+(moved?40000:0),tdRoad=Ls*pa,tdSun=moved?'≈ 5×10⁹':'—';
+  var Rs=(Ls/100),irrRet=(Rs*pa*1e-6/2.79e-4);
+  function f2(x){return x<1?x.toFixed(2):fmt(Math.round(x));}
+  ['uL','uW'].forEach(function(id){document.getElementById(id).classList.toggle('act',(id==='uW')===rad);});
+  document.getElementById('sem').style.opacity=moved?0:1;
+  document.getElementById('direct').setAttribute('opacity',moved?1:0);
+  document.getElementById('road').setAttribute('fill',snow?'#F1EFE8':'#5F5E5A');
+  document.getElementById('road').setAttribute('stroke',snow?'#888780':'none');
+  document.getElementById('refl').setAttribute('stroke-width',snow?2.6:1);
+  document.getElementById('roadLbl').textContent=snow?'snowy road, reflectance ρ ≈ 0.85':'asphalt road, reflectance ρ ≈ 0.2';
+  var sh=(3-pd)*4;
+  document.getElementById('irT').setAttribute('height',18+sh);
+  document.getElementById('irB').setAttribute('y',218-sh);document.getElementById('irB').setAttribute('height',18+sh);
+  document.getElementById('bSem').textContent=moved?'Put the traffic light back':'Remove the traffic light';
+  document.getElementById('bSnow').textContent=snow?'Remove the snow':'Add snow';
+  document.getElementById('bSem').classList.toggle('act',moved);document.getElementById('bSnow').classList.toggle('act',snow);
+  var t='';
+  if(!rad){
+  t+=tag(10,8,205,C.phi,'luminous flux Φ','3.6×10²⁸ lumens','(lm)');
+  t+=tag(10,52,205,C.int,'intensity I','2.9×10²⁷ candela','(cd = lm/sr)');
+  t+=tag(10,96,205,C.lum,'sun luminance L','≈ 1.6×10⁹ nit','(cd/m²)');
+  t+=tag(10,378,195,C.ill,'road illuminance E',fmt(E)+' lux','(lm/m²)');
+  t+=tag(212,378,196,C.lum,'road luminance L','≈ '+fmt(Ls)+' nit','(cd/m²)');
+  t+=tag(414,378,262,C.td,'retinal illuminance',fmt(tdRoad)+' troland','(nit · mm²)',moved?'staring at the sun: ≈ 5×10⁹ troland':'');
+  t+=tag(470,96,205,C.ill,'eye illuminance E','≈ '+fmt(Eeye)+' lux','(lm/m²)',moved?'of which 40,000 from the sun':'');
+  }else{
+  t+=tag(10,8,205,C.phi,'radiant flux','3.6×10²⁶ watts','(W = J/s)');
+  t+=tag(10,52,205,C.int,'radiant intensity','2.9×10²⁵ W/sr','');
+  t+=tag(10,96,205,C.lum,'sun radiance','≈ 1.6×10⁷ W/(m²·sr)','');
+  t+=tag(10,378,195,C.ill,'road irradiance','≈ 100 W/m²','');
+  t+=tag(212,378,196,C.lum,'road radiance','≈ '+f2(Rs)+' W/(m²·sr)','');
+  t+=tag(414,378,262,C.td,'retinal irradiance',f2(irrRet)+' W/m²','',moved?'staring at the sun: ≈ 2×10⁵ W/m² (20 W/cm²)':'');
+  t+=tag(470,96,205,C.ill,'eye irradiance','≈ '+fmt(Eeye/100)+' W/m²','',moved?'of which 400 from the sun':'');
+  }
+  t+='<line x1="70" y1="134" x2="70" y2="151" stroke="'+C.lum+'" stroke-width="1"/>';
+  t+='<line x1="580" y1="'+(moved?150:134)+'" x2="556" y2="182" stroke="'+C.ill+'" stroke-width="1"/>';
+  t+='<line x1="640" y1="378" x2="648" y2="252" stroke="'+C.td+'" stroke-width="1"/>';
+  t+='<line x1="313" y1="378" x2="420" y2="342" stroke="'+C.lum+'" stroke-width="1"/>';
+  t+='<line x1="105" y1="378" x2="200" y2="340" stroke="'+C.ill+'" stroke-width="1"/>';
+  document.getElementById('tags').innerHTML=t;
+  var rows=[
+   ['phi','Luminous flux Φ','<b>lumen</b> (lm)','how much light the source emits in total, in all directions','sun','3.6×10²⁸ lm',false,'radiant flux, <b>watt</b>: 3.6×10²⁶ W'],
+   ['int','Luminous intensity I','<b>candela</b> (cd) = lm/sr','how much it emits in one direction, per unit of solid angle; I = Φ / 4π','sun','2.9×10²⁷ cd',false,'radiant intensity, <b>W/sr</b>: 2.9×10²⁵ W/sr'],
+   ['lum','Luminance L','<b>nit</b> = cd/m²','how concentrated the emission is: intensity divided by the apparent area. It belongs to whatever emits or reflects','sun','≈ 1.6×10⁹ nit',false,'radiance, <b>W/(m²·sr)</b>: ≈ 1.6×10⁷'],
+   ['ill','Illuminance E','<b>lux</b> (lx) = lm/m²','how much light reaches a surface; E = I / d² (about 130,000 lx outside the atmosphere, much less on the ground with the sun low)','road','10,000 lx',false,'irradiance, <b>W/m²</b>: ≈ 100 W/m²'],
+   ['lum','Luminance L','<b>nit</b> = cd/m²','how much of it the road sends back towards you; L ≈ ρ · E / π','road','≈ '+fmt(Ls)+' nit',snow,'radiance, <b>W/(m²·sr)</b>: ≈ '+f2(Rs)],
+   ['ill','Illuminance E','<b>lux</b> (lx) = lm/m²','how much light reaches the eye: the light reflected by the road (≈ π·L/2 if the road fills half the visual field) and, without the traffic light, the direct light of the sun, which decides the glare','eye','≈ '+fmt(Eeye)+' lx'+(moved?'<br>of which 40,000 from the sun':''),moved||snow,'irradiance, <b>W/m²</b>: ≈ '+fmt(Eeye/100)+' W/m²'],
+   ['td','Retinal illuminance','<b>troland</b> (Td) = nit × mm²','how much light reaches a point on the retina: luminance of what you look at × pupil area. It decides the damage','retina','road '+fmt(tdRoad)+' Td'+(moved?'<br>sun ≈ 5×10⁹ Td':''),snow||moved,'retinal irradiance, <b>W/m²</b>: road ≈ '+f2(irrRet)+(moved?'<br>sun ≈ 2×10⁵ W/m² (≈ 20 W/cm²)':'')]];
+  var h='';rows.forEach(function(r){h+='<tr'+(r[6]?' class="chg"':'')+'><td><span class="dot" style="background:'+C[r[0]]+'"></span>'+r[1]+'</td><td class="u">'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td><td class="val">'+r[5]+'</td><td class="rad">'+r[7]+'</td></tr>';});
+  document.getElementById('tb').innerHTML=h;
+  document.getElementById('note').innerHTML='Same colour, same quantity and same unit. The sun\'s three quantities never change: neither the traffic light nor the snow touches the sun. '+(moved?'Without the traffic light, the direct light of the sun adds to the light from the road: <b>40,000 lux</b> more at the eye (it dazzles) and, if you stare at it, an image of the sun of about <b>5×10⁹ trolands</b> on the retina (it causes damage). The pupil constricts to 2 mm.':'Behind the traffic light only what reaches you changes: the direct light of the sun disappears, and at the eye only the light reflected by the road remains, about '+fmt(Eroad)+' lux.')+(snow?' With snow the luminance of the road rises, and the trolands with it, even though the pupil constricts.':'')+' To go from light to energy, for sunlight: about <b>100 lumens per watt</b> (luminous efficacy). Values: orders of magnitude, low sun at dawn; skylight, which also reaches the eye, is not counted.';
+}
+upd();
+</script>
+</body>
+</html>

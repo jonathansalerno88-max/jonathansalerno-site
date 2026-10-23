@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thin lens ray diagram</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;font-size:14px;color:var(--text-secondary)}
+.ctl button{font:inherit;font-size:13px;padding:6px 12px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.ctl button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+.ctl button:disabled{opacity:.35;cursor:default}
+.eq{font-size:14px;color:var(--text-primary);background:var(--surface-1);border-radius:var(--radius);padding:10px 12px;margin-top:8px;line-height:1.7}
+.note{font-size:12px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
+#sv{touch-action:none}
+#handle{cursor:grab}
+#handle:active{cursor:grabbing}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Ray diagram of a thin lens with the object on the right: converging lens, diverging lens or magnifying glass with frame and handle; draggable object, three principal rays, foci, dimensions d0, di and f, lens equation and magnification.</h2>
+<div class="ctl">
+<button id="tC" onclick="setT('C')">Converging lens</button>
+<button id="tD" onclick="setT('D')">Diverging lens</button>
+<button id="tM" onclick="setT('M')">Magnifying glass</button>
+<span style="flex:1"></span>
+<span style="font-size:13px">Drag the arrow</span>
+</div>
+<div class="ctl">
+<span>Object</span>
+<button id="p1" onclick="put(2.6)">beyond 2F</button>
+<button id="p2" onclick="put(2)">at 2F</button>
+<button id="p3" onclick="put(1.5)">between F and 2F</button>
+<button id="p4" onclick="put(1)">at F</button>
+<button id="p5" onclick="put(0.6)">inside F</button>
+</div>
+<div class="ctl"><span>d₀</span><input type="range" id="dS" min="2" max="58" step="0.1" value="30" style="flex:1" oninput="upd()"><span id="dL" style="min-width:60px;text-align:right;color:var(--text-primary)"></span></div>
+<div class="ctl"><span>|f|</span><input type="range" id="fS" min="5" max="20" step="0.5" value="10" style="flex:1" oninput="upd()"><span id="fL" style="min-width:60px;text-align:right;color:var(--text-primary)"></span></div>
+<div class="ctl"><span>Object height</span><input type="range" id="hS" min="0.5" max="9" step="0.1" value="3" style="flex:1" oninput="upd()"><span id="hL" style="min-width:60px;text-align:right;color:var(--text-primary)"></span></div>
+<svg id="sv" width="100%" viewBox="0 -70 680 440"><g id="sc"></g><rect id="handle" x="0" y="0" width="0" height="0" fill="transparent"/></svg>
+<div class="eq" id="eq"></div>
+<p class="note">Convention: light travels from right to left; d₀ and dᵢ are positive for a real object and a real image, f is negative for the diverging lens. Rays: <span style="color:#BA7517">①</span> parallel to the axis, then through F′; <span style="color:#185FA5">②</span> through the centre, undeviated; <span style="color:#0F6E56">③</span> through F, then parallel. Heights are drawn at a different scale from distances.</p>
+<script>
+var typ='C',LX=340,AY=170,SX=5,SY=12,drag=false;
+function setT(t){typ=t;if(t==='M'){document.getElementById('fS').value=10;document.getElementById('dS').value=6;document.getElementById('hS').value=2;}upd();}
+function put(m){document.getElementById('dS').value=Math.max(2,Math.min(58,m*parseFloat(document.getElementById('fS').value)));upd();}
+function fmt(x,d){return x.toFixed(d);}
+function L(x1,y1,x2,y2,c,w,d,o){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+(w||1.4)+'"'+(d?' stroke-dasharray="'+d+'"':'')+(o!=null?' opacity="'+o+'"':'')+'/>';}
+function T(x,y,t,cls,anc,col){return '<text class="'+(cls||'ts')+'" x="'+x+'" y="'+y+'"'+(anc?' text-anchor="'+anc+'"':'')+(col?' fill="'+col+'"':'')+'>'+t+'</text>';}
+function arrow(x,y0,y1,col,dash){var up=y1<y0,s=L(x,y0,x,y1,col,2.5,dash);var hy=y1+(up?10:-10);return s+'<path d="M'+(x-6)+' '+hy+' L'+x+' '+y1+' L'+(x+6)+' '+hy+(dash?'" fill="none" stroke="'+col+'" stroke-width="1.5"':' Z" fill="'+col+'"')+'/>';}
+function q(x1,x2,y,lbl,col,dash){var a=Math.min(x1,x2),b=Math.max(x1,x2),s='';
+s+=L(a,y,b,y,col,1.5,dash?'4 3':null)+L(a,y-6,a,y+6,col,1.5)+L(b,y-6,b,y+6,col,1.5);
+return s+T((a+b)/2,y-6,lbl,'th','middle',col);}
+function mk(x,lbl){if(x<6||x>674)return '';return L(x,AY-6,x,AY+6,'#534AB7',2)+T(x,AY+22,lbl,'th','middle','#534AB7');}
+function svgPt(e){var sv=document.getElementById('sv'),p=sv.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(sv.getScreenCTM().inverse());}
+var hd=document.getElementById('handle');
+hd.addEventListener('pointerdown',function(e){drag=true;hd.setPointerCapture(e.pointerId);e.preventDefault();});
+hd.addEventListener('pointermove',function(e){if(!drag)return;var p=svgPt(e);
+document.getElementById('dS').value=Math.max(2,Math.min(58,(p.x-LX)/SX));document.getElementById('hS').value=Math.max(0.5,Math.min(9,(AY-p.y)/SY));upd();});
+hd.addEventListener('pointerup',function(e){drag=false;hd.releasePointerCapture(e.pointerId);});
+function upd(){
+['C','D','M'].forEach(function(k){document.getElementById('t'+k).classList.toggle('act',typ===k);});
+['p1','p2','p3','p4','p5'].forEach(function(id){document.getElementById(id).disabled=typ==='D';});
+var d0=parseFloat(document.getElementById('dS').value),fa=parseFloat(document.getElementById('fS').value),h=parseFloat(document.getElementById('hS').value);
+var f=typ==='D'?-fa:fa;
+document.getElementById('dL').textContent=fmt(d0,1)+' cm';document.getElementById('fL').textContent=fmt(fa,1)+' cm';document.getElementById('hL').textContent=fmt(h,1)+' cm';
+var inv=1/f-1/d0,inf=Math.abs(inv)<2e-4,di=inf?Infinity:1/inv,m=inf?Infinity:-di/d0,hi=inf?0:m*h;
+var xo=LX+d0*SX,yt=AY-h*SY,xi=inf?-1e6:LX-di*SX,yi=AY-hi*SY;
+var s=L(10,AY,670,AY,'var(--b)',0.6,'4 4');
+if(typ==='M'){
+s+='<line x1="'+(LX+8)+'" y1="34" x2="'+(LX+62)+'" y2="-52" stroke="#854F0B" stroke-width="16" stroke-linecap="round"/>';
+s+='<line x1="'+(LX+8)+'" y1="34" x2="'+(LX+22)+'" y2="12" stroke="#5F5E5A" stroke-width="10" stroke-linecap="round"/>';
+s+='<path d="M'+LX+' 40 Q'+(LX+18)+' '+AY+' '+LX+' 300 Q'+(LX-18)+' '+AY+' '+LX+' 40 Z" fill="#B5D4F4" opacity="0.7" stroke="#185FA5" stroke-width="1"/>';
+s+='<rect x="'+(LX-11)+'" y="34" width="22" height="272" rx="11" fill="none" stroke="#5F5E5A" stroke-width="5"/>';
+s+=T(LX+76,-46,'handle','ts','start');}
+else if(typ==='C')s+='<path d="M'+LX+' 40 Q'+(LX+18)+' '+AY+' '+LX+' 300 Q'+(LX-18)+' '+AY+' '+LX+' 40 Z" fill="#B5D4F4" opacity="0.7" stroke="#185FA5" stroke-width="1"/>';
+else s+='<path d="M'+(LX-12)+' 40 L'+(LX+12)+' 40 Q'+(LX+2)+' '+AY+' '+(LX+12)+' 300 L'+(LX-12)+' 300 Q'+(LX-2)+' '+AY+' '+(LX-12)+' 40 Z" fill="#B5D4F4" opacity="0.7" stroke="#185FA5" stroke-width="1"/>';
+var xF=LX+f*SX,xF2=LX-f*SX;
+s+=mk(xF,'F')+mk(LX+2*f*SX,'2F')+mk(xF2,'F′')+mk(LX-2*f*SX,'2F′');
+function out(yL,slopeInf,col){var r='';
+if(inf){r+=L(LX,yL,10,yL+slopeInf*(10-LX),col);}
+else if(di>0){var k=(yi-yL)/(xi-LX);var xe=xi<10?10:Math.max(10,Math.min(xi-40,LX-60));r+=L(LX,yL,xe,yL+k*(xe-LX),col);}
+else{var k2=(yL-yi)/(LX-xi);r+=L(LX,yL,10,yL+k2*(10-LX),col);r+=L(xi,yi,LX,yL,col,1,'3 4',0.6);}
+return r;}
+var cs=(AY-yt)/(LX-xo);
+s+=L(xo,yt,LX,yt,'#BA7517')+out(yt,cs,'#BA7517');
+if(typ==='D'&&!inf)s+=L(xF2,AY,LX,yt,'#BA7517',1,'3 4',0.6);
+s+=L(xo,yt,LX,AY,'#185FA5')+out(AY,cs,'#185FA5');
+var y3=AY+(yt-AY)*(LX-xF)/(xo-xF);
+if(Math.abs(xo-xF)>1&&Math.abs(y3-AY)<220){
+s+=L(xo,yt,LX,y3,'#0F6E56')+out(y3,cs,'#0F6E56');
+if(typ!=='D'&&d0<f)s+=L(xF,AY,xo,yt,'#0F6E56',1,'3 4',0.6);
+if(typ==='D')s+=L(LX,y3,xF,AY,'#0F6E56',1,'3 4',0.6);}
+if(typ==='M'){var ex=LX-80;s+='<ellipse cx="'+ex+'" cy="'+AY+'" rx="22" ry="14" fill="#F1EFE8" stroke="#888780" stroke-width="1"/><circle cx="'+(ex+10)+'" cy="'+AY+'" r="6" fill="#2C2C2A"/>'+T(ex,AY+34,'eye','ts','middle');}
+s+=arrow(xo,AY,yt,'var(--t)');s+=T(xo,yt-14,'object','ts','middle');
+if(!inf&&xi>4&&xi<676){var yic=Math.max(-50,Math.min(296,yi));s+=arrow(xi,AY,yic,'#D85A30',di<0?'5 4':null);s+=T(xi,(hi>0?yic-14:yic+20),di<0?'virtual image':'real image','ts','middle','#D85A30');}
+else if(!inf)s+=T(di>0?10:670,AY-30,di>0?'← image':'image →','th',di>0?'start':'end','#D85A30');
+s+=q(LX,xo,316,'d₀ = '+fmt(d0,1)+' cm','var(--t)');
+if(!inf){var xic=Math.max(6,Math.min(674,xi));s+=q(xic,LX,338,'dᵢ = '+fmt(di,1)+' cm'+(di<0?' (virtual)':''),'#D85A30',di<0);}
+else s+=T(LX-40,338,'dᵢ = ∞','th','end','#D85A30');
+s+=q(xF2,LX,360,'f = '+(f>0?'+':'−')+fmt(fa,1)+' cm','#534AB7',f<0);
+document.getElementById('sc').innerHTML=s;
+hd.setAttribute('x',xo-16);hd.setAttribute('y',Math.min(yt,AY)-16);hd.setAttribute('width',32);hd.setAttribute('height',Math.abs(AY-yt)+32);
+var e='<b>1/f = 1/d₀ + 1/dᵢ</b> → 1/'+fmt(f,1)+' = 1/'+fmt(d0,1)+' + 1/'+(inf?'∞':fmt(di,1))+'  ('+fmt(1/f,3)+' = '+fmt(1/d0,3)+' + '+(inf?'0':fmt(1/di,3))+' cm⁻¹)';
+if(inf)e+='<br>Object at F: the rays emerge parallel, the image goes to infinity.';
+else{e+='<br><b>m = −dᵢ / d₀</b> = '+fmt(m,2)+' · image height = '+fmt(hi,2)+' cm';
+e+='<br>'+(di>0?'<b>Real</b>':'<b>Virtual</b>')+' image, '+(m<0?'inverted':'upright')+', '+(Math.abs(m)>1.02?'magnified':Math.abs(m)<0.98?'reduced':'same size')+'.';}
+if(typ==='M')e+='<br><b>Magnifying power ≈ 25 cm / f</b> = '+fmt(25/fa,1)+'× '+(d0<fa?'(object inside F: it works as a magnifying glass)':'(object outside F: it no longer acts as a magnifying glass and gives a real, inverted image)');
+document.getElementById('eq').innerHTML=e;
+}
+upd();
+</script>
+</body>
+</html>

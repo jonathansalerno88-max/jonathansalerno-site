@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lens physics — Jonathan Salerno</title>
+<link rel="alternate" hreflang="it" href="/didattica/fisica-delle-lenti/">
+<link rel="alternate" hreflang="en" href="/teaching/lens-physics/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
+<meta name="description" content="Interactive teaching material: luminance and illuminance, retinal damage, the eye as an optical system, myopia and hyperopia, pupil and aberrations, parallax, thin lenses and real and virtual images.">
+<meta name="author" content="Jonathan Salerno">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lens physics">
+<meta property="og:description" content="Interactive teaching material on the optics of the eye and of lenses.">
+<style>
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-ext-600-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-greek-400-normal.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-ext-500-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+:root{
+  --paper:#FBFCFD; --ink:#16222E; --mut:#55697A; --faint:#8696A4;
+  --rule:#DDE4EA; --link:#1456A8; --mark:#B5520C; --axis:#9DACB9; --card:#F1F4F7;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0E151B; --ink:#E2E9EF; --mut:#9BAAB7; --faint:#6C7D8C;
+  --rule:#27343F; --link:#6FA8EA; --mark:#F08A3C; --axis:#50616F; --card:#16212A;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#0E151B; --ink:#E2E9EF; --mut:#9BAAB7; --faint:#6C7D8C;
+  --rule:#27343F; --link:#6FA8EA; --mark:#F08A3C; --axis:#50616F; --card:#16212A;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans);
+  font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased}
+.page{max-width:47rem; margin:0 auto; padding:clamp(2rem,6vw,4.5rem) 16px clamp(3rem,8vw,6rem)}
+a{color:var(--link); font-weight:600; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:.2em}
+a:hover{text-decoration-thickness:2px}
+a:focus-visible{outline:2px solid var(--link); outline-offset:3px; border-radius:2px}
+
+.back{font-size:.875rem; margin:0 0 1.6rem}
+.kicker{font-family:var(--mono); font-size:.75rem; color:var(--faint); letter-spacing:.04em; margin:0 0 .4rem}
+h1{font-family:var(--serif); font-weight:500; font-size:clamp(2.2rem,6vw,3rem); line-height:1.08;
+  letter-spacing:-.02em; margin:0 0 .9rem}
+.lede{max-width:38rem; color:var(--ink); font-size:1.0625rem}
+.lede p{margin:0 0 .8rem}
+
+nav.toc{margin:2rem 0 0; padding:1rem 1.2rem; background:var(--card); border-radius:10px}
+nav.toc h2{margin:0 0 .5rem; padding:0; border:0}
+nav.toc ol{margin:0; padding-left:1.4rem; font-size:.9375rem; columns:2 17rem; column-gap:2rem}
+nav.toc li{margin:.15rem 0; break-inside:avoid}
+nav.toc a{font-weight:500}
+
+section{margin-top:clamp(2.8rem,7vw,4rem); scroll-margin-top:1rem}
+h2{font-family:var(--sans); font-weight:600; font-size:.8125rem; color:var(--mut);
+  margin:0 0 1rem; padding-bottom:.5rem; border-bottom:1px solid var(--rule); letter-spacing:.005em}
+h3{font-family:var(--serif); font-weight:500; font-size:1.45rem; line-height:1.25; margin:0 0 .8rem; letter-spacing:-.01em}
+section p, section ul, section ol{max-width:38rem}
+section p{margin:0 0 .85rem}
+section ul{padding-left:1.2rem; margin:0 0 .9rem}
+section li{margin:.25rem 0}
+.formula{font-family:var(--mono); font-size:.9rem; background:var(--card); border-radius:6px;
+  padding:.55rem .8rem; display:inline-block; margin:.1rem 0 .9rem}
+.try{font-size:.9375rem; color:var(--mut); border-left:3px solid var(--axis); padding:.1rem 0 .1rem .9rem; margin:1rem 0}
+.try b{color:var(--ink); font-weight:600}
+
+figure.w{margin:1.4rem 0 1.2rem}
+figure.w iframe{display:block; width:100%; height:560px; border:1px solid var(--rule);
+  border-radius:10px; background:#FBFCFD}
+figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
+figure.w figcaption a{font-weight:500}
+
+table{border-collapse:collapse; font-size:.9rem; margin:.4rem 0 1rem; width:100%; max-width:38rem}
+th,td{text-align:left; padding:.45rem .6rem; border-bottom:1px solid var(--rule); vertical-align:top}
+th{font-weight:600; color:var(--mut); font-size:.8125rem}
+
+ol.refs{font-size:.875rem; color:var(--mut); padding-left:1.2rem}
+ol.refs li{margin:.45rem 0}
+.caveat{font-size:.875rem; color:var(--mut)}
+footer{margin-top:clamp(3rem,8vw,4.5rem); padding-top:1.1rem; border-top:1px solid var(--rule);
+  color:var(--faint); font-size:.8125rem}
+footer p{margin:0}
+footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
+</style>
+</head>
+<body>
+<div class="page">
+
+<p class="back"><a href="/">Jonathan Salerno</a> · <a href="/didattica/fisica-delle-lenti/" hreflang="it" lang="it">Italiano</a></p>
+
+<header>
+  <p class="kicker">TEACHING MATERIAL</p>
+  <h1>Lens physics</h1>
+  <div class="lede">
+    <p>From a bicycle light to the magnifying glass: a course on the optics of the eye and of
+    lenses, built as a series of questions. Every section has an interactive figure to use, not
+    just to look at.</p>
+    <p class="caveat">The numbers in the figures are orders of magnitude calculated with simplified
+    models, except where a source is cited. They are there to show how the quantities relate to one
+    another, not to make diagnoses.</p>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <h2>Contents</h2>
+  <ol start="0">
+    <li><a href="#bici">Lumens or candelas? Two bike lights</a></li>
+    <li><a href="#luce">Luminance, illuminance and glare</a></li>
+    <li><a href="#danno">How the retina gets damaged</a></li>
+    <li><a href="#occhio">The eye: model, refractive errors, accommodation, drugs</a></li>
+    <li><a href="#occhiali">Spectacle lenses</a></li>
+    <li><a href="#parallasse">Parallax: nodal point or entrance pupil</a></li>
+    <li><a href="#animali">Focal length and pupil in animals</a></li>
+    <li><a href="#lente-sottile">The thin lens</a></li>
+    <li><a href="#reale-virtuale">Real or virtual image</a></li>
+    <li><a href="#fonti">Sources</a></li>
+  </ol>
+</nav>
+
+<!-- 0 -->
+<section id="bici">
+  <h2>0 · Introduction</h2>
+  <h3>Lumens or candelas? Two bike lights</h3>
+  <p>On r/askscience someone has to choose between two bicycle lights: the cheaper one claims more
+  lumens, the more expensive one more ‘cd/m²’. They ask which of the two numbers really says how much
+  the light illuminates (<a href="https://www.reddit.com/r/askscience/comments/47bw1b/can_anyone_please_explain_the_difference_between/">the thread</a>).
+  To answer, you have to separate four quantities that get mixed up on the packaging, and that is
+  the job of the whole first part of this page.</p>
+  <ul>
+    <li><b>Lumens</b>: all the light that leaves the lamp, in every direction. It does not say where it goes.</li>
+    <li><b>Candelas</b>, that is lumens per steradian: how much light goes in one direction, for a headlight the
+    centre of the beam. The same flux concentrated into a narrower beam gives more candelas.</li>
+    <li><b>Lux</b>, that is lumens per square metre: how much light reaches the road at a given distance,
+    E = I / d². It is what you see in front of the wheel. Lights type-approved in Germany (StVZO) state
+    exactly the lux at 10 m; the ANSI FL1 standard states the peak candelas and the <em>beam distance</em>,
+    the distance at which the centre of the beam falls to 0.25 lux, roughly the light of the full moon.</li>
+    <li><b>Cd/m²</b>, that is nits: the luminance of the lens. It says how much the lamp dazzles someone looking
+    straight at it, not how much it lights the road. On a spec sheet it is almost certainly a mistake for
+    ‘candelas’, as one of the replies suspects.</li>
+  </ul>
+  <figure class="w">
+    <iframe src="w/00-bici.html" title="Two bike lights: lumens, candelas, lux on the road and luminance of the lens" loading="lazy"></iframe>
+    <figcaption>Change the flux, the beam width and the distance. <a href="w/00-bici.html">Open full screen</a></figcaption>
+  </figure>
+  <p>In the example, the light with fewer lumens but a 10° beam has six times the candelas of the one with
+  1,000 lumens and 40°: at 10 m it puts about 170 lux on the road against 26, and reaches two and a half
+  times as far. The light with more lumens instead lights a wider strip of road. So, to see far
+  ahead, what counts is the candelas or the lux at 10 m; to see to the sides, the lumens spread over a wide beam.</p>
+  <p><b>Now it's your turn.</b> You have to light your lane where you need to see: at the stopping
+  distance, that is 1 s of reaction plus braking. At 22 km/h that is about 10 m. There you need at least 60 lux
+  over 3.5 m of width, without blinding the cyclist coming the other way or the pedestrian
+  walking towards you on the pavement. Six faces judge the light you have chosen: light on the
+  road, width, cyclist, pedestrian, price and battery life.</p>
+  <figure class="w">
+    <iframe src="w/00b-missione.html" title="Game: set up a bike light to light the road up to the stopping distance" loading="lazy"></iframe>
+    <figcaption>Adjust the flux, beam, lens and cut-off. <a href="w/00b-missione.html">Open full screen</a></figcaption>
+  </figure>
+  <p class="try"><b>Try this.</b> Without a cut-off beam, widen the beam beyond about 33°: the
+  pedestrian at 8 m enters the cone and about twenty lux reach their eyes. What matters is not how
+  bright the lens is in nits: it is the veil of scattered light that those lux spread over their retina,
+  which the figure measures in nits and compares with the luminance of the road. The cut-off, which keeps the light
+  below eye height, solves it for everyone, and there is more: the half of the light that the round beam
+  wasted upwards ends up on the road, so for the same lumens the lux double. Watch the
+  side view while you press the button. With the round beam, getting 60 lux over 3.5 m takes
+  at least about 560 lumens and the battery does not last two hours; with the cut-off about 280 are enough.
+  Then make the lens smaller: below a certain diameter the beam no longer narrows, because a
+  one-square-millimetre LED cannot be concentrated into an arbitrarily small angle. The diameter does not
+  enter the lux, but it decides how many candelas you can get out of your lumens.
+  Finally raise the speed to 40 km/h: the stopping distance rises to about 23 m, and to cover the
+  lane down there a beam of about 9° is enough. With a uniform cone the lumens needed stay almost the
+  same (lux times lit area is always the flux), but the beam becomes narrow and leaves the road
+  near the wheel and the bends in the dark. This is why fast riders fit a second, wide light, and
+  StVZO lights concentrate the intensity just below the cut-off, where the road is far away.
+  And try to get six happy faces: you can't, because the cut-off has a cost. Every light is a
+  compromise, and the numbers on the box are there to choose which one.</p>
+  <p>A clarification on one of the replies in the thread, which says that to use cd/m² you need to know
+  the distance. That holds for lux, not for luminance: luminance does not depend on distance, and it is
+  the same reason why the sun, seen from Earth or from Mars, burns the retina with the same
+  intensity. We see this in the next section.</p>
+</section>
+
+<!-- 1 -->
+<section id="luce">
+  <h2>1 · Luminance, illuminance and glare</h2>
+  <h3>What lumens, candelas, nits, lux and trolands measure</h3>
+  <p>The quantities of light are not alternatives to one another: they describe the same light at different points.</p>
+  <ul>
+    <li><b>Lumen</b> (luminous flux): how much light the source emits in total.</li>
+    <li><b>Candela</b> (luminous intensity): how much it emits in one direction, per unit solid angle.</li>
+    <li><b>Nit</b>, that is candelas per square metre (luminance): how <em>concentrated</em> the emission is, the intensity divided by the apparent area of the source. The sun is around 10⁹ nits, a smartphone 1,000–2,000.</li>
+    <li><b>Lux</b>, that is lumens per square metre (illuminance): how much light <em>arrives</em> on a surface. Full sun gives about 100,000 lux.</li>
+    <li><b>Troland</b> (retinal illuminance): luminance in nits × pupil area in mm².</li>
+  </ul>
+  <p>Luminance belongs to whatever emits or reflects: the sun, the road. <b>What reaches the eye is not a
+  luminance</b>: it is an illuminance, in lux, and on the retina a retinal illuminance, in trolands.
+  In the figure each unit has its own colour, the same wherever it appears.</p>
+  <p>Every source, direct or reflected, always has a luminance and always produces an illuminance on
+  what it strikes. An illuminated matt surface in turn becomes a source:</p>
+  <p class="formula">L ≈ ρ · E / π</p>
+  <p>where ρ is the reflectance. Light asphalt (ρ ≈ 0.2) under 10,000 lux has about 600 nits; fresh
+  snow (ρ ≈ 0.85) about four times as much.</p>
+  <p>For an extended source, the illuminance on the retina depends only on the luminance and the pupil,
+  not on the distance: the solid angle cancels out.</p>
+  <p class="formula">E<sub>retina</sub> ∝ L · A<sub>pupil</sub> / f²</p>
+  <p>Hence the distinction that matters: <b>glare</b> depends on the illuminance the source
+  produces at the eye, divided roughly by the square of the angle from the line of sight; <b>damage
+  to the retina</b> depends on the luminance of what you stare at and on time.</p>
+  <figure class="w">
+    <iframe src="w/01-semaforo.html" title="Traffic light at dawn: asphalt and snow-covered road, direct light, trolands and safety threshold" loading="lazy"></iframe>
+    <figcaption>Remove the traffic light and add snow: only the quantities highlighted in the table change. <a href="w/01-semaforo.html">Open full screen</a></figcaption>
+  </figure>
+  <p class="try"><b>Try this.</b> Behind the traffic light the sun does not change: the sun's lumens, candelas and nits
+  stay the same. Only the illuminance at your eye, in lux, collapses, and that is why the
+  glare disappears. With snow the luminance of the road rises, about 4 times, but it stays below
+  the 10⁴ nits of the safety threshold: it dazzles, it does not damage.</p>
+</section>
+
+<!-- 2 -->
+<section id="danno">
+  <h2>2 · How the retina gets damaged</h2>
+  <h3>Photochemical dose, thermal threshold, and the eclipse trap</h3>
+  <p>There are two distinct mechanisms.</p>
+  <ul>
+    <li><b>Photochemical</b> (blue light): what counts is the dose, that is irradiance × time on the same point of the
+    retina. It accumulates: a brief intense exposure is equivalent to a long weak one. It is the mechanism
+    of solar retinopathy. The ICNIRP/ACGIH exposure limit is a blue-light-weighted radiance,
+    100 J/(cm²·sr) over the course of a day; staring at the sun you exceed it in a matter of seconds.</li>
+    <li><b>Thermal</b>: what counts is the instantaneous power, because heat dissipates. Either you exceed the threshold
+    at once or nothing happens. It is the risk of lasers, which enter collimated and are concentrated into a
+    spot of about 0.02 mm.</li>
+  </ul>
+  <p>For white light there is an ICNIRP rule of thumb: below 10⁴ cd/m² of luminance not even a
+  detailed risk assessment is needed. The real threshold, however, is expressed in radiance weighted
+  on the blue spectrum, not in nits.</p>
+  <p><b>The eclipse.</b> The visible part of the sun has the same luminance as the full sun; only
+  the illuminance at the eye falls. The damage is done by luminance, but the alarm bell is rung by
+  illuminance: without discomfort the reflex to look away does not kick in, the pupil
+  dilates, and the retina has no pain receptors. You stare for a long time at a source that burns like
+  the full sun.</p>
+  <figure class="w">
+    <iframe src="w/02-danno.html" title="Sun, partial eclipse, laser pointer and screen: photochemical damage, thermal damage and body clock" loading="lazy"></iframe>
+    <figcaption>Change the source, remove the obstacle, put in the eye drops and move the exposure time. <a href="w/02-danno.html">Open full screen</a></figcaption>
+  </figure>
+  <p class="try"><b>Try this.</b> Do eye drops that constrict the pupil (pilocarpine, or aceclidine,
+  approved in 2025 for presbyopia) protect? It depends on the source, and it is the difference between lux and
+  trolands. The drops do not change the lux at the eye, they change the area of the pupil, and therefore the trolands.
+  In full sun the pupil is already about 2 mm, and the drops remove only a fifth of the dose.
+  In a 90% eclipse they stop dilation at 4 mm and divide the dose by five, but every point of the
+  crescent stays as bright as the full sun: in two minutes you still exceed the limit tens of
+  times over. With the laser they do nothing, because the 1 mm beam enters any pupil whole.
+  Which drops constrict the pupil, and which muscle they act on, is drawn in
+  <a href="#occhio">section 3</a>.</p>
+  <p><b>The screen.</b> The risk to the retina is negligible, with or without a filter. The real effect is
+  on the body clock: reading for about 4 hours an evening for 5 evenings on a tablet, compared with a paper
+  book, Chang and colleagues measured evening melatonin reduced by 55%, onset of secretion
+  delayed by more than 1.5 hours, falling asleep slower by about 10 minutes and lower alertness in the
+  morning. The effect that matters is the shift of the clock, which with a fixed alarm becomes
+  <em>social jet lag</em>. The conditions of the study (maximum brightness, dimly lit room)
+  have been criticised as exaggerated, and the authors replied; the question is open.</p>
+  <p>On blue-light filters, the 2023 Cochrane review concludes that they probably do not
+  reduce computer-related eye strain and that the effect on sleep is uncertain, with very
+  low-certainty evidence.</p>
+</section>
+
+<!-- 3 -->
+<section id="occhio">
+  <h2>3 · The eye: model, refractive errors, accommodation, drugs</h2>
+  <h3>The reduced eye</h3>
+  <p>For calculations the eye is treated as a single refracting surface, with a power of about
+  60 dioptres at rest and an interior of index 4/3: this is the <em>reduced eye</em>. That surface is not
+  the real cornea: it lies about 1.6 mm behind it, where the principal planes of the eye fall. Measured
+  from the cornea, the points that matter are:</p>
+  <ul>
+    <li><b>anterior focal point</b> F: about 15 mm in front of the cornea (16.7 mm in front of the surface, 1/60 of a metre);</li>
+    <li><b>nodal point</b> N′: about 7 mm behind the cornea, at the posterior pole of the lens. It is the centre
+    of curvature of the surface, so a ray aimed there crosses it without bending;</li>
+    <li><b>posterior focal point</b> F′: about 24 mm behind the cornea, that is on the retina of an emmetropic eye 24 mm long.</li>
+  </ul>
+  <p>The N′–retina distance, about 16.7 mm, sets the size of images: one degree of visual
+  field takes up about 0.29 mm of retina, and the sun, when stared at, forms a tiny disc of about 0.15 mm.</p>
+  <h3>Where the focal point falls relative to the retina</h3>
+  <p>The distance that decides everything is the one between the <b>posterior nodal point</b> N′, on the posterior
+  face of the lens, and the focal point F′. It sets the size of the image on the retina and,
+  compared with the fixed N′–retina distance (about 16.7 mm), tells whether the relaxed eye
+  focuses at infinity.</p>
+  <ul>
+    <li><b>Emmetropic</b>: at rest F′ falls on the retina.</li>
+    <li><b>Myopic</b>: F′ falls in front. Accommodating does not help, because it adds power.</li>
+    <li><b>Hyperopic</b>: F′ falls behind. When young it compensates by accommodating, with effort.</li>
+    <li><b>Astigmatic</b>: two powers, two focal points, one per meridian. By accommodating you bring one into focus at a time.</li>
+  </ul>
+  <p>Rule of thumb: about <b>3 dioptres per millimetre</b>. An eye 1 mm longer is myopic by
+  about −3 D; for the same reason an error of 1 mm in biometry before cataract surgery becomes
+  about 3 D of error in the intraocular lens.</p>
+  <p>For a near object it is not F′ that must lie on the retina, but the <em>image</em>. The ciliary muscle
+  contracts, the zonule (the suspensory ligaments) slackens, the lens becomes rounder, the power
+  rises and F′ moves forward in front of the retina. The relation is the lens equation, with the distances
+  measured from N′:</p>
+  <p class="formula">1/f = 1/d₀ + 1/dᵢ &nbsp;&nbsp; m = −dᵢ / d₀</p>
+  <figure class="w">
+    <iframe src="w/04-occhio.html" title="Interactive eye: myopia, hyperopia, astigmatism, corrective lens, accommodation, drugs, distances d0, di and f" loading="lazy"></iframe>
+    <figcaption>The main figure: refractive error, corrective lens, object position, drug or eye drops, ciliary muscle. <a href="w/04-occhio.html">Open full screen</a></figcaption>
+  </figure>
+  <p class="try"><b>Try this.</b> Emmetropic, object at infinity, muscle relaxed: sharp.
+  Raise accommodation and infinity goes out of focus. Hyperopia and cycloplegic: the accommodation that
+  was compensating disappears, and this is why cyclopentolate is used to measure children's
+  eyesight. Emmetropic and pilocarpine: accommodation is locked too high, but the small pupil
+  limits the blur (pinhole effect). To separate the two there is the tick box for the
+  eye drops that only constrict the pupil (aceclidine, approved for presbyopia in 2025): object at
+  about 40 cm (slider all the way to the right), accommodation at 1.5 D as in early presbyopia, and the
+  blur falls from about 14 to about 6 arcminutes. With no accommodation at all it falls from 34 to 15:
+  the small pupil adds depth of field, not accommodation.</p>
+  <p>Drugs act on the ciliary muscle, which is smooth and controlled by the parasympathetic system through
+  muscarinic receptors. This is why the opposite of pilocarpine is not muscle relaxants, which
+  act on skeletal muscle, but cycloplegics (atropine, cyclopentolate, tropicamide).</p>
+  <h3>The iris muscles and the ciliary muscle</h3>
+  <p>The pupil is set by two smooth muscles that pull in opposite directions. The <b>sphincter</b>, a
+  ring around the edge of the pupil, constricts it: it is controlled by the parasympathetic system, along cranial
+  nerve III and the ciliary ganglion, with acetylcholine on M3 muscarinic receptors, the same as the ciliary
+  muscle. The <b>dilator</b>, arranged radially, widens it: it is controlled by the sympathetic system, with three neurons
+  (hypothalamus, ciliospinal centre, superior cervical ganglion) and noradrenaline on α1 receptors.
+  Every eye drop that changes the pupil acts on one of the two. The <b>ciliary muscle</b>, the one
+  for accommodation, lies on the parasympathetic pathway: in fact, it takes almost all the fibres of the ciliary
+  ganglion, about 97%, against 3% for the sphincter. The sympathetic system sends it only a small β2 branch
+  that relaxes it slightly. This is why complete relaxation is obtained by blocking M3 (cycloplegia),
+  not by stimulating the sympathetic system.</p>
+  <figure class="w">
+    <iframe src="w/04b-iride.html" title="Iris sphincter and dilator, ciliary muscle and their nerve pathways, with eye drops and lesions" loading="lazy"></iframe>
+    <figcaption>Choose the light, the viewing distance, eye drops or a lesion: see which pathway changes, the pupil and, below, the ciliary muscle, zonule and lens. <a href="w/04b-iride.html">Open full screen</a></figcaption>
+  </figure>
+  <p class="try"><b>Try this.</b> In dim light compare pilocarpine and phentolamine: both
+  constrict the pupil, but the first pulls the sphincter and the second leaves the dilator without strength.
+  Then Horner and nerve III: in Horner syndrome the difference between the two eyes is easier to see in the
+  dark, in a nerve III lesion in the light. Finally look near: the ciliary muscle contracts,
+  the zonule slackens, the lens becomes rounder and the pupil constricts, because accommodation,
+  miosis and convergence start from the same nucleus (the near triad). With atropine the ciliary muscle
+  stays flat even up close; with pilocarpine it contracts even when looking far.</p>
+  <h3>Constricting the pupil without accommodating</h3>
+  <p>The eye drops that only constrict the pupil do not change the optics of the eye: cornea and lens
+  stay the same, with their defects. They change which part of the optics is used. The iris stops the
+  peripheral rays, which are the ones that err the most, so the spot a point leaves on the retina
+  gets smaller. By how much depends on the defect:</p>
+  <ul>
+    <li><b>Defocus</b>, that is the focal point in the wrong place, as in the presbyope reading: the small
+    pupil does not move the focal point, it narrows the cone of rays. The spot follows the diameter: half the
+    pupil, half the spot. This is the pinhole effect.</li>
+    <li><b>Spherical aberration</b>: the peripheral rays are bent too much. The spot grows roughly
+    with the cube of the diameter: half the pupil, about an eighth of the spot.</li>
+    <li><b>Chromatic aberration</b>: blue comes to a focus before red, with about 2 D of difference
+    across the visible. Like defocus, it follows the diameter.</li>
+  </ul>
+  <p>The price is light, which follows the area of the pupil, and below about 2 mm diffraction, which
+  spreads light out when it passes through a small hole. It is the same rule as the aperture of a camera.
+  And the eye already knows it: when looking near it constricts the pupil together with accommodation and
+  convergence. The eye drops reproduce only the miosis of the near triad, the only piece the
+  presbyope can still buy.</p>
+  <p>How small must the spot be? There are two limits. The first is <b>diffraction</b>:
+  even with perfect optics a point becomes a tiny disc, whose core is, at half intensity, about
+  9/D micrometres wide with the pupil D in millimetres: about 1.3 µm at 7 mm, 3 µm at 3 mm, 6 µm at 1.5 mm. The second is the <b>cones</b>: in the
+  fovea there is one about every 2.5 µm, and a spot smaller than a cone carries no extra detail,
+  because the retina cannot tell it apart. With a pupil of 2.5–3 mm the healthy eye is already close to this
+  limit.</p>
+  <figure class="w">
+    <iframe src="w/04c-apertura.html" title="Constricting the pupil: defocus, spherical and chromatic aberration" loading="lazy"></iframe>
+    <figcaption>Choose an emmetropic eye or a defect and move the pupil diameter. <a href="w/04c-apertura.html">Open full screen</a></figcaption>
+  </figure>
+  <p class="try"><b>Try this.</b> Spherical aberration, pupil from 7 to 3 mm: the outermost rays,
+  those that cross the axis well before the retina, end up in grey against the iris, and the
+  spot almost disappears. Next to it is how you would see it without that defect: a point, widened only
+  by diffraction. With the presbyope reading, instead, the spot shrinks in proportion, and the focal point stays
+  behind the retina. Finally try the emmetropic eye: there constricting makes things worse, because only diffraction remains
+  and the light falls. Below the rays, the panels are at true scale: each small circle is a cone that
+  lights up like a pixel, and you see how many of them the light from a single point covers. The angle covered by a
+  cone is its width divided by the focal length N′F′, from the posterior nodal point to the retina:
+  2.5 µm / 16.7 mm ≈ 0.5 arcminutes. With chromatic aberration, the segmented central cone shows the colours
+  that reach it concentrated: yellow and green; around it there is orange, and further out blue and
+  violet are smeared. In perfect optics all the colours end up in the same cone.
+  Then switch from "uniform pixels" to "real cones": in the centre of the fovea there are only L and M cones, in a
+  ratio of about 2 to 1, and S cones, the blue ones, are missing entirely. With chromatic aberration
+  the blue-violet halo, which is clearly visible with uniform pixels, almost disappears with real cones: this is why
+  we do not notice it in everyday life.</p>
+</section>
+
+<!-- 4 -->
+<section id="occhiali">
+  <h2>4 · Spectacle lenses</h2>
+  <h3>Menisci, and why they are not biconvex</h3>
+  <p>Whether a lens is converging or diverging is decided by where it is thicker, not by the shape of its faces:
+  thicker at the centre it converges, thicker at the edges it diverges. Spectacles are almost always
+  <b>menisci</b>, with both faces curved the same way (from μηνίσκος, little moon).</p>
+  <figure class="w">
+    <iframe src="w/05-forme-lenti.html" title="Shapes of converging and diverging lenses" loading="lazy"></iframe>
+  </figure>
+  <p>The meniscus shape is not there to counter spherical aberration, which with a beam as wide as the
+  pupil is negligible. It is there to counter <b>oblique astigmatism</b>: the eye rotates behind the lens,
+  and a lens crossed at a slant behaves as if it had two powers. By curving it around the
+  centre of rotation of the eye, a sideways gaze crosses it almost perpendicularly.</p>
+</section>
+
+<!-- 5 -->
+<section id="parallasse">
+  <h2>5 · Parallax: nodal point or entrance pupil</h2>
+  <h3>What to rotate around to avoid errors</h3>
+  <p>Among panoramic photographers the saying is to rotate the camera around the "nodal point". It is
+  a historical inaccuracy: parallax depends only on the <b>centre of perspective</b>, that is the
+  point from which the lines of sight towards the objects start, and that point is the <b>entrance
+  pupil</b>, the image of the aperture stop seen through the front lenses. With a single lens and the
+  stop right against it the two points coincide, and that is where the rule comes from; in a compound
+  lens they separate, by centimetres even in wide-angle lenses.</p>
+  <p>The posterior nodal point remains important for another reason: together with the focal plane
+  it defines the focal length.</p>
+  <figure class="w">
+    <iframe src="w/08-parallasse-fotocamera.html" title="Camera: rotation about the nodal point or the entrance pupil" loading="lazy"></iframe>
+    <figcaption>Choose the lens and the axis, then rotate. <a href="w/08-parallasse-fotocamera.html">Open full screen</a></figcaption>
+  </figure>
+  <p>The real eye rotates around its centre of rotation, about 13.5 mm behind the cornea: the
+  "wrong" point for panoramic photography. The entrance pupil is at about 3 mm, N′ at about
+  7 mm. As the gaze moves, near objects slide a little relative to distant ones: this is
+  ocular parallax, which the brain compensates for.</p>
+  <figure class="w">
+    <iframe src="w/09-parallasse-occhio.html" title="Eye: entrance pupil, nodal point and centre of rotation" loading="lazy"></iframe>
+    <figcaption><a href="w/09-parallasse-occhio.html">Open full screen</a></figcaption>
+  </figure>
+</section>
+
+<!-- 6 -->
+<section id="animali">
+  <h2>6 · Focal length and pupil in animals</h2>
+  <h3>Detail, field and light cannot be had all at once</h3>
+  <p>With the same cones, lengthening N′F′ enlarges the image: the same detail covers more
+  photoreceptors, but the field covered by the fovea narrows, as with a telephoto lens. If the
+  pupil does not grow, the image also gets darker, because the brightness on the retina goes with
+  the inverse square of the <b>f-number</b>, that is the focal length divided by the diameter of the pupil
+  (as in photography: f/2 is bright, f/8 is dark).</p>
+  <ul>
+    <li><b>Birds of prey</b>: long focal length, large and detailed image, but a lot of light is needed.</li>
+    <li><b>Cat</b>: short focal length and huge pupil, a lot of light but a small image.</li>
+    <li><b>Owl</b>: both, with a tubular eye. The price is a narrow field and eyes
+    that do not rotate in the orbit: the head rotates instead.</li>
+  </ul>
+  <figure class="w">
+    <iframe src="w/10-occhi-animali.html" title="Varying the nodal point–focal point distance: human, cat, bird of prey, owl" loading="lazy"></iframe>
+    <figcaption>Indicative values, chosen to show the strategies. <a href="w/10-occhi-animali.html">Open full screen</a></figcaption>
+  </figure>
+</section>
+
+<!-- 7 -->
+<section id="lente-sottile">
+  <h2>7 · The thin lens</h2>
+  <h3>The classic ray diagram</h3>
+  <p>Three rays are enough: the one parallel to the axis, which after the lens passes through F′; the one through the
+  centre, which is not deviated; the one through F, which comes out parallel. Where they cross is the tip
+  of the image. If after the lens they diverge, you extend them backwards and find a virtual
+  image.</p>
+  <table>
+    <thead><tr><th>Lens</th><th>Object</th><th>Image</th></tr></thead>
+    <tbody>
+      <tr><td>Converging</td><td>beyond 2F</td><td>real, inverted, reduced, between F′ and 2F′</td></tr>
+      <tr><td>Converging</td><td>at 2F</td><td>real, inverted, same size (m = −1)</td></tr>
+      <tr><td>Converging</td><td>between F and 2F</td><td>real, inverted, magnified, beyond 2F′</td></tr>
+      <tr><td>Converging</td><td>at F</td><td>at infinity</td></tr>
+      <tr><td>Converging</td><td>inside F</td><td>virtual, upright, magnified</td></tr>
+      <tr><td>Diverging</td><td>anywhere</td><td>virtual, upright, reduced</td></tr>
+    </tbody>
+  </table>
+  <p>The <b>magnifying glass</b> is a converging lens used with the object inside the focal point.
+  It magnifies about 25 cm / f. Reading glasses do the same thing, but are ten times
+  weaker; glasses for myopia are diverging and make things smaller.</p>
+  <figure class="w">
+    <iframe src="w/11-ray-diagram.html" title="Thin-lens ray diagram with a draggable object" loading="lazy"></iframe>
+    <figcaption>Drag the black arrow. <a href="w/11-ray-diagram.html">Open full screen</a></figcaption>
+  </figure>
+</section>
+
+<!-- 8 -->
+<section id="reale-virtuale">
+  <h2>8 · Real or virtual image</h2>
+  <h3>The sheet-of-paper test</h3>
+  <p>An image is <b>real</b> when the light really passes through that point: a sheet of paper placed there
+  catches it, and anyone in the room sees it, because the paper scatters the light in all
+  directions. It is <b>virtual</b> when the rays diverge as if they came from a point they have
+  never passed through: only someone who puts their eye in their path sees it, and it never appears on a
+  sheet of paper.</p>
+  <p>With a single lens or mirror, inverted means real and upright means virtual.
+  With more elements the rule no longer holds: in the astronomical telescope the final image is inverted
+  but virtual.</p>
+  <figure class="w">
+    <iframe src="w/12-prova-foglio.html" title="The sheet-of-paper test with a converging and a diverging lens" loading="lazy"></iframe>
+    <figcaption>Move the sheet in the three cases. <a href="w/12-prova-foglio.html">Open full screen</a></figcaption>
+  </figure>
+  <p class="try"><b>Try this at home.</b> Facing a window, hold a white sheet of paper and put a
+  magnifying glass in front of it, then slowly move it away: a few centimetres away the window appears,
+  small and upside down. With glasses for myopia it never appears; with reading glasses it appears, but
+  30 cm–1 m from the lens.</p>
+  <p>Everyday virtual images: the bathroom mirror, the car's side mirror, the door
+  peephole, the bottom of the swimming pool that looks closer. Real images: the projector
+  screen, the camera sensor, the retina, the dot of sunlight concentrated by a lens.</p>
+</section>
+
+<section id="fonti">
+  <h2>Sources</h2>
+  <ol class="refs">
+    <li>O'Hagan JB, Khazova M, Price LLA. Low-energy light bulbs, computers, tablets and the blue light
+    hazard. <i>Eye</i> 2016. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4763136/">PMC4763136</a>
+    — ICNIRP rule of thumb of 10⁴ cd/m².</li>
+    <li>Blue-light photochemical hazard and ACGIH exposure limits (100 J/(cm²·sr)). NASA Technical
+    Reports Server, document <a href="https://ntrs.nasa.gov/api/citations/19960011703/downloads/19960011703.pdf">19960011703</a>.</li>
+    <li>Chang AM, Aeschbach D, Duffy JF, Czeisler CA. Evening use of light-emitting eReaders negatively
+    affects sleep, circadian timing, and next-morning alertness. <i>PNAS</i> 2015;112(4):1232–7.
+    <a href="https://doi.org/10.1073/pnas.1418490112">doi:10.1073/pnas.1418490112</a></li>
+    <li>Zeitzer JM. Real life trumps laboratory in matters of public health. <i>PNAS</i> 2015.
+    <a href="https://doi.org/10.1073/pnas.1500717112">doi:10.1073/pnas.1500717112</a> · Reply by
+    Chang AM, Czeisler CA. <a href="https://doi.org/10.1073/pnas.1501544112">doi:10.1073/pnas.1501544112</a></li>
+    <li>Singh S, Keller PR, Busija L, et al. Blue-light filtering spectacle lenses for visual
+    performance, sleep, and macular health in adults. <i>Cochrane Database Syst Rev</i> 2023;(8):CD013244.
+    <a href="https://doi.org/10.1002/14651858.CD013244.pub2">doi:10.1002/14651858.CD013244.pub2</a></li>
+    <li>Can anyone please explain the difference between lumen and candela per m²? Thread on r/askscience.
+    <a href="https://www.reddit.com/r/askscience/comments/47bw1b/can_anyone_please_explain_the_difference_between/">reddit.com/r/askscience</a> — the question in the introduction.</li>
+    <li>ANSI/PLATO FL 1, definitions of peak beam intensity and beam distance (0.25 lux), summarised by
+    <a href="https://www.pelican.com/support/flashlight-ansi-standards">Pelican</a>.</li>
+    <li>Aceclidine 1.44% (VIZZ), miotic eye drops for presbyopia approved by the FDA on 31 July 2025:
+    <a href="https://www.biospace.com/press-releases/lenz-therapeutics-announces-us-fda-approval-of-vizz-for-the-treatment-of-presbyopia">LENZ Therapeutics press release</a>.</li>
+    <li>StVZO: bike lights type-approved in lux at 10 m, with a cut-off beam. Summary by
+    <a href="https://www.bikeradar.com/advice/buyers-guides/stvzo-bike-lights/">BikeRadar</a>.</li>
+    <li>Disability glare: Stiles-Holladay veiling luminance and threshold increment
+    TI = 65·L<sub>veil</sub>/L<sup>0.8</sup> (CIE 150:2017, observer looking along the road, 1° downwards).
+    Summary by <a href="https://docs.agi32.com/AGi32/Content/adding_calculation_points/Calculations_Obtrusive_Light-Threshold_Increment.htm">AGi32</a>;
+    10–15% limits for street lights in
+    <a href="https://hjv-lights.com/from-principle-to-standard-a-comprehensive-analysis-of-disability-glare-control-in-road-lighting-threshold-increment/">HJV Lights</a>.</li>
+  </ol>
+  <p class="caveat">All other values (luminances, trolands, irradiances, positions of the cardinal
+  points, parameters of animal eyes) are orders of magnitude from simplified models,
+  the reduced eye first of all.</p>
+</section>
+
+<footer>
+  <p>Jonathan Salerno · Florence · <a href="/">jonathansalerno.org</a></p>
+  <p class="lic">© 2026 Jonathan Salerno. Text and interactive figures are licensed under
+  <a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons
+  Attribution–NonCommercial 4.0 International (CC BY-NC 4.0)</a>: you may share and adapt them
+  with attribution, not for commercial purposes. Data and third-party works remain their authors'
+  (see Sources).</p>
+</footer>
+
+</div>
+<script>
+/* Each figure is a page of its own in an iframe from this site, so the frame
+   can be sized to its content and kept in step as the figure changes. */
+(function(){
+  var frames = document.querySelectorAll('figure.w iframe');
+  Array.prototype.forEach.call(frames, function(f){
+    function fit(){
+      try{
+        var d = f.contentDocument;
+        if (d && d.documentElement) f.style.height = Math.ceil(d.documentElement.offsetHeight) + 2 + 'px';
+      }catch(e){}
+    }
+    f.addEventListener('load', function(){
+      fit();
+      try{
+        if ('ResizeObserver' in window) new ResizeObserver(fit).observe(f.contentDocument.body);
+      }catch(e){}
+    });
+  });
+})();
+</script>
+</body>
+</html>
