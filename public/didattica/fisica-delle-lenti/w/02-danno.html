@@ -22,6 +22,7 @@
 <button id="sEcl" onclick="setSrc('ecl')">Eclissi parziale</button>
 <button id="sLaser" onclick="setSrc('laser')">Puntatore laser</button>
 <button id="sScreen" onclick="setSrc('screen')">Schermo PC</button>
+<label style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="mio" onchange="upd()"> collirio che stringe la pupilla</label>
 <span style="flex:1"></span>
 <button id="obsBtn" onclick="obs=!obs;upd()">Togli il semaforo</button>
 </div>
@@ -92,6 +93,7 @@
 <text class="ts" x="20" y="596">Sotto 1 mW (classe 2) il riflesso di chiusura delle palpebre, circa 0,25 s, basta a proteggere.</text>
 </g>
 </svg>
+<p id="mioN" style="font-size:13px;color:#534AB7;margin:2px 0 0;min-height:0"></p>
 <div class="ctl">
 <span id="tLab">Tempo di fissazione</span>
 <input type="range" id="tS" min="0" max="100" value="30" style="flex:1" oninput="upd()">
@@ -133,30 +135,35 @@ document.getElementById('blueIn').setAttribute('opacity',obs?0.35:1);
 var btn=document.getElementById('obsBtn');
 btn.textContent=src==='screen'?(obs?'Togli il filtro':'Metti il filtro'):src==='ecl'?(obs?'Togli gli occhiali':'Metti gli occhiali'):(obs?'Togli il semaforo':'Metti il semaforo');
 var s1=document.getElementById('src1'),s2=document.getElementById('src2'),pup=document.getElementById('pup');
-var tg='',rate=0,th=0,gap=12,Eeye=null,lab3='',v3='',w3=0;
+var tg='',rate=0,th=0,gap=12,Eeye=null,lab3='',v3='',w3=0,mio=document.getElementById('mio').checked,DM=1.8,mioN='';
+function pA(d){return Math.PI*d*d/4;}
+function pTxt(d,nat){return 'pupilla Ø '+d.toFixed(1).replace('.',',')+' mm, area ≈ '+(pA(d)<10?pA(d).toFixed(1).replace('.',','):Math.round(pA(d)))+' mm²'+(mio?' (collirio; senza: '+nat.toFixed(1).replace('.',',')+' mm)':'');}
 if(src==='sun'){
  s1.textContent='Sole fissato';s2.textContent='Sorgente estesa: sulla retina forma un disco di circa 0,15 mm.';
- gap=6;pup.textContent='pupilla Ø 2 mm, area ≈ 3 mm²';
+ var dS=mio?DM:2,kS=(dS/2)*(dS/2);gap=Math.round(dS*3);pup.textContent=pTxt(dS,2);
  tg+=tag(10,236,230,C.lum,'luminanza L sole','≈ 1,6×10⁹ nit','(cd/m²)');
  if(obs){Eeye=0;tg+=tag(420,56,255,C.ill,'illuminanza sull\'occhio (dal sole)','≈ 0 lux','(lm/m²)','luce diretta bloccata dal semaforo');
   tg+=tag(420,272,255,C.td,'sulla retina','nessuna immagine del sole','');}
- else{Eeye=100000;rate=1/3;th=0.15;
-  tg+=tag(420,56,255,C.ill,'illuminanza sull\'occhio','≈ 100.000 lux','(lm/m²)','≈ 1.000 W/m²');
-  tg+=tag(420,272,255,C.td,'illuminanza retinica','≈ 5×10⁹ troland','(nit · mm²)','≈ 20 W/cm² su un disco di 0,15 mm');}
+ else{Eeye=100000;rate=1/3*kS;th=0.15*kS;
+  tg+=tag(420,56,255,C.ill,'illuminanza sull\'occhio','≈ 100.000 lux','(lm/m²)','≈ 1.000 W/m²'+(mio?': il collirio non la cambia':''));
+  tg+=tag(420,272,255,C.td,'illuminanza retinica','≈ '+sci(1.6e9*pA(dS))+' troland','(nit · mm²)','≈ '+num(20*kS)+' W/cm² su un disco di 0,15 mm');
+  if(mio)mioN='Al sole la pupilla è già stretta (circa 2 mm): il collirio toglie solo il '+Math.round((1-kS)*100)+'% circa.';}
 }else if(src==='ecl'){
  var c=document.getElementById('cov').value/100;document.getElementById('covL').textContent=Math.round(c*100)+'%';
  document.getElementById('moon').setAttribute('cx',90+44*(1-c));
- var T=obs?3e-5:1,d=2+3*Math.pow(c,3),A=Math.PI*d*d/4,k=(d/2)*(d/2);
+ var T=obs?3e-5:1,dN=2+3*Math.pow(c,3),d=mio?Math.min(DM,dN):dN,A=Math.PI*d*d/4,k=(d/2)*(d/2);
+ if(mio)mioN='Il collirio blocca la dilatazione: senza, la pupilla sarebbe '+dN.toFixed(1).replace('.',',')+' mm e la dose '+(dN>d?Math.round((dN*dN)/(d*d)*10)/10:1).toString().replace('.',',')+' volte più alta.+' Protegge, ma non rende sicuro guardare: ogni punto della falce resta brillante come il sole pieno.';
  Eeye=100000*(1-c)*T;gap=Math.max(4,Math.round(d*3));
  s1.textContent='Eclissi parziale';s2.textContent='La Luna copre una parte del disco, ma non attenua quella che resta.';
- pup.textContent='pupilla Ø '+d.toFixed(1).replace('.',',')+' mm, area ≈ '+Math.round(A)+' mm² (si dilata col buio)';
+ pup.textContent=mio?pTxt(d,dN):'pupilla Ø '+d.toFixed(1).replace('.',',')+' mm, area ≈ '+Math.round(A)+' mm² (si dilata col buio)';
  tg+=tag(10,236,230,C.lum,'luminanza L della falce','≈ 1,6×10⁹ nit','(cd/m²)','invariata rispetto al sole pieno');
  tg+=tag(420,56,255,C.ill,'illuminanza sull\'occhio','≈ '+sci(Eeye)+' lux','(lm/m²)','≈ '+num(Eeye/100)+' W/m²'+(obs?' · con occhiali':''));
  rate=(1/3)*k*T;th=0.15*k*T;
  tg+=tag(420,272,255,C.td,'illuminanza retinica sulla falce','≈ '+sci(1.6e9*A*T)+' troland','(nit · mm²)',obs?'con occhiali: dose trascurabile':'≈ '+num(20*k)+' W/cm²'+(k>1.05?': più che a sole pieno':''));
 }else if(src==='laser'){
  s1.textContent='Puntatore laser verde';s2.textContent='Sorgente puntiforme e fascio collimato.';
- gap=12;pup.textContent='fascio Ø ≈ 1 mm, più stretto della pupilla';
+ gap=mio?Math.round(DM*3):12;pup.textContent='fascio Ø ≈ 1 mm, più stretto della pupilla'+(mio?' anche con il collirio':'');
+ if(mio)mioN='Il collirio qui non serve a niente: il fascio è largo 1 mm ed entra tutto anche in una pupilla di 1,8 mm.';
  tg+=tag(10,236,230,C.phi,'flusso radiante del fascio','5 milliwatt','(W = J/s)');
  if(obs){Eeye=0;tg+=tag(420,56,255,C.ill,'illuminanza sull\'occhio','≈ 0 lux','(lm/m²)','fascio bloccato');tg+=tag(420,272,255,C.td,'sulla retina','nessuno spot','');}
  else{Eeye=4e6;rate=1/30;th=5;
@@ -164,11 +171,12 @@ if(src==='sun'){
   tg+=tag(420,272,255,C.td,'irradianza sulla retina','≈ 1.600 W/cm²','','spot di ≈ 0,02 mm: troland senza senso');}
 }else{
  s1.textContent='Schermo PC';s2.textContent='Guardato la sera da circa 50 cm.';
- gap=16;pup.textContent='pupilla Ø 4 mm, area ≈ 12 mm²';
+ var dP=mio?DM:4;gap=Math.round(dP*4);pup.textContent=pTxt(dP,4);
  tg+=tag(10,252,230,C.lum,'luminanza L schermo','≈ 250 nit','(cd/m²)');
  tg+=tag(420,56,255,C.ill,'illuminanza sull\'occhio','≈ 100 lux','(lm/m²)','schermo da circa 0,1 m² a 50 cm');
  rate=obs?0.7e-8:1e-8;th=0;
- tg+=tag(420,272,255,C.td,'illuminanza retinica','≈ 3.000 troland','(nit · mm²)',obs?'luce blu ridotta di circa il 30%':'luce blu piena');
+ tg+=tag(420,272,255,C.td,'illuminanza retinica','≈ '+sci(250*pA(dP))+' troland','(nit · mm²)',obs?'luce blu ridotta di circa il 30%':'luce blu piena');
+ if(mio)mioN='Troland ridotti di circa 5 volte. Quanto questo riduca il ritardo dell\'orologio non è stato misurato: la barra non cambia.';
 }
 tg+='<line x1="500" y1="'+(56+54)+'" x2="502" y2="152" stroke="'+C.ill+'" stroke-width="1"/>';
 tg+='<line x1="626" y1="272" x2="626" y2="196" stroke="'+C.td+'" stroke-width="1"/>';
@@ -194,7 +202,7 @@ if(src==='screen'){
  var E=Eeye||0;b3.setAttribute('width',Math.min(Math.max(Math.log10(Math.max(E,1))/5,0),1)*580);
  v3=E<0.05?'≈ 0 lux: nessun fastidio':'≈ '+sci(E)+' lux → '+(E>20000?'forte: distogli lo sguardo':E>2000?'moderato':'debole: riesci a fissare');
 }
-document.getElementById('lab3').textContent=lab3;document.getElementById('v3').textContent=v3;
+document.getElementById('mioN').textContent=mioN;document.getElementById('lab3').textContent=lab3;document.getElementById('v3').textContent=v3;
 }
 upd();
 </script>
