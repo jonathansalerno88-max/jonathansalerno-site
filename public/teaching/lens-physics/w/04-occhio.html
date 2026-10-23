@@ -22,6 +22,7 @@
 <button id="cM" onclick="setC('M')">Myopia (−5 D)</button>
 <button id="cH" onclick="setC('H')">Hyperopia (+2 D)</button>
 <button id="cA" onclick="setC('A')">Astigmatism</button>
+<label style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="pres" onchange="upd()"> presbyopia (stiff lens)</label>
 <span style="flex:1"></span>
 <button id="lensBtn" onclick="lens=!lens;upd()">Add the correcting lens</button>
 </div>
@@ -84,13 +85,14 @@
 <g id="quote"></g>
 <rect x="430" y="340" width="220" height="88" rx="8" fill="none" stroke="var(--b)" stroke-width="0.5"/>
 <text class="ts" x="442" y="360">How you see it</text>
-<g id="seen">
+<g id="seen" transform="translate(70,0)">
 <line x1="560" y1="418" x2="560" y2="368" stroke="var(--t)" stroke-width="3"/>
 <path d="M553 378 L560 364 L567 378 Z" fill="var(--t)"/>
 <path d="M553 412 L560 420 L567 412 M553 404 L560 412 L567 404" fill="none" stroke="var(--t)" stroke-width="2"/>
 </g>
 <text class="ts" id="seenLbl" x="442" y="380"> </text>
-<text class="ts" id="pupLbl" x="442" y="398"> </text>
+<text class="ts" id="blurLbl" x="442" y="398"> </text>
+<text class="ts" id="pupLbl" x="442" y="416"> </text>
 <line x1="24" y1="364" x2="44" y2="364" stroke="#BA7517" stroke-width="2"/>
 <text class="ts" x="50" y="368">rays from tip A</text>
 <line x1="24" y1="386" x2="44" y2="386" stroke="#185FA5" stroke-width="2" stroke-dasharray="5 3"/>
@@ -118,7 +120,8 @@ function setC(c){cond=c;lens=false;upd();}
 function setM(m){objM=m;upd();}
 function accVal(){return drug==='P'?6:drug==='C'?0:parseFloat(document.getElementById('acc').value);}
 function useL(){return lens&&cond!=='E';}
-function Psys(i){var ex=excess[cond][i];return PE+(ex+accVal()+(useL()?-ex:0))/S;}
+function lensAcc(){var A=accVal();return document.getElementById('pres').checked?Math.min(A,1):A;}
+function Psys(i){var ex=excess[cond][i];return PE+(ex+lensAcc()+(useL()?-ex:0))/S;}
 function hit(p,d){var dx=d.x-p.x,dy=d.y-p.y,ox=p.x-C.x,oy=p.y-C.y;var A2=dx*dx+dy*dy,B2=2*(ox*dx+oy*dy),C2=ox*ox+oy*oy-C.r*C.r;var D2=B2*B2-4*A2*C2;if(!(D2>=0)||!(A2>0))return {x:p.x,y:p.y,t:0};var t=(-B2+Math.sqrt(D2))/(2*A2);return {x:p.x+t*dx,y:p.y+t*dy,t:t};}
 function image(src,P){var dO=src.x-X0,den=P-1/dO;if(Math.abs(den)<1e-6)return {inf:true,x:-1e5,y:Y0+(Y0-src.y)*1e5/dO,virt:false,di:1e9};var di=1/den;
 if(di>0)return {x:X0-di,y:Y0+(Y0-src.y)*di/dO,virt:false,di:di};
@@ -178,11 +181,11 @@ function upd(){
 var sl=document.getElementById('acc');sl.disabled=drug!=='N';
 var mb=document.getElementById('mio');mb.disabled=drug!=='N';if(drug!=='N')mb.checked=false;var mio=mb.checked;
   document.getElementById('mioL').style.opacity=drug!=='N'?0.4:1;
-  var A=accVal(),pw=drug==='P'?12:drug==='C'?42:mio?12:30,uL=useL(),isInf=objM==='inf';
+  var A=accVal(),AL=lensAcc(),pres=document.getElementById('pres').checked,pw=drug==='P'?12:drug==='C'?42:mio?12:30,uL=useL(),isInf=objM==='inf';
 var P1=Psys(0),fs0=1/P1;
 var oxEl=document.getElementById('ox'),ox,clamped=false;
 if(!isInf&&objM!==null){ox=X0+objM*fs0;if(ox>650){ox=650;clamped=true;}if(ox<330){ox=330;clamped=true;}oxEl.value=ox;}else ox=parseFloat(oxEl.value);
-document.getElementById('accL').textContent='accommodation '+fmt(A,1)+' D'+(drug!=='N'?' (locked)':'');
+document.getElementById('accL').textContent=(pres?'muscle '+fmt(A,1)+' D → lens only '+fmt(AL,1)+' D':'accommodation '+fmt(A,1)+' D')+(drug!=='N'?' (locked)':'');
 ['E','M','H','A'].forEach(function(k){document.getElementById('c'+k).classList.toggle('act',cond===k);});
 ['N','P','C'].forEach(function(k){document.getElementById('d'+k).classList.toggle('act',drug===k);});
 document.getElementById('o0').classList.toggle('act',isInf);
@@ -202,15 +205,15 @@ else{document.getElementById('obj').innerHTML='<line x1="'+ox+'" y1="60" x2="'+o
 document.getElementById('specs').innerHTML=uL?'<path d="'+shapes[cond]+'" fill="#B5D4F4" opacity="0.8" stroke="#185FA5" stroke-width="0.8"/><text class="th" x="404" y="68" text-anchor="middle">'+lensName[cond][0]+'</text><text class="ts" x="404" y="86" text-anchor="middle">'+lensName[cond][1]+'</text>':'';
 document.getElementById('irT').setAttribute('height',(Y0-pw)-100);
 document.getElementById('irB').setAttribute('y',Y0+pw);document.getElementById('irB').setAttribute('height',220-(Y0+pw));
-var rx=14+A*0.6,cx=X0+rx;
-var cr=document.getElementById('crys');cr.setAttribute('rx',rx);cr.setAttribute('cx',cx);cr.setAttribute('ry',45-A*1.2);
+var rx=14+AL*0.6,cx=X0+rx;
+var cr=document.getElementById('crys');cr.setAttribute('rx',rx);cr.setAttribute('cx',cx);cr.setAttribute('ry',45-AL*1.2);
 ['cil1','cil2'].forEach(function(id){var e=document.getElementById(id);e.setAttribute('cx',cx);e.setAttribute('ry',6+A*0.7);});
 document.getElementById('cil1').setAttribute('cy',96+A*0.5);document.getElementById('cil2').setAttribute('cy',224-A*0.5);
 document.getElementById('zon').innerHTML=zonula(A,cx);
 document.getElementById('cilLbl').textContent='ciliary muscle: '+(A<0.5?'relaxed':A<6?'partly contracted':'contracted');
 document.getElementById('zonLbl').textContent='zonule (suspensory ligaments): '+(A<2?'taut':A<6?'partly slack':'slack');
 document.getElementById('retImg').innerHTML=isInf?retArrow(TH,-TH):retArrow((Y0-(Y0-H))/(ox-X0),(Y0-(Y0+H))/(ox-X0));
-var Pr=60+excess[cond][0]+A+(uL?-excess[cond][0]:0),fR=1000/Pr,d0mm=isInf?Infinity:(ox-X0)*PX,V0=isInf?0:1000/d0mm,Vi=Pr-V0,diR=Math.abs(Vi)<1e-6?Infinity:1000/Vi;
+var Pr=60+excess[cond][0]+AL+(uL?-excess[cond][0]:0),fR=1000/Pr,d0mm=isInf?Infinity:(ox-X0)*PX,V0=isInf?0:1000/d0mm,Vi=Pr-V0,diR=Math.abs(Vi)<1e-6?Infinity:1000/Vi;
 var I0=imgs[0],qt='';
 qt+=isInf?q(X0,672,300,'d₀ = ∞','var(--t)',false,false,true):q(X0,ox,300,'d₀ = '+fmt(d0mm/10,1)+' cm','var(--t)');
 if(I0.inf||!isFinite(diR))qt+=q(8,X0,300,'dᵢ = ∞','#BA7517',false,true,false);
@@ -224,14 +227,14 @@ if(isInf)eq+='<br><b>m</b> → 0 (object at infinity): what counts is the angle,
 else if(!isFinite(diR))eq+='<br><b>m</b> → ∞: image at infinity';
 else{var m=-diR/d0mm;eq+='<br><b>m = −dᵢ / d₀</b> = −'+fmt(diR,1)+' / '+fmt(d0mm,0)+' = '+(Math.abs(m)<0.01?m.toExponential(1):fmt(m,3))+' → '+(m<0?'inverted':'upright')+', '+(Math.abs(m)<1?'reduced '+fmt(1/Math.abs(m),0)+' times':'magnified '+fmt(Math.abs(m),1)+' times');}
 eq+='<br>retina 16.7 mm from N′: in focus if dᵢ = 16.7 mm';
-if(excess[cond].length>1){var Pr2=60+excess[cond][1]+A+(uL?-excess[cond][1]:0),di2=1000/(Pr2-V0);eq+=' · meridian 2: f = '+fmt(1000/Pr2,1)+' mm, dᵢ = '+fmt(di2,1)+' mm';}
+if(excess[cond].length>1){var Pr2=60+excess[cond][1]+AL+(uL?-excess[cond][1]:0),di2=1000/(Pr2-V0);eq+=' · meridian 2: f = '+fmt(1000/Pr2,1)+' mm, dᵢ = '+fmt(di2,1)+' mm';}
 document.getElementById('eqBox').innerHTML=eq;
 var stat=function(I,i){if(!I.inf&&!I.virt&&i!=null){var e=dDs[i];return Math.abs(e)<0.25?'in focus on the retina':e>0?'focus in front of the retina ('+fmt(e,2)+' D too much)':'focus behind the retina ('+fmt(-e,2)+' D too little)';}if(I.inf)return 'parallel rays: focus at infinity, no point in focus';if(I.virt)return 'virtual image: no focus on the retina';var e=I.di/DI-1;return Math.abs(e)<0.02?'in focus on the retina':e<0?'focus in front of the retina':'focus behind the retina';};
 var pmm=drug==='P'?1.6:drug==='C'?7:mio?1.8:4;
-var dDs=excess[cond].map(function(ex){return 60+ex+A+(uL?-ex:0)-60-(isInf?0:V0);});
+var dDs=excess[cond].map(function(ex){return 60+ex+AL+(uL?-ex:0)-60-(isInf?0:V0);});
 var errs=imgs.map(function(I,i){return (I.inf||I.virt)?99:Math.abs(dDs[i]);}),worst=Math.max.apply(null,errs);
 var bAm=worst>=99?99:pmm*worst*3.44; // blur angle in arcmin: pupil (mm) x defocus (D) = mrad
-document.getElementById('cap').textContent=info[cond]+(uL?' + lens':'')+(drug==='P'?' + pilocarpine':drug==='C'?' + cycloplegic':'')+(mio?' + miotic eye drops':'');
+document.getElementById('cap').textContent=info[cond]+(uL?' + lens':'')+(drug==='P'?' + pilocarpine':drug==='C'?' + cycloplegic':'')+(mio?' + miotic eye drops':'')+(pres?' + presbyopia':'');
 document.getElementById('cap2').textContent=imgs.length>1?('meridian 1: '+stat(imgs[0],0)+' · meridian 2: '+stat(imgs[1],1)):stat(imgs[0],0);
 var ci;
 if(isInf)ci='<b>At infinity</b>: parallel rays, the image forms at F′ (dᵢ = f).';
@@ -248,10 +251,11 @@ var fid=sharp?'':(ast?'url(#fAst)':'url(#fIso)'),fid2=sharp?'':(ast?'url(#fAst2)
 ['gIso','gIso2'].forEach(function(id){document.getElementById(id).setAttribute('stdDeviation',bl);});
 ['gAst','gAst2'].forEach(function(id){document.getElementById(id).setAttribute('stdDeviation','0.3 '+bl);});
 document.getElementById('seen').setAttribute('filter',fid);document.getElementById('retImg').setAttribute('filter',fid2);
-document.getElementById('seenLbl').textContent=(bAm<1?'sharp':bAm<3?'almost sharp':(ast?'streaked in one direction':(bAm<8?'slightly blurred':'blurred')))+(bAm<99?' · blur '+(bAm<1?'< 1':fmt(bAm,0))+'′':'');
+document.getElementById('seenLbl').textContent=(bAm<1?'sharp':bAm<3?'almost sharp':(ast?'streaked in one direction':(bAm<8?'slightly blurred':'blurred')));
+document.getElementById('blurLbl').textContent=(bAm<99?'blur '+(bAm<1?'< 1':fmt(bAm,0))+'′':'');
 document.getElementById('pupLbl').textContent=mio?'pupil constricted (eye drops)':drug==='P'?'pupil constricted (miosis)':drug==='C'?'pupil dilated (mydriasis)':'';
 document.getElementById('astLeg').textContent=(cond==='A'&&!uL)?'pale rays and ₂ foci: second meridian':'';
-document.getElementById('drugInfo').innerHTML=mio?dInfo.M:(drug!=='N'?dInfo[drug]+' The eye drops that constrict only the pupil are not added here: '+(drug==='P'?'the pupil is already constricted.':'atropine blocks the same muscarinic receptors of the iris sphincter that the drops act on.'):'');
+document.getElementById('drugInfo').innerHTML=(mio?dInfo.M:(drug!=='N'?dInfo[drug]+' The eye drops that constrict only the pupil are not added here: '+(drug==='P'?'the pupil is already constricted.':'atropine blocks the same muscarinic receptors of the iris sphincter that the drops act on.'):''))+(pres?' <b>Presbyopia</b>: the ciliary muscle still contracts and the zonule slackens, but the crystalline lens, grown larger and stiff, no longer rounds up. Of the accommodation commanded, at most about 1 D reaches the lens, while reading at 40 cm needs 2.5. The command is there; the lens does not respond.':'');
 }
 upd();
 </script>
