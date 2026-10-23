@@ -78,7 +78,7 @@ section li{margin:.25rem 0}
 .formula{font-family:var(--mono); font-size:.9rem; background:var(--card); border-radius:6px;
   padding:.55rem .8rem; display:inline-block; margin:.1rem 0 .9rem}
 .try{font-size:.9375rem; color:var(--mut); border-left:3px solid var(--axis); padding:.1rem 0 .1rem .9rem; margin:1rem 0}
-.try ul{margin:.35rem 0 0; padding-left:1.1rem}
+.try ul,.try ol{margin:.35rem 0 0; padding-left:1.3rem}
 .try li{margin:.15rem 0}
 .try b{color:var(--ink); font-weight:600}
 
@@ -174,8 +174,13 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/00b-missione.html" title="Game: set up a bike light to light the road up to the stopping distance" loading="lazy"></iframe>
     <figcaption>Adjust the flux, beam, lens and cut-off. <a href="w/00b-missione.html">Open full screen</a></figcaption>
   </figure>
-  <p class="try"><b>Try this.</b> Try the combinations yourself. The goal is to see as far as the
-  stopping distance without dazzling the pedestrian, the cyclist or anyone coming the other way.</p>
+  <div class="try"><b>Try this.</b> <i>Goal</i>: see as far as the stopping distance without dazzling the pedestrian, the cyclist or anyone coming the other way.
+  <ol>
+    <li>Choose the speed: the game works out how far you need to see.</li>
+    <li>Adjust lumens and beam width until light on the road and width turn green.</li>
+    <li>Check the pedestrian and the cyclist: if they are sad, narrow the beam or switch on the cut-off.</li>
+    <li>Look at price and battery life, and pick your compromise.</li>
+  </ol></div>
   <p><b>So which light should you buy?</b> If you ride where there are other people (towns, cycle
   paths, roads): a light with a <b>cut-off beam</b>, that is, StVZO-approved. It puts the light on the
   road and not in the eyes of oncoming people, and for the same lumens it lights more. Between two
@@ -217,10 +222,12 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/01-semaforo.html" title="Traffic light at dawn: asphalt and snow-covered road, direct light, trolands and safety threshold" loading="lazy"></iframe>
     <figcaption>Remove the traffic light and add snow: only the quantities highlighted in the table change. <a href="w/01-semaforo.html">Open full screen</a></figcaption>
   </figure>
-  <p class="try"><b>Try this.</b> Behind the traffic light the sun does not change: the sun's lumens, candelas and nits
-  stay the same. Only the illuminance at your eye, in lux, collapses, and that is why the
-  glare disappears. With snow the luminance of the road rises, about 4 times, but it stays below
-  the 10⁴ nits of the safety threshold: it dazzles, it does not damage.</p>
+  <div class="try"><b>Try this.</b> <i>Goal</i>: find out which quantity changes when the glare disappears.
+  <ol>
+    <li>Put the traffic light in front of the sun: the sun's lumens, candelas and nits do not change.</li>
+    <li>Look at the illuminance at the eye, in lux: it collapses. That is what decides glare.</li>
+    <li>Switch on the snow: the road's luminance rises about fourfold, but stays below the 10⁴ nit safety threshold. It dazzles, it does not damage.</li>
+  </ol></div>
 </section>
 
 <!-- 2 -->
@@ -249,15 +256,15 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/02-danno.html" title="Sun, partial eclipse, laser pointer and screen: photochemical damage, thermal damage and body clock" loading="lazy"></iframe>
     <figcaption>Change the source, remove the obstacle, put in the eye drops and move the exposure time. <a href="w/02-danno.html">Open full screen</a></figcaption>
   </figure>
-  <p class="try"><b>Try this.</b> Do eye drops that constrict the pupil (pilocarpine, or aceclidine,
-  approved in 2025 for presbyopia) protect? It depends on the source, and it is the difference between lux and
-  trolands. The drops do not change the lux at the eye, they change the area of the pupil, and therefore the trolands.
-  In full sun the pupil is already about 2 mm, and the drops remove only a fifth of the dose.
-  In a 90% eclipse they stop dilation at 4 mm and divide the dose by five, but every point of the
-  crescent stays as bright as the full sun: in two minutes you still exceed the limit tens of
-  times over. With the laser they do nothing, because the 1 mm beam enters any pupil whole.
-  Which drops constrict the pupil, and which muscle they act on, is drawn in
-  <a href="#occhio">section 3</a>.</p>
+  <div class="try"><b>Try this.</b> <i>Goal</i>: find out when eye drops that constrict the pupil protect the retina.
+  <ol>
+    <li>Sun, tick the eye drops: the pupil was already about 2 mm, and the dose drops by only a fifth.</li>
+    <li>Eclipse at 90%, tick the eye drops: they stop the pupil dilating to 4 mm and divide the dose by five.</li>
+    <li>Move the time to 2 minutes: the limit is still exceeded tens of times over, because every point of the crescent is as bright as the full sun.</li>
+    <li>Laser: the eye drops change nothing, because the 1 mm beam enters any pupil whole.</li>
+  </ol></div>
+  <p>The eye drops do not change the lux at the eye: they change the pupil area, and so the trolands.
+  Which eye drops constrict the pupil, and which muscle they act on, is drawn in <a href="#occhio">section 3</a>.</p>
   <p><b>The screen.</b> The risk to the retina is negligible, with or without a filter. The real effect is
   on the body clock: reading for about 4 hours an evening for 5 evenings on a tablet, compared with a paper
   book, Chang and colleagues measured evening melatonin reduced by 55%, onset of secretion
@@ -275,7 +282,11 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
   <h2>3 · The eye: model, refractive errors, accommodation, drugs</h2>
   <h3>The reduced eye</h3>
   <p>For calculations the eye is treated as a single refracting surface, with a power of about
-  60 dioptres at rest and an interior of index 4/3: this is the <em>reduced eye</em>. That surface is not
+  60 dioptres at rest and an interior of index 4/3: this is the <em>reduced eye</em>. “Reduced” compared
+  with the real eye, which has at least four refracting surfaces (the two faces of the cornea and the two
+  of the lens; six in Gullstrand's schematic eye, which splits the lens into cortex and nucleus). The
+  model reduces them to one: instead of two principal points and two nodal points there is one of each,
+  and the sums take a single formula. That surface is not
   the real cornea: it lies about 1.6 mm behind it, where the principal planes of the eye fall. Measured
   from the cornea, the points that matter are:</p>
   <ul>
@@ -309,17 +320,14 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/04-occhio.html" title="Interactive eye: myopia, hyperopia, astigmatism, corrective lens, accommodation, drugs, distances d0, di and f" loading="lazy"></iframe>
     <figcaption>The main figure: refractive error, corrective lens, object position, drug or eye drops, ciliary muscle. <a href="w/04-occhio.html">Open full screen</a></figcaption>
   </figure>
-  <p class="try"><b>Try this.</b> Emmetropic, object at infinity, muscle relaxed: sharp.
-  Raise accommodation and infinity goes out of focus. Hyperopia and cycloplegic: the accommodation that
-  was compensating disappears, and this is why cyclopentolate is used to measure children's
-  eyesight. Emmetropic and pilocarpine: accommodation is locked too high, but the small pupil
-  limits the blur (pinhole effect).
-  Tick “presbyopia”, put the object at about 40 cm (slider all the way right) and contract the muscle:
-  the muscle reaches 2.5 D, but the stiff lens stops at 1 D and reading stays blurred. To separate the two there is the tick box for the
-  eye drops that only constrict the pupil (aceclidine, approved for presbyopia in 2025): object at
-  about 40 cm (slider all the way to the right), accommodation at 1.5 D as in early presbyopia, and the
-  blur falls from about 14 to about 6 arcminutes. With no accommodation at all it falls from 34 to 15:
-  the small pupil adds depth of field, not accommodation.</p>
+  <div class="try"><b>Try this.</b> <i>Goal</i>: see how refractive errors, drugs and age move the focus relative to the retina.
+  <ol>
+    <li>Emmetropic, object at infinity, muscle relaxed: sharp. Raise the accommodation: infinity goes out of focus.</li>
+    <li>Hyperopia + cycloplegic: the accommodation that was compensating disappears. That is why cyclopentolate is used to test children's eyes.</li>
+    <li>Emmetropic + pilocarpine: accommodation locked too high, but the small pupil limits the blur.</li>
+    <li>Tick “presbyopia”, object at about 40 cm (slider all the way right), muscle at 2.5 D: the lens stops at 1 D and reading stays blurred.</li>
+    <li>Untick “presbyopia”, muscle at 1.5 D (early presbyopia), tick the eye drops that constrict only the pupil: the blur falls from about 14 to about 6 arcminutes. More depth of field, not more accommodation.</li>
+  </ol></div>
   <p>Drugs act on the ciliary muscle, which is smooth and controlled by the parasympathetic system through
   muscarinic receptors. This is why the opposite of pilocarpine is not muscle relaxants, which
   act on skeletal muscle, but cycloplegics (atropine, cyclopentolate, tropicamide).</p>
@@ -338,13 +346,13 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/04b-iride.html" title="Iris sphincter and dilator, ciliary muscle and their nerve pathways, with eye drops and lesions" loading="lazy"></iframe>
     <figcaption>Choose the light, the viewing distance, eye drops or a lesion: see which pathway changes, the pupil and, below, the ciliary muscle, zonule and lens. <a href="w/04b-iride.html">Open full screen</a></figcaption>
   </figure>
-  <p class="try"><b>Try this.</b> In dim light compare pilocarpine and phentolamine: both
-  constrict the pupil, but the first pulls the sphincter and the second leaves the dilator without strength.
-  Then Horner and nerve III: in Horner syndrome the difference between the two eyes is easier to see in the
-  dark, in a nerve III lesion in the light. Finally look near: the ciliary muscle contracts,
-  the zonule slackens, the lens becomes rounder and the pupil constricts, because accommodation,
-  miosis and convergence start from the same nucleus (the near triad). With atropine the ciliary muscle
-  stays flat even up close; with pilocarpine it contracts even when looking far.</p>
+  <div class="try"><b>Try this.</b> <i>Goal</i>: recognise which muscle each drug and each lesion acts on.
+  <ol>
+    <li>Dim light, pilocarpine and then phentolamine: both constrict the pupil, but the first pulls the sphincter, the second takes strength from the dilator.</li>
+    <li>Horner: the difference between the two eyes shows best in the dark. Cranial nerve III: it shows best in the light.</li>
+    <li>Look near: ciliary muscle contracted, zonule slack, lens rounded, pupil smaller. This is the near triad.</li>
+    <li>Atropine: the ciliary muscle stays flat even at near. Pilocarpine: it contracts even when looking far.</li>
+  </ol></div>
   <h3>Constricting the pupil without accommodating</h3>
   <p>The eye drops that only constrict the pupil do not change the optics of the eye: cornea and lens
   stay the same, with their defects. They change which part of the optics is used. The iris stops the
@@ -374,21 +382,17 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/04c-apertura.html" title="Constricting the pupil: defocus, spherical and chromatic aberration" loading="lazy"></iframe>
     <figcaption>Choose an emmetropic eye or a defect and move the pupil diameter. <a href="w/04c-apertura.html">Open full screen</a></figcaption>
   </figure>
-  <p class="try"><b>Try this.</b> Spherical aberration, pupil from 7 to 3 mm: the outermost rays,
-  those that cross the axis well before the retina, end up in grey against the iris, and the
-  spot almost disappears. Next to it is how you would see it without that defect: a point, widened only
-  by diffraction. With the presbyope reading, instead, the spot shrinks in proportion, and the focal point stays
-  behind the retina. Finally try the emmetropic eye: there constricting makes things worse, because only diffraction remains
-  and the light falls. Below the rays, the panels are at true scale: each small circle is a cone that
-  lights up like a pixel, and you see how many of them the light from a single point covers. The angle covered by a
-  cone is its width divided by the focal length N′F′, from the posterior nodal point to the retina:
-  2.5 µm / 16.7 mm ≈ 0.5 arcminutes. With chromatic aberration, the segmented central cone shows the colours
-  that reach it concentrated: yellow and green; around it there is orange, and further out blue and
-  violet are smeared. In perfect optics all the colours end up in the same cone.
-  Then switch from "uniform pixels" to "real cones": in the centre of the fovea there are only L and M cones, in a
-  ratio of about 2 to 1, and S cones, the blue ones, are missing entirely. With chromatic aberration
-  the blue-violet halo, which is clearly visible with uniform pixels, almost disappears with real cones: this is why
-  we do not notice it in everyday life.</p>
+  <div class="try"><b>Try this.</b> <i>Goal</i>: find out when constricting the pupil helps and when it makes things worse.
+  <ol>
+    <li>Spherical aberration, pupil from 7 to 3 mm: the outer rays end up against the iris and the spot almost vanishes.</li>
+    <li>Presbyope reading: the spot shrinks in proportion to the diameter, but the focus stays behind the retina.</li>
+    <li>Emmetropic: as you constrict, the spot grows because of diffraction and the light falls.</li>
+    <li>Chromatic aberration: yellow and green at the centre, orange around them, blue and violet further out.</li>
+    <li>Switch to “real cones”: the blue-violet halo almost vanishes, because the centre of the fovea has no S cones.</li>
+  </ol></div>
+  <p>The panels below the rays are at true scale: each small circle is a cone that lights up like a pixel.
+  The angle covered by one cone is its width divided by the focal length N′F′, from the posterior nodal
+  point to the retina: 2.5 µm / 16.7 mm ≈ 0.5 arcminutes.</p>
 </section>
 
 <!-- 4 -->
@@ -498,10 +502,13 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/12-prova-foglio.html" title="The sheet-of-paper test with a converging and a diverging lens" loading="lazy"></iframe>
     <figcaption>Move the sheet in the three cases. <a href="w/12-prova-foglio.html">Open full screen</a></figcaption>
   </figure>
-  <p class="try"><b>Try this at home.</b> Facing a window, hold a white sheet of paper and put a
-  magnifying glass in front of it, then slowly move it away: a few centimetres away the window appears,
-  small and upside down. With glasses for myopia it never appears; with reading glasses it appears, but
-  30 cm–1 m from the lens.</p>
+  <div class="try"><b>Try this at home.</b> <i>Goal</i>: find the real image of a lens with a sheet of paper.
+  <ol>
+    <li>Stand facing a window with a sheet of white paper.</li>
+    <li>Hold a magnifying glass in front of the paper and slowly move it away.</li>
+    <li>At a few centimetres the window appears, small and upside down: it is a real image.</li>
+    <li>Try again with glasses: with glasses for myopia it never appears; with reading glasses it does, but 30 cm–1 m from the lens.</li>
+  </ol></div>
   <p>Everyday virtual images: the bathroom mirror, the car's side mirror, the door
   peephole, the bottom of the swimming pool that looks closer. Real images: the projector
   screen, the camera sensor, the retina, the dot of sunlight concentrated by a lens.</p>

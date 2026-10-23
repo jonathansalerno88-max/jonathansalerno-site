@@ -78,7 +78,7 @@ section li{margin:.25rem 0}
 .formula{font-family:var(--mono); font-size:.9rem; background:var(--card); border-radius:6px;
   padding:.55rem .8rem; display:inline-block; margin:.1rem 0 .9rem}
 .try{font-size:.9375rem; color:var(--mut); border-left:3px solid var(--axis); padding:.1rem 0 .1rem .9rem; margin:1rem 0}
-.try ul{margin:.35rem 0 0; padding-left:1.1rem}
+.try ul,.try ol{margin:.35rem 0 0; padding-left:1.3rem}
 .try li{margin:.15rem 0}
 .try b{color:var(--ink); font-weight:600}
 
@@ -174,8 +174,13 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/00b-missione.html" title="Gioco: regola una luce da bici per illuminare la strada fino allo spazio di arresto" loading="lazy"></iframe>
     <figcaption>Regola flusso, fascio, lente e taglio. <a href="w/00b-missione.html">Apri a schermo intero</a></figcaption>
   </figure>
-  <p class="try"><b>Da provare.</b> Prova tu le combinazioni. L'obiettivo è vedere fino allo spazio
-  di arresto senza abbagliare il pedone, il ciclista e chi arriva dall'altro lato.</p>
+  <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: vedere fino allo spazio di arresto senza abbagliare il pedone, il ciclista e chi arriva dall'altro lato.
+  <ol>
+    <li>Scegli la velocità: il gioco calcola fino a dove devi vedere.</li>
+    <li>Regola lumen e ampiezza del fascio finché luce sulla strada e larghezza diventano verdi.</li>
+    <li>Controlla pedone e ciclista: se sono tristi, stringi il fascio o attiva il taglio.</li>
+    <li>Guarda prezzo e autonomia, e scegli il tuo compromesso.</li>
+  </ol></div>
   <p><b>Quindi, quale luce comprare?</b> Per chi pedala dove c'è altra gente (città, ciclabili,
   strade): una luce con <b>taglio del fascio</b>, cioè omologata StVZO. Mette la luce sulla strada e
   non negli occhi di chi arriva, e con gli stessi lumen illumina di più. Fra due luci così, confronta i
@@ -216,10 +221,12 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/01-semaforo.html" title="Semaforo all'alba: strada asfaltata e innevata, luce diretta, troland e soglia di sicurezza" loading="lazy"></iframe>
     <figcaption>Togli il semaforo e metti la neve: cambiano solo le grandezze evidenziate nella tabella. <a href="w/01-semaforo.html">Apri a schermo intero</a></figcaption>
   </figure>
-  <p class="try"><b>Da provare.</b> Dietro il semaforo il sole non cambia: lumen, candele e nit del sole
-  restano gli stessi. Crolla solo l'illuminanza sul tuo occhio, in lux, ed è per questo che
-  l'abbagliamento sparisce. Con la neve sale la luminanza della strada, circa 4 volte, ma resta sotto
-  i 10⁴ nit della soglia di sicurezza: abbaglia, non danneggia.</p>
+  <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: capire quale grandezza cambia quando l'abbagliamento sparisce.
+  <ol>
+    <li>Metti il semaforo davanti al sole: lumen, candele e nit del sole non cambiano.</li>
+    <li>Guarda l'illuminanza sull'occhio, in lux: crolla. È lei che decide l'abbagliamento.</li>
+    <li>Attiva la neve: la luminanza della strada sale di circa 4 volte, ma resta sotto i 10⁴ nit della soglia di sicurezza. Abbaglia, non danneggia.</li>
+  </ol></div>
 </section>
 
 <!-- 2 -->
@@ -248,15 +255,15 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/02-danno.html" title="Sole, eclissi parziale, puntatore laser e schermo: danno fotochimico, danno termico e orologio biologico" loading="lazy"></iframe>
     <figcaption>Cambia sorgente, togli l'ostacolo, metti il collirio e muovi il tempo di esposizione. <a href="w/02-danno.html">Apri a schermo intero</a></figcaption>
   </figure>
-  <p class="try"><b>Da provare.</b> Un collirio che stringe la pupilla (pilocarpina, o l'aceclidina
-  approvata nel 2025 per la presbiopia) protegge? Dipende dalla sorgente, ed è la differenza fra lux e
-  troland. Il collirio non cambia i lux sull'occhio, cambia l'area della pupilla, quindi i troland.
-  Al sole pieno la pupilla è già di circa 2 mm, e il collirio toglie solo un quinto della dose.
-  Nell'eclissi al 90% blocca la dilatazione a 4 mm e divide la dose per cinque, ma ogni punto della
-  falce resta brillante come il sole pieno: in due minuti si supera comunque il limite di decine di
-  volte. Con il laser non fa niente, perché il fascio di 1 mm entra tutto in qualsiasi pupilla.
-  Quali colliri stringono la pupilla, e su quale muscolo agiscono, è disegnato nella
-  <a href="#occhio">sezione 3</a>.</p>
+  <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: capire quando un collirio che stringe la pupilla protegge la retina.
+  <ol>
+    <li>Sole, spunta il collirio: la pupilla era già di circa 2 mm, e la dose cala solo di un quinto.</li>
+    <li>Eclissi al 90%, spunta il collirio: blocca la dilatazione a 4 mm e divide la dose per cinque.</li>
+    <li>Porta il tempo a 2 minuti: il limite si supera comunque di decine di volte, perché ogni punto della falce brilla come il sole pieno.</li>
+    <li>Laser: il collirio non cambia niente, perché il fascio di 1 mm entra tutto in qualsiasi pupilla.</li>
+  </ol></div>
+  <p>Il collirio non cambia i lux sull'occhio: cambia l'area della pupilla, quindi i troland. Quali
+  colliri stringono la pupilla, e su quale muscolo agiscono, è disegnato nella <a href="#occhio">sezione 3</a>.</p>
   <p><b>Lo schermo.</b> Il rischio per la retina è trascurabile, con o senza filtro. L'effetto reale è
   sull'orologio biologico: leggendo circa 4 ore a sera per 5 sere su un tablet, rispetto a un libro
   di carta, Chang e colleghi hanno misurato melatonina serale ridotta del 55%, inizio della secrezione
@@ -274,7 +281,11 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
   <h2>3 · L'occhio: modello, difetti, accomodazione, farmaci</h2>
   <h3>L'occhio ridotto</h3>
   <p>Per i calcoli l'occhio si tratta come una sola superficie che rifrange, con potere di circa
-  60 diottrie a riposo e l'interno a indice 4/3: è l'<em>occhio ridotto</em>. Quella superficie non
+  60 diottrie a riposo e l'interno a indice 4/3: è l'<em>occhio ridotto</em>. «Ridotto» rispetto
+  all'occhio vero, che ha almeno quattro superfici che rifrangono (le due facce della cornea e le due del
+  cristallino; sei nell'occhio schematico di Gullstrand, che divide il cristallino in corteccia e nucleo).
+  Il modello le riduce a una: al posto di due punti principali e due punti nodali ne resta uno per tipo,
+  e i conti si fanno con una formula sola. Quella superficie non
   è la cornea vera: sta circa 1,6 mm dietro, dove cadono i piani principali dell'occhio. Misurati
   dalla cornea, i punti che contano sono:</p>
   <ul>
@@ -308,17 +319,14 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/04-occhio.html" title="Occhio interattivo: miopia, ipermetropia, astigmatismo, lente correttiva, accomodazione, farmaci, quote d0, di e f" loading="lazy"></iframe>
     <figcaption>Il disegno principale: difetto, lente correttiva, posizione dell'oggetto, farmaco o collirio, muscolo ciliare. <a href="w/04-occhio.html">Apri a schermo intero</a></figcaption>
   </figure>
-  <p class="try"><b>Da provare.</b> Emmetrope, oggetto all'infinito, muscolo rilassato: nitido.
-  Alza l'accomodazione e l'infinito si sfoca. Ipermetropia e cicloplegico: l'accomodazione che
-  compensava sparisce, ed è per questo che il ciclopentolato si usa per misurare la vista ai
-  bambini. Emmetrope e pilocarpina: l'accomodazione è bloccata troppo alta, ma la pupilla stretta
-  limita la sfocatura (effetto foro stenopeico). Spunta «presbiopia», metti l'oggetto a circa 40 cm
-  (cursore tutto a destra) e contrai il muscolo: il muscolo arriva a 2,5 D, ma il cristallino rigido
-  si ferma a 1 D e la lettura resta sfocata. Per separare le due cose c'è la spunta del
-  collirio che stringe solo la pupilla (aceclidina, approvata per la presbiopia nel 2025): oggetto a
-  circa 40 cm (cursore tutto a destra), accomodazione a 1,5 D come in una presbiopia iniziale, e la
-  sfocatura scende da circa 14 a circa 6 primi d'arco. Senza nessuna accomodazione scende da 34 a 15:
-  la pupilla piccola aggiunge profondità di campo, non accomodazione.</p>
+  <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: vedere come difetti, farmaci ed età spostano il fuoco rispetto alla retina.
+  <ol>
+    <li>Emmetrope, oggetto all'infinito, muscolo rilassato: nitido. Alza l'accomodazione: l'infinito si sfoca.</li>
+    <li>Ipermetropia + cicloplegico: sparisce l'accomodazione che compensava. Per questo il ciclopentolato si usa per misurare la vista ai bambini.</li>
+    <li>Emmetrope + pilocarpina: accomodazione bloccata troppo alta, ma la pupilla stretta limita la sfocatura.</li>
+    <li>Spunta «presbiopia», oggetto a circa 40 cm (cursore tutto a destra), muscolo a 2,5 D: il cristallino si ferma a 1 D e la lettura resta sfocata.</li>
+    <li>Togli «presbiopia», muscolo a 1,5 D (una presbiopia iniziale), spunta il collirio che stringe solo la pupilla: la sfocatura scende da circa 14 a circa 6 primi d'arco. Più profondità di campo, non più accomodazione.</li>
+  </ol></div>
   <p>I farmaci agiscono sul muscolo ciliare, che è liscio e comandato dal parasimpatico attraverso
   recettori muscarinici. Per questo l'opposto della pilocarpina non sono i miorilassanti, che
   agiscono sul muscolo scheletrico, ma i cicloplegici (atropina, ciclopentolato, tropicamide).</p>
@@ -337,13 +345,13 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/04b-iride.html" title="Sfintere e dilatatore dell'iride, muscolo ciliare e le loro vie nervose, con colliri e lesioni" loading="lazy"></iframe>
     <figcaption>Scegli luce, distanza dello sguardo, collirio o lesione: guarda quale via cambia, la pupilla e, sotto, muscolo ciliare, zonula e cristallino. <a href="w/04b-iride.html">Apri a schermo intero</a></figcaption>
   </figure>
-  <p class="try"><b>Da provare.</b> In penombra confronta pilocarpina e fentolamina: tutte e due
-  stringono la pupilla, ma la prima tira lo sfintere e la seconda lascia il dilatatore senza forza.
-  Poi Horner e III nervo: nella sindrome di Horner la differenza fra i due occhi si vede meglio al
-  buio, nella lesione del III nervo alla luce. Infine guarda vicino: il muscolo ciliare si contrae,
-  la zonula si allenta, il cristallino si arrotonda e la pupilla si stringe, perché accomodazione,
-  miosi e convergenza partono dallo stesso nucleo (la triade del vicino). Con l'atropina il ciliare
-  resta piatto anche da vicino; con la pilocarpina si contrae anche guardando lontano.</p>
+  <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: riconoscere su quale muscolo agisce ogni farmaco e ogni lesione.
+  <ol>
+    <li>Penombra, pilocarpina e poi fentolamina: tutte e due stringono la pupilla, ma la prima tira lo sfintere, la seconda toglie forza al dilatatore.</li>
+    <li>Horner: la differenza fra i due occhi si vede meglio al buio. III nervo: si vede meglio alla luce.</li>
+    <li>Guarda vicino: ciliare contratto, zonula lassa, cristallino arrotondato, pupilla più stretta. È la triade del vicino.</li>
+    <li>Atropina: il ciliare resta piatto anche da vicino. Pilocarpina: si contrae anche guardando lontano.</li>
+  </ol></div>
   <h3>Stringere la pupilla senza accomodare</h3>
   <p>Il collirio che stringe solo la pupilla non cambia l'ottica dell'occhio: cornea e cristallino
   restano quelli, con i loro difetti. Cambia quale parte dell'ottica si usa. L'iride ferma i raggi
@@ -373,21 +381,17 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/04c-apertura.html" title="Stringere la pupilla: sfocatura, aberrazione sferica e cromatica" loading="lazy"></iframe>
     <figcaption>Scegli occhio emmetrope o difetto e muovi il diametro della pupilla. <a href="w/04c-apertura.html">Apri a schermo intero</a></figcaption>
   </figure>
-  <p class="try"><b>Da provare.</b> Aberrazione sferica, pupilla da 7 a 3 mm: i raggi più esterni,
-  quelli che incrociano l'asse molto prima della retina, finiscono in grigio contro l'iride, e la
-  macchia quasi sparisce. Accanto c'è come lo vedresti senza quel difetto: un punto, allargato solo
-  dalla diffrazione. Con il presbite che legge invece la macchia cala in proporzione, e il fuoco resta
-  dietro la retina. Infine prova l'occhio emmetrope: lì stringere peggiora, perché resta solo la diffrazione
-  e la luce cala. Sotto i raggi, i riquadri sono in scala vera: ogni cerchietto è un cono che si
-  accende come un pixel, e vedi quanti ne copre la luce di un solo punto. L'angolo coperto da un
-  cono è la sua larghezza divisa per la distanza focale N′F′, dal punto nodale posteriore alla retina:
-  2,5 µm / 16,7 mm ≈ 0,5 primi. Con l'aberrazione cromatica, il cono centrale a spicchi mostra i colori
-  che ci arrivano concentrati: giallo e verde; attorno c'è l'arancione, e più fuori si spalmano blu e
-  viola. Nell'ottica perfetta tutti i colori finiscono nello stesso cono.
-  Poi passa da "pixel omogenei" a "coni veri": nel centro della fovea ci sono solo coni L e M, in
-  proporzione di circa 2 a 1, e mancano del tutto i coni S, quelli del blu. Con l'aberrazione cromatica
-  l'alone blu-viola, che con i pixel omogenei si vede bene, con i coni veri quasi sparisce: per questo
-  nella vita non lo notiamo.</p>
+  <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: capire quando stringere la pupilla aiuta e quando peggiora.
+  <ol>
+    <li>Aberrazione sferica, pupilla da 7 a 3 mm: i raggi esterni finiscono contro l'iride e la macchia quasi sparisce.</li>
+    <li>Presbite che legge: la macchia cala in proporzione al diametro, ma il fuoco resta dietro la retina.</li>
+    <li>Emmetrope: stringendo, la macchia cresce per la diffrazione e la luce cala.</li>
+    <li>Aberrazione cromatica: al centro giallo e verde, attorno arancione, fuori blu e viola.</li>
+    <li>Passa a «coni veri»: l'alone blu-viola quasi sparisce, perché nel centro della fovea mancano i coni S.</li>
+  </ol></div>
+  <p>I riquadri sotto i raggi sono in scala vera: ogni cerchietto è un cono che si accende come un pixel.
+  L'angolo coperto da un cono è la sua larghezza divisa per la distanza focale N′F′, dal punto nodale
+  posteriore alla retina: 2,5 µm / 16,7 mm ≈ 0,5 primi.</p>
 </section>
 
 <!-- 4 -->
@@ -497,10 +501,13 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <iframe src="w/12-prova-foglio.html" title="La prova del foglio con lente convergente e divergente" loading="lazy"></iframe>
     <figcaption>Muovi il foglio nei tre casi. <a href="w/12-prova-foglio.html">Apri a schermo intero</a></figcaption>
   </figure>
-  <p class="try"><b>Da fare a casa.</b> Di fronte a una finestra, tieni un foglio bianco e mettici
-  davanti una lente d'ingrandimento, poi allontanala piano: a qualche centimetro compare la finestra,
-  piccola e capovolta. Con gli occhiali da miope non compare mai; con quelli da lettura compare, ma
-  a 30 cm–1 m dalla lente.</p>
+  <div class="try"><b>Da fare a casa.</b> <i>Obiettivo</i>: trovare con un foglio l'immagine reale di una lente.
+  <ol>
+    <li>Mettiti di fronte a una finestra con un foglio bianco.</li>
+    <li>Tieni una lente d'ingrandimento davanti al foglio e allontanala piano.</li>
+    <li>A qualche centimetro compare la finestra, piccola e capovolta: è un'immagine reale.</li>
+    <li>Riprova con gli occhiali: con quelli da miope non compare mai; con quelli da lettura compare, ma a 30 cm–1 m dalla lente.</li>
+  </ol></div>
   <p>Immagini virtuali di ogni giorno: lo specchio del bagno, lo specchietto laterale dell'auto, lo
   spioncino della porta, il fondo della piscina che sembra più vicino. Immagini reali: lo schermo del
   proiettore, il sensore della fotocamera, la retina, il puntino del sole concentrato da una lente.</p>
