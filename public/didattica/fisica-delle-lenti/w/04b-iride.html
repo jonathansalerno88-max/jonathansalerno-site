@@ -10,6 +10,9 @@
 .ctl .lb{min-width:74px}
 .ctl button{font:inherit;font-size:13px;padding:5px 10px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
 .ctl button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+.ctl .gl{font-weight:500;margin-left:4px}
+.ctl .gl.p{color:#185FA5}.ctl .gl.s{color:#A32D2D}
+.ctl .sep{width:10px}
 .info{font-size:13px;color:var(--text-secondary);line-height:1.6;margin:8px 0 0}
 .info b{color:var(--text-primary);font-weight:500}
 .note{font-size:12px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
@@ -24,13 +27,14 @@
 <button id="gF" onclick="near=false;upd()">Lontano</button>
 <button id="gN" onclick="near=true;upd()">Vicino (40 cm)</button></div>
 <div class="ctl"><span class="lb">Collirio</span>
-<button id="d0" onclick="setD(0)">Nessuno</button>
-<button id="d1" onclick="setD(1)">Pilocarpina</button>
-<button id="d2" onclick="setD(2)">Aceclidina</button>
-<button id="d3" onclick="setD(3)">Tropicamide / atropina</button>
-<button id="d4" onclick="setD(4)">Fenilefrina</button>
-<button id="d5" onclick="setD(5)">Fentolamina</button>
-<button id="d6" onclick="setD(6)">Brimonidina</button></div>
+<button id="d0" onclick="setD(0)">Nessuno</button></div>
+<div class="ctl"><span class="lb"></span>
+<span class="gl p">Agonisti M3</span><button id="d1" onclick="setD(1)">Pilocarpina</button><button id="d2" onclick="setD(2)">Aceclidina</button>
+<span class="sep"></span><span class="gl p">Antagonisti M3</span><button id="d3" onclick="setD(3)">Tropicamide / atropina</button></div>
+<div class="ctl"><span class="lb"></span>
+<span class="gl s">Agonisti α1</span><button id="d4" onclick="setD(4)">Fenilefrina</button>
+<span class="sep"></span><span class="gl s">Antagonisti α1</span><button id="d5" onclick="setD(5)">Fentolamina</button>
+<span class="sep"></span><span class="gl s">Agonisti α2</span><button id="d6" onclick="setD(6)">Brimonidina</button></div>
 <div class="ctl"><span class="lb">Lesione</span>
 <button id="d7" onclick="setD(7)">Via simpatica interrotta (Horner)</button>
 <button id="d8" onclick="setD(8)">III nervo interrotto</button></div>
