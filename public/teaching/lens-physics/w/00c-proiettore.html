@@ -3,112 +3,65 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mission: projector or TV?</title>
+<title>Projector or OLED TV in the same room</title>
 <link rel="stylesheet" href="widget.css">
 <style>
-.ctl{display:grid;grid-template-columns:118px 1fr 70px;align-items:center;gap:6px 10px;margin:0 0 6px;font-size:13px;color:var(--text-secondary)}
-.ctl output{text-align:right;color:var(--text-primary);font-variant-numeric:tabular-nums;font-weight:500}
-.tog{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font-size:13px;color:var(--text-secondary);margin:2px 0 8px}
-.tog>span:first-child{width:118px}
-.tog button{font:inherit;font-size:13px;padding:5px 11px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
-.tog button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
-.lim{font-size:12.5px;color:var(--text-secondary);margin:0 0 6px;line-height:1.45}
-.note{font-size:12px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
-.hide{display:none!important}
-.row{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:flex-start}
-#sv1{flex:1 1 360px;min-width:0!important}#sv2{flex:1 1 250px;min-width:0!important;max-width:330px}
+.ctl{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px 12px;font-size:14px;color:var(--text-secondary)}
+.ctl output{color:var(--text-primary);font-weight:500;min-width:150px;text-align:right}
+#pl{font:inherit;font-size:13px;padding:6px 12px;border-radius:var(--radius);border:1.5px solid var(--border-accent);background:var(--surface-1);color:var(--text-accent);cursor:pointer;margin:8px 0 4px}
+.row{display:flex;flex-wrap:wrap;gap:12px 16px;margin-top:8px}
+.cell{flex:1 1 300px;min-width:0}
+.cell svg{min-width:0!important;width:100%}
+.cap{font-size:14px;font-weight:500;margin:6px 0 2px}
+.nums{font-size:13px;color:var(--text-secondary);margin:0}
+.vd{display:inline-block;font-size:13px;font-weight:500;padding:3px 10px;border-radius:999px;margin-top:6px}
+.note{font-size:12px;color:var(--text-secondary);margin:12px 0 0;line-height:1.5}
 </style>
 </head>
 <body>
-<h2 class="sr-only">Game: choose a projector or a TV and set the lumens, diagonal, screen or display technology to complete an evening or an afternoon mission. Five faces judge contrast, brightness, size, price and availability.</h2>
-<div class="tog"><span>Mission</span><span id="mB"></span></div>
-<div class="tog"><span>Device</span><span id="dB"></span></div>
-<div id="pC">
-<div class="ctl"><span>ANSI lumens</span><input type="range" id="lm" min="500" max="8000" step="100" value="1500" oninput="upd()"><output id="lmO"></output></div>
-<div class="tog"><span>Screen</span><span id="sB"></span></div>
+<h2 class="sr-only">A 3,000-lumen projector on a 100-inch white screen and a 77-inch OLED TV in the same room. The slider changes the room light from darkness to full daylight; under each screen are the white, the black and the contrast.</h2>
+<div class="ctl"><span>Room light</span><input type="range" id="lx" min="0" max="1000" value="0" oninput="stopP();upd()"><output id="lxO"></output></div>
+<button id="pl" onclick="tog()"></button>
+<div class="row">
+<div class="cell"><svg viewBox="0 0 320 210" aria-hidden="true"><g id="s0"></g></svg><p class="cap">Projector 3,000 lm, white 100″ screen</p><p class="nums" id="n0"></p><span class="vd" id="v0"></span></div>
+<div class="cell"><svg viewBox="0 0 320 210" aria-hidden="true"><g id="s1"></g></svg><p class="cap">OLED TV 77″</p><p class="nums" id="n1"></p><span class="vd" id="v1"></span></div>
 </div>
-<div id="tC" class="hide"><div class="tog"><span>Technology</span><span id="tB"></span></div><div class="tog" id="hzR"><span>Refresh rate</span><span id="hB"></span></div><div class="tog" id="bfR"><span>Black frame insertion</span><span id="fB"></span></div></div>
-<div class="ctl"><span>Diagonal</span><input type="range" id="dg" min="24" max="150" step="1" value="100" oninput="upd()"><output id="dgO"></output></div>
-<p class="lim" id="mx"></p>
-<div class="row"><svg viewBox="0 0 400 520" id="sv1" role="img" aria-labelledby="t0"><title id="t0">Mission: projector or TV?</title><g id="g1"></g></svg><svg viewBox="410 0 270 456" id="sv2"><g id="g2"></g></svg></div>
-<p class="lim" id="ln1"></p><p class="lim" id="ln2"></p><p class="lim" id="ln3"></p>
-<p class="note">Simplified model, indicative numbers. Matte surface: L = ρ · E / π, with E in lux (lx = lm/m²). Brightness needed: at least 48 nits (the DCI digital-cinema standard) and, with the lights on, at least 3 times the luminance of the wall, because the eye adapts to the room. Contrast needed: 10:1, a threshold chosen here for a watchable picture. Screen: white ρ 0.9, light grey 0.5, ALR 0.8 for projector light and 0.15 for room light. Displays (full-screen nits, reflectance, native contrast): CRT 120 nits, 6%, 10,000:1; plasma 150 nits, 4%, 5,000:1; LED 400 nits, 1.5%, 3,000:1; mini-LED 900 nits, 1.5%, 20,000:1; OLED 250 nits, 1%, near-perfect black; OLED gaming monitor like the OLED, up to 32″, 0.03 ms response, up to 720 Hz. Projector: native contrast 1,000:1 (high-end projectors go much higher). Black: green below 0.05 nits. Burn-in: high risk for plasma, medium for OLED and CRT, none for LED, mini-LED and projector. Black frame insertion: OLED blanks the image for half the frame (half the persistence, brightness ×0.5); LED and mini-LED strobe the backlight (persistence about 1/5 of the frame plus 1 ms, brightness ×0.4). Motion clarity: what counts is how long each image stays lit (persistence), not just the hertz. Blur ≈ speed × persistence. CRT about 1.5 ms because the phosphor fades at once; plasma about 4 ms; LED, mini-LED and OLED hold the image for the whole frame (16.7 ms at 60 Hz, 8.3 at 120 Hz) plus the pixel response time (LED about 4 ms, mini-LED 3, OLED 0.1); projector 16.7 ms. The ‘How you see black’ panel shows black on a log scale relative to white, with a halo round the star for mini-LED (blooming). Prices are made up and only for comparison.</p>
+<p class="note">Simplified model. Projector: 3,000 lumens (lm, total flux) on a 100″ matte white screen (ρ 0.9), about 1,100 lux (lx = lm/m²), native contrast 1,000:1. OLED TV: 250 nits (cd/m²) full screen, reflects 1% of the light. The screen sends back the room light just like the projector's, so its black lightens at once; the TV screen is dark and sends back almost none of the room light. ‘Washed out’ means contrast below 10:1; ‘rather dim’ means white below about 3 times the luminance of the wall.</p>
 <script>
-var L={"loc": "en-GB", "m": ["Film in the evening, lights off", "Match in the afternoon, curtains open", "Home cinema, total darkness", "Retro video games"], "devs": ["Projector", "TV"], "scrs": ["White", "Light grey", "ALR"], "techs": ["Cathode-ray (CRT)", "Plasma", "LED (LCD)", "Mini-LED", "OLED", "OLED gaming monitor"], "board": "The verdict", "rows": ["Contrast against room light", "Brightness", "Size", "Black (in this room)", "Motion clarity", "Burn-in risk", "Price (made up)", "Can you buy it new?"], "bi": ["none", "medium: avoid fixed logos for hours", "high: still images stay burnt in"], "blk": "How you see black", "mov": "How you see motion: a trail of about {B} pixels (magnified)", "hz": "Refresh rate", "l3": "Each image stays lit for about {P} ms: an object crossing the screen in 2 seconds blurs over about {B} pixels.", "bfi": "Black frame insertion", "bfis": ["No", "Yes: image lit for only part of the frame"], "flick": " With black frame insertion at 60 Hz many people see the screen flicker.", "gpu": " This holds only if the game really produces {H} images per second: otherwise images repeat.", "obj": ["Goal: at least 100″, in the dark", "Goal: at least 75″, by day", "Goal: at least 75″, deep black", "Goal: at least 25″, sharp motion"], "objs": [["room light about 2 lux", "contrast 10:1, at least {N} nits"], ["500 lux on the wall", "contrast 10:1, at least {N} nits"], ["total darkness, black below 0.05 nits", "contrast 10:1, at least {N} nits"], ["each image lit for at most 3 ms", "contrast 10:1, at least {N} nits"]], "win": "Mission accomplished!", "win2": "Now look at price and availability.", "yes": "yes", "no": "no, discontinued: second-hand only", "l1p": "On the screen: {Ep} lux from the projector + {Ea} lux from the room.", "l1t": "The display emits {L} nits; reflectance {R}%; room light on the display {Ea} lux.", "l2": "White {Lw} nits, black {Lb} nits, contrast {C}:1.", "maxs": "Largest diagonal for this technology: {D}″.", "cur": "€"},mis=1,dev=0,scr=0,tech=2;
-var ER=[2,500,0.2,50],NEEDD=[100,75,75,25],hzv=120,bfi=0,SCR=[[0.9,0.9],[0.5,0.5],[0.8,0.15]];
-var TV=[{L:120,R:.06,C:1e4,max:36,p:200,nw:false,bi:1,per:1.5},{L:150,R:.04,C:5e3,max:65,p:300,nw:false,bi:2,per:4},{L:400,R:.015,C:3e3,max:98,p:600,nw:true,bi:0,resp:4},{L:900,R:.015,C:2e4,max:115,p:1000,nw:true,bi:0,bloom:1,resp:3},{L:250,R:.01,C:1e6,max:97,p:1500,nw:true,bi:1,resp:0.1},{L:250,R:.01,C:1e6,max:32,p:0,nw:true,bi:1,resp:0.03,mon:1}];
+var L={"loc": "en-GB", "play": "▶ From dark to day", "stop": "❚❚ Pause", "marks": [[0.2, "dark"], [30, "evening, one lamp"], [100, "day, curtains drawn"], [500, "full daylight"]], "w": "white {W} nits", "b": "black {B} nits", "c": "contrast {C}:1", "v": ["looks good", "washed out", "good contrast, but rather dim"]},run=false,t0=null,ph=0;
+var LMIN=Math.log10(0.2),LMAX=Math.log10(700);
+function lux(){return Math.pow(10,LMIN+(LMAX-LMIN)*(+document.getElementById('lx').value)/1000)}
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d||0,minimumFractionDigits:d||0})}
 function sig(x){return x>=1e5?'> '+nf(1e5):x>=1000?nf(Math.round(x/50)*50):x>=100?nf(Math.round(x/10)*10):x>=10?nf(x):x>=1?nf(x,1):x>=0.01?nf(x,2):'< '+nf(0.01,2)}
 function fmt(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
-function btns(id,arr,cur,fn){var h='';arr.forEach(function(t,i){h+='<button class="'+(i===cur?'act':'')+'" onclick="'+fn+'('+i+')">'+t+'</button>'});document.getElementById(id).innerHTML=h}
-function setM(i){mis=i;upd()}function setD(i){dev=i;upd()}function setS(i){scr=i;upd()}function setT(i){tech=i;upd()}function HZL(){return tech===5?[60,120,240,480,720]:[60,120]}function setH(i){hzv=HZL()[i];upd()}function setF(i){bfi=i;upd()}
-function T(x,y,t,cls,col,anc){return '<text class="'+(cls||'ts')+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+'>'+t+'</text>'}
 function mix(a,b,t){return 'rgb('+[0,1,2].map(function(i){return Math.round(a[i]+(b[i]-a[i])*t)}).join(',')+')'}
-function face(x,y,m){
-  var c={2:'#3B6D11',1:'#854F0B',0:'#A32D2D'}[m],f={2:'#EAF3DE',1:'#FAEEDA',0:'#FCEBEB'}[m];
-  var mouth=m===2?'M'+(x-7)+' '+(y+4)+' Q'+x+' '+(y+11)+' '+(x+7)+' '+(y+4):m===1?'M'+(x-7)+' '+(y+6)+' L'+(x+7)+' '+(y+6):'M'+(x-7)+' '+(y+9)+' Q'+x+' '+(y+2)+' '+(x+7)+' '+(y+9);
-  return '<circle cx="'+x+'" cy="'+y+'" r="15" fill="'+f+'" stroke="'+c+'" stroke-width="1.5"/>'+
-  '<circle cx="'+(x-5)+'" cy="'+(y-4)+'" r="1.8" fill="'+c+'"/><circle cx="'+(x+5)+'" cy="'+(y-4)+'" r="1.8" fill="'+c+'"/>'+
-  '<path d="'+mouth+'" fill="none" stroke="'+c+'" stroke-width="1.8" stroke-linecap="round"/>';}
-function upd(){
- btns('mB',L.m,mis,'setM');btns('dB',L.devs,dev,'setD');btns('sB',L.scrs,scr,'setS');btns('tB',L.techs,tech,'setT');var hl=HZL();if(hl.indexOf(hzv)<0)hzv=hl[hl.length-1];btns('hB',hl.map(function(h){return h+' Hz'}),hl.indexOf(hzv),'setH');btns('fB',L.bfis,bfi,'setF');
- document.getElementById('pC').classList.toggle('hide',dev!==0);document.getElementById('tC').classList.toggle('hide',dev!==1);document.getElementById('hzR').classList.toggle('hide',dev!==1||tech<2);document.getElementById('bfR').classList.toggle('hide',dev!==1||tech<2);
- var B=dev===1&&tech>=2&&bfi===1,Le=0;
- var dgS=document.getElementById('dg'),mx=dev===0?150:TV[tech].max;dgS.max=mx;if(+dgS.value>mx)dgS.value=mx;
- var dg=+dgS.value,F=+document.getElementById('lm').value,Ea=ER[mis];
- document.getElementById('lmO').textContent=nf(F)+' lm';document.getElementById('dgO').textContent=dg+'″';
- document.getElementById('mx').textContent=dev===1?fmt(L.maxs,{D:mx}):'';
- var w=dg*0.0254*16/Math.sqrt(337),h=w*9/16,A=w*h,Lw,Lb,Ep=0,price,nw=true,t=TV[tech];
- if(dev===0){var rp=SCR[scr][0],ra=SCR[scr][1];Ep=F/A;var La=ra*Ea/Math.PI;Lw=rp*Ep/Math.PI+La;Lb=rp*Ep/Math.PI/1000+La;
-   price=200+0.3*F+[80+1.5*dg,120+2*dg,300+12*dg][scr];}
- else{var Lr=t.R*Ea/Math.PI;Le=t.L*(B?(tech>=4?0.5:0.4):1);Lw=Le+Lr;Lb=Le/t.C+Lr;price=t.mon?400+1.2*hzv:t.p*Math.pow(dg/55,2.5);nw=t.nw;if(!nw)price=Math.min(price,250);}
- var C=Lw/Lb,need=Math.max(48,3*0.6*Ea/Math.PI);
- var sC=C>=10?2:C>=4?1:0,sL=Lw>=need?2:Lw>=need*0.6?1:0,sS=dg>=NEEDD[mis]?2:dg>=NEEDD[mis]*0.75?1:0,sP=price<1500?2:price<3000?1:0,sN=nw?2:0;
- var sB=Lb<=0.05?2:Lb<=0.3?1:0,bi=dev===0?0:t.bi,sI=2-bi;
- var fr=1000/hzv,per=dev===0?1000/60:(t.per||(B?(tech>=4?0.5*fr+t.resp:0.2*fr+1):fr+t.resp)),blur=960*per/1000,sM=per<=3?2:per<=9?1:0;
- var win=sC===2&&sL===2&&sS===2&&(mis!==2||sB===2)&&(mis!==3||sM===2);
- // scene
- var day=mis===1;var wall=day?'#ECE5D6':(mis===2?'#0E1116':mis===3?'#2A2620':'#1B2029'),s='<rect x="0" y="0" width="400" height="300" rx="10" fill="'+wall+'"/>';
- s+=day?'<rect x="336" y="36" width="50" height="118" fill="#FFF8E1" stroke="#C9BFA6"/><line x1="361" y1="36" x2="361" y2="154" stroke="#C9BFA6"/><path d="M330 30 L330 170 L340 170 L338 30Z M392 30 L392 170 L382 170 L384 30Z" fill="#D9C9A8"/>'
-        :'<rect x="336" y="36" width="50" height="118" fill="#141A24" stroke="#39404C"/><circle cx="372" cy="58" r="5" fill="#C9CED8"/>';
- var sw=Math.min(300,20+dg*1.85),sh=sw*9/16,sx=170-sw/2,sy=30+(150-sh)/2+(dg<50?40:0);
+function scene(E,Lw,Lb,tv){
+ var need=Math.max(48,0.573*E),a=Math.max(0,Math.min(1,(Math.log10(E)-LMIN)/(LMAX-LMIN)));
+ var wall=mix([20,24,32],[236,229,214],a),s='<rect width="320" height="210" rx="10" fill="'+wall+'"/>';
+ s+='<rect x="262" y="30" width="44" height="96" fill="'+mix([20,26,36],[255,248,225],a)+'" stroke="'+mix([60,66,76],[201,191,166],a)+'"/><line x1="284" y1="30" x2="284" y2="126" stroke="'+mix([60,66,76],[201,191,166],a)+'"/>';
  var gain=Math.min(1,Math.pow(Lw/need,0.5)),bl=Math.min(0.85,Math.pow(Lb/Lw,0.45));
  function px(c){return mix([0,0,0],c.map(function(v){return (bl*255+(1-bl)*v)*gain}),1)}
- if(dev===0){s+='<rect x="'+(sx-3)+'" y="'+(sy-3)+'" width="'+(sw+6)+'" height="'+(sh+6)+'" fill="'+(day?'#BDBDBD':'#444')+'"/>';}
- else if(tech===0){s+='<rect x="'+(sx-sw*.18)+'" y="'+(sy-sh*.18)+'" width="'+(sw*1.36)+'" height="'+(sh*1.5)+'" rx="10" fill="#5A5650"/>';}
- else{s+='<rect x="'+(sx-4)+'" y="'+(sy-4)+'" width="'+(sw+8)+'" height="'+(sh+8)+'" rx="3" fill="#111"/>'+'<rect x="'+(sx+sw/2-14)+'" y="'+(sy+sh+4)+'" width="28" height="6" fill="#333"/>';}
- s+='<g transform="translate('+sx+' '+sy+') scale('+(sw/160)+' '+(sh/90)+')">';
- s+='<rect width="160" height="90" '+(dev===1&&tech===0?'rx="8" ':'')+'fill="'+px([12,16,40])+'"/><circle cx="118" cy="24" r="9" fill="'+px([250,244,220])+'"/>';
+ var x=tv?36:20,y=tv?34:24,w=tv?196:220,h=w*9/16;
+ s+=tv?'<rect x="'+(x-4)+'" y="'+(y-4)+'" width="'+(w+8)+'" height="'+(h+8)+'" rx="3" fill="#111"/><rect x="'+(x+w/2-14)+'" y="'+(y+h+4)+'" width="28" height="6" fill="#333"/>'
+      :'<rect x="'+(x-3)+'" y="'+(y-3)+'" width="'+(w+6)+'" height="'+(h+6)+'" fill="'+mix([70,70,70],[190,190,190],a)+'"/>';
+ s+='<g transform="translate('+x+' '+y+') scale('+(w/160)+' '+(h/90)+')"><rect width="160" height="90" fill="'+px([12,16,40])+'"/><circle cx="118" cy="24" r="9" fill="'+px([250,244,220])+'"/>';
  [[20,12],[40,30],[70,8],[90,20],[140,40],[60,44]].forEach(function(p){s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="1" fill="'+px([220,220,255])+'"/>'});
  s+='<path d="M0 90 L0 62 L30 40 L52 58 L80 30 L110 60 L130 48 L160 66 L160 90Z" fill="'+px([40,70,60])+'"/><path d="M0 90 L0 76 L40 64 L90 78 L160 70 L160 90Z" fill="'+px([18,30,26])+'"/></g>';
- if(dev===0)s+='<path d="M170 282 L'+sx+' '+(sy+sh)+' L'+(sx+sw)+' '+(sy+sh)+'Z" fill="#FFF3C4" opacity="'+(day?0.05:0.22)+'"/><rect x="150" y="278" width="40" height="15" rx="4" fill="#3A3A38"/><circle cx="170" cy="278" r="4" fill="#FFE9A8"/>';
- // board
- var bx=420,b=T(bx,22,L.board,'th');
- var rows=[[sC,L.rows[0],sig(C)+':1'],[sL,L.rows[1],sig(Lw)+' / '+sig(need)+' nit'],[sS,L.rows[2],dg+'″ / '+NEEDD[mis]+'″'],[sB,L.rows[3],sig(Lb)+' nit'],[sM,L.rows[4],nf(per,per<10?1:0)+' ms'],[sI,L.rows[5],L.bi[bi]],[sP,L.rows[6],'≈ '+nf(Math.round(price/50)*50)+' '+L.cur],[sN,L.rows[7],nw?L.yes:L.no]];
- rows.forEach(function(r,i){var y=50+i*40;b+=face(bx+16,y,r[0])+T(bx+40,y-3,r[1],'th')+T(bx+40,y+14,r[2],'ts');});
- b+='<rect x="'+bx+'" y="370" width="256" height="80" rx="8" fill="'+(win?'#EAF3DE':'#F1EFE8')+'" stroke="'+(win?'#3B6D11':'#B4B2A9')+'"/>';
- if(win)b+=T(bx+12,398,L.win,'th','#27500A')+T(bx+12,420,L.win2,'ts','#3B6D11');
- else b+=T(bx+12,392,L.obj[mis],'th','#444441')+T(bx+12,412,L.objs[mis][0],'ts','#5F5E5A')+T(bx+12,430,fmt(L.objs[mis][1],{N:sig(need)}),'ts','#5F5E5A');
- var lo=Math.log10(0.01),v=Math.max(0,Math.min(1,(Math.log10(Math.max(Lb,0.01))-lo)/(Math.log10(Lw)-lo))),k=Math.round(255*v*0.9);
- var blkc='rgb('+k+','+k+','+Math.min(255,k+4)+')';
- s+='<rect x="0" y="310" width="400" height="100" rx="10" fill="'+wall+'"/>'+T(16,330,L.blk+': '+sig(Lb)+' nit',null,null,'th').replace('<text','<text fill="'+(day?'#16222E':'#E2E9EF')+'"');
- s+='<rect x="16" y="340" width="368" height="58" fill="'+blkc+'" stroke="'+(day?'#BDBDBD':'#333')+'"/>';
- if(dev===1&&t.bloom)s+='<circle cx="200" cy="369" r="18" fill="#FFFFFF" opacity=".16"/><circle cx="200" cy="369" r="10" fill="#FFFFFF" opacity=".18"/>';
- s+='<circle cx="200" cy="369" r="2.6" fill="#FFFFFF"/><circle cx="120" cy="358" r="1.2" fill="#DDE4FF"/><circle cx="290" cy="380" r="1.2" fill="#DDE4FF"/>';
- s+='<rect x="0" y="420" width="400" height="100" rx="10" fill="'+wall+'"/>'+T(16,440,fmt(L.mov,{B:nf(blur)}),null,null,'th').replace('<text','<text fill="'+(day?'#16222E':'#E2E9EF')+'"');
- s+='<rect x="16" y="450" width="368" height="58" fill="#10141C" stroke="'+(day?'#BDBDBD':'#333')+'"/>';
- var W=Math.min(70,blur*2.2),n=14,g='<g id="mv">';
- for(var i=0;i<n;i++){var dx=-W/2+W*i/(n-1);g+='<circle cx="'+dx.toFixed(1)+'" cy="0" r="9" fill="#FFD36B" opacity="'+Math.min(1,2.2/n+(W<4?1:0)).toFixed(2)+'"/>';}
- s+='<clipPath id="mvc"><rect x="16" y="450" width="368" height="58"/></clipPath><g clip-path="url(#mvc)">'+g+'</g></g>';
- document.getElementById('g1').innerHTML=s;document.getElementById('g2').innerHTML=b;
- document.getElementById('ln1').textContent=dev===0?fmt(L.l1p,{Ep:sig(Ep),Ea:sig(Ea)}):fmt(L.l1t,{L:sig(Le),R:nf(t.R*100,t.R<0.02&&t.R!==0.01?1:0),Ea:sig(Ea)});
- document.getElementById('ln2').textContent=fmt(L.l2,{Lw:sig(Lw),Lb:sig(Lb),C:sig(C)});
- document.getElementById('ln3').textContent=fmt(L.l3,{P:nf(per,per<10?1:0),B:nf(blur)})+(B&&hzv===60?L.flick:'')+(dev===1&&tech>=2&&hzv>120?fmt(L.gpu,{H:hzv}):'');
-}
+ if(!tv)s+='<path d="M130 196 L'+x+' '+(y+h)+' L'+(x+w)+' '+(y+h)+'Z" fill="#FFF3C4" opacity="'+(0.22*(1-a)+0.03)+'"/><rect x="112" y="192" width="36" height="13" rx="4" fill="#3A3A38"/><circle cx="130" cy="192" r="3.5" fill="#FFE9A8"/>';
+ return [s,need];}
+function upd(){
+ var E=lux();var m='';L.marks.forEach(function(k){if(Math.abs(Math.log10(E/k[0]))<0.25)m=' · '+k[1]});
+ document.getElementById('lxO').textContent=sig(E)+' lux'+m;
+ document.getElementById('pl').textContent=run?L.stop:L.play;
+ var Ep=3000/2.76,D=[[0.9*Ep/Math.PI+0.9*E/Math.PI,0.9*Ep/Math.PI/1000+0.9*E/Math.PI],[250+0.01*E/Math.PI,250/1e6+0.01*E/Math.PI]];
+ D.forEach(function(d,i){var r=scene(E,d[0],d[1],i===1),C=d[0]/d[1],k=C<10?1:d[0]<r[1]?2:0;
+  document.getElementById('s'+i).innerHTML=r[0];
+  document.getElementById('n'+i).textContent=fmt(L.w,{W:sig(d[0])})+' · '+fmt(L.b,{B:sig(d[1])})+' · '+fmt(L.c,{C:sig(C)});
+  var v=document.getElementById('v'+i);v.textContent=L.v[k];v.style.background=k?'#FCEEDD':'#EAF3DE';v.style.color=k?'#8A4A0B':'#27500A';});}
+function loop(ts){if(!run)return;if(t0===null)t0=ts-ph*10000;ph=((ts-t0)/10000)%1;var u=ph<0.5?ph*2:2-ph*2;document.getElementById('lx').value=Math.round(u*1000);upd();requestAnimationFrame(loop)}
+function stopP(){run=false;t0=null;}
+function tog(){run=!run;t0=null;if(run)requestAnimationFrame(loop);upd()}
 upd();
-var rmq=matchMedia('(prefers-reduced-motion: reduce)').matches,t0=null;
-function mvLoop(ts){if(t0===null)t0=ts;var m=document.getElementById('mv');if(m){var x=rmq?200:16+((ts-t0)/2500%1)*368;m.setAttribute('transform','translate('+x.toFixed(1)+' 479)');}if(!rmq)requestAnimationFrame(mvLoop);}
-requestAnimationFrame(mvLoop);
 </script>
 </body>
 </html>

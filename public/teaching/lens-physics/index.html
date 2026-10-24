@@ -85,8 +85,9 @@ section li{margin:.25rem 0}
 figure.w{margin:1.4rem 0 1.2rem}
 figure.w iframe{display:block; width:100%; height:560px; border:1px solid var(--rule);
   border-radius:10px; background:#FBFCFD}
-figure.w iframe.tall{height:960px}
-@media (max-width:600px){figure.w iframe.tall{height:1320px}}
+figure.w iframe.h-simple{height:600px}
+figure.w iframe.h-game{height:1240px}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -115,7 +116,7 @@ ul.qty figure.paused::after{opacity:.9}
 .qtake ul{margin:0 0 .6rem; padding-left:1.2rem}
 .qtake li{margin:.15rem 0}
 .qtake .formula{display:block; margin:.2rem 0 .5rem; white-space:normal}
-#projector{margin-top:2.6rem; scroll-margin-top:1rem}
+#projector,#motion{margin-top:2.6rem; scroll-margin-top:1rem}
 .qhint{font-size:.8125rem; color:var(--faint); margin:-.4rem 0 1rem}
 @media (max-width:30rem){ul.qty>li{grid-template-columns:1fr} ul.qty figure{max-width:15rem}}
 :root{--q-flux:#534AB7; --q-int:#185FA5; --q-ill:#B5520C; --q-lum:#0F6E56}
@@ -333,16 +334,9 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   only 1–2% of the light: with 400 nits <span class="u">(nit = cd/m²)</span> it keeps a contrast above 100:1. Sure enough, by the end
   of the thread the poster gives up on the projector and starts looking at TVs.</p>
   <figure class="w">
-    <iframe src="w/00c-proiettore.html" title="Mission: projector or TV, in the evening and in the afternoon" loading="lazy" class="tall"></iframe>
-    <figcaption>Choose the mission, then move the sliders and buttons until the faces turn green. <a href="w/00c-proiettore.html">Open full screen</a></figcaption>
+    <iframe src="w/00c-proiettore.html" title="Projector or OLED TV in the same room, from dark to day" loading="lazy" class="h-simple"></iframe>
+    <figcaption>Move the room light or press ▶ and watch the two blacks. <a href="w/00c-proiettore.html">Open full screen</a></figcaption>
   </figure>
-  <div class="try"><b>Try it.</b> <i>Goal</i>: complete both missions spending as little as possible.
-  <ol><li>Evening mission: with the projector and the white screen, find the fewest lumens for 100″.</li>
-  <li>Switch to the afternoon mission without touching anything else: look at the contrast.</li>
-  <li>Raise the lumens, then try the grey screen and the ALR one: which passes, and at what price?</li>
-  <li>Switch to the TV and try the technologies one by one: which passes by day, which does not, and why?</li>
-  <li>Home-cinema mission: watch the ‘How you see black’ panel with LED, mini-LED and OLED. Who wins, and with what burn-in risk?</li>
-  <li>Retro-games mission: try the OLED at 60 and 120 Hz, then the CRT. Why is a 60 Hz CRT sharper than a 120 Hz OLED?</li></ol></div>
   <div class="qtake">
     <p class="qtt">Take-home: what to look at when you buy</p>
     <p><b>Phone</b></p>
@@ -367,6 +361,31 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
     You change it with more lumens, a smaller picture or a darker room; with the screen, only if it is ALR,
     because it sends back the projector's light more than the light from the windows.</p>
   </div>
+
+  <h3 id="motion">And motion? The CRT and 720 Hz monitors</h3>
+  <p>On another AnandTech forum, more than ten years ago, someone still games on a 19″ CRT because LCDs look less
+  sharp to them. They ask whether anything has the clarity of a CRT, and whether a 120 Hz monitor would make a
+  difference (<a href="https://forums.anandtech.com/threads/crt-clarity.2186781/">the thread</a>).</p>
+  <p>The answer lies in a quantity that spec sheets do not list: <b>persistence</b>, that is how long each image
+  stays lit. When the eye follows a moving object, each still image slides across the retina for as long as it
+  stays lit:</p>
+  <p class="formula">blur ≈ speed × persistence</p>
+  <p>LED and OLED keep the image lit for the whole frame: 16.7 ms at 60 Hz, 8.3 ms at 120 Hz. More hertz help, but
+  only if the game really produces that many images per second. A CRT instead lights each phosphor dot for about
+  1.5 ms and then lets it fade: at 60 Hz it is sharper than an OLED at 120. That is why old CRTs were unbeatable in
+  motion for decades, and curiously the only things that come close are today's 720 Hz OLED gaming monitors, at
+  1.4 ms. The game below also has black level, burn-in, price and the other missions.</p>
+  <figure class="w">
+    <iframe src="w/00d-schermi.html" title="Mission: projector, TV or gaming monitor" loading="lazy" class="h-game"></iframe>
+    <figcaption>Choose the mission, then move the sliders and buttons until the faces turn green. <a href="w/00d-schermi.html">Open full screen</a></figcaption>
+  </figure>
+  <div class="try"><b>Try it.</b> <i>Goal</i>: for each mission, find the device that passes it for the least money.
+  <ol><li>Evening mission: with the projector and the white screen, find the fewest lumens for 100″.</li>
+  <li>Switch to the afternoon mission without touching anything else: look at the contrast.</li>
+  <li>Raise the lumens, then try the grey screen and the ALR one: which passes, and at what price?</li>
+  <li>Switch to the TV and try the technologies one by one: which passes by day, which does not, and why?</li>
+  <li>Home-cinema mission: watch the ‘How you see black’ panel with LED, mini-LED and OLED. Who wins, and with what burn-in risk?</li>
+  <li>Retro-games mission: try the OLED at 60 and 120 Hz, then the CRT. Why is a 60 Hz CRT sharper than a 120 Hz OLED?</li></ol></div>
 
 
 </section>

@@ -85,8 +85,9 @@ section li{margin:.25rem 0}
 figure.w{margin:1.4rem 0 1.2rem}
 figure.w iframe{display:block; width:100%; height:560px; border:1px solid var(--rule);
   border-radius:10px; background:#FBFCFD}
-figure.w iframe.tall{height:960px}
-@media (max-width:600px){figure.w iframe.tall{height:1320px}}
+figure.w iframe.h-simple{height:600px}
+figure.w iframe.h-game{height:1240px}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -115,7 +116,7 @@ ul.qty figure.paused::after{opacity:.9}
 .qtake ul{margin:0 0 .6rem; padding-left:1.2rem}
 .qtake li{margin:.15rem 0}
 .qtake .formula{display:block; margin:.2rem 0 .5rem; white-space:normal}
-#proiettore{margin-top:2.6rem; scroll-margin-top:1rem}
+#proiettore,#movimento{margin-top:2.6rem; scroll-margin-top:1rem}
 .qhint{font-size:.8125rem; color:var(--faint); margin:-.4rem 0 1rem}
 @media (max-width:30rem){ul.qty>li{grid-template-columns:1fr} ul.qty figure{max-width:15rem}}
 :root{--q-flux:#534AB7; --q-int:#185FA5; --q-ill:#B5520C; --q-lum:#0F6E56}
@@ -332,16 +333,9 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   della luce: con 400 nit <span class="u">(nit = cd/m²)</span> tiene un contrasto oltre 100:1. Infatti alla fine del thread l'autore
   lascia perdere il proiettore e comincia a guardare i televisori.</p>
   <figure class="w">
-    <iframe src="w/00c-proiettore.html" title="Missione: proiettore o TV, di sera e di pomeriggio" loading="lazy" class="tall"></iframe>
-    <figcaption>Scegli la missione, poi muovi cursori e pulsanti finché le faccine diventano verdi. <a href="w/00c-proiettore.html">Apri a schermo intero</a></figcaption>
+    <iframe src="w/00c-proiettore.html" title="Proiettore o TV OLED nella stessa stanza, dal buio al giorno" loading="lazy" class="h-simple"></iframe>
+    <figcaption>Muovi la luce della stanza o premi ▶ e guarda i due neri. <a href="w/00c-proiettore.html">Apri a schermo intero</a></figcaption>
   </figure>
-  <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: completare le due missioni spendendo il meno possibile.
-  <ol><li>Missione di sera: con il proiettore e la tela bianca, trova i lumen minimi per 100″.</li>
-  <li>Passa alla missione di pomeriggio senza toccare niente: guarda il contrasto.</li>
-  <li>Alza i lumen, poi prova la tela grigia e l'ALR: quale passa, e a che prezzo?</li>
-  <li>Passa alla TV e prova le tecnologie una per una: quale passa di giorno, quale no, e perché?</li>
-  <li>Missione cinema in casa: guarda il riquadro «Come vedi il nero» con LED, mini-LED e OLED. Chi vince, e con quale rischio di burn-in?</li>
-  <li>Missione videogiochi d'epoca: prova l'OLED a 60 e a 120 Hz, poi il catodico. Perché un CRT a 60 Hz è più nitido di un OLED a 120?</li></ol></div>
   <div class="qtake">
     <p class="qtt">In sintesi: cosa guardare quando compri</p>
     <p><b>Telefono</b></p>
@@ -365,6 +359,31 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
     con più lumen, un'immagine più piccola o una stanza più buia; con la tela, solo se è ALR, perché rimanda
     la luce del proiettore più di quella delle finestre.</p>
   </div>
+
+  <h3 id="movimento">E nel movimento? Il CRT e i monitor da 720 Hz</h3>
+  <p>Su un altro forum di AnandTech, più di dieci anni fa, qualcuno gioca ancora su un CRT da 19″ perché sugli LCD
+  vede l'immagine meno nitida. Chiede se esiste qualcosa con la nitidezza di un CRT, e se un monitor a 120 Hz
+  farebbe la differenza (<a href="https://forums.anandtech.com/threads/crt-clarity.2186781/">il thread</a>).</p>
+  <p>La risposta sta in una grandezza che sulle schede tecniche non c'è: la <b>persistenza</b>, cioè quanto resta
+  accesa ogni immagine. Quando l'occhio insegue un oggetto che si muove, ogni immagine ferma gli scivola sulla
+  retina per tutto il tempo che resta accesa:</p>
+  <p class="formula">sfocatura ≈ velocità × persistenza</p>
+  <p>LED e OLED tengono l'immagine accesa per tutto il fotogramma: 16,7 ms a 60 Hz, 8,3 ms a 120 Hz. Più hertz
+  aiutano, ma solo se il gioco produce davvero quelle immagini al secondo. Il CRT invece accende ogni punto del
+  fosforo per circa 1,5 ms e poi lo lascia spegnere: a 60 Hz è più nitido di un OLED a 120. Per questo i vecchi CRT
+  sono stati imbattibili nel movimento per decenni, e curiosamente gli si avvicinano solo i monitor da gaming OLED
+  di oggi a 720 Hz, con 1,4 ms. Nel gioco qui sotto ci sono anche nero, burn-in, prezzo e le altre missioni.</p>
+  <figure class="w">
+    <iframe src="w/00d-schermi.html" title="Missione: proiettore, TV o monitor da gaming" loading="lazy" class="h-game"></iframe>
+    <figcaption>Scegli la missione, poi muovi cursori e pulsanti finché le faccine diventano verdi. <a href="w/00d-schermi.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: trovare per ogni missione l'apparecchio che la passa spendendo il meno possibile.
+  <ol><li>Missione di sera: con il proiettore e la tela bianca, trova i lumen minimi per 100″.</li>
+  <li>Passa alla missione di pomeriggio senza toccare niente: guarda il contrasto.</li>
+  <li>Alza i lumen, poi prova la tela grigia e l'ALR: quale passa, e a che prezzo?</li>
+  <li>Passa alla TV e prova le tecnologie una per una: quale passa di giorno, quale no, e perché?</li>
+  <li>Missione cinema in casa: guarda il riquadro «Come vedi il nero» con LED, mini-LED e OLED. Chi vince, e con quale rischio di burn-in?</li>
+  <li>Missione videogiochi d'epoca: prova l'OLED a 60 e a 120 Hz, poi il catodico. Perché un CRT a 60 Hz è più nitido di un OLED a 120?</li></ol></div>
 
 
 </section>
