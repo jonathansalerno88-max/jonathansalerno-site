@@ -85,6 +85,8 @@ section li{margin:.25rem 0}
 figure.w{margin:1.4rem 0 1.2rem}
 figure.w iframe{display:block; width:100%; height:560px; border:1px solid var(--rule);
   border-radius:10px; background:#FBFCFD}
+figure.w iframe.tall{height:720px}
+@media (max-width:600px){figure.w iframe.tall{height:1130px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -252,8 +254,12 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     su un'area doppia danno metà lux <span class="u">(lx = lm/m²)</span>) e la riflettanza ρ della tela o del muro. Per una superficie
     opaca L = ρ · E / π. Con 3.000 lumen su una tela da 100″ (circa 2,8 m²) arrivano circa 1.100 lux: un telo
     bianco (ρ ≈ 0,9) li rimanda a circa 310 nit, un muro grigio chiaro (ρ ≈ 0,5) a circa 175. Spero che tu
-    l'abbia scelto bianco. Al buio bastano; di giorno anche la luce della stanza cade sul telo e viene
-    riflessa allo stesso modo: il nero diventa grigio e il contrasto crolla. Per questo il proiettore vuole il buio.</div></div></li>
+    l'abbia scelto bianco: alza i nit. Il contrasto però no: di giorno anche la luce della stanza cade sul telo
+    e viene rimandata con la stessa ρ, quindi il nero diventa grigio. Il contrasto vale circa
+    1 + lux del proiettore / lux della stanza, e la riflettanza si semplifica. Per questo al buio bastano
+    circa 48 nit, lo standard dei cinema, e in una stanza in pieno giorno ne servono più di mille. Lo battono
+    solo i teli <b>ALR</b> (Ambient Light Rejecting, che respingono la luce ambiente), che rimandano la luce
+    del proiettore più di quella delle finestre.</div></div></li>
   </ul>
   <p class="qhint">Clicca su un disegno per fermarlo, clicca di nuovo per farlo ripartire.</p>
   <script>(function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -262,6 +268,11 @@ s.setAttribute("tabindex","0");s.setAttribute("role","button");
 function set(p){f.classList.toggle("paused",p);s.setAttribute("aria-pressed",p?"true":"false");s.setAttribute("aria-label",p?"Fai ripartire l'animazione":"Ferma l'animazione");if(p)s.pauseAnimations();else s.unpauseAnimations();}
 set(rm);s.addEventListener("click",function(){set(!f.classList.contains("paused"))});
 s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();set(!f.classList.contains("paused"))}});});})();</script>
+  <figure class="w">
+    <iframe src="w/00c-proiettore.html" title="Proiettore: quanti nit servono al buio e di giorno" loading="lazy" class="tall"></iframe>
+    <figcaption>Proiettore: cambia lumen, diagonale, luce della stanza e tela. <a href="w/00c-proiettore.html">Apri a schermo intero</a></figcaption>
+  </figure>
+
   <figure class="w">
     <iframe src="w/00-bici.html" title="Due luci da bici: lumen, candele, lux sulla strada e luminanza della lente" loading="lazy"></iframe>
     <figcaption>Cambia flusso, ampiezza del fascio e distanza. <a href="w/00-bici.html">Apri a schermo intero</a></figcaption>

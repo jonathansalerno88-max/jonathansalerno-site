@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How many nits a projector needs, in the dark and by day</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin:6px 0;font-size:14px;color:var(--text-secondary)}
+.ctl .lb{min-width:150px}
+.ctl button{font:inherit;font-size:13px;padding:5px 11px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.ctl button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+.ctl output{min-width:64px;text-align:right;color:var(--text-primary);font-weight:500}
+.nt{font-size:12px;color:var(--text-secondary);margin:8px 0 0}
+.row{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-start;margin-top:8px}
+#sv1{flex:1 1 360px;min-width:0!important}#sv2{flex:1 1 220px;min-width:0!important;max-width:320px}
+.ln{font-size:13px;color:var(--text-secondary);margin:6px 0 0}
+#msg{margin-top:8px;padding:8px 12px;border-radius:8px;font-size:14px;font-weight:500}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Projector: set the lumens, the screen diagonal, the room light and the screen type. The drawing shows the picture on the screen; on the right, the nits you have and the nits you need.</h2>
+<div class="ctl"><span class="lb">Projector lumens</span><input type="range" id="lm" min="200" max="6000" step="50" value="3000" style="flex:1" oninput="upd()"><output id="lmO"></output></div>
+<div class="ctl"><span class="lb">Screen diagonal</span><input type="range" id="dg" min="40" max="150" step="5" value="100" style="flex:1" oninput="upd()"><output id="dgO"></output></div>
+<div class="ctl"><span class="lb">Room light</span><span id="rB"></span></div>
+<div class="ctl"><span class="lb">Screen</span><span id="sB"></span></div>
+<div class="row"><svg viewBox="0 0 400 300" id="sv1" role="img" aria-labelledby="t0"><title id="t0">How many nits a projector needs, in the dark and by day</title><g id="g1"></g></svg><svg viewBox="430 0 230 170" id="sv2" aria-hidden="true"><g id="g2"></g></svg></div>
+<p class="ln" id="ln1"></p><p class="ln" id="ln2"></p><div id="msg"></div>
+<p class="nt">Simplified model. Matte screen: L = ρ · E / π, with E in lux (lx = lm/m²). In the dark the eye adapts and about 48 nits are enough, the DCI digital-cinema standard; with the lights on you need enough nits to keep the contrast at least 10:1 (the threshold chosen here for a watchable picture). Projector native contrast 1,000:1. The ALR screen is modelled with ρ 0.8 for the projector light and 0.15 for room light.</p>
+<script>
+var L={"loc": "en-GB", "rooms": ["Dark", "Evening, dim light", "Day, curtains drawn", "Full daylight"], "scrs": ["White screen (ρ 0.9)", "Light grey wall (ρ 0.5)", "ALR screen (rejects room light)"], "have": "nits you have", "need": "nits you need", "cin": "cinema 48", "axis": "nits (cd/m²), log scale", "l1": "On the screen: {Ep} lux from the projector + {Ea} lux from the room", "l2": "White {Lw} nits, black {Lb} nits: contrast {C}:1", "ok": "Enough: it looks good.", "dim": "Too dim: you need at least {N} nits, that is about {F} lumens on this screen.", "wash": "Washed out: black is grey. You need {N} nits, that is about {F} lumens on this screen."},ROOM=[1,30,100,500],SCR=[[0.9,0.9],[0.5,0.5],[0.8,0.15]],room=0,scr=0,CN=1000;
+function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d||0,minimumFractionDigits:d||0})}
+function sig(x){return x>=100?nf(Math.round(x/(x>=1000?50:10))*(x>=1000?50:10)):x>=10?nf(x):nf(x,1)}
+function fmt(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
+function btns(id,arr,cur,fn){var h='';arr.forEach(function(t,i){h+='<button class="'+(i===cur?'act':'')+'" onclick="'+fn+'('+i+')">'+t+'</button> '});document.getElementById(id).innerHTML=h}
+function setR(i){room=i;upd()} function setS(i){scr=i;upd()}
+function T(x,y,s,c,a,cl){return '<text x="'+x+'" y="'+y+'" class="'+(cl||'ts')+'"'+(c?' fill="'+c+'"':'')+(a?' text-anchor="'+a+'"':'')+'>'+s+'</text>'}
+function mix(a,b,t){return 'rgb('+[0,1,2].map(function(i){return Math.round(a[i]+(b[i]-a[i])*t)}).join(',')+')'}
+function upd(){
+ var F=+document.getElementById('lm').value,dg=+document.getElementById('dg').value;
+ document.getElementById('lmO').textContent=nf(F)+' lm';document.getElementById('dgO').textContent=dg+'″';
+ btns('rB',L.rooms,room,'setR');btns('sB',L.scrs,scr,'setS');
+ var w=dg*0.0254*16/Math.sqrt(337),h=w*9/16,A=w*h,Ep=F/A,Ea=ROOM[room],rp=SCR[scr][0],ra=SCR[scr][1];
+ var La=ra*Ea/Math.PI,Lw=rp*Ep/Math.PI+La,Lb=rp*Ep/Math.PI/CN+La,C=Lw/Lb;
+ var Nd=Math.max(48,10*La*CN/(CN-10)),Fn=(Nd-La)*Math.PI*A/rp,ok=Lw>=Nd*0.999,washed=C<10;
+ // drawing: room, screen, picture
+ var amb=Math.log10(Ea)/Math.log10(500);var wall=mix([24,28,36],[236,229,214],amb);
+ var s='<rect x="0" y="0" width="400" height="300" rx="10" fill="'+wall+'"/>';
+ if(room===3)s+='<rect x="330" y="40" width="54" height="110" fill="#FFF8E1" stroke="#C9BFA6"/><line x1="357" y1="40" x2="357" y2="150" stroke="#C9BFA6"/>';
+ if(room===2)s+='<rect x="330" y="40" width="54" height="110" fill="#B9A98A" stroke="#8C7C60"/>';
+ if(room===1)s+='<circle cx="350" cy="70" r="9" fill="#FFD98A"/><line x1="350" y1="20" x2="350" y2="61" stroke="#665"/>';
+ var sw=60+dg*1.6,sh=sw*9/16,sx=165-sw/2+10,sy=40+(150-sh)/2+10;
+ // picture: perceived brightness relative to what is needed, black lifted by contrast
+ var gain=Math.min(1,Math.pow(Lw/Nd,0.5)),bl=Math.min(0.85,Math.pow(Lb/Lw,0.45));
+ function px(c){return mix([0,0,0],c.map(function(v){return (bl*255+(1-bl)*v)*gain}),1)}
+ s+='<rect x="'+(sx-4)+'" y="'+(sy-4)+'" width="'+(sw+8)+'" height="'+(sh+8)+'" fill="'+mix([60,60,60],[250,250,250],amb*0.7)+'"/>';
+ s+='<g transform="translate('+sx+' '+sy+') scale('+(sw/160)+' '+(sh/90)+')">';
+ s+='<rect width="160" height="90" fill="'+px([12,16,40])+'"/><circle cx="118" cy="24" r="9" fill="'+px([250,244,220])+'"/>';
+ [[20,12],[40,30],[70,8],[90,20],[140,40],[60,44]].forEach(function(p){s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="1" fill="'+px([220,220,255])+'"/>'});
+ s+='<path d="M0 90 L0 62 L30 40 L52 58 L80 30 L110 60 L130 48 L160 66 L160 90Z" fill="'+px([40,70,60])+'"/>';
+ s+='<path d="M0 90 L0 76 L40 64 L90 78 L160 70 L160 90Z" fill="'+px([18,30,26])+'"/></g>';
+ // projector and beam
+ s+='<path d="M200 280 L'+sx+' '+(sy+sh)+' L'+(sx+sw)+' '+(sy+sh)+'Z" fill="#FFF3C4" opacity="'+(0.25*(1-amb)+0.04)+'"/>';
+ s+='<rect x="180" y="276" width="44" height="16" rx="4" fill="#3A3A38"/><circle cx="202" cy="276" r="4" fill="#FFE9A8"/>';
+ var s1=s;s='';
+ // log bar
+ var X0=440,X1=640,Y0=60;function lx(v){return X0+(Math.log10(Math.max(v,1))/4)*(X1-X0)}
+ s+=T(X0,24,L.axis,null,null,'ts');
+ [1,10,100,1000,10000].forEach(function(v){var x=lx(v);s+='<line x1="'+x+'" y1="'+(Y0-6)+'" x2="'+x+'" y2="'+(Y0+86)+'" stroke="#DDE4EA"/>'+T(x,Y0+100,nf(v),'#55697A','middle')});
+ s+='<line x1="'+lx(48)+'" y1="'+(Y0+8)+'" x2="'+lx(48)+'" y2="'+(Y0+86)+'" stroke="#8696A4" stroke-dasharray="3 3"/>'+T(lx(48),Y0-14,L.cin,'#55697A','middle');
+ var col=ok&&!washed?'#3B6D11':'#B5520C';
+ s+='<rect x="'+X0+'" y="'+(Y0+8)+'" width="'+(lx(Lw)-X0)+'" height="22" rx="3" fill="'+col+'"/>'+T(X0+4,Y0+4,L.have+': '+sig(Lw),col,null,'th');
+ s+='<rect x="'+X0+'" y="'+(Y0+58)+'" width="'+(lx(Nd)-X0)+'" height="22" rx="3" fill="#185FA5"/>'+T(X0+4,Y0+54,L.need+': '+sig(Nd),'#185FA5',null,'th');
+ document.getElementById('g1').innerHTML=s1;document.getElementById('g2').innerHTML=s;
+ document.getElementById('ln1').textContent=fmt(L.l1,{Ep:sig(Ep),Ea:sig(Ea)});
+ document.getElementById('ln2').textContent=fmt(L.l2,{Lw:sig(Lw),Lb:sig(Lb),C:sig(C)});
+ var good=ok&&!washed,m=document.getElementById('msg');
+ m.textContent=good?L.ok:fmt(washed&&room>0?L.wash:L.dim,{N:sig(Nd),F:sig(Fn)});
+ m.style.background=good?'#EAF3DE':'#FCEEDD';m.style.color=good?'#27500A':'#8A4A0B';}
+upd();
+</script>
+</body>
+</html>

@@ -85,6 +85,8 @@ section li{margin:.25rem 0}
 figure.w{margin:1.4rem 0 1.2rem}
 figure.w iframe{display:block; width:100%; height:560px; border:1px solid var(--rule);
   border-radius:10px; background:#FBFCFD}
+figure.w iframe.tall{height:720px}
+@media (max-width:600px){figure.w iframe.tall{height:1130px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -252,8 +254,12 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     twice the area give half the lux <span class="u">(lx = lm/m²)</span>) and the reflectance ρ of the screen or wall. For a matte
     surface L = ρ · E / π. With 3,000 lumens on a 100″ screen (about 2.8 m²) about 1,100 lux arrive: a white
     screen (ρ ≈ 0.9) sends them back as about 310 nits, a light grey wall (ρ ≈ 0.5) as about 175. Hopefully you
-    chose a white one. In the dark that is plenty; by day the room light also falls on the screen and is reflected
-    the same way: black turns grey and contrast collapses. That is why a projector wants darkness.</div></div></li>
+    chose a white one: it raises the nits. Not the contrast, though: by day the room light also falls on the
+    screen and is sent back with the same ρ, so black turns grey. The contrast is about
+    1 + projector lux / room lux, and the reflectance cancels out. That is why in the dark about 48 nits are
+    enough, the cinema standard, while in a room in full daylight you need more than a thousand. Only
+    <b>ALR</b> (Ambient Light Rejecting) screens beat this: they send back the projector's light more than
+    the light from the windows.</div></div></li>
   </ul>
   <p class="qhint">Click a drawing to pause it, click again to resume.</p>
   <script>(function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -262,6 +268,11 @@ s.setAttribute("tabindex","0");s.setAttribute("role","button");
 function set(p){f.classList.toggle("paused",p);s.setAttribute("aria-pressed",p?"true":"false");s.setAttribute("aria-label",p?"Resume the animation":"Pause the animation");if(p)s.pauseAnimations();else s.unpauseAnimations();}
 set(rm);s.addEventListener("click",function(){set(!f.classList.contains("paused"))});
 s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();set(!f.classList.contains("paused"))}});});})();</script>
+  <figure class="w">
+    <iframe src="w/00c-proiettore.html" title="Projector: how many nits you need in the dark and by day" loading="lazy" class="tall"></iframe>
+    <figcaption>Projector: change the lumens, diagonal, room light and screen. <a href="w/00c-proiettore.html">Open full screen</a></figcaption>
+  </figure>
+
   <figure class="w">
     <iframe src="w/00-bici.html" title="Two bike lights: lumens, candelas, lux on the road and luminance of the lens" loading="lazy"></iframe>
     <figcaption>Change the flux, the beam width and the distance. <a href="w/00-bici.html">Open full screen</a></figcaption>
