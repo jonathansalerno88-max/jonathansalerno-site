@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Supporto allo studio — Jonathan Salerno</title>
+<link rel="alternate" hreflang="it" href="/didattica/">
+<link rel="alternate" hreflang="en" href="/teaching/">
 <meta name="description" content="Supporto allo studio di Jonathan Salerno.">
 <style>
 @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-400-normal.woff2) format('woff2')}
@@ -18,11 +20,33 @@ h1{font-family:"IBM Plex Serif",Georgia,serif;font-weight:500;font-size:clamp(2r
 h2{font-family:"IBM Plex Serif",Georgia,serif;font-weight:500;font-size:1.2rem;margin:0}
 p{margin:.35rem 0 0;color:var(--mut);font-size:.9375rem}
 .entry{padding:1rem 0;border-top:1px solid var(--rule)}
+.topbar{display:flex; justify-content:space-between; align-items:center; gap:1rem; font-size:.875rem; margin:0 0 1.6rem}
+.lang{position:relative}
+.lang summary{list-style:none; cursor:pointer; display:flex; align-items:center; gap:.4rem; padding:.35rem .7rem;
+  border:1px solid var(--rule); border-radius:8px; background:var(--card,transparent); color:var(--ink); font-weight:600; font-size:.875rem}
+.lang summary::-webkit-details-marker{display:none}
+.lang summary::after{content:"▾"; font-size:.75rem; color:var(--mut)}
+.lang[open] summary::after{content:"▴"}
+.lang ul{position:absolute; right:0; top:calc(100% + 4px); margin:0; padding:.3rem; list-style:none; background:var(--paper);
+  border:1px solid var(--rule); border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,.14); min-width:9.5rem; z-index:10}
+.lang li a{display:block; padding:.4rem .6rem; border-radius:6px; text-decoration:none; color:var(--ink); font-weight:500}
+.lang li a:hover,.lang li a:focus-visible{background:var(--card,rgba(127,127,127,.12))}
+.lang li a[aria-current]{color:var(--link); font-weight:600}
+.lang li a[aria-current]::after{content:" ✓"}
 </style>
 </head>
 <body>
 <div class="page">
-<p><a href="/">Jonathan Salerno</a></p>
+<div class="topbar">
+  <a href="/">Jonathan Salerno</a>
+  <details class="lang">
+    <summary aria-label="Lingua / Language"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg> Italiano</summary>
+    <ul>
+      <li><a href="/didattica/" lang="it" hreflang="it" aria-current="page">Italiano</a></li>
+      <li><a href="/teaching/" lang="en" hreflang="en">English</a></li>
+    </ul>
+  </details>
+</div>
 <h1>Supporto allo studio</h1>
 <div class="entry">
 <h2><a href="fisica-delle-lenti/">Fisica delle lenti</a></h2>
@@ -31,5 +55,6 @@ retina, difetti visivi e accomodazione, muscoli dell'iride e farmaci, pupilla e 
 occhiali, parallasse, lenti sottili, immagini reali e virtuali. <a href="/teaching/lens-physics/" lang="en">English version</a>.</p>
 </div>
 </div>
+<script>document.addEventListener('click',function(e){document.querySelectorAll('details.lang[open]').forEach(function(d){if(!d.contains(e.target))d.removeAttribute('open');});});</script>
 </body>
 </html>
