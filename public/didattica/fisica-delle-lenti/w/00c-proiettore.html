@@ -27,21 +27,21 @@
 <div class="ctl"><span>Lumen ANSI</span><input type="range" id="lm" min="500" max="8000" step="100" value="1500" oninput="upd()"><output id="lmO"></output></div>
 <div class="tog"><span>Tela</span><span id="sB"></span></div>
 </div>
-<div id="tC" class="hide"><div class="tog"><span>Tecnologia</span><span id="tB"></span></div></div>
+<div id="tC" class="hide"><div class="tog"><span>Tecnologia</span><span id="tB"></span></div><div class="tog" id="hzR"><span>Frequenza</span><span id="hB"></span></div></div>
 <div class="ctl"><span>Diagonale</span><input type="range" id="dg" min="24" max="150" step="1" value="100" oninput="upd()"><output id="dgO"></output></div>
 <p class="lim" id="mx"></p>
-<div class="row"><svg viewBox="0 0 400 410" id="sv1" role="img" aria-labelledby="t0"><title id="t0">Missione: proiettore o TV?</title><g id="g1"></g></svg><svg viewBox="410 0 270 440" id="sv2"><g id="g2"></g></svg></div>
-<p class="lim" id="ln1"></p><p class="lim" id="ln2"></p>
-<p class="note">Modello semplificato, numeri indicativi. Superficie opaca: L = ρ · E / π, con E in lux (lx = lm/m²). Luminosità che serve: almeno 48 nit (lo standard dei cinema digitali DCI) e, con la luce accesa, almeno 3 volte la luminanza della parete, perché l'occhio si adatta alla stanza. Contrasto che serve: 10:1, una soglia scelta qui per un'immagine guardabile. Tela: bianca ρ 0,9, grigio chiaro 0,5, ALR 0,8 per la luce del proiettore e 0,15 per quella della stanza. Schermi (nit a tutto schermo, riflettanza, contrasto nativo): CRT 120 nit, 6 %, 10.000:1; plasma 150 nit, 4 %, 5.000:1; LED 400 nit, 1,5 %, 3.000:1; mini-LED 900 nit, 1,5 %, 20.000:1; OLED 250 nit, 1 %, nero quasi perfetto. Proiettore: contrasto nativo 1.000:1 (i proiettori di fascia alta arrivano molto più in alto). Nero: verde sotto 0,05 nit. Burn-in: rischio alto per il plasma, medio per OLED e CRT, nessuno per LED, mini-LED e proiettore. Il riquadro «Come vedi il nero» mostra il nero su scala logaritmica rispetto al bianco, con un alone attorno alla stella per il mini-LED (blooming). I prezzi sono inventati, servono solo a confrontare.</p>
+<div class="row"><svg viewBox="0 0 400 410" id="sv1" role="img" aria-labelledby="t0"><title id="t0">Missione: proiettore o TV?</title><g id="g1"></g></svg><svg viewBox="410 0 270 456" id="sv2"><g id="g2"></g></svg></div>
+<p class="lim" id="ln1"></p><p class="lim" id="ln2"></p><p class="lim" id="ln3"></p>
+<p class="note">Modello semplificato, numeri indicativi. Superficie opaca: L = ρ · E / π, con E in lux (lx = lm/m²). Luminosità che serve: almeno 48 nit (lo standard dei cinema digitali DCI) e, con la luce accesa, almeno 3 volte la luminanza della parete, perché l'occhio si adatta alla stanza. Contrasto che serve: 10:1, una soglia scelta qui per un'immagine guardabile. Tela: bianca ρ 0,9, grigio chiaro 0,5, ALR 0,8 per la luce del proiettore e 0,15 per quella della stanza. Schermi (nit a tutto schermo, riflettanza, contrasto nativo): CRT 120 nit, 6 %, 10.000:1; plasma 150 nit, 4 %, 5.000:1; LED 400 nit, 1,5 %, 3.000:1; mini-LED 900 nit, 1,5 %, 20.000:1; OLED 250 nit, 1 %, nero quasi perfetto. Proiettore: contrasto nativo 1.000:1 (i proiettori di fascia alta arrivano molto più in alto). Nero: verde sotto 0,05 nit. Burn-in: rischio alto per il plasma, medio per OLED e CRT, nessuno per LED, mini-LED e proiettore. Nitidezza nel movimento: conta quanto resta accesa ogni immagine (persistenza), non solo gli hertz. Sfocatura ≈ velocità × persistenza. CRT circa 1,5 ms perché il fosforo si spegne subito; plasma circa 4 ms; LED, mini-LED e OLED tengono l'immagine accesa per tutto il fotogramma (16,7 ms a 60 Hz, 8,3 a 120 Hz) più il tempo di risposta dei pixel (LED circa 4 ms, mini-LED 3, OLED 0,1); proiettore 16,7 ms. Il riquadro «Come vedi il nero» mostra il nero su scala logaritmica rispetto al bianco, con un alone attorno alla stella per il mini-LED (blooming). I prezzi sono inventati, servono solo a confrontare.</p>
 <script>
-var L={"loc": "it-IT", "m": ["Film di sera, luci spente", "Partita di pomeriggio, tende aperte", "Cinema in casa, buio totale"], "devs": ["Proiettore", "TV"], "scrs": ["Bianca", "Grigio chiaro", "ALR"], "techs": ["Catodico (CRT)", "Plasma", "LED (LCD)", "Mini-LED", "OLED"], "board": "Il giudizio", "rows": ["Contrasto con la luce della stanza", "Luminosità", "Grandezza", "Nero (in questa stanza)", "Rischio di burn-in", "Prezzo (inventato)", "Si compra nuovo?"], "bi": ["nessuno", "medio: evita loghi fissi per ore", "alto: le immagini fisse restano impresse"], "blk": "Come vedi il nero", "obj": ["Obiettivo: almeno 100″, al buio", "Obiettivo: almeno 75″, di giorno", "Obiettivo: almeno 75″, nero profondo"], "objs": [["luce della stanza circa 2 lux", "contrasto 10:1, almeno {N} nit"], ["500 lux sulla parete", "contrasto 10:1, almeno {N} nit"], ["buio totale, nero sotto 0,05 nit", "contrasto 10:1, almeno {N} nit"]], "win": "Missione compiuta!", "win2": "Ora guarda prezzo e disponibilità.", "yes": "sì", "no": "no, fuori produzione: solo usato", "l1p": "Sulla tela: {Ep} lux dal proiettore + {Ea} lux dalla stanza.", "l1t": "Lo schermo emette {L} nit; riflettanza {R} %; luce della stanza sullo schermo {Ea} lux.", "l2": "Bianco {Lw} nit, nero {Lb} nit, contrasto {C}:1.", "maxs": "Diagonale massima per questa tecnologia: {D}″.", "cur": "€"},mis=1,dev=0,scr=0,tech=2;
-var ER=[2,500,0.2],NEEDD=[100,75,75],SCR=[[0.9,0.9],[0.5,0.5],[0.8,0.15]];
-var TV=[{L:120,R:.06,C:1e4,max:36,p:200,nw:false,bi:1},{L:150,R:.04,C:5e3,max:65,p:300,nw:false,bi:2},{L:400,R:.015,C:3e3,max:98,p:600,nw:true,bi:0},{L:900,R:.015,C:2e4,max:115,p:1000,nw:true,bi:0,bloom:1},{L:250,R:.01,C:1e6,max:97,p:1500,nw:true,bi:1}];
+var L={"loc": "it-IT", "m": ["Film di sera, luci spente", "Partita di pomeriggio, tende aperte", "Cinema in casa, buio totale", "Videogiochi d'epoca"], "devs": ["Proiettore", "TV"], "scrs": ["Bianca", "Grigio chiaro", "ALR"], "techs": ["Catodico (CRT)", "Plasma", "LED (LCD)", "Mini-LED", "OLED"], "board": "Il giudizio", "rows": ["Contrasto con la luce della stanza", "Luminosità", "Grandezza", "Nero (in questa stanza)", "Nitidezza nel movimento", "Rischio di burn-in", "Prezzo (inventato)", "Si compra nuovo?"], "bi": ["nessuno", "medio: evita loghi fissi per ore", "alto: le immagini fisse restano impresse"], "blk": "Come vedi il nero", "hz": "Frequenza", "l3": "Ogni immagine resta accesa circa {P} ms: un oggetto che attraversa lo schermo in 2 secondi si sfoca di circa {B} pixel.", "obj": ["Obiettivo: almeno 100″, al buio", "Obiettivo: almeno 75″, di giorno", "Obiettivo: almeno 75″, nero profondo", "Obiettivo: almeno 25″, movimento nitido"], "objs": [["luce della stanza circa 2 lux", "contrasto 10:1, almeno {N} nit"], ["500 lux sulla parete", "contrasto 10:1, almeno {N} nit"], ["buio totale, nero sotto 0,05 nit", "contrasto 10:1, almeno {N} nit"], ["immagine accesa al massimo 3 ms", "contrasto 10:1, almeno {N} nit"]], "win": "Missione compiuta!", "win2": "Ora guarda prezzo e disponibilità.", "yes": "sì", "no": "no, fuori produzione: solo usato", "l1p": "Sulla tela: {Ep} lux dal proiettore + {Ea} lux dalla stanza.", "l1t": "Lo schermo emette {L} nit; riflettanza {R} %; luce della stanza sullo schermo {Ea} lux.", "l2": "Bianco {Lw} nit, nero {Lb} nit, contrasto {C}:1.", "maxs": "Diagonale massima per questa tecnologia: {D}″.", "cur": "€"},mis=1,dev=0,scr=0,tech=2;
+var ER=[2,500,0.2,50],NEEDD=[100,75,75,25],hz=1,SCR=[[0.9,0.9],[0.5,0.5],[0.8,0.15]];
+var TV=[{L:120,R:.06,C:1e4,max:36,p:200,nw:false,bi:1,per:1.5},{L:150,R:.04,C:5e3,max:65,p:300,nw:false,bi:2,per:4},{L:400,R:.015,C:3e3,max:98,p:600,nw:true,bi:0,resp:4},{L:900,R:.015,C:2e4,max:115,p:1000,nw:true,bi:0,bloom:1,resp:3},{L:250,R:.01,C:1e6,max:97,p:1500,nw:true,bi:1,resp:0.1}];
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d||0,minimumFractionDigits:d||0})}
 function sig(x){return x>=1e5?'> '+nf(1e5):x>=1000?nf(Math.round(x/50)*50):x>=100?nf(Math.round(x/10)*10):x>=10?nf(x):x>=1?nf(x,1):x>=0.01?nf(x,2):'< '+nf(0.01,2)}
 function fmt(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
 function btns(id,arr,cur,fn){var h='';arr.forEach(function(t,i){h+='<button class="'+(i===cur?'act':'')+'" onclick="'+fn+'('+i+')">'+t+'</button>'});document.getElementById(id).innerHTML=h}
-function setM(i){mis=i;upd()}function setD(i){dev=i;upd()}function setS(i){scr=i;upd()}function setT(i){tech=i;upd()}
+function setM(i){mis=i;upd()}function setD(i){dev=i;upd()}function setS(i){scr=i;upd()}function setT(i){tech=i;upd()}function setH(i){hz=i;upd()}
 function T(x,y,t,cls,col,anc){return '<text class="'+(cls||'ts')+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+'>'+t+'</text>'}
 function mix(a,b,t){return 'rgb('+[0,1,2].map(function(i){return Math.round(a[i]+(b[i]-a[i])*t)}).join(',')+')'}
 function face(x,y,m){
@@ -51,8 +51,8 @@ function face(x,y,m){
   '<circle cx="'+(x-5)+'" cy="'+(y-4)+'" r="1.8" fill="'+c+'"/><circle cx="'+(x+5)+'" cy="'+(y-4)+'" r="1.8" fill="'+c+'"/>'+
   '<path d="'+mouth+'" fill="none" stroke="'+c+'" stroke-width="1.8" stroke-linecap="round"/>';}
 function upd(){
- btns('mB',L.m,mis,'setM');btns('dB',L.devs,dev,'setD');btns('sB',L.scrs,scr,'setS');btns('tB',L.techs,tech,'setT');
- document.getElementById('pC').classList.toggle('hide',dev!==0);document.getElementById('tC').classList.toggle('hide',dev!==1);
+ btns('mB',L.m,mis,'setM');btns('dB',L.devs,dev,'setD');btns('sB',L.scrs,scr,'setS');btns('tB',L.techs,tech,'setT');btns('hB',['60 Hz','120 Hz'],hz,'setH');
+ document.getElementById('pC').classList.toggle('hide',dev!==0);document.getElementById('tC').classList.toggle('hide',dev!==1);document.getElementById('hzR').classList.toggle('hide',dev!==1||tech<2);
  var dgS=document.getElementById('dg'),mx=dev===0?150:TV[tech].max;dgS.max=mx;if(+dgS.value>mx)dgS.value=mx;
  var dg=+dgS.value,F=+document.getElementById('lm').value,Ea=ER[mis];
  document.getElementById('lmO').textContent=nf(F)+' lm';document.getElementById('dgO').textContent=dg+'″';
@@ -64,9 +64,10 @@ function upd(){
  var C=Lw/Lb,need=Math.max(48,3*0.6*Ea/Math.PI);
  var sC=C>=10?2:C>=4?1:0,sL=Lw>=need?2:Lw>=need*0.6?1:0,sS=dg>=NEEDD[mis]?2:dg>=NEEDD[mis]*0.75?1:0,sP=price<1500?2:price<3000?1:0,sN=nw?2:0;
  var sB=Lb<=0.05?2:Lb<=0.3?1:0,bi=dev===0?0:t.bi,sI=2-bi;
- var win=sC===2&&sL===2&&sS===2&&(mis!==2||sB===2);
+ var per=dev===0?1000/60:(t.per||(1000/(hz?120:60)+t.resp)),blur=960*per/1000,sM=per<=3?2:per<=9?1:0;
+ var win=sC===2&&sL===2&&sS===2&&(mis!==2||sB===2)&&(mis!==3||sM===2);
  // scene
- var day=mis===1;var wall=day?'#ECE5D6':(mis===2?'#0E1116':'#1B2029'),s='<rect x="0" y="0" width="400" height="300" rx="10" fill="'+wall+'"/>';
+ var day=mis===1;var wall=day?'#ECE5D6':(mis===2?'#0E1116':mis===3?'#2A2620':'#1B2029'),s='<rect x="0" y="0" width="400" height="300" rx="10" fill="'+wall+'"/>';
  s+=day?'<rect x="336" y="36" width="50" height="118" fill="#FFF8E1" stroke="#C9BFA6"/><line x1="361" y1="36" x2="361" y2="154" stroke="#C9BFA6"/><path d="M330 30 L330 170 L340 170 L338 30Z M392 30 L392 170 L382 170 L384 30Z" fill="#D9C9A8"/>'
         :'<rect x="336" y="36" width="50" height="118" fill="#141A24" stroke="#39404C"/><circle cx="372" cy="58" r="5" fill="#C9CED8"/>';
  var sw=Math.min(300,20+dg*1.85),sh=sw*9/16,sx=170-sw/2,sy=30+(150-sh)/2+(dg<50?40:0);
@@ -82,11 +83,11 @@ function upd(){
  if(dev===0)s+='<path d="M170 282 L'+sx+' '+(sy+sh)+' L'+(sx+sw)+' '+(sy+sh)+'Z" fill="#FFF3C4" opacity="'+(day?0.05:0.22)+'"/><rect x="150" y="278" width="40" height="15" rx="4" fill="#3A3A38"/><circle cx="170" cy="278" r="4" fill="#FFE9A8"/>';
  // board
  var bx=420,b=T(bx,22,L.board,'th');
- var rows=[[sC,L.rows[0],sig(C)+':1'],[sL,L.rows[1],sig(Lw)+' / '+sig(need)+' nit'],[sS,L.rows[2],dg+'″ / '+NEEDD[mis]+'″'],[sB,L.rows[3],sig(Lb)+' nit'],[sI,L.rows[4],L.bi[bi]],[sP,L.rows[5],'≈ '+nf(Math.round(price/50)*50)+' '+L.cur],[sN,L.rows[6],nw?L.yes:L.no]];
- rows.forEach(function(r,i){var y=52+i*44;b+=face(bx+16,y,r[0])+T(bx+40,y-3,r[1],'th')+T(bx+40,y+14,r[2],'ts');});
- b+='<rect x="'+bx+'" y="352" width="256" height="80" rx="8" fill="'+(win?'#EAF3DE':'#F1EFE8')+'" stroke="'+(win?'#3B6D11':'#B4B2A9')+'"/>';
- if(win)b+=T(bx+12,380,L.win,'th','#27500A')+T(bx+12,402,L.win2,'ts','#3B6D11');
- else b+=T(bx+12,374,L.obj[mis],'th','#444441')+T(bx+12,394,L.objs[mis][0],'ts','#5F5E5A')+T(bx+12,412,fmt(L.objs[mis][1],{N:sig(need)}),'ts','#5F5E5A');
+ var rows=[[sC,L.rows[0],sig(C)+':1'],[sL,L.rows[1],sig(Lw)+' / '+sig(need)+' nit'],[sS,L.rows[2],dg+'″ / '+NEEDD[mis]+'″'],[sB,L.rows[3],sig(Lb)+' nit'],[sM,L.rows[4],nf(per,per<10?1:0)+' ms'],[sI,L.rows[5],L.bi[bi]],[sP,L.rows[6],'≈ '+nf(Math.round(price/50)*50)+' '+L.cur],[sN,L.rows[7],nw?L.yes:L.no]];
+ rows.forEach(function(r,i){var y=50+i*40;b+=face(bx+16,y,r[0])+T(bx+40,y-3,r[1],'th')+T(bx+40,y+14,r[2],'ts');});
+ b+='<rect x="'+bx+'" y="370" width="256" height="80" rx="8" fill="'+(win?'#EAF3DE':'#F1EFE8')+'" stroke="'+(win?'#3B6D11':'#B4B2A9')+'"/>';
+ if(win)b+=T(bx+12,398,L.win,'th','#27500A')+T(bx+12,420,L.win2,'ts','#3B6D11');
+ else b+=T(bx+12,392,L.obj[mis],'th','#444441')+T(bx+12,412,L.objs[mis][0],'ts','#5F5E5A')+T(bx+12,430,fmt(L.objs[mis][1],{N:sig(need)}),'ts','#5F5E5A');
  var lo=Math.log10(0.01),v=Math.max(0,Math.min(1,(Math.log10(Math.max(Lb,0.01))-lo)/(Math.log10(Lw)-lo))),k=Math.round(255*v*0.9);
  var blkc='rgb('+k+','+k+','+Math.min(255,k+4)+')';
  s+='<rect x="0" y="310" width="400" height="100" rx="10" fill="'+wall+'"/>'+T(16,330,L.blk+': '+sig(Lb)+' nit',null,null,'th').replace('<text','<text fill="'+(day?'#16222E':'#E2E9EF')+'"');
@@ -96,6 +97,7 @@ function upd(){
  document.getElementById('g1').innerHTML=s;document.getElementById('g2').innerHTML=b;
  document.getElementById('ln1').textContent=dev===0?fmt(L.l1p,{Ep:sig(Ep),Ea:sig(Ea)}):fmt(L.l1t,{L:sig(t.L),R:nf(t.R*100,t.R<0.02&&t.R!==0.01?1:0),Ea:sig(Ea)});
  document.getElementById('ln2').textContent=fmt(L.l2,{Lw:sig(Lw),Lb:sig(Lb),C:sig(C)});
+ document.getElementById('ln3').textContent=fmt(L.l3,{P:nf(per,per<10?1:0),B:nf(blur)});
 }
 upd();
 </script>
