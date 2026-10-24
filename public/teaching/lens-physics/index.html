@@ -93,7 +93,7 @@ th,td{text-align:left; padding:.45rem .6rem; border-bottom:1px solid var(--rule)
 th{font-weight:600; color:var(--mut); font-size:.8125rem}
 
 ul.qty{list-style:none; padding:0; margin:0 0 1.1rem; max-width:38rem}
-ul.qty li{display:grid; grid-template-columns:9.5rem 1fr; gap:.4rem 1rem; align-items:start; margin:0 0 1.1rem}
+ul.qty>li{display:grid; grid-template-columns:9.5rem 1fr; gap:.4rem 1rem; align-items:start; margin:0 0 1.1rem}
 ul.qty figure{margin:.2rem 0 0}
 ul.qty .qsvg{display:block; width:100%; height:auto; background:var(--card); border-radius:8px}
 ul.qty figcaption{font-size:.75rem; line-height:1.35; color:var(--faint); margin-top:.3rem}
@@ -104,8 +104,11 @@ ul.qty figure.paused .qsvg *{animation-play-state:paused!important}
 ul.qty figure::after{content:""; position:absolute; top:calc(75cqw - 1.45rem); right:.35rem; width:1.1rem; height:1.1rem; border-radius:50%; background-color:var(--paper); opacity:0; transition:opacity .2s;
   background-image:linear-gradient(var(--mut),var(--mut)),linear-gradient(var(--mut),var(--mut)); background-size:2px 8px,2px 8px; background-position:6px 50%,10px 50%; background-repeat:no-repeat; pointer-events:none}
 ul.qty figure.paused::after{opacity:.9}
+.qnote{font-size:.9375rem; background:var(--card); border-radius:8px; padding:.6rem .85rem; margin:.7rem 0 0}
+.qnote ul{margin:.3rem 0 .45rem; padding-left:1.2rem}
+.qnote li{margin:.1rem 0}
 .qhint{font-size:.8125rem; color:var(--faint); margin:-.4rem 0 1rem}
-@media (max-width:30rem){ul.qty li{grid-template-columns:1fr} ul.qty figure{max-width:15rem}}
+@media (max-width:30rem){ul.qty>li{grid-template-columns:1fr} ul.qty figure{max-width:15rem}}
 :root{--q-flux:#534AB7; --q-int:#185FA5; --q-ill:#B5520C; --q-lum:#0F6E56}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--q-flux:#A39BF0; --q-int:#6FA8EA; --q-ill:#F08A3C; --q-lum:#4FC9A6}}
 :root[data-theme="dark"]{--q-flux:#A39BF0; --q-int:#6FA8EA; --q-ill:#F08A3C; --q-lum:#4FC9A6}
@@ -234,7 +237,19 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <circle cx="132" cy="60" r="8" fill="none" stroke="var(--q-lum)" stroke-width="2"/><circle cx="132" cy="60" r="3.5" fill="var(--ink)"/>
 </svg><figcaption>Same intensity from a smaller lens: more nits, more glare.</figcaption></figure><div><b>Cd/m²</b>, that is nits: the luminance of the lens. It says how much the lamp dazzles someone looking
     straight at it, not how much it lights the road. On a spec sheet it is almost certainly a mistake for
-    ‘candelas’, as one of the replies suspects.</div></li>
+    ‘candelas’, as one of the replies suspects.
+    <div class="qnote"><b>Where nits really do matter: screens.</b> For a smartphone, a laptop or a TV the
+    nit <span class="u">(nit = cd/m²)</span> is exactly the number to look at, because the screen has to beat the light reflected
+    off it. Rough values:
+    <ul><li>dim room: 200–300 nits;</li>
+    <li>bright room or next to a window: 500–700 nits;</li>
+    <li>outdoors in the shade: at least 400–500 nits;</li>
+    <li>in direct sun: at least 800–1,000 nits, more is better. High-end smartphones reach a peak of
+    2,000–3,000 nits; many laptops stay at 300–500 and cannot be read in the sun.</li></ul>
+    A projector, on the other hand, is sold in lumens <span class="u">(lm, total flux)</span>: the luminance of the screen depends
+    on how big you make it. For a matte white screen L ≈ Φ / (π · A): 3,000 lumens on a 100″ screen (about 2.8 m²)
+    give about 1,100 lux <span class="u">(lx = lm/m²)</span> and about 350 nits. In the dark that is plenty; by day the room light
+    also falls on the screen, black turns grey and contrast collapses. That is why a projector wants darkness.</div></div></li>
   </ul>
   <p class="qhint">Click a drawing to pause it, click again to resume.</p>
   <script>(function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -650,6 +665,8 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
     Summary by <a href="https://docs.agi32.com/AGi32/Content/adding_calculation_points/Calculations_Obtrusive_Light-Threshold_Increment.htm">AGi32</a>;
     10–15% limits for street lights in
     <a href="https://hjv-lights.com/from-principle-to-standard-a-comprehensive-analysis-of-disability-glare-control-in-road-lighting-threshold-increment/">HJV Lights</a>.</li>
+    <li>Screen luminance by setting (200–300 nits indoors, over 800–1,000 in the sun): summary by
+    <a href="https://maketecheasier.com/what-is-nit-of-screen-brightness">Make Tech Easier</a>. Projector screen luminance: Lambertian screen with gain 1, L = E/π.</li>
   </ol>
   <p class="caveat">All other values (luminances, trolands, irradiances, positions of the cardinal
   points, parameters of animal eyes) are orders of magnitude from simplified models,

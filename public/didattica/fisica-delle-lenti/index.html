@@ -93,7 +93,7 @@ th,td{text-align:left; padding:.45rem .6rem; border-bottom:1px solid var(--rule)
 th{font-weight:600; color:var(--mut); font-size:.8125rem}
 
 ul.qty{list-style:none; padding:0; margin:0 0 1.1rem; max-width:38rem}
-ul.qty li{display:grid; grid-template-columns:9.5rem 1fr; gap:.4rem 1rem; align-items:start; margin:0 0 1.1rem}
+ul.qty>li{display:grid; grid-template-columns:9.5rem 1fr; gap:.4rem 1rem; align-items:start; margin:0 0 1.1rem}
 ul.qty figure{margin:.2rem 0 0}
 ul.qty .qsvg{display:block; width:100%; height:auto; background:var(--card); border-radius:8px}
 ul.qty figcaption{font-size:.75rem; line-height:1.35; color:var(--faint); margin-top:.3rem}
@@ -104,8 +104,11 @@ ul.qty figure.paused .qsvg *{animation-play-state:paused!important}
 ul.qty figure::after{content:""; position:absolute; top:calc(75cqw - 1.45rem); right:.35rem; width:1.1rem; height:1.1rem; border-radius:50%; background-color:var(--paper); opacity:0; transition:opacity .2s;
   background-image:linear-gradient(var(--mut),var(--mut)),linear-gradient(var(--mut),var(--mut)); background-size:2px 8px,2px 8px; background-position:6px 50%,10px 50%; background-repeat:no-repeat; pointer-events:none}
 ul.qty figure.paused::after{opacity:.9}
+.qnote{font-size:.9375rem; background:var(--card); border-radius:8px; padding:.6rem .85rem; margin:.7rem 0 0}
+.qnote ul{margin:.3rem 0 .45rem; padding-left:1.2rem}
+.qnote li{margin:.1rem 0}
 .qhint{font-size:.8125rem; color:var(--faint); margin:-.4rem 0 1rem}
-@media (max-width:30rem){ul.qty li{grid-template-columns:1fr} ul.qty figure{max-width:15rem}}
+@media (max-width:30rem){ul.qty>li{grid-template-columns:1fr} ul.qty figure{max-width:15rem}}
 :root{--q-flux:#534AB7; --q-int:#185FA5; --q-ill:#B5520C; --q-lum:#0F6E56}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--q-flux:#A39BF0; --q-int:#6FA8EA; --q-ill:#F08A3C; --q-lum:#4FC9A6}}
 :root[data-theme="dark"]{--q-flux:#A39BF0; --q-int:#6FA8EA; --q-ill:#F08A3C; --q-lum:#4FC9A6}
@@ -234,7 +237,19 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <circle cx="132" cy="60" r="8" fill="none" stroke="var(--q-lum)" stroke-width="2"/><circle cx="132" cy="60" r="3.5" fill="var(--ink)"/>
 </svg><figcaption>Stessa intensità da una lente più piccola: più nit, più abbagliamento.</figcaption></figure><div><b>Cd/m²</b>, cioè nit: la luminanza della lente. Dice quanto la lampada abbaglia chi la guarda in
     faccia, non quanto illumina la strada. Su una scheda tecnica è quasi certamente un errore per
-    «candele», come sospetta una delle risposte.</div></li>
+    «candele», come sospetta una delle risposte.
+    <div class="qnote"><b>Dove invece i nit contano davvero: gli schermi.</b> Per smartphone, portatile e
+    televisore il nit <span class="u">(nit = cd/m²)</span> è proprio il numero da guardare, perché lo schermo deve battere la luce
+    che ci si riflette sopra. Valori indicativi:
+    <ul><li>stanza poco illuminata: 200–300 nit;</li>
+    <li>stanza luminosa o vicino a una finestra: 500–700 nit;</li>
+    <li>all'aperto, all'ombra: almeno 400–500 nit;</li>
+    <li>al sole diretto: almeno 800–1.000 nit, meglio di più. Gli smartphone di fascia alta arrivano a
+    2.000–3.000 nit di picco; molti portatili restano a 300–500 e al sole non si leggono.</li></ul>
+    Il videoproiettore invece si vende in lumen <span class="u">(lm, flusso totale)</span>: la luminanza della tela dipende da
+    quanto la fai grande. Per una tela bianca opaca L ≈ Φ / (π · A): 3.000 lumen su una tela da 100″ (circa 2,8 m²)
+    danno circa 1.100 lux <span class="u">(lx = lm/m²)</span> e circa 350 nit. Al buio bastano; di giorno la luce della stanza
+    illumina anche la tela, il nero diventa grigio e il contrasto crolla. Per questo il proiettore vuole il buio.</div></div></li>
   </ul>
   <p class="qhint">Clicca su un disegno per fermarlo, clicca di nuovo per farlo ripartire.</p>
   <script>(function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -650,6 +665,8 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
     Sintesi di <a href="https://docs.agi32.com/AGi32/Content/adding_calculation_points/Calculations_Obtrusive_Light-Threshold_Increment.htm">AGi32</a>;
     limiti del 10–15 % per i lampioni in
     <a href="https://hjv-lights.com/from-principle-to-standard-a-comprehensive-analysis-of-disability-glare-control-in-road-lighting-threshold-increment/">HJV Lights</a>.</li>
+    <li>Luminanza degli schermi per ambiente (200–300 nit al chiuso, oltre 800–1.000 al sole): sintesi di
+    <a href="https://maketecheasier.com/what-is-nit-of-screen-brightness">Make Tech Easier</a>. Luminanza della tela del proiettore: tela lambertiana con guadagno 1, L = E/π.</li>
   </ol>
   <p class="caveat">Tutti gli altri valori (luminanze, troland, irradianze, posizioni dei punti
   cardinali, parametri degli occhi animali) sono ordini di grandezza da modelli semplificati,
