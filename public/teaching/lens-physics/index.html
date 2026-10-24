@@ -203,7 +203,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
   lumens <span class="u">(lm, total flux)</span>, the more expensive one more ‘cd/m²’. They ask which of the two numbers really says how much
   the light illuminates (<a href="https://www.reddit.com/r/askscience/comments/47bw1b/can_anyone_please_explain_the_difference_between/">the thread</a>).
   To answer, you have to separate four quantities that get mixed up on the packaging, and that is
-  the job of the whole first part of this page.</p>
+  the job of the whole first part of this page. Two more do not appear on the packaging but decide what you see: reflectance and contrast.</p>
   <ul class="qty">
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <circle cx="80" cy="56" r="46" fill="var(--q-flux)" fill-opacity=".07" stroke="var(--q-flux)" stroke-dasharray="3 3"/>
@@ -266,6 +266,37 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     enough, the cinema standard, while in a room in full daylight you need more than a thousand. Only
     <b>ALR</b> (Ambient Light Rejecting) screens beat this: they send back the projector's light more than
     the light from the windows.</div></div></li>
+    <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
+<defs><radialGradient id="qglow2"><stop offset="0" stop-color="#FFE9A8" stop-opacity="1"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></radialGradient></defs>
+<circle cx="24" cy="22" r="9" fill="#FFD36B" stroke="#E9A92E"/><g stroke="#E9A92E" stroke-width="1.4" stroke-linecap="round"><line x1="36.0" y1="22.0" x2="40.0" y2="22.0"/><line x1="32.5" y1="30.5" x2="35.3" y2="33.3"/><line x1="24.0" y1="34.0" x2="24.0" y2="38.0"/><line x1="15.5" y1="30.5" x2="12.7" y2="33.3"/><line x1="12.0" y1="22.0" x2="8.0" y2="22.0"/><line x1="15.5" y1="13.5" x2="12.7" y2="10.7"/><line x1="24.0" y1="10.0" x2="24.0" y2="6.0"/><line x1="32.5" y1="13.5" x2="35.3" y2="10.7"/></g>
+<g stroke="#E9A92E" stroke-width="1.2" class="q-rays2"><line x1="31" y1="31" x2="62" y2="88"/><line x1="36" y1="28" x2="76" y2="88"/></g>
+<rect x="0" y="88" width="160" height="32" fill="#4A4A48"><animate attributeName="fill" values="#4A4A48;#EEF3F8;#4A4A48" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect>
+<g fill="#9CC3E6" opacity="0"><circle cx="14" cy="96" r="1.2"/><circle cx="40" cy="104" r="1.2"/><circle cx="66" cy="98" r="1.2"/><circle cx="92" cy="110" r="1.2"/><circle cx="118" cy="100" r="1.2"/><circle cx="146" cy="106" r="1.2"/><circle cx="28" cy="112" r="1.2"/><circle cx="104" cy="94" r="1.2"/><animate attributeName="opacity" values="0;1;0" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></g>
+<circle cx="138" cy="56" r="10" fill="url(#qglow2)"><animate attributeName="r" values="8;24;8" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></circle>
+<g stroke="var(--q-lum)" stroke-linecap="round" class="q-rays2" stroke-width="1"><animate attributeName="stroke-width" values="0.8;2.6;0.8" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/><line x1="66" y1="88" x2="124" y2="56"/><line x1="74" y1="88" x2="126" y2="59"/><line x1="82" y1="88" x2="128" y2="62"/></g>
+<path d="M120 56 Q138 43 156 56 Q138 69 120 56Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
+<circle cx="138" cy="56" r="6" fill="none" stroke="var(--q-lum)" stroke-width="2"/><circle cx="138" cy="56" r="3.2" fill="var(--ink)"><animate attributeName="r" values="3.2;2.2;3.2" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></circle>
+<text x="6" y="110" class="q-t" fill="#FFFFFF">ρ ≈ 0.2<animate attributeName="opacity" values="1;0;1" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text>
+<text x="6" y="110" class="q-t" fill="#16222E" opacity="0">ρ ≈ 0.85<animate attributeName="opacity" values="0;1;0" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text></svg><figcaption>Same sun, asphalt or snow: snow sends back more light, more nits reach the eye.</figcaption></figure><div><b>Reflectance ρ</b> <span class="u">(pure number, 0 to 1)</span>: the fraction of light a surface sends back. For a matte
+    surface L = ρ · E / π, that is from the lux <span class="u">(lx = lm/m²)</span> that arrive to the nits <span class="u">(nit = cd/m²)</span> you see.
+    Under the same sun asphalt (ρ ≈ 0.2) and fresh snow (ρ ≈ 0.85) receive the same lux, but snow sends back
+    about four times the nits, and about four times the trolands <span class="u">(Td = cd/m² × mm²)</span> reach the retina.
+    A little less in practice, because the pupil narrows.</div></li>
+    <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
+<rect x="0" y="0" width="160" height="120" rx="8" fill="#1B2029"><animate attributeName="fill" values="#1B2029;#E9E3D6;#1B2029" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect>
+<rect x="130" y="16" width="22" height="40" fill="#2A3140" stroke="#8C7C60"><animate attributeName="fill" values="#2A3140;#FFF8E1;#2A3140" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect><line x1="141" y1="16" x2="141" y2="56" stroke="#8C7C60"/>
+<rect x="17" y="13" width="102" height="58" fill="#6E6E6E"/>
+<rect x="20" y="16" width="96" height="52" fill="#0C1028"/><circle cx="95" cy="28" r="5" fill="#FAF4DC"/>
+<path d="M20 68 L20 52 L38 40 L50 50 L66 34 L84 52 L96 46 L116 56 L116 68Z" fill="#284638"/>
+<path d="M20 68 L20 62 L46 56 L76 64 L116 60 L116 68Z" fill="#12201A"/>
+<rect x="20" y="16" width="96" height="52" fill="#C9C9C9" opacity="0"><animate attributeName="opacity" values="0;.62;0" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect>
+<path d="M68 100 L20 68 L116 68Z" fill="#FFF3C4" opacity=".25"><animate attributeName="opacity" values=".25;.04;.25" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></path>
+<rect x="58" y="100" width="20" height="8" rx="2" fill="#3A3A38"/><circle cx="68" cy="100" r="2.5" fill="#FFE9A8"/></svg><figcaption>Same picture, the room light comes on: black turns grey.</figcaption></figure><div><b>Contrast</b> <span class="u">(L white / L black)</span>: how far white stands out from black. When two lights fall on the
+    same surface, like the projector and the room on the screen, ρ multiplies both and cancels out:<br>
+    <span class="formula">contrast ≈ 1 + E<sub>projector</sub> / E<sub>room</sub></span><br>
+    Example: a 3,000-lumen <span class="u">(lm, total flux)</span> projector on a 100″ screen (about 2.8 m²) brings about 1,100 lux.
+    In the dark, with about 1 lux from the room, only the projector limits the contrast; in a living room by day,
+    with about 500 lux, it is about 3:1 and the picture looks washed out.</div></li>
   </ul>
   <p class="qhint">Click a drawing to pause it, click again to resume.</p>
   <script>(function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;

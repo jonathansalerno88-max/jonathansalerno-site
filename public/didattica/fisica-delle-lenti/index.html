@@ -203,7 +203,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
   più lumen <span class="u">(lm, flusso totale)</span>, la più cara più «cd/m²». Chiede quale dei due numeri dica davvero quanto illumina
   la luce (<a href="https://www.reddit.com/r/askscience/comments/47bw1b/can_anyone_please_explain_the_difference_between/">il thread</a>).
   Per rispondere bisogna separare quattro grandezze che sulle confezioni si mescolano, ed è il
-  lavoro di tutta la prima parte di questa pagina.</p>
+  lavoro di tutta la prima parte di questa pagina. Poi ne servono altre due, che sulle confezioni non ci sono ma decidono quello che vedi: la riflettanza e il contrasto.</p>
   <ul class="qty">
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <circle cx="80" cy="56" r="46" fill="var(--q-flux)" fill-opacity=".07" stroke="var(--q-flux)" stroke-dasharray="3 3"/>
@@ -266,6 +266,37 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     circa 48 nit, lo standard dei cinema, e in una stanza in pieno giorno ne servono più di mille. Lo battono
     solo i teli <b>ALR</b> (Ambient Light Rejecting, che respingono la luce ambiente), che rimandano la luce
     del proiettore più di quella delle finestre.</div></div></li>
+    <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
+<defs><radialGradient id="qglow2"><stop offset="0" stop-color="#FFE9A8" stop-opacity="1"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></radialGradient></defs>
+<circle cx="24" cy="22" r="9" fill="#FFD36B" stroke="#E9A92E"/><g stroke="#E9A92E" stroke-width="1.4" stroke-linecap="round"><line x1="36.0" y1="22.0" x2="40.0" y2="22.0"/><line x1="32.5" y1="30.5" x2="35.3" y2="33.3"/><line x1="24.0" y1="34.0" x2="24.0" y2="38.0"/><line x1="15.5" y1="30.5" x2="12.7" y2="33.3"/><line x1="12.0" y1="22.0" x2="8.0" y2="22.0"/><line x1="15.5" y1="13.5" x2="12.7" y2="10.7"/><line x1="24.0" y1="10.0" x2="24.0" y2="6.0"/><line x1="32.5" y1="13.5" x2="35.3" y2="10.7"/></g>
+<g stroke="#E9A92E" stroke-width="1.2" class="q-rays2"><line x1="31" y1="31" x2="62" y2="88"/><line x1="36" y1="28" x2="76" y2="88"/></g>
+<rect x="0" y="88" width="160" height="32" fill="#4A4A48"><animate attributeName="fill" values="#4A4A48;#EEF3F8;#4A4A48" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect>
+<g fill="#9CC3E6" opacity="0"><circle cx="14" cy="96" r="1.2"/><circle cx="40" cy="104" r="1.2"/><circle cx="66" cy="98" r="1.2"/><circle cx="92" cy="110" r="1.2"/><circle cx="118" cy="100" r="1.2"/><circle cx="146" cy="106" r="1.2"/><circle cx="28" cy="112" r="1.2"/><circle cx="104" cy="94" r="1.2"/><animate attributeName="opacity" values="0;1;0" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></g>
+<circle cx="138" cy="56" r="10" fill="url(#qglow2)"><animate attributeName="r" values="8;24;8" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></circle>
+<g stroke="var(--q-lum)" stroke-linecap="round" class="q-rays2" stroke-width="1"><animate attributeName="stroke-width" values="0.8;2.6;0.8" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/><line x1="66" y1="88" x2="124" y2="56"/><line x1="74" y1="88" x2="126" y2="59"/><line x1="82" y1="88" x2="128" y2="62"/></g>
+<path d="M120 56 Q138 43 156 56 Q138 69 120 56Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
+<circle cx="138" cy="56" r="6" fill="none" stroke="var(--q-lum)" stroke-width="2"/><circle cx="138" cy="56" r="3.2" fill="var(--ink)"><animate attributeName="r" values="3.2;2.2;3.2" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></circle>
+<text x="6" y="110" class="q-t" fill="#FFFFFF">ρ ≈ 0,2<animate attributeName="opacity" values="1;0;1" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text>
+<text x="6" y="110" class="q-t" fill="#16222E" opacity="0">ρ ≈ 0,85<animate attributeName="opacity" values="0;1;0" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text></svg><figcaption>Stesso sole, asfalto o neve: la neve rimanda più luce, all'occhio arrivano più nit.</figcaption></figure><div><b>Riflettanza ρ</b> <span class="u">(numero puro, da 0 a 1)</span>: la frazione di luce che una superficie rimanda. Per una
+    superficie opaca L = ρ · E / π, cioè dai lux <span class="u">(lx = lm/m²)</span> che arrivano ai nit <span class="u">(nit = cd/m²)</span> che vedi.
+    Sotto lo stesso sole l'asfalto (ρ ≈ 0,2) e la neve fresca (ρ ≈ 0,85) ricevono gli stessi lux, ma la neve
+    manda circa quattro volte i nit, e sulla retina arrivano circa quattro volte i troland <span class="u">(Td = cd/m² × mm²)</span>.
+    In pratica un po' meno, perché la pupilla si stringe.</div></li>
+    <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
+<rect x="0" y="0" width="160" height="120" rx="8" fill="#1B2029"><animate attributeName="fill" values="#1B2029;#E9E3D6;#1B2029" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect>
+<rect x="130" y="16" width="22" height="40" fill="#2A3140" stroke="#8C7C60"><animate attributeName="fill" values="#2A3140;#FFF8E1;#2A3140" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect><line x1="141" y1="16" x2="141" y2="56" stroke="#8C7C60"/>
+<rect x="17" y="13" width="102" height="58" fill="#6E6E6E"/>
+<rect x="20" y="16" width="96" height="52" fill="#0C1028"/><circle cx="95" cy="28" r="5" fill="#FAF4DC"/>
+<path d="M20 68 L20 52 L38 40 L50 50 L66 34 L84 52 L96 46 L116 56 L116 68Z" fill="#284638"/>
+<path d="M20 68 L20 62 L46 56 L76 64 L116 60 L116 68Z" fill="#12201A"/>
+<rect x="20" y="16" width="96" height="52" fill="#C9C9C9" opacity="0"><animate attributeName="opacity" values="0;.62;0" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect>
+<path d="M68 100 L20 68 L116 68Z" fill="#FFF3C4" opacity=".25"><animate attributeName="opacity" values=".25;.04;.25" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></path>
+<rect x="58" y="100" width="20" height="8" rx="2" fill="#3A3A38"/><circle cx="68" cy="100" r="2.5" fill="#FFE9A8"/></svg><figcaption>Stessa immagine, si accende la luce della stanza: il nero diventa grigio.</figcaption></figure><div><b>Contrasto</b> <span class="u">(L bianco / L nero)</span>: quanto il bianco si stacca dal nero. Quando sulla stessa
+    superficie arrivano due luci, come il proiettore e la stanza sulla tela, ρ le moltiplica entrambe e si
+    semplifica:<br><span class="formula">contrasto ≈ 1 + E<sub>proiettore</sub> / E<sub>stanza</sub></span><br>
+    Esempio: un videoproiettore da 3.000 lumen <span class="u">(lm, flusso totale)</span> su una tela da 100″ (circa 2,8 m²) porta
+    circa 1.100 lux. Al buio, con circa 1 lux dalla stanza, il contrasto lo limita solo il proiettore; in salotto
+    di giorno, con circa 500 lux, è circa 3:1 e l'immagine è slavata.</div></li>
   </ul>
   <p class="qhint">Clicca su un disegno per fermarlo, clicca di nuovo per farlo ripartire.</p>
   <script>(function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
