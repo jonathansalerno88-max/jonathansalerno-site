@@ -97,6 +97,14 @@ ul.qty li{display:grid; grid-template-columns:9.5rem 1fr; gap:.4rem 1rem; align-
 ul.qty figure{margin:.2rem 0 0}
 ul.qty .qsvg{display:block; width:100%; height:auto; background:var(--card); border-radius:8px}
 ul.qty figcaption{font-size:.75rem; line-height:1.35; color:var(--faint); margin-top:.3rem}
+ul.qty figure{position:relative; container-type:inline-size}
+ul.qty .qsvg{cursor:pointer}
+ul.qty .qsvg:focus-visible{outline:2px solid var(--link); outline-offset:2px}
+ul.qty figure.paused .qsvg *{animation-play-state:paused!important}
+ul.qty figure::after{content:""; position:absolute; top:calc(75cqw - 1.45rem); right:.35rem; width:1.1rem; height:1.1rem; border-radius:50%; background-color:var(--paper); opacity:0; transition:opacity .2s;
+  background-image:linear-gradient(var(--mut),var(--mut)),linear-gradient(var(--mut),var(--mut)); background-size:2px 8px,2px 8px; background-position:6px 50%,10px 50%; background-repeat:no-repeat; pointer-events:none}
+ul.qty figure.paused::after{opacity:.9}
+.qhint{font-size:.8125rem; color:var(--faint); margin:-.4rem 0 1rem}
 @media (max-width:30rem){ul.qty li{grid-template-columns:1fr} ul.qty figure{max-width:15rem}}
 :root{--q-flux:#534AB7; --q-int:#185FA5; --q-ill:#B5520C; --q-lum:#0F6E56}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--q-flux:#A39BF0; --q-int:#6FA8EA; --q-ill:#F08A3C; --q-lum:#4FC9A6}}
@@ -110,7 +118,6 @@ ul.qty figcaption{font-size:.75rem; line-height:1.35; color:var(--faint); margin
 @keyframes qflow{to{stroke-dashoffset:-8}}
 .qsvg .q-fl{transform-box:fill-box; transform-origin:50% 100%; animation:qfl 1.3s ease-in-out infinite alternate}
 @keyframes qfl{from{transform:scale(1,1)} 50%{transform:scale(.94,1.08)} to{transform:scale(1.03,.95)}}
-@media (prefers-reduced-motion:reduce){.qsvg *{animation:none!important}}
 ol.refs{font-size:.875rem; color:var(--mut); padding-left:1.2rem}
 ol.refs li{margin:.45rem 0}
 .caveat{font-size:.875rem; color:var(--mut)}
@@ -211,7 +218,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <circle cx="80" cy="16" r="5" fill="#FFD36B" stroke="var(--q-ill)"><animate attributeName="cy" values="16;56;16" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></circle>
 <line x1="144" y1="16" x2="144" y2="98" stroke="var(--mut)" stroke-dasharray="2 2"><animate attributeName="y1" values="16;56;16" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></line>
 <text x="148" y="60" class="q-t" fill="var(--mut)">d<animate attributeName="y" values="60;80;60" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text>
-<text x="8" y="16" class="q-t" fill="var(--q-ill)">E = I/d² · lux</text></svg><figcaption>Lamp further away: the same light over a larger area, fewer lux (the small rectangle is 1 m²).</figcaption></figure><div><b>Lux</b>, that is lumens per square metre: how much light reaches the road at a given distance,
+<text x="8" y="16" class="q-t" fill="var(--q-ill)">E = I/d²</text><text x="8" y="28" class="q-t" fill="var(--q-ill)">lux</text></svg><figcaption>Lamp further away: the same light over a larger area, fewer lux (the small rectangle is 1 m²).</figcaption></figure><div><b>Lux</b>, that is lumens per square metre: how much light reaches the road at a given distance,
     E = I / d². It is what you see in front of the wheel. Lights type-approved in Germany (StVZO) state
     exactly the lux at 10 m; the ANSI FL1 standard states the peak candelas and the <em>beam distance</em>,
     the distance at which the centre of the beam falls to 0.25 lux, roughly the light of the full moon.</div></li>
@@ -228,7 +235,13 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     straight at it, not how much it lights the road. On a spec sheet it is almost certainly a mistake for
     ‘candelas’, as one of the replies suspects.</div></li>
   </ul>
-  <script>if(matchMedia("(prefers-reduced-motion: reduce)").matches)document.querySelectorAll(".qsvg").forEach(function(s){s.pauseAnimations&&s.pauseAnimations()});</script>
+  <p class="qhint">Click a drawing to pause it, click again to resume.</p>
+  <script>(function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
+document.querySelectorAll("ul.qty figure").forEach(function(f){var s=f.querySelector(".qsvg");
+s.setAttribute("tabindex","0");s.setAttribute("role","button");
+function set(p){f.classList.toggle("paused",p);s.setAttribute("aria-pressed",p?"true":"false");s.setAttribute("aria-label",p?"Resume the animation":"Pause the animation");if(p)s.pauseAnimations();else s.unpauseAnimations();}
+set(rm);s.addEventListener("click",function(){set(!f.classList.contains("paused"))});
+s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();set(!f.classList.contains("paused"))}});});})();</script>
   <figure class="w">
     <iframe src="w/00-bici.html" title="Two bike lights: lumens, candelas, lux on the road and luminance of the lens" loading="lazy"></iframe>
     <figcaption>Change the flux, the beam width and the distance. <a href="w/00-bici.html">Open full screen</a></figcaption>
