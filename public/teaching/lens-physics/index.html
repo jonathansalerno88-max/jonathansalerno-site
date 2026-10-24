@@ -118,6 +118,7 @@ ul.qty figure.paused::after{opacity:.9}
 @keyframes qflow{to{stroke-dashoffset:-8}}
 .qsvg .q-fl{transform-box:fill-box; transform-origin:50% 100%; animation:qfl 1.3s ease-in-out infinite alternate}
 @keyframes qfl{from{transform:scale(1,1)} 50%{transform:scale(.94,1.08)} to{transform:scale(1.03,.95)}}
+.u{font-family:var(--mono); font-size:.8em; color:var(--mut); white-space:nowrap; font-weight:400}
 ol.refs{font-size:.875rem; color:var(--mut); padding-left:1.2rem}
 ol.refs li{margin:.45rem 0}
 .caveat{font-size:.875rem; color:var(--mut)}
@@ -188,7 +189,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
   <h2>0 · Introduction</h2>
   <h3>Lumens or candelas? Two bike lights</h3>
   <p>On r/askscience someone has to choose between two bicycle lights: the cheaper one claims more
-  lumens, the more expensive one more ‘cd/m²’. They ask which of the two numbers really says how much
+  lumens <span class="u">(lm, total flux)</span>, the more expensive one more ‘cd/m²’. They ask which of the two numbers really says how much
   the light illuminates (<a href="https://www.reddit.com/r/askscience/comments/47bw1b/can_anyone_please_explain_the_difference_between/">the thread</a>).
   To answer, you have to separate four quantities that get mixed up on the packaging, and that is
   the job of the whole first part of this page.</p>
@@ -198,7 +199,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <circle cx="80" cy="56" r="46" class="q-wave"/>
 <g class="q-rays" stroke="var(--q-flux)" stroke-width="1.6" stroke-linecap="round"><line x1="91.6" y1="59.1" x2="120.6" y2="66.9"/><line x1="88.5" y1="64.5" x2="109.7" y2="85.7"/><line x1="83.1" y1="67.6" x2="90.9" y2="96.6"/><line x1="76.9" y1="67.6" x2="69.1" y2="96.6"/><line x1="71.5" y1="64.5" x2="50.3" y2="85.7"/><line x1="68.4" y1="59.1" x2="39.4" y2="66.9"/><line x1="68.4" y1="52.9" x2="39.4" y2="45.1"/><line x1="71.5" y1="47.5" x2="50.3" y2="26.3"/><line x1="76.9" y1="44.4" x2="69.1" y2="15.4"/><line x1="83.1" y1="44.4" x2="90.9" y2="15.4"/><line x1="88.5" y1="47.5" x2="109.7" y2="26.3"/><line x1="91.6" y1="52.9" x2="120.6" y2="45.1"/></g>
 <rect x="74" y="64" width="12" height="34" rx="2" class="q-body"/><line x1="80" y1="64" x2="80" y2="60" stroke="var(--ink)" stroke-width="1"/><g transform="translate(80 56)"><g class="q-fl"><path d="M0 -12 C5 -5 6 1 0 5 C-6 1 -5 -5 0 -12Z" fill="#F2A93B"/><path d="M0 -6 C2.5 -2 3 1.5 0 3.5 C-3 1.5 -2.5 -2 0 -6Z" fill="#FFE08A"/></g></g>
-<text x="150" y="16" text-anchor="end" class="q-t" fill="var(--q-flux)">Φ · lm</text></svg><figcaption>The sphere: the flux leaves in every direction.</figcaption></figure><div><b>Lumens</b>: all the light that leaves the lamp, in every direction. It does not say where it goes.</div></li>
+<text x="150" y="16" text-anchor="end" class="q-t" fill="var(--q-flux)">Φ · lm</text></svg><figcaption>The sphere: the flux leaves in every direction.</figcaption></figure><div><b>Lumens</b> <span class="u">(lm, total flux)</span>: all the light that leaves the lamp, in every direction. It does not say where it goes.</div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <defs><linearGradient id="qcone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--q-int)" stop-opacity=".35"/><stop offset=".45" stop-color="var(--q-int)" stop-opacity=".9"/><stop offset="1" stop-color="var(--q-int)" stop-opacity=".55"/></linearGradient>
 <marker id="qarr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8Z" fill="var(--q-int)"/></marker></defs>
@@ -208,7 +209,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <line x1="34" y1="62" x2="150" y2="62" stroke="var(--q-int)" stroke-width="1.4" marker-end="url(#qarr)"/>
 <text x="124" y="66" text-anchor="middle" class="q-t" fill="var(--paper)" opacity=".9">Ω<animate attributeName="opacity" values=".9;0;.9" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text>
 <rect x="18" y="68" width="12" height="34" rx="2" class="q-body"/><line x1="24" y1="68" x2="24" y2="64" stroke="var(--ink)" stroke-width="1"/><g transform="translate(24 60)"><g class="q-fl"><path d="M0 -12 C5 -5 6 1 0 5 C-6 1 -5 -5 0 -12Z" fill="#F2A93B"/><path d="M0 -6 C2.5 -2 3 1.5 0 3.5 C-3 1.5 -2.5 -2 0 -6Z" fill="#FFE08A"/></g></g>
-<text x="150" y="16" text-anchor="end" class="q-t" fill="var(--q-int)">I = Φ/Ω · cd</text></svg><figcaption>Same flux, narrower cone: more candelas.</figcaption></figure><div><b>Candelas</b>, that is lumens per steradian: how much light goes in one direction, for a headlight the
+<text x="150" y="16" text-anchor="end" class="q-t" fill="var(--q-int)">I = Φ/Ω · cd</text></svg><figcaption>Same flux, narrower cone: more candelas.</figcaption></figure><div><b>Candelas</b> <span class="u">(cd = lm/sr)</span>, that is lumens per steradian: how much light goes in one direction, for a headlight the
     centre of the beam. The same flux concentrated into a narrower beam gives more candelas.</div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <path d="M4 110 L156 110 L140 88 L20 88 Z" fill="var(--card)" stroke="var(--rule)"/>
@@ -218,7 +219,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <circle cx="80" cy="16" r="5" fill="#FFD36B" stroke="var(--q-ill)"><animate attributeName="cy" values="16;56;16" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></circle>
 <line x1="144" y1="16" x2="144" y2="98" stroke="var(--mut)" stroke-dasharray="2 2"><animate attributeName="y1" values="16;56;16" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></line>
 <text x="148" y="60" class="q-t" fill="var(--mut)">d<animate attributeName="y" values="60;80;60" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text>
-<text x="8" y="16" class="q-t" fill="var(--q-ill)">E = I/d²</text><text x="8" y="28" class="q-t" fill="var(--q-ill)">lux</text></svg><figcaption>Lamp further away: the same light over a larger area, fewer lux (the small rectangle is 1 m²).</figcaption></figure><div><b>Lux</b>, that is lumens per square metre: how much light reaches the road at a given distance,
+<text x="8" y="16" class="q-t" fill="var(--q-ill)">E = I/d²</text><text x="8" y="28" class="q-t" fill="var(--q-ill)">lux</text></svg><figcaption>Lamp further away: the same light over a larger area, fewer lux (the small rectangle is 1 m²).</figcaption></figure><div><b>Lux</b> <span class="u">(lx = lm/m²)</span>, that is lumens per square metre: how much light reaches the road at a given distance,
     E = I / d². It is what you see in front of the wheel. Lights type-approved in Germany (StVZO) state
     exactly the lux at 10 m; the ANSI FL1 standard states the peak candelas and the <em>beam distance</em>,
     the distance at which the centre of the beam falls to 0.25 lux, roughly the light of the full moon.</div></li>
@@ -246,13 +247,13 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
     <iframe src="w/00-bici.html" title="Two bike lights: lumens, candelas, lux on the road and luminance of the lens" loading="lazy"></iframe>
     <figcaption>Change the flux, the beam width and the distance. <a href="w/00-bici.html">Open full screen</a></figcaption>
   </figure>
-  <p>In the thread's example, light A has 1,000 lumens in a 40° beam and light B 400 lumens in a
-  10° beam. B has fewer lumens but about six times the candelas of A: at 10 m it puts about 170 lux on
+  <p>In the thread's example, light A has 1,000 lumens <span class="u">(lm, total flux)</span> in a 40° beam and light B 400 lumens in a
+  10° beam. B has fewer lumens but about six times the candelas <span class="u">(cd = lm/sr)</span> of A: at 10 m it puts about 170 lux <span class="u">(lx = lm/m²)</span> on
   the road against 26, and reaches two and a half times as far. A, on the other hand, lights a wider
   strip of road. To see far ahead, what counts is the candelas, or the lux at 10 m; to see to the
   sides, the lumens spread over a wide beam.</p>
   <p><b>Now it's your turn.</b> You have to light your lane where you need to see: at the stopping
-  distance, that is 1 s of reaction plus braking. At 22 km/h that is about 10 m. There you need at least 60 lux
+  distance, that is 1 s of reaction plus braking. At 22 km/h that is about 10 m. There you need at least 60 lux <span class="u">(lx = lm/m²)</span>
   over 3.5 m of width, without blinding the cyclist coming the other way or the pedestrian
   walking towards you on the pavement. Six faces judge the light you have chosen: light on the
   road, width, cyclist, pedestrian, price and battery life.</p>
@@ -263,15 +264,15 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   <div class="try"><b>Try this.</b> <i>Goal</i>: see as far as the stopping distance without dazzling the pedestrian, the cyclist or anyone coming the other way.
   <ol>
     <li>Choose the speed: the game works out how far you need to see.</li>
-    <li>Adjust lumens and beam width until light on the road and width turn green.</li>
+    <li>Adjust lumens <span class="u">(lm, total flux)</span> and beam width until light on the road and width turn green.</li>
     <li>Check the pedestrian and the cyclist: if they are sad, narrow the beam or switch on the cut-off.</li>
     <li>Look at price and battery life, and pick your compromise.</li>
   </ol></div>
   <p><b>So which light should you buy?</b> If you ride where there are other people (towns, cycle
   paths, roads): a light with a <b>cut-off beam</b>, that is, StVZO-approved. It puts the light on the
-  road and not in the eyes of oncoming people, and for the same lumens it lights more. Between two
-  such lights, compare the stated <b>lux at 10 m</b>: higher means you see better. If you ride fast at
-  night off-road, alone, a round beam is fine too: there you look at the <b>candelas</b> for distance
+  road and not in the eyes of oncoming people, and for the same lumens <span class="u">(lm, total flux)</span> it lights more. Between two
+  such lights, compare the stated <b>lux at 10 m</b> <span class="u">(lx = lm/m²)</span>: higher means you see better. If you ride fast at
+  night off-road, alone, a round beam is fine too: there you look at the <b>candelas</b> <span class="u">(cd = lm/sr)</span> for distance
   and the lumens for the sides, and two lights, one narrow and one wide, work best. Lumens alone are
   never enough to choose, and the ‘cd/m²’ in the original question is almost certainly a mistake for
   ‘candelas’.</p>
@@ -284,19 +285,19 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   <h3>What lumens, candelas, nits, lux and trolands measure</h3>
   <p>The quantities of light are not alternatives to one another: they describe the same light at different points.</p>
   <ul>
-    <li><b>Lumen</b> (luminous flux): how much light the source emits in total.</li>
-    <li><b>Candela</b> (luminous intensity): how much it emits in one direction, per unit solid angle.</li>
-    <li><b>Nit</b>, that is candelas per square metre (luminance): how <em>concentrated</em> the emission is, the intensity divided by the apparent area of the source. The sun is around 10⁹ nits, a smartphone 1,000–2,000.</li>
-    <li><b>Lux</b>, that is lumens per square metre (illuminance): how much light <em>arrives</em> on a surface. Full sun gives about 100,000 lux.</li>
-    <li><b>Troland</b> (retinal illuminance): luminance in nits × pupil area in mm².</li>
+    <li><b>Lumen</b> (luminous flux, <span class="u">lm</span>): how much light the source emits in total.</li>
+    <li><b>Candela</b> (luminous intensity, <span class="u">cd = lm/sr</span>): how much it emits in one direction, per unit solid angle.</li>
+    <li><b>Nit</b> <span class="u">(nit = cd/m²)</span>, that is candelas per square metre (luminance): how <em>concentrated</em> the emission is, the intensity divided by the apparent area of the source. The sun is around 10⁹ nits, a smartphone 1,000–2,000.</li>
+    <li><b>Lux</b> <span class="u">(lx = lm/m²)</span>, that is lumens per square metre (illuminance): how much light <em>arrives</em> on a surface. Full sun gives about 100,000 lux.</li>
+    <li><b>Troland</b> (retinal illuminance, <span class="u">Td = cd/m² × mm²</span>): luminance in nits × pupil area in mm².</li>
   </ul>
   <p>Luminance belongs to whatever emits or reflects: the sun, the road. <b>What reaches the eye is not a
-  luminance</b>: it is an illuminance, in lux, and on the retina a retinal illuminance, in trolands.
+  luminance</b>: it is an illuminance, in lux <span class="u">(lx = lm/m²)</span>, and on the retina a retinal illuminance, in trolands <span class="u">(Td = cd/m² × mm²)</span>.
   In the figure each unit has its own colour, the same wherever it appears.</p>
   <p>Every source, direct or reflected, always has a luminance and always produces an illuminance on
   what it strikes. An illuminated matt surface in turn becomes a source:</p>
   <p class="formula">L ≈ ρ · E / π</p>
-  <p>where ρ is the reflectance. Light asphalt (ρ ≈ 0.2) under 10,000 lux has about 600 nits; fresh
+  <p>where ρ is the reflectance. Light asphalt (ρ ≈ 0.2) under 10,000 lux <span class="u">(lx = lm/m²)</span> has about 600 nits <span class="u">(nit = cd/m²)</span>; fresh
   snow (ρ ≈ 0.85) about four times as much.</p>
   <p>For an extended source, the illuminance on the retina depends only on the luminance and the pupil,
   not on the distance: the solid angle cancels out.</p>
@@ -310,9 +311,9 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   </figure>
   <div class="try"><b>Try this.</b> <i>Goal</i>: find out which quantity changes when the glare disappears.
   <ol>
-    <li>Put the traffic light in front of the sun: the sun's lumens, candelas and nits do not change.</li>
-    <li>Look at the illuminance at the eye, in lux: it collapses. That is what decides glare.</li>
-    <li>Switch on the snow: the road's luminance rises about fourfold, but stays below the 10⁴ nit safety threshold. It dazzles, it does not damage.</li>
+    <li>Put the traffic light in front of the sun: the sun's lumens <span class="u">(lm, total flux)</span>, candelas <span class="u">(cd = lm/sr)</span> and nits <span class="u">(nit = cd/m²)</span> do not change.</li>
+    <li>Look at the illuminance at the eye, in lux <span class="u">(lx = lm/m²)</span>: it collapses. That is what decides glare.</li>
+    <li>Switch on the snow: the road's luminance rises about fourfold, but stays below the 10⁴ nit <span class="u">(nit = cd/m²)</span> safety threshold. It dazzles, it does not damage.</li>
   </ol></div>
 </section>
 
@@ -332,7 +333,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   </ul>
   <p>For white light there is an ICNIRP rule of thumb: below 10⁴ cd/m² of luminance not even a
   detailed risk assessment is needed. The real threshold, however, is expressed in radiance weighted
-  on the blue spectrum, not in nits.</p>
+  on the blue spectrum, not in nits <span class="u">(nit = cd/m²)</span>.</p>
   <p><b>The eclipse.</b> The visible part of the sun has the same luminance as the full sun; only
   the illuminance at the eye falls. The damage is done by luminance, but the alarm bell is rung by
   illuminance: without discomfort the reflex to look away does not kick in, the pupil
@@ -349,7 +350,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
     <li>Move the time to 2 minutes: the limit is still exceeded tens of times over, because every point of the crescent is as bright as the full sun.</li>
     <li>Laser: the eye drops change nothing, because the 1 mm beam enters any pupil whole.</li>
   </ol></div>
-  <p>The eye drops do not change the lux at the eye: they change the pupil area, and so the trolands.
+  <p>The eye drops do not change the lux <span class="u">(lx = lm/m²)</span> at the eye: they change the pupil area, and so the trolands <span class="u">(Td = cd/m² × mm²)</span>.
   Which eye drops constrict the pupil, and which muscle they act on, is drawn in <a href="#occhio">section 3</a>.</p>
   <p><b>The screen.</b> The risk to the retina is negligible, with or without a filter. The real effect is
   on the body clock: reading for about 4 hours an evening for 5 evenings on a tablet, compared with a paper

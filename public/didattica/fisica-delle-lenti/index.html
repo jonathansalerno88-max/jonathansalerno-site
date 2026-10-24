@@ -118,6 +118,7 @@ ul.qty figure.paused::after{opacity:.9}
 @keyframes qflow{to{stroke-dashoffset:-8}}
 .qsvg .q-fl{transform-box:fill-box; transform-origin:50% 100%; animation:qfl 1.3s ease-in-out infinite alternate}
 @keyframes qfl{from{transform:scale(1,1)} 50%{transform:scale(.94,1.08)} to{transform:scale(1.03,.95)}}
+.u{font-family:var(--mono); font-size:.8em; color:var(--mut); white-space:nowrap; font-weight:400}
 ol.refs{font-size:.875rem; color:var(--mut); padding-left:1.2rem}
 ol.refs li{margin:.45rem 0}
 .caveat{font-size:.875rem; color:var(--mut)}
@@ -188,7 +189,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
   <h2>0 · Introduzione</h2>
   <h3>Lumen o candele? Due luci da bici</h3>
   <p>Su r/askscience qualcuno deve scegliere fra due luci per bicicletta: la più economica dichiara
-  più lumen, la più cara più «cd/m²». Chiede quale dei due numeri dica davvero quanto illumina
+  più lumen <span class="u">(lm, flusso totale)</span>, la più cara più «cd/m²». Chiede quale dei due numeri dica davvero quanto illumina
   la luce (<a href="https://www.reddit.com/r/askscience/comments/47bw1b/can_anyone_please_explain_the_difference_between/">il thread</a>).
   Per rispondere bisogna separare quattro grandezze che sulle confezioni si mescolano, ed è il
   lavoro di tutta la prima parte di questa pagina.</p>
@@ -198,7 +199,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <circle cx="80" cy="56" r="46" class="q-wave"/>
 <g class="q-rays" stroke="var(--q-flux)" stroke-width="1.6" stroke-linecap="round"><line x1="91.6" y1="59.1" x2="120.6" y2="66.9"/><line x1="88.5" y1="64.5" x2="109.7" y2="85.7"/><line x1="83.1" y1="67.6" x2="90.9" y2="96.6"/><line x1="76.9" y1="67.6" x2="69.1" y2="96.6"/><line x1="71.5" y1="64.5" x2="50.3" y2="85.7"/><line x1="68.4" y1="59.1" x2="39.4" y2="66.9"/><line x1="68.4" y1="52.9" x2="39.4" y2="45.1"/><line x1="71.5" y1="47.5" x2="50.3" y2="26.3"/><line x1="76.9" y1="44.4" x2="69.1" y2="15.4"/><line x1="83.1" y1="44.4" x2="90.9" y2="15.4"/><line x1="88.5" y1="47.5" x2="109.7" y2="26.3"/><line x1="91.6" y1="52.9" x2="120.6" y2="45.1"/></g>
 <rect x="74" y="64" width="12" height="34" rx="2" class="q-body"/><line x1="80" y1="64" x2="80" y2="60" stroke="var(--ink)" stroke-width="1"/><g transform="translate(80 56)"><g class="q-fl"><path d="M0 -12 C5 -5 6 1 0 5 C-6 1 -5 -5 0 -12Z" fill="#F2A93B"/><path d="M0 -6 C2.5 -2 3 1.5 0 3.5 C-3 1.5 -2.5 -2 0 -6Z" fill="#FFE08A"/></g></g>
-<text x="150" y="16" text-anchor="end" class="q-t" fill="var(--q-flux)">Φ · lm</text></svg><figcaption>La sfera: il flusso esce in ogni direzione.</figcaption></figure><div><b>Lumen</b>: tutta la luce che esce dalla lampada, in ogni direzione. Non dice dove va.</div></li>
+<text x="150" y="16" text-anchor="end" class="q-t" fill="var(--q-flux)">Φ · lm</text></svg><figcaption>La sfera: il flusso esce in ogni direzione.</figcaption></figure><div><b>Lumen</b> <span class="u">(lm, flusso totale)</span>: tutta la luce che esce dalla lampada, in ogni direzione. Non dice dove va.</div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <defs><linearGradient id="qcone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--q-int)" stop-opacity=".35"/><stop offset=".45" stop-color="var(--q-int)" stop-opacity=".9"/><stop offset="1" stop-color="var(--q-int)" stop-opacity=".55"/></linearGradient>
 <marker id="qarr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8Z" fill="var(--q-int)"/></marker></defs>
@@ -208,7 +209,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <line x1="34" y1="62" x2="150" y2="62" stroke="var(--q-int)" stroke-width="1.4" marker-end="url(#qarr)"/>
 <text x="124" y="66" text-anchor="middle" class="q-t" fill="var(--paper)" opacity=".9">Ω<animate attributeName="opacity" values=".9;0;.9" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text>
 <rect x="18" y="68" width="12" height="34" rx="2" class="q-body"/><line x1="24" y1="68" x2="24" y2="64" stroke="var(--ink)" stroke-width="1"/><g transform="translate(24 60)"><g class="q-fl"><path d="M0 -12 C5 -5 6 1 0 5 C-6 1 -5 -5 0 -12Z" fill="#F2A93B"/><path d="M0 -6 C2.5 -2 3 1.5 0 3.5 C-3 1.5 -2.5 -2 0 -6Z" fill="#FFE08A"/></g></g>
-<text x="150" y="16" text-anchor="end" class="q-t" fill="var(--q-int)">I = Φ/Ω · cd</text></svg><figcaption>Stesso flusso, cono più stretto: più candele.</figcaption></figure><div><b>Candele</b>, cioè lumen per steradiante: quanta luce va in una direzione, per un faro il
+<text x="150" y="16" text-anchor="end" class="q-t" fill="var(--q-int)">I = Φ/Ω · cd</text></svg><figcaption>Stesso flusso, cono più stretto: più candele.</figcaption></figure><div><b>Candele</b> <span class="u">(cd = lm/sr)</span>, cioè lumen per steradiante: quanta luce va in una direzione, per un faro il
     centro del fascio. Lo stesso flusso concentrato in un fascio più stretto dà più candele.</div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <path d="M4 110 L156 110 L140 88 L20 88 Z" fill="var(--card)" stroke="var(--rule)"/>
@@ -218,7 +219,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <circle cx="80" cy="16" r="5" fill="#FFD36B" stroke="var(--q-ill)"><animate attributeName="cy" values="16;56;16" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></circle>
 <line x1="144" y1="16" x2="144" y2="98" stroke="var(--mut)" stroke-dasharray="2 2"><animate attributeName="y1" values="16;56;16" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></line>
 <text x="148" y="60" class="q-t" fill="var(--mut)">d<animate attributeName="y" values="60;80;60" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text>
-<text x="8" y="16" class="q-t" fill="var(--q-ill)">E = I/d²</text><text x="8" y="28" class="q-t" fill="var(--q-ill)">lux</text></svg><figcaption>Lampada più lontana: la stessa luce su un'area più grande, meno lux (il rettangolino è 1 m²).</figcaption></figure><div><b>Lux</b>, cioè lumen per metro quadro: quanta luce arriva sulla strada a una certa distanza,
+<text x="8" y="16" class="q-t" fill="var(--q-ill)">E = I/d²</text><text x="8" y="28" class="q-t" fill="var(--q-ill)">lux</text></svg><figcaption>Lampada più lontana: la stessa luce su un'area più grande, meno lux (il rettangolino è 1 m²).</figcaption></figure><div><b>Lux</b> <span class="u">(lx = lm/m²)</span>, cioè lumen per metro quadro: quanta luce arriva sulla strada a una certa distanza,
     E = I / d². È quello che vedi davanti alla ruota. Le luci omologate in Germania (StVZO) dichiarano
     proprio i lux a 10 m; lo standard ANSI FL1 dichiara le candele di picco e la <em>portata</em>,
     la distanza a cui il centro del fascio scende a 0,25 lux, circa la luce della luna piena.</div></li>
@@ -246,13 +247,13 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
     <iframe src="w/00-bici.html" title="Due luci da bici: lumen, candele, lux sulla strada e luminanza della lente" loading="lazy"></iframe>
     <figcaption>Cambia flusso, ampiezza del fascio e distanza. <a href="w/00-bici.html">Apri a schermo intero</a></figcaption>
   </figure>
-  <p>Nell'esempio del thread, la luce A ha 1.000 lumen in un fascio di 40°, la luce B 400 lumen in un
-  fascio di 10°. B ha meno lumen ma circa sei volte le candele di A: a 10 m mette sulla strada circa
-  170 lux contro 26, e arriva due volte e mezzo più lontano. A, in compenso, illumina una striscia di
+  <p>Nell'esempio del thread, la luce A ha 1.000 lumen <span class="u">(lm, flusso totale)</span> in un fascio di 40°, la luce B 400 lumen in un
+  fascio di 10°. B ha meno lumen ma circa sei volte le candele <span class="u">(cd = lm/sr)</span> di A: a 10 m mette sulla strada circa
+  170 lux <span class="u">(lx = lm/m²)</span> contro 26, e arriva due volte e mezzo più lontano. A, in compenso, illumina una striscia di
   strada più larga. Per vedere lontano contano le candele, o i lux a 10 m; per vedere ai lati, i lumen
   distribuiti su un fascio largo.</p>
   <p><b>Ora tocca a te.</b> Devi illuminare la tua corsia dove ti serve vedere: allo spazio di
-  arresto, cioè 1 s di reazione più la frenata. A 22 km/h sono circa 10 m. Lì ti servono almeno 60 lux
+  arresto, cioè 1 s di reazione più la frenata. A 22 km/h sono circa 10 m. Lì ti servono almeno 60 lux <span class="u">(lx = lm/m²)</span>
   su 3,5 m di larghezza, senza accecare il ciclista che arriva in senso opposto né il pedone che
   cammina verso di te sul marciapiede. Sei faccine giudicano la luce che hai scelto: luce sulla
   strada, larghezza, ciclista, pedone, prezzo e autonomia.</p>
@@ -263,15 +264,15 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: vedere fino allo spazio di arresto senza abbagliare il pedone, il ciclista e chi arriva dall'altro lato.
   <ol>
     <li>Scegli la velocità: il gioco calcola fino a dove devi vedere.</li>
-    <li>Regola lumen e ampiezza del fascio finché luce sulla strada e larghezza diventano verdi.</li>
+    <li>Regola lumen <span class="u">(lm, flusso totale)</span> e ampiezza del fascio finché luce sulla strada e larghezza diventano verdi.</li>
     <li>Controlla pedone e ciclista: se sono tristi, stringi il fascio o attiva il taglio.</li>
     <li>Guarda prezzo e autonomia, e scegli il tuo compromesso.</li>
   </ol></div>
   <p><b>Quindi, quale luce comprare?</b> Per chi pedala dove c'è altra gente (città, ciclabili,
   strade): una luce con <b>taglio del fascio</b>, cioè omologata StVZO. Mette la luce sulla strada e
-  non negli occhi di chi arriva, e con gli stessi lumen illumina di più. Fra due luci così, confronta i
-  <b>lux a 10 m</b> dichiarati: più alti vuol dire che vedi meglio. Per chi va forte di notte fuori
-  strada, da solo, va bene anche un fascio tondo: lì guardi le <b>candele</b> per la distanza e i lumen
+  non negli occhi di chi arriva, e con gli stessi lumen <span class="u">(lm, flusso totale)</span> illumina di più. Fra due luci così, confronta i
+  <b>lux a 10 m</b> <span class="u">(lx = lm/m²)</span> dichiarati: più alti vuol dire che vedi meglio. Per chi va forte di notte fuori
+  strada, da solo, va bene anche un fascio tondo: lì guardi le <b>candele</b> <span class="u">(cd = lm/sr)</span> per la distanza e i lumen
   per i lati, e conviene montare due luci, una stretta e una larga. I lumen da soli non bastano mai per
   scegliere, e i «cd/m²» della domanda iniziale sono quasi certamente un errore per «candele».</p>
 
@@ -283,19 +284,19 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   <h3>Che cosa misurano lumen, candele, nit, lux e troland</h3>
   <p>Le grandezze della luce non sono alternative fra loro: descrivono la stessa luce in punti diversi.</p>
   <ul>
-    <li><b>Lumen</b> (flusso luminoso): quanta luce emette la sorgente in tutto.</li>
-    <li><b>Candela</b> (intensità): quanta ne emette in una direzione, per unità di angolo solido.</li>
-    <li><b>Nit</b>, cioè candele al metro quadro (luminanza): quanto è <em>concentrata</em> l'emissione, l'intensità divisa per l'area apparente della sorgente. Il sole sta intorno a 10⁹ nit, uno smartphone a 1.000–2.000.</li>
-    <li><b>Lux</b>, cioè lumen al metro quadro (illuminanza): quanta luce <em>arriva</em> su una superficie. Il sole pieno dà circa 100.000 lux.</li>
-    <li><b>Troland</b> (illuminanza sulla retina): luminanza in nit × area della pupilla in mm².</li>
+    <li><b>Lumen</b> (flusso luminoso, <span class="u">lm</span>): quanta luce emette la sorgente in tutto.</li>
+    <li><b>Candela</b> (intensità, <span class="u">cd = lm/sr</span>): quanta ne emette in una direzione, per unità di angolo solido.</li>
+    <li><b>Nit</b> <span class="u">(nit = cd/m²)</span>, cioè candele al metro quadro (luminanza): quanto è <em>concentrata</em> l'emissione, l'intensità divisa per l'area apparente della sorgente. Il sole sta intorno a 10⁹ nit, uno smartphone a 1.000–2.000.</li>
+    <li><b>Lux</b> <span class="u">(lx = lm/m²)</span>, cioè lumen al metro quadro (illuminanza): quanta luce <em>arriva</em> su una superficie. Il sole pieno dà circa 100.000 lux.</li>
+    <li><b>Troland</b> (illuminanza sulla retina, <span class="u">Td = cd/m² × mm²</span>): luminanza in nit × area della pupilla in mm².</li>
   </ul>
   <p>La luminanza appartiene a chi emette o riflette: il sole, la strada. <b>Sull'occhio non arriva una
-  luminanza</b>: arriva un'illuminanza, in lux, e sulla retina un'illuminanza retinica, in troland.
+  luminanza</b>: arriva un'illuminanza, in lux <span class="u">(lx = lm/m²)</span>, e sulla retina un'illuminanza retinica, in troland <span class="u">(Td = cd/m² × mm²)</span>.
   Nel disegno ogni unità ha il suo colore, lo stesso ovunque compaia.</p>
   <p>Ogni sorgente, diretta o riflessa, ha sempre una luminanza e produce sempre un'illuminanza su
   ciò che colpisce. Una superficie opaca illuminata diventa a sua volta una sorgente:</p>
   <p class="formula">L ≈ ρ · E / π</p>
-  <p>dove ρ è la riflettanza. Un asfalto chiaro (ρ ≈ 0,2) sotto 10.000 lux ha circa 600 nit; la neve
+  <p>dove ρ è la riflettanza. Un asfalto chiaro (ρ ≈ 0,2) sotto 10.000 lux <span class="u">(lx = lm/m²)</span> ha circa 600 nit <span class="u">(nit = cd/m²)</span>; la neve
   fresca (ρ ≈ 0,85) circa quattro volte tanto.</p>
   <p>Per una sorgente estesa, l'illuminanza sulla retina dipende solo dalla luminanza e dalla pupilla,
   non dalla distanza: l'angolo solido si semplifica.</p>
@@ -309,9 +310,9 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   </figure>
   <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: capire quale grandezza cambia quando l'abbagliamento sparisce.
   <ol>
-    <li>Metti il semaforo davanti al sole: lumen, candele e nit del sole non cambiano.</li>
-    <li>Guarda l'illuminanza sull'occhio, in lux: crolla. È lei che decide l'abbagliamento.</li>
-    <li>Attiva la neve: la luminanza della strada sale di circa 4 volte, ma resta sotto i 10⁴ nit della soglia di sicurezza. Abbaglia, non danneggia.</li>
+    <li>Metti il semaforo davanti al sole: lumen <span class="u">(lm, flusso totale)</span>, candele <span class="u">(cd = lm/sr)</span> e nit <span class="u">(nit = cd/m²)</span> del sole non cambiano.</li>
+    <li>Guarda l'illuminanza sull'occhio, in lux <span class="u">(lx = lm/m²)</span>: crolla. È lei che decide l'abbagliamento.</li>
+    <li>Attiva la neve: la luminanza della strada sale di circa 4 volte, ma resta sotto i 10⁴ nit <span class="u">(nit = cd/m²)</span> della soglia di sicurezza. Abbaglia, non danneggia.</li>
   </ol></div>
 </section>
 
@@ -331,7 +332,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   </ul>
   <p>Per la luce bianca esiste una regola pratica dell'ICNIRP: sotto 10⁴ cd/m² di luminanza non serve
   nemmeno una valutazione dettagliata del rischio. La soglia vera però si esprime in radianza pesata
-  sullo spettro blu, non in nit.</p>
+  sullo spettro blu, non in nit <span class="u">(nit = cd/m²)</span>.</p>
   <p><b>L'eclissi.</b> La parte di sole visibile ha la stessa luminanza del sole pieno; cala solo
   l'illuminanza sull'occhio. Il danno lo fa la luminanza, ma il campanello d'allarme lo suona
   l'illuminanza: senza fastidio il riflesso di distogliere lo sguardo non scatta, la pupilla si
@@ -348,7 +349,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
     <li>Porta il tempo a 2 minuti: il limite si supera comunque di decine di volte, perché ogni punto della falce brilla come il sole pieno.</li>
     <li>Laser: il collirio non cambia niente, perché il fascio di 1 mm entra tutto in qualsiasi pupilla.</li>
   </ol></div>
-  <p>Il collirio non cambia i lux sull'occhio: cambia l'area della pupilla, quindi i troland. Quali
+  <p>Il collirio non cambia i lux <span class="u">(lx = lm/m²)</span> sull'occhio: cambia l'area della pupilla, quindi i troland <span class="u">(Td = cd/m² × mm²)</span>. Quali
   colliri stringono la pupilla, e su quale muscolo agiscono, è disegnato nella <a href="#occhio">sezione 3</a>.</p>
   <p><b>Lo schermo.</b> Il rischio per la retina è trascurabile, con o senza filtro. L'effetto reale è
   sull'orologio biologico: leggendo circa 4 ore a sera per 5 sere su un tablet, rispetto a un libro
