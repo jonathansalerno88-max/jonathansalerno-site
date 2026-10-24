@@ -246,10 +246,14 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <li>outdoors in the shade: at least 400–500 nits;</li>
     <li>in direct sun: at least 800–1,000 nits, more is better. High-end smartphones reach a peak of
     2,000–3,000 nits; many laptops stay at 300–500 and cannot be read in the sun.</li></ul>
-    A projector, on the other hand, is sold in lumens <span class="u">(lm, total flux)</span>: the luminance of the screen depends
-    on how big you make it. For a matte white screen L ≈ Φ / (π · A): 3,000 lumens on a 100″ screen (about 2.8 m²)
-    give about 1,100 lux <span class="u">(lx = lm/m²)</span> and about 350 nits. In the dark that is plenty; by day the room light
-    also falls on the screen, black turns grey and contrast collapses. That is why a projector wants darkness.</div></div></li>
+    A projector is the opposite case to the bike light: the box gives you lumens <span class="u">(lm, total flux)</span>, but you
+    do not look the projector in the face, you look at the screen. What counts is, for a change, the nits of the
+    screen, and they depend on three things: the projector's lumens, how big the picture is (the same lumens over
+    twice the area give half the lux <span class="u">(lx = lm/m²)</span>) and the reflectance ρ of the screen or wall. For a matte
+    surface L = ρ · E / π. With 3,000 lumens on a 100″ screen (about 2.8 m²) about 1,100 lux arrive: a white
+    screen (ρ ≈ 0.9) sends them back as about 310 nits, a light grey wall (ρ ≈ 0.5) as about 175. Hopefully you
+    chose a white one. In the dark that is plenty; by day the room light also falls on the screen and is reflected
+    the same way: black turns grey and contrast collapses. That is why a projector wants darkness.</div></div></li>
   </ul>
   <p class="qhint">Click a drawing to pause it, click again to resume.</p>
   <script>(function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -666,7 +670,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
     10–15% limits for street lights in
     <a href="https://hjv-lights.com/from-principle-to-standard-a-comprehensive-analysis-of-disability-glare-control-in-road-lighting-threshold-increment/">HJV Lights</a>.</li>
     <li>Screen luminance by setting (200–300 nits indoors, over 800–1,000 in the sun): summary by
-    <a href="https://maketecheasier.com/what-is-nit-of-screen-brightness">Make Tech Easier</a>. Projector screen luminance: Lambertian screen with gain 1, L = E/π.</li>
+    <a href="https://maketecheasier.com/what-is-nit-of-screen-brightness">Make Tech Easier</a>. Projector screen luminance: matte (Lambertian) surface, L = ρ · E / π.</li>
   </ol>
   <p class="caveat">All other values (luminances, trolands, irradiances, positions of the cardinal
   points, parameters of animal eyes) are orders of magnitude from simplified models,
