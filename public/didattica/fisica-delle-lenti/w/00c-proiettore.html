@@ -21,14 +21,14 @@
 <body>
 <h2 class="sr-only">Un proiettore da 3.000 lumen su una tela bianca da 100 pollici e una TV OLED da 77 pollici nella stessa stanza. Il cursore cambia la luce della stanza dal buio al pieno giorno; sotto ogni schermo ci sono il bianco, il nero e il contrasto.</h2>
 <div class="ctl"><span>Luce nella stanza</span><input type="range" id="lx" min="0" max="1000" value="0" oninput="stopP();upd()"><output id="lxO"></output></div>
-<button id="pl" onclick="tog()"></button>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px"><button id="pl" onclick="tog()"></button><label style="display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text-secondary)"><input type="checkbox" id="alr" onchange="upd()"> Telo ALR (respinge la luce della stanza)</label></div>
 <div class="row">
-<div class="cell"><svg viewBox="0 0 320 210" aria-hidden="true"><g id="s0"></g></svg><p class="cap">Proiettore 3.000 lm, tela bianca 100″</p><p class="nums" id="n0"></p><span class="vd" id="v0"></span></div>
+<div class="cell"><svg viewBox="0 0 320 210" aria-hidden="true"><g id="s0"></g></svg><p class="cap" id="c0">Proiettore 3.000 lm, tela bianca 100″</p><p class="nums" id="n0"></p><span class="vd" id="v0"></span></div>
 <div class="cell"><svg viewBox="0 0 320 210" aria-hidden="true"><g id="s1"></g></svg><p class="cap">TV OLED 77″</p><p class="nums" id="n1"></p><span class="vd" id="v1"></span></div>
 </div>
-<p class="note">Modello semplificato. Proiettore: 3.000 lumen (lm, flusso totale) su una tela bianca opaca (ρ 0,9) da 100″, circa 1.100 lux (lx = lm/m²), contrasto nativo 1.000:1. TV OLED: 250 nit (cd/m²) a tutto schermo, riflette l'1 % della luce. La tela rimanda la luce della stanza come quella del proiettore, quindi il suo nero si schiarisce subito; lo schermo della TV è scuro e la luce della stanza quasi non la rimanda. «Slavata» vuol dire contrasto sotto 10:1; «poco luminosa» vuol dire bianco sotto circa 3 volte la luminanza della parete.</p>
+<p class="note">Modello semplificato. Proiettore: 3.000 lumen (lm, flusso totale) su una tela bianca opaca (ρ 0,9) da 100″, circa 1.100 lux (lx = lm/m²), contrasto nativo 1.000:1. TV OLED: 250 nit (cd/m²) a tutto schermo, riflette l'1 % della luce. La tela rimanda la luce della stanza come quella del proiettore, quindi il suo nero si schiarisce subito; lo schermo della TV è scuro e la luce della stanza quasi non la rimanda. Il telo ALR rimanda l’80 % della luce del proiettore, che arriva da davanti, e solo il 15 % di quella della stanza, che arriva di lato e dall’alto. «Slavata» vuol dire contrasto sotto 10:1; «poco luminosa» vuol dire bianco sotto circa 3 volte la luminanza della parete.</p>
 <script>
-var L={"loc": "it-IT", "play": "▶ Dal buio al giorno", "stop": "❚❚ Ferma", "marks": [[0.2, "buio"], [30, "sera, una lampada"], [100, "giorno, tende chiuse"], [500, "giorno pieno"]], "w": "bianco {W} nit", "b": "nero {B} nit", "c": "contrasto {C}:1", "v": ["si vede bene", "slavata", "buon contrasto, ma poco luminosa"]},run=false,t0=null,ph=0;
+var L={"loc": "it-IT", "play": "▶ Dal buio al giorno", "stop": "❚❚ Ferma", "marks": [[0.2, "buio"], [30, "sera, una lampada"], [100, "giorno, tende chiuse"], [500, "giorno pieno"]], "w": "bianco {W} nit", "b": "nero {B} nit", "c": "contrasto {C}:1", "v": ["si vede bene", "slavata", "buon contrasto, ma poco luminosa"], "pj": "Proiettore 3.000 lm, tela bianca 100″", "pja": "Proiettore 3.000 lm, telo ALR 100″"},run=false,t0=null,ph=0;
 var LMIN=Math.log10(0.2),LMAX=Math.log10(700);
 function lux(){return Math.pow(10,LMIN+(LMAX-LMIN)*(+document.getElementById('lx').value)/1000)}
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d||0,minimumFractionDigits:d||0})}
@@ -50,10 +50,11 @@ function scene(E,Lw,Lb,tv){
  if(!tv)s+='<path d="M130 196 L'+x+' '+(y+h)+' L'+(x+w)+' '+(y+h)+'Z" fill="#FFF3C4" opacity="'+(0.22*(1-a)+0.03)+'"/><rect x="112" y="192" width="36" height="13" rx="4" fill="#3A3A38"/><circle cx="130" cy="192" r="3.5" fill="#FFE9A8"/>';
  return [s,need];}
 function upd(){
- var E=lux();var m='';L.marks.forEach(function(k){if(Math.abs(Math.log10(E/k[0]))<0.25)m=' · '+k[1]});
+ var E=lux();var m='';L.marks.forEach(function(k){if(Math.abs(Math.log10(E/k[0]))<0.15)m=' · '+k[1]});
  document.getElementById('lxO').textContent=sig(E)+' lux'+m;
  document.getElementById('pl').textContent=run?L.stop:L.play;
- var Ep=3000/2.76,D=[[0.9*Ep/Math.PI+0.9*E/Math.PI,0.9*Ep/Math.PI/1000+0.9*E/Math.PI],[250+0.01*E/Math.PI,250/1e6+0.01*E/Math.PI]];
+ var A=document.getElementById('alr').checked,rp=A?0.8:0.9,ra=A?0.15:0.9;document.getElementById('c0').textContent=A?L.pja:L.pj;
+ var Ep=3000/2.76,D=[[rp*Ep/Math.PI+ra*E/Math.PI,rp*Ep/Math.PI/1000+ra*E/Math.PI],[250+0.01*E/Math.PI,250/1e6+0.01*E/Math.PI]];
  D.forEach(function(d,i){var r=scene(E,d[0],d[1],i===1),C=d[0]/d[1],k=C<10?1:d[0]<r[1]?2:0;
   document.getElementById('s'+i).innerHTML=r[0];
   document.getElementById('n'+i).textContent=fmt(L.w,{W:sig(d[0])})+' · '+fmt(L.b,{B:sig(d[1])})+' · '+fmt(L.c,{C:sig(C)});
