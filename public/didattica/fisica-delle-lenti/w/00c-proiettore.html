@@ -9,6 +9,7 @@
 svg[viewBox]{min-width:0!important;max-width:100%!important}
 .ctl{display:grid;grid-template-columns:minmax(100px,auto) 1fr 150px;align-items:center;gap:6px 10px;font-size:13px;color:var(--text-secondary);margin:4px 0}
 .ctl output{text-align:right;color:var(--text-primary);font-weight:500;font-variant-numeric:tabular-nums}
+@media (max-width:440px){.ctl{grid-template-columns:1fr auto}.ctl>span{grid-column:1/-1}.ctl output{min-width:0}.cell{flex-basis:100%}}
 .tog{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);margin:4px 0}
 .tog>span:first-child{min-width:100px}
 .tog button{font:inherit;font-size:13px;padding:4px 10px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
