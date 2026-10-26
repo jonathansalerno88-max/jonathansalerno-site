@@ -31,20 +31,20 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 </head>
 <body>
 <h2 class="sr-only">Two recipes side by side for removing motion blur on a gaming TV. For each one choose the game's frames per second, the TV's refresh rate, interpolation, black frame insertion and HDR; five checks say whether it passes an online shooter or an HDR adventure.</h2>
-<div class="tog"><span>What game is it</span><span id="mB"></span></div>
+<div class="tog"><span>What are you watching</span><span id="mB"></span></div>
 <div class="tog"><span>Starting recipes</span><span id="pB"></span></div>
-<label class="best"><input type="checkbox" id="best" onchange="upd()"> Best compromise (keeping the game's fps)</label>
+<label class="best"><input type="checkbox" id="best" onchange="upd()"> Best compromise (keeping the fps)</label>
 <div class="row">
 <div class="cell" id="c0"><p class="cap" id="h0"></p><div id="k0"></div><svg viewBox="0 0 320 120" aria-hidden="true"><g id="s0"></g></svg><table class="ck" id="t0"></table><div class="f" id="f0"></div></div>
 <div class="cell" id="c1"><p class="cap" id="h1"></p><div id="k1"></div><svg viewBox="0 0 320 120" aria-hidden="true"><g id="s1"></g></svg><table class="ck" id="t1"></table><div class="f" id="f1"></div></div>
 </div>
 <p class="u">Hz = 1/s · fps = images/s · nit = cd/m²</p>
 <div class="cmp" id="cmp"></div>
-<p class="note">Simplified model, orders of magnitude for a mid-range OLED TV. Persistence P: how long each image stays lit; with no tricks it is 1/fps, with interpolation 1/Hz, with BFI half the refresh. Blur = speed × P, with an object crossing 1,920 px in 2 s (960 px/s). Game-mode lag about 10 ms with a 60 Hz signal and 5 ms at 120 Hz, as in typical RTINGS measurements; low-latency interpolation (only some TVs, and without VRR) must wait for the next real frame, so it adds 1/fps; standard interpolation, outside game mode, brings lag to tens or hundreds of ms (100 here). BFI: half the refresh is black, so half the light and about half a refresh of extra lag; at 60 Hz many people see it flicker, and many TVs switch it off with HDR. If the game is slower than the TV, BFI flashes the same image twice and you see it double. HDR peak 800 nits, SDR 300 nits; convincing HDR from 600 nits up (like the VESA DisplayHDR 600 tier). Blur and lag limits chosen for the comparison: shooter 8 px and 20 ms, adventure 12 px and 50 ms.</p>
+<p class="note">Simplified model, orders of magnitude for a mid-range OLED TV. Persistence P: how long each image stays lit; with no tricks it is 1/fps, with interpolation 1/Hz, with BFI half the refresh. Blur = speed × P, with an object crossing 1,920 px in 2 s (960 px/s). Game-mode lag about 10 ms with a 60 Hz signal and 5 ms at 120 Hz, as in typical RTINGS measurements; low-latency interpolation (only some TVs, and without VRR) must wait for the next real frame, so it adds 1/fps; standard interpolation, outside game mode, brings lag to tens or hundreds of ms (100 here). BFI: half the refresh is black, so half the light and about half a refresh of extra lag; at 60 Hz many people see it flicker, and many TVs switch it off with HDR. If the game is slower than the TV, BFI flashes the same image twice and you see it double. HDR peak 800 nits, SDR 300 nits; convincing HDR from 600 nits up (like the VESA DisplayHDR 600 tier). Standard interpolation has more time to compute and makes fewer halos than the low-latency kind. Blur and lag limits chosen for the comparison: shooter 8 px and 20 ms, adventure 12 px and 50 ms, film 12 px and any lag, because nobody presses buttons; in a film halos are a flaw to accept or not, not a fail.</p>
 <script>
-var L={"loc": "en-GB", "miss": ["Online shooter", "HDR adventure"], "pres": ["A: HDR + 60 fps + interpolation · B: 120 Hz + BFI"], "rec": ["Recipe A", "Recipe B"], "fps": "The game runs at", "hz": "The TV runs at", "ip": "Interpolation", "ips": ["No", "Low latency", "Standard"], "bfi": "BFI", "hdr": "HDR", "yn": ["No", "Yes"], "ipx": "Needs a TV faster than the game", "chk": ["Blur", "Lag", "HDR light", "Flicker", "Clean image"], "v_s": "{S} px (max {M})", "v_r": "{R} ms (max {M})", "v_l": "{P} nits (min 600)", "v_l0": "does not matter", "v_f": ["no", "yes, at {H} Hz"], "v_c": ["yes", "slight halos", "obvious halos", "double image"], "lag": "lag", "zoom": "magnified ×3: the object crosses the screen in 2 s", "flk": "flickers", "fP0": "P = 1 / {R} fps = <b>{P} ms</b> (each image stays lit the whole time)", "fPi": "P = 1 / {H} Hz = <b>{P} ms</b> ({N})", "ipn": {"2": "one image in two is invented", "4": "three images in four are invented"}, "fl": ["blur", "lag", "HDR light", "flicker", "halos or double image"], "fPb": "P = 1 / {H} Hz × 0.5 = {F} ms × 0.5 = <b>{P} ms</b>", "fS": "blur = 960 px/s × {Ps} s = <b>{S} px</b>", "fR": "lag = {B} ms (game mode, {H} Hz signal)", "fRi": " + {W} ms (waiting for the next real frame)", "fRb": " + {X} ms (BFI)", "fRs": "lag ≈ <b>100 ms</b> (interpolation outside game mode)", "fRt": " = <b>{R} ms</b>", "fL": "peak = {L} nits × {D} = <b>{P} nits</b>", "win_both": "Both pass. {W} wins: {why}.", "why": ["less blur", "more light"], "whyc": "no halos", "win_one": "{W} wins. {X} fails on: {F}.", "win_none": "Neither wins. A fails on: {FA}. B fails on: {FB}.", "warn": " Note: {W} has {A}."},mis=1,FPS=[30,60,120],HZ=[60,120],V=960;
-var P0=[{fps:60,hz:120,ip:1,bfi:0,hdr:1},{fps:120,hz:120,ip:0,bfi:1,hdr:1}],S=JSON.parse(JSON.stringify(P0)),pre=0;
-var LIM=[{s:8,r:20,hdr:false,halo:1},{s:12,r:50,hdr:true,halo:2}];
+var L={"loc": "en-GB", "miss": ["Online shooter", "HDR adventure", "Film (24 fps)"], "pres": ["A: HDR + 60 fps + interpolation · B: 120 Hz + BFI", "A: HDR + interpolation · B: 120 Hz + BFI"], "rec": ["Recipe A", "Recipe B"], "fps": "Real images", "hz": "The TV runs at", "ip": "Interpolation", "ips": ["No", "Low latency", "Standard"], "bfi": "BFI", "hdr": "HDR", "yn": ["No", "Yes"], "ipx": "Needs a TV faster than the game", "chk": ["Blur", "Lag", "HDR light", "Flicker", "Clean image"], "v_s": "{S} px (max {M})", "v_r": "{R} ms (max {M})", "v_r0": "{R} ms (does not matter)", "v_l": "{P} nits (min 600)", "v_l0": "does not matter", "v_f": ["no", "yes, at {H} Hz"], "v_c": ["yes", "slight halos", "obvious halos", "double image"], "lag": "lag", "zoom": "magnified ×3: the object crosses the screen in 2 s", "flk": "flickers", "fP0": "P = 1 / {R} fps = <b>{P} ms</b> (each image stays lit the whole time)", "fPi": "P = 1 / {H} Hz = <b>{P} ms</b> ({N})", "ipn": {"20": "one image in two is invented", "40": "three images in four are invented", "50": "four images in five are invented", "25": "three images in five are invented"}, "fl": ["blur", "lag", "HDR light", "flicker", "halos or double image"], "fPb": "P = 1 / {H} Hz × 0.5 = {F} ms × 0.5 = <b>{P} ms</b>", "fS": "blur = 960 px/s × {Ps} s = <b>{S} px</b>", "fR": "lag = {B} ms (game mode, {H} Hz signal)", "fRi": " + {W} ms (waiting for the next real frame)", "fRb": " + {X} ms (BFI)", "fRs": "lag ≈ <b>100 ms</b> (interpolation outside game mode)", "fRt": " = <b>{R} ms</b>", "fL": "peak = {L} nits × {D} = <b>{P} nits</b>", "win_both": "Both pass. {W} wins: {why}.", "win_tie": "Both pass, level.", "why": ["less blur", "more light", "more light"], "whyc": "no halos", "win_one": "{W} wins. {X} fails on: {F}.", "win_none": "Neither wins. A fails on: {FA}. B fails on: {FB}.", "warn": " Note: {W} has {A}."},mis=1,FPS=[24,30,60,120],HZ=[60,120],V=960;
+var P0=[{fps:60,hz:120,ip:1,bfi:0,hdr:1},{fps:120,hz:120,ip:0,bfi:1,hdr:0}],PF=[{fps:24,hz:120,ip:2,bfi:0,hdr:1},{fps:24,hz:120,ip:0,bfi:1,hdr:0}],S=JSON.parse(JSON.stringify(P0)),pre=0;
+var LIM=[{s:8,r:20,hdr:false,halo:1},{s:12,r:50,hdr:true,halo:2},{s:12,r:null,hdr:true,halo:3}];
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d||0,minimumFractionDigits:d||0})}
 function fmt(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
 function btns(arr,cur,fn,dis){var h='';arr.forEach(function(t,i){h+='<button '+(dis&&dis(i)?'disabled ':'')+'class="'+(i===cur?'act':'')+'" onclick="'+(fn.slice(-1)===','?fn+i+')':fn+'('+i+')')+'">'+t+'</button>'});return h}
@@ -57,23 +57,23 @@ function calc(c){
  o.peak=(c.hdr?800:300)*(c.bfi?0.5:1);
  o.flk=c.bfi&&hz<=60;
  o.dbl=c.bfi&&R<hz;
- o.halo=ip?(fps<=30?2:1):0;
+ o.halo=ip===2?1:ip?(fps<=30?2:1):0;
  o.clean=o.dbl?3:o.halo;
  var lim=LIM[mis];o.st=[];
  o.st[0]=o.S<=lim.s?2:0;
- o.st[1]=Math.round(o.lag*10)/10<=lim.r?2:0;
+ o.st[1]=lim.r===null?-1:Math.round(o.lag*10)/10<=lim.r?2:0;
  o.st[2]=lim.hdr?((c.hdr&&o.peak>=600)?2:0):-1;
  o.st[3]=o.flk?0:2;
  o.st[4]=o.clean===0?2:(o.clean<lim.halo?1:0);
  var w=[100,100,100,120,150];o.score=0;o.st.forEach(function(s,i){if(s===0)o.score+=w[i];if(s===1)o.score+=10});
- o.tb=mis===0?o.S+o.lag/10-o.peak/1e5:-o.peak/100+o.S/10;
+ o.tb=(mis===0?o.S+o.lag/10-o.peak/1e5:-o.peak/100+o.S/10)+(c.bfi&&c.hdr?1:0)+o.clean*0.5;
  o.pass=o.st.every(function(s){return s!==0});
  return o}
 function bestFor(fps){var b=null,bc=null;HZ.forEach(function(hz){[0,1,2].forEach(function(ip){[0,1].forEach(function(bfi){[0,1].forEach(function(hdr){
  if(ip&&hz<=Math.min(fps,hz))return;var c={fps:fps,hz:hz,ip:ip,bfi:bfi,hdr:hdr},o=calc(c);
  if(!b||o.score<b.score||(o.score===b.score&&o.tb<b.tb-1e-9)){b=o;bc=c}})})})});return bc}
-function setM(i){mis=i;upd()}
-function setP(){pre=0;S=JSON.parse(JSON.stringify(P0));document.getElementById('best').checked=false;upd()}
+function setM(i){var f=(i===2)!==(mis===2);mis=i;if(f){var B=JSON.parse(JSON.stringify(mis===2?PF:P0));S=S.map(function(c,p){return pre===0?B[p]:Object.assign({},c,{fps:B[p].fps})})}upd()}
+function setP(){pre=0;S=JSON.parse(JSON.stringify(mis===2?PF:P0));document.getElementById('best').checked=false;upd()}
 function set(k,p,i){S[p][k]=k==='fps'?FPS[i]:k==='hz'?HZ[i]:i;pre=-1;if(k!=='fps')document.getElementById('best').checked=false;upd()}
 function scene(o,c,i){
  var a=Math.min(1,o.peak/800),bg='rgb('+Math.round(14+40*a)+','+Math.round(20+50*a)+','+Math.round(34+70*a)+')';
@@ -96,11 +96,11 @@ function upd(){
  var bst=document.getElementById('best').checked;
  if(bst){S=S.map(function(c){return bestFor(c.fps)});pre=-1}
  document.getElementById('mB').innerHTML=btns(L.miss,mis,'setM');
- document.getElementById('pB').innerHTML=btns(L.pres,pre,'setP');
+ document.getElementById('pB').innerHTML=btns([L.pres[mis===2?1:0]],pre,'setP');
  var O=[];
  [0,1].forEach(function(p){
   var c=S[p],o=calc(c);O[p]=o;var d=function(){return bst};
-  var h='<div class="tog"><span>'+L.fps+'</span>'+btns(FPS.map(function(f){return f+' fps'}),FPS.indexOf(c.fps),'set(\'fps\','+p+',')+'</div>';
+  var h='<div class="tog"><span>'+L.fps+'</span>'+btns(FPS.map(function(f){return f+' fps'}),FPS.indexOf(c.fps),'set(\'fps\','+p+',',function(i){return mis===2?i>0:i===0})+'</div>';
   h+='<div class="tog"><span>'+L.hz+'</span>'+btns(HZ.map(function(f){return f+' Hz'}),HZ.indexOf(c.hz),'set(\'hz\','+p+',',d)+'</div>';
   var ipd=function(i){return bst||(i>0&&c.hz<=c.fps)};
   h+='<div class="tog"'+(c.hz<=c.fps?' title="'+L.ipx+'"':'')+'><span>'+L.ip+'</span>'+btns(L.ips,o.ip,'set(\'ip\','+p+',',ipd)+'</div>';
@@ -110,7 +110,7 @@ function upd(){
   document.getElementById('s'+p).innerHTML=scene(o,c,p);
   var lim=LIM[mis],rows=[
    fmt(L.v_s,{S:nf(o.S,0),M:lim.s}),
-   fmt(L.v_r,{R:nf(o.lag,0),M:lim.r}),
+   fmt(lim.r===null?L.v_r0:L.v_r,{R:nf(o.lag,0),M:lim.r}),
    lim.hdr?fmt(L.v_l,{P:nf(o.peak)}):L.v_l0,
    o.flk?fmt(L.v_f[1],{H:c.hz}):L.v_f[0],
    L.v_c[o.clean]],t='';
@@ -119,20 +119,21 @@ function upd(){
   document.getElementById('t'+p).innerHTML=t;
   var f='';
   if(c.bfi)f+=fmt(L.fPb,{H:c.hz,F:nf(1000/c.hz,1),P:nf(o.P,1)});
-  else if(o.ip)f+=fmt(L.fPi,{H:c.hz,P:nf(o.P,1),N:L.ipn[String(Math.round(c.hz/o.fps))]});
+  else if(o.ip)f+=fmt(L.fPi,{H:c.hz,P:nf(o.P,1),N:L.ipn[String(Math.round(c.hz/o.fps*10))]});
   else f+=fmt(L.fP0,{R:o.fps,P:nf(o.P,1)});
   f+='<br>'+fmt(L.fS,{Ps:nf(o.P/1000,4),S:nf(o.S,0)})+'<br>';
   if(o.ip===2)f+=L.fRs;else{f+=fmt(L.fR,{B:nf(o.base,1),H:o.fps});if(o.wait)f+=fmt(L.fRi,{W:nf(o.wait,1)});if(o.xb)f+=fmt(L.fRb,{X:nf(o.xb,1)});if(o.wait||o.xb)f+=fmt(L.fRt,{R:nf(o.lag,0)})}
   f+='<br>'+fmt(L.fL,{L:c.hdr?800:300,D:c.bfi?nf(0.5,1):'1',P:nf(o.peak)});
   document.getElementById('f'+p).innerHTML=f;
   var cl=document.getElementById('c'+p);cl.classList.toggle('okc',o.pass);cl.classList.toggle('noc',!o.pass);
-  var hz=o.hz,lb=L.rec[p]+' · '+o.fps+' fps, '+hz+' Hz'+(o.ip?', '+L.ip.toLowerCase():'')+(c.bfi?', BFI':'')+(c.hdr?', HDR':'');
+  var hz=o.hz,lb=L.rec[p]+' · '+o.fps+' fps, '+hz+' Hz'+(o.ip?', '+L.ip.toLowerCase()+' ('+L.ips[o.ip].toLowerCase()+')':'')+(c.bfi?', BFI':'')+(c.hdr?', HDR':'');
   document.getElementById('h'+p).textContent=(o.pass?'✓ ':'✗ ')+lb;
  });
  var fl=function(o){return o.st.map(function(s,i){return s===0?L.fl[i]:null}).filter(Boolean).join(', ')};
  var wa=function(o){return o.st[4]===1?L.v_c[o.clean]:''};
  var s;
- if(O[0].pass&&O[1].pass){var w=(O[0].score<O[1].score||(O[0].score===O[1].score&&O[0].tb<=O[1].tb))?0:1;s=fmt(L.win_both,{W:L.rec[w],why:O[w].score<O[1-w].score?L.whyc:L.why[mis]})}
+ if(O[0].pass&&O[1].pass&&O[0].score===O[1].score&&Math.abs(O[0].tb-O[1].tb)<1e-9)s=L.win_tie;
+ else if(O[0].pass&&O[1].pass){var w=(O[0].score<O[1].score||(O[0].score===O[1].score&&O[0].tb<=O[1].tb))?0:1;s=fmt(L.win_both,{W:L.rec[w],why:O[w].score<O[1-w].score?L.whyc:L.why[mis]})}
  else if(O[0].pass||O[1].pass){var w=O[0].pass?0:1;s=fmt(L.win_one,{W:L.rec[w],X:L.rec[1-w],F:fl(O[1-w])})}
  else s=fmt(L.win_none,{FA:fl(O[0]),FB:fl(O[1])});
  [0,1].forEach(function(p){if(O[p].pass&&wa(O[p]))s+=fmt(L.warn,{W:L.rec[p],A:wa(O[p])})});

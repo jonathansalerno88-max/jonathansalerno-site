@@ -98,8 +98,8 @@ figure.w iframe{display:block; width:100%; height:560px; border:1px solid var(--
   border-radius:10px; background:#FBFCFD}
 figure.w iframe.h-simple{height:600px}
 figure.w iframe.h-game{height:1240px}
-figure.w iframe.h-sfida{height:1010px}
-@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:1810px}}
+figure.w iframe.h-sfida{height:1100px}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:1975px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -433,17 +433,22 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   at 120 fps and <b>BFI</b> (Black Frame Insertion). Half of every refresh is black and persistence drops to 4.2 ms,
   but the light is halved, and HDR with it; and at 60 Hz the screen flickers. How to find your way: look at the
   blur, the <b>lag</b> between button and screen, and the peak nits <span class="u">(nit = cd/m²)</span>. Which one
-  matters most depends on the game.</p>
+  matters most depends on what you are watching: in a film, for example, nobody presses buttons.</p>
   <figure class="w">
     <iframe src="w/00f-sfida-gaming.html" title="Gaming TV: HDR + 60 fps + interpolation versus 120 Hz + black frame insertion" loading="lazy" class="h-sfida"></iframe>
-    <figcaption>The two recipes side by side: choose the kind of game, then change fps, hertz, interpolation, BFI and HDR. The blur is magnified three times. <a href="w/00f-sfida-gaming.html">Open full screen</a></figcaption>
+    <figcaption>The two recipes side by side: choose shooter, adventure or film, then change fps, hertz, interpolation, BFI and HDR. The blur is magnified three times. <a href="w/00f-sfida-gaming.html">Open full screen</a></figcaption>
   </figure>
-  <p><b>And the winner is… it depends on the game.</b> In an HDR adventure interpolation wins: 8 px of blur, about
-  27 ms of lag and 800 nits, at the price of a few halos around fast objects. BFI loses, because 800 nits become 400.
-  In an online shooter it flips: BFI at 120 Hz gives 4 px of blur and 9 ms of lag, while interpolation goes past
+  <p><b>And the winner is… it depends on what you are watching.</b> In an HDR adventure interpolation wins: 8 px of
+  blur, about 27 ms of lag and 800 nits, at the price of a few halos around fast objects. BFI loses: without HDR it
+  gives 150 nits, and even with HDR on 800 nits become 400 (which is why many TVs switch it off with HDR). In an
+  online shooter it flips: BFI at 120 Hz gives 4 px of blur and 9 ms of lag, while interpolation goes past
   20 ms and leaves halos right on the targets. Tick ‘Best compromise’ and a third recipe turns up, which beats both in
   the adventure: <b>real 120 Hz, no tricks</b>, with 8 px of blur, 5 ms of lag and all 800 nits. It does need the
-  game to really run at 120 fps: if it runs at 60, no combination passes a shooter.</p>
+  game to really run at 120 fps: if it runs at 60, no combination passes a shooter. In a <b>film</b> interpolation
+  wins outright, because its highest price, lag, does not matter there: from 24 fps the TV invents four images in
+  five and the blur drops from 40 px to 8 px. The standard version, which has more time to compute, makes fewer halos
+  than the gaming one. What remains is the <b>soap opera effect</b>, the smooth, live-broadcast look of the motion:
+  some find it a betrayal of cinema, others feel they are right inside the scene.</p>
 
 
 </section>

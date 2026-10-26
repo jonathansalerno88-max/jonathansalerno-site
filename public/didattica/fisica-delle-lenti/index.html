@@ -98,8 +98,8 @@ figure.w iframe{display:block; width:100%; height:560px; border:1px solid var(--
   border-radius:10px; background:#FBFCFD}
 figure.w iframe.h-simple{height:600px}
 figure.w iframe.h-game{height:1240px}
-figure.w iframe.h-sfida{height:1010px}
-@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:1810px}}
+figure.w iframe.h-sfida{height:1100px}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:1975px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -433,18 +433,21 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   La seconda: gioco a 120 fps e <b>BFI</b> (Black Frame Insertion). Metà di ogni refresh è nera e la persistenza
   scende a 4,2 ms, ma la luce si dimezza, e con lei l'HDR; a 60 Hz, poi, lo schermo sfarfalla. Come orientarsi: guarda
   la scia, il <b>ritardo</b> fra il tasto e lo schermo e i nit <span class="u">(nit = cd/m²)</span> di picco. Quale
-  conta di più dipende dal gioco.</p>
+  conta di più dipende da cosa guardi: in un film, per esempio, nessuno preme tasti.</p>
   <figure class="w">
     <iframe src="w/00f-sfida-gaming.html" title="TV da gaming: HDR + 60 fps + interpolazione contro 120 Hz + black frame insertion" loading="lazy" class="h-sfida"></iframe>
-    <figcaption>Le due ricette affiancate: scegli il tipo di gioco, poi cambia fps, hertz, interpolazione, BFI e HDR. La scia è ingrandita tre volte. <a href="w/00f-sfida-gaming.html">Apri a schermo intero</a></figcaption>
+    <figcaption>Le due ricette affiancate: scegli sparatutto, avventura o film, poi cambia fps, hertz, interpolazione, BFI e HDR. La scia è ingrandita tre volte. <a href="w/00f-sfida-gaming.html">Apri a schermo intero</a></figcaption>
   </figure>
-  <p><b>E il vincitore è… dipende dal gioco.</b> In un'avventura in HDR vince l'interpolazione: 8 px di scia, circa
-  27 ms di ritardo e 800 nit, al prezzo di qualche alone sugli oggetti veloci. La BFI perde, perché 800 nit diventano
-  400. In uno sparatutto online si ribalta: la BFI a 120 Hz dà 4 px di scia e 9 ms di ritardo, mentre l'interpolazione
+  <p><b>E il vincitore è… dipende da cosa guardi.</b> In un'avventura in HDR vince l'interpolazione: 8 px di scia, circa
+  27 ms di ritardo e 800 nit, al prezzo di qualche alone sugli oggetti veloci. La BFI perde: senza HDR fa 150 nit, e
+  anche accendendolo 800 nit diventano 400 (molte TV, infatti, con l'HDR la spengono). In uno sparatutto online si ribalta: la BFI a 120 Hz dà 4 px di scia e 9 ms di ritardo, mentre l'interpolazione
   supera i 20 ms e lascia aloni proprio sui bersagli. Spunta «Miglior compromesso» e salta fuori una terza ricetta, che
   nell'avventura le batte tutte e due: <b>120 Hz veri, senza trucchi</b>, con 8 px di scia, 5 ms di ritardo e tutti
   gli 800 nit. Serve però che il gioco giri davvero a 120 fps: se gira a 60, in uno sparatutto nessuna combinazione
-  passa.</p>
+  passa. Nel <b>film</b> l'interpolazione vince netto, perché il suo prezzo più alto, il ritardo, lì non conta: da 24 fps
+  la TV inventa quattro immagini su cinque e la scia scende da 40 px a 8 px. La versione standard, che ha più tempo per
+  calcolare, fa meno aloni di quella da gioco. Resta l'<b>effetto soap opera</b>, cioè il movimento fluido da presa
+  diretta: c'è chi lo trova un tradimento del cinema, e chi ci si sente dentro.</p>
 
 
 </section>
