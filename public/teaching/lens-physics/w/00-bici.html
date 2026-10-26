@@ -40,9 +40,10 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 <div class="f" id="f1"></div><div class="f flux" id="f2"></div><div class="f" id="f3"></div><div class="f ill" id="f4"></div><div class="f" id="f5"></div>
 <div class="chk"><b id="k1"></b><span>You see the pothole at the stopping distance</span></div>
 <div class="chk"><b id="k2"></b><span>The beam covers the lane</span></div>
+<div class="chk"><b id="k3"></b><span>Estimated cost</span></div>
 </div></div>
 <div class="res" id="res"></div>
-<p class="note">Simplified model: uniform beam inside a cone, seen from above; real headlights have a centre brighter than the average. Braking 5 m/s² dry and 3 m/s² wet; 1 s reaction. Target at the stopping distance: 10 lux (lx = lm/m²) with street lights, 30 lux on a dark road. Candelas: cd = lm/sr.</p>
+<p class="note">Simplified model: uniform beam inside a cone, seen from above; real headlights have a centre brighter than the average. Braking 5 m/s² dry and 3 m/s² wet; 1 s reaction. Target at the stopping distance: 10 lux (lx = lm/m²) with street lights, 30 lux on a dark road. Candelas: cd = lm/sr. Cost: a rough estimate, about €15 + €4 per 100 lumens, plus a few euros for narrow-beam optics; real prices vary a lot with brand and battery.</p>
 <script>
 var L={"loc": "en-GB", "pres": ["Light A: 1,000 lm, 40°", "Light B: 400 lm, 10°"], "roads": ["Dry", "Wet"], "lits": ["Good (street lights)", "Poor or none"], "f1": "d = v · 1 s + v² / (2a) = {V} m/s × 1 s + ({V} m/s)² / (2 × {A} m/s²) = <b>{D} m</b>", "f2": "Ω = 2π · (1 − cos(α/2)) = 2π · (1 − cos {H}°) = <b>{O} sr</b>", "f3": "I = Φ / Ω = {F} lm ÷ {O} sr = <b>{I} lm/sr = {I} cd</b>", "f4": "E at {D} m = I / d² = {I} lm/sr ÷ ({D} m)²/sr = <b>{E} lm/m² = {E} lx</b> ({T} lx needed)", "f5": "width at {D} m = 2 · d · tan(α/2) = 2 × {D} m × tan {H}° = <b>{W} m</b> (lane 3.5 m)", "yes": "yes", "no": "no", "both": "✓ You see far and wide: the right light for these conditions.", "onlyfar": "You see the pothole, but the beam is too narrow: the sides are dark. You need more lumens to widen it without losing candelas.", "onlywide": "The beam is wide but too little light gets out there: you need more candelas (a narrower beam or more lumens).", "none": "Neither enough light out there nor enough width: you need more lumens.", "obst": "pothole", "wx": "width drawn ×3"},wet=0,lit=0,TG=[10,30],AC=[5,3],LANE=3.5,pre=-1;
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d||0,minimumFractionDigits:d||0})}
@@ -58,7 +59,8 @@ function upd(keep){
  var F=+document.getElementById('F').value,al=+document.getElementById('a').value,V=+document.getElementById('v').value;
  document.getElementById('FO').textContent=nf(F)+' lm';document.getElementById('aO').textContent=al+'°';document.getElementById('vO').textContent=V+' km/h';
  var v=V/3.6,A=AC[wet],D=v+v*v/(2*A),h=al/2*Math.PI/180,O=2*Math.PI*(1-Math.cos(h)),I=F/O,E=I/(D*D),W=2*D*Math.tan(h),Tg=TG[lit];
- var far=E>=Tg,wide=W>=LANE;
+ var far=E>=Tg,wide=W>=LANE,price=15+0.04*F+(al<15?12:al<25?5:0),pc=price<40?0:price<70?1:2;
+ var k3=document.getElementById('k3');k3.textContent='≈ '+nf(Math.round(price/5)*5)+' €';k3.style.background=['#EAF3DE','#FAEEDA','#FCEBEB'][pc];k3.style.color=['#27500A','#854F0B','#A32D2D'][pc];
  document.getElementById('f1').innerHTML=fmt(L.f1,{V:nf(v,1),A:A,D:nf(D,1)});
  document.getElementById('f2').innerHTML=fmt(L.f2,{H:nf(al/2,al%2?1:0),O:nf(O,O<0.1?3:2)});
  document.getElementById('f3').innerHTML=fmt(L.f3,{F:nf(F),O:nf(O,O<0.1?3:2),I:nf(r50(I))});
