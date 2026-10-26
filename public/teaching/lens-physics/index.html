@@ -119,6 +119,10 @@ ul.qty figure.paused::after{opacity:.9}
 #projector,#motion{margin-top:2.6rem; scroll-margin-top:1rem}
 .qsub{list-style:disc; padding-left:1.2rem; margin:.35rem 0 0}
 .qsub li{margin:.2rem 0}
+.dim{font-size:.875rem; color:var(--mut); border-left:3px solid var(--q-int); background:var(--card); border-radius:0 6px 6px 0; padding:.35rem .7rem .3rem; margin:.5rem 0 .2rem; max-width:38rem}
+.dim b{color:var(--ink); font-weight:600}
+.dim ul{margin:.15rem 0 0; padding-left:1.1rem; list-style:disc}
+.dim li{margin:.15rem 0}
 .qhint{font-size:.8125rem; color:var(--faint); margin:-.4rem 0 1rem}
 @media (max-width:30rem){ul.qty>li{grid-template-columns:1fr} ul.qty figure{max-width:15rem}}
 :root{--q-flux:#534AB7; --q-int:#185FA5; --q-ill:#B5520C; --q-lum:#0F6E56}
@@ -214,7 +218,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <circle cx="80" cy="56" r="46" class="q-wave"/>
 <g class="q-rays" stroke="var(--q-flux)" stroke-width="1.6" stroke-linecap="round"><line x1="91.6" y1="59.1" x2="120.6" y2="66.9"/><line x1="88.5" y1="64.5" x2="109.7" y2="85.7"/><line x1="83.1" y1="67.6" x2="90.9" y2="96.6"/><line x1="76.9" y1="67.6" x2="69.1" y2="96.6"/><line x1="71.5" y1="64.5" x2="50.3" y2="85.7"/><line x1="68.4" y1="59.1" x2="39.4" y2="66.9"/><line x1="68.4" y1="52.9" x2="39.4" y2="45.1"/><line x1="71.5" y1="47.5" x2="50.3" y2="26.3"/><line x1="76.9" y1="44.4" x2="69.1" y2="15.4"/><line x1="83.1" y1="44.4" x2="90.9" y2="15.4"/><line x1="88.5" y1="47.5" x2="109.7" y2="26.3"/><line x1="91.6" y1="52.9" x2="120.6" y2="45.1"/></g>
 <rect x="74" y="64" width="12" height="34" rx="2" class="q-body"/><line x1="80" y1="64" x2="80" y2="60" stroke="var(--ink)" stroke-width="1"/><g transform="translate(80 56)"><g class="q-fl"><path d="M0 -12 C5 -5 6 1 0 5 C-6 1 -5 -5 0 -12Z" fill="#F2A93B"/><path d="M0 -6 C2.5 -2 3 1.5 0 3.5 C-3 1.5 -2.5 -2 0 -6Z" fill="#FFE08A"/></g></g>
-</svg><figcaption>The sphere: the flux leaves in every direction.</figcaption></figure><div><b>Lumens</b> <span class="u">(lm, total flux)</span>: all the light that leaves the lamp, in every direction. It does not say where it goes.</div></li>
+</svg><figcaption>The sphere: the flux leaves in every direction.</figcaption></figure><div><b>Lumens</b> <span class="u">(lm, total flux)</span>, that is luminous flux <b>Φ</b>: all the light that leaves the lamp, in every direction. It does not say where it goes.</div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <defs><linearGradient id="qcone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--q-int)" stop-opacity=".35"/><stop offset=".45" stop-color="var(--q-int)" stop-opacity=".9"/><stop offset="1" stop-color="var(--q-int)" stop-opacity=".55"/></linearGradient>
 <marker id="qarr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8Z" fill="var(--q-int)"/></marker></defs>
@@ -224,12 +228,13 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <line x1="34" y1="62" x2="150" y2="62" stroke="var(--q-int)" stroke-width="1.4" marker-end="url(#qarr)"/>
 <text x="124" y="66" text-anchor="middle" class="q-t" fill="var(--paper)" opacity=".9">Ω<animate attributeName="opacity" values=".9;0;.9" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text>
 <rect x="18" y="68" width="12" height="34" rx="2" class="q-body"/><line x1="24" y1="68" x2="24" y2="64" stroke="var(--ink)" stroke-width="1"/><g transform="translate(24 60)"><g class="q-fl"><path d="M0 -12 C5 -5 6 1 0 5 C-6 1 -5 -5 0 -12Z" fill="#F2A93B"/><path d="M0 -6 C2.5 -2 3 1.5 0 3.5 C-3 1.5 -2.5 -2 0 -6Z" fill="#FFE08A"/></g></g>
-</svg><figcaption>Same flux, narrower cone (smaller Ω): more intensity, that is more candelas.</figcaption></figure><div><b>Candelas</b> <span class="u">(cd = lm/sr)</span>, that is <b>luminous intensity</b>: how many lumens go in one
+</svg><figcaption>Same flux, narrower cone (smaller Ω): more intensity, that is more candelas.</figcaption></figure><div><b>Candelas</b> <span class="u">(cd = lm/sr)</span>, that is luminous intensity <b>I</b>: how many lumens go in one
     direction, per steradian of cone. For a headlight it is the centre of the beam.
     <ul class="qsub"><li><b>Ω</b>, the solid angle, says how wide the cone is, in steradians <span class="u">(sr)</span>: on a sphere
     of 1 m radius round the lamp, the cone cuts out a cap of Ω m². The whole sphere is 4π ≈ 12.6 sr.</li>
     <li>Intensity = flux / solid angle, that is I = Φ / Ω. The same 100 lumens spread over the whole sphere give
-    about 8 cd; squeezed into a 10° cone (Ω ≈ 0.024 sr) they give about 4,200 cd, more than 500 times as much.</li></ul></div></li>
+    about 8 cd; squeezed into a 10° cone (Ω ≈ 0.024 sr) they give about 4,200 cd, more than 500 times as much.</li></ul>
+    <div class="dim"><b>Checking the units</b><ul><li>I = Φ / Ω: lm / sr = cd ✓. The other way round, 1 lm = 1 cd · sr: a lumen is a candela <i>times</i> a steradian.</li></ul></div></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <path d="M4 110 L156 110 L140 88 L20 88 Z" fill="var(--card)" stroke="var(--rule)"/>
 <path fill="var(--q-ill)" fill-opacity=".08" d="M80 16 L34 98 L126 98 Z"><animate attributeName="d" values="M80 16 L34 98 L126 98 Z;M80 56 L56 98 L104 98 Z;M80 16 L34 98 L126 98 Z" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></path>
@@ -238,7 +243,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <circle cx="80" cy="16" r="5" fill="#FFD36B" stroke="var(--q-ill)"><animate attributeName="cy" values="16;56;16" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></circle>
 <line x1="144" y1="16" x2="144" y2="98" stroke="var(--mut)" stroke-dasharray="2 2"><animate attributeName="y1" values="16;56;16" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></line>
 <text x="148" y="60" class="q-t" fill="var(--mut)">d<animate attributeName="y" values="60;80;60" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text>
-</svg><figcaption>Lamp further away: the same light over a larger area, fewer lux (the small rectangle is 1 m²).</figcaption></figure><div><b>Lux</b> <span class="u">(lx = lm/m²)</span>, that is <b>illuminance</b>: how many lumens arrive on each square metre of
+</svg><figcaption>Lamp further away: the same light over a larger area, fewer lux (the small rectangle is 1 m²).</figcaption></figure><div><b>Lux</b> <span class="u">(lx = lm/m²)</span>, that is illuminance <b>E</b>: how many lumens arrive on each square metre of
     road at a given distance, E = I / d². It is what you see in front of the wheel. Spec sheets state it in two
     ways:
     <ul class="qsub"><li>lights type-approved in Germany (<b>StVZO</b>, Straßenverkehrs-Zulassungs-Ordnung, the German
@@ -246,9 +251,9 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <li>torches and many American lights follow the <b>ANSI</b> (American National Standards Institute) FL1 standard,
     which gives the candelas <span class="u">(cd = lm/sr)</span> at the centre of the beam and the <em>beam distance</em>: how far the
     beam reaches before only 0.25 lux are left at its centre, the light of a full-moon night. From the formula
-    E = I / d², beam distance = √(I / 0.25 lx). The units work out: cd / lx = cd / (cd·sr/m²) = m²/sr, and the
-    steradian is a pure number, so m² is left under the root and the distance comes out in metres. In practice,
-    with I in candelas, beam distance in metres = 2·√I: a 10,000 cd light reaches 200 m.</li></ul></div></li>
+    E = I / d², beam distance = √(I / 0.25 lx). In practice, with I in candelas, beam distance in metres = 2·√I:
+    a 10,000 cd light reaches 200 m.</li></ul>
+    <div class="dim"><b>Checking the units</b><ul><li>Why E = I / d²? One square metre of road at distance d is seen from the lamp under a solid angle Ω = 1 m² / d² (sr), so I · Ω lumens reach it: E = I / d², in cd · sr / m² = lm / m² = lx ✓.</li><li>The steradian is a pure number: it is the area of the cap divided by the radius squared, m² / m². That is why it is not written in the formula.</li><li>Beam distance: d = √(I / E). I is in cd, E in lx = cd · sr / m², so I / E is cd / (cd · sr / m²) = m² / sr = m². Under the root m² is left, and the distance comes out in metres ✓.</li></ul></div></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <defs><radialGradient id="qglow"><stop offset="0" stop-color="#FFE9A8" stop-opacity="1"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></radialGradient></defs>
 <g stroke="var(--q-lum)" stroke-width="1.2" stroke-dasharray="3 3" class="q-rays2"><line x1="44" y1="52" x2="128" y2="58"/><line x1="44" y1="60" x2="128" y2="60"/><line x1="44" y1="68" x2="128" y2="62"/></g>
@@ -258,9 +263,10 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <ellipse cx="42" cy="60" rx="4" ry="19" fill="#FFF3CC" stroke="var(--q-lum)" stroke-width="1.4"><animate attributeName="ry" values="19;6;19" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/><animate attributeName="rx" values="4;2;4" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></ellipse>
 <path d="M112 60 Q134 42 156 60 Q134 78 112 60Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
 <circle cx="132" cy="60" r="8" fill="none" stroke="var(--q-lum)" stroke-width="2"/><circle cx="132" cy="60" r="3.5" fill="var(--ink)"/>
-</svg><figcaption>Same intensity from a smaller lens: more nits, more glare.</figcaption></figure><div><b>Cd/m²</b>, that is nits: the luminance of the lens. It says how much the lamp dazzles someone looking
+</svg><figcaption>Same intensity from a smaller lens: more nits, more glare.</figcaption></figure><div><b>Cd/m²</b>, that is nits: the luminance <b>L</b> of the lens, L = I / A, with A the area of the lens as seen by the viewer. It says how much the lamp dazzles someone looking
     straight at it, not how much it lights the road. On a spec sheet it is almost certainly a mistake for
-    ‘candelas’, as one of the replies suspects.</div></li>
+    ‘candelas’, as one of the replies suspects.
+    <div class="dim"><b>Checking the units</b><ul><li>L = I / A: cd / m² = nit ✓. Careful: I / d² also gives cd / m², but there a steradian is understood and it is an illuminance (lux). Same units on paper, different quantities: that is why ‘cd/m²’ and ‘lux’ get mixed up.</li></ul></div></div></li>
   </ul>
   <p class="qhint">Click a drawing to pause it, click again to resume.</p>
   <figure class="w">
@@ -318,7 +324,8 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     surface L = ρ · E / π, that is from the lux <span class="u">(lx = lm/m²)</span> that arrive to the nits <span class="u">(nit = cd/m²)</span> you see.
     Under the same sun asphalt (ρ ≈ 0.2) and fresh snow (ρ ≈ 0.85) receive the same lux, but snow sends back
     about four times the nits, and about four times the trolands <span class="u">(Td = cd/m² × mm²)</span> reach the retina.
-    A little less in practice, because the pupil narrows.</div></li>
+    A little less in practice, because the pupil narrows.
+    <div class="dim"><b>Checking the units</b><ul><li>L = ρ · E / π: ρ is a pure number, and the π is π steradians, how much the hemisphere ‘weighs’ for a matte surface. So lx / sr = lm / (m² · sr) = cd / m² = nit ✓.</li></ul></div></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <rect x="0" y="0" width="160" height="120" rx="8" fill="#1B2029"><animate attributeName="fill" values="#1B2029;#E9E3D6;#1B2029" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect>
 <rect x="130" y="16" width="22" height="40" fill="#2A3140" stroke="#8C7C60"><animate attributeName="fill" values="#2A3140;#FFF8E1;#2A3140" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect><line x1="141" y1="16" x2="141" y2="56" stroke="#8C7C60"/>
@@ -332,7 +339,8 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     same surface, like the projector and the room on the screen, ρ multiplies both and cancels out:<br>
     <span class="formula">contrast ≈ 1 + E<sub>projector</sub> / E<sub>room</sub></span><br>
     In the dark, with about 1 lux from the room, even a few lumens <span class="u">(lm, total flux)</span> give a
-    very high contrast; by day, with hundreds of lux from the windows, you need a great many.</div></li>
+    very high contrast; by day, with hundreds of lux from the windows, you need a great many.
+    <div class="dim"><b>Checking the units</b><ul><li>Contrast = L white / L black: nits / nits, a pure number ✓. 1 + E<sub>projector</sub> / E<sub>room</sub> is lux / lux, a pure number too ✓.</li></ul></div></div></li>
   </ul>
   <script>(function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
 document.querySelectorAll("ul.qty figure").forEach(function(f){var s=f.querySelector(".qsvg");
@@ -383,6 +391,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   stays lit. When the eye follows a moving object, each still image slides across the retina for as long as it
   stays lit:</p>
   <p class="formula">blur ≈ speed × persistence</p>
+  <div class="dim"><b>Checking the units</b><ul><li>(pixels / s) × s = pixels ✓. Example: an object crossing 1,920 pixels in 2 s moves at 960 pixels/s; with 16.7 ms of persistence it blurs over 960 × 0.0167 ≈ 16 pixels.</li></ul></div>
   <p>LED and OLED keep the image lit for the whole frame: 16.7 ms at 60 Hz, 8.3 ms at 120 Hz. More hertz help, but
   only if the game really produces that many images per second. A CRT instead lights each phosphor dot for about
   1.5 ms and then lets it fade: at 60 Hz it is sharper than an OLED at 120. That is why old CRTs were unbeatable in

@@ -119,6 +119,10 @@ ul.qty figure.paused::after{opacity:.9}
 #proiettore,#movimento{margin-top:2.6rem; scroll-margin-top:1rem}
 .qsub{list-style:disc; padding-left:1.2rem; margin:.35rem 0 0}
 .qsub li{margin:.2rem 0}
+.dim{font-size:.875rem; color:var(--mut); border-left:3px solid var(--q-int); background:var(--card); border-radius:0 6px 6px 0; padding:.35rem .7rem .3rem; margin:.5rem 0 .2rem; max-width:38rem}
+.dim b{color:var(--ink); font-weight:600}
+.dim ul{margin:.15rem 0 0; padding-left:1.1rem; list-style:disc}
+.dim li{margin:.15rem 0}
 .qhint{font-size:.8125rem; color:var(--faint); margin:-.4rem 0 1rem}
 @media (max-width:30rem){ul.qty>li{grid-template-columns:1fr} ul.qty figure{max-width:15rem}}
 :root{--q-flux:#534AB7; --q-int:#185FA5; --q-ill:#B5520C; --q-lum:#0F6E56}
@@ -214,7 +218,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <circle cx="80" cy="56" r="46" class="q-wave"/>
 <g class="q-rays" stroke="var(--q-flux)" stroke-width="1.6" stroke-linecap="round"><line x1="91.6" y1="59.1" x2="120.6" y2="66.9"/><line x1="88.5" y1="64.5" x2="109.7" y2="85.7"/><line x1="83.1" y1="67.6" x2="90.9" y2="96.6"/><line x1="76.9" y1="67.6" x2="69.1" y2="96.6"/><line x1="71.5" y1="64.5" x2="50.3" y2="85.7"/><line x1="68.4" y1="59.1" x2="39.4" y2="66.9"/><line x1="68.4" y1="52.9" x2="39.4" y2="45.1"/><line x1="71.5" y1="47.5" x2="50.3" y2="26.3"/><line x1="76.9" y1="44.4" x2="69.1" y2="15.4"/><line x1="83.1" y1="44.4" x2="90.9" y2="15.4"/><line x1="88.5" y1="47.5" x2="109.7" y2="26.3"/><line x1="91.6" y1="52.9" x2="120.6" y2="45.1"/></g>
 <rect x="74" y="64" width="12" height="34" rx="2" class="q-body"/><line x1="80" y1="64" x2="80" y2="60" stroke="var(--ink)" stroke-width="1"/><g transform="translate(80 56)"><g class="q-fl"><path d="M0 -12 C5 -5 6 1 0 5 C-6 1 -5 -5 0 -12Z" fill="#F2A93B"/><path d="M0 -6 C2.5 -2 3 1.5 0 3.5 C-3 1.5 -2.5 -2 0 -6Z" fill="#FFE08A"/></g></g>
-</svg><figcaption>La sfera: il flusso esce in ogni direzione.</figcaption></figure><div><b>Lumen</b> <span class="u">(lm, flusso totale)</span>: tutta la luce che esce dalla lampada, in ogni direzione. Non dice dove va.</div></li>
+</svg><figcaption>La sfera: il flusso esce in ogni direzione.</figcaption></figure><div><b>Lumen</b> <span class="u">(lm, flusso totale)</span>, cioè il flusso luminoso <b>Φ</b>: tutta la luce che esce dalla lampada, in ogni direzione. Non dice dove va.</div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <defs><linearGradient id="qcone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--q-int)" stop-opacity=".35"/><stop offset=".45" stop-color="var(--q-int)" stop-opacity=".9"/><stop offset="1" stop-color="var(--q-int)" stop-opacity=".55"/></linearGradient>
 <marker id="qarr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8Z" fill="var(--q-int)"/></marker></defs>
@@ -224,13 +228,14 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <line x1="34" y1="62" x2="150" y2="62" stroke="var(--q-int)" stroke-width="1.4" marker-end="url(#qarr)"/>
 <text x="124" y="66" text-anchor="middle" class="q-t" fill="var(--paper)" opacity=".9">Ω<animate attributeName="opacity" values=".9;0;.9" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text>
 <rect x="18" y="68" width="12" height="34" rx="2" class="q-body"/><line x1="24" y1="68" x2="24" y2="64" stroke="var(--ink)" stroke-width="1"/><g transform="translate(24 60)"><g class="q-fl"><path d="M0 -12 C5 -5 6 1 0 5 C-6 1 -5 -5 0 -12Z" fill="#F2A93B"/><path d="M0 -6 C2.5 -2 3 1.5 0 3.5 C-3 1.5 -2.5 -2 0 -6Z" fill="#FFE08A"/></g></g>
-</svg><figcaption>Stesso flusso, cono più stretto (Ω più piccolo): più intensità, cioè più candele.</figcaption></figure><div><b>Candele</b> <span class="u">(cd = lm/sr)</span>, cioè l'<b>intensità luminosa</b>: quanti lumen vanno in una
+</svg><figcaption>Stesso flusso, cono più stretto (Ω più piccolo): più intensità, cioè più candele.</figcaption></figure><div><b>Candele</b> <span class="u">(cd = lm/sr)</span>, cioè l'intensità luminosa <b>I</b>: quanti lumen vanno in una
     direzione, per ogni steradiante di cono. Per un faro è il centro del fascio.
     <ul class="qsub"><li><b>Ω</b>, l'angolo solido, dice quanto è aperto il cono, in steradianti <span class="u">(sr)</span>: su una
     sfera di 1 m di raggio intorno alla lampada, il cono ritaglia una calotta di Ω m². La sfera intera vale
     4π ≈ 12,6 sr.</li>
     <li>Intensità = flusso / angolo solido, cioè I = Φ / Ω. Gli stessi 100 lumen sparsi su tutta la sfera danno
-    circa 8 cd; stretti in un cono di 10° (Ω ≈ 0,024 sr) danno circa 4.200 cd, più di 500 volte tanto.</li></ul></div></li>
+    circa 8 cd; stretti in un cono di 10° (Ω ≈ 0,024 sr) danno circa 4.200 cd, più di 500 volte tanto.</li></ul>
+    <div class="dim"><b>Conti con le unità</b><ul><li>I = Φ / Ω: lm / sr = cd ✓. Al contrario, 1 lm = 1 cd · sr: un lumen è una candela <i>moltiplicata</i> per uno steradiante.</li></ul></div></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <path d="M4 110 L156 110 L140 88 L20 88 Z" fill="var(--card)" stroke="var(--rule)"/>
 <path fill="var(--q-ill)" fill-opacity=".08" d="M80 16 L34 98 L126 98 Z"><animate attributeName="d" values="M80 16 L34 98 L126 98 Z;M80 56 L56 98 L104 98 Z;M80 16 L34 98 L126 98 Z" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></path>
@@ -239,7 +244,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <circle cx="80" cy="16" r="5" fill="#FFD36B" stroke="var(--q-ill)"><animate attributeName="cy" values="16;56;16" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></circle>
 <line x1="144" y1="16" x2="144" y2="98" stroke="var(--mut)" stroke-dasharray="2 2"><animate attributeName="y1" values="16;56;16" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></line>
 <text x="148" y="60" class="q-t" fill="var(--mut)">d<animate attributeName="y" values="60;80;60" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text>
-</svg><figcaption>Lampada più lontana: la stessa luce su un'area più grande, meno lux (il rettangolino è 1 m²).</figcaption></figure><div><b>Lux</b> <span class="u">(lx = lm/m²)</span>, cioè l'<b>illuminanza</b>: quanti lumen arrivano su ogni metro quadro
+</svg><figcaption>Lampada più lontana: la stessa luce su un'area più grande, meno lux (il rettangolino è 1 m²).</figcaption></figure><div><b>Lux</b> <span class="u">(lx = lm/m²)</span>, cioè l'illuminanza <b>E</b>: quanti lumen arrivano su ogni metro quadro
     della strada a una certa distanza, E = I / d². È quello che vedi davanti alla ruota. Le schede tecniche lo
     dichiarano in due modi:
     <ul class="qsub"><li>le luci omologate in Germania (<b>StVZO</b>, Straßenverkehrs-Zulassungs-Ordnung, il regolamento
@@ -247,9 +252,9 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <li>le torce e molte luci americane seguono lo standard <b>ANSI</b> (American National Standards Institute) FL1,
     che dà le candele <span class="u">(cd = lm/sr)</span> al centro del fascio e la <em>portata</em>: quanto lontano arriva il fascio
     prima che al centro restino solo 0,25 lux, la luce di una notte di luna piena. Dalla formula
-    E = I / d², portata = √(I / 0,25 lx). Le unità tornano: cd / lx = cd / (cd·sr/m²) = m²/sr, e lo steradiante
-    è un numero puro, quindi sotto radice restano m² e la portata viene in metri. In pratica, con I in candele,
-    portata in metri = 2·√I: una luce da 10.000 cd ha una portata di 200 m.</li></ul></div></li>
+    E = I / d², portata = √(I / 0,25 lx). In pratica, con I in candele, portata in metri = 2·√I:
+    una luce da 10.000 cd ha una portata di 200 m.</li></ul>
+    <div class="dim"><b>Conti con le unità</b><ul><li>Perché E = I / d²? Un metro quadro di strada a distanza d si vede dalla lampada sotto un angolo solido Ω = 1 m² / d² (sr), quindi ci arrivano I · Ω lumen: E = I / d², in cd · sr / m² = lm / m² = lx ✓.</li><li>Lo steradiante è un numero puro: è l'area della calotta divisa per il raggio al quadrato, m² / m². Per questo nella formula non si scrive.</li><li>Portata: d = √(I / E). I è in cd, E in lx = cd · sr / m², quindi I / E fa cd / (cd · sr / m²) = m² / sr = m². Sotto radice restano i m², e la portata esce in metri ✓.</li></ul></div></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <defs><radialGradient id="qglow"><stop offset="0" stop-color="#FFE9A8" stop-opacity="1"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></radialGradient></defs>
 <g stroke="var(--q-lum)" stroke-width="1.2" stroke-dasharray="3 3" class="q-rays2"><line x1="44" y1="52" x2="128" y2="58"/><line x1="44" y1="60" x2="128" y2="60"/><line x1="44" y1="68" x2="128" y2="62"/></g>
@@ -259,9 +264,10 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <ellipse cx="42" cy="60" rx="4" ry="19" fill="#FFF3CC" stroke="var(--q-lum)" stroke-width="1.4"><animate attributeName="ry" values="19;6;19" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/><animate attributeName="rx" values="4;2;4" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></ellipse>
 <path d="M112 60 Q134 42 156 60 Q134 78 112 60Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
 <circle cx="132" cy="60" r="8" fill="none" stroke="var(--q-lum)" stroke-width="2"/><circle cx="132" cy="60" r="3.5" fill="var(--ink)"/>
-</svg><figcaption>Stessa intensità da una lente più piccola: più nit, più abbagliamento.</figcaption></figure><div><b>Cd/m²</b>, cioè nit: la luminanza della lente. Dice quanto la lampada abbaglia chi la guarda in
+</svg><figcaption>Stessa intensità da una lente più piccola: più nit, più abbagliamento.</figcaption></figure><div><b>Cd/m²</b>, cioè nit: la luminanza <b>L</b> della lente, L = I / A, con A l'area della lente vista da chi guarda. Dice quanto la lampada abbaglia chi la guarda in
     faccia, non quanto illumina la strada. Su una scheda tecnica è quasi certamente un errore per
-    «candele», come sospetta una delle risposte.</div></li>
+    «candele», come sospetta una delle risposte.
+    <div class="dim"><b>Conti con le unità</b><ul><li>L = I / A: cd / m² = nit ✓. Attenzione: anche I / d² fa cd / m², ma lì c'è uno steradiante sottinteso ed è un'illuminanza (lux). Stesse unità sulla carta, grandezze diverse: per questo «cd/m²» e «lux» si confondono.</li></ul></div></div></li>
   </ul>
   <p class="qhint">Clicca su un disegno per fermarlo, clicca di nuovo per farlo ripartire.</p>
   <figure class="w">
@@ -318,7 +324,8 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     superficie opaca L = ρ · E / π, cioè dai lux <span class="u">(lx = lm/m²)</span> che arrivano ai nit <span class="u">(nit = cd/m²)</span> che vedi.
     Sotto lo stesso sole l'asfalto (ρ ≈ 0,2) e la neve fresca (ρ ≈ 0,85) ricevono gli stessi lux, ma la neve
     manda circa quattro volte i nit, e sulla retina arrivano circa quattro volte i troland <span class="u">(Td = cd/m² × mm²)</span>.
-    In pratica un po' meno, perché la pupilla si stringe.</div></li>
+    In pratica un po' meno, perché la pupilla si stringe.
+    <div class="dim"><b>Conti con le unità</b><ul><li>L = ρ · E / π: ρ è un numero puro, e il π sono π steradianti, quanto «pesa» la semisfera per una superficie opaca. Quindi lx / sr = lm / (m² · sr) = cd / m² = nit ✓.</li></ul></div></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <rect x="0" y="0" width="160" height="120" rx="8" fill="#1B2029"><animate attributeName="fill" values="#1B2029;#E9E3D6;#1B2029" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect>
 <rect x="130" y="16" width="22" height="40" fill="#2A3140" stroke="#8C7C60"><animate attributeName="fill" values="#2A3140;#FFF8E1;#2A3140" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect><line x1="141" y1="16" x2="141" y2="56" stroke="#8C7C60"/>
@@ -332,7 +339,8 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     superficie arrivano due luci, come il proiettore e la stanza sulla tela, ρ le moltiplica entrambe e si
     semplifica:<br><span class="formula">contrasto ≈ 1 + E<sub>proiettore</sub> / E<sub>stanza</sub></span><br>
     Al buio, con circa 1 lux dalla stanza, anche pochi lumen <span class="u">(lm, flusso totale)</span> danno un
-    contrasto altissimo; di giorno, con centinaia di lux dalle finestre, ne servono tantissimi.</div></li>
+    contrasto altissimo; di giorno, con centinaia di lux dalle finestre, ne servono tantissimi.
+    <div class="dim"><b>Conti con le unità</b><ul><li>Contrasto = L bianco / L nero: nit / nit, numero puro ✓. Anche 1 + E<sub>proiettore</sub> / E<sub>stanza</sub> è lux / lux, numero puro ✓.</li></ul></div></div></li>
   </ul>
   <script>(function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
 document.querySelectorAll("ul.qty figure").forEach(function(f){var s=f.querySelector(".qsvg");
@@ -382,6 +390,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   accesa ogni immagine. Quando l'occhio insegue un oggetto che si muove, ogni immagine ferma gli scivola sulla
   retina per tutto il tempo che resta accesa:</p>
   <p class="formula">sfocatura ≈ velocità × persistenza</p>
+  <div class="dim"><b>Conti con le unità</b><ul><li>(pixel / s) × s = pixel ✓. Esempio: un oggetto che attraversa 1.920 pixel in 2 s va a 960 pixel/s; con 16,7 ms di persistenza si sfoca su 960 × 0,0167 ≈ 16 pixel.</li></ul></div>
   <p>LED e OLED tengono l'immagine accesa per tutto il fotogramma: 16,7 ms a 60 Hz, 8,3 ms a 120 Hz. Più hertz
   aiutano, ma solo se il gioco produce davvero quelle immagini al secondo. Il CRT invece accende ogni punto del
   fosforo per circa 1,5 ms e poi lo lascia spegnere: a 60 Hz è più nitido di un OLED a 120. Per questo i vecchi CRT
