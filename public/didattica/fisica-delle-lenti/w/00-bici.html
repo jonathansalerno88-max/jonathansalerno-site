@@ -21,6 +21,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 .f.ill{border-left-color:#B5520C;background:#FBF1E8}.f.flux{border-left-color:#534AB7;background:#F1EFFA}
 .chk{display:flex;align-items:center;gap:8px;font-size:13px;margin:4px 0}
 .chk b{display:inline-block;min-width:26px;text-align:center;border-radius:999px;padding:1px 8px;font-size:12px}
+.best{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--text-accent);margin:6px 0 8px}
 .res{margin-top:8px;padding:8px 11px;border-radius:8px;font-size:13.5px;font-weight:500;min-height:calc(3em + 16px);box-sizing:border-box}
 .note{font-size:12px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
 </style>
@@ -29,6 +30,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 <h2 class="sr-only">Una bici su strada vista dall'alto. Regoli i lumen e l'ampiezza del fascio di una luce, e le condizioni: velocità, asfalto asciutto o bagnato, strada illuminata o buia. Il disegno e le formule mostrano candele, lux allo spazio di arresto e larghezza illuminata.</h2>
 <p class="q">Prova a cambiare i lumen, poi l'ampiezza del fascio (cioè le candele). Cosa succede laggiù, allo spazio di arresto? Quale conta di più?</p>
 <div class="tog"><span>Luci del thread</span><span id="pB"></span></div>
+<label class="best"><input type="checkbox" id="best" onchange="upd()"> Miglior compromesso: la luce più economica che vede lontano e largo<span id="bmx"></span></label>
 <div class="ctl"><span>Flusso Φ</span><input type="range" id="F" min="100" max="1500" step="25" value="400" oninput="upd()"><output id="FO"></output></div>
 <div class="ctl"><span>Ampiezza fascio α</span><input type="range" id="a" min="4" max="60" step="1" value="20" oninput="upd()"><output id="aO"></output></div>
 <div class="ctl"><span>Velocità</span><input type="range" id="v" min="10" max="45" step="1" value="30" oninput="upd()"><output id="vO"></output></div>
@@ -45,18 +47,24 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 <div class="res" id="res"></div>
 <p class="note">Modello semplificato: fascio uniforme dentro un cono, vista dall'alto; i fari veri hanno il centro più intenso della media. Frenata 5 m/s² su asciutto e 3 m/s² su bagnato; 1 s di reazione. Obiettivo allo spazio di arresto: 10 lux (lx = lm/m²) con i lampioni, 30 lux su strada buia. Candele: cd = lm/sr. Costo: stima indicativa, circa 15 € + 4 € ogni 100 lumen, più qualche euro per le ottiche a fascio stretto; i prezzi veri variano molto per marca e batteria.</p>
 <script>
-var L={"loc": "it-IT", "pres": ["Luce A: 1.000 lm, 40°", "Luce B: 400 lm, 10°"], "roads": ["Asciutto", "Bagnato"], "lits": ["Buona (lampioni)", "Scarsa o nessuna"], "f1": "d = v · 1 s + v² / (2a) = {V} m/s × 1 s + ({V} m/s)² / (2 × {A} m/s²) = <b>{D} m</b>", "f2": "Ω = 2π · (1 − cos(α/2)) = 2π · (1 − cos {H}°) = <b>{O} sr</b>", "f3": "I = Φ / Ω = {F} lm ÷ {O} sr = <b>{I} lm/sr = {I} cd</b>", "f4": "E a {D} m = I / d² = {I} lm/sr ÷ ({D} m)²/sr = <b>{E} lm/m² = {E} lx</b> (servono {T} lx)", "f5": "larghezza a {D} m = 2 · d · tan(α/2) = 2 × {D} m × tan {H}° = <b>{W} m</b> (corsia 3,5 m)", "yes": "sì", "no": "no", "both": "✓ Vedi lontano e largo: luce giusta per queste condizioni.", "onlyfar": "Vedi la buca, ma il fascio è troppo stretto: ai lati è buio. Servono più lumen per allargarlo senza perdere candele.", "onlywide": "Il fascio è largo ma laggiù arriva troppo poca luce: servono più candele (fascio più stretto o più lumen).", "none": "Né abbastanza luce laggiù né abbastanza larghezza: servono più lumen.", "obst": "buca", "wx": "larghezza disegnata ×3"},wet=0,lit=0,TG=[10,30],AC=[5,3],LANE=3.5,pre=-1;
+var L={"loc": "it-IT", "pres": ["Luce A: 1.000 lm, 40°", "Luce B: 400 lm, 10°"], "bestmax": " (servirebbero più di 1.500 lm: fuori scala)", "roads": ["Asciutto", "Bagnato"], "lits": ["Buona (lampioni)", "Scarsa o nessuna"], "f1": "d = v · 1 s + v² / (2a) = {V} m/s × 1 s + ({V} m/s)² / (2 × {A} m/s²) = <b>{D} m</b>", "f2": "Ω = 2π · (1 − cos(α/2)) = 2π · (1 − cos {H}°) = <b>{O} sr</b>", "f3": "I = Φ / Ω = {F} lm ÷ {O} sr = <b>{I} lm/sr = {I} cd</b>", "f4": "E a {D} m = I / d² = {I} lm/sr ÷ ({D} m)²/sr = <b>{E} lm/m² = {E} lx</b> (servono {T} lx)", "f5": "larghezza a {D} m = 2 · d · tan(α/2) = 2 × {D} m × tan {H}° = <b>{W} m</b> (corsia 3,5 m)", "yes": "sì", "no": "no", "both": "✓ Vedi lontano e largo: luce giusta per queste condizioni.", "onlyfar": "Vedi la buca, ma il fascio è troppo stretto: ai lati è buio. Servono più lumen per allargarlo senza perdere candele.", "onlywide": "Il fascio è largo ma laggiù arriva troppo poca luce: servono più candele (fascio più stretto o più lumen).", "none": "Né abbastanza luce laggiù né abbastanza larghezza: servono più lumen.", "obst": "buca", "wx": "larghezza disegnata ×3"},wet=0,lit=0,TG=[10,30],AC=[5,3],LANE=3.5,pre=-1;
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d||0,minimumFractionDigits:d||0})}
 function r50(x){return x>=1000?Math.round(x/50)*50:Math.round(x)}
 function fmt(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
 function btns(id,arr,cur,fn){var h='';arr.forEach(function(t,i){h+='<button class="'+(i===cur?'act':'')+'" onclick="'+fn+'('+i+')">'+t+'</button>'});document.getElementById(id).innerHTML=h}
 function setR(i){wet=i;upd()}function setL(i){lit=i;upd()}
-function setP(i){pre=i;document.getElementById('F').value=[1000,400][i];document.getElementById('a').value=[40,10][i];upd(true)}
+function setP(i){document.getElementById('best').checked=false;pre=i;document.getElementById('F').value=[1000,400][i];document.getElementById('a').value=[40,10][i];upd(true)}
 function T(x,y,s,c,a,cl){return '<text x="'+x+'" y="'+y+'" class="'+(cl||'ts')+'" fill="'+c+'"'+(a?' text-anchor="'+a+'"':'')+'>'+s+'</text>'}
 function upd(keep){
  if(!keep)pre=-1;
  btns('pB',L.pres,pre,'setP');btns('rB',L.roads,wet,'setR');btns('lB',L.lits,lit,'setL');
- var F=+document.getElementById('F').value,al=+document.getElementById('a').value,V=+document.getElementById('v').value;
+ var V=+document.getElementById('v').value,bst=document.getElementById('best').checked,bmx='';
+ document.getElementById('F').disabled=bst;document.getElementById('a').disabled=bst;
+ if(bst){var vv=V/3.6,dd=vv+vv*vv/(2*AC[wet]),tg=TG[lit],amin=Math.ceil(2*Math.atan(LANE/2/dd)*180/Math.PI),bp=1e9,bf=0,ba=0;
+  for(var aa=Math.max(4,amin);aa<=60;aa++){var oo=2*Math.PI*(1-Math.cos(aa/2*Math.PI/180)),ff=Math.max(100,Math.ceil(tg*dd*dd*oo/25)*25),pp=15+0.04*ff+(aa<15?12:aa<25?5:0);if(pp<bp){bp=pp;bf=ff;ba=aa}}
+  if(bf>1500){bf=1500;bmx=L.bestmax}document.getElementById('F').value=bf;document.getElementById('a').value=ba;pre=-1}
+ document.getElementById('bmx').textContent=bmx;
+ var F=+document.getElementById('F').value,al=+document.getElementById('a').value;
  document.getElementById('FO').textContent=nf(F)+' lm';document.getElementById('aO').textContent=al+'°';document.getElementById('vO').textContent=V+' km/h';
  var v=V/3.6,A=AC[wet],D=v+v*v/(2*A),h=al/2*Math.PI/180,O=2*Math.PI*(1-Math.cos(h)),I=F/O,E=I/(D*D),W=2*D*Math.tan(h),Tg=TG[lit];
  var far=E>=Tg,wide=W>=LANE,price=15+0.04*F+(al<15?12:al<25?5:0),pc=price<40?0:price<70?1:2;

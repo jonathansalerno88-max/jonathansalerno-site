@@ -21,6 +21,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 .f.ill{border-left-color:#B5520C;background:#FBF1E8}.f.flux{border-left-color:#534AB7;background:#F1EFFA}
 .chk{display:flex;align-items:center;gap:8px;font-size:13px;margin:4px 0}
 .chk b{display:inline-block;min-width:26px;text-align:center;border-radius:999px;padding:1px 8px;font-size:12px}
+.best{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--text-accent);margin:6px 0 8px}
 .res{margin-top:8px;padding:8px 11px;border-radius:8px;font-size:13.5px;font-weight:500;min-height:calc(3em + 16px);box-sizing:border-box}
 .note{font-size:12px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
 </style>
@@ -29,6 +30,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 <h2 class="sr-only">A bike on the road seen from above. You set the lumens and the beam width of a light, and the conditions: speed, dry or wet road, lit or dark street. The drawing and the formulas show candelas, lux at the stopping distance and lit width.</h2>
 <p class="q">Try changing the lumens, then the beam width (that is, the candelas). What happens out there, at the stopping distance? Which matters more?</p>
 <div class="tog"><span>Lights from the thread</span><span id="pB"></span></div>
+<label class="best"><input type="checkbox" id="best" onchange="upd()"> Best compromise: the cheapest light that sees far and wide<span id="bmx"></span></label>
 <div class="ctl"><span>Flux Φ</span><input type="range" id="F" min="100" max="1500" step="25" value="400" oninput="upd()"><output id="FO"></output></div>
 <div class="ctl"><span>Beam width α</span><input type="range" id="a" min="4" max="60" step="1" value="20" oninput="upd()"><output id="aO"></output></div>
 <div class="ctl"><span>Speed</span><input type="range" id="v" min="10" max="45" step="1" value="30" oninput="upd()"><output id="vO"></output></div>
@@ -45,18 +47,24 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 <div class="res" id="res"></div>
 <p class="note">Simplified model: uniform beam inside a cone, seen from above; real headlights have a centre brighter than the average. Braking 5 m/s² dry and 3 m/s² wet; 1 s reaction. Target at the stopping distance: 10 lux (lx = lm/m²) with street lights, 30 lux on a dark road. Candelas: cd = lm/sr. Cost: a rough estimate, about €15 + €4 per 100 lumens, plus a few euros for narrow-beam optics; real prices vary a lot with brand and battery.</p>
 <script>
-var L={"loc": "en-GB", "pres": ["Light A: 1,000 lm, 40°", "Light B: 400 lm, 10°"], "roads": ["Dry", "Wet"], "lits": ["Good (street lights)", "Poor or none"], "f1": "d = v · 1 s + v² / (2a) = {V} m/s × 1 s + ({V} m/s)² / (2 × {A} m/s²) = <b>{D} m</b>", "f2": "Ω = 2π · (1 − cos(α/2)) = 2π · (1 − cos {H}°) = <b>{O} sr</b>", "f3": "I = Φ / Ω = {F} lm ÷ {O} sr = <b>{I} lm/sr = {I} cd</b>", "f4": "E at {D} m = I / d² = {I} lm/sr ÷ ({D} m)²/sr = <b>{E} lm/m² = {E} lx</b> ({T} lx needed)", "f5": "width at {D} m = 2 · d · tan(α/2) = 2 × {D} m × tan {H}° = <b>{W} m</b> (lane 3.5 m)", "yes": "yes", "no": "no", "both": "✓ You see far and wide: the right light for these conditions.", "onlyfar": "You see the pothole, but the beam is too narrow: the sides are dark. You need more lumens to widen it without losing candelas.", "onlywide": "The beam is wide but too little light gets out there: you need more candelas (a narrower beam or more lumens).", "none": "Neither enough light out there nor enough width: you need more lumens.", "obst": "pothole", "wx": "width drawn ×3"},wet=0,lit=0,TG=[10,30],AC=[5,3],LANE=3.5,pre=-1;
+var L={"loc": "en-GB", "pres": ["Light A: 1,000 lm, 40°", "Light B: 400 lm, 10°"], "bestmax": " (it would need more than 1,500 lm: off the scale)", "roads": ["Dry", "Wet"], "lits": ["Good (street lights)", "Poor or none"], "f1": "d = v · 1 s + v² / (2a) = {V} m/s × 1 s + ({V} m/s)² / (2 × {A} m/s²) = <b>{D} m</b>", "f2": "Ω = 2π · (1 − cos(α/2)) = 2π · (1 − cos {H}°) = <b>{O} sr</b>", "f3": "I = Φ / Ω = {F} lm ÷ {O} sr = <b>{I} lm/sr = {I} cd</b>", "f4": "E at {D} m = I / d² = {I} lm/sr ÷ ({D} m)²/sr = <b>{E} lm/m² = {E} lx</b> ({T} lx needed)", "f5": "width at {D} m = 2 · d · tan(α/2) = 2 × {D} m × tan {H}° = <b>{W} m</b> (lane 3.5 m)", "yes": "yes", "no": "no", "both": "✓ You see far and wide: the right light for these conditions.", "onlyfar": "You see the pothole, but the beam is too narrow: the sides are dark. You need more lumens to widen it without losing candelas.", "onlywide": "The beam is wide but too little light gets out there: you need more candelas (a narrower beam or more lumens).", "none": "Neither enough light out there nor enough width: you need more lumens.", "obst": "pothole", "wx": "width drawn ×3"},wet=0,lit=0,TG=[10,30],AC=[5,3],LANE=3.5,pre=-1;
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d||0,minimumFractionDigits:d||0})}
 function r50(x){return x>=1000?Math.round(x/50)*50:Math.round(x)}
 function fmt(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
 function btns(id,arr,cur,fn){var h='';arr.forEach(function(t,i){h+='<button class="'+(i===cur?'act':'')+'" onclick="'+fn+'('+i+')">'+t+'</button>'});document.getElementById(id).innerHTML=h}
 function setR(i){wet=i;upd()}function setL(i){lit=i;upd()}
-function setP(i){pre=i;document.getElementById('F').value=[1000,400][i];document.getElementById('a').value=[40,10][i];upd(true)}
+function setP(i){document.getElementById('best').checked=false;pre=i;document.getElementById('F').value=[1000,400][i];document.getElementById('a').value=[40,10][i];upd(true)}
 function T(x,y,s,c,a,cl){return '<text x="'+x+'" y="'+y+'" class="'+(cl||'ts')+'" fill="'+c+'"'+(a?' text-anchor="'+a+'"':'')+'>'+s+'</text>'}
 function upd(keep){
  if(!keep)pre=-1;
  btns('pB',L.pres,pre,'setP');btns('rB',L.roads,wet,'setR');btns('lB',L.lits,lit,'setL');
- var F=+document.getElementById('F').value,al=+document.getElementById('a').value,V=+document.getElementById('v').value;
+ var V=+document.getElementById('v').value,bst=document.getElementById('best').checked,bmx='';
+ document.getElementById('F').disabled=bst;document.getElementById('a').disabled=bst;
+ if(bst){var vv=V/3.6,dd=vv+vv*vv/(2*AC[wet]),tg=TG[lit],amin=Math.ceil(2*Math.atan(LANE/2/dd)*180/Math.PI),bp=1e9,bf=0,ba=0;
+  for(var aa=Math.max(4,amin);aa<=60;aa++){var oo=2*Math.PI*(1-Math.cos(aa/2*Math.PI/180)),ff=Math.max(100,Math.ceil(tg*dd*dd*oo/25)*25),pp=15+0.04*ff+(aa<15?12:aa<25?5:0);if(pp<bp){bp=pp;bf=ff;ba=aa}}
+  if(bf>1500){bf=1500;bmx=L.bestmax}document.getElementById('F').value=bf;document.getElementById('a').value=ba;pre=-1}
+ document.getElementById('bmx').textContent=bmx;
+ var F=+document.getElementById('F').value,al=+document.getElementById('a').value;
  document.getElementById('FO').textContent=nf(F)+' lm';document.getElementById('aO').textContent=al+'°';document.getElementById('vO').textContent=V+' km/h';
  var v=V/3.6,A=AC[wet],D=v+v*v/(2*A),h=al/2*Math.PI/180,O=2*Math.PI*(1-Math.cos(h)),I=F/O,E=I/(D*D),W=2*D*Math.tan(h),Tg=TG[lit];
  var far=E>=Tg,wide=W>=LANE,price=15+0.04*F+(al<15?12:al<25?5:0),pc=price<40?0:price<70?1:2;
