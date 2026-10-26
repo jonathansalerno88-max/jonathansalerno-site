@@ -117,6 +117,8 @@ ul.qty figure.paused::after{opacity:.9}
 .qtake li{margin:.15rem 0}
 .qtake .formula{display:block; margin:.2rem 0 .5rem; white-space:normal}
 #projector,#motion{margin-top:2.6rem; scroll-margin-top:1rem}
+.qsub{list-style:disc; padding-left:1.2rem; margin:.35rem 0 0}
+.qsub li{margin:.2rem 0}
 .qhint{font-size:.8125rem; color:var(--faint); margin:-.4rem 0 1rem}
 @media (max-width:30rem){ul.qty>li{grid-template-columns:1fr} ul.qty figure{max-width:15rem}}
 :root{--q-flux:#534AB7; --q-int:#185FA5; --q-ill:#B5520C; --q-lum:#0F6E56}
@@ -232,10 +234,15 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <circle cx="80" cy="16" r="5" fill="#FFD36B" stroke="var(--q-ill)"><animate attributeName="cy" values="16;56;16" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></circle>
 <line x1="144" y1="16" x2="144" y2="98" stroke="var(--mut)" stroke-dasharray="2 2"><animate attributeName="y1" values="16;56;16" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></line>
 <text x="148" y="60" class="q-t" fill="var(--mut)">d<animate attributeName="y" values="60;80;60" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text>
-</svg><figcaption>Lamp further away: the same light over a larger area, fewer lux (the small rectangle is 1 m²).</figcaption></figure><div><b>Lux</b> <span class="u">(lx = lm/m²)</span>, that is lumens per square metre: how much light reaches the road at a given distance,
-    E = I / d². It is what you see in front of the wheel. Lights type-approved in Germany (StVZO) state
-    exactly the lux at 10 m; the ANSI FL1 standard states the peak candelas and the <em>beam distance</em>,
-    the distance at which the centre of the beam falls to 0.25 lux, roughly the light of the full moon.</div></li>
+</svg><figcaption>Lamp further away: the same light over a larger area, fewer lux (the small rectangle is 1 m²).</figcaption></figure><div><b>Lux</b> <span class="u">(lx = lm/m²)</span>, that is <b>illuminance</b>: how many lumens arrive on each square metre of
+    road at a given distance, E = I / d². It is what you see in front of the wheel. Spec sheets state it in two
+    ways:
+    <ul class="qsub"><li>lights type-approved in Germany (<b>StVZO</b>, Straßenverkehrs-Zulassungs-Ordnung, the German
+    vehicle regulations) give the lux at 10 m directly;</li>
+    <li>torches and many American lights follow the <b>ANSI</b> (American National Standards Institute) FL1 standard,
+    which gives the candelas <span class="u">(cd = lm/sr)</span> at the centre of the beam and the <em>beam distance</em>: how far the
+    beam reaches before only 0.25 lux are left at its centre, the light of a full-moon night. From the formula,
+    beam distance = √(I / 0.25) = 2·√I: a 10,000 cd light reaches 200 m.</li></ul></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <defs><radialGradient id="qglow"><stop offset="0" stop-color="#FFE9A8" stop-opacity="1"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></radialGradient></defs>
 <g stroke="var(--q-lum)" stroke-width="1.2" stroke-dasharray="3 3" class="q-rays2"><line x1="44" y1="52" x2="128" y2="58"/><line x1="44" y1="60" x2="128" y2="60"/><line x1="44" y1="68" x2="128" y2="62"/></g>
