@@ -224,8 +224,12 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <line x1="34" y1="62" x2="150" y2="62" stroke="var(--q-int)" stroke-width="1.4" marker-end="url(#qarr)"/>
 <text x="124" y="66" text-anchor="middle" class="q-t" fill="var(--paper)" opacity=".9">Ω<animate attributeName="opacity" values=".9;0;.9" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text>
 <rect x="18" y="68" width="12" height="34" rx="2" class="q-body"/><line x1="24" y1="68" x2="24" y2="64" stroke="var(--ink)" stroke-width="1"/><g transform="translate(24 60)"><g class="q-fl"><path d="M0 -12 C5 -5 6 1 0 5 C-6 1 -5 -5 0 -12Z" fill="#F2A93B"/><path d="M0 -6 C2.5 -2 3 1.5 0 3.5 C-3 1.5 -2.5 -2 0 -6Z" fill="#FFE08A"/></g></g>
-</svg><figcaption>Same flux, narrower cone: more candelas.</figcaption></figure><div><b>Candelas</b> <span class="u">(cd = lm/sr)</span>, that is lumens per steradian: how much light goes in one direction, for a headlight the
-    centre of the beam. The same flux concentrated into a narrower beam gives more candelas.</div></li>
+</svg><figcaption>Same flux, narrower cone (smaller Ω): more intensity, that is more candelas.</figcaption></figure><div><b>Candelas</b> <span class="u">(cd = lm/sr)</span>, that is <b>luminous intensity</b>: how many lumens go in one
+    direction, per steradian of cone. For a headlight it is the centre of the beam.
+    <ul class="qsub"><li><b>Ω</b>, the solid angle, says how wide the cone is, in steradians <span class="u">(sr)</span>: on a sphere
+    of 1 m radius round the lamp, the cone cuts out a cap of Ω m². The whole sphere is 4π ≈ 12.6 sr.</li>
+    <li>Intensity = flux / solid angle, that is I = Φ / Ω. The same 100 lumens spread over the whole sphere give
+    about 8 cd; squeezed into a 10° cone (Ω ≈ 0.024 sr) they give about 4,200 cd, more than 500 times as much.</li></ul></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <path d="M4 110 L156 110 L140 88 L20 88 Z" fill="var(--card)" stroke="var(--rule)"/>
 <path fill="var(--q-ill)" fill-opacity=".08" d="M80 16 L34 98 L126 98 Z"><animate attributeName="d" values="M80 16 L34 98 L126 98 Z;M80 56 L56 98 L104 98 Z;M80 16 L34 98 L126 98 Z" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></path>
