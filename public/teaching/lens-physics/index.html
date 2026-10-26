@@ -66,6 +66,14 @@ nav.toc h2{margin:0 0 .5rem; padding:0; border:0}
 nav.toc ol{margin:0; padding-left:1.4rem; font-size:.9375rem; columns:2 17rem; column-gap:2rem}
 nav.toc li{margin:.15rem 0; break-inside:avoid}
 nav.toc a{font-weight:500}
+.part{margin:clamp(3.4rem,8vw,5rem) 0 -1rem; padding-top:1rem; border-top:2px solid var(--ink)}
+.part .pn{display:block; font-family:var(--mono); font-size:.75rem; letter-spacing:.06em; color:var(--faint); text-transform:uppercase}
+.part .pt{display:block; font-family:var(--serif); font-size:clamp(1.5rem,4vw,1.9rem); line-height:1.15; margin-top:.2rem}
+.xref{font-size:.9rem; color:var(--mut); background:var(--card); border-left:3px solid var(--link); border-radius:0 6px 6px 0; padding:.5rem .8rem; margin:0 0 1rem; max-width:38rem}
+.xref b{color:var(--ink)}
+nav.toc .tg{display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:.6rem 2rem}
+nav.toc .tp{font-size:.75rem; font-family:var(--mono); color:var(--faint); letter-spacing:.04em; margin:0 0 .25rem; text-transform:uppercase}
+nav.toc .tg ol{columns:auto}
 nav.toc li ul{margin:.1rem 0 .25rem; padding-left:1.1rem; font-size:.875rem; list-style:disc}
 nav.toc li ul li{margin:.05rem 0}
 nav.toc li ul a{font-weight:400}
@@ -195,24 +203,32 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 
 <nav class="toc" aria-label="Contents">
   <h2>Contents</h2>
-  <ol start="0">
-    <li><a href="#bici">Introduction: bike lights, screens and motion</a>
+  <div class="tg">
+  <div><p class="tp">Part I · Introduction</p><ol start="0">
+    <li><a href="#bici">Bike lights, screens and motion</a>
       <ul><li><a href="#bike-lights">Lumens or candelas? Two bike lights</a></li>
       <li><a href="#projector">Do nits matter for screens? Projector or TV</a></li>
       <li><a href="#motion">Motion: the CRT and 720 Hz monitors</a></li></ul></li>
+  </ol></div>
+  <div><p class="tp">Part II · Light and the human eye</p><ol start="1">
     <li><a href="#luce">Luminance, illuminance and glare</a></li>
     <li><a href="#danno">How the retina gets damaged</a></li>
     <li><a href="#occhio">The eye: model, refractive errors, accommodation, drugs</a></li>
-    <li><a href="#occhiali">Spectacle lenses</a></li>
-    <li><a href="#parallasse">Parallax: nodal point or entrance pupil</a></li>
     <li><a href="#animali">Focal length and pupil in animals</a></li>
+  </ol></div>
+  <div><p class="tp">Part III · Lenses and ray diagrams</p><ol start="5">
     <li><a href="#lente-sottile">The thin lens</a></li>
     <li><a href="#reale-virtuale">Real or virtual image</a></li>
-    <li><a href="#fonti">Sources</a></li>
-  </ol>
+    <li><a href="#occhiali">Spectacle lenses</a></li>
+    <li><a href="#parallasse">Parallax: nodal point or entrance pupil</a></li>
+  </ol></div>
+  </div>
+  <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#fonti">Sources</a></p>
 </nav>
 
 <!-- 0 -->
+<div class="part"><span class="pn">Part I</span><span class="pt">Introduction: lumens, candelas, nits</span></div>
+
 <section id="bici">
   <h2>0 · Introduction</h2>
   <h3 id="bike-lights">Lumens or candelas? Two bike lights</h3>
@@ -412,7 +428,9 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
 
 </section>
 
-<!-- 1 -->
+
+<div class="part"><span class="pn">Part II</span><span class="pt">Light and the human eye</span></div>
+
 <section id="luce">
   <h2>1 · Luminance, illuminance and glare</h2>
   <h3>What lumens, candelas, nits, lux and trolands measure</h3>
@@ -450,7 +468,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   </ol></div>
 </section>
 
-<!-- 2 -->
+
 <section id="danno">
   <h2>2 · How the retina gets damaged</h2>
   <h3>Photochemical dose, thermal threshold, and the eclipse trap</h3>
@@ -497,9 +515,10 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   low-certainty evidence.</p>
 </section>
 
-<!-- 3 -->
+
 <section id="occhio">
   <h2>3 · The eye: model, refractive errors, accommodation, drugs</h2>
+  <div class="xref"><b>A few lens ideas are needed.</b> This section uses dioptres (D = 1 / f, with f in metres), focal point and nodal point. If you need them, they are explained in <a href="#lente-sottile">Part III · The thin lens</a>.</div>
   <h3>The reduced eye</h3>
   <p>For calculations the eye is treated as a single refracting surface, with a power of about
   60 dioptres at rest and an interior of index 4/3: this is the <em>reduced eye</em>. “Reduced” compared
@@ -615,51 +634,9 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   point to the retina: 2.5 µm / 16.7 mm ≈ 0.5 arcminutes.</p>
 </section>
 
-<!-- 4 -->
-<section id="occhiali">
-  <h2>4 · Spectacle lenses</h2>
-  <h3>Menisci, and why they are not biconvex</h3>
-  <p>Whether a lens is converging or diverging is decided by where it is thicker, not by the shape of its faces:
-  thicker at the centre it converges, thicker at the edges it diverges. Spectacles are almost always
-  <b>menisci</b>, with both faces curved the same way (from μηνίσκος, little moon).</p>
-  <figure class="w">
-    <iframe src="w/05-forme-lenti.html" title="Shapes of converging and diverging lenses" loading="lazy"></iframe>
-  </figure>
-  <p>The meniscus shape is not there to counter spherical aberration, which with a beam as wide as the
-  pupil is negligible. It is there to counter <b>oblique astigmatism</b>: the eye rotates behind the lens,
-  and a lens crossed at a slant behaves as if it had two powers. By curving it around the
-  centre of rotation of the eye, a sideways gaze crosses it almost perpendicularly.</p>
-</section>
 
-<!-- 5 -->
-<section id="parallasse">
-  <h2>5 · Parallax: nodal point or entrance pupil</h2>
-  <h3>What to rotate around to avoid errors</h3>
-  <p>Among panoramic photographers the saying is to rotate the camera around the "nodal point". It is
-  a historical inaccuracy: parallax depends only on the <b>centre of perspective</b>, that is the
-  point from which the lines of sight towards the objects start, and that point is the <b>entrance
-  pupil</b>, the image of the aperture stop seen through the front lenses. With a single lens and the
-  stop right against it the two points coincide, and that is where the rule comes from; in a compound
-  lens they separate, by centimetres even in wide-angle lenses.</p>
-  <p>The posterior nodal point remains important for another reason: together with the focal plane
-  it defines the focal length.</p>
-  <figure class="w">
-    <iframe src="w/08-parallasse-fotocamera.html" title="Camera: rotation about the nodal point or the entrance pupil" loading="lazy"></iframe>
-    <figcaption>Choose the lens and the axis, then rotate. <a href="w/08-parallasse-fotocamera.html">Open full screen</a></figcaption>
-  </figure>
-  <p>The real eye rotates around its centre of rotation, about 13.5 mm behind the cornea: the
-  "wrong" point for panoramic photography. The entrance pupil is at about 3 mm, N′ at about
-  7 mm. As the gaze moves, near objects slide a little relative to distant ones: this is
-  ocular parallax, which the brain compensates for.</p>
-  <figure class="w">
-    <iframe src="w/09-parallasse-occhio.html" title="Eye: entrance pupil, nodal point and centre of rotation" loading="lazy"></iframe>
-    <figcaption><a href="w/09-parallasse-occhio.html">Open full screen</a></figcaption>
-  </figure>
-</section>
-
-<!-- 6 -->
 <section id="animali">
-  <h2>6 · Focal length and pupil in animals</h2>
+  <h2>4 · Focal length and pupil in animals</h2>
   <h3>Detail, field and light cannot be had all at once</h3>
   <p>With the same cones, lengthening N′F′ enlarges the image: the same detail covers more
   photoreceptors, but the field covered by the fovea narrows, as with a telephoto lens. If the
@@ -697,9 +674,11 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   dusk it still gets enough light, and it covers a wide field.</p>
 </section>
 
-<!-- 7 -->
+
+<div class="part"><span class="pn">Part III</span><span class="pt">Lenses and ray diagrams</span></div>
+
 <section id="lente-sottile">
-  <h2>7 · The thin lens</h2>
+  <h2>5 · The thin lens</h2>
   <h3>The classic ray diagram</h3>
   <p>Three rays are enough: the one parallel to the axis, which after the lens passes through F′; the one through the
   centre, which is not deviated; the one through F, which comes out parallel. Where they cross is the tip
@@ -725,9 +704,9 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   </figure>
 </section>
 
-<!-- 8 -->
+
 <section id="reale-virtuale">
-  <h2>8 · Real or virtual image</h2>
+  <h2>6 · Real or virtual image</h2>
   <h3>The sheet-of-paper test</h3>
   <p>An image is <b>real</b> when the light really passes through that point: a sheet of paper placed there
   catches it, and anyone in the room sees it, because the paper scatters the light in all
@@ -752,6 +731,49 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   peephole, the bottom of the swimming pool that looks closer. Real images: the projector
   screen, the camera sensor, the retina, the dot of sunlight concentrated by a lens.</p>
 </section>
+
+
+<section id="occhiali">
+  <h2>7 · Spectacle lenses</h2>
+  <h3>Menisci, and why they are not biconvex</h3>
+  <p>Whether a lens is converging or diverging is decided by where it is thicker, not by the shape of its faces:
+  thicker at the centre it converges, thicker at the edges it diverges. Spectacles are almost always
+  <b>menisci</b>, with both faces curved the same way (from μηνίσκος, little moon).</p>
+  <figure class="w">
+    <iframe src="w/05-forme-lenti.html" title="Shapes of converging and diverging lenses" loading="lazy"></iframe>
+  </figure>
+  <p>The meniscus shape is not there to counter spherical aberration, which with a beam as wide as the
+  pupil is negligible. It is there to counter <b>oblique astigmatism</b>: the eye rotates behind the lens,
+  and a lens crossed at a slant behaves as if it had two powers. By curving it around the
+  centre of rotation of the eye, a sideways gaze crosses it almost perpendicularly.</p>
+</section>
+
+
+<section id="parallasse">
+  <h2>8 · Parallax: nodal point or entrance pupil</h2>
+  <h3>What to rotate around to avoid errors</h3>
+  <p>Among panoramic photographers the saying is to rotate the camera around the "nodal point". It is
+  a historical inaccuracy: parallax depends only on the <b>centre of perspective</b>, that is the
+  point from which the lines of sight towards the objects start, and that point is the <b>entrance
+  pupil</b>, the image of the aperture stop seen through the front lenses. With a single lens and the
+  stop right against it the two points coincide, and that is where the rule comes from; in a compound
+  lens they separate, by centimetres even in wide-angle lenses.</p>
+  <p>The posterior nodal point remains important for another reason: together with the focal plane
+  it defines the focal length.</p>
+  <figure class="w">
+    <iframe src="w/08-parallasse-fotocamera.html" title="Camera: rotation about the nodal point or the entrance pupil" loading="lazy"></iframe>
+    <figcaption>Choose the lens and the axis, then rotate. <a href="w/08-parallasse-fotocamera.html">Open full screen</a></figcaption>
+  </figure>
+  <p>The real eye rotates around its centre of rotation, about 13.5 mm behind the cornea: the
+  "wrong" point for panoramic photography. The entrance pupil is at about 3 mm, N′ at about
+  7 mm. As the gaze moves, near objects slide a little relative to distant ones: this is
+  ocular parallax, which the brain compensates for.</p>
+  <figure class="w">
+    <iframe src="w/09-parallasse-occhio.html" title="Eye: entrance pupil, nodal point and centre of rotation" loading="lazy"></iframe>
+    <figcaption><a href="w/09-parallasse-occhio.html">Open full screen</a></figcaption>
+  </figure>
+</section>
+
 
 <section id="fonti">
   <h2>Sources</h2>
