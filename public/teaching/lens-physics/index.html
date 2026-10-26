@@ -254,9 +254,11 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     which gives the candelas <span class="u">(cd = lm/sr)</span> at the centre of the beam and the <em>beam distance</em>: how far the
     beam reaches before only 0.25 lux are left at its centre, the light of a full-moon night. Mind the roles: 0.25 lx is an
     <b>illuminance E</b>, the beam distance is a <b>distance d</b>: the distance at which E falls to 0.25 lx.
-    From E = I / d², d = √(I / E) = √(I / 0.25 lx). The units: cd ÷ lx = (lm/sr) ÷ (lm/m²) = m²/sr,
-    and the root gives metres, because the steradian is a pure number. In practice, with I in candelas,
-    beam distance in metres = 2·√I, because √(1 / 0.25) = 2: a 10,000 cd light reaches 200 m.</li></ul>
+    What we care about are the <b>candelas</b>, and they follow from the beam distance: there the illuminance is
+    E = 0.25 lx by definition, so from E = I / d², knowing E and d, we get <b>I = E · d²</b>. Example: beam
+    distance 200 m → I = 0.25 lm/m² × (200 m)²/sr = 10,000 lm/sr = 10,000 cd. Candelas can be compared with any
+    other measuring system: a StVZO light with 100 lux at 10 m has I = 100 lm/m² × (10 m)²/sr = 10,000 cd, the
+    same intensity.</li></ul>
     <figure class="w qcalc"><iframe src="w/00e-che-luce.html" title="Which light do you need? From stopping distance to the spec sheet" loading="lazy"></iframe>
     <figcaption>Choose speed, road and street lighting, then move the light's slider until you reach the goal. <a href="w/00e-che-luce.html">Open full screen</a></figcaption></figure></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
