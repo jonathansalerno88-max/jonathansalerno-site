@@ -66,6 +66,9 @@ nav.toc h2{margin:0 0 .5rem; padding:0; border:0}
 nav.toc ol{margin:0; padding-left:1.4rem; font-size:.9375rem; columns:2 17rem; column-gap:2rem}
 nav.toc li{margin:.15rem 0; break-inside:avoid}
 nav.toc a{font-weight:500}
+nav.toc li ul{margin:.1rem 0 .25rem; padding-left:1.1rem; font-size:.875rem; list-style:disc}
+nav.toc li ul li{margin:.05rem 0}
+nav.toc li ul a{font-weight:400}
 
 section{margin-top:clamp(2.8rem,7vw,4rem); scroll-margin-top:1rem}
 h2{font-family:var(--sans); font-weight:600; font-size:.8125rem; color:var(--mut);
@@ -193,7 +196,10 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <nav class="toc" aria-label="Contents">
   <h2>Contents</h2>
   <ol start="0">
-    <li><a href="#bici">Introduction: bike lights and projectors</a></li>
+    <li><a href="#bici">Introduction: bike lights, screens and motion</a>
+      <ul><li><a href="#bike-lights">Lumens or candelas? Two bike lights</a></li>
+      <li><a href="#projector">Do nits matter for screens? Projector or TV</a></li>
+      <li><a href="#motion">Motion: the CRT and 720 Hz monitors</a></li></ul></li>
     <li><a href="#luce">Luminance, illuminance and glare</a></li>
     <li><a href="#danno">How the retina gets damaged</a></li>
     <li><a href="#occhio">The eye: model, refractive errors, accommodation, drugs</a></li>
@@ -209,7 +215,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <!-- 0 -->
 <section id="bici">
   <h2>0 · Introduction</h2>
-  <h3>Lumens or candelas? Two bike lights</h3>
+  <h3 id="bike-lights">Lumens or candelas? Two bike lights</h3>
   <p>On r/askscience someone has to choose between two bicycle lights: the cheaper one claims more
   lumens <span class="u">(lm, total flux)</span>, the more expensive one more ‘cd/m²’. They ask which of the two numbers really says how much
   the light illuminates (<a href="https://www.reddit.com/r/askscience/comments/47bw1b/can_anyone_please_explain_the_difference_between/">the thread</a>).
