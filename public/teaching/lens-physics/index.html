@@ -335,16 +335,22 @@ s.setAttribute("tabindex","0");s.setAttribute("role","button");
 function set(p){f.classList.toggle("paused",p);s.setAttribute("aria-pressed",p?"true":"false");s.setAttribute("aria-label",p?"Resume the animation":"Pause the animation");if(p)s.pauseAnimations();else s.unpauseAnimations();}
 set(rm);s.addEventListener("click",function(){set(!f.classList.contains("paused"))});
 s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();set(!f.classList.contains("paused"))}});});})();</script>
-  <p>Let us do the thread's sums. A 110″ screen is about 3.3 m²: 1,500 lumens bring about 450 lux <span class="u">(lx = lm/m²)</span>
-  onto it, 4,500 lumens about 1,350. A living room with many windows easily puts 500 on the screen, so the contrast
-  goes from about 2:1 to about 4:1: better, but still washed out. To reach 10:1 you would need about 4,500 lux,
-  that is about 15,000 lumens. A TV in the same room, on the other hand, is almost black when off and reflects
-  only 1–2% of the light: with 400 nits <span class="u">(nit = cd/m²)</span> it keeps a contrast above 100:1. Sure enough, by the end
-  of the thread the poster gives up on the projector and starts looking at TVs.</p>
+  <p class="lead2"><b>Back to the thread to declare the winner.</b> This is a lumens <span class="u">(lm, total flux)</span> problem again, but
+  this time for a screen: a 1,500 or a 4,500 lumen projector, on a 110″ screen, in a living room full of windows?
+  How to find your way: on the screen the lumens alone do not count, the <b>contrast</b> does, that is the ratio
+  between the lux <span class="u">(lx = lm/m²)</span> the projector brings and the lux the room brings. A 110″ screen is about 3.3 m²:
+  1,500 lumens bring about 450 lux onto it, 4,500 lumens about 1,350, and the windows easily add 500.</p>
   <figure class="w">
-    <iframe src="w/00c-proiettore.html" title="Projector or OLED TV in the same room, from dark to day" loading="lazy" class="h-simple"></iframe>
-    <figcaption>Move the room light or press ▶ and watch the two blacks. <a href="w/00c-proiettore.html">Open full screen</a></figcaption>
+    <iframe src="w/00c-proiettore.html" title="Projector or TV? The living room from the thread, from dark to day" loading="lazy" class="h-simple"></iframe>
+    <figcaption>The living room from the thread, by day: try the two projectors, then change screen, lumens and room light, or tick ‘Best compromise’. <a href="w/00c-proiettore.html">Open full screen</a></figcaption>
   </figure>
+  <p><b>And the winner is… the TV.</b> By day the 1,500 lm projector sits at about 2:1 and the 4,500 lm one at
+  about 4:1: both washed out. To reach 10:1 on a white screen you would need about 15,000 lumens. With an ALR
+  screen about 3,500 are enough, but the bill rises to about €2,850. A 75″ LED TV is almost black when off and
+  reflects only 1–2% of the light: it holds 160:1 for about €1,300, even if it is smaller. Sure enough, the poster
+  moves on to TVs. In the evening, in the dark, the verdict flips: 600–700 lumens on a white screen are enough, and
+  it is the cheapest way to get 110″. <b>Tick ‘Best compromise’</b> and move the room light to see when one pays
+  off and when the other does.</p>
   <div class="qtake">
     <p class="qtt">Take-home: what to look at when you buy</p>
     <p><b>Phone</b></p>

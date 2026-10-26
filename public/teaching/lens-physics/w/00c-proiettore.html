@@ -3,66 +3,102 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Projector or OLED TV in the same room</title>
+<title>Projector or TV? The living room from the thread</title>
 <link rel="stylesheet" href="widget.css">
 <style>
-.ctl{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px 12px;font-size:14px;color:var(--text-secondary)}
-.ctl output{color:var(--text-primary);font-weight:500;min-width:150px;text-align:right}
-#pl{font:inherit;font-size:13px;padding:6px 12px;border-radius:var(--radius);border:1.5px solid var(--border-accent);background:var(--surface-1);color:var(--text-accent);cursor:pointer;margin:8px 0 4px}
+svg[viewBox]{min-width:0!important;max-width:100%!important}
+.ctl{display:grid;grid-template-columns:minmax(100px,auto) 1fr 150px;align-items:center;gap:6px 10px;font-size:13px;color:var(--text-secondary);margin:4px 0}
+.ctl output{text-align:right;color:var(--text-primary);font-weight:500;font-variant-numeric:tabular-nums}
+.tog{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);margin:4px 0}
+.tog>span:first-child{min-width:100px}
+.tog button{font:inherit;font-size:13px;padding:4px 10px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.tog button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+.best{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--text-accent);margin:6px 0}
+#pl{font:inherit;font-size:13px;padding:5px 11px;border-radius:var(--radius);border:1.5px solid var(--border-accent);background:var(--surface-1);color:var(--text-accent);cursor:pointer;margin:4px 0}
 .row{display:flex;flex-wrap:wrap;gap:12px 16px;margin-top:8px}
-.cell{flex:1 1 300px;min-width:0}
-.cell svg{min-width:0!important;width:100%}
+.cell{flex:1 1 280px;min-width:0;border:2px solid transparent;border-radius:12px;padding:4px}
+.cell.win{border-color:#3B6D11}
 .cap{font-size:14px;font-weight:500;margin:6px 0 2px}
-.nums{font-size:13px;color:var(--text-secondary);margin:0}
-.vd{display:inline-block;font-size:13px;font-weight:500;padding:3px 10px;border-radius:999px;margin-top:6px}
-.note{font-size:12px;color:var(--text-secondary);margin:12px 0 0;line-height:1.5}
+.nums{font-size:13px;color:var(--text-secondary);margin:0;font-variant-numeric:tabular-nums;min-height:2.8em}
+.vd{display:inline-block;font-size:13px;font-weight:500;padding:3px 10px;border-radius:999px;margin-top:4px}
+.res{margin-top:10px;padding:8px 11px;border-radius:8px;font-size:13.5px;font-weight:500;background:#EEF3FA;color:#16222E;min-height:calc(3em + 16px);box-sizing:border-box}
+.note{font-size:12px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
 </style>
 </head>
 <body>
-<h2 class="sr-only">A 3,000-lumen projector on a 100-inch white screen and a 77-inch OLED TV in the same room. The slider changes the room light from darkness to full daylight; under each screen are the white, the black and the contrast.</h2>
-<div class="ctl"><span>Room light</span><input type="range" id="lx" min="0" max="1000" value="0" oninput="stopP();upd()"><output id="lxO"></output></div>
-<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px"><button id="pl" onclick="tog()"></button><label style="display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text-secondary)"><input type="checkbox" id="alr" onchange="upd()"> ALR screen (rejects room light)</label></div>
+<h2 class="sr-only">The living room from the thread: a projector on a screen and a TV in the same room. You set the projector's lumens, the screen, the diagonal, the TV type and the room light; the Best compromise box picks the cheapest solution that looks good.</h2>
+<div class="tog"><span>Projectors from the thread</span><span id="pB"></span></div>
+<label class="best"><input type="checkbox" id="best" onchange="upd()"> Best compromise: the cheapest solution that looks good in this room</label>
+<div class="ctl"><span>ANSI lumens</span><input type="range" id="F" min="500" max="8000" step="100" value="1500" oninput="upd()"><output id="FO"></output></div>
+<div class="tog"><span>Screen</span><span id="sB"></span></div>
+<div class="ctl"><span>Screen diagonal</span><input type="range" id="dg" min="60" max="150" step="5" value="110" oninput="upd()"><output id="dgO"></output></div>
+<div class="tog"><span>TV</span><span id="tB"></span></div>
+<div class="ctl"><span>Room light</span><input type="range" id="lx" min="0" max="1000" value="1000" oninput="stopP();upd()"><output id="lxO"></output></div>
+<button id="pl" onclick="tog()"></button>
 <div class="row">
-<div class="cell"><svg viewBox="0 0 320 210" aria-hidden="true"><g id="s0"></g></svg><p class="cap" id="c0">Projector 3,000 lm, white 100″ screen</p><p class="nums" id="n0"></p><span class="vd" id="v0"></span></div>
-<div class="cell"><svg viewBox="0 0 320 210" aria-hidden="true"><g id="s1"></g></svg><p class="cap">OLED TV 77″</p><p class="nums" id="n1"></p><span class="vd" id="v1"></span></div>
+<div class="cell" id="c0"><svg viewBox="0 0 320 210" aria-hidden="true"><g id="s0"></g></svg><p class="cap" id="t0"></p><p class="nums" id="n0"></p><span class="vd" id="v0"></span></div>
+<div class="cell" id="c1"><svg viewBox="0 0 320 210" aria-hidden="true"><g id="s1"></g></svg><p class="cap" id="t1"></p><p class="nums" id="n1"></p><span class="vd" id="v1"></span></div>
 </div>
-<p class="note">Simplified model. Projector: 3,000 lumens (lm, total flux) on a 100″ matte white screen (ρ 0.9), about 1,100 lux (lx = lm/m²), native contrast 1,000:1. OLED TV: 250 nits (cd/m²) full screen, reflects 1% of the light. The screen sends back the room light just like the projector's, so its black lightens at once; the TV screen is dark and sends back almost none of the room light. The ALR screen sends back 80% of the projector’s light, which comes from the front, and only 15% of the room light, which comes from the side and from above. ‘Washed out’ means contrast below 10:1; ‘rather dim’ means white below about 3 times the luminance of the wall.</p>
+<div class="res" id="res"></div>
+<p class="note">Simplified model. Matte screen: L = ρ · E / π. White screen ρ 0.9, light grey 0.5, ALR 0.8 for projector light and 0.15 for room light. Projector: native contrast 1,000:1. LED TV: 400 nits (cd/m²), reflects 1.5% of the light; OLED TV: 250 nits, reflects 1%. ‘Looks good’: contrast at least 10:1 and white at least 3 times the luminance of the wall (minimum 48 nits, the cinema standard). Made-up prices, only for comparison: projector €200 + €0.30 per lumen; white screen €80 + €1.5 per inch, grey €120 + €2, ALR €300 + €12; LED TV 75″ ≈ €1,300, OLED 77″ ≈ €3,500.</p>
 <script>
-var L={"loc": "en-GB", "play": "▶ From dark to day", "stop": "❚❚ Pause", "marks": [[0.2, "dark"], [30, "evening, one lamp"], [100, "day, curtains drawn"], [500, "full daylight"]], "w": "white {W} nits", "b": "black {B} nits", "c": "contrast {C}:1", "v": ["looks good", "washed out", "good contrast, but rather dim"], "pj": "Projector 3,000 lm, white 100″ screen", "pja": "Projector 3,000 lm, ALR 100″ screen"},run=false,t0=null,ph=0;
-var LMIN=Math.log10(0.2),LMAX=Math.log10(700);
+var L={"loc": "en-GB", "pres": ["1,500 lm", "4,500 lm"], "scrs": ["White", "Light grey", "ALR"], "tvs": ["LED 75″", "OLED 77″"], "play": "▶ From dark to day", "stop": "❚❚ Pause", "marks": [[0.2, "dark"], [30, "evening, one lamp"], [100, "day, curtains drawn"], [500, "day, windows open"]], "pj": "Projector {F} lm, {S} screen {D}″", "tvn": ["LED TV 75″", "OLED TV 77″"], "sn": ["white", "light grey", "ALR"], "w": "white {W} nits · black {B} nits · contrast {C}:1", "cost": "estimated cost ≈ €{P}", "v": ["looks good", "washed out", "good contrast, but rather dim"], "bt": "Best compromise here: {X}, ≈ €{P}.", "btp": "the projector with {F} lm and a {S} screen", "btt": "the {T}", "bnone": " No projector up to 8,000 lm makes it.", "bother": " (The cheapest projector that works costs ≈ €{P}.)", "bother2": " (The TV costs ≈ €{P}.)"},run=false,t0=null,ph=0.5,scr=0,tvk=0,pre=0;
+var LMIN=Math.log10(0.2),LMAX=Math.log10(500),SCR=[[0.9,0.9],[0.5,0.5],[0.8,0.15]],TV=[{L:400,R:.015,C:3000,p:1300},{L:250,R:.01,C:1e6,p:3500}];
 function lux(){return Math.pow(10,LMIN+(LMAX-LMIN)*(+document.getElementById('lx').value)/1000)}
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d||0,minimumFractionDigits:d||0})}
 function sig(x){return x>=1e5?'> '+nf(1e5):x>=1000?nf(Math.round(x/50)*50):x>=100?nf(Math.round(x/10)*10):x>=10?nf(x):x>=1?nf(x,1):x>=0.01?nf(x,2):'< '+nf(0.01,2)}
 function fmt(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
 function mix(a,b,t){return 'rgb('+[0,1,2].map(function(i){return Math.round(a[i]+(b[i]-a[i])*t)}).join(',')+')'}
-function scene(E,Lw,Lb,tv){
+function btns(id,arr,cur,fn){var h='';arr.forEach(function(t,i){h+='<button class="'+(i===cur?'act':'')+'" onclick="'+fn+'('+i+')">'+t+'</button>'});document.getElementById(id).innerHTML=h}
+function setS(i){scr=i;document.getElementById('best').checked=false;upd()}function setT(i){tvk=i;upd()}
+function setP(i){pre=i;document.getElementById('best').checked=false;document.getElementById('F').value=[1500,4500][i];document.getElementById('dg').value=110;scr=0;upd(true)}
+function area(d){var w=d*0.0254*16/Math.sqrt(337);return w*w*9/16}
+function proj(F,s,d,E){var rp=SCR[s][0],ra=SCR[s][1],Ep=F/area(d);return [rp*Ep/Math.PI+ra*E/Math.PI,rp*Ep/Math.PI/1000+ra*E/Math.PI]}
+function pcost(F,s,d){return 200+0.3*F+[80+1.5*d,120+2*d,300+12*d][s]}
+function good(Lw,Lb,E){return Lw/Lb>=10&&Lw>=Math.max(48,0.573*E)}
+function verdict(Lw,Lb,E){return Lw/Lb<10?1:Lw<Math.max(48,0.573*E)?2:0}
+function scene(E,Lw,Lb,tv,d){
  var need=Math.max(48,0.573*E),a=Math.max(0,Math.min(1,(Math.log10(E)-LMIN)/(LMAX-LMIN)));
  var wall=mix([20,24,32],[236,229,214],a),s='<rect width="320" height="210" rx="10" fill="'+wall+'"/>';
- s+='<rect x="262" y="30" width="44" height="96" fill="'+mix([20,26,36],[255,248,225],a)+'" stroke="'+mix([60,66,76],[201,191,166],a)+'"/><line x1="284" y1="30" x2="284" y2="126" stroke="'+mix([60,66,76],[201,191,166],a)+'"/>';
+ s+='<rect x="268" y="30" width="40" height="96" fill="'+mix([20,26,36],[255,248,225],a)+'" stroke="'+mix([60,66,76],[201,191,166],a)+'"/>';
  var gain=Math.min(1,Math.pow(Lw/need,0.5)),bl=Math.min(0.85,Math.pow(Lb/Lw,0.45));
  function px(c){return mix([0,0,0],c.map(function(v){return (bl*255+(1-bl)*v)*gain}),1)}
- var x=tv?36:20,y=tv?34:24,w=tv?196:220,h=w*9/16;
+ var w=tv?(tv===1?200:206):Math.min(240,70+d*1.4),h=w*9/16,x=tv?30:(130-w/2),y=tv?30:Math.max(8,22+(124-h)/2);
  s+=tv?'<rect x="'+(x-4)+'" y="'+(y-4)+'" width="'+(w+8)+'" height="'+(h+8)+'" rx="3" fill="#111"/><rect x="'+(x+w/2-14)+'" y="'+(y+h+4)+'" width="28" height="6" fill="#333"/>'
       :'<rect x="'+(x-3)+'" y="'+(y-3)+'" width="'+(w+6)+'" height="'+(h+6)+'" fill="'+mix([70,70,70],[190,190,190],a)+'"/>';
  s+='<g transform="translate('+x+' '+y+') scale('+(w/160)+' '+(h/90)+')"><rect width="160" height="90" fill="'+px([12,16,40])+'"/><circle cx="118" cy="24" r="9" fill="'+px([250,244,220])+'"/>';
  [[20,12],[40,30],[70,8],[90,20],[140,40],[60,44]].forEach(function(p){s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="1" fill="'+px([220,220,255])+'"/>'});
  s+='<path d="M0 90 L0 62 L30 40 L52 58 L80 30 L110 60 L130 48 L160 66 L160 90Z" fill="'+px([40,70,60])+'"/><path d="M0 90 L0 76 L40 64 L90 78 L160 70 L160 90Z" fill="'+px([18,30,26])+'"/></g>';
- if(!tv)s+='<path d="M130 196 L'+x+' '+(y+h)+' L'+(x+w)+' '+(y+h)+'Z" fill="#FFF3C4" opacity="'+(0.22*(1-a)+0.03)+'"/><rect x="112" y="192" width="36" height="13" rx="4" fill="#3A3A38"/><circle cx="130" cy="192" r="3.5" fill="#FFE9A8"/>';
- return [s,need];}
-function upd(){
- var E=lux();var m='';L.marks.forEach(function(k){if(Math.abs(Math.log10(E/k[0]))<0.15)m=' · '+k[1]});
- document.getElementById('lxO').textContent=sig(E)+' lux'+m;
+ if(!tv)s+='<path d="M130 198 L'+x+' '+(y+h)+' L'+(x+w)+' '+(y+h)+'Z" fill="#FFF3C4" opacity="'+(0.22*(1-a)+0.03)+'"/><rect x="112" y="194" width="36" height="12" rx="4" fill="#3A3A38"/><circle cx="130" cy="194" r="3.5" fill="#FFE9A8"/>';
+ return s;}
+function upd(keep){
+ if(!keep)pre=-1;
+ var E=lux(),d=+document.getElementById('dg').value,bst=document.getElementById('best').checked,t=TV[tvk];
+ var Ltv=[t.L+t.R*E/Math.PI,t.L/t.C+t.R*E/Math.PI],tvOK=good(Ltv[0],Ltv[1],E);
+ // cheapest working projector for this diagonal
+ var bp=null;for(var s=0;s<3;s++)for(var F=500;F<=8000;F+=100){var q=proj(F,s,d,E);if(good(q[0],q[1],E)){var c=pcost(F,s,d);if(!bp||c<bp.c)bp={F:F,s:s,c:c};break;}}
+ document.getElementById('F').disabled=bst;
+ if(bst&&bp){document.getElementById('F').value=bp.F;scr=bp.s;}
+ btns('pB',L.pres,pre,'setP');btns('sB',L.scrs,scr,'setS');btns('tB',L.tvs,tvk,'setT');
+ var F=+document.getElementById('F').value,m='';L.marks.forEach(function(k){if(Math.abs(Math.log10(E/k[0]))<0.15)m=' · '+k[1]});
+ document.getElementById('FO').textContent=nf(F)+' lm';document.getElementById('dgO').textContent=d+'″';document.getElementById('lxO').textContent=sig(E)+' lux'+m;
  document.getElementById('pl').textContent=run?L.stop:L.play;
- var A=document.getElementById('alr').checked,rp=A?0.8:0.9,ra=A?0.15:0.9;document.getElementById('c0').textContent=A?L.pja:L.pj;
- var Ep=3000/2.76,D=[[rp*Ep/Math.PI+ra*E/Math.PI,rp*Ep/Math.PI/1000+ra*E/Math.PI],[250+0.01*E/Math.PI,250/1e6+0.01*E/Math.PI]];
- D.forEach(function(d,i){var r=scene(E,d[0],d[1],i===1),C=d[0]/d[1],k=C<10?1:d[0]<r[1]?2:0;
-  document.getElementById('s'+i).innerHTML=r[0];
-  document.getElementById('n'+i).textContent=fmt(L.w,{W:sig(d[0])})+' · '+fmt(L.b,{B:sig(d[1])})+' · '+fmt(L.c,{C:sig(C)});
-  var v=document.getElementById('v'+i);v.textContent=L.v[k];v.style.background=k?'#FCEEDD':'#EAF3DE';v.style.color=k?'#8A4A0B':'#27500A';});}
-function loop(ts){if(!run)return;if(t0===null)t0=ts-ph*10000;ph=((ts-t0)/10000)%1;var u=ph<0.5?ph*2:2-ph*2;document.getElementById('lx').value=Math.round(u*1000);upd();requestAnimationFrame(loop)}
+ var Lp=proj(F,scr,d,E),D=[[Lp[0],Lp[1],pcost(F,scr,d)],[Ltv[0],Ltv[1],t.p]];
+ document.getElementById('t0').textContent=fmt(L.pj,{F:nf(F),S:L.sn[scr],D:d});document.getElementById('t1').textContent=L.tvn[tvk];
+ D.forEach(function(q,i){document.getElementById('s'+i).innerHTML=scene(E,q[0],q[1],i?tvk+1:0,d);var k=verdict(q[0],q[1],E);
+  document.getElementById('n'+i).textContent=fmt(L.w,{W:sig(q[0]),B:sig(q[1]),C:sig(q[0]/q[1])})+' · '+fmt(L.cost,{P:nf(Math.round(q[2]/50)*50)});
+  var v=document.getElementById('v'+i);v.textContent=L.v[k];v.style.background=k?'#FCEEDD':'#EAF3DE';v.style.color=k?'#8A4A0B':'#27500A';});
+ var r=document.getElementById('res'),c0=document.getElementById('c0'),c1=document.getElementById('c1');c0.classList.remove('win');c1.classList.remove('win');
+ if(bst){var pc=bp?bp.c:Infinity,tc=tvOK?t.p:Infinity,txt;
+  if(pc<=tc&&bp){txt=fmt(L.bt,{X:fmt(L.btp,{F:nf(bp.F),S:L.sn[bp.s]}),P:nf(Math.round(pc/50)*50)})+(tvOK?fmt(L.bother2,{P:nf(t.p)}):'');c0.classList.add('win');}
+  else if(tvOK){txt=fmt(L.bt,{X:fmt(L.btt,{T:L.tvn[tvk]}),P:nf(t.p)})+(bp?fmt(L.bother,{P:nf(Math.round(pc/50)*50)}):L.bnone);c1.classList.add('win');}
+  else txt=L.bnone;
+  r.textContent=txt;r.style.display='';}else{r.textContent='';r.style.display='none';}
+}
+function loop(ts){if(!run)return;if(t0===null)t0=ts-ph*10000;ph=((ts-t0)/10000)%1;var u=ph<0.5?ph*2:2-ph*2;document.getElementById('lx').value=Math.round(u*1000);upd(true);requestAnimationFrame(loop)}
 function stopP(){run=false;t0=null;}
-function tog(){run=!run;t0=null;if(run)requestAnimationFrame(loop);upd()}
-upd();
+function tog(){run=!run;t0=null;if(run)requestAnimationFrame(loop);upd(true)}
+setP(0);
 </script>
 </body>
 </html>

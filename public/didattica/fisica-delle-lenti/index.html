@@ -336,16 +336,22 @@ s.setAttribute("tabindex","0");s.setAttribute("role","button");
 function set(p){f.classList.toggle("paused",p);s.setAttribute("aria-pressed",p?"true":"false");s.setAttribute("aria-label",p?"Fai ripartire l'animazione":"Ferma l'animazione");if(p)s.pauseAnimations();else s.unpauseAnimations();}
 set(rm);s.addEventListener("click",function(){set(!f.classList.contains("paused"))});
 s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();set(!f.classList.contains("paused"))}});});})();</script>
-  <p>Facciamo i conti del thread. Una tela da 110″ è circa 3,3 m²: 1.500 lumen ci portano circa 450 lux <span class="u">(lx = lm/m²)</span>,
-  4.500 lumen circa 1.350. Un soggiorno con tante finestre ne porta sulla tela facilmente 500, quindi il contrasto
-  passa da circa 2:1 a circa 4:1: meglio, ma sempre slavato. Per arrivare a 10:1 servirebbero circa 4.500 lux,
-  cioè circa 15.000 lumen. Una TV nella stessa stanza, invece, da spenta è quasi nera e riflette solo l'1–2%
-  della luce: con 400 nit <span class="u">(nit = cd/m²)</span> tiene un contrasto oltre 100:1. Infatti alla fine del thread l'autore
-  lascia perdere il proiettore e comincia a guardare i televisori.</p>
+  <p class="lead2"><b>Torniamo al thread per dichiarare il vincitore.</b> Anche qui è un problema di lumen <span class="u">(lm, flusso totale)</span>, ma
+  stavolta per uno schermo: proiettore da 1.500 o da 4.500 lumen, su una tela da 110″, in un soggiorno pieno di
+  finestre? Come orientarsi: sulla tela non contano i lumen da soli, conta il <b>contrasto</b>, cioè il rapporto fra i
+  lux <span class="u">(lx = lm/m²)</span> che porta il proiettore e quelli che porta la stanza. Una tela da 110″ è circa 3,3 m²: 1.500 lumen
+  ci portano circa 450 lux, 4.500 lumen circa 1.350, e le finestre ne aggiungono facilmente 500.</p>
   <figure class="w">
-    <iframe src="w/00c-proiettore.html" title="Proiettore o TV OLED nella stessa stanza, dal buio al giorno" loading="lazy" class="h-simple"></iframe>
-    <figcaption>Muovi la luce della stanza o premi ▶ e guarda i due neri. <a href="w/00c-proiettore.html">Apri a schermo intero</a></figcaption>
+    <iframe src="w/00c-proiettore.html" title="Proiettore o TV? Il soggiorno del thread, dal buio al giorno" loading="lazy" class="h-simple"></iframe>
+    <figcaption>Il soggiorno del thread, di giorno: prova i due proiettori, poi cambia tela, lumen e luce nella stanza, oppure spunta «Miglior compromesso». <a href="w/00c-proiettore.html">Apri a schermo intero</a></figcaption>
   </figure>
+  <p><b>E il vincitore è… la TV.</b> Di giorno il proiettore da 1.500 lm sta a circa 2:1 e quello da 4.500 lm a circa
+  4:1: slavati tutti e due. Per arrivare a 10:1 su tela bianca servirebbero circa 15.000 lumen. Con un telo ALR
+  ne bastano circa 3.500, ma la spesa sale a circa 2.850 €. Una TV LED da 75″ da spenta è quasi nera e riflette
+  solo l'1–2 % della luce: tiene 160:1 per circa 1.300 €, anche se è più piccola. Infatti l'autore del thread passa
+  ai televisori. Di sera, al buio, il verdetto si ribalta: bastano 600–700 lumen su tela bianca, ed è il modo più
+  economico per avere 110″. <b>Spunta «Miglior compromesso»</b> e muovi la luce della stanza per vedere quando
+  conviene l'uno e quando l'altra.</p>
   <div class="qtake">
     <p class="qtt">In sintesi: cosa guardare quando compri</p>
     <p><b>Telefono</b></p>
