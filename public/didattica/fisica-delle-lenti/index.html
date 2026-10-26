@@ -252,9 +252,10 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <li>le torce e molte luci americane seguono lo standard <b>ANSI</b> (American National Standards Institute) FL1,
     che dà le candele <span class="u">(cd = lm/sr)</span> al centro del fascio e la <em>portata</em>: quanto lontano arriva il fascio
     prima che al centro restino solo 0,25 lux, la luce di una notte di luna piena. Dalla formula
-    E = I / d², portata = √(I / 0,25 lx). In pratica, con I in candele, portata in metri = 2·√I:
-    una luce da 10.000 cd ha una portata di 200 m.</li></ul>
-    <div class="dim"><b>Conti con le unità</b><ul><li>Perché E = I / d²? Un metro quadro di strada a distanza d si vede dalla lampada sotto un angolo solido Ω = 1 m² / d² (sr), quindi ci arrivano I · Ω lumen: E = I / d², in cd · sr / m² = lm / m² = lx ✓.</li><li>Lo steradiante è un numero puro: è l'area della calotta divisa per il raggio al quadrato, m² / m². Per questo nella formula non si scrive.</li><li>Portata: d = √(I / E). I è in cd, E in lx = cd · sr / m², quindi I / E fa cd / (cd · sr / m²) = m² / sr = m². Sotto radice restano i m², e la portata esce in metri ✓.</li></ul></div></div></li>
+    E = I / d² si ricava d² = I / E, quindi d = √(I / E); per la portata E = 0,25 lx, quindi
+    portata = √(I / 0,25 lx). Con le dimensioni: [E] = [I] / [L]², quindi [I] / [E] = [L]², e la radice dà [L],
+    una lunghezza ✓ (qui [L] è la lunghezza, non la luminanza). In pratica, con I in candele,
+    portata in metri = 2·√I: una luce da 10.000 cd ha una portata di 200 m.</li></ul></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <defs><radialGradient id="qglow"><stop offset="0" stop-color="#FFE9A8" stop-opacity="1"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></radialGradient></defs>
 <g stroke="var(--q-lum)" stroke-width="1.2" stroke-dasharray="3 3" class="q-rays2"><line x1="44" y1="52" x2="128" y2="58"/><line x1="44" y1="60" x2="128" y2="60"/><line x1="44" y1="68" x2="128" y2="62"/></g>
