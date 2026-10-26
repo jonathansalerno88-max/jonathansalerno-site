@@ -35,14 +35,14 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 <div class="tog"><span>Ricette di partenza</span><span id="pB"></span></div>
 <label class="best"><input type="checkbox" id="best" onchange="upd()"> Miglior compromesso (a parità di fps)</label>
 <div class="row">
-<div class="cell" id="c0"><p class="cap" id="h0"></p><div id="k0"></div><svg viewBox="0 0 320 120" aria-hidden="true"><g id="s0"></g></svg><table class="ck" id="t0"></table><div class="f" id="f0"></div></div>
-<div class="cell" id="c1"><p class="cap" id="h1"></p><div id="k1"></div><svg viewBox="0 0 320 120" aria-hidden="true"><g id="s1"></g></svg><table class="ck" id="t1"></table><div class="f" id="f1"></div></div>
+<div class="cell" id="c0"><p class="cap" id="h0"></p><div id="k0"></div><svg viewBox="0 0 320 162" aria-hidden="true"><g id="s0"></g></svg><table class="ck" id="t0"></table><div class="f" id="f0"></div></div>
+<div class="cell" id="c1"><p class="cap" id="h1"></p><div id="k1"></div><svg viewBox="0 0 320 162" aria-hidden="true"><g id="s1"></g></svg><table class="ck" id="t1"></table><div class="f" id="f1"></div></div>
 </div>
-<p class="u">Hz = 1/s · fps = immagini/s · nit = cd/m²</p>
+<p class="u">Hz = 1/s · fps = immagini/s · nit = cd/m²<span id="dv"></span></p>
 <div class="cmp" id="cmp"></div>
 <p class="note">Modello semplificato, ordini di grandezza per una TV OLED di fascia media. Persistenza P: quanto resta accesa ogni immagine; senza trucchi è 1/fps, con l'interpolazione 1/Hz, con la BFI metà del refresh. Scia = velocità × P, con un oggetto che attraversa 1.920 px in 2 s (960 px/s). Ritardo in modalità gioco circa 10 ms con un segnale a 60 Hz e 5 ms a 120 Hz, come nelle misure tipiche di RTINGS; l'interpolazione a bassa latenza (solo alcune TV, e senza VRR) deve aspettare il fotogramma vero successivo, quindi aggiunge 1/fps; quella standard, fuori dalla modalità gioco, porta il ritardo a decine o centinaia di ms (qui 100). BFI: metà refresh nero, quindi luce dimezzata e circa mezzo refresh di ritardo in più; a 60 Hz molti la vedono sfarfallare, e molte TV la spengono con l'HDR. Se il gioco va più lento della TV, la BFI accende la stessa immagine due volte e si vede doppia. Picco HDR 800 nit, SDR 300 nit; HDR convincente da 600 nit in su (come la classe VESA DisplayHDR 600). L'interpolazione standard ha più tempo per calcolare e fa meno aloni di quella a bassa latenza. Limiti di scia e ritardo scelti per il confronto: sparatutto 8 px e 20 ms, avventura 12 px e 50 ms, film 12 px e ritardo libero, perché nessuno preme tasti; nel film gli aloni sono un difetto da accettare o no, non una bocciatura.</p>
 <script>
-var L={"loc": "it-IT", "miss": ["Sparatutto online", "Avventura in HDR", "Film (24 fps)"], "pres": ["A: HDR + 60 fps + interpolazione · B: 120 Hz + BFI", "A: HDR + interpolazione · B: 120 Hz + BFI"], "rec": ["Ricetta A", "Ricetta B"], "fps": "Immagini vere", "hz": "La TV va a", "ip": "Interpolazione", "ips": ["No", "Bassa latenza", "Standard"], "bfi": "BFI", "hdr": "HDR", "yn": ["No", "Sì"], "ipx": "Serve una TV più veloce del gioco", "chk": ["Scia", "Ritardo", "Luce HDR", "Sfarfallio", "Immagine pulita"], "v_s": "{S} px (max {M})", "v_r": "{R} ms (max {M})", "v_r0": "{R} ms (non conta)", "v_l": "{P} nit (min 600)", "v_l0": "non conta", "v_f": ["no", "sì, a {H} Hz"], "v_c": ["sì", "aloni leggeri", "aloni evidenti", "doppia immagine"], "lag": "ritardo", "zoom": "ingrandito ×3: l'oggetto attraversa lo schermo in 2 s", "flk": "sfarfalla", "fP0": "P = 1 / {R} fps = <b>{P} ms</b> (ogni immagine resta accesa tutto il tempo)", "fPi": "P = 1 / {H} Hz = <b>{P} ms</b> ({N})", "ipn": {"20": "una immagine su due è inventata", "40": "tre immagini su quattro sono inventate", "50": "quattro immagini su cinque sono inventate", "25": "tre immagini su cinque sono inventate"}, "fl": ["scia", "ritardo", "luce HDR", "sfarfallio", "aloni o doppia immagine"], "fPb": "P = 1 / {H} Hz × 0,5 = {F} ms × 0,5 = <b>{P} ms</b>", "fS": "scia = 960 px/s × {Ps} s = <b>{S} px</b>", "fR": "ritardo = {B} ms (modalità gioco, segnale a {H} Hz)", "fRi": " + {W} ms (attesa del fotogramma vero dopo)", "fRb": " + {X} ms (BFI)", "fRs": "ritardo ≈ <b>100 ms</b> (interpolazione fuori dalla modalità gioco)", "fRt": " = <b>{R} ms</b>", "fL": "picco = {L} nit × {D} = <b>{P} nit</b>", "win_both": "Passano tutte e due. Vince la {W}: {why}.", "win_tie": "Passano tutte e due, alla pari.", "why": ["meno scia", "più luce", "più luce"], "whyc": "niente aloni", "win_one": "Vince la {W}. La {X} cade su: {F}.", "win_none": "Non vince nessuna. A cade su: {FA}. B cade su: {FB}.", "warn": " Attenzione: {W} ha {A}."},mis=1,FPS=[24,30,60,120],HZ=[60,120],V=960;
+var L={"loc": "it-IT", "miss": ["Sparatutto online", "Avventura in HDR", "Film (24 fps)"], "pres": ["A: HDR + 60 fps + interpolazione · B: 120 Hz + BFI", "A: HDR + interpolazione · B: 120 Hz + BFI"], "rec": ["Ricetta A", "Ricetta B"], "fps": "Immagini vere", "hz": "La TV va a", "ip": "Interpolazione", "ips": ["No", "Bassa latenza", "Standard"], "bfi": "BFI", "hdr": "HDR", "yn": ["No", "Sì"], "ipx": "Serve una TV più veloce del gioco", "chk": ["Scia", "Ritardo", "Luce HDR", "Sfarfallio", "Immagine pulita"], "v_s": "{S} px (max {M})", "v_r": "{R} ms (max {M})", "v_r0": "{R} ms (non conta)", "v_l": "{P} nit (min 600)", "v_l0": "non conta", "v_f": ["no", "sì, a {H} Hz"], "v_c": ["sì", "aloni leggeri", "aloni evidenti", "doppia immagine"], "lag": "ritardo", "strip": "10 refresh della TV a {H} Hz = {T} ms", "strip2": "lettere: immagini vere · ≈: immagini inventate", "dev": "Il tuo schermo mostra circa {D} immagini al secondo: qui la TV a 120 Hz si vede al massimo così.", "zoom": "ingrandito ×3: l'oggetto attraversa lo schermo in 2 s", "flk": "sfarfalla", "fP0": "P = 1 / {R} fps = <b>{P} ms</b> (ogni immagine resta accesa tutto il tempo)", "fPi": "P = 1 / {H} Hz = <b>{P} ms</b> ({N})", "ipn": {"20": "una immagine su due è inventata", "40": "tre immagini su quattro sono inventate", "50": "quattro immagini su cinque sono inventate", "25": "tre immagini su cinque sono inventate"}, "fl": ["scia", "ritardo", "luce HDR", "sfarfallio", "aloni o doppia immagine"], "fPb": "P = 1 / {H} Hz × 0,5 = {F} ms × 0,5 = <b>{P} ms</b>", "fS": "scia = 960 px/s × {Ps} s = <b>{S} px</b>", "fR": "ritardo = {B} ms (modalità gioco, segnale a {H} Hz)", "fRi": " + {W} ms (attesa del fotogramma vero dopo)", "fRb": " + {X} ms (BFI)", "fRs": "ritardo ≈ <b>100 ms</b> (interpolazione fuori dalla modalità gioco)", "fRt": " = <b>{R} ms</b>", "fL": "picco = {L} nit × {D} = <b>{P} nit</b>", "win_both": "Passano tutte e due. Vince la {W}: {why}.", "win_tie": "Passano tutte e due, alla pari.", "why": ["meno scia", "più luce", "più luce"], "whyc": "niente aloni", "win_one": "Vince la {W}. La {X} cade su: {F}.", "win_none": "Non vince nessuna. A cade su: {FA}. B cade su: {FB}.", "warn": " Attenzione: {W} ha {A}."},mis=1,FPS=[24,30,60,120],HZ=[60,120],V=960;
 var P0=[{fps:60,hz:120,ip:1,bfi:0,hdr:1},{fps:120,hz:120,ip:0,bfi:1,hdr:0}],PF=[{fps:24,hz:120,ip:2,bfi:0,hdr:1},{fps:24,hz:120,ip:0,bfi:1,hdr:0}],S=JSON.parse(JSON.stringify(P0)),pre=0;
 var LIM=[{s:8,r:20,hdr:false,halo:1},{s:12,r:50,hdr:true,halo:2},{s:12,r:null,hdr:true,halo:3}];
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d||0,minimumFractionDigits:d||0})}
@@ -89,9 +89,17 @@ function scene(o,c,i){
  if(o.halo)s+='<rect x="-12" y="35" width="24" height="30" rx="7" fill="none" stroke="'+(o.halo>1?'#E0623A':'#E8A33D')+'" stroke-width="1.6" stroke-dasharray="3 2"/>';
  s+='</g>';
  if(o.flk)s+='<text x="14" y="22" class="ts" fill="#FFB4A0">⚡ '+L.flk+'</text>';
- s+='<text x="160" y="104" class="ts" text-anchor="middle" fill="#55697A" style="font-size:10.5px">'+L.zoom+'</text>';
+ s+='<text x="160" y="103" class="ts" text-anchor="middle" fill="#55697A" style="font-size:10.5px">'+L.zoom+'</text>';
+ var LT='ABCDEFGHIJ',cols=['#F4D35E','#8FB8DE'];
+ for(var n=0;n<10;n++){var x=10+n*30,lab,fill,stroke='#16222E';
+  if(o.ip){var r=(n*o.fps)%o.hz===0,k=Math.floor(n*o.fps/o.hz);lab=r?LT[k]:'≈';fill=r?cols[k%2]:'#F7E3C6';}
+  else{var k=Math.floor(n*o.fps/o.hz);lab=LT[k];fill=cols[k%2];}
+  s+='<rect x="'+x+'" y="110" width="28" height="18" rx="3" fill="'+fill+'" stroke="#9DACB9" stroke-width=".6"/>';
+  if(c.bfi)s+='<rect x="'+(x+14)+'" y="110" width="14" height="18" rx="2" fill="#111"/>';
+  s+='<text x="'+(x+(c.bfi?7:14))+'" y="123" class="ts" text-anchor="middle" fill="'+stroke+'" style="font-size:11px;font-weight:500">'+lab+'</text>';}
+ s+='<text x="160" y="143" class="ts" text-anchor="middle" fill="#55697A" style="font-size:10.5px">'+fmt(L.strip,{H:o.hz,T:nf(10000/o.hz,0)})+'</text><text x="160" y="157" class="ts" text-anchor="middle" fill="#55697A" style="font-size:10.5px">'+L.strip2+'</text>';
  return s}
-var xs=[0,0];
+var xs=[0,0],CUR=[null,null];
 function upd(){
  var bst=document.getElementById('best').checked;
  if(bst){S=S.map(function(c){return bestFor(c.fps)});pre=-1}
@@ -99,7 +107,7 @@ function upd(){
  document.getElementById('pB').innerHTML=btns([L.pres[mis===2?1:0]],pre,'setP');
  var O=[];
  [0,1].forEach(function(p){
-  var c=S[p],o=calc(c);O[p]=o;var d=function(){return bst};
+  var c=S[p],o=calc(c);O[p]=o;CUR[p]={fps:o.fps,hz:o.hz,ip:o.ip};var d=function(){return bst};
   var h='<div class="tog"><span>'+L.fps+'</span>'+btns(FPS.map(function(f){return f+' fps'}),FPS.indexOf(c.fps),'set(\'fps\','+p+',',function(i){return mis===2?i>0:i===0})+'</div>';
   h+='<div class="tog"><span>'+L.hz+'</span>'+btns(HZ.map(function(f){return f+' Hz'}),HZ.indexOf(c.hz),'set(\'hz\','+p+',',d)+'</div>';
   var ipd=function(i){return bst||(i>0&&c.hz<=c.fps)};
@@ -140,7 +148,13 @@ function upd(){
  document.getElementById('cmp').textContent=s;
 }
 var rm=matchMedia('(prefers-reduced-motion: reduce)').matches,t0=null;
-function loop(ts){if(t0===null)t0=ts;var u=((ts-t0)/2000)%1,x=rm?200:20+u*280;[0,1].forEach(function(p){var g=document.getElementById('mv'+p);if(g)g.setAttribute('transform','translate('+x+' 0)')});if(!rm)requestAnimationFrame(loop)}
+var nfr=0,tf=null;
+function loop(ts){if(t0===null)t0=ts;var t=(ts-t0)/1000;
+ if(tf===null)tf=ts;nfr++;if(ts-tf>1000&&nfr>0&&!document.getElementById('dv').textContent){var D=Math.round(nfr*1000/(ts-tf)/10)*10;document.getElementById('dv').textContent=' · '+fmt(L.dev,{D:D})}
+ [0,1].forEach(function(p){var g=document.getElementById('mv'+p),c=CUR[p];if(!g||!c)return;
+  var n=Math.floor(t*c.hz),tt=c.ip?n/c.hz:Math.floor(n*c.fps/c.hz)/c.fps,x=rm?200:20+((tt/2)%1)*280;
+  g.setAttribute('transform','translate('+x+' 0)')});
+ if(!rm)requestAnimationFrame(loop)}
 setP();requestAnimationFrame(loop);
 </script>
 </body>
