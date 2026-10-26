@@ -3,109 +3,93 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Two bike lights</title>
+<title>Lumens or candelas? A bike light on the road</title>
 <link rel="stylesheet" href="widget.css">
 <style>
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px 22px;margin:0 0 10px}
-@media (max-width:560px){.grid2{grid-template-columns:1fr}}
-.col h3{font-size:14px;font-weight:500;margin:0 0 4px}
-.row{display:grid;grid-template-columns:96px 1fr 72px;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary)}
-.row output{text-align:right;color:var(--text-primary);font-variant-numeric:tabular-nums}
-.dist{display:grid;grid-template-columns:96px 1fr 72px;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);margin:2px 0 10px}
-.dist output{text-align:right;color:var(--text-primary);font-weight:500}
-.tbl{overflow-x:auto;margin-top:10px}
-table{border-collapse:collapse;width:100%;min-width:560px;font-size:13px}
-th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:top}
-th{font-weight:500;color:var(--text-secondary);font-size:12px}
-td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
-td.win{font-weight:600;background:#FCEEDD}
-.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
-.note{font-size:12.5px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
-.ctlbtn{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px}
-.ctlbtn button{font:inherit;font-size:13px;padding:6px 12px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+svg[viewBox]{min-width:0!important;max-width:100%!important}
+.q{font-size:14px;font-weight:500;margin:0 0 8px;color:var(--text-primary)}
+.ctl{display:grid;grid-template-columns:minmax(100px,auto) 1fr 70px;align-items:center;gap:6px 10px;font-size:13px;color:var(--text-secondary);margin:4px 0}
+.ctl output{text-align:right;color:var(--text-primary);font-weight:500;font-variant-numeric:tabular-nums}
+.tog{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);margin:4px 0}
+.tog>span:first-child{min-width:100px}
+.tog button{font:inherit;font-size:13px;padding:4px 10px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.tog button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+.row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:flex-start;margin-top:8px}
+.row svg{flex:1 1 230px}
+.side{flex:1 1 260px;min-width:0}
+.f{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:12px;background:#EEF3FA;border-left:3px solid #185FA5;border-radius:0 6px 6px 0;padding:5px 8px;margin:0 0 5px;color:#16222E;min-height:calc(3em + 10px);box-sizing:border-box;font-variant-numeric:tabular-nums}
+.f.ill{border-left-color:#B5520C;background:#FBF1E8}.f.flux{border-left-color:#534AB7;background:#F1EFFA}
+.chk{display:flex;align-items:center;gap:8px;font-size:13px;margin:4px 0}
+.chk b{display:inline-block;min-width:26px;text-align:center;border-radius:999px;padding:1px 8px;font-size:12px}
+.res{margin-top:8px;padding:8px 11px;border-radius:8px;font-size:13.5px;font-weight:500;min-height:calc(3em + 16px);box-sizing:border-box}
+.note{font-size:12px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
 </style>
 </head>
 <body>
-<h2 class="sr-only">Two bike lights compared: flux in lumens, beam width, intensity in candela, lens luminance in nits and illuminance in lux on the road at a chosen distance, with the range according to the ANSI FL1 standard.</h2>
-<div class="ctlbtn">
-<button onclick="preset(0)">Thread example: more lumens versus more candela</button>
-<button onclick="preset(1)">Same lumens, different beam</button>
-</div>
-<div class="grid2">
-<div class="col"><h3 style="color:#185FA5">Light A</h3>
-<div class="row"><span>Flux</span><input type="range" id="aL" min="100" max="2000" step="50" oninput="upd()"><output id="aLo"></output></div>
-<div class="row"><span>Beam width</span><input type="range" id="aA" min="4" max="80" step="1" oninput="upd()"><output id="aAo"></output></div>
-<div class="row"><span>Lens diameter</span><input type="range" id="aD" min="10" max="50" step="1" oninput="upd()"><output id="aDo"></output></div>
-</div>
-<div class="col"><h3 style="color:#854F0B">Light B</h3>
-<div class="row"><span>Flux</span><input type="range" id="bL" min="100" max="2000" step="50" oninput="upd()"><output id="bLo"></output></div>
-<div class="row"><span>Beam width</span><input type="range" id="bA" min="4" max="80" step="1" oninput="upd()"><output id="bAo"></output></div>
-<div class="row"><span>Lens diameter</span><input type="range" id="bD" min="10" max="50" step="1" oninput="upd()"><output id="bDo"></output></div>
-</div>
-</div>
-<div class="dist"><span>Distance</span><input type="range" id="dS" min="2" max="50" step="1" value="10" oninput="upd()"><output id="dO"></output></div>
-<svg width="100%" viewBox="0 0 680 400">
-<defs>
-<clipPath id="cA"><rect x="0" y="22" width="680" height="160"/></clipPath>
-<clipPath id="cB"><rect x="0" y="206" width="680" height="160"/></clipPath>
-</defs>
-<g id="sc"></g>
-</svg>
-<div class="tbl"><table>
-<thead><tr><th>Quantity</th><th>Unit</th><th>What it says about a bike light</th><th>Light A</th><th>Light B</th></tr></thead>
-<tbody id="tb"></tbody>
-</table></div>
-<p class="note">Colours as in the rest of the page: <b style="color:#534AB7">purple</b> flux (lumens), <b style="color:#185FA5">blue</b> intensity (candela), <b style="color:#0F6E56">green</b> luminance (nit = cd/m²), <b style="color:#B5520C">orange</b> illuminance (lux). In bold, for each row, the light that wins. Simplification: uniform beam inside a cone; in real lights the centre is more intense than the average, so the stated peak candela are higher than these.</p>
+<h2 class="sr-only">A bike on the road seen from above. You set the lumens and the beam width of a light, and the conditions: speed, dry or wet road, lit or dark street. The drawing and the formulas show candelas, lux at the stopping distance and lit width.</h2>
+<p class="q">Try changing the lumens, then the beam width (that is, the candelas). What happens out there, at the stopping distance? Which matters more?</p>
+<div class="tog"><span>Lights from the thread</span><span id="pB"></span></div>
+<div class="ctl"><span>Flux Φ</span><input type="range" id="F" min="100" max="1500" step="25" value="400" oninput="upd()"><output id="FO"></output></div>
+<div class="ctl"><span>Beam width α</span><input type="range" id="a" min="4" max="60" step="1" value="20" oninput="upd()"><output id="aO"></output></div>
+<div class="ctl"><span>Speed</span><input type="range" id="v" min="10" max="45" step="1" value="30" oninput="upd()"><output id="vO"></output></div>
+<div class="tog"><span>Road</span><span id="rB"></span></div>
+<div class="tog"><span>Street lighting</span><span id="lB"></span></div>
+<div class="row">
+<svg viewBox="0 0 240 300" aria-hidden="true"><defs><linearGradient id="bg" x1="0" y1="1" x2="0" y2="0"><stop id="g0" offset="0"/><stop id="g1" offset=".5"/><stop id="g2" offset="1"/></linearGradient></defs><g id="g"></g></svg>
+<div class="side">
+<div class="f" id="f1"></div><div class="f flux" id="f2"></div><div class="f" id="f3"></div><div class="f ill" id="f4"></div><div class="f" id="f5"></div>
+<div class="chk"><b id="k1"></b><span>You see the pothole at the stopping distance</span></div>
+<div class="chk"><b id="k2"></b><span>The beam covers the lane</span></div>
+</div></div>
+<div class="res" id="res"></div>
+<p class="note">Simplified model: uniform beam inside a cone, seen from above; real headlights have a centre brighter than the average. Braking 5 m/s² dry and 3 m/s² wet; 1 s reaction. Target at the stopping distance: 10 lux (lx = lm/m²) with street lights, 30 lux on a dark road. Candelas: cd = lm/sr.</p>
 <script>
-var X0=62,SC=11.4,YA=102,YB=286,C={n:'#888780',phi:'#534AB7',int:'#185FA5',lum:'#0F6E56',ill:'#B5520C'};
-var P=[{a:[1000,40,25],b:[400,10,20]},{a:[600,40,25],b:[600,12,25]}];
-function preset(i){var p=P[i];['L','A','D'].forEach(function(k,j){document.getElementById('a'+k).value=p.a[j];document.getElementById('b'+k).value=p.b[j];});upd();}
-function v(id){return parseFloat(document.getElementById(id).value);}
-function it(x,d){return x.toLocaleString('en-GB',{maximumFractionDigits:d||0});}
-function sig(x){if(x>=1e6){var e=Math.floor(Math.log10(x)),m=x/Math.pow(10,e);return m.toFixed(1)+'×10'+String(e).split('').map(function(c){return '⁰¹²³⁴⁵⁶⁷⁸⁹'[c];}).join('');}
- var p=Math.pow(10,Math.max(0,Math.floor(Math.log10(Math.max(x,1)))-1));return it(Math.round(x/p)*p);}
-function calc(L,A,D,d){var a=A/2*Math.PI/180,O=2*Math.PI*(1-Math.cos(a)),I=L/O,area=Math.PI*Math.pow(D/2000,2);
- return {L:L,A:A,D:D,I:I,lum:I/area,E:I/(d*d),R:2*Math.sqrt(I),W:2*d*Math.tan(a)};}
-function T(x,y,t,col,anc,cls){return '<text class="'+(cls||'ts')+'" x="'+x+'" y="'+y+'"'+(anc?' text-anchor="'+anc+'"':'')+' fill="'+col+'">'+t+'</text>';}
-function beam(r,yc,name,col,clip,d){
- var xw=X0+d*SC,a=r.A/2*Math.PI/180,lens=r.D/2*0.9,s='';
- var h=lens+Math.tan(a)*(xw-X0),op=Math.max(0.12,Math.min(0.85,0.15+0.17*Math.log10(r.I/300)));
- s+='<g clip-path="url(#'+clip+')">';
- s+='<polygon points="'+X0+','+(yc-lens)+' '+xw+','+(yc-h)+' '+xw+','+(yc+h)+' '+X0+','+(yc+lens)+'" fill="#FAC775" opacity="'+op+'"/>';
- s+='<line x1="'+X0+'" y1="'+yc+'" x2="'+xw+'" y2="'+yc+'" stroke="'+C.int+'" stroke-width="1" stroke-dasharray="3 3"/>';
- var eo=Math.max(0.15,Math.min(1,0.2+0.27*Math.log10(Math.max(r.E,1))));
- s+='<line x1="'+xw+'" y1="'+(yc-h)+'" x2="'+xw+'" y2="'+(yc+h)+'" stroke="#EF9F27" stroke-width="6" opacity="'+eo+'"/>';
- s+='</g>';
- s+='<line x1="'+xw+'" y1="'+(yc-78)+'" x2="'+xw+'" y2="'+(yc+78)+'" stroke="#888780" stroke-width="1"/>';
- s+='<rect x="16" y="'+(yc-lens-4)+'" width="'+(X0-16)+'" height="'+(2*lens+8)+'" rx="5" fill="#2C2C2A"/>';
- s+='<rect x="'+(X0-3)+'" y="'+(yc-lens)+'" width="5" height="'+(2*lens)+'" rx="2" fill="#E6F1FB" stroke="'+C.lum+'" stroke-width="1.2"/>';
- s+=T(16,yc-78+12,name,col,'start','th');
- s+=T(16,yc+lens+20,it(r.L)+' lumens',C.phi)+T(16,yc+lens+36,'lens '+sig(r.lum)+' nit',C.lum);
- var lx=Math.min(xw-8,X0+190);s+=T(Math.max(X0+70,(X0+lx)/2),yc-6,sig(r.I)+' candela',C.int,'middle');
- var tx=xw+8,anc='start';if(xw>560){tx=xw-8;anc='end';}
- s+=T(tx,yc-60,it(r.E,r.E<10?1:0)+' lux',C.ill,anc,'th')+T(tx,yc-44,'at '+it(d)+' m',C.ill,anc);
- return s;}
-function upd(){
- var d=v('dS');document.getElementById('dO').textContent=d+' m';
- var A=calc(v('aL'),v('aA'),v('aD'),d),B=calc(v('bL'),v('bA'),v('bD'),d);
- [['a',A],['b',B]].forEach(function(q){document.getElementById(q[0]+'Lo').textContent=it(q[1].L)+' lm';document.getElementById(q[0]+'Ao').textContent=q[1].A+'°';document.getElementById(q[0]+'Do').textContent=q[1].D+' mm';});
- var s='';
- s+=beam(A,YA,'Light A','#185FA5','cA',d)+beam(B,YB,'Light B','#854F0B','cB',d);
- s+='<line x1="'+X0+'" y1="384" x2="'+(X0+50*SC)+'" y2="384" stroke="var(--b)" stroke-width="1"/>';
- for(var m=0;m<=50;m+=10){var x=X0+m*SC;s+='<line x1="'+x+'" y1="380" x2="'+x+'" y2="388" stroke="var(--b)" stroke-width="1"/>'+T(x,399,m+' m','#55697A','middle');}
- document.getElementById('sc').innerHTML=s;
- var rows=[
-  ['phi','Luminous flux','<b>lumen</b> (lm)','all the light emitted, in all directions: it does not say where it goes',A.L,B.L,it(A.L),it(B.L)],
-  ['int','Intensity at the beam centre','<b>candela</b> (cd = lm/sr)','how much light goes straight ahead: the same flux in a narrower beam gives more candela',A.I,B.I,sig(A.I),sig(B.I)],
-  ['ill','Illuminance on the road at '+d+' m','<b>lux</b> (lx = lm/m²) = cd / d²','how much light reaches what you need to see. StVZO-approved lights state the lux at 10 m',A.E,B.E,it(A.E,A.E<10?1:0),it(B.E,B.E<10?1:0)],
-  ['ill','Range according to ANSI FL1','<b>metres</b> = 2·√cd','distance at which the beam centre drops to 0.25 lux, about a full moon',A.R,B.R,it(A.R),it(B.R)],
-  ['n','Lit width at '+d+' m','<b>metres</b>','how much road you cover to the sides',A.W,B.W,it(A.W,1),it(B.W,1)],
-  ['lum','Lens luminance','<b>nit</b> (cd/m²) = cd / lens area','how dazzling the lamp is when seen head-on; it does not depend on distance and does not say how much it lights up',null,null,sig(A.lum),sig(B.lum)]];
- var h='';rows.forEach(function(r){var wa=r[4]!=null&&r[4]>r[5]*1.02,wb=r[4]!=null&&r[5]>r[4]*1.02;
-  h+='<tr><td><span class="dot" style="background:'+C[r[0]]+'"></span>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td class="n'+(wa?' win':'')+'">'+r[6]+'</td><td class="n'+(wb?' win':'')+'">'+r[7]+'</td></tr>';});
- document.getElementById('tb').innerHTML=h;
-}
-preset(0);
+var L={"loc": "en-GB", "pres": ["Light A: 1,000 lm, 40°", "Light B: 400 lm, 10°"], "roads": ["Dry", "Wet"], "lits": ["Good (street lights)", "Poor or none"], "f1": "d = v · 1 s + v² / (2a) = {V} m/s × 1 s + ({V} m/s)² / (2 × {A} m/s²) = <b>{D} m</b>", "f2": "Ω = 2π · (1 − cos(α/2)) = 2π · (1 − cos {H}°) = <b>{O} sr</b>", "f3": "I = Φ / Ω = {F} lm ÷ {O} sr = <b>{I} lm/sr = {I} cd</b>", "f4": "E at {D} m = I / d² = {I} lm/sr ÷ ({D} m)²/sr = <b>{E} lm/m² = {E} lx</b> ({T} lx needed)", "f5": "width at {D} m = 2 · d · tan(α/2) = 2 × {D} m × tan {H}° = <b>{W} m</b> (lane 3.5 m)", "yes": "yes", "no": "no", "both": "✓ You see far and wide: the right light for these conditions.", "onlyfar": "You see the pothole, but the beam is too narrow: the sides are dark. You need more lumens to widen it without losing candelas.", "onlywide": "The beam is wide but too little light gets out there: you need more candelas (a narrower beam or more lumens).", "none": "Neither enough light out there nor enough width: you need more lumens.", "obst": "pothole", "wx": "width drawn ×3"},wet=0,lit=0,TG=[10,30],AC=[5,3],LANE=3.5,pre=-1;
+function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d||0,minimumFractionDigits:d||0})}
+function r50(x){return x>=1000?Math.round(x/50)*50:Math.round(x)}
+function fmt(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
+function btns(id,arr,cur,fn){var h='';arr.forEach(function(t,i){h+='<button class="'+(i===cur?'act':'')+'" onclick="'+fn+'('+i+')">'+t+'</button>'});document.getElementById(id).innerHTML=h}
+function setR(i){wet=i;upd()}function setL(i){lit=i;upd()}
+function setP(i){pre=i;document.getElementById('F').value=[1000,400][i];document.getElementById('a').value=[40,10][i];upd(true)}
+function T(x,y,s,c,a,cl){return '<text x="'+x+'" y="'+y+'" class="'+(cl||'ts')+'" fill="'+c+'"'+(a?' text-anchor="'+a+'"':'')+'>'+s+'</text>'}
+function upd(keep){
+ if(!keep)pre=-1;
+ btns('pB',L.pres,pre,'setP');btns('rB',L.roads,wet,'setR');btns('lB',L.lits,lit,'setL');
+ var F=+document.getElementById('F').value,al=+document.getElementById('a').value,V=+document.getElementById('v').value;
+ document.getElementById('FO').textContent=nf(F)+' lm';document.getElementById('aO').textContent=al+'°';document.getElementById('vO').textContent=V+' km/h';
+ var v=V/3.6,A=AC[wet],D=v+v*v/(2*A),h=al/2*Math.PI/180,O=2*Math.PI*(1-Math.cos(h)),I=F/O,E=I/(D*D),W=2*D*Math.tan(h),Tg=TG[lit];
+ var far=E>=Tg,wide=W>=LANE;
+ document.getElementById('f1').innerHTML=fmt(L.f1,{V:nf(v,1),A:A,D:nf(D,1)});
+ document.getElementById('f2').innerHTML=fmt(L.f2,{H:nf(al/2,al%2?1:0),O:nf(O,O<0.1?3:2)});
+ document.getElementById('f3').innerHTML=fmt(L.f3,{F:nf(F),O:nf(O,O<0.1?3:2),I:nf(r50(I))});
+ document.getElementById('f4').innerHTML=fmt(L.f4,{D:nf(D,1),I:nf(r50(I)),E:nf(E,E<10?1:0),T:Tg});
+ document.getElementById('f5').innerHTML=fmt(L.f5,{D:nf(D,1),H:nf(al/2,al%2?1:0),W:nf(W,1)});
+ [['k1',far],['k2',wide]].forEach(function(k){var e=document.getElementById(k[0]);e.textContent=k[1]?L.yes:L.no;e.style.background=k[1]?'#EAF3DE':'#FCEBEB';e.style.color=k[1]?'#27500A':'#A32D2D'});
+ var r=document.getElementById('res'),msg=far&&wide?L.both:far?L.onlyfar:wide?L.onlywide:L.none;r.textContent=msg;
+ r.style.background=far&&wide?'#EAF3DE':'#FCEEDD';r.style.color=far&&wide?'#27500A':'#8A4A0B';
+ // top view: bike at bottom (y=280), road up; distance scale
+ var maxD=Math.max(D*1.35,15),sy=250/maxD,sx=sy*3,cx=120,y0=280,Y=function(m){return y0-m*sy};
+ var dark=lit?'#151A21':'#262D36',s='<rect width="240" height="300" rx="8" fill="'+dark+'"/>';
+ s+='<rect x="'+(cx-LANE/2*sx)+'" y="0" width="'+(LANE*sx)+'" height="300" fill="'+(lit?'#2A3038':'#3A424C')+'"/>';
+ s+='<line x1="'+(cx-LANE/2*sx)+'" y1="0" x2="'+(cx-LANE/2*sx)+'" y2="300" stroke="#C9D2DC" stroke-dasharray="6 6"/><line x1="'+(cx+LANE/2*sx)+'" y1="0" x2="'+(cx+LANE/2*sx)+'" y2="300" stroke="#C9D2DC" stroke-dasharray="6 6"/>';
+ if(!lit){[60,170].forEach(function(y){s+='<circle cx="'+(cx-LANE/2*sx-14)+'" cy="'+y+'" r="7" fill="#FFE9A8" opacity=".25"/><circle cx="'+(cx-LANE/2*sx-14)+'" cy="'+y+'" r="2.5" fill="#FFE9A8"/>'})}
+ // beam cone with brightness gradient: opacity ∝ E(y)/target capped
+ function op(m){var e=I/(m*m);return Math.max(0.04,Math.min(0.85,0.85*Math.sqrt(e/(Tg*4))))}
+ document.getElementById('g0').setAttribute('stop-color','#FFE9A8');document.getElementById('g0').setAttribute('stop-opacity',op(Math.max(2,maxD*0.08)));
+ document.getElementById('g1').setAttribute('stop-color','#FFE9A8');document.getElementById('g1').setAttribute('stop-opacity',op(maxD*0.55));
+ document.getElementById('g2').setAttribute('stop-color','#FFE9A8');document.getElementById('g2').setAttribute('stop-opacity',op(maxD*1.08));
+ var hw=Math.tan(h)*maxD*1.1*sx;s+='<path d="M'+cx+' '+y0+' L'+(cx-hw)+' '+Y(maxD*1.1)+' L'+(cx+hw)+' '+Y(maxD*1.1)+' Z" fill="url(#bg)"/>';
+ // stopping line and pothole
+ var yd=Y(D),wd=W/2*sx;s+='<line x1="10" y1="'+yd+'" x2="230" y2="'+yd+'" stroke="#E2E9EF" stroke-dasharray="3 3"/>';
+ s+='<line x1="'+(cx-wd)+'" y1="'+(yd+6)+'" x2="'+(cx+wd)+'" y2="'+(yd+6)+'" stroke="#F5A86A" stroke-width="2"/>';
+ s+='<ellipse cx="'+(cx+LANE*sx*0.28)+'" cy="'+yd+'" rx="7" ry="4" fill="'+(far?'#D8D2C2':'#4E4A42')+'" stroke="'+(far?'#FFE9A8':'#5A5650')+'"/>';
+ s+=T(cx+LANE*sx*0.28,yd-8,L.obst,far?'#FFE9A8':'#9AA3AD','middle');
+ s+=T(8,yd-6,'d = '+nf(D,1)+' m','#E2E9EF')+T(232,yd-6,nf(E,E<10?1:0)+' lx',far?'#B8E08F':'#F5A86A','end','th');
+ // bike
+ s+='<rect x="'+(cx-3)+'" y="'+(y0-2)+'" width="6" height="18" rx="2" fill="#C9D2DC"/><circle cx="'+cx+'" cy="'+y0+'" r="3" fill="#FFE08A"/>';
+ s+=T(8,16,L.wx,'#9AA3AD');
+ document.getElementById('g').innerHTML=s;}
+upd();
 </script>
 </body>
 </html>
