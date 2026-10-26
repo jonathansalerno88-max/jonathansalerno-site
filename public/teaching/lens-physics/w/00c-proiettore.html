@@ -18,6 +18,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 #pl{font:inherit;font-size:13px;padding:5px 11px;border-radius:var(--radius);border:1.5px solid var(--border-accent);background:var(--surface-1);color:var(--text-accent);cursor:pointer;margin:4px 0}
 .hide{display:none!important}
 .f{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:12px;background:#EEF3FA;border-left:3px solid #185FA5;border-radius:0 6px 6px 0;padding:5px 8px;margin:6px 0 0;color:#16222E;min-height:calc(3em + 10px);box-sizing:border-box;font-variant-numeric:tabular-nums}
+.cost{font-size:13.5px;font-weight:500;margin:8px 0 0;color:var(--text-primary)}
 .res{margin-top:8px;padding:8px 11px;border-radius:8px;font-size:13.5px;font-weight:500;min-height:calc(3em + 16px);box-sizing:border-box}
 .note{font-size:12px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
 </style>
@@ -30,17 +31,19 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 <div class="tog"><span>Projectors from the thread</span><span id="pB"></span></div>
 <label class="best"><input type="checkbox" id="best" onchange="upd()"> Fewest lumens that reach the goal</label>
 <div class="ctl"><span>ANSI lumens</span><input type="range" id="F" min="500" max="8000" step="100" value="1500" oninput="upd()"><output id="FO"></output></div>
-<div class="ctl"><span>Diagonal</span><input type="range" id="dg" min="60" max="150" step="5" value="110" oninput="upd()"><output id="dgO"></output></div>
 <div class="tog"><span>Screen</span><span id="sB"></span></div>
 </div>
+<div class="ctl"><span>Diagonal</span><input type="range" id="dg" min="60" max="150" step="5" value="110" oninput="upd()"><output id="dgO"></output></div>
+
 <div class="ctl"><span>Room light</span><input type="range" id="lx" min="0" max="1000" value="1000" oninput="stopP();upd()"><output id="lxO"></output></div>
 <button id="pl" onclick="tog()"></button>
 <svg viewBox="0 0 320 200" aria-hidden="true"><g id="s0"></g></svg>
 <div class="f" id="f1"></div><div class="f" id="f2"></div>
+<p class="cost" id="cost"></p>
 <div class="res" id="res"></div>
-<p class="note">Simplified model. Contrast = luminance of white / luminance of black (nits / nits). Projector on a matte screen: the screen sends back the projector's light and the room light with the same reflectance (white ρ 0.9; ALR 0.8 for the projector and 0.15 for the room), native contrast 1,000:1. LED TV: 400 nits (cd/m²), reflects 1.5% of the light, native contrast 3,000:1; OLED TV: 250 nits, reflects 1%, near-perfect black. Goals from the AVIXA/ANSI image contrast standard: 15:1 for basic decision making (slides), 80:1 for video.</p>
+<p class="note">Simplified model. Contrast = luminance of white / luminance of black (nits / nits). Projector on a matte screen: the screen sends back the projector's light and the room light with the same reflectance (white ρ 0.9; ALR 0.8 for the projector and 0.15 for the room), native contrast 1,000:1. LED TV: 400 nits (cd/m²), reflects 1.5% of the light, native contrast 3,000:1; OLED TV: 250 nits, reflects 1%, near-perfect black. Estimated prices, only for comparison: projector €200 + €0.30 per lumen; white screen €80 + €1.5 per inch, ALR screen €300 + €12 per inch; LED TV about €600 at 55″, OLED about €1,500, growing with the diagonal to the power 2.5. Goals from the AVIXA/ANSI image contrast standard: 15:1 for basic decision making (slides), 80:1 for video.</p>
 <script>
-var L={"loc": "en-GB", "objs": ["Film: 80:1", "Slides and presentations: 15:1"], "devs": ["Projector", "LED TV", "OLED TV"], "pres": ["1,500 lm", "4,500 lm"], "scrs": ["White", "ALR"], "play": "▶ From dark to day", "stop": "❚❚ Pause", "marks": [[0.2, "dark"], [30, "evening, one lamp"], [100, "day, curtains drawn"], [500, "day, windows open"]], "fp1": "E projector = Φ / A = {F} lm ÷ {A} m² = <b>{Ep} lx</b> · E room = <b>{Es} lx</b>", "fp2": "contrast = (E projector + E room) / (E projector / 1,000 + E room) = ({Ep} + {Es}) / ({Ep3} + {Es}) = <b>{C}:1</b>", "ft1": "L white = {Lt} nits + R · E room / π = {Lt} + {R} × {Es} / π = <b>{W} nits</b>", "ft2": "L black = L / native contrast + R · E room / π = <b>{B} nits</b> → contrast = {W} / {B} = <b>{C}:1</b>", "ok": "✓ Goal reached: {C}:1, {T}:1 needed.", "no": "Contrast {C}:1, {T}:1 needed.", "hp": " More lumens or a smaller screen raise the contrast; or lower the room light.", "imp": " With this light not even 8,000 lumens are enough: lower the light, try the ALR screen or switch to a TV.", "minl": "Fewest lumens: {F} lm.", "alrn": " (ALR screen: only about 1/5 of the room light counts)"},run=false,t0=null,ph=0.5,obj=0,dev=0,scr=0,pre=0,TG=[80,15];
+var L={"loc": "en-GB", "objs": ["Film: 80:1", "Slides and presentations: 15:1"], "devs": ["Projector", "LED TV", "OLED TV"], "pres": ["1,500 lm", "4,500 lm"], "scrs": ["Plain white", "Special ALR screen (rejects room light)"], "play": "▶ From dark to day", "stop": "❚❚ Pause", "marks": [[0.2, "dark"], [30, "evening, one lamp"], [100, "day, curtains drawn"], [500, "day, windows open"]], "fp1": "E projector = Φ / A = {F} lm ÷ {A} m² = <b>{Ep} lx</b> · E room = <b>{Es} lx</b>", "fp2": "contrast = (E projector + E room) / (E projector / 1,000 + E room) = ({Ep} + {Es}) / ({Ep3} + {Es}) = <b>{C}:1</b>", "ft1": "L white = {Lt} nits + R · E room / π = {Lt} + {R} × {Es} / π = <b>{W} nits</b>", "ft2": "L black = L / native contrast + R · E room / π = <b>{B} nits</b> → contrast = {W} / {B} = <b>{C}:1</b>", "ok": "✓ Goal reached: {C}:1, {T}:1 needed.", "no": "Contrast {C}:1, {T}:1 needed.", "hp": " More lumens or a smaller screen raise the contrast; or lower the room light.", "imp": " With this light not even 8,000 lumens are enough: lower the light, try the ALR screen or switch to a TV.", "minl": "Fewest lumens: {F} lm.", "alrn": " (ALR screen: only about 1/5 of the room light counts)", "pc": "Estimated cost ≈ €{T} (projector €{P} + screen €{S})", "tc": "Estimated cost ≈ €{T} for a {D}″ {N}", "tcmax": " (nothing bigger than {M}″ is sold: the diagonal is capped)", "tvn": ["LED TV", "OLED TV"]},run=false,t0=null,ph=0.5,obj=0,dev=0,scr=0,pre=0,TG=[80,15];
 var LMIN=Math.log10(0.2),LMAX=Math.log10(500),SCR=[[0.9,0.9],[0.8,0.15]],TV=[{L:400,R:.015,C:3000},{L:250,R:.01,C:1e6}];
 function lux(){return Math.pow(10,LMIN+(LMAX-LMIN)*(+document.getElementById('lx').value)/1000)}
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d||0,minimumFractionDigits:d||0})}
@@ -86,7 +89,9 @@ function upd(keep){
  else{var t=TV[dev-1],Lr=t.R*E/Math.PI;W=t.L+Lr;B=t.L/t.C+Lr;C=W/B;
   document.getElementById('f1').innerHTML=fmt(L.ft1,{Lt:t.L,R:nf(t.R,3),Es:sig(E),W:sig(W)});
   document.getElementById('f2').innerHTML=fmt(L.ft2,{B:sig(B),W:sig(W),C:sig(C)});}
- document.getElementById('s0').innerHTML=scene(E,W,B,dev>0,dev?Math.min(d,dev===1?98:97):d);
+ var dmax=dev===1?98:97,dt=dev?Math.min(d,dmax):d;document.getElementById('s0').innerHTML=scene(E,W,B,dev>0,dt);
+ if(dev===0){var pp=200+0.3*F,sp=scr?300+12*d:80+1.5*d,r5=function(x){return nf(Math.round(x/10)*10)};document.getElementById('cost').textContent=fmt(L.pc,{T:r5(pp+sp),P:r5(pp),S:r5(sp)});}
+ else{var tp=[600,1500][dev-1]*Math.pow(dt/55,2.5);document.getElementById('cost').textContent=fmt(L.tc,{T:nf(Math.round(tp/50)*50),N:L.tvn[dev-1],D:dt})+(d>dmax?fmt(L.tcmax,{M:dmax}):'');}
  var ok=C>=Tg,r=document.getElementById('res');r.textContent=fmt(ok?L.ok:L.no,{C:sig(C),T:Tg})+(ok?'':(dev===0&&!bst?L.hp:''))+extra;
  r.style.background=ok?'#EAF3DE':'#FCEEDD';r.style.color=ok?'#27500A':'#8A4A0B';}
 function loop(ts){if(!run)return;if(t0===null)t0=ts-ph*10000;ph=((ts-t0)/10000)%1;var u=ph<0.5?ph*2:2-ph*2;document.getElementById('lx').value=Math.round(u*1000);upd(true);requestAnimationFrame(loop)}
