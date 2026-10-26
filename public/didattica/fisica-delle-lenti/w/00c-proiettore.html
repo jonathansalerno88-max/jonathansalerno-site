@@ -3,99 +3,92 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Proiettore o TV? Il soggiorno del thread</title>
+<title>Obiettivo contrasto: proiettore o TV nel soggiorno del thread</title>
 <link rel="stylesheet" href="widget.css">
 <style>
 svg[viewBox]{min-width:0!important;max-width:100%!important}
 .ctl{display:grid;grid-template-columns:minmax(100px,auto) 1fr 150px;align-items:center;gap:6px 10px;font-size:13px;color:var(--text-secondary);margin:4px 0}
 .ctl output{text-align:right;color:var(--text-primary);font-weight:500;font-variant-numeric:tabular-nums}
-@media (max-width:440px){.ctl{grid-template-columns:1fr auto}.ctl>span{grid-column:1/-1}.ctl output{min-width:0}.cell{flex-basis:100%}}
+@media (max-width:440px){.ctl{grid-template-columns:1fr auto}.ctl>span{grid-column:1/-1}}
 .tog{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);margin:4px 0}
 .tog>span:first-child{min-width:100px}
 .tog button{font:inherit;font-size:13px;padding:4px 10px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
 .tog button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
 .best{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--text-accent);margin:6px 0}
 #pl{font:inherit;font-size:13px;padding:5px 11px;border-radius:var(--radius);border:1.5px solid var(--border-accent);background:var(--surface-1);color:var(--text-accent);cursor:pointer;margin:4px 0}
-.row{display:flex;flex-wrap:wrap;gap:12px 16px;margin-top:8px}
-.cell{flex:1 1 280px;min-width:0;border:2px solid transparent;border-radius:12px;padding:4px}
-.cell.win{border-color:#3B6D11}
-.cap{font-size:14px;font-weight:500;margin:6px 0 2px}
-.nums{font-size:13px;color:var(--text-secondary);margin:0;font-variant-numeric:tabular-nums;min-height:2.8em}
-.vd{display:inline-block;font-size:13px;font-weight:500;padding:3px 10px;border-radius:999px;margin-top:4px}
-.res{margin-top:10px;padding:8px 11px;border-radius:8px;font-size:13.5px;font-weight:500;background:#EEF3FA;color:#16222E;min-height:calc(3em + 16px);box-sizing:border-box}
+.hide{display:none!important}
+.f{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:12px;background:#EEF3FA;border-left:3px solid #185FA5;border-radius:0 6px 6px 0;padding:5px 8px;margin:6px 0 0;color:#16222E;min-height:calc(3em + 10px);box-sizing:border-box;font-variant-numeric:tabular-nums}
+.res{margin-top:8px;padding:8px 11px;border-radius:8px;font-size:13.5px;font-weight:500;min-height:calc(3em + 16px);box-sizing:border-box}
 .note{font-size:12px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
 </style>
 </head>
 <body>
-<h2 class="sr-only">Il soggiorno del thread: un proiettore su una tela e una TV nella stessa stanza. Regoli i lumen del proiettore, la tela, la diagonale, il tipo di TV e la luce nella stanza; la spunta Miglior compromesso sceglie la soluzione più economica che si vede bene.</h2>
+<h2 class="sr-only">Gioco: raggiungi il contrasto obiettivo (80:1 per un film, 15:1 per le slide) nel soggiorno del thread. Puoi cambiare lumen e diagonale del proiettore, il tipo di tela, oppure passare a una TV LED od OLED, e regolare la luce nella stanza.</h2>
+<div class="tog"><span>Obiettivo</span><span id="oB"></span></div>
+<div class="tog"><span>Schermo</span><span id="dB"></span></div>
+<div id="pC">
 <div class="tog"><span>Proiettori del thread</span><span id="pB"></span></div>
-<label class="best"><input type="checkbox" id="best" onchange="upd()"> Miglior compromesso: la soluzione più economica che si vede bene in questa stanza</label>
+<label class="best"><input type="checkbox" id="best" onchange="upd()"> Lumen minimi per raggiungere l'obiettivo</label>
 <div class="ctl"><span>Lumen ANSI</span><input type="range" id="F" min="500" max="8000" step="100" value="1500" oninput="upd()"><output id="FO"></output></div>
+<div class="ctl"><span>Diagonale</span><input type="range" id="dg" min="60" max="150" step="5" value="110" oninput="upd()"><output id="dgO"></output></div>
 <div class="tog"><span>Tela</span><span id="sB"></span></div>
-<div class="ctl"><span>Diagonale tela</span><input type="range" id="dg" min="60" max="150" step="5" value="110" oninput="upd()"><output id="dgO"></output></div>
-<div class="tog"><span>TV</span><span id="tB"></span></div>
+</div>
 <div class="ctl"><span>Luce nella stanza</span><input type="range" id="lx" min="0" max="1000" value="1000" oninput="stopP();upd()"><output id="lxO"></output></div>
 <button id="pl" onclick="tog()"></button>
-<div class="row">
-<div class="cell" id="c0"><svg viewBox="0 0 320 210" aria-hidden="true"><g id="s0"></g></svg><p class="cap" id="t0"></p><p class="nums" id="n0"></p><span class="vd" id="v0"></span></div>
-<div class="cell" id="c1"><svg viewBox="0 0 320 210" aria-hidden="true"><g id="s1"></g></svg><p class="cap" id="t1"></p><p class="nums" id="n1"></p><span class="vd" id="v1"></span></div>
-</div>
+<svg viewBox="0 0 320 200" aria-hidden="true"><g id="s0"></g></svg>
+<div class="f" id="f1"></div><div class="f" id="f2"></div>
 <div class="res" id="res"></div>
-<p class="note">Modello semplificato. Tela opaca: L = ρ · E / π. Tela bianca ρ 0,9, grigio chiaro 0,5, ALR 0,8 per la luce del proiettore e 0,15 per quella della stanza. Proiettore: contrasto nativo 1.000:1. TV LED: 400 nit (cd/m²), riflette l'1,5 % della luce; TV OLED: 250 nit, riflette l'1 %. «Si vede bene»: contrasto almeno 10:1 e bianco almeno 3 volte la luminanza della parete (minimo 48 nit, lo standard dei cinema). Prezzi inventati, solo per confrontare: proiettore 200 € + 0,30 € per lumen; tela bianca 80 € + 1,5 € per pollice, grigia 120 € + 2 €, ALR 300 € + 12 €; TV LED 75″ ≈ 1.300 €, OLED 77″ ≈ 3.500 €.</p>
+<p class="note">Modello semplificato. Contrasto = luminanza del bianco / luminanza del nero (nit / nit). Proiettore su tela opaca: la tela rimanda la luce del proiettore e quella della stanza con la stessa riflettanza (bianca ρ 0,9; ALR 0,8 per il proiettore e 0,15 per la stanza), contrasto nativo 1.000:1. TV LED: 400 nit (cd/m²), riflette l'1,5 % della luce, contrasto nativo 3.000:1; TV OLED: 250 nit, riflette l'1 %, nero quasi perfetto. Obiettivi dallo standard AVIXA/ANSI sul contrasto delle immagini: 15:1 per decisioni semplici (slide), 80:1 per i video.</p>
 <script>
-var L={"loc": "it-IT", "pres": ["1.500 lm", "4.500 lm"], "scrs": ["Bianca", "Grigio chiaro", "ALR"], "tvs": ["LED 75″", "OLED 77″"], "play": "▶ Dal buio al giorno", "stop": "❚❚ Ferma", "marks": [[0.2, "buio"], [30, "sera, una lampada"], [100, "giorno, tende chiuse"], [500, "giorno, finestre aperte"]], "pj": "Proiettore {F} lm, tela {S} {D}″", "tvn": ["TV LED 75″", "TV OLED 77″"], "sn": ["bianca", "grigio chiaro", "ALR"], "w": "bianco {W} nit · nero {B} nit · contrasto {C}:1", "cost": "costo stimato ≈ {P} €", "v": ["si vede bene", "slavata", "buon contrasto, ma poco luminosa"], "bt": "Miglior compromesso qui: {X}, ≈ {P} €.", "btp": "il proiettore con {F} lm e tela {S}", "btt": "la {T}", "bnone": " Nessun proiettore fino a 8.000 lm ce la fa.", "bother": " (Il proiettore più economico che funziona costa ≈ {P} €.)", "bother2": " (La TV costa ≈ {P} €.)"},run=false,t0=null,ph=0.5,scr=0,tvk=0,pre=0;
-var LMIN=Math.log10(0.2),LMAX=Math.log10(500),SCR=[[0.9,0.9],[0.5,0.5],[0.8,0.15]],TV=[{L:400,R:.015,C:3000,p:1300},{L:250,R:.01,C:1e6,p:3500}];
+var L={"loc": "it-IT", "objs": ["Film: 80:1", "Slide e presentazioni: 15:1"], "devs": ["Proiettore", "TV LED", "TV OLED"], "pres": ["1.500 lm", "4.500 lm"], "scrs": ["Bianca", "ALR"], "play": "▶ Dal buio al giorno", "stop": "❚❚ Ferma", "marks": [[0.2, "buio"], [30, "sera, una lampada"], [100, "giorno, tende chiuse"], [500, "giorno, finestre aperte"]], "fp1": "E proiettore = Φ / A = {F} lm ÷ {A} m² = <b>{Ep} lx</b> · E stanza = <b>{Es} lx</b>", "fp2": "contrasto = (E proiettore + E stanza) / (E proiettore / 1.000 + E stanza) = ({Ep} + {Es}) / ({Ep3} + {Es}) = <b>{C}:1</b>", "ft1": "L bianco = {Lt} nit + R · E stanza / π = {Lt} + {R} × {Es} / π = <b>{W} nit</b>", "ft2": "L nero = L / contrasto nativo + R · E stanza / π = <b>{B} nit</b> → contrasto = {W} / {B} = <b>{C}:1</b>", "ok": "✓ Obiettivo raggiunto: {C}:1, ne servono {T}:1.", "no": "Contrasto {C}:1, ne servono {T}:1.", "hp": " Più lumen o una tela più piccola alzano il contrasto; oppure abbassa la luce nella stanza.", "imp": " Con questa luce nemmeno 8.000 lumen bastano: abbassa la luce, prova il telo ALR o passa a una TV.", "minl": "Lumen minimi: {F} lm.", "alrn": " (telo ALR: della stanza conta circa 1/5)"},run=false,t0=null,ph=0.5,obj=0,dev=0,scr=0,pre=0,TG=[80,15];
+var LMIN=Math.log10(0.2),LMAX=Math.log10(500),SCR=[[0.9,0.9],[0.8,0.15]],TV=[{L:400,R:.015,C:3000},{L:250,R:.01,C:1e6}];
 function lux(){return Math.pow(10,LMIN+(LMAX-LMIN)*(+document.getElementById('lx').value)/1000)}
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d||0,minimumFractionDigits:d||0})}
 function sig(x){return x>=1e5?'> '+nf(1e5):x>=1000?nf(Math.round(x/50)*50):x>=100?nf(Math.round(x/10)*10):x>=10?nf(x):x>=1?nf(x,1):x>=0.01?nf(x,2):'< '+nf(0.01,2)}
 function fmt(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
 function mix(a,b,t){return 'rgb('+[0,1,2].map(function(i){return Math.round(a[i]+(b[i]-a[i])*t)}).join(',')+')'}
 function btns(id,arr,cur,fn){var h='';arr.forEach(function(t,i){h+='<button class="'+(i===cur?'act':'')+'" onclick="'+fn+'('+i+')">'+t+'</button>'});document.getElementById(id).innerHTML=h}
-function setS(i){scr=i;document.getElementById('best').checked=false;upd()}function setT(i){tvk=i;upd()}
+function setO(i){obj=i;upd(true)}function setD(i){dev=i;upd(true)}function setS(i){scr=i;upd()}
 function setP(i){pre=i;document.getElementById('best').checked=false;document.getElementById('F').value=[1500,4500][i];document.getElementById('dg').value=110;scr=0;upd(true)}
 function area(d){var w=d*0.0254*16/Math.sqrt(337);return w*w*9/16}
-function proj(F,s,d,E){var rp=SCR[s][0],ra=SCR[s][1],Ep=F/area(d);return [rp*Ep/Math.PI+ra*E/Math.PI,rp*Ep/Math.PI/1000+ra*E/Math.PI]}
-function pcost(F,s,d){return 200+0.3*F+[80+1.5*d,120+2*d,300+12*d][s]}
-function good(Lw,Lb,E){return Lw/Lb>=10&&Lw>=Math.max(48,0.573*E)}
-function verdict(Lw,Lb,E){return Lw/Lb<10?1:Lw<Math.max(48,0.573*E)?2:0}
+function proj(F,s,d,E){var rp=SCR[s][0],ra=SCR[s][1],Ep=F/area(d);return {Ep:Ep,W:rp*Ep/Math.PI+ra*E/Math.PI,B:rp*Ep/Math.PI/1000+ra*E/Math.PI}}
 function scene(E,Lw,Lb,tv,d){
  var need=Math.max(48,0.573*E),a=Math.max(0,Math.min(1,(Math.log10(E)-LMIN)/(LMAX-LMIN)));
- var wall=mix([20,24,32],[236,229,214],a),s='<rect width="320" height="210" rx="10" fill="'+wall+'"/>';
- s+='<rect x="268" y="30" width="40" height="96" fill="'+mix([20,26,36],[255,248,225],a)+'" stroke="'+mix([60,66,76],[201,191,166],a)+'"/>';
+ var wall=mix([20,24,32],[236,229,214],a),s='<rect width="320" height="200" rx="10" fill="'+wall+'"/>';
+ s+='<rect x="268" y="28" width="40" height="92" fill="'+mix([20,26,36],[255,248,225],a)+'" stroke="'+mix([60,66,76],[201,191,166],a)+'"/>';
  var gain=Math.min(1,Math.pow(Lw/need,0.5)),bl=Math.min(0.85,Math.pow(Lb/Lw,0.45));
  function px(c){return mix([0,0,0],c.map(function(v){return (bl*255+(1-bl)*v)*gain}),1)}
- var w=tv?(tv===1?200:206):Math.min(240,70+d*1.4),h=w*9/16,x=tv?30:(130-w/2),y=tv?30:Math.max(8,22+(124-h)/2);
+ var w=Math.min(240,60+d*1.25),h=w*9/16,x=130-w/2,y=Math.max(8,18+(124-h)/2);
  s+=tv?'<rect x="'+(x-4)+'" y="'+(y-4)+'" width="'+(w+8)+'" height="'+(h+8)+'" rx="3" fill="#111"/><rect x="'+(x+w/2-14)+'" y="'+(y+h+4)+'" width="28" height="6" fill="#333"/>'
       :'<rect x="'+(x-3)+'" y="'+(y-3)+'" width="'+(w+6)+'" height="'+(h+6)+'" fill="'+mix([70,70,70],[190,190,190],a)+'"/>';
  s+='<g transform="translate('+x+' '+y+') scale('+(w/160)+' '+(h/90)+')"><rect width="160" height="90" fill="'+px([12,16,40])+'"/><circle cx="118" cy="24" r="9" fill="'+px([250,244,220])+'"/>';
  [[20,12],[40,30],[70,8],[90,20],[140,40],[60,44]].forEach(function(p){s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="1" fill="'+px([220,220,255])+'"/>'});
  s+='<path d="M0 90 L0 62 L30 40 L52 58 L80 30 L110 60 L130 48 L160 66 L160 90Z" fill="'+px([40,70,60])+'"/><path d="M0 90 L0 76 L40 64 L90 78 L160 70 L160 90Z" fill="'+px([18,30,26])+'"/></g>';
- if(!tv)s+='<path d="M130 198 L'+x+' '+(y+h)+' L'+(x+w)+' '+(y+h)+'Z" fill="#FFF3C4" opacity="'+(0.22*(1-a)+0.03)+'"/><rect x="112" y="194" width="36" height="12" rx="4" fill="#3A3A38"/><circle cx="130" cy="194" r="3.5" fill="#FFE9A8"/>';
+ if(!tv)s+='<path d="M130 190 L'+x+' '+(y+h)+' L'+(x+w)+' '+(y+h)+'Z" fill="#FFF3C4" opacity="'+(0.22*(1-a)+0.03)+'"/><rect x="112" y="186" width="36" height="12" rx="4" fill="#3A3A38"/><circle cx="130" cy="186" r="3.5" fill="#FFE9A8"/>';
  return s;}
 function upd(keep){
  if(!keep)pre=-1;
- var E=lux(),d=+document.getElementById('dg').value,bst=document.getElementById('best').checked,t=TV[tvk];
- var Ltv=[t.L+t.R*E/Math.PI,t.L/t.C+t.R*E/Math.PI],tvOK=good(Ltv[0],Ltv[1],E);
- // cheapest working projector for this diagonal
- var bp=null;for(var s=0;s<3;s++)for(var F=500;F<=8000;F+=100){var q=proj(F,s,d,E);if(good(q[0],q[1],E)){var c=pcost(F,s,d);if(!bp||c<bp.c)bp={F:F,s:s,c:c};break;}}
+ var E=lux(),d=+document.getElementById('dg').value,bst=document.getElementById('best').checked,Tg=TG[obj],extra='';
+ btns('oB',L.objs,obj,'setO');btns('dB',L.devs,dev,'setD');
+ document.getElementById('pC').classList.toggle('hide',dev!==0);
+ if(dev===0&&bst){var fm=null;for(var F=500;F<=8000;F+=100){var q=proj(F,scr,d,E);if(q.W/q.B>=Tg){fm=F;break}}
+  document.getElementById('F').value=fm||8000;extra=fm?' '+fmt(L.minl,{F:nf(fm)}):L.imp;pre=-1}
  document.getElementById('F').disabled=bst;
- if(bst&&bp){document.getElementById('F').value=bp.F;scr=bp.s;}
- btns('pB',L.pres,pre,'setP');btns('sB',L.scrs,scr,'setS');btns('tB',L.tvs,tvk,'setT');
+ btns('pB',L.pres,pre,'setP');btns('sB',L.scrs,scr,'setS');
  var F=+document.getElementById('F').value,m='';L.marks.forEach(function(k){if(Math.abs(Math.log10(E/k[0]))<0.15)m=' · '+k[1]});
  document.getElementById('FO').textContent=nf(F)+' lm';document.getElementById('dgO').textContent=d+'″';document.getElementById('lxO').textContent=sig(E)+' lux'+m;
  document.getElementById('pl').textContent=run?L.stop:L.play;
- var Lp=proj(F,scr,d,E),D=[[Lp[0],Lp[1],pcost(F,scr,d)],[Ltv[0],Ltv[1],t.p]];
- document.getElementById('t0').textContent=fmt(L.pj,{F:nf(F),S:L.sn[scr],D:d});document.getElementById('t1').textContent=L.tvn[tvk];
- D.forEach(function(q,i){document.getElementById('s'+i).innerHTML=scene(E,q[0],q[1],i?tvk+1:0,d);var k=verdict(q[0],q[1],E);
-  document.getElementById('n'+i).textContent=fmt(L.w,{W:sig(q[0]),B:sig(q[1]),C:sig(q[0]/q[1])})+' · '+fmt(L.cost,{P:nf(Math.round(q[2]/50)*50)});
-  var v=document.getElementById('v'+i);v.textContent=L.v[k];v.style.background=k?'#FCEEDD':'#EAF3DE';v.style.color=k?'#8A4A0B':'#27500A';});
- var r=document.getElementById('res'),c0=document.getElementById('c0'),c1=document.getElementById('c1');c0.classList.remove('win');c1.classList.remove('win');
- if(bst){var pc=bp?bp.c:Infinity,tc=tvOK?t.p:Infinity,txt;
-  if(pc<=tc&&bp){txt=fmt(L.bt,{X:fmt(L.btp,{F:nf(bp.F),S:L.sn[bp.s]}),P:nf(Math.round(pc/50)*50)})+(tvOK?fmt(L.bother2,{P:nf(t.p)}):'');c0.classList.add('win');}
-  else if(tvOK){txt=fmt(L.bt,{X:fmt(L.btt,{T:L.tvn[tvk]}),P:nf(t.p)})+(bp?fmt(L.bother,{P:nf(Math.round(pc/50)*50)}):L.bnone);c1.classList.add('win');}
-  else txt=L.bnone;
-  r.textContent=txt;r.style.display='';}else{r.textContent='';r.style.display='none';}
-}
+ var W,B,C;
+ if(dev===0){var q=proj(F,scr,d,E);W=q.W;B=q.B;C=W/B;
+  var rp=SCR[scr][0],ra=SCR[scr][1],Eeff=ra/rp*E;
+  document.getElementById('f1').innerHTML=fmt(L.fp1,{F:nf(F),A:nf(area(d),1),Ep:sig(q.Ep),Es:sig(Eeff)})+(scr?L.alrn:'');
+  document.getElementById('f2').innerHTML=fmt(L.fp2,{Ep:sig(q.Ep),Es:sig(Eeff),Ep3:sig(q.Ep/1000),C:sig(C)});}
+ else{var t=TV[dev-1],Lr=t.R*E/Math.PI;W=t.L+Lr;B=t.L/t.C+Lr;C=W/B;
+  document.getElementById('f1').innerHTML=fmt(L.ft1,{Lt:t.L,R:nf(t.R,3),Es:sig(E),W:sig(W)});
+  document.getElementById('f2').innerHTML=fmt(L.ft2,{B:sig(B),W:sig(W),C:sig(C)});}
+ document.getElementById('s0').innerHTML=scene(E,W,B,dev>0,dev?Math.min(d,dev===1?98:97):d);
+ var ok=C>=Tg,r=document.getElementById('res');r.textContent=fmt(ok?L.ok:L.no,{C:sig(C),T:Tg})+(ok?'':(dev===0&&!bst?L.hp:''))+extra;
+ r.style.background=ok?'#EAF3DE':'#FCEEDD';r.style.color=ok?'#27500A':'#8A4A0B';}
 function loop(ts){if(!run)return;if(t0===null)t0=ts-ph*10000;ph=((ts-t0)/10000)%1;var u=ph<0.5?ph*2:2-ph*2;document.getElementById('lx').value=Math.round(u*1000);upd(true);requestAnimationFrame(loop)}
 function stopP(){run=false;t0=null;}
 function tog(){run=!run;t0=null;if(run)requestAnimationFrame(loop);upd(true)}
