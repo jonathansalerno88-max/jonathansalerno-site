@@ -26,6 +26,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 .f{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:12px;background:#EEF3FA;border-left:3px solid #185FA5;border-radius:0 6px 6px 0;padding:5px 8px;margin:6px 0 0;color:#16222E;min-height:calc(6em + 10px);box-sizing:border-box;font-variant-numeric:tabular-nums}
 .u{font-size:11.5px;color:var(--text-secondary);margin:4px 0 0}
 .cmp{margin-top:10px;padding:8px 11px;border-radius:8px;font-size:13.5px;background:#EEF3FA;color:#16222E;min-height:calc(3em + 16px);box-sizing:border-box}
+.gnote{font-size:12px;color:var(--text-secondary);margin:2px 0 0}
 .note{font-size:12px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
 </style>
 </head>
@@ -34,13 +35,13 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 <p class="goal">Online shooter: what counts is the <b>blur</b> (at most 8 px) and the <b>lag</b> between button and screen (at most 20 ms).</p>
 <div class="row">
 <div class="cell" id="c0"><p class="cap" id="h0"></p><div id="k0"></div><svg viewBox="0 0 320 112" aria-hidden="true"><g id="s0"></g></svg><table class="ck" id="t0"></table><div class="f" id="f0"></div></div>
-<div class="cell" id="c1"><p class="cap" id="h1"></p><div class="fix" id="k1"></div><svg viewBox="0 0 320 112" aria-hidden="true"><g id="s1"></g></svg><table class="ck" id="t1"></table><div class="f" id="f1"></div></div>
+<div class="cell" id="c1"><p class="cap" id="h1"></p><div class="fix" id="k1"></div><svg viewBox="0 0 320 112" aria-hidden="true"><g id="s1"></g></svg><svg id="gr" aria-hidden="true"></svg><p class="gnote" id="g3"></p><table class="ck" id="t1"></table><div class="f" id="f1"></div></div>
 </div>
 <p class="u">Hz = 1/s · fps = images/s · nit = cd/m²</p>
 <div class="cmp" id="cmp"></div>
 <p class="note">Simplified model, orders of magnitude for a mid-range OLED TV. Persistence P: how long each image stays lit; with no tricks it is 1/fps, with interpolation 1/Hz, with BFI half the refresh. Blur = speed × P, with an object crossing 1,920 px in 2 s (960 px/s). Game-mode lag about 10 ms with a 60 Hz signal and 5 ms at 120 Hz, as in typical RTINGS measurements; low-latency interpolation (only some TVs, and without VRR) must wait for the next real frame, so it adds 1/fps; standard interpolation, outside game mode, brings lag to tens or hundreds of ms (100 here). BFI: half the refresh is black, so half the light and about half a refresh of extra lag; at 60 Hz many people see it flicker, and many TVs switch it off with HDR. If the game is slower than the TV, BFI flashes the same image twice and you see it double. HDR peak 800 nits, SDR 300 nits. The little square moves only with the images the TV shows, but your screen shows at most as many as it can (usually 60 per second). Limits of 8 px and 20 ms chosen for the comparison.</p>
 <script>
-var L={"loc": "en-GB", "mine": "Your combination", "best": "Best compromise", "fps": "The game runs at", "hz": "The TV runs at", "ip": "Interpolation", "ips": ["No", "Low latency", "Standard"], "bfi": "BFI", "hdr": "HDR", "yn": ["No", "Yes"], "ipx": "Needs a TV faster than the game", "chk": ["Blur", "Lag", "Flicker", "Clean image", "Light"], "v_s": "{S} px (max 8)", "v_r": "{R} ms (max 20)", "v_f": ["no", "yes, at {H} Hz"], "v_c": ["yes", "halos on targets", "halos on targets", "double image"], "v_l": "{P} nits (does not matter here)", "zoom": "magnified ×3: the object crosses the screen in 2 s", "flk": "flickers", "fP0": "P = 1 / {R} fps = <b>{P} ms</b>", "fPi": "P = 1 / {H} Hz = <b>{P} ms</b> ({N})", "ipn": {"20": "one image in two is invented", "40": "three images in four are invented"}, "fPb": "P = 1 / {H} Hz × 0.5 = {F} ms × 0.5 = <b>{P} ms</b>", "fS": "blur = 960 px/s × {Ps} s = <b>{S} px</b>", "fR": "lag = {B} ms (game mode, {H} Hz signal)", "fRi": " + {W} ms (waiting for the next real frame)", "fRb": " + {X} ms (BFI)", "fRs": "lag ≈ <b>100 ms</b> (interpolation outside game mode)", "fRt": " = <b>{R} ms</b>", "fL": "light = {L} nits × {D} = <b>{P} nits</b>", "set": "{F} fps · {H} Hz · interpolation {I} · BFI {B} · HDR {D}", "same": "You found the best compromise.", "alsook": "Yours passes too: {S} px and {R} ms, against {S2} px and {R2} ms for the best compromise.", "lose": "The best compromise wins. Your combination fails on: {F}.", "fl": ["blur", "lag", "flicker", "halos or double image"]},FPS=[30,60,120],HZ=[60,120],V=960;
+var L={"loc": "en-GB", "mine": "Your combination", "best": "Best compromise", "g1": "1 second = {H} refreshes (one row = 12 refreshes = {T} ms)", "g2": "each box = {F} ms: {L} ms of image + {B} ms of black", "g2n": "each box = {F} ms of image, no black", "g3": "Black comes back {H} times a second: too fast to see it flicker. At 60 times a second many people do.", "fps": "The game runs at", "hz": "The TV runs at", "ip": "Interpolation", "ips": ["No", "Low latency", "Standard"], "bfi": "BFI", "hdr": "HDR", "yn": ["No", "Yes"], "ipx": "Needs a TV faster than the game", "chk": ["Blur", "Lag", "Flicker", "Clean image", "Light"], "v_s": "{S} px (max 8)", "v_r": "{R} ms (max 20)", "v_f": ["no", "yes, at {H} Hz"], "v_c": ["yes", "halos on targets", "halos on targets", "double image"], "v_l": "{P} nits (does not matter here)", "zoom": "magnified ×3: the object crosses the screen in 2 s", "flk": "flickers", "fP0": "P = 1 / {R} fps = <b>{P} ms</b>", "fPi": "P = 1 / {H} Hz = <b>{P} ms</b> ({N})", "ipn": {"20": "one image in two is invented", "40": "three images in four are invented"}, "fPb": "P = 1 / {H} Hz × 0.5 = {F} ms × 0.5 = <b>{P} ms</b>", "fS": "blur = 960 px/s × {Ps} s = <b>{S} px</b>", "fR": "lag = {B} ms (game mode, {H} Hz signal)", "fRi": " + {W} ms (waiting for the next real frame)", "fRb": " + {X} ms (BFI)", "fRs": "lag ≈ <b>100 ms</b> (interpolation outside game mode)", "fRt": " = <b>{R} ms</b>", "fL": "light = {L} nits × {D} = <b>{P} nits</b>", "set": "{F} fps · {H} Hz · interpolation {I} · BFI {B} · HDR {D}", "same": "You found the best compromise.", "alsook": "Yours passes too: {S} px and {R} ms, against {S2} px and {R2} ms for the best compromise.", "lose": "The best compromise wins. Your combination fails on: {F}.", "fl": ["blur", "lag", "flicker", "halos or double image"]},FPS=[30,60,120],HZ=[60,120],V=960;
 var S={fps:60,hz:120,ip:1,bfi:0,hdr:1},B=null,CUR=[null,null];
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d||0,minimumFractionDigits:d||0})}
 function fmt(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
@@ -94,6 +95,16 @@ function panel(p,c,o){
  document.getElementById('f'+p).innerHTML=f;
  var cl=document.getElementById('c'+p);cl.classList.toggle('okc',o.pass);cl.classList.toggle('noc',!o.pass);
  document.getElementById('h'+p).textContent=(o.pass?'✓ ':'✗ ')+(p?L.best:L.mine);}
+function grid(o){
+ var n=B.hz,rows=Math.ceil(n/12),bw=24,gx=2,bh=12,gy=3,top=16,H=top+rows*(bh+gy)+18,s='';
+ s+='<text x="4" y="11" class="ts" fill="#55697A" style="font-size:10.5px">'+fmt(L.g1,{H:n,T:nf(12000/n,0)})+'</text>';
+ for(var k=0;k<n;k++){var c=k%12,r=Math.floor(k/12),x=4+c*(bw+gx),y=top+r*(bh+gy),col=k%2?'#E9B949':'#F4D35E';
+  if(B.bfi){s+='<rect x="'+x+'" y="'+y+'" width="'+(bw/2)+'" height="'+bh+'" fill="'+col+'"/><rect x="'+(x+bw/2)+'" y="'+y+'" width="'+(bw/2)+'" height="'+bh+'" fill="#111"/>'}
+  else s+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" fill="'+col+'"/>';
+  s+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" fill="none" stroke="#9DACB9" stroke-width=".5"/>'}
+ var F=1000/n;s+='<text x="4" y="'+(H-4)+'" class="ts" fill="#55697A" style="font-size:10.5px">'+(B.bfi?fmt(L.g2,{F:nf(F,1),L:nf(F/2,1),B:nf(F/2,1)}):fmt(L.g2n,{F:nf(F,1)}))+'</text>';
+ var g=document.getElementById('gr');g.setAttribute('viewBox','0 0 320 '+H);g.innerHTML=s;
+ document.getElementById('g3').textContent=B.bfi?fmt(L.g3,{H:n}):'';}
 function upd(){
  var o=calc(S),ob=calc(B);
  var h='<div class="tog"><span>'+L.fps+'</span>'+btns(FPS.map(function(f){return f+' fps'}),FPS.indexOf(S.fps),"set('fps',")+'</div>';
@@ -103,7 +114,7 @@ function upd(){
  h+='<div class="tog"><span>'+L.hdr+'</span>'+btns(L.yn,S.hdr,"set('hdr',")+'</div>';
  document.getElementById('k0').innerHTML=h;
  document.getElementById('k1').textContent=fmt(L.set,{F:B.fps,H:B.hz,I:L.ips[B.ip].toLowerCase(),B:L.yn[B.bfi].toLowerCase(),D:L.yn[B.hdr].toLowerCase()});
- panel(0,S,o);panel(1,B,ob);
+ panel(0,S,o);panel(1,B,ob);grid(ob);
  var s,sameC=S.fps===B.fps&&S.hz===B.hz&&o.ip===B.ip&&S.bfi===B.bfi&&S.hdr===B.hdr;
  if(sameC||(o.pass&&Math.abs(o.tb-ob.tb)<1e-9))s=L.same;
  else if(o.pass)s=fmt(L.alsook,{S:nf(o.S,0),R:nf(o.lag,0),S2:nf(ob.S,0),R2:nf(ob.lag,0)});
