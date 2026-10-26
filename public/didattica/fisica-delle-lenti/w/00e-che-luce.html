@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Che luce ti serve? Dallo spazio di arresto alla scheda tecnica</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+svg[viewBox]{min-width:0!important;max-width:100%!important}
+h3{font-size:14px;font-weight:600;margin:14px 0 6px;color:var(--text-primary)}
+h3:first-of-type{margin-top:2px}
+.ctl{display:grid;grid-template-columns:minmax(90px,auto) 1fr 64px;align-items:center;gap:6px 10px;font-size:13px;color:var(--text-secondary);margin:4px 0}
+.ctl output{text-align:right;color:var(--text-primary);font-weight:500}
+.tog{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);margin:4px 0}
+.tog>span:first-child{min-width:90px}
+.tog button{font:inherit;font-size:13px;padding:4px 10px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.tog button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+.f{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:12.5px;background:#EEF3FA;border-left:3px solid #185FA5;border-radius:0 6px 6px 0;padding:6px 9px;margin:6px 0 2px;color:#16222E}
+.fn{font-size:12px;color:var(--text-secondary);margin:0 0 4px}
+.res{margin-top:10px;padding:8px 11px;border-radius:8px;font-size:13.5px;font-weight:500}
+.note{font-size:12px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
+.hide{display:none}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Calcolatore in tre passi: spazio di arresto dalla velocità e dalla strada, lux che servono in base all'illuminazione, e verifica di una luce StVZO o ANSI FL1 con un cursore.</h2>
+<h3>1 · Spazio di arresto</h3>
+<div class="ctl"><span>Velocità</span><input type="range" id="v" min="10" max="45" step="1" value="30" oninput="upd()"><output id="vO"></output></div>
+<div class="tog"><span>Asfalto</span><span id="rB"></span></div>
+<div class="f" id="f1"></div><p class="fn" id="f1n"></p>
+<h3>2 · Quanta luce ti serve laggiù</h3>
+<div class="tog"><span>Illuminazione della strada</span><span id="lB"></span></div>
+<div class="f" id="f2"></div><p class="fn" id="f2n"></p>
+<h3>3 · Leggi la confezione</h3>
+<div class="tog"><span>Standard</span><span id="sB"></span></div>
+<div class="ctl" id="kS"><span>Lux a 10 m dichiarati</span><input type="range" id="k" min="10" max="150" step="5" value="40" oninput="upd()"><output id="kO"></output></div>
+<div class="ctl hide" id="pS"><span>Portata dichiarata</span><input type="range" id="p" min="50" max="400" step="5" value="120" oninput="upd()"><output id="pO"></output></div>
+<div class="f" id="f3"></div>
+<div class="f" id="f4"></div>
+<svg viewBox="0 0 340 130" aria-hidden="true"><g id="g"></g></svg>
+<div class="res" id="res"></div>
+<p class="note">Modello semplificato: fascio che punta dritto sulla buca, misure di picco (al centro del fascio). Frenata: 5 m/s² su asciutto, 3 m/s² su bagnato. Obiettivi indicativi: 10 lux (lx = lm/m²) con i lampioni, 30 lux su strada buia; il minimo di legge StVZO è 10 lux a 10 m. Candele: cd = lm/sr.</p>
+<script>
+var L={"loc": "it-IT", "roads": ["Asciutto", "Bagnato"], "lits": ["Buona (lampioni)", "Scarsa o nessuna"], "stds": ["StVZO (Germania)", "ANSI FL1"], "f1": "d = v · 1 s + v² / (2a) = {R} m + {B} m = <b>{D} m</b>", "f1n": "v = {V} m/s; 1 s di reazione; frenata a = {A} m/s²", "f2": "I minima = E · d² = {E} lx × ({D} m)² = <b>{I} cd</b>", "f2n": "E = {E} lx è l'obiettivo che serve a vedere una buca con {L}", "litn": ["i lampioni accesi", "poca o nessuna luce intorno"], "f3s": "I = lux a 10 m × (10 m)² = {K} × 100 = <b>{I} cd</b>", "f3a": "I = (portata / 2)² = ({P} / 2)² = <b>{I} cd</b>", "f4": "E a {D} m = I / d² = {I} / {D2} = <b>{E} lx</b>", "ok": "✓ Obiettivo raggiunto: a {D} m hai {E} lx, ne servivano {T}.", "no": "Ancora poco: a {D} m hai {E} lx, ne servono {T}. Ti serve almeno {M}.", "needS": "{K} lux a 10 m", "needA": "{P} m di portata", "obst": "buca"},wet=0,lit=1,std=0,TG=[10,30],AC=[5,3];
+function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d||0,minimumFractionDigits:d||0})}
+function r50(x){return x>=1000?Math.round(x/50)*50:Math.round(x)}
+function fmt(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
+function btns(id,arr,cur,fn){var h='';arr.forEach(function(t,i){h+='<button class="'+(i===cur?'act':'')+'" onclick="'+fn+'('+i+')">'+t+'</button>'});document.getElementById(id).innerHTML=h}
+function setR(i){wet=i;upd()}function setL(i){lit=i;upd()}function setS(i){std=i;upd()}
+function upd(){
+ btns('rB',L.roads,wet,'setR');btns('lB',L.lits,lit,'setL');btns('sB',L.stds,std,'setS');
+ document.getElementById('kS').classList.toggle('hide',std!==0);document.getElementById('pS').classList.toggle('hide',std!==1);
+ var V=+document.getElementById('v').value,v=V/3.6,a=AC[wet],R=v*1,B=v*v/(2*a),D=R+B,E=TG[lit],Imin=E*D*D;
+ document.getElementById('vO').textContent=V+' km/h';
+ document.getElementById('f1').innerHTML=fmt(L.f1,{R:nf(R,1),B:nf(B,1),D:nf(D,1)});
+ document.getElementById('f1n').textContent=fmt(L.f1n,{V:nf(v,1),A:a});
+ document.getElementById('f2').innerHTML=fmt(L.f2,{E:E,D:nf(D,1),I:nf(r50(Imin))});
+ document.getElementById('f2n').textContent=fmt(L.f2n,{E:E,L:L.litn[lit]});
+ var K=+document.getElementById('k').value,P=+document.getElementById('p').value,I;
+ document.getElementById('kO').textContent=K+' lx';document.getElementById('pO').textContent=P+' m';
+ if(std===0){I=K*100;document.getElementById('f3').innerHTML=fmt(L.f3s,{K:K,I:nf(I)});}
+ else{I=(P/2)*(P/2);document.getElementById('f3').innerHTML=fmt(L.f3a,{P:P,I:nf(r50(I))});}
+ var Ed=I/(D*D),ok=Ed>=E;
+ document.getElementById('f4').innerHTML=fmt(L.f4,{D:nf(D,1),I:nf(r50(I)),D2:nf(D*D,0),E:nf(Ed,Ed<10?1:0)});
+ var need=std===0?fmt(L.needS,{K:Math.ceil(Imin/100)}):fmt(L.needA,{P:Math.ceil(2*Math.sqrt(Imin))});
+ var r=document.getElementById('res');r.textContent=fmt(ok?L.ok:L.no,{D:nf(D,1),E:nf(Ed,Ed<10?1:0),T:E,M:need});
+ r.style.background=ok?'#EAF3DE':'#FCEEDD';r.style.color=ok?'#27500A':'#8A4A0B';
+ // scene: road side view, lamp at x=20, distance scale 0..50 m -> 20..330
+ var sc=Math.min(6.2,300/Math.max(D*1.15,20)),X=function(m){return 20+m*sc},ox=X(D),dark=lit?'#20262E':'#3A4350';
+ var s='<rect x="0" y="0" width="340" height="130" rx="8" fill="'+dark+'"/><rect x="0" y="92" width="340" height="38" fill="'+(lit?'#2C333C':'#4A525C')+'"/>';
+ if(!lit)s+='<g fill="#FFE9A8" opacity=".55"><circle cx="90" cy="18" r="4"/><circle cx="250" cy="18" r="4"/></g><g stroke="#8A919A"><line x1="90" y1="22" x2="90" y2="92"/><line x1="250" y1="22" x2="250" y2="92"/></g>';
+ var gl=Math.min(1,Ed/E);
+ s+='<path d="M24 80 L'+(ox+30)+' 74 L'+(ox+30)+' 92 L60 92 Z" fill="#FFE9A8" opacity="'+(0.1+0.25*gl)+'"/>';
+ s+='<rect x="8" y="75" width="14" height="10" rx="2" fill="#111"/><circle cx="22" cy="80" r="2.5" fill="#FFE08A"/>';
+ s+='<ellipse cx="'+ox+'" cy="94" rx="9" ry="3" fill="'+(ok?'#E6E0D0':'#6B6458')+'" stroke="'+(ok?'#FFE9A8':'#555')+'"/>';
+ s+='<text x="'+ox+'" y="86" text-anchor="middle" class="ts" fill="'+(ok?'#FFE9A8':'#9AA3AD')+'">'+L.obst+'</text>';
+ s+='<line x1="22" y1="114" x2="'+ox+'" y2="114" stroke="#C9D2DC"/><line x1="22" y1="110" x2="22" y2="118" stroke="#C9D2DC"/><line x1="'+ox+'" y1="110" x2="'+ox+'" y2="118" stroke="#C9D2DC"/>';
+ s+='<text x="'+((22+ox)/2)+'" y="126" text-anchor="middle" class="ts" fill="#E2E9EF">d = '+nf(D,1)+' m</text>';
+ s+='<text x="'+(ox)+'" y="64" text-anchor="middle" class="th" fill="'+(ok?'#B8E08F':'#F5A86A')+'">'+nf(Ed,Ed<10?1:0)+' lx</text>';
+ document.getElementById('g').innerHTML=s;}
+upd();
+</script>
+</body>
+</html>

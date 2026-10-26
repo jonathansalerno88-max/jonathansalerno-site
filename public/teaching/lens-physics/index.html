@@ -123,8 +123,8 @@ ul.qty figure.paused::after{opacity:.9}
 .dim b{color:var(--ink); font-weight:600}
 .dim ul{margin:.15rem 0 0; padding-left:1.1rem; list-style:disc}
 .dim li{margin:.15rem 0}
-.qfigs{display:flex; flex-direction:column; gap:.9rem}
-@media (max-width:30rem){.qfigs{flex-direction:row; flex-wrap:wrap} .qfigs figure{flex:1 1 9rem}}
+figure.w.qcalc{margin:.9rem 0 .2rem; max-width:none!important}
+ul.qty figure.w::after{display:none}
 .qhint{font-size:.8125rem; color:var(--faint); margin:-.4rem 0 1rem}
 @media (max-width:30rem){ul.qty>li{grid-template-columns:1fr} ul.qty figure{max-width:15rem}}
 :root{--q-flux:#534AB7; --q-int:#185FA5; --q-ill:#B5520C; --q-lum:#0F6E56}
@@ -237,7 +237,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <li>Intensity = flux / solid angle, that is I = Φ / Ω. The same 100 lumens spread over the whole sphere give
     about 8 cd; squeezed into a 10° cone (Ω ≈ 0.024 sr) they give about 4,200 cd, more than 500 times as much.</li></ul>
     <div class="dim"><b>Checking the units</b><ul><li>I = Φ / Ω: lm / sr = cd ✓. The other way round, 1 lm = 1 cd · sr: a lumen is a candela <i>times</i> a steradian.</li></ul></div></div></li>
-    <li><div class="qfigs"><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
+    <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <path d="M4 110 L156 110 L140 88 L20 88 Z" fill="var(--card)" stroke="var(--rule)"/>
 <path fill="var(--q-ill)" fill-opacity=".08" d="M80 16 L34 98 L126 98 Z"><animate attributeName="d" values="M80 16 L34 98 L126 98 Z;M80 56 L56 98 L104 98 Z;M80 16 L34 98 L126 98 Z" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></path>
 <ellipse cx="80" cy="98" rx="46" ry="6" fill="var(--q-ill)"><animate attributeName="rx" values="46;24;46" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/><animate attributeName="ry" values="6;3.2;6" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/><animate attributeName="fill-opacity" values=".2;.8;.2" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></ellipse>
@@ -245,22 +245,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 <circle cx="80" cy="16" r="5" fill="#FFD36B" stroke="var(--q-ill)"><animate attributeName="cy" values="16;56;16" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></circle>
 <line x1="144" y1="16" x2="144" y2="98" stroke="var(--mut)" stroke-dasharray="2 2"><animate attributeName="y1" values="16;56;16" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></line>
 <text x="148" y="60" class="q-t" fill="var(--mut)">d<animate attributeName="y" values="60;80;60" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></text>
-</svg><figcaption>Lamp further away: the same light over a larger area, fewer lux (the small rectangle is 1 m²).</figcaption></figure><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
-<rect x="0" y="100" width="160" height="20" fill="var(--card)" stroke="var(--rule)"/>
-<path d="M18 78 L156 78 L156 100 L44 100 Z" fill="var(--q-ill)" fill-opacity=".16"/>
-<line x1="18" y1="78" x2="156" y2="78" stroke="var(--q-ill)" stroke-width="1.2" stroke-dasharray="3 2"/>
-<rect x="119" y="66" width="4" height="34" fill="var(--paper)" stroke="var(--mut)"/><g stroke="var(--q-ill)" stroke-width="1.2" class="q-rays2" stroke-dasharray="3 3"><line x1="20" y1="79" x2="118" y2="82"/><line x1="20" y1="81" x2="80" y2="99"/></g>
-<rect x="6" y="73" width="12" height="10" rx="2" fill="var(--ink)"/><circle cx="18" cy="78" r="2.2" fill="#FFE08A"/>
-
-<rect x="125" y="76" width="30" height="12" rx="2" fill="var(--paper)" stroke="var(--ink)"/><line x1="123" y1="82" x2="125" y2="82" stroke="var(--ink)"/><text x="140" y="85" text-anchor="middle" class="q-t" fill="var(--q-ill)" style="font-size:7px">60 lx</text>
-<line x1="18" y1="110" x2="121" y2="110" stroke="var(--mut)" marker-end="url(#qarr2)" marker-start="url(#qarr2s)"/>
-<text x="70" y="117" text-anchor="middle" class="q-t" fill="var(--mut)" style="font-size:7px">10 m</text>
-<defs><marker id="qarr2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L8 4L0 8Z" fill="var(--mut)"/></marker><marker id="qarr2s" viewBox="0 0 8 8" refX="1" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M8 0L0 4L8 8Z" fill="var(--mut)"/></marker></defs>
-</svg><figcaption>StVZO: the lux are measured on a screen at 10 m, at the brightest point of the beam, just below the cut-off; the beam is cut off below the horizon so as not to dazzle oncoming people. <b>On the box</b>: ‘lux at 10 m’. Higher means you see more road.</figcaption></figure><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
-<path d="M14 60 L156 44 L156 76 Z" fill="var(--q-int)" fill-opacity=".14"/>
-<line x1="14" y1="60" x2="156" y2="60" stroke="var(--q-int)" stroke-width="1" stroke-dasharray="2 2"/>
-<rect x="2" y="55" width="12" height="10" rx="2" fill="var(--ink)"/><circle cx="14" cy="60" r="2.2" fill="#FFE08A"/>
-<text x="4" y="48" class="q-t" fill="var(--q-int)" style="font-size:7px">10,000 cd</text><line x1="36" y1="64" x2="36" y2="70" stroke="var(--mut)"/><text x="36" y="80" text-anchor="middle" class="q-t" fill="var(--mut)" style="font-size:7px">25 m</text><text x="36" y="38" text-anchor="middle" transform="translate(0 0)" class="q-t" fill="var(--q-ill)" style="font-size:7px" opacity="0">16 lx<animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.001;0.011;1" dur="6s" repeatCount="indefinite"/></text><line x1="64" y1="64" x2="64" y2="70" stroke="var(--mut)"/><text x="64" y="80" text-anchor="middle" class="q-t" fill="var(--mut)" style="font-size:7px">50 m</text><text x="64" y="38" text-anchor="middle" transform="translate(0 0)" class="q-t" fill="var(--q-ill)" style="font-size:7px" opacity="0">4 lx<animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.221;0.231;1" dur="6s" repeatCount="indefinite"/></text><line x1="96" y1="64" x2="96" y2="70" stroke="var(--mut)"/><text x="96" y="80" text-anchor="middle" class="q-t" fill="var(--mut)" style="font-size:7px">100 m</text><text x="96" y="38" text-anchor="middle" transform="translate(0 0)" class="q-t" fill="var(--q-ill)" style="font-size:7px" opacity="0">1 lx<animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.441;0.451;1" dur="6s" repeatCount="indefinite"/></text><line x1="132" y1="64" x2="132" y2="70" stroke="var(--mut)"/><text x="132" y="80" text-anchor="middle" class="q-t" fill="var(--mut)" style="font-size:7px">200 m</text><text x="132" y="38" text-anchor="end" transform="translate(14 0)" class="q-t" fill="var(--q-ill)" style="font-size:8px" opacity="0">0.25 lx<animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.661;0.671;1" dur="6s" repeatCount="indefinite"/></text><circle cx="36" cy="60" r="3.2" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"><animate attributeName="cx" values="36;36;64;64;96;96;132;132" keyTimes="0;.18;.22;.4;.44;.62;.66;1" dur="6s" repeatCount="indefinite"/></circle><text x="150" y="94" text-anchor="end" class="q-t" fill="var(--q-int)" style="font-size:8px" opacity="0">beam distance = 200 m<animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.661;.671;1" dur="6s" repeatCount="indefinite"/></text></svg><figcaption>ANSI FL1: you move away along the beam until 0.25 lux are left. With 10,000 cd that happens at 200 m: the beam distance. <b>On the box</b>: candelas and beam distance. Look at the beam distance: it says the same as the candelas and grows with their square root (4 times the candelas, twice the distance). But at the beam distance only 0.25 lux are left: the lux at the distance d you need follow from E = beam distance² / (4·d²). Beam distance 155 m → about 10 lx at 24 m and 60 lx at 10 m, like a 60 lx StVZO light.</figcaption></figure></div><div><b>Lux</b> <span class="u">(lx = lm/m²)</span>, that is illuminance <b>E</b>: how many lumens arrive on each square metre of
+</svg><figcaption>Lamp further away: the same light over a larger area, fewer lux (the small rectangle is 1 m²).</figcaption></figure><div><b>Lux</b> <span class="u">(lx = lm/m²)</span>, that is illuminance <b>E</b>: how many lumens arrive on each square metre of
     road at a given distance, E = I / d². It is what you see in front of the wheel. Spec sheets state it in two
     ways:
     <ul class="qsub"><li>lights type-approved in Germany (<b>StVZO</b>, Straßenverkehrs-Zulassungs-Ordnung, the German
@@ -271,7 +256,9 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     E = I / d² we get d² = I / E, so d = √(I / E); for the beam distance E = 0.25 lx, so
     beam distance = √(I / 0.25 lx). In dimensions: [E] = [I] / [L]², so [I] / [E] = [L]², and the root gives [L],
     a length ✓ (here [L] is length, not luminance). In practice, with I in candelas,
-    beam distance in metres = 2·√I: a 10,000 cd light reaches 200 m.</li></ul></div></li>
+    beam distance in metres = 2·√I: a 10,000 cd light reaches 200 m.</li></ul>
+    <figure class="w qcalc"><iframe src="w/00e-che-luce.html" title="Which light do you need? From stopping distance to the spec sheet" loading="lazy"></iframe>
+    <figcaption>Choose speed, road and street lighting, then move the light's slider until you reach the goal. <a href="w/00e-che-luce.html">Open full screen</a></figcaption></figure></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <defs><radialGradient id="qglow"><stop offset="0" stop-color="#FFE9A8" stop-opacity="1"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></radialGradient></defs>
 <g stroke="var(--q-lum)" stroke-width="1.2" stroke-dasharray="3 3" class="q-rays2"><line x1="44" y1="52" x2="128" y2="58"/><line x1="44" y1="60" x2="128" y2="60"/><line x1="44" y1="68" x2="128" y2="62"/></g>
@@ -361,7 +348,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <div class="dim"><b>Checking the units</b><ul><li>Contrast = L white / L black: nits / nits, a pure number ✓. 1 + E<sub>projector</sub> / E<sub>room</sub> is lux / lux, a pure number too ✓.</li></ul></div></div></li>
   </ul>
   <script>(function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
-document.querySelectorAll("ul.qty figure").forEach(function(f){var s=f.querySelector(".qsvg");
+document.querySelectorAll("ul.qty figure:not(.w)").forEach(function(f){var s=f.querySelector(".qsvg");
 s.setAttribute("tabindex","0");s.setAttribute("role","button");
 function set(p){f.classList.toggle("paused",p);s.setAttribute("aria-pressed",p?"true":"false");s.setAttribute("aria-label",p?"Resume the animation":"Pause the animation");if(p)s.pauseAnimations();else s.unpauseAnimations();}
 set(rm);s.addEventListener("click",function(){set(!f.classList.contains("paused"))});
