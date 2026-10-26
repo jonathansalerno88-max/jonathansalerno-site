@@ -98,8 +98,8 @@ figure.w iframe{display:block; width:100%; height:560px; border:1px solid var(--
   border-radius:10px; background:#FBFCFD}
 figure.w iframe.h-simple{height:600px}
 figure.w iframe.h-game{height:1240px}
-figure.w iframe.h-sfida{height:1160px}
-@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2090px}}
+figure.w iframe.h-sfida{height:935px}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:1650px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -425,30 +425,24 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   <li>Switch to the TV and try the technologies one by one: which passes by day, which does not, and why?</li>
   <li>Home-cinema mission: watch the ‘How you see black’ panel with LED, mini-LED and OLED. Who wins, and with what burn-in risk?</li>
   <li>Retro-games mission: try the OLED at 60 and 120 Hz, then the CRT. Why is a 60 Hz CRT sharper than a 120 Hz OLED?</li></ol></div>
-  <p class="lead2"><b>The gaming-TV challenge.</b> Today's TVs offer two recipes for shortening the blur, and each
-  pays a different price. The first: the game at 60 <b>fps</b> (frames per second), <b>HDR</b> (High Dynamic Range)
-  on, and frame <b>interpolation</b>. The TV invents an image between two real ones and reaches 120 Hz
-  <span class="u">(Hz = 1/s)</span>, so persistence drops to 8.3 ms. To invent the in-between image, though, it has
-  to wait for the next real one: 16.7 ms of extra lag, and outside game mode it gets to 100 ms. The second: the game
-  at 120 fps and <b>BFI</b> (Black Frame Insertion). Half of every refresh is black and persistence drops to 4.2 ms,
-  but the light is halved, and HDR with it; and at 60 Hz the screen flickers. How to find your way: look at the
-  blur, the <b>lag</b> between button and screen, and the peak nits <span class="u">(nit = cd/m²)</span>. Which one
-  matters most depends on what you are watching: in a film, for example, nobody presses buttons.</p>
+  <p class="lead2"><b>The gaming-TV challenge.</b> Take an online shooter, where two things matter: the blur, because
+  the target moves, and the <b>lag</b> between button and screen. Today's TVs offer two recipes for shortening the blur.
+  The first: the game at 60 <b>fps</b> (frames per second), <b>HDR</b> (High Dynamic Range) on, and frame
+  <b>interpolation</b>. The TV invents an image between two real ones and reaches 120 Hz
+  <span class="u">(Hz = 1/s)</span>, so persistence drops to 8.3 ms. To invent the in-between image, though, it has to
+  wait for the next real one: 16.7 ms of extra lag. The second: the game at 120 fps and <b>BFI</b> (Black Frame
+  Insertion). Half of every refresh is black and persistence drops to 4.2 ms, but the light is halved, and at 60 Hz the
+  screen flickers. On the left try any combination you like; on the right the best compromise stays fixed.</p>
   <figure class="w">
-    <iframe src="w/00f-sfida-gaming.html" title="Gaming TV: HDR + 60 fps + interpolation versus 120 Hz + black frame insertion" loading="lazy" class="h-sfida"></iframe>
-    <figcaption>The two recipes side by side: choose shooter, adventure or film, then change fps, hertz, interpolation, BFI and HDR. The blur is magnified three times, and the little square moves only with the images the TV really shows: at 24 fps without interpolation it jerks, with interpolation it glides. That is the soap opera effect. <a href="w/00f-sfida-gaming.html">Open full screen</a></figcaption>
+    <iframe src="w/00f-sfida-gaming.html" title="Online shooter: your combination versus the best compromise" loading="lazy" class="h-sfida"></iframe>
+    <figcaption>Change fps, hertz, interpolation, BFI and HDR until the left panel turns green. The blur is magnified three times, and the little square moves only with the images the TV really shows. <a href="w/00f-sfida-gaming.html">Open full screen</a></figcaption>
   </figure>
-  <p><b>And the winner is… it depends on what you are watching.</b> In an HDR adventure interpolation wins: 8 px of
-  blur, about 27 ms of lag and 800 nits, at the price of a few halos around fast objects. BFI loses: without HDR it
-  gives 150 nits, and even with HDR on 800 nits become 400 (which is why many TVs switch it off with HDR). In an
-  online shooter it flips: BFI at 120 Hz gives 4 px of blur and 9 ms of lag, while interpolation goes past
-  20 ms and leaves halos right on the targets. Tick ‘Best compromise’ and a third recipe turns up, which beats both in
-  the adventure: <b>real 120 Hz, no tricks</b>, with 8 px of blur, 5 ms of lag and all 800 nits. It does need the
-  game to really run at 120 fps: if it runs at 60, no combination passes a shooter. In a <b>film</b> interpolation
-  wins outright, because its highest price, lag, does not matter there: from 24 fps the TV invents four images in
-  five and the blur drops from 40 px to 8 px. The standard version, which has more time to compute, makes fewer halos
-  than the gaming one. What remains is the <b>soap opera effect</b>, the smooth, live-broadcast look of the motion:
-  some find it a betrayal of cinema, others feel they are right inside the scene.</p>
+  <p><b>And the winner is… 120 Hz with BFI, if the game runs at 120 fps.</b> It gives 4 px of blur and 9 ms of lag.
+  The light is halved, but in a shooter that does not matter: HDR can be switched off. Interpolation loses instead,
+  because waiting for the real frame brings lag to about 27 ms and leaves halos right on the targets. Real 120 Hz with
+  no tricks passes too, just: 8 px and 5 ms, with all of HDR. If the game only runs at 60 fps, though, no combination
+  passes: with no tricks the blur is 16 px, with BFI at 60 Hz the screen flickers, with BFI at 120 Hz every image is
+  seen double.</p>
 
 
 </section>
