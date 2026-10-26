@@ -79,7 +79,7 @@ function upd(keep){
  if(bst){document.getElementById('F').value=Math.min(8000,Math.max(500,Math.ceil(Fg/100)*100));pre=-1}
  document.getElementById('F').disabled=bst;
  btns('oB',L.objs,obj,'setO');btns('pB',L.pres,pre,'setP');btns('sB',L.scrs,scr,'setS');btns('tB',L.tvs,tvk,'setT');
- var F=+document.getElementById('F').value,m='';L.marks.forEach(function(k){if(Math.abs(Math.log10(E/k[0]))<0.15)m=' · '+k[1]});
+ var F=+document.getElementById('F').value,m='',bd=1e9;L.marks.forEach(function(k){var dd=Math.abs(Math.log10(E/k[0]));if(dd<bd){bd=dd;m=' · '+k[1]}});
  document.getElementById('FO').textContent=nf(F)+' lm';document.getElementById('dgO').textContent=d+'″';document.getElementById('lxO').textContent=sig(E)+' lux'+m;
  document.getElementById('pl').textContent=run?L.stop:L.play;
  // projector
