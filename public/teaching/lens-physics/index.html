@@ -99,7 +99,8 @@ figure.w iframe{display:block; width:100%; height:560px; border:1px solid var(--
 figure.w iframe.h-simple{height:600px}
 figure.w iframe.h-game{height:1240px}
 figure.w iframe.h-sfida{height:1475px}
-@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px}}
+figure.w iframe.h-film{height:1300px}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -209,7 +210,8 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <li><a href="#bici">Bike lights, screens and motion</a>
       <ul><li><a href="#bike-lights">Lumens or candelas? Two bike lights</a></li>
       <li><a href="#projector">Do nits matter for screens? Projector or TV</a></li>
-      <li><a href="#motion">Motion: the CRT and 720 Hz monitors</a></li></ul></li>
+      <li><a href="#motion">Motion: the CRT and 720 Hz monitors</a></li>
+      <li><a href="#film">In films: The Matrix and interpolation</a></li></ul></li>
   </ol></div>
   <div><p class="tp">Part II · Light and the human eye</p><ol start="1">
     <li><a href="#luce">Luminance, illuminance and glare</a></li>
@@ -443,6 +445,34 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   no tricks passes too, just: 8 px and 5 ms, with all of HDR. If the game only runs at 60 fps, though, no combination
   passes: with no tricks the blur is 16 px, with BFI at 60 Hz the screen flickers, with BFI at 120 Hz every image is
   seen double.</p>
+
+  <h3 id="film">And in films? Where interpolation works: The Matrix</h3>
+  <p>In the shooter interpolation loses. And yet, rewatching <i>The Matrix</i> (1999) on a 120 Hz TV with
+  interpolation on, it feels like being there. It is not a contradiction: in a film you get all of the gain and almost
+  none of the price. <i>The Matrix</i> was shot on 35 mm film at 24 fps, like almost all cinema since sound came in.</p>
+  <p><b>The gain is huge precisely at 24 fps.</b> In the game interpolation went from 60 to 120 images per second and
+  halved the blur. In a film it goes from 24 to 120: four images in five are invented, persistence drops from 41.7 to
+  8.3 ms and the blur from 40 to 8 px. The judder in camera pans disappears too, and on OLEDs it shows more because
+  the pixels change instantly.</p>
+  <div class="dim"><b>Checking the units</b><ul><li>1 / 24 fps = 1 / (24 s⁻¹) = 0.0417 s = 41.7 ms; 960 px/s × 0.0417 s = 40 px ✓</li><li>1 / 120 Hz = 1 / (120 s⁻¹) = 0.0083 s = 8.3 ms; 960 px/s × 0.0083 s = 8 px ✓</li></ul></div>
+  <p><b>The price is almost nil.</b> Lag, which was the worst flaw in the shooter, does not matter here: nobody presses
+  buttons, and the TV delays the sound too to keep it with the picture. Halos remain, but you are not aiming at
+  anything, and standard interpolation, which has more time to compute, makes fewer of them than the gaming kind.</p>
+  <figure class="w">
+    <iframe src="w/00g-film.html" title="A film at 24 fps: native or interpolated to 120 Hz" loading="lazy" class="h-film"></iframe>
+    <figcaption>The same film at 24 fps, on the left without interpolation and on the right with it: watch the little square, the two grids and the frame in slow motion. <a href="w/00g-film.html">Open full screen</a></figcaption>
+  </figure>
+  <p><b>And the winner is… interpolation, if you like the soap opera effect.</b> The real world has no frames: the more
+  the motion of the image follows the motion of the eye, the more it looks like reality. Others do not like it, and
+  it is a matter of habit. For almost a century cinema has been 24 fps, while smooth motion belonged to live TV and
+  soap operas, shot on video at 50 or 60 images per second. On top of that, sharp motion reveals what cinema hides:
+  sets, make-up, stunt doubles. It is the same clash there was over <i>The Hobbit</i> (2012), shot at 48 fps. The TV's
+  <b>Filmmaker Mode</b> switches interpolation off to respect the director's 24 fps; the in-between levels remove the
+  judder without going all the way to the soap opera effect.</p>
+  <p><b>A curiosity.</b> The <i>bullet time</i> of <i>The Matrix</i> was born with interpolation: the actors were shot
+  with 120 still cameras in a row, and between one shot and the next the compositors inserted interpolated images to
+  make the camera move smooth (<a href="https://pauldebevec.com/Items/SoftImage1999/">Manex, 1999</a>). In those scenes
+  some of the images were invented before the TV even got involved.</p>
 
 
 </section>

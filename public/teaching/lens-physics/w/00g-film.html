@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A film at 24 fps: native or interpolated to 120 Hz</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+svg[viewBox]{min-width:0!important;max-width:100%!important}
+.goal{font-size:14px;margin:0 0 6px}
+.row{display:flex;flex-wrap:wrap;gap:12px 14px;margin-top:6px}
+.cell{flex:1 1 300px;min-width:0;border:2px solid transparent;border-radius:12px;padding:6px}
+.cell.okc{border-color:#3B6D11}.cell.noc{border-color:#E2B48F}
+.cap{font-size:14px;font-weight:600;margin:2px 0 4px}
+.fix{font-size:13px;color:var(--text-primary);background:var(--surface-1);border-radius:var(--radius);padding:6px 9px;margin:4px 0 8px}
+.ck{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0 0;font-variant-numeric:tabular-nums}
+.ck td{padding:2px 4px;border-top:0.5px solid var(--border)}
+.ck td:first-child{width:1.4em;font-weight:600}
+.ck td:nth-child(2){color:var(--text-secondary);width:7em}
+.ok{color:#3B6D11}.wa{color:#9A6A00}.no{color:#B23B1E}.na{color:var(--text-secondary)}
+.f{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:12px;background:#EEF3FA;border-left:3px solid #185FA5;border-radius:0 6px 6px 0;padding:5px 8px;margin:6px 0 0;color:#16222E;min-height:calc(4.5em + 10px);box-sizing:border-box;font-variant-numeric:tabular-nums}
+.lg{font-size:12.5px;margin:4px 0 0;border:0.5px solid var(--border);border-radius:var(--radius);padding:5px 8px;font-variant-numeric:tabular-nums}
+.lg b{font-weight:600}
+.lg table{border-collapse:collapse;width:100%}
+.lg td{padding:2px 4px;vertical-align:middle}
+.lg td:last-child{text-align:right;font-weight:600;white-space:nowrap}
+.sw{display:inline-block;width:24px;height:12px;border:0.5px solid #9DACB9;vertical-align:middle}
+.gnote{font-size:12px;color:var(--text-secondary);margin:4px 0 0}
+.why svg[viewBox]{max-width:460px!important}
+.why{border:0.5px solid var(--border);border-radius:var(--radius);padding:6px 9px;margin:12px 0 0}
+.why .gnote{color:var(--text-primary);font-size:13px;line-height:1.5}
+.note{font-size:12px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
+</style>
+</head>
+<body>
+<h2 class="sr-only">The same film at 24 frames per second on a 120 Hz TV, on the left without interpolation and on the right with it. For each: blur, judder, lag, halos and a grid with the 120 refreshes of one second. Below, one film frame in slow motion.</h2>
+<p class="goal">A film, shot at 24 fps like almost all cinema, on a 120 Hz TV. Here lag does not matter: nobody presses buttons.</p>
+<div class="row">
+<div class="cell noc" id="c0"><p class="cap" id="h0"></p><div class="fix" id="k0"></div><svg viewBox="0 0 320 112" aria-hidden="true"><g id="s0"></g></svg><svg id="gd0" aria-hidden="true"></svg><div class="lg" id="lg0"></div><p class="gnote" id="n0"></p><table class="ck" id="t0"></table><div class="f" id="f0"></div></div>
+<div class="cell okc" id="c1"><p class="cap" id="h1"></p><div class="fix" id="k1"></div><svg viewBox="0 0 320 112" aria-hidden="true"><g id="s1"></g></svg><svg id="gd1" aria-hidden="true"></svg><div class="lg" id="lg1"></div><p class="gnote" id="n1"></p><table class="ck" id="t1"></table><div class="f" id="f1"></div></div>
+</div>
+<div class="why"><svg id="wy" viewBox="0 0 320 104" aria-hidden="true"></svg><p class="gnote" id="wp"></p></div>
+<p class="note">Simplified model. Persistence P: how long each image stands still; blur = speed × P, with an object crossing 1,920 px in 2 s (960 px/s). Standard interpolation, outside game mode, delays the picture by tens or hundreds of ms; with films the TV delays the sound too to keep them together. The little square moves only with the images the TV shows, but your screen shows at most as many as it can (usually 60 per second): enough to see the difference between 24 and 120.</p>
+<script>
+var L={"loc": "en-GB", "cap": ["Native 24 fps", "24 fps interpolated to 120"], "set": ["24 fps · 120 Hz · interpolation off", "24 fps · 120 Hz · standard interpolation"], "chk": ["Blur", "Judder", "Lag", "Halos", "Look"], "v": [["40 px", "a jump every 41.7 ms", "does not matter", "no", "cinema"], ["8 px", "a small step every 8.3 ms", "≈ 100 ms, does not matter", "slight, around fast objects", "soap opera effect"]], "st": [[0, 0, -1, 2, -1], [2, 2, -1, 1, -1]], "f": ["P = 1 / 24 fps = <b>41.7 ms</b><br>blur = 960 px/s × 0.0417 s = <b>40 px</b><br>each image stays on screen for 5 refreshes", "P = 1 / 120 Hz = <b>8.3 ms</b> (four images in five are invented)<br>blur = 960 px/s × 0.0083 s = <b>8 px</b><br>the TV delays the sound too, and you do not notice"], "g1": "One second of screen, refresh by refresh", "lg0": [["box", "1 refresh", "8.3 ms"], ["5 boxes of the same colour", "the same film frame", "41.7 ms"]], "lg1": [["yellow box", "real film frame", "8.3 ms"], ["orange box (≈)", "image invented by the TV", "8.3 ms"]], "lgr": ["1 row: 10 refreshes = 2 film frames", "83.3 ms"], "lgg": ["the whole grid: 120 refreshes", "1,000 ms = 1 s"], "lgt": "Key", "n0": "24 frames per second, each repeated 5 times: the image stands still for 41.7 ms and then jumps.", "n1": "24 real frames and 96 invented ones per second: the image moves on in small steps every 8.3 ms.", "zoom": "magnified ×2: the object crosses the screen in 2 s", "wt": "One film frame in slow motion (41.7 ms)", "wl": ["native 24 fps", "interpolated to 120"], "ws": "blur {S} px", "wr": "on the retina (×1.5)", "wp": "While you follow a running character with your gaze, your eye moves continuously, at 960 px/s. With native 24 fps the image stands still for 41.7 ms and in that time slides 40 px across the retina: that is the blur, and then comes the jump to the next frame. With interpolation, in those 41.7 ms the TV shows 5 images, each a little further on than the last: each one slides only 8 px, and the motion of the image almost follows the motion of the eye. That is what happens when you look at the real world, which has no frames: that is why it feels like being there."},Y='#F4D35E',Y2='#D9A520',OR='#F2A65A',V=960;
+var C=[{fps:24,hz:120,ip:0,S:40},{fps:24,hz:120,ip:1,S:8}];
+function fmt(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
+function scene(i){
+ var c=C[i],s='<rect x="0" y="0" width="320" height="92" rx="8" fill="#111"/><rect x="6" y="6" width="308" height="80" rx="4" fill="rgb(54,70,104)"/>';
+ s+='<circle cx="270" cy="26" r="11" fill="rgb(255,250,220)"/><rect x="6" y="66" width="308" height="20" fill="rgba(0,0,0,.25)"/><g id="mv'+i+'">';
+ var bl=c.S*2;
+ s+='<defs><linearGradient id="tr'+i+'" x1="0" x2="1"><stop offset="0" stop-color="'+Y+'" stop-opacity="0"/><stop offset="1" stop-color="'+Y+'" stop-opacity="0.9"/></linearGradient></defs>';
+ s+='<rect x="'+(-bl)+'" y="40" width="'+bl+'" height="20" rx="4" fill="url(#tr'+i+')"/><rect x="-6" y="40" width="12" height="20" rx="4" fill="'+Y+'"/>';
+ if(c.ip)s+='<rect x="-12" y="35" width="24" height="30" rx="7" fill="none" stroke="#E8A33D" stroke-width="1.6" stroke-dasharray="3 2"/>';
+ s+='</g><text x="160" y="106" class="ts" text-anchor="middle" fill="#55697A" style="font-size:10.5px">'+L.zoom+'</text>';
+ document.getElementById('s'+i).innerHTML=s;}
+function grid(i){
+ var c=C[i],n=120,bw=29,gx=2,bh=11,gy=3,top=16,H=top+12*(bh+gy),s='<text x="4" y="11" class="ts" fill="#55697A" style="font-size:10.5px">'+L.g1+'</text>';
+ for(var k=0;k<n;k++){var x=6+(k%10)*(bw+gx),y=top+Math.floor(k/10)*(bh+gy),fr=Math.floor(k/5),real=!c.ip||k%5===0,col=c.ip?(real?Y:OR):(fr%2?Y2:Y);
+  s+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" fill="'+col+'" stroke="#9DACB9" stroke-width=".5"/>';
+  if(!real)s+='<text x="'+(x+bw/2)+'" y="'+(y+10)+'" text-anchor="middle" fill="#7A3E0A" style="font-size:10px">≈</text>';}
+ var g=document.getElementById('gd'+i);g.setAttribute('viewBox','0 0 320 '+H);g.innerHTML=s;
+ var sw=function(a,w){return '<span class="sw" style="'+(w?'width:'+w+'px;':'')+'background:'+a+'"></span>'};
+ var rows=i?[[sw(Y)],[sw(OR)]]:[[sw(Y)],[sw('repeating-linear-gradient(90deg,'+Y+' 0 5px,#9DACB9 5px 6px)',40)]];
+ var src=i?L.lg1:L.lg0,pat=i?'repeating-linear-gradient(90deg,'+Y+' 0 3px,'+OR+' 3px 12px)':'repeating-linear-gradient(90deg,'+Y+' 0 10px,'+Y2+' 10px 20px)';
+ var h='<b>'+L.lgt+'</b><table>';
+ src.forEach(function(r,j){h+='<tr><td style="width:46px">'+rows[j][0]+'</td><td>'+r[0]+': '+r[1]+'</td><td>'+r[2]+'</td></tr>'});
+ h+='<tr><td>'+sw(pat,40)+'</td><td>'+L.lgr[0]+'</td><td>'+L.lgr[1]+'</td></tr>';
+ h+='<tr><td><span class="sw" style="width:40px;height:20px;background:'+pat+'"></span></td><td>'+L.lgg[0]+'</td><td>'+L.lgg[1]+'</td></tr></table>';
+ document.getElementById('lg'+i).innerHTML=h;
+ document.getElementById('n'+i).textContent=i?L.n1:L.n0;}
+function checks(i){var t='';L.chk.forEach(function(k,j){var st=L.st[i][j],cl=st===2?'ok':st===1?'wa':st===0?'no':'na',ic=st===2?'✓':st===1?'~':st===0?'✗':'–';
+ t+='<tr><td class="'+cl+'">'+ic+'</td><td>'+k+'</td><td class="'+cl+'">'+L.v[i][j]+'</td></tr>'});document.getElementById('t'+i).innerHTML=t;
+ document.getElementById('f'+i).innerHTML=L.f[i];document.getElementById('h'+i).textContent=L.cap[i];document.getElementById('k'+i).textContent=L.set[i];}
+function why(){
+ var s='<text x="2" y="11" class="ts" fill="#16222E" style="font-size:11.5px;font-weight:600">'+L.wt+'</text>';
+ s+='<defs><linearGradient id="wg" x1="0" x2="1"><stop offset="0" stop-color="'+Y+'" stop-opacity="0.15"/><stop offset="1" stop-color="'+Y+'"/></linearGradient></defs>';
+ [0,1].forEach(function(i){var y=24+i*34;
+  s+='<text x="2" y="'+(y+10)+'" class="ts" fill="#55697A" style="font-size:10.5px">'+L.wl[i]+'</text>';
+  if(i){for(var k=0;k<5;k++)s+='<rect x="'+(84+k*24)+'" y="'+y+'" width="24" height="14" fill="'+(k?OR:Y)+'" stroke="#9DACB9" stroke-width=".5"/>'+(k?'<text x="'+(96+k*24)+'" y="'+(y+11)+'" text-anchor="middle" fill="#7A3E0A" style="font-size:10px">≈</text>':'');}
+  else s+='<rect x="84" y="'+y+'" width="120" height="14" fill="'+Y+'" stroke="#9DACB9" stroke-width=".5"/>';
+  s+='<path d="M210 '+(y+7)+' h10 m-4 -3 l4 3 l-4 3" fill="none" stroke="#55697A" stroke-width="1"/>';
+  var S=C[i].S,bw=S*1.5;s+='<rect x="'+(286-bw)+'" y="'+(y+2)+'" width="'+bw+'" height="10" rx="2" fill="url(#wg)"/><rect x="286" y="'+(y+1)+'" width="6" height="12" rx="2" fill="'+Y+'"/>';
+  s+='<text x="318" y="'+(y-3)+'" class="ts" text-anchor="end" fill="#16222E" style="font-size:10.5px;font-weight:600">'+fmt(L.ws,{S:S})+'</text>';});
+ s+='<text x="84" y="98" class="ts" fill="#55697A" style="font-size:10px">0</text><text x="204" y="98" class="ts" text-anchor="end" fill="#55697A" style="font-size:10px">41,7 ms</text><text x="318" y="98" class="ts" text-anchor="end" fill="#55697A" style="font-size:10px">'+L.wr+'</text>';
+ if(L.loc!=='it-IT')s=s.replace('41,7 ms','41.7 ms');
+ document.getElementById('wy').innerHTML=s;document.getElementById('wp').textContent=L.wp;}
+[0,1].forEach(function(i){scene(i);grid(i);checks(i)});why();
+var rm=matchMedia('(prefers-reduced-motion: reduce)').matches,t0=null;
+function loop(ts){if(t0===null)t0=ts;var t=(ts-t0)/1000;
+ [0,1].forEach(function(i){var c=C[i],n=Math.floor(t*c.hz),tt=c.ip?n/c.hz:Math.floor(n*c.fps/c.hz)/c.fps,x=rm?200:20+((tt/2)%1)*280;
+  document.getElementById('mv'+i).setAttribute('transform','translate('+x+' 0)')});
+ if(!rm)requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

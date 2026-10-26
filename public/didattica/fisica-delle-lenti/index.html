@@ -99,7 +99,8 @@ figure.w iframe{display:block; width:100%; height:560px; border:1px solid var(--
 figure.w iframe.h-simple{height:600px}
 figure.w iframe.h-game{height:1240px}
 figure.w iframe.h-sfida{height:1475px}
-@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px}}
+figure.w iframe.h-film{height:1300px}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -209,7 +210,8 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <li><a href="#bici">Luci da bici, schermi e movimento</a>
       <ul><li><a href="#luci-bici">Lumen o candele? Due luci da bici</a></li>
       <li><a href="#proiettore">Negli schermi contano i nit? Proiettore o TV</a></li>
-      <li><a href="#movimento">Il movimento: il CRT e i monitor da 720 Hz</a></li></ul></li>
+      <li><a href="#movimento">Il movimento: il CRT e i monitor da 720 Hz</a></li>
+      <li><a href="#film">Nei film: Matrix e l'interpolazione</a></li></ul></li>
   </ol></div>
   <div><p class="tp">Parte II · Luce e occhio umano</p><ol start="1">
     <li><a href="#luce">Luminanza, illuminanza e abbagliamento</a></li>
@@ -443,6 +445,35 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   senza trucchi, al limite: 8 px e 5 ms, con tutto l'HDR. Se il gioco gira solo a 60 fps, invece, nessuna combinazione
   passa: senza trucchi la scia è di 16 px, con la BFI a 60 Hz lo schermo sfarfalla, con la BFI a 120 Hz ogni immagine
   si vede doppia.</p>
+
+  <h3 id="film">E nei film? Dove l'interpolazione funziona: Matrix</h3>
+  <p>Nello sparatutto l'interpolazione perde. Eppure, riguardando <i>Matrix</i> (1999) su una TV a 120 Hz con
+  l'interpolazione accesa, sembra di essere lì. Non è una contraddizione: nel film ti prendi tutto il guadagno e quasi
+  niente del prezzo. <i>Matrix</i> è girato in pellicola 35 mm a 24 fps, come quasi tutto il cinema dall'arrivo del
+  sonoro.</p>
+  <p><b>Il guadagno è enorme proprio a 24 fps.</b> Nel gioco l'interpolazione passava da 60 a 120 immagini al secondo
+  e dimezzava la scia. Nel film passa da 24 a 120: quattro immagini su cinque sono inventate, la persistenza scende da
+  41,7 a 8,3 ms e la scia da 40 a 8 px. Spariscono anche gli scatti nelle panoramiche, che sugli OLED si vedono di
+  più perché i pixel cambiano all'istante.</p>
+  <div class="dim"><b>Conti con le unità</b><ul><li>1 / 24 fps = 1 / (24 s⁻¹) = 0,0417 s = 41,7 ms; 960 px/s × 0,0417 s = 40 px ✓</li><li>1 / 120 Hz = 1 / (120 s⁻¹) = 0,0083 s = 8,3 ms; 960 px/s × 0,0083 s = 8 px ✓</li></ul></div>
+  <p><b>Il prezzo quasi non c'è.</b> Il ritardo, che nello sparatutto era il difetto peggiore, qui non conta: nessuno
+  preme tasti, e la TV ritarda anche l'audio per tenerlo insieme all'immagine. Gli aloni restano, ma non stai mirando
+  a niente, e l'interpolazione standard, che ha più tempo per calcolare, ne fa meno di quella da gioco.</p>
+  <figure class="w">
+    <iframe src="w/00g-film.html" title="Film a 24 fps: nativo o interpolato a 120 Hz" loading="lazy" class="h-film"></iframe>
+    <figcaption>Lo stesso film a 24 fps, a sinistra senza interpolazione e a destra con l'interpolazione: guarda il quadratino, le due griglie e il fotogramma al rallentatore. <a href="w/00g-film.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <p><b>E il vincitore è… l'interpolazione, se ti piace l'effetto soap opera.</b> Il mondo reale non ha fotogrammi:
+  più il movimento dell'immagine segue quello dell'occhio, più sembra la realtà. Ad altri invece non piace, ed è
+  questione di abitudine. Per quasi un secolo il cinema è stato a 24 fps, mentre il movimento fluido era quello della
+  TV in diretta e delle soap opera, girate in video a 50 o 60 immagini al secondo. In più il movimento nitido svela
+  quello che il cinema nasconde: scenografie, trucco, controfigure. È lo stesso scontro che c'è stato con
+  <i>Lo Hobbit</i> (2012), girato a 48 fps. La <b>Filmmaker Mode</b> delle TV spegne l'interpolazione per rispettare i
+  24 fps del regista; i livelli intermedi tolgono gli scatti senza arrivare all'effetto soap opera.</p>
+  <p><b>Curiosità.</b> Il <i>bullet time</i> di <i>Matrix</i> è nato proprio con l'interpolazione: gli attori sono stati
+  ripresi con 120 fotocamere fotografiche in fila, e fra uno scatto e l'altro i compositori hanno inserito immagini
+  interpolate per rendere fluido il giro di camera (<a href="https://pauldebevec.com/Items/SoftImage1999/">Manex, 1999</a>).
+  In quelle scene una parte delle immagini era inventata ancora prima che ci pensasse la TV.</p>
 
 
 </section>
