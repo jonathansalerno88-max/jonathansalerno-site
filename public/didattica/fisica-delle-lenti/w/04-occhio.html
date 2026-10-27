@@ -117,7 +117,7 @@ C:'<b>Cicloplegico</b> (antagonista muscarinico: atropina, ciclopentolato, tropi
 function setC(c){cond=c;lens=false;upd();}
 
 
-function setM(m){objM=m;upd();}
+function setM(m){objM=m;if(m==='inf')document.getElementById('acc').value=0;upd();}
 function accVal(){return drug==='P'?6:drug==='C'?0:parseFloat(document.getElementById('acc').value);}
 function useL(){return lens&&cond!=='E';}
 function lensAcc(){var A=accVal();return document.getElementById('pres').checked?Math.min(A,1):A;}
