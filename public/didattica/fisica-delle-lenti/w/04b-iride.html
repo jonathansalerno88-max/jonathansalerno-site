@@ -128,7 +128,7 @@ function upd(){
  // ciliary muscle, side view
  var base=near?2.5:0.5,Ac=g.c==='F'?Math.max(6,base):g.c==='S'?base+0.3:g.c==='X'?0:base;
  var LX=170,LY=636,lry=54,lrx=10+Ac*2.6,off=100-Ac*2,slack=Math.min(1,Ac/6),rpS=Math.max(6,dm/2*7);
- p+=T(20,500,'Il muscolo ciliare visto di lato','th')+T(20,516,'la luce arriva da sinistra','ts');
+ p+=T(20,500,'Il muscolo ciliare visto di lato <tspan class="ts" fill="#55697A" font-weight="400">· la luce arriva da sinistra</tspan>','th');
  p+='<line x1="20" y1="'+LY+'" x2="300" y2="'+LY+'" stroke="var(--b)" stroke-width="0.5" stroke-dasharray="4 4"/>';
  p+='<path d="M'+(LX-46)+' '+(LY-108)+' Q'+(LX-128)+' '+LY+' '+(LX-46)+' '+(LY+108)+'" fill="#E6F1FB" fill-opacity="0.5" stroke="#888780" stroke-width="1"/>'+T(LX-96,LY-70,'cornea','ts',null,'end');
  p+='<ellipse cx="'+LX+'" cy="'+LY+'" rx="'+lrx+'" ry="'+lry+'" fill="#B5D4F4" opacity="0.7" stroke="#378ADD" stroke-width="0.8"/>';
@@ -160,7 +160,7 @@ function upd(){
   p+=T(X-70+sh,Y+32,'linea Z','ts',null,'middle')+T(X,Y+30,'miosina','ts',mo,'middle')+T(X+60,Y-20,'actina','ts',ac);
   p+=T(20,Y+48,g.c==='X'?'nessun segnale: il sarcomero resta lungo':con?'contratto: l\'actina scorre sulla miosina, il sarcomero si accorcia':'rilassato: sarcomero lungo, la zonula tira il cristallino','ts',con?'#993C1D':null);
  })();
- p+=T(LX+32,LY+off+5,'muscolo ciliare','th','#C4562B')+T(LX+26,LY-lry-8,'zonula '+(slack<0.2?'tesa':'lassa'),'ts')+T(LX+lrx+8,LY+4,'cristallino','ts')+T(LX-lrx-12,LY+off-14,'iride','ts',null,'end');
+ p+=T(LX+32,LY+off+5,'muscolo ciliare','th','#C4562B')+T(LX+22,LY-off-(10+Ac)-6,'muscolo ciliare','th','#C4562B','end')+T(LX+26,LY-lry-8,'zonula '+(slack<0.2?'tesa':'lassa'),'ts')+T(LX+lrx+8,LY+4,'cristallino','ts')+T(LX-lrx-12,LY+off-14,'iride','ts',null,'end');
  var cyT=LY-off;
  p+='<path d="M'+(px+140)+' '+(ry+58)+' L'+(px+140)+' 520 L'+(LX+36)+' 520 L'+(LX+14)+' '+(cyT-6)+'" fill="none" stroke="'+P+'" stroke-width="4" opacity="'+(pOn&&g.c!=='X'?0.85:0.3)+'"/>';
  p+=T(px+146,512,'≈ 97 % → <tspan fill="#C4562B" font-weight="600">muscolo ciliare</tspan>','ts',P);
