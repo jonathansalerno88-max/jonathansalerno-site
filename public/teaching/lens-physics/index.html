@@ -101,13 +101,16 @@ figure.w iframe.h-simple{height:600px}
 figure.w iframe.h-game{height:1240px}
 figure.w iframe.h-sfida{height:1475px}
 figure.w iframe.h-film{height:1300px}
-figure.w iframe.h-micro{height:955px}
+figure.w iframe.h-micro{height:1000px}
 figure.w iframe.h-pers{height:1505px}
-@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1075px}}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1145px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
 table{border-collapse:collapse; font-size:.9rem; margin:.4rem 0 1rem; width:100%; max-width:38rem}
+.tscroll{overflow-x:auto; max-width:100%}
+.tscroll table{max-width:none; min-width:34rem}
+.tscroll td{white-space:nowrap}
 th,td{text-align:left; padding:.45rem .6rem; border-bottom:1px solid var(--rule); vertical-align:top}
 th{font-weight:600; color:var(--mut); font-size:.8125rem}
 
@@ -883,15 +886,43 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   the coarse knob gets you close, the fine knob finishes the job, because at high magnification a few micrometres
   are enough to blur the image. And in the first histology lab the letter ‘e’ cut out of a newspaper shows up
   rotated by 180°: upside down and left to right.</p>
+  <h3>The objectives, the oil and the two knobs</h3>
+  <p>The nosepiece usually carries four objectives. The more they magnify, the smaller the piece of slide you see,
+  the closer they must sit to the slide and the thinner the slice that stays in focus.</p>
+  <div class="tscroll"><table>
+    <thead><tr><th>Objective</th><th>Total (10× eyepiece)</th><th><b>NA</b> (Numerical Aperture)</th><th>Field</th><th>Resolution</th><th>Working distance</th><th>Depth of field</th></tr></thead>
+    <tbody>
+      <tr><td>4×</td><td>40×</td><td>0.10</td><td>5 mm</td><td>3.4 µm</td><td>≈ 17 mm</td><td>≈ 55 µm</td></tr>
+      <tr><td>10×</td><td>100×</td><td>0.25</td><td>2 mm</td><td>1.3 µm</td><td>≈ 10 mm</td><td>≈ 8 µm</td></tr>
+      <tr><td>40×</td><td>400×</td><td>0.65</td><td>0.5 mm</td><td>0.5 µm</td><td>≈ 0.6 mm</td><td>≈ 1 µm</td></tr>
+      <tr><td>100× oil immersion</td><td>1000×</td><td>1.25</td><td>0.2 mm</td><td>0.3 µm</td><td>≈ 0.15 mm</td><td>≈ 0.6 µm</td></tr>
+    </tbody>
+  </table></div>
+  <p>Magnification alone does not reveal smaller details: that is decided by the <b>numerical aperture</b>,
+  NA = n · sin θ, where θ is half the angle of the cone of light entering the objective and n the refractive index
+  between slide and lens. In air n = 1, so NA never reaches 1. With a drop of <b>immersion oil</b>, which has the same
+  index as glass (n ≈ 1.515), even the most inclined rays go straight from the slide into the lens instead of bending
+  away or being reflected: that is why the 100× reaches NA 1.25, but only with oil. Dry objectives, instead, are
+  designed for air, and oil makes them worse.</p>
+  <p class="formula">resolution d = 0.61 · λ / NA</p>
+  <div class="dim"><b>Checking the units</b><ul><li>Green light, λ = 0.55 µm; 40× objective, NA 0.65: d = 0.61 × 0.55 µm / 0.65 ≈ 0.52 µm. NA is a pure number (n is a ratio of speeds, sin θ a ratio of lengths), so d stays in µm.</li><li>Field of view = eyepiece field number / objective magnification: 20 mm / 40 = 0.5 mm.</li></ul></div>
+  <p>There are two focus knobs. The <b>coarse</b> knob moves the stage in large steps and is used with the 4× and
+  the 10×. The <b>fine</b> knob moves it by a few micrometres and is needed with the 40× and the 100×, where the depth
+  of field is about a micrometre. With these objectives the coarse knob is dangerous: the working distance is under a
+  millimetre, and raising the stage crushes the slide against the lens. Luckily the objectives are <b>parfocal</b>: if
+  the image is in focus at 10×, turning the nosepiece to the 40× keeps it almost in focus, and a touch of fine focus
+  is enough.</p>
   <figure class="w">
     <iframe src="w/13-microscopio.html" title="Optical microscope: choose the lenses and focus" loading="lazy" class="h-micro"></iframe>
-    <figcaption>Choose the three lenses, then turn the knob. <a href="w/13-microscopio.html">Open full screen</a></figcaption>
+    <figcaption>Choose lenses, objective and oil, then focus with the two knobs. <a href="w/13-microscopio.html">Open full screen</a></figcaption>
   </figure>
-  <div class="try"><b>Try this.</b> <i>Goal</i>: understand why you need two converging lenses.
+  <div class="try"><b>Try this.</b> <i>Goal</i>: understand why you need two converging lenses, and how you go from 40× to 1000×.
   <ol><li>Start with all the lenses diverging and change one at a time: which one is the first to make a real image appear in the tube?</li>
-  <li>With converging objective and eyepiece, turn the knob and follow the dashed red arrow: the view turns sharp when it reaches the purple line of the eyepiece focus.</li>
-  <li>Make the condenser diverging, then remove it altogether: does the image stay sharp? And bright?</li>
-  <li>Look at the sharp ‘e’: is it upright or upside down? Why?</li></ol></div>
+  <li>With converging objective and eyepiece and the 4×, focus with the coarse knob only: the view turns sharp when the red arrow reaches the purple line.</li>
+  <li>Switch to the 10× and then the 40× without touching the coarse knob: how much fine focus do you need?</li>
+  <li>At 40×, try raising the coarse knob by a millimetre. What happens?</li>
+  <li>Switch to the 100× without oil, then add the oil. And what if you put oil on the 40×?</li>
+  <li>Make the condenser diverging, then remove it: does the image stay sharp? And bright?</li></ol></div>
 </section>
 
 <section id="fonti">

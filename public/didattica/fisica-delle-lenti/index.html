@@ -101,13 +101,16 @@ figure.w iframe.h-simple{height:600px}
 figure.w iframe.h-game{height:1240px}
 figure.w iframe.h-sfida{height:1475px}
 figure.w iframe.h-film{height:1300px}
-figure.w iframe.h-micro{height:955px}
+figure.w iframe.h-micro{height:1000px}
 figure.w iframe.h-pers{height:1505px}
-@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1075px}}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1145px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
 table{border-collapse:collapse; font-size:.9rem; margin:.4rem 0 1rem; width:100%; max-width:38rem}
+.tscroll{overflow-x:auto; max-width:100%}
+.tscroll table{max-width:none; min-width:34rem}
+.tscroll td{white-space:nowrap}
 th,td{text-align:left; padding:.45rem .6rem; border-bottom:1px solid var(--rule); vertical-align:top}
 th{font-weight:600; color:var(--mut); font-size:.8125rem}
 
@@ -887,15 +890,43 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   fuoco dell'oculare: con la vite macrometrica ci si arriva vicino, con la micrometrica si rifinisce, perché a forte
   ingrandimento bastano pochi micrometri per sfocare. E al primo laboratorio di istologia la lettera «e» ritagliata
   dal giornale compare ruotata di 180°: capovolta sopra-sotto e destra-sinistra.</p>
+  <h3>Gli obiettivi, l'olio e le due viti</h3>
+  <p>Sul revolver ci sono di solito quattro obiettivi. Più ingrandiscono, più piccolo è il pezzo di vetrino che vedi,
+  più vicino devono stare al vetrino e più sottile è la fetta che resta a fuoco.</p>
+  <div class="tscroll"><table>
+    <thead><tr><th>Obiettivo</th><th>Totale (oculare 10×)</th><th><b>NA</b> (Numerical Aperture)</th><th>Campo</th><th>Risoluzione</th><th>Distanza di lavoro</th><th>Profondità di campo</th></tr></thead>
+    <tbody>
+      <tr><td>4×</td><td>40×</td><td>0,10</td><td>5 mm</td><td>3,4 µm</td><td>≈ 17 mm</td><td>≈ 55 µm</td></tr>
+      <tr><td>10×</td><td>100×</td><td>0,25</td><td>2 mm</td><td>1,3 µm</td><td>≈ 10 mm</td><td>≈ 8 µm</td></tr>
+      <tr><td>40×</td><td>400×</td><td>0,65</td><td>0,5 mm</td><td>0,5 µm</td><td>≈ 0,6 mm</td><td>≈ 1 µm</td></tr>
+      <tr><td>100× a immersione</td><td>1000×</td><td>1,25</td><td>0,2 mm</td><td>0,3 µm</td><td>≈ 0,15 mm</td><td>≈ 0,6 µm</td></tr>
+    </tbody>
+  </table></div>
+  <p>L'ingrandimento da solo non fa vedere dettagli più piccoli: quello lo decide l'<b>apertura numerica</b>,
+  NA = n · sin θ, dove θ è metà dell'angolo del cono di luce che entra nell'obiettivo e n l'indice di rifrazione fra
+  vetrino e lente. In aria n = 1, quindi NA non arriva mai a 1. Con una goccia d'<b>olio da immersione</b>, che ha lo
+  stesso indice del vetro (n ≈ 1,515), anche i raggi più inclinati passano dritti dal vetrino alla lente invece di
+  deviare o riflettersi: per questo il 100× arriva a NA 1,25, ma solo con l'olio. Gli obiettivi a secco invece
+  sono calcolati per l'aria, e con l'olio peggiorano.</p>
+  <p class="formula">risoluzione d = 0,61 · λ / NA</p>
+  <div class="dim"><b>Conti con le unità</b><ul><li>Luce verde, λ = 0,55 µm; obiettivo 40×, NA 0,65: d = 0,61 × 0,55 µm / 0,65 ≈ 0,52 µm. NA è un numero puro (n è un rapporto fra velocità, sin θ un rapporto fra lunghezze), quindi d resta in µm.</li><li>Campo visivo = numero di campo dell'oculare / ingrandimento dell'obiettivo: 20 mm / 40 = 0,5 mm.</li></ul></div>
+  <p>Per mettere a fuoco ci sono due viti. La <b>macrometrica</b> sposta il tavolino a scatti grandi e si usa con il
+  4× e il 10×. La <b>micrometrica</b> lo sposta di pochi micrometri e serve con il 40× e il 100×, dove la profondità
+  di campo è di circa un micrometro. Con questi obiettivi la macrometrica è pericolosa: la distanza di lavoro è sotto
+  il millimetro, e alzando il tavolino si schiaccia il vetrino contro la lente. Per fortuna gli obiettivi sono
+  <b>parafocali</b>: se l'immagine è a fuoco al 10×, girando il revolver sul 40× resta quasi a fuoco, e basta un
+  ritocco di micrometrica.</p>
   <figure class="w">
     <iframe src="w/13-microscopio.html" title="Microscopio ottico: scegli le lenti e metti a fuoco" loading="lazy" class="h-micro"></iframe>
-    <figcaption>Scegli le tre lenti, poi gira la vite. <a href="w/13-microscopio.html">Apri a schermo intero</a></figcaption>
+    <figcaption>Scegli lenti, obiettivo e olio, poi metti a fuoco con le due viti. <a href="w/13-microscopio.html">Apri a schermo intero</a></figcaption>
   </figure>
-  <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: capire perché servono due lenti convergenti.
+  <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: capire perché servono due lenti convergenti, e come si passa da 40× a 1000×.
   <ol><li>Parti con tutte le lenti divergenti e cambiane una alla volta: quale fa comparire per prima un'immagine reale nel tubo?</li>
-  <li>Con obiettivo e oculare convergenti, gira la vite e segui la freccia rossa tratteggiata: la vista diventa nitida quando arriva sulla linea viola del fuoco dell'oculare.</li>
-  <li>Rendi divergente il condensatore, poi toglilo del tutto: l'immagine resta nitida? E luminosa?</li>
-  <li>Guarda la «e» nitida: è dritta o capovolta? Perché?</li></ol></div>
+  <li>Con obiettivo e oculare convergenti e il 4×, metti a fuoco con la sola macrometrica: la vista diventa nitida quando la freccia rossa arriva sulla linea viola.</li>
+  <li>Passa al 10× e poi al 40× senza toccare la macrometrica: quanto devi ritoccare la micrometrica?</li>
+  <li>Al 40× prova ad alzare la macrometrica di un millimetro. Che cosa succede?</li>
+  <li>Passa al 100× senza olio, poi metti l'olio. E se metti l'olio al 40×?</li>
+  <li>Rendi divergente il condensatore, poi toglilo: l'immagine resta nitida? E luminosa?</li></ol></div>
 </section>
 
 <section id="fonti">
