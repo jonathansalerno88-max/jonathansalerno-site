@@ -101,8 +101,9 @@ figure.w iframe.h-simple{height:600px}
 figure.w iframe.h-game{height:1240px}
 figure.w iframe.h-sfida{height:1475px}
 figure.w iframe.h-film{height:1300px}
+figure.w iframe.h-micro{height:955px}
 figure.w iframe.h-pers{height:1505px}
-@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px}}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1075px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -244,6 +245,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <li><a href="#lente-sottile">La lente sottile</a></li>
     <li><a href="#reale-virtuale">Immagine reale o virtuale</a></li>
     <li><a href="#occhiali">Le lenti degli occhiali</a></li>
+    <li><a href="#microscopio">Il microscopio ottico</a></li>
   </ol></div>
   </div>
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#fonti">Fonti</a></p>
@@ -847,6 +849,31 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   pupilla è trascurabile. Serve contro l'<b>astigmatismo obliquo</b>: l'occhio ruota dietro la lente,
   e una lente attraversata di sbieco si comporta come se avesse due poteri. Curvandola attorno al
   centro di rotazione dell'occhio, lo sguardo laterale la attraversa quasi perpendicolare.</p>
+</section>
+
+<section id="microscopio">
+  <h2>9 · Il microscopio ottico</h2>
+  <h3>Due lenti convergenti, una dopo l'altra</h3>
+  <p>Il microscopio ottico composto mette in fila due sistemi di lenti convergenti. L'<b>obiettivo</b>, vicinissimo
+  al vetrino, ha una focale corta: con il vetrino appena oltre il suo fuoco forma dentro il tubo un'immagine
+  <b>reale, capovolta e ingrandita</b>, l'immagine intermedia. L'<b>oculare</b> guarda quell'immagine come una lente
+  d'ingrandimento: se cade nel suo fuoco, ne escono raggi paralleli e l'occhio la vede all'infinito, senza accomodare.</p>
+  <p class="formula">ingrandimento totale = ingrandimento dell'obiettivo × ingrandimento dell'oculare</p>
+  <div class="dim"><b>Conti con le unità</b><ul><li>Obiettivo 40× e oculare 10×: 40 × 10 = 400×. Gli ingrandimenti sono numeri puri, rapporti fra lunghezze (mm / mm).</li><li>L'oculare ingrandisce circa 250 mm / f, come la lente d'ingrandimento della sezione 6: con f = 25 mm, 250 mm / 25 mm = 10×.</li></ul></div>
+  <p>Sotto il vetrino c'è il <b>condensatore</b>, anche lui convergente: non ingrandisce niente, concentra la luce
+  della lampada sul campione. Mettere a fuoco vuol dire spostare il vetrino finché l'immagine intermedia cade nel
+  fuoco dell'oculare: con la vite macrometrica ci si arriva vicino, con la micrometrica si rifinisce, perché a forte
+  ingrandimento bastano pochi micrometri per sfocare. E al primo laboratorio di istologia la lettera «e» ritagliata
+  dal giornale compare ruotata di 180°: capovolta sopra-sotto e destra-sinistra.</p>
+  <figure class="w">
+    <iframe src="w/13-microscopio.html" title="Microscopio ottico: scegli le lenti e metti a fuoco" loading="lazy" class="h-micro"></iframe>
+    <figcaption>Scegli le tre lenti, poi gira la vite. <a href="w/13-microscopio.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: capire perché servono due lenti convergenti.
+  <ol><li>Parti con tutte le lenti divergenti e cambiane una alla volta: quale fa comparire per prima un'immagine reale nel tubo?</li>
+  <li>Con obiettivo e oculare convergenti, gira la vite e segui la freccia rossa tratteggiata: la vista diventa nitida quando arriva sulla linea viola del fuoco dell'oculare.</li>
+  <li>Rendi divergente solo il condensatore: l'immagine resta nitida? E luminosa?</li>
+  <li>Guarda la «e» nitida: è dritta o capovolta? Perché?</li></ol></div>
 </section>
 
 <section id="fonti">

@@ -101,8 +101,9 @@ figure.w iframe.h-simple{height:600px}
 figure.w iframe.h-game{height:1240px}
 figure.w iframe.h-sfida{height:1475px}
 figure.w iframe.h-film{height:1300px}
+figure.w iframe.h-micro{height:955px}
 figure.w iframe.h-pers{height:1505px}
-@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px}}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1075px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -244,6 +245,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <li><a href="#lente-sottile">The thin lens</a></li>
     <li><a href="#reale-virtuale">Real or virtual image</a></li>
     <li><a href="#occhiali">Spectacle lenses</a></li>
+    <li><a href="#microscopio">The optical microscope</a></li>
   </ol></div>
   </div>
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#fonti">Sources</a></p>
@@ -843,6 +845,31 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   pupil is negligible. It is there to counter <b>oblique astigmatism</b>: the eye rotates behind the lens,
   and a lens crossed at a slant behaves as if it had two powers. By curving it around the
   centre of rotation of the eye, a sideways gaze crosses it almost perpendicularly.</p>
+</section>
+
+<section id="microscopio">
+  <h2>9 · The optical microscope</h2>
+  <h3>Two converging lenses, one after the other</h3>
+  <p>The compound optical microscope lines up two systems of converging lenses. The <b>objective</b>, very close
+  to the slide, has a short focal length: with the slide just beyond its focus it forms inside the tube a
+  <b>real, upside-down, magnified</b> image, the intermediate image. The <b>eyepiece</b> looks at that image like a
+  magnifying glass: if it falls at its focus, parallel rays come out and the eye sees it at infinity, without accommodating.</p>
+  <p class="formula">total magnification = objective magnification × eyepiece magnification</p>
+  <div class="dim"><b>Checking the units</b><ul><li>A 40× objective and a 10× eyepiece: 40 × 10 = 400×. Magnifications are pure numbers, ratios of lengths (mm / mm).</li><li>The eyepiece magnifies about 250 mm / f, like the magnifying glass in section 6: with f = 25 mm, 250 mm / 25 mm = 10×.</li></ul></div>
+  <p>Below the slide is the <b>condenser</b>, also converging: it magnifies nothing, it concentrates the lamp's
+  light on the specimen. Focusing means moving the slide until the intermediate image falls at the eyepiece focus:
+  the coarse knob gets you close, the fine knob finishes the job, because at high magnification a few micrometres
+  are enough to blur the image. And in the first histology lab the letter ‘e’ cut out of a newspaper shows up
+  rotated by 180°: upside down and left to right.</p>
+  <figure class="w">
+    <iframe src="w/13-microscopio.html" title="Optical microscope: choose the lenses and focus" loading="lazy" class="h-micro"></iframe>
+    <figcaption>Choose the three lenses, then turn the knob. <a href="w/13-microscopio.html">Open full screen</a></figcaption>
+  </figure>
+  <div class="try"><b>Try this.</b> <i>Goal</i>: understand why you need two converging lenses.
+  <ol><li>Start with all the lenses diverging and change one at a time: which one is the first to make a real image appear in the tube?</li>
+  <li>With converging objective and eyepiece, turn the knob and follow the dashed red arrow: the view turns sharp when it reaches the purple line of the eyepiece focus.</li>
+  <li>Make only the condenser diverging: does the image stay sharp? And bright?</li>
+  <li>Look at the sharp ‘e’: is it upright or upside down? Why?</li></ol></div>
 </section>
 
 <section id="fonti">
