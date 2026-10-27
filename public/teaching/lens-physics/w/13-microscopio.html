@@ -28,7 +28,7 @@
 <radialGradient id="lg"><stop offset="0" stop-color="#FFE9A8"/><stop offset="1" stop-color="#F4D35E" stop-opacity="0"/></radialGradient></defs><g id="g"></g></svg>
 <p id="ex" aria-live="polite"></p>
 <script>
-var L={"loc": "en-GB", "parts": ["Condenser", "Objective", "Eyepiece"], "kinds": ["converging", "diverging"], "lab": {"eye": "eye", "oc": "eyepiece", "ob": "objective", "sl": "slide with the ‘e’", "con": "condenser", "src": "light source", "im": "intermediate image", "imv": "virtual image", "foc": "eyepiece focus", "tube": "tube", "ns": "diagram not to scale"}, "view": "What you see in the eyepiece", "st": {"nof": "no sharp image possible", "mag": "magnification ≈ {M}×", "inv": "upside down", "up": "upright", "sharp": "sharp", "blur": "blurred", "dim": "dark", "bright": "bright"}, "badge": ["perfect view ✓", "not yet ✗"], "ex": {"ob": "With a diverging objective no real image forms: the rays leave more open than they came in, and behind the objective there is only a small virtual image. However you turn the knob, it never comes into focus.", "oc": "The objective does its job: the real, upside-down intermediate image is there. But a diverging eyepiece cannot act as a magnifying glass: it opens the rays even more, and the eye cannot focus them at any distance.", "con": " The diverging condenser scatters the light instead of concentrating it on the slide: the image is dark.", "near": "Right lenses. Now turn the knob: the intermediate image must fall at the eyepiece focus, or just above it. Right now it is too low: bring the slide closer to the objective.", "far": "Right lenses. Now turn the knob: the intermediate image must fall at the eyepiece focus, or just above it. Right now it is too close to the eyepiece: move the slide a little away from the objective.", "ok": "There is the ‘e’, magnified about {M} times, sharp and upside down: top to bottom and left to right. The objective makes a real, upside-down, magnified image of it; the eyepiece looks at that image like a magnifying glass and sends it to the eye as almost parallel rays, so the eye sees it relaxed.", "okdim": "Focus is right, but the ‘e’ is dark: the condenser still needs the right lens."}},S=[1,1,1];
+var L={"loc": "en-GB", "parts": ["Condenser", "Objective", "Eyepiece"], "kinds": ["converging", "diverging"], "none": "none", "lab": {"eye": "eye", "oc": "eyepiece", "ob": "objective", "sl": "slide with the ‘e’", "con": "condenser", "abs": "(removed)", "src": "light source", "im": "intermediate image", "imv": "virtual image", "foc": "eyepiece focus", "tube": "tube", "ns": "diagram not to scale"}, "view": "What you see in the eyepiece", "st": {"mid": "less bright", "nof": "no sharp image possible", "mag": "magnification ≈ {M}×", "inv": "upside down", "up": "upright", "sharp": "sharp", "blur": "blurred", "dim": "dark", "bright": "bright"}, "badge": ["perfect view ✓", "not yet ✗"], "ex": {"ob": "With a diverging objective no real image forms: the rays leave more open than they came in, and behind the objective there is only a small virtual image. However you turn the knob, it never comes into focus.", "oc": "The objective does its job: the real, upside-down intermediate image is there. But a diverging eyepiece cannot act as a magnifying glass: it opens the rays even more, and the eye cannot focus them at any distance.", "con": " The diverging condenser scatters the light instead of concentrating it on the slide: the image is dark.", "near": "Right lenses. Now turn the knob: the intermediate image must fall at the eyepiece focus, or just above it. Right now it is too low: bring the slide closer to the objective.", "far": "Right lenses. Now turn the knob: the intermediate image must fall at the eyepiece focus, or just above it. Right now it is too close to the eyepiece: move the slide a little away from the objective.", "ok": "There is the ‘e’, magnified about {M} times, sharp and upside down: top to bottom and left to right. The objective makes a real, upside-down, magnified image of it; the eyepiece looks at that image like a magnifying glass and sends it to the eye as almost parallel rays, so the eye sees it relaxed.", "okdim": "Focus is right, but the ‘e’ is dark: the condenser still needs the right lens.", "nocon": "Without a condenser the ‘e’ is just as sharp and magnified: objective and eyepiece are enough to make the image. The light still arrives, only less concentrated, and the view is dimmer. The condenser is there for the light, not for the magnification.", "nocon2": " The condenser is missing here: the light arrives less concentrated, but the image does not need it."}},S=[1,1,1];
 // schematic optics in px (not to scale): axis vertical, light goes up
 var AX=190,YE=40,YOC=100,YOB=400,YCON=548,YSRC=604,F1=50,F2=60,A1=26,A2=30,H=9,DN=250;
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d,minimumFractionDigits:d})}
@@ -38,11 +38,11 @@ function lens(y,conv,w){w=w||36;return conv?'<path d="M'+(AX-w)+' '+y+' Q'+AX+' 
  :'<path d="M'+(AX-w)+' '+(y-9)+' Q'+AX+' '+(y-1)+' '+(AX+w)+' '+(y-9)+' L'+(AX+w)+' '+(y+9)+' Q'+AX+' '+(y+1)+' '+(AX-w)+' '+(y+9)+' Z" fill="#B5D4F4" opacity="0.85" stroke="#185FA5" stroke-width="1.2"/>'}
 function arrow(x,y,h,col,dash,o){var tip=x+h,s=Ln(x,y,tip,y,col,2.2,dash,o);var hx=tip-(h>0?7:-7);return s+'<path d="M'+hx+' '+(y-4)+' L'+tip+' '+y+' L'+hx+' '+(y+4)+(dash?'" fill="none" stroke="'+col+'" stroke-width="1.4"':' Z" fill="'+col+'"')+(o!=null?' opacity="'+o+'"':'')+'/>'}
 function lbl(y,t,col){return Ln(AX+44,y,262,y,'#B4BCC6',0.8)+T(268,y+4,t,'ts',col)}
-function btns(i){var h='<span>'+L.parts[i]+'</span>';L.kinds.forEach(function(k,j){h+='<button class="'+(S[i]===j?'act':'')+'" aria-pressed="'+(S[i]===j)+'" onclick="S['+i+']='+j+';upd()">'+k+'</button>'});return h}
+function btns(i){var h='<span>'+L.parts[i]+'</span>';(i===0?L.kinds.concat([L.none]):L.kinds).forEach(function(k,j){h+='<button class="'+(S[i]===j?'act':'')+'" aria-pressed="'+(S[i]===j)+'" onclick="S['+i+']='+j+';upd()">'+k+'</button>'});return h}
 function nud(d){var e=document.getElementById('fo');e.value=Math.max(52,Math.min(80,parseFloat(e.value)+d)).toFixed(2);upd()}
 function upd(){
  for(var i=0;i<3;i++)document.getElementById('r'+i).innerHTML=btns(i);
- var d0=parseFloat(document.getElementById('fo').value),f1=S[1]?-F1:F1,f2=S[2]?-F2:F2,cc=!S[0],YO=YOB+d0;
+ var d0=parseFloat(document.getElementById('fo').value),f1=S[1]?-F1:F1,f2=S[2]?-F2:F2,cc=S[0]===0,nc=S[0]===2,YO=YOB+d0;
  // objective: image distance (positive = real, above the objective)
  var di=1/(1/f1-1/d0),m1=-di/d0,YI=YOB-di,u2=YI-YOC; // u2: intermediate image below the eyepiece (>0)
  var Vout=Math.abs(u2)<0.5?1:1/f2-1/u2; // vergence leaving the eyepiece, 1/px (>0 converging)
@@ -51,10 +51,10 @@ function upd(){
  // microscope body
  s+='<rect x="'+(AX-44)+'" y="'+(YOC+8)+'" width="88" height="'+(YOB-YOC-20)+'" rx="4" fill="#F3F5F7" stroke="#C9D2DC"/>'+T(AX-52,YOC+150,L.lab.tube,'ts','#8696A4','end');
  // illumination
- var spread=cc?6:70;
- s+='<path d="M'+(AX-12)+' '+(YSRC-14)+' L'+(AX-40)+' '+YCON+' L'+(AX-spread)+' '+YO+' L'+(AX+spread)+' '+YO+' L'+(AX+40)+' '+YCON+' L'+(AX+12)+' '+(YSRC-14)+' Z" fill="#F4D35E" opacity="'+(cc?0.35:0.15)+'"/>';
+ var spread=cc?6:nc?34:70;
+ s+='<path d="M'+(AX-12)+' '+(YSRC-14)+' L'+(AX-40)+' '+YCON+' L'+(AX-spread)+' '+YO+' L'+(AX+spread)+' '+YO+' L'+(AX+40)+' '+YCON+' L'+(AX+12)+' '+(YSRC-14)+' Z" fill="#F4D35E" opacity="'+(cc?0.35:nc?0.24:0.15)+'"/>';
  s+='<circle cx="'+AX+'" cy="'+YSRC+'" r="22" fill="url(#lg)"/><circle cx="'+AX+'" cy="'+YSRC+'" r="11" fill="#F4D35E" stroke="#B88A00"/>';
- s+=lens(YCON,cc,40);
+ s+=nc?'<rect x="'+(AX-40)+'" y="'+(YCON-8)+'" width="80" height="16" rx="3" fill="none" stroke="#9DACB9" stroke-dasharray="4 3"/>':lens(YCON,cc,40);
  // stage and slide
  s+='<rect x="'+(AX-70)+'" y="'+(YO+1)+'" width="140" height="5" fill="#DDE4EA" stroke="#9DACB9" stroke-width="0.8"/>';
  s+=arrow(AX,YO,H,'#16222E');
@@ -80,22 +80,22 @@ function upd(){
  s+=lbl(YE-10,L.lab.eye)+lbl(YOC,L.lab.oc)+(!S[2]?lbl(YOC+F2,L.lab.foc,'#534AB7'):'');
  if(di>0&&YI>YOC-30&&YI<YOB-10&&Math.abs(YI-YOC-F2)>14)s+=lbl(YI,L.lab.im,'#D85A30');
  if(di<0)s+=lbl(YI+12,L.lab.imv,'#D85A30');
- s+=lbl(YOB,L.lab.ob)+lbl(YO+3,L.lab.sl)+lbl(YCON,L.lab.con)+lbl(YSRC,L.lab.src);
+ s+=lbl(YOB,L.lab.ob)+lbl(YO+3,L.lab.sl)+lbl(YCON,L.lab.con+(nc?' '+L.lab.abs:''))+lbl(YSRC,L.lab.src);
  s+=T(20,632,L.lab.ns,'ts','#8696A4');
  // the view in the eyepiece
- var ok=!S[1]&&!S[2]&&err===0,br=cc?1:0.35,bg=cc?'#FFF6D6':'#6E6A5C';
+ var ok=!S[1]&&!S[2]&&err===0,br=cc?1:0.35,bg=cc?'#FFF6D6':nc?'#C9C1A0':'#6E6A5C';
  s+=T(525,52,L.view,'th',null,'middle');
  s+='<circle cx="525" cy="200" r="120" fill="#1E2630"/><g clip-path="url(#cv)"><rect x="405" y="80" width="240" height="240" fill="'+bg+'"/>';
  var fs=Math.max(5,Math.min(230,6*Math.abs(M))),rot=M<0?' transform="rotate(180 525 200)"':'';
- s+='<g filter="url(#bf)"><g'+rot+'><text x="525" y="'+(200+fs*0.27)+'" text-anchor="middle" style="font:'+fs+'px Georgia,serif" fill="#3B2A6B" opacity="'+(cc?0.95:0.55)+'">e</text></g></g></g>';
+ s+='<g filter="url(#bf)"><g'+rot+'><text x="525" y="'+(200+fs*0.27)+'" text-anchor="middle" style="font:'+fs+'px Georgia,serif" fill="#3B2A6B" opacity="'+(cc?0.95:nc?0.8:0.55)+'">e</text></g></g></g>';
  s+='<circle cx="525" cy="200" r="120" fill="none" stroke="#16222E" stroke-width="4"/>';
- var ln=[S[1]||S[2]?L.st.nof:L.st.mag.replace('{M}',nf(Math.abs(M),Math.abs(M)<2?1:0)),M<0?L.st.inv:L.st.up,err===0?L.st.sharp:L.st.blur,cc?L.st.bright:L.st.dim];
+ var ln=[S[1]||S[2]?L.st.nof:L.st.mag.replace('{M}',nf(Math.abs(M),Math.abs(M)<2?1:0)),M<0?L.st.inv:L.st.up,err===0?L.st.sharp:L.st.blur,cc?L.st.bright:nc?L.st.mid:L.st.dim];
  s+=T(525,350,ln[0],'th',null,'middle')+T(525,370,ln.slice(1).join(' · '),'ts',ok&&cc?'#3B6D11':null,'middle');
  document.getElementById('g').innerHTML=s;
  document.getElementById('gb').setAttribute('stdDeviation',blur.toFixed(2));
  var x;
- if(S[1])x=L.ex.ob;else if(S[2])x=L.ex.oc;else if(err>0)x=Vout>0?L.ex.near:L.ex.far;else x=cc?L.ex.ok.replace('{M}',nf(Math.abs(M),0)):L.ex.okdim;
- if(cc===false&&!(err===0&&!S[1]&&!S[2]))x+=L.ex.con;
+ if(S[1])x=L.ex.ob;else if(S[2])x=L.ex.oc;else if(err>0)x=Vout>0?L.ex.near:L.ex.far;else x=cc?L.ex.ok.replace('{M}',nf(Math.abs(M),0)):nc?L.ex.nocon:L.ex.okdim;
+ if(!cc&&!(err===0&&!S[1]&&!S[2]))x+=nc?L.ex.nocon2:L.ex.con;
  document.getElementById('ex').textContent=x;
  var G=document.getElementById('gs'),win=ok&&cc;G.textContent=L.badge[win?0:1];G.className='gs '+(win?'ok':'no');}
 upd();
