@@ -176,6 +176,12 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 .lang li a:hover,.lang li a:focus-visible{background:var(--card,rgba(127,127,127,.12))}
 .lang li a[aria-current]{color:var(--link); font-weight:600}
 .lang li a[aria-current]::after{content:" ✓"}
+.tright{display:flex; align-items:center; gap:.5rem}
+.sup ul{min-width:15rem}
+.sup li a{white-space:nowrap}
+.sup li a{display:flex; align-items:center; gap:.5rem}
+.sup li a[aria-current]::after{content:none}
+@media (max-width:480px){.sup .sl{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}}
 </style>
 </head>
 <body>
@@ -183,6 +189,15 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 
 <div class="topbar">
   <a href="/">Jonathan Salerno</a>
+  <div class="tright">
+  <details class="lang sup">
+    <summary aria-label="Contatti e sostegno"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg> <span class="sl">Contatti</span></summary>
+    <ul>
+      <li><a href="mailto:info@eraofprevention.com?subject=Luce%2C%20occhio%20e%20lenti"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> Segnalami un errore o un'idea</a></li>
+      <li><a href="https://buy.stripe.com/14AdR98Y565f7WYgqc3Nm00" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg> Sostieni Diario Salute</a></li>
+      <li><a href="#contatti">↓ Leggi il riquadro in fondo</a></li>
+    </ul>
+  </details>
   <details class="lang">
     <summary aria-label="Lingua / Language"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg> Italiano</summary>
     <ul>
@@ -190,6 +205,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
       <li><a href="/teaching/lens-physics/" lang="en" hreflang="en">English</a></li>
     </ul>
   </details>
+  </div>
 </div>
 
 <header>
@@ -828,7 +844,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
 </section>
 
 
-<aside class="fb" aria-label="Segnalazioni e contributi">
+<aside class="fb" id="contatti" aria-label="Segnalazioni e contributi">
   <p><b>Ti sono piaciuti questi contenuti?</b> Segnalami errori, spunti di riflessione e idee a
   <a href="mailto:info@eraofprevention.com?subject=Luce%2C%20occhio%20e%20lenti">info@eraofprevention.com</a>.
   Come dice <a href="https://derangedphysiology.com/main/contact"><i>Deranged Physiology</i></a>, «The value of this
