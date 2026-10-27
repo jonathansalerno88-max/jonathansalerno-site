@@ -28,6 +28,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 </head>
 <body>
 <h2 class="sr-only">A bike on the road seen from above. You set the lumens and the beam width of a light, and the conditions: speed, dry or wet road, lit or dark street. The drawing and the formulas show candelas, lux at the stopping distance and lit width.</h2>
+<div class="goalbox" role="note"><span class="gi" aria-hidden="true">🎯</span><div class="gt"><b>Goal</b> · a light that lets you see the pothole at stopping distance <i>and</i> covers the whole lane, for as little money as possible.</div><span class="gs na" id="gs" aria-live="polite"></span></div>
 <p class="q">Try changing the lumens, then the beam width (that is, the candelas). What happens out there, at the stopping distance? Which matters more?</p>
 <div class="tog"><span>Lights from the thread</span><span id="pB"></span></div>
 <label class="best"><input type="checkbox" id="best" onchange="upd()"> Best compromise: the cheapest light that sees far and wide<span id="bmx"></span></label>
@@ -74,7 +75,7 @@ function upd(keep){
  document.getElementById('f3').innerHTML=fmt(L.f3,{F:nf(F),O:nf(O,O<0.1?3:2),I:nf(r50(I))});
  document.getElementById('f4').innerHTML=fmt(L.f4,{D:nf(D,1),I:nf(r50(I)),E:nf(E,E<10?1:0),T:Tg});
  document.getElementById('f5').innerHTML=fmt(L.f5,{D:nf(D,1),H:nf(al/2,al%2?1:0),W:nf(W,1)});
- [['k1',far],['k2',wide]].forEach(function(k){var e=document.getElementById(k[0]);e.textContent=k[1]?L.yes:L.no;e.style.background=k[1]?'#EAF3DE':'#FCEBEB';e.style.color=k[1]?'#27500A':'#A32D2D'});
+ window._g=[far,wide];[['k1',far],['k2',wide]].forEach(function(k){var e=document.getElementById(k[0]);e.textContent=k[1]?L.yes:L.no;e.style.background=k[1]?'#EAF3DE':'#FCEBEB';e.style.color=k[1]?'#27500A':'#A32D2D'});
  var r=document.getElementById('res'),msg=far&&wide?L.both:far?L.onlyfar:wide?L.onlywide:L.none;r.textContent=msg;
  r.style.background=far&&wide?'#EAF3DE':'#FCEEDD';r.style.color=far&&wide?'#27500A':'#8A4A0B';
  // top view: bike at bottom (y=280), road up; distance scale
@@ -100,6 +101,12 @@ function upd(keep){
  s+=T(8,16,L.wx,'#9AA3AD');
  document.getElementById('g').innerHTML=s;}
 upd();
+</script>
+<script>function GOAL(){var g=window._g;if(!g)return null;return g[0]&&g[1]?['reached ✓',1]:['missing: '+(!g[0]&&!g[1]?'pothole and lane':!g[0]?'the pothole':'the lane')+' ✗',0]}</script>
+<script>
+(function(){var G=document.getElementById('gs');if(!G||typeof GOAL!=='function')return;
+ function f(){try{var r=GOAL();if(!r){G.className='gs na';return;}G.textContent=r[0];G.className='gs '+(r[1]?'ok':'no');}catch(e){}}
+ var u=window.upd;if(typeof u==='function')window.upd=function(){var x=u.apply(this,arguments);f();return x;};f();})();
 </script>
 </body>
 </html>

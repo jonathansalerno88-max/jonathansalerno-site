@@ -28,6 +28,7 @@ h3:first-of-type{margin-top:2px}
 </head>
 <body>
 <h2 class="sr-only">Calcolatore in tre passi: spazio di arresto dalla velocità e dalla strada, lux che servono in base all'illuminazione, e verifica di una luce StVZO o ANSI FL1 con un cursore.</h2>
+<div class="goalbox" role="note"><span class="gi" aria-hidden="true">🎯</span><div class="gt"><b>Obiettivo</b> · dalla scheda tecnica di una luce, capire se ti fa vedere una buca allo spazio di arresto.</div><span class="gs na" id="gs" aria-live="polite"></span></div>
 <h3>1 · Spazio di arresto</h3>
 <div class="tog"><span>Unità</span><span id="uB"></span></div>
 <div class="ctl"><span>Velocità</span><input type="range" id="v" min="10" max="45" step="1" value="30" oninput="upd()"><output id="vO"></output></div>
@@ -68,7 +69,7 @@ function upd(){
  document.getElementById('kO').textContent=K+' lx';document.getElementById('pO').textContent=P+' m';
  if(std===0){I=K*100;document.getElementById('f3').innerHTML=fmt(L.f3s,{K:K,I:nf(I)});}
  else{I=(P/2)*(P/2);document.getElementById('f3').innerHTML=fmt(L.f3a,{P:P,I:nf(r50(I))});}
- var Ed=I/(D*D),ok=Ed>=E;
+ var Ed=I/(D*D),ok=Ed>=E;window._g=[ok];
  document.getElementById('f4').innerHTML=fmt(L.f4,{D:nf(D,1),I:nf(r50(I)),D2:nf(D*D,0),E:nf(Ed,Ed<10?1:0)});
  var need=std===0?fmt(L.needS,{K:Math.ceil(Imin/100)}):fmt(L.needA,{P:Math.ceil(2*Math.sqrt(Imin))});
  var r=document.getElementById('res');r.textContent=fmt(ok?L.ok:L.no,{D:nf(D,1),E:nf(Ed,Ed<10?1:0),T:E,M:need});
@@ -87,6 +88,12 @@ function upd(){
  s+='<text x="'+(ox)+'" y="64" text-anchor="middle" class="th" fill="'+(ok?'#B8E08F':'#F5A86A')+'">'+nf(Ed,Ed<10?1:0)+' lx</text>';
  document.getElementById('g').innerHTML=s;}
 initU();upd();
+</script>
+<script>function GOAL(){return window._g?(window._g[0]?['la luce basta ✓',1]:['la luce non basta ✗',0]):null}</script>
+<script>
+(function(){var G=document.getElementById('gs');if(!G||typeof GOAL!=='function')return;
+ function f(){try{var r=GOAL();if(!r){G.className='gs na';return;}G.textContent=r[0];G.className='gs '+(r[1]?'ok':'no');}catch(e){}}
+ var u=window.upd;if(typeof u==='function')window.upd=function(){var x=u.apply(this,arguments);f();return x;};f();})();
 </script>
 </body>
 </html>

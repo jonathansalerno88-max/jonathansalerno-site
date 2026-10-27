@@ -29,6 +29,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 </head>
 <body>
 <h2 class="sr-only">Projector and TV side by side in the same room at the same diagonal. For any room light you see the contrast of both and how many lumens the projector would need to match the TV's contrast or the goal.</h2>
+<div class="goalbox" role="note"><span class="gi" aria-hidden="true">🎯</span><div class="gt"><b>Goal</b> · reach the target contrast (80:1 for a film, 15:1 for slides) with the light in the room. Who gets there, the projector or the TV?</div><span class="gs na" id="gs" aria-live="polite"></span></div>
 <div class="tog"><span>Goal</span><span id="oB"></span></div>
 <div class="tog"><span>Projectors from the thread</span><span id="pB"></span></div>
 <label class="best"><input type="checkbox" id="best" onchange="upd()"> Fewest lumens for the goal</label>
@@ -94,7 +95,7 @@ function upd(keep){
  document.getElementById('s1').innerHTML=scene(E,Tw,Tb,true,dt);
  document.getElementById('f1').innerHTML=fmt(L.ft,{Lt:t.L,R:nf(t.R,3),E:sig(E),W:sig(Tw),Lb0:sig(t.L/t.C),B:sig(Tb),C:sig(Ct)});
  document.getElementById('k1').textContent=fmt(L.cost,{P:nf(Math.round(t.p*Math.pow(dt/55,2.5)/50)*50)})+(d>t.max?fmt(L.tmax,{M:t.max}):'');
- ['c0','c1'].forEach(function(id,i){var ok=(i?Ct:Cp)>=Tg,c=document.getElementById(id);c.classList.toggle('okc',ok);c.classList.toggle('noc',!ok);
+ window._g=[Cp>=Tg,Ct>=Tg,Tg];['c0','c1'].forEach(function(id,i){var ok=(i?Ct:Cp)>=Tg,c=document.getElementById(id);c.classList.toggle('okc',ok);c.classList.toggle('noc',!ok);
   document.getElementById('h'+i).textContent=(ok?L.ok+' ':L.no+' ')+document.getElementById('h'+i).textContent;});
  // comparison
  var Fs=lumFor(Math.min(Ct,999),E,d),s='';
@@ -106,6 +107,12 @@ function loop(ts){if(!run)return;if(t0===null)t0=ts-ph*10000;ph=((ts-t0)/10000)%
 function stopP(){run=false;t0=null;}
 function tog(){run=!run;t0=null;if(run)requestAnimationFrame(loop);upd(true)}
 setP(0);
+</script>
+<script>function GOAL(){var g=window._g;if(!g)return null;return [g[2]+':1 → projector '+(g[0]?'✓':'✗')+' · TV '+(g[1]?'✓':'✗'),g[0]&&g[1]?1:0]}</script>
+<script>
+(function(){var G=document.getElementById('gs');if(!G||typeof GOAL!=='function')return;
+ function f(){try{var r=GOAL();if(!r){G.className='gs na';return;}G.textContent=r[0];G.className='gs '+(r[1]?'ok':'no');}catch(e){}}
+ var u=window.upd;if(typeof u==='function')window.upd=function(){var x=u.apply(this,arguments);f();return x;};f();})();
 </script>
 </body>
 </html>

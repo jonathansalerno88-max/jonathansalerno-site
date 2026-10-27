@@ -21,6 +21,7 @@
 </head>
 <body>
 <h2 class="sr-only">Gioco: scegli proiettore o TV e regola lumen, diagonale, tela o tecnologia dello schermo per completare una missione di sera o di pomeriggio. Cinque faccine giudicano contrasto, luminosità, grandezza, prezzo e disponibilità.</h2>
+<div class="goalbox" role="note"><span class="gi" aria-hidden="true">🎯</span><div class="gt"><b>Obiettivo</b> · scegli la missione, poi trova lo schermo che fa diventare verdi le faccine, spendendo il meno possibile.</div><span class="gs na" id="gs" aria-live="polite"></span></div>
 <div class="tog"><span>Missione</span><span id="mB"></span></div>
 <div class="tog"><span>Apparecchio</span><span id="dB"></span></div>
 <div id="pC">
@@ -84,7 +85,7 @@ function upd(){
  if(dev===0)s+='<path d="M170 282 L'+sx+' '+(sy+sh)+' L'+(sx+sw)+' '+(sy+sh)+'Z" fill="#FFF3C4" opacity="'+(day?0.05:0.22)+'"/><rect x="150" y="278" width="40" height="15" rx="4" fill="#3A3A38"/><circle cx="170" cy="278" r="4" fill="#FFE9A8"/>';
  // board
  var bx=420,b=T(bx,22,L.board,'th');
- var rows=[[sC,L.rows[0],sig(C)+':1'],[sL,L.rows[1],sig(Lw)+' / '+sig(need)+' nit'],[sS,L.rows[2],dg+'″ / '+NEEDD[mis]+'″'],[sB,L.rows[3],sig(Lb)+' nit'],[sM,L.rows[4],nf(per,per<10?1:0)+' ms'],[sI,L.rows[5],L.bi[bi]],[sP,L.rows[6],'≈ '+nf(Math.round(price/50)*50)+' '+L.cur],[sN,L.rows[7],nw?L.yes:L.no]];
+ var rows=window._rows=[[sC,L.rows[0],sig(C)+':1'],[sL,L.rows[1],sig(Lw)+' / '+sig(need)+' nit'],[sS,L.rows[2],dg+'″ / '+NEEDD[mis]+'″'],[sB,L.rows[3],sig(Lb)+' nit'],[sM,L.rows[4],nf(per,per<10?1:0)+' ms'],[sI,L.rows[5],L.bi[bi]],[sP,L.rows[6],'≈ '+nf(Math.round(price/50)*50)+' '+L.cur],[sN,L.rows[7],nw?L.yes:L.no]];
  rows.forEach(function(r,i){var y=50+i*40;b+=face(bx+16,y,r[0])+T(bx+40,y-3,r[1],'th')+T(bx+40,y+14,r[2],'ts');});
  b+='<rect x="'+bx+'" y="370" width="256" height="80" rx="8" fill="'+(win?'#EAF3DE':'#F1EFE8')+'" stroke="'+(win?'#3B6D11':'#B4B2A9')+'"/>';
  if(win)b+=T(bx+12,398,L.win,'th','#27500A')+T(bx+12,420,L.win2,'ts','#3B6D11');
@@ -109,6 +110,12 @@ upd();
 var rmq=matchMedia('(prefers-reduced-motion: reduce)').matches,t0=null;
 function mvLoop(ts){if(t0===null)t0=ts;var m=document.getElementById('mv');if(m){var x=rmq?200:16+((ts-t0)/2500%1)*368;m.setAttribute('transform','translate('+x.toFixed(1)+' 479)');}if(!rmq)requestAnimationFrame(mvLoop);}
 requestAnimationFrame(mvLoop);
+</script>
+<script>function GOAL(){var r=window._rows;if(!r)return null;var n=r.filter(function(x){return x[0]===2}).length;return [n+' faccine verdi su '+r.length,n===r.length?1:0]}</script>
+<script>
+(function(){var G=document.getElementById('gs');if(!G||typeof GOAL!=='function')return;
+ function f(){try{var r=GOAL();if(!r){G.className='gs na';return;}G.textContent=r[0];G.className='gs '+(r[1]?'ok':'no');}catch(e){}}
+ var u=window.upd;if(typeof u==='function')window.upd=function(){var x=u.apply(this,arguments);f();return x;};f();})();
 </script>
 </body>
 </html>

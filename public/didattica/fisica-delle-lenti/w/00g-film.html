@@ -34,7 +34,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 </head>
 <body>
 <h2 class="sr-only">Lo stesso film a 24 fotogrammi al secondo su una TV a 120 Hz, a sinistra senza interpolazione e a destra con l'interpolazione. Per ognuno: scia, scatti, ritardo, aloni e una griglia con i 120 refresh di un secondo. Sotto, un fotogramma del film al rallentatore.</h2>
-<p class="goal">Un film, girato a 24 fps come quasi tutto il cinema, su una TV a 120 Hz. Qui il ritardo non conta: nessuno preme tasti.</p>
+<div class="goalbox" role="note"><span class="gi" aria-hidden="true">🎯</span><div class="gt"><b>Obiettivo</b> · vedere perché l'interpolazione, che nello sparatutto perde, nei film funziona: un film a 24 fps su una TV a 120 Hz, senza e con interpolazione. Qui il ritardo non conta, nessuno preme tasti.</div><span class="gs na" id="gs" aria-live="polite"></span></div>
 <div class="row">
 <div class="cell noc" id="c0"><p class="cap" id="h0"></p><div class="fix" id="k0"></div><svg viewBox="0 0 320 112" aria-hidden="true"><g id="s0"></g></svg><svg id="gd0" aria-hidden="true"></svg><div class="lg" id="lg0"></div><p class="gnote" id="n0"></p><table class="ck" id="t0"></table><div class="f" id="f0"></div></div>
 <div class="cell okc" id="c1"><p class="cap" id="h1"></p><div class="fix" id="k1"></div><svg viewBox="0 0 320 112" aria-hidden="true"><g id="s1"></g></svg><svg id="gd1" aria-hidden="true"></svg><div class="lg" id="lg1"></div><p class="gnote" id="n1"></p><table class="ck" id="t1"></table><div class="f" id="f1"></div></div>
@@ -92,6 +92,12 @@ function loop(ts){if(t0===null)t0=ts;var t=(ts-t0)/1000;
   document.getElementById('mv'+i).setAttribute('transform','translate('+x+' 0)')});
  if(!rm)requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
+</script>
+<script>function GOAL(){return null}</script>
+<script>
+(function(){var G=document.getElementById('gs');if(!G||typeof GOAL!=='function')return;
+ function f(){try{var r=GOAL();if(!r){G.className='gs na';return;}G.textContent=r[0];G.className='gs '+(r[1]?'ok':'no');}catch(e){}}
+ var u=window.upd;if(typeof u==='function')window.upd=function(){var x=u.apply(this,arguments);f();return x;};f();})();
 </script>
 </body>
 </html>

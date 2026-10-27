@@ -40,7 +40,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 </head>
 <body>
 <h2 class="sr-only">Online shooter on a gaming TV. On the left strategy A: the game at 60 fps, the TV at 120 Hz, low-latency interpolation and HDR. On the right the best compromise: 120 fps, 120 Hz and black frame insertion. Four checks say who passes: blur, lag, flicker, clean image.</h2>
-<p class="goal">Online shooter: what counts is the <b>blur</b> (at most 8 px) and the <b>lag</b> between button and screen (at most 20 ms).</p>
+<div class="goalbox" role="note"><span class="gi" aria-hidden="true">🎯</span><div class="gt"><b>Goal</b> · in an online shooter, <b>blur</b> at most 8 px and <b>lag</b> between button and screen at most 20 ms. Which recipe gets there?</div><span class="gs na" id="gs" aria-live="polite"></span></div>
 <div class="row">
 <div class="cell" id="c0"><p class="cap" id="h0"></p><div class="fix" id="k0"></div><svg viewBox="0 0 320 112" aria-hidden="true"><g id="s0"></g></svg><svg id="gd0" aria-hidden="true"></svg><div class="lg" id="lg0"></div><p class="gnote" id="g30"></p><table class="ck" id="t0"></table><div class="f" id="f0"></div></div>
 <div class="cell" id="c1"><p class="cap" id="h1"></p><div class="fix" id="k1"></div><svg viewBox="0 0 320 112" aria-hidden="true"><g id="s1"></g></svg><svg id="gd1" aria-hidden="true"></svg><div class="lg" id="lg1"></div><p class="gnote" id="g31"></p><div class="why"><svg id="wy" viewBox="0 0 320 92" aria-hidden="true"></svg><p class="gnote" id="wp"></p></div><table class="ck" id="t1"></table><div class="f" id="f1"></div></div>
@@ -143,7 +143,7 @@ function upd(){
  var lab=function(c){return fmt(L.set,{F:c.fps,H:c.hz,I:L.ips[c.ip].toLowerCase(),B:L.yn[c.bfi].toLowerCase(),D:L.yn[c.hdr].toLowerCase()})};
  document.getElementById('k0').textContent=lab(S);
  document.getElementById('k1').textContent=lab(B);
- panel(0,S,o);panel(1,B,ob);grid(0,S,o);grid(1,B,ob);why();
+ window._g=[o.pass,ob.pass];panel(0,S,o);panel(1,B,ob);grid(0,S,o);grid(1,B,ob);why();
  var s,sameC=S.fps===B.fps&&S.hz===B.hz&&o.ip===B.ip&&S.bfi===B.bfi&&S.hdr===B.hdr;
  if(sameC||(o.pass&&Math.abs(o.tb-ob.tb)<1e-9))s=L.same;
  else if(o.pass)s=fmt(L.alsook,{S:nf(o.S,0),R:nf(o.lag,0),S2:nf(ob.S,0),R2:nf(ob.lag,0)});
@@ -156,6 +156,12 @@ function loop(ts){if(t0===null)t0=ts;var t=(ts-t0)/1000;
   g.setAttribute('transform','translate('+x+' 0)')});
  if(!rm)requestAnimationFrame(loop)}
 upd();requestAnimationFrame(loop);
+</script>
+<script>function GOAL(){var g=window._g;if(!g)return null;return ['strategy A '+(g[0]?'✓':'✗')+' · best compromise '+(g[1]?'✓':'✗'),g[1]?1:0]}</script>
+<script>
+(function(){var G=document.getElementById('gs');if(!G||typeof GOAL!=='function')return;
+ function f(){try{var r=GOAL();if(!r){G.className='gs na';return;}G.textContent=r[0];G.className='gs '+(r[1]?'ok':'no');}catch(e){}}
+ var u=window.upd;if(typeof u==='function')window.upd=function(){var x=u.apply(this,arguments);f();return x;};f();})();
 </script>
 </body>
 </html>
