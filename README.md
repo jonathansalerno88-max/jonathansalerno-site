@@ -1,9 +1,12 @@
 # jonathansalerno.org
 
-Source of my personal site. Static HTML, no build step.
+Source of my personal site. Static HTML, no build step; one small Worker
+script for the contact form.
 
 ```
 wrangler.jsonc         Cloudflare config — serves public/ as the site
+src/worker.js          the only server code: POST /api/contact sends the
+                       contact form by email (Cloudflare Email Routing)
 public/index.html      the site itself
 public/calculators/    clinical thresholds — BMI, pack-years, alcohol, activity
 public/catalytic-plane/  interactive reader for Salerno 2026 (DMPK)

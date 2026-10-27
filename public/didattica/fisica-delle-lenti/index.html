@@ -185,6 +185,27 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 .sup li a svg{flex:none}
 .sup li a[aria-current]::after{content:none}
 @media (max-width:480px){.sup .sl{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}}
+
+/* Contact form (dialog opened from the Contact menu) */
+dialog.cf{width:min(32rem,calc(100vw - 2rem)); border:1px solid var(--rule); border-radius:12px; padding:1.1rem 1.2rem 1rem;
+  background:var(--paper); color:var(--ink); box-shadow:0 12px 40px rgba(0,0,0,.25)}
+dialog.cf::backdrop{background:rgba(14,21,27,.45)}
+dialog.cf h2{margin:0 0 .2rem; padding:0; border:0; font-size:1.15rem; color:var(--ink); text-transform:none; letter-spacing:0; font-family:var(--sans)}
+dialog.cf p.cf-sub{margin:0 0 .8rem; color:var(--mut); font-size:.875rem}
+dialog.cf label{display:block; font-size:.875rem; font-weight:600; margin:.6rem 0 .25rem}
+dialog.cf label span{font-weight:400; color:var(--faint)}
+dialog.cf input,dialog.cf textarea{width:100%; box-sizing:border-box; font:inherit; font-size:.9375rem; color:var(--ink); background:var(--card);
+  border:1px solid var(--rule); border-radius:8px; padding:.5rem .6rem}
+dialog.cf textarea{min-height:8rem; resize:vertical}
+dialog.cf input:focus-visible,dialog.cf textarea:focus-visible{outline:2px solid var(--link); outline-offset:1px}
+dialog.cf .cf-hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+dialog.cf .cf-priv{font-size:.8125rem; color:var(--mut); margin:.7rem 0 0}
+dialog.cf .cf-row{display:flex; gap:.6rem; justify-content:flex-end; align-items:center; margin-top:.9rem; flex-wrap:wrap}
+dialog.cf button{font:inherit; font-size:.9375rem; border-radius:8px; padding:.45rem .9rem; cursor:pointer; border:1px solid var(--rule); background:var(--card); color:var(--ink)}
+dialog.cf button.cf-send{background:var(--link); border-color:var(--link); color:#fff; font-weight:600}
+dialog.cf button:disabled{opacity:.6; cursor:default}
+dialog.cf .cf-msg{margin:.7rem 0 0; font-size:.9rem}
+dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
 </style>
 </head>
 <body>
@@ -197,7 +218,7 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
     <summary aria-label="Contatti e sostegno"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg> <span class="sl">Contatti</span></summary>
     <ul>
       <li><a href="/bio/"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg> Chi sono</a></li>
-      <li><a href="mailto:info@eraofprevention.com?subject=Luce%2C%20occhio%20e%20lenti"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> Segnala errori o mandami le tue idee</a></li>
+      <li><a data-contact href="mailto:info@eraofprevention.com?subject=Luce%2C%20occhio%20e%20lenti"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> Segnala errori o mandami le tue idee</a></li>
       <li><a href="https://buy.stripe.com/7sYfZh0rzgJTb9a7TG3Nm01" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg> Sostieni la cultura senza pubblicità né tracciamento</a></li>
     </ul>
   </details>
@@ -976,5 +997,39 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   if(location.hash) addEventListener('load',function(){pin(decodeURIComponent(location.hash.slice(1)))});
 })();
 </script>
+<dialog class="cf" id="cf" aria-labelledby="cf-t">
+<form id="cf-f" novalidate>
+  <h2 id="cf-t">Segnala errori o mandami le tue idee</h2>
+  <p class="cf-sub">Ti rispondo all’indirizzo che scrivi qui sotto.</p>
+  <label for="cf-n">Nome <span>(facoltativo)</span></label><input id="cf-n" name="name" maxlength="100" autocomplete="name">
+  <label for="cf-e">La tua email</label><input id="cf-e" name="email" type="email" maxlength="200" autocomplete="email" required>
+  <label for="cf-m">Messaggio</label><textarea id="cf-m" name="message" maxlength="5000" required></textarea>
+  <div class="cf-hp" aria-hidden="true"><label for="cf-w">Website</label><input id="cf-w" name="website" tabindex="-1" autocomplete="off"></div>
+  <p class="cf-priv">Uso nome ed email solo per risponderti: il messaggio arriva nella mia casella e non viene salvato da nessun’altra parte.</p>
+  <p class="cf-msg" id="cf-s" role="status" aria-live="polite"></p>
+  <div class="cf-row"><button type="button" id="cf-x">Annulla</button><button type="submit" class="cf-send" id="cf-b">Invia</button></div>
+</form>
+</dialog>
+<script>(function(){
+var T={"cancel": "Annulla", "send": "Invia", "sending": "Invio…", "ok": "Grazie! Il messaggio è arrivato. Ti rispondo appena posso.", "err": "Non sono riuscito a inviarlo. Riprova, oppure scrivimi a", "errmail": "Controlla l’indirizzo email.", "errmsg": "Scrivi un messaggio un po’ più lungo.", "close": "Chiudi"},d=document.getElementById('cf'),f=document.getElementById('cf-f'),s=document.getElementById('cf-s'),b=document.getElementById('cf-b'),x=document.getElementById('cf-x'),t0=0;
+if(!d||typeof d.showModal!=='function')return; // old browsers keep the plain mailto link
+document.querySelectorAll('a[data-contact]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();
+ var m=a.closest('details');if(m)m.removeAttribute('open');
+ if(d.dataset.done){f.reset();s.textContent='';s.className='cf-msg';b.hidden=false;b.disabled=false;x.textContent=T.cancel;delete d.dataset.done;}
+ t0=Date.now();d.showModal();document.getElementById('cf-e').focus();});});
+x.addEventListener('click',function(){d.close();});
+f.addEventListener('submit',function(e){e.preventDefault();
+ var em=f.email.value.trim(),ms=f.message.value.trim();
+ if(!/^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(em)){s.className='cf-msg no';s.textContent=T.errmail;f.email.focus();return;}
+ if(ms.length<5){s.className='cf-msg no';s.textContent=T.errmsg;f.message.focus();return;}
+ b.disabled=true;b.textContent=T.sending;s.className='cf-msg';s.textContent='';
+ fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:f.name.value,email:em,message:ms,website:f.website.value,elapsed:Date.now()-t0,page:location.pathname})})
+ .then(function(r){return r.json().catch(function(){return{ok:false}}).then(function(j){if(!r.ok||!j.ok)throw j;return j;})})
+ .then(function(){s.className='cf-msg ok';s.textContent=T.ok;b.hidden=true;x.textContent=T.close;d.dataset.done='1';})
+ .catch(function(j){s.className='cf-msg no';s.innerHTML='';
+   if(j&&j.error==='email'){s.textContent=T.errmail;}else if(j&&j.error==='message'){s.textContent=T.errmsg;}
+   else{s.appendChild(document.createTextNode(T.err+' '));var a=document.createElement('a');a.href='mailto:info@eraofprevention.com';a.textContent='info@eraofprevention.com';s.appendChild(a);s.appendChild(document.createTextNode('.'));}
+   b.disabled=false;b.textContent=T.send;});});
+})();</script>
 </body>
 </html>

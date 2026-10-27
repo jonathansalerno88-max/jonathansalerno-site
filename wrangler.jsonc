@@ -1,11 +1,22 @@
 {
-  // Static site for jonathansalerno.org. No entrypoint: the Worker serves
-  // the files under public/ and nothing else. The name must keep matching
-  // the existing Worker, or a deploy would create a second one and the
-  // custom domain would stay on the old.
+  // Site for jonathansalerno.org. The Worker serves the files under public/
+  // and handles a single endpoint, POST /api/contact (src/worker.js), which
+  // sends the contact form by email. Requests that match a file in public/
+  // are served directly and never reach the script. The name must keep
+  // matching the existing Worker, or a deploy would create a second one and
+  // the custom domain would stay on the old.
   "name": "wandering-morning-3bfe",
   "compatibility_date": "2026-10-09",
+  "main": "src/worker.js",
   "assets": {
-    "directory": "./public"
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  // Email Routing: the form can only write to this verified address.
+  "send_email": [
+    { "name": "EMAIL", "destination_address": "info@eraofprevention.com" }
+  ],
+  "vars": {
+    "CONTACT_TO": "info@eraofprevention.com"
   }
 }
