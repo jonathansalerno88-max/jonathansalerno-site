@@ -949,6 +949,15 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   It shows the inside, in projection. The <b>SEM</b> (Scanning Electron Microscope) instead does not form an image with
   lenses: a pencil of electrons scans the surface line by line, and a detector counts the secondary electrons leaving
   each point. It shows the surface, in relief.</p>
+  <p>In the SEM the gun stays still: what moves the beam are the <b>scan coils</b>, electromagnets wound around the
+  column. An electron crossing a magnetic field feels the Lorentz force, perpendicular to both its velocity and the
+  field: more current in the coils, stronger field, more deflection. One pair of coils moves the spot horizontally,
+  the other vertically, and their currents rise in a sawtooth, one fast (a line) and one slow (the whole image). It is
+  the same system as the cathode-ray TV in section 0: there the beam drew the image on the phosphor, here it reads it
+  from the sample. The lenses of TEM and SEM are electromagnets too, but instead of moving the beam they squeeze it, as
+  glass does with light.</p>
+  <p class="formula">F = q · v × B</p>
+  <div class="dim"><b>Checking the units</b><ul><li>q in C, v in m/s, B in T, with T = kg/(C·s): C × m/s × kg/(C·s) = kg·m/s² = N ✓.</li></ul></div>
   <div class="tscroll tw"><table>
     <thead><tr><th></th><th>Optical</th><th>Confocal</th><th>TEM</th><th>SEM</th></tr></thead>
     <tbody>
