@@ -84,6 +84,10 @@ function upd(){
  var dOn=d>=0.7,dW=dOn?3.6+1.6*Math.min(1,(d-0.7)/0.8):1.1,dO=dOn?0.95:0.4;
  // iris
  var q='<circle cx="'+CX+'" cy="'+CY+'" r="'+(RI+14)+'" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1"/>';
+  var cilC=g.c==='F'||(g.c!=='X'&&near);
+ q+='<circle cx="'+CX+'" cy="'+CY+'" r="'+(RI+7)+'" fill="none" stroke="'+(cilC?'#E8774F':'#F0997B')+'" stroke-width="10" opacity="'+(cilC?0.85:0.4)+'"/>';
+ var ca=-0.72,cxr=CX+(RI+7)*Math.cos(ca),cyr=CY+(RI+7)*Math.sin(ca);
+ q+='<line x1="'+cxr+'" y1="'+cyr+'" x2="'+(cxr+4)+'" y2="112" class="leader" style="stroke:#C4562B"/>'+T(296,92,'muscolo ciliare','th','#C4562B','end')+T(296,107,'(dietro l\'iride)','ts','#C4562B','end');
  q+='<circle cx="'+CX+'" cy="'+CY+'" r="'+RI+'" fill="#D9C4A3"/>';
  for(var k=0;k<36;k++){var a=k*Math.PI/18;q+='<line x1="'+(CX+rs*Math.cos(a))+'" y1="'+(CY+rs*Math.sin(a))+'" x2="'+(CX+(RI-3)*Math.cos(a))+'" y2="'+(CY+(RI-3)*Math.sin(a))+'" stroke="'+S+'" stroke-width="'+dW+'" opacity="'+dO+'"/>';}
  for(var r=rp+3;r<rs;r+=3.2)q+='<circle cx="'+CX+'" cy="'+CY+'" r="'+r+'" fill="none" stroke="'+P+'" stroke-width="'+sW+'" opacity="'+sO+'"/>';
@@ -110,7 +114,7 @@ function upd(){
   ys+=h+14;});
  // receptor boxes
  var ry=y+4;
- p+='<rect x="'+px+'" y="'+ry+'" width="'+w+'" height="58" rx="5" fill="#E6F1FB" stroke="'+P+'" stroke-width="1"/>'+T(px+8,ry+17,'acetilcolina → recettori M3','ts','#16222E')+T(px+8,ry+33,'sfintere + muscolo ciliare','ts',P);
+ p+='<rect x="'+px+'" y="'+ry+'" width="'+w+'" height="58" rx="5" fill="#E6F1FB" stroke="'+P+'" stroke-width="1"/>'+T(px+8,ry+17,'acetilcolina → recettori M3','ts','#16222E')+T(px+8,ry+33,'<tspan fill="'+P+'" font-weight="600">sfintere</tspan> + <tspan fill="#C4562B" font-weight="600">muscolo ciliare</tspan>','ts',P);
  if(g.rec[0])p+=T(px+8,ry+50,g.rec[0],'th',g.rec[0].charAt(0)==='+'?'#3B6D11':'#5F5E5A');
  var rys=ys+4;
  p+='<rect x="'+sx+'" y="'+rys+'" width="'+w+'" height="58" rx="5" fill="#FCEBEB" stroke="'+S+'" stroke-width="1"/>'+T(sx+8,rys+17,'noradrenalina → recettori α1','ts','#16222E')+T(sx+8,rys+33,'dilatatore','ts',S);
@@ -118,7 +122,7 @@ function upd(){
  // links to the iris
  var yl=Math.max(ry,rys)+58;
  p+='<path d="M'+(px+30)+' '+(ry+58)+' L'+(px+30)+' '+(yl+20)+' L'+(CX+rs+4)+' '+(yl+20)+' L'+(CX+rs*0.75)+' '+(CY+rs*0.75)+'" fill="none" stroke="'+P+'" stroke-width="1.2" stroke-dasharray="4 3" opacity="'+(pOn?0.9:0.3)+'"/>';
- p+=T(258,yl+15,'≈ 3 %','ts',P);
+ p+=T(250,yl+15,'≈ 3 % → sfintere','ts',P);
  p+='<path d="M'+(sx+30)+' '+(rys+58)+' L'+(sx+30)+' '+(yl+36)+' L'+(CX+RI*0.6)+' '+(yl+36)+' L'+(CX+RI*0.62)+' '+(CY+RI*0.62)+'" fill="none" stroke="'+S+'" stroke-width="1.2" stroke-dasharray="4 3" opacity="'+(sOn?0.9:0.3)+'"/>';
  // ciliary muscle
  // ciliary muscle, side view
@@ -134,6 +138,8 @@ function upd(){
  function slide(dir){var to=(dir*sh)+' 0',fr=(dir*sh0)+' 0';return rmo?'':'<animateTransform class="sl" attributeName="transform" type="translate" from="'+fr+'" to="'+to+'" dur="0.8s" begin="indefinite" fill="freeze"/>';}
  [-1,1].forEach(function(sg){var cy=LY+sg*off,ey=LY+sg*lry,col=slack<0.2?'#444441':'#888780',w=slack<0.2?1.6:1.2,ry=10+Ac;
   p+='<line x1="'+(LX-lrx-6)+'" y1="'+(LY+sg*rpS)+'" x2="'+(LX-lrx-6)+'" y2="'+(cy-sg*4)+'" stroke="#854F0B" stroke-width="4"/>';
+  p+='<line x1="'+(LX-lrx-6)+'" y1="'+(LY+sg*rpS)+'" x2="'+(LX-lrx-6)+'" y2="'+(LY+sg*(rpS+13))+'" stroke="'+P+'" stroke-width="'+(sOn2?7:3.5)+'" opacity="'+(sOn2?1:0.55)+'"/>';
+  if(sg<0)p+=T(LX-lrx-14,LY-rpS-3,'sfintere','th',P,'end');
   [-7,7].forEach(function(dx){var x1=LX+dx,y1=cy-sg*(ry-1),x2=LX+dx*0.6,y2=ey,len=Math.hypot(x2-x1,y2-y1);
    p+=slack<0.2?'<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+col+'" stroke-width="'+w+'"/>':'<path d="'+wave(x1,y1,x2,y2,1.5+2*slack,Math.max(2,Math.round(len/7)))+'" fill="none" stroke="'+col+'" stroke-width="'+w+'"/>';});
   p+='<ellipse cx="'+LX+'" cy="'+cy+'" rx="27" ry="'+ry+'" fill="'+mfill+'" stroke="#993C1D" stroke-width="0.8" opacity="'+(g.c==='X'?0.45:1)+'"/>';
@@ -154,10 +160,10 @@ function upd(){
   p+=T(X-70+sh,Y+32,'linea Z','ts',null,'middle')+T(X,Y+30,'miosina','ts',mo,'middle')+T(X+60,Y-20,'actina','ts',ac);
   p+=T(20,Y+48,g.c==='X'?'nessun segnale: il sarcomero resta lungo':con?'contratto: l\'actina scorre sulla miosina, il sarcomero si accorcia':'rilassato: sarcomero lungo, la zonula tira il cristallino','ts',con?'#993C1D':null);
  })();
- p+=T(LX+32,LY+off+5,'muscolo ciliare','ts')+T(LX+26,LY-lry-8,'zonula '+(slack<0.2?'tesa':'lassa'),'ts')+T(LX+lrx+8,LY+4,'cristallino','ts')+T(LX-lrx-12,LY+off-14,'iride','ts',null,'end');
+ p+=T(LX+32,LY+off+5,'muscolo ciliare','th','#C4562B')+T(LX+26,LY-lry-8,'zonula '+(slack<0.2?'tesa':'lassa'),'ts')+T(LX+lrx+8,LY+4,'cristallino','ts')+T(LX-lrx-12,LY+off-14,'iride','ts',null,'end');
  var cyT=LY-off;
  p+='<path d="M'+(px+140)+' '+(ry+58)+' L'+(px+140)+' 520 L'+(LX+36)+' 520 L'+(LX+14)+' '+(cyT-6)+'" fill="none" stroke="'+P+'" stroke-width="4" opacity="'+(pOn&&g.c!=='X'?0.85:0.3)+'"/>';
- p+=T(px+146,512,'≈ 97 % delle fibre','ts',P);
+ p+=T(px+146,512,'≈ 97 % → <tspan fill="#C4562B" font-weight="600">muscolo ciliare</tspan>','ts',P);
  p+='<path d="M'+(sx+140)+' '+(rys+58)+' L'+(sx+140)+' 538 L'+(LX+50)+' 538 L'+(LX+16)+' '+(cyT+2)+'" fill="none" stroke="'+S+'" stroke-width="1" stroke-dasharray="3 3" opacity="'+(sOn?0.85:0.3)+'"/>';
  p+=T(420,556,'β2: rilassa poco','ts',S);
  var st=g.c==='F'?'contratto (forzato)':g.c==='X'?'paralizzato':Ac>1?'contratto':'quasi rilassato (tono di fondo)';
