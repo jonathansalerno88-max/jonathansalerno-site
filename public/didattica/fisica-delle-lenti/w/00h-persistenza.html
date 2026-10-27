@@ -45,13 +45,13 @@ function T(x,y,t,cl,col,anc){return '<text class="'+cl+'" x="'+x+'" y="'+y+'"'+(
 function face(cx,cy){return '<circle cx="'+cx+'" cy="'+cy+'" r="10" fill="#F4D35E"/><circle cx="'+(cx-3.6)+'" cy="'+(cy-2.5)+'" r="1.7" fill="#1E2630"/><circle cx="'+(cx+3.6)+'" cy="'+(cy-2.5)+'" r="1.7" fill="#1E2630"/><path d="M'+(cx-4.5)+' '+(cy+3)+' q4.5 4 9 0" fill="none" stroke="#1E2630" stroke-width="1.5" stroke-linecap="round"/>'}
 // black in a dark room: background grey (exaggerated), plus the glow of the CRT glass or the halo of the Mini-LED zones
 // black seen = native black (nit) + light reflected by the screen, R × E / π (lx → nit); greys exaggerated: level ∝ (L/150 nit)^(1/4)
-var KB={crt:{n:0.01,r:0.05,h:'glow'},pla:{n:0.01,r:0.03},oled:{n:0,r:0.01},qd:{n:0,r:0.03},lcd:{n:0.03,r:0.015},lcdi:{n:0.15,r:0.015},mini:{n:0.003,r:0.015,z:[0.6,0.25,0.1,0.04]},minii:{n:0.003,r:0.015,z:[3,1.2,0.5,0.2]}};
+var KB={crt:{n:0.01,r:0.05,h:'glow'},pla:{n:0.01,r:0.03},oled:{n:0,r:0.01},qd:{n:0,r:0.03},lcd:{n:0.03,r:0.015},lcdi:{n:0.15,r:0.015},mini:{n:0.001,r:0.015,z:[0.6,0.2,0.06]},minii:{n:0.001,r:0.015,z:[3,1,0.3]}};
 function gy(n){var v=Math.round(255*Math.pow(Math.min(1,Math.max(0,n)/150),0.25)),h=('0'+v.toString(16)).slice(-2);return '#'+h+h+h}
 function blk(y,k,id){var B=KB[k],BH=44,cx=BX+CW/2,cy=y+BH/2,rf=B.r*EL[st.r]/Math.PI,tot=B.n+rf,o='<rect x="'+BX+'" y="'+y+'" width="'+CW+'" height="'+BH+'" rx="3" fill="'+gy(tot)+'"/>';
  if(B.h==='glow')o+='<defs><radialGradient id="hg'+id+'"><stop offset="0.35" stop-color="#F4D35E" stop-opacity="0.4"/><stop offset="1" stop-color="#F4D35E" stop-opacity="0"/></radialGradient></defs><circle cx="'+cx+'" cy="'+cy+'" r="26" fill="url(#hg'+id+')"/>';
  // Mini-LED: the zones around the bright face stay lit, brighter near it; slight blur, the diffuser softens their edges
  if(B.z){o+='<defs><filter id="zf'+id+'" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="1.2"/></filter><clipPath id="zc'+id+'"><rect x="'+BX+'" y="'+y+'" width="'+CW+'" height="'+BH+'" rx="3"/></clipPath></defs><g clip-path="url(#zc'+id+')" filter="url(#zf'+id+')">';
-  for(var zi=-3;zi<=3;zi++)for(var zj=-2;zj<=2;zj++){var dd=Math.round(Math.max(Math.abs(zi),Math.abs(zj)*1.5));if(dd<4)o+='<rect x="'+(cx-4+zi*8)+'" y="'+(cy-4+zj*8)+'" width="8" height="8" fill="'+gy(B.z[dd]+rf)+'"/>';}
+  for(var zi=-2;zi<=2;zi++)for(var zj=-2;zj<=2;zj++){var dd=Math.max(Math.abs(zi),Math.abs(zj));o+='<rect x="'+(cx-3.5+zi*7)+'" y="'+(cy-3.5+zj*7)+'" width="7" height="7" fill="'+gy(B.z[dd]+rf)+'"/>';}
   o+='</g>';}
  var v=tot===0?'0 nit':'≈ '+(tot<0.005?'0':nf(tot,tot<1?2:1))+' nit',col=tot<0.02&&!B.z?'#3B6D11':tot<1?'#9A6A00':'#B23B1E';
  o+='<g transform="translate('+cx+' '+cy+') scale(0.7) translate('+(-cx)+' '+(-cy)+')">'+face(cx,cy)+'</g>'+T(BX,y+BH+12,v,'ts',col)+T(BX,y+BH+25,rf>0.8*tot&&rf>0?L.rf:L.bk[k][1],'ts');
