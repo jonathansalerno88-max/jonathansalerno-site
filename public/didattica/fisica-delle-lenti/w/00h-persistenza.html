@@ -12,18 +12,31 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 .note{font-size:12px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
 .goalbox{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;border:1.5px solid var(--border-accent);background:#EEF4FC;border-radius:10px;padding:8px 12px;margin:0 0 10px;font-size:14px;line-height:1.45}
 .goalbox .gt b{color:var(--text-accent)}
+.try{border:1.5px dashed var(--border-accent);border-radius:10px;padding:8px 10px 4px;margin:4px 0 0}
+.try h3{font-size:14px;margin:0 0 4px;color:var(--text-accent)}
+.tog{display:flex;flex-wrap:wrap;align-items:center;gap:5px;font-size:13px;color:var(--text-secondary);margin:4px 0}
+.tog>span:first-child{min-width:86px}
+.tog button{font:inherit;font-size:13px;padding:3px 9px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.tog button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+.tog button:disabled{opacity:.45;cursor:default}
+#ex{font-size:13px;line-height:1.5;margin:6px 0 4px;color:var(--text-primary)}
 </style>
 </head>
 <body>
-<h2 class="sr-only">Sei schermi a confronto in 50 millisecondi: CRT a 60 Hz, plasma a 60 Hz, OLED a 60 Hz, OLED a 120 Hz, OLED a 120 Hz con black frame insertion e monitor OLED a 720 Hz. Per ognuno, a sinistra quando l'immagine è accesa, al centro la scia che lascia sulla retina mentre l'occhio insegue un oggetto a 960 pixel al secondo, a destra come si vede l'oggetto in movimento.</h2>
+<h2 class="sr-only">Sei schermi a confronto in 50 millisecondi: CRT a 60 Hz, plasma a 60 Hz, OLED a 60 Hz, OLED a 120 Hz, OLED a 120 Hz con black frame insertion e monitor OLED a 720 Hz. Per ognuno, a sinistra quando l'immagine è accesa, al centro la scia che lascia sulla retina mentre l'occhio insegue un oggetto a 960 pixel al secondo, a destra come si vede l'oggetto in movimento. Sotto, una riga da provare: si scelgono tecnologia (CRT, plasma, OLED, QLED, Mini-LED), hertz e lampeggio.</h2>
 <div class="goalbox" role="note"><span aria-hidden="true" style="font-size:18px">🎯</span><div class="gt"><b>Obiettivo</b> · vedere perché conta quanto resta accesa ogni immagine, e non quanti hertz ha lo schermo. L'occhio insegue un oggetto a 960 px/s; ogni immagine accesa gli scivola sulla retina e lascia una scia.</div></div>
 <button id="pl" onclick="tog()"></button>
 <svg viewBox="0 0 680 468" aria-hidden="true"><g id="g"></g></svg>
-<p class="note">Persistenza P = quanto resta accesa ogni immagine. Scia sulla retina = velocità × P (pixel/s × s = pixel). Il rallentatore mostra 50 ms in 6 s, cioè 120 volte più lento. Le scie al centro sono ingrandite 8 volte; nell'ultima colonna l'oggetto è sfocato della scia vera, in pixel.</p>
+<div class="try"><h3>Prova tu</h3>
+<div class="tog" id="t1"></div><div class="tog" id="t2"></div><div class="tog" id="t3"></div>
+<svg viewBox="0 0 680 104" aria-hidden="true"><g id="g2"></g></svg>
+<p id="ex" aria-live="polite"></p></div>
+<p class="note">Persistenza P = quanto resta accesa ogni immagine. Scia sulla retina = velocità × P (pixel/s × s = pixel). Negli LCD (QLED e Mini-LED) la transizione dei pixel, qui ≈ 5 ms come valore indicativo per un pannello VA, aggiunge circa metà della sua durata. Il rallentatore mostra 50 ms in 6 s, cioè 120 volte più lento. Le scie al centro sono ingrandite 8 volte; nell'ultima colonna l'oggetto è sfocato della scia vera, in pixel.</p>
 <script>
-var L={"loc": "it-IT", "play": "▶ Al rallentatore", "stop": "❚❚ Ferma", "h1": ["Sullo schermo", "50 ms, refresh per refresh"], "h2": ["Sulla retina", "la scia, ingrandita ×8"], "h3": ["Come lo vedi", "a grandezza vera"], "still": "oggetto fermo, per confronto →", "rows": [["CRT · 60 Hz", "fosforo acceso ≈ 1,5 ms"], ["Plasma · 60 Hz", "lampi + fosforo ≈ 4 ms"], ["OLED o LED · 60 Hz", "acceso tutto il refresh"], ["OLED · 120 Hz", "acceso tutto il refresh"], ["OLED · 120 Hz + BFI", "metà refresh nera"], ["Monitor OLED · 720 Hz", "acceso tutto il refresh"]], "lg": ["immagine accesa: ogni tratto giallo dura P, la persistenza", "schermo spento"], "f": "960 px/s × {P} ms = {S} px", "t": "t = {T} ms"},run=false,t0=null,tc=null,rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var L={"loc": "it-IT", "play": "▶ Al rallentatore", "stop": "❚❚ Ferma", "h1": ["Sullo schermo", "50 ms, refresh per refresh"], "h2": ["Sulla retina", "la scia, ingrandita ×8"], "h3": ["Come lo vedi", "a grandezza vera"], "still": "oggetto fermo, per confronto →", "rows": [["CRT · 60 Hz", "fosforo acceso ≈ 1,5 ms"], ["Plasma · 60 Hz", "lampi + fosforo ≈ 4 ms"], ["OLED · 60 Hz", "acceso tutto il refresh"], ["OLED · 120 Hz", "acceso tutto il refresh"], ["OLED · 120 Hz + BFI", "metà refresh nera"], ["Monitor OLED · 720 Hz", "acceso tutto il refresh"]], "lg": ["immagine accesa: ogni tratto giallo dura P, la persistenza", "schermo spento"], "f": "960 px/s × {P} ms = {S} px", "f2": "960 px/s × ({P} + {R}/2) ms ≈ {S} px", "t": "t = {T} ms", "techL": "Tecnologia", "hzL": "Refresh", "bfL": "Lampeggio", "tech": ["CRT", "Plasma", "OLED", "QLED", "Mini-LED"], "bf": ["spento", "acceso"], "sub": {"crt": "fosforo acceso ≈ 1,5 ms", "pla": "lampi + fosforo ≈ 4 ms", "oled": "acceso tutto il refresh", "oledb": "BFI: metà refresh nera", "lcd": "LCD, pixel lenti (≈ 5 ms)", "lcdb": "LCD, luce dietro a lampi"}, "lgT": "pixel LCD che sta ancora cambiando (righe scure: con la luce dietro spenta)", "ex": {"crt": "Il CRT qui resta a 60 Hz e non ha bisogno di lampeggio: il fosforo si accende e si spegne da solo.", "pla": "Il plasma dei televisori andava a 60 Hz: lampi concentrati, ma il fosforo si spegne più lentamente del CRT. Niente lampeggio da aggiungere.", "oled": "Ogni pixel dell'OLED fa luce da sé e cambia in meno di un decimo di millisecondo: conta solo per quanto resta acceso.", "qled": "QLED è un LCD: una retroilluminazione a LED dietro i cristalli liquidi, più un film di quantum dot che rende i colori più puri. Per il movimento si comporta come un LCD: immagine accesa tutto il refresh, e in più i cristalli impiegano qualche millisecondo a cambiare.", "mini": "Mini-LED è un LCD con migliaia di LED piccoli dietro, divisi in zone che si spengono dove l'immagine è nera: migliora il nero, non il movimento. Stessa scia del QLED: provali uno dopo l'altro.", "b": " Col lampeggio la luce dietro si accende solo a fine refresh, quando i cristalli hanno già cambiato: la transizione resta al buio."}},run=false,t0=null,tc=null;
 var D=[{p:1000/60,l:1.5,crt:2.2},{p:1000/60,l:4,crt:1.8},{p:1000/60,l:1000/60},{p:1000/120,l:1000/120},{p:1000/120,l:500/120},{p:1000/720,l:1000/720}];
-var X0=168,X1=400,MS=(X1-X0)/50,RX=416,CX=584,CW=92,MAG=8,V=0.96,Y0=66,DY=58,Y=['#F4D35E','#E9B949'];
+var X0=168,X1=400,MS=(X1-X0)/50,RX=416,CX=584,CW=92,MAG=8,V=0.96,Y0=66,DY=58,Y=['#F4D35E','#E9B949'],TR=5;
+var TK=['crt','pla','oled','qled','mini'],HZ=[60,120,144,240],st={t:3,h:0,b:0};
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d,minimumFractionDigits:d})}
 function fmt(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
 function T(x,y,t,cl,col,anc){return '<text class="'+cl+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+'>'+t+'</text>'}
@@ -33,34 +46,59 @@ function obj(y,sd,id){var cx=CX+CW/2,cy=y+14,f=sd>0.25?' filter="url(#bl'+id+')"
  if(f)o+='<defs><filter id="bl'+id+'" x="-60%" y="-20%" width="220%" height="140%"><feGaussianBlur stdDeviation="'+sd.toFixed(2)+' 0"/></filter></defs>';
  o+='<g'+f+'><circle cx="'+cx+'" cy="'+cy+'" r="10" fill="#F4D35E"/><circle cx="'+(cx-3.6)+'" cy="'+(cy-2.5)+'" r="1.7" fill="#1E2630"/><circle cx="'+(cx+3.6)+'" cy="'+(cy-2.5)+'" r="1.7" fill="#1E2630"/><path d="M'+(cx-4.5)+' '+(cy+3)+' q4.5 4 9 0" fill="none" stroke="#1E2630" stroke-width="1.5" stroke-linecap="round"/></g>';
  return o;}
+// one screen: d.p refresh period, d.off start of the lit stretch, d.l its length (P), d.crt fade factor, d.tr LCD pixel transition (ms)
+function row(d,i,y,lab,sub,fx){var h=20,s='',off=d.off||0,tr=d.tr||0;
+ s+=T(8,y+10,lab,'th')+T(8,y+26,sub,'ts');
+ s+='<rect x="'+X0+'" y="'+y+'" width="'+(X1-X0)+'" height="'+h+'" fill="#1E2630"/>';
+ for(var k=0;k*d.p<50;k++){var a=k*d.p,xa=X0+a*MS,xs=X0+Math.min(50,a+off)*MS,lw=Math.max(0,Math.min(d.l,50-a-off))*MS;
+  if(d.crt){s+='<defs><linearGradient id="cr'+i+'_'+k+'" x1="0" x2="1"><stop offset="0" stop-color="'+Y[0]+'"/><stop offset="1" stop-color="'+Y[0]+'" stop-opacity="0"/></linearGradient></defs><rect x="'+xa+'" y="'+y+'" width="'+Math.min(lw*d.crt,(50-a)*MS)+'" height="'+h+'" fill="url(#cr'+i+'_'+k+')"/>';}
+  else if(lw>0)s+='<rect x="'+xs+'" y="'+y+'" width="'+Math.max(0.8,lw)+'" height="'+h+'" fill="'+Y[0]+'"/>';
+  if(tr){var dk=off?Math.min(tr,off):0;
+   if(dk)s+='<rect x="'+xa+'" y="'+y+'" width="'+Math.min(dk,50-a)*MS+'" height="'+h+'" fill="url(#hatchD)"/>';
+   if(tr>dk&&a+dk<50)s+='<rect x="'+(xa+dk*MS)+'" y="'+y+'" width="'+Math.min(tr-dk,50-a-dk)*MS+'" height="'+h+'" fill="url(#hatch)"/>';}
+  if(k>0)s+='<line x1="'+xa+'" y1="'+y+'" x2="'+xa+'" y2="'+(y+h)+'" stroke="#FBFCFD" stroke-width="1.2"/>';}
+ // bracket over the first lit stretch: that length is the persistence P
+ var bx=X0+off*MS,bw=Math.max(3,d.l*MS);s+='<path d="M'+bx+' '+(y-3)+' v-4 h'+bw+' v4" fill="none" stroke="#B23B1E" stroke-width="1.2"/>'+T(bx+bw+4,y-3,'P','th','#B23B1E');
+ s+='<rect x="'+X0+'" y="'+y+'" width="'+(X1-X0)+'" height="'+h+'" fill="none" stroke="#8696A4" stroke-width="0.6"/>';
+ // retina streak: P, plus half of any pixel transition that happens while the light is on
+ var ov=tr?Math.max(0,Math.min(tr,off+d.l)-off):0,Pe=d.l+ov/2,S=0.96*Pe,full=S*MAG,cur=full,show=true;
+ if(tc!==null){var ph=tc%d.p;cur=Math.max(0,Math.min(1,(ph-off)/d.l))*full;show=ph>=off&&ph<off+d.l*(d.crt||1);}
+ s+='<line x1="'+RX+'" y1="'+(y+h/2)+'" x2="'+(RX+150)+'" y2="'+(y+h/2)+'" stroke="#DDE4EA" stroke-width="1"/>';
+ s+='<defs><linearGradient id="st'+i+'" x1="0" x2="1"><stop offset="0" stop-color="'+Y[0]+'" stop-opacity="0.15"/><stop offset="1" stop-color="'+Y[0]+'"/></linearGradient></defs>';
+ if(tc!==null)s+='<rect x="'+RX+'" y="'+(y+3)+'" width="'+Math.max(1,full)+'" height="'+(h-6)+'" rx="2" fill="none" stroke="#C9D2DC" stroke-dasharray="3 2"/>';
+ s+='<rect x="'+RX+'" y="'+(y+3)+'" width="'+Math.max(1.5,cur)+'" height="'+(h-6)+'" rx="2" fill="url(#st'+i+')"/>';
+ if(show)s+='<rect x="'+(RX+Math.max(1.5,cur)-3)+'" y="'+(y+1)+'" width="6" height="'+(h-2)+'" rx="2" fill="'+Y[0]+'" stroke="#9A6A00" stroke-width="0.6"/>';
+ s+=obj(y-4,S/Math.sqrt(12),i);
+ var col=S<=4?'#3B6D11':S<=10?'#9A6A00':'#B23B1E',txt=ov?fmt(L.f2,{P:nf(d.l,1),R:nf(ov,1),S:nf(S,S<10?1:0)}):fmt(L.f,{P:nf(d.l,1),S:nf(S,S<10?1:0)});
+ s+=fx?T(fx[0],fx[1],txt,'ts',col):T(RX,y+h+14,txt,'ts',col);
+ return s;}
+var HATCH='<defs><pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#F4D35E"/><rect width="2.2" height="5" fill="#5A4A1A"/></pattern><pattern id="hatchD" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#1E2630"/><rect width="2.2" height="5" fill="#55606C"/></pattern></defs>';
+function cfg(){var t=TK[st.t],hz=HZ[st.h],p=1000/hz,b=st.b,n=L.tech[st.t];
+ if(t==='crt')return [D[0],n+' · 60 Hz',L.sub.crt];
+ if(t==='pla')return [D[1],n+' · 60 Hz',L.sub.pla];
+ if(t==='oled')return [b?{p:p,l:p/2}:{p:p,l:p},n+' · '+hz+' Hz'+(b?' + BFI':''),b?L.sub.oledb:L.sub.oled];
+ return [b?{p:p,off:p/2,l:p/2,tr:Math.min(TR,p)}:{p:p,l:p,tr:Math.min(TR,p)},n+' · '+hz+' Hz',b?L.sub.lcdb:L.sub.lcd];}
+function btns(lab,arr,cur,fn,dis){var h='<span>'+lab+'</span>';arr.forEach(function(t,i){h+='<button '+(dis&&dis(i)?'disabled ':'')+'class="'+(i===cur?'act':'')+'" aria-pressed="'+(i===cur)+'" onclick="'+fn+'('+i+')">'+t+'</button>'});return h}
+function setT(i){st.t=i;if(i<2){st.h=0;st.b=0;}draw()}function setH(i){st.h=i;draw()}function setB(i){st.b=i;draw()}
+function drawTry(){var fixed=st.t<2,c=cfg(),y=26;
+ document.getElementById('t1').innerHTML=btns(L.techL,L.tech,st.t,'setT');
+ document.getElementById('t2').innerHTML=btns(L.hzL,HZ.map(function(h){return h+' Hz'}),st.h,'setH',function(i){return fixed&&i>0});
+ document.getElementById('t3').innerHTML=btns(L.bfL,L.bf,st.b,'setB',function(i){return fixed&&i>0});
+ var s=HATCH+row(c[0],'t',y,c[1],c[2]);
+ if(c[0].tr)s+='<rect x="'+X0+'" y="'+(y+40)+'" width="14" height="10" fill="url(#hatch)"/>'+(c[0].off?'<rect x="'+(X0+16)+'" y="'+(y+40)+'" width="14" height="10" fill="url(#hatchD)"/>':'')+T(X0+(c[0].off?36:20),y+49,c[0].off?L.lgT:L.lgT.replace(/ \(.*\)/,''),'ts');
+ if(tc!==null){var xc=X0+tc*MS;s+='<line x1="'+xc+'" y1="'+(y-6)+'" x2="'+xc+'" y2="'+(y+24)+'" stroke="#B23B1E" stroke-width="1.4"/>';}
+ document.getElementById('g2').innerHTML=s;
+ var t=TK[st.t];document.getElementById('ex').textContent=L.ex[t==='mini'?'mini':t]+(st.b&&(t==='qled'||t==='mini')?L.ex.b:'');}
 function draw(){
  var s=T(X0,22,L.h1[0],'th')+T(X0,38,L.h1[1],'ts')+T(RX,22,L.h2[0],'th')+T(RX,38,L.h2[1],'ts')+T(CX,22,L.h3[0],'th')+T(CX,38,L.h3[1],'ts');
- var yl=Y0+(D.length-1)*DY+54;
+ var yb=Y0+(D.length-1)*DY,yl=yb+54;
  s+='<rect x="'+X0+'" y="'+(yl-8)+'" width="10" height="8" fill="'+Y[0]+'"/>'+T(X0+14,yl,L.lg[0],'ts')+'<rect x="'+X0+'" y="'+(yl+8)+'" width="10" height="8" fill="#1E2630"/>'+T(X0+14,yl+16,L.lg[1],'ts');
  s+=T(CX-8,yl+40,L.still,'ts',null,'end')+obj(yl+22,0,'s');
- D.forEach(function(d,i){var y=Y0+i*DY,h=20;
-  s+=T(8,y+10,L.rows[i][0],'th')+T(8,y+26,L.rows[i][1],'ts');
-  s+='<rect x="'+X0+'" y="'+y+'" width="'+(X1-X0)+'" height="'+h+'" fill="#1E2630"/>';
-  for(var k=0;k*d.p<50;k++){var a=k*d.p,b=Math.min(50,a+d.p),xa=X0+a*MS,lw=Math.min(d.l,50-a)*MS;
-   if(d.crt){s+='<defs><linearGradient id="cr'+i+'_'+k+'" x1="0" x2="1"><stop offset="0" stop-color="'+Y[0]+'"/><stop offset="1" stop-color="'+Y[0]+'" stop-opacity="0"/></linearGradient></defs><rect x="'+xa+'" y="'+y+'" width="'+(lw*d.crt)+'" height="'+h+'" fill="url(#cr'+i+'_'+k+')"/>';}
-   else s+='<rect x="'+xa+'" y="'+y+'" width="'+Math.max(0.8,lw)+'" height="'+h+'" fill="'+Y[0]+'"/>';
-   if(k>0)s+='<line x1="'+xa+'" y1="'+y+'" x2="'+xa+'" y2="'+(y+h)+'" stroke="#FBFCFD" stroke-width="1.2"/>';}
-  // bracket over the first lit stretch: that length is the persistence P
-  var bw=Math.max(3,d.l*MS);s+='<path d="M'+X0+' '+(y-3)+' v-4 h'+bw+' v4" fill="none" stroke="#B23B1E" stroke-width="1.2"/>'+T(X0+bw+4,y-3,'P','th','#B23B1E');
-  s+='<rect x="'+X0+'" y="'+y+'" width="'+(X1-X0)+'" height="'+h+'" fill="none" stroke="#8696A4" stroke-width="0.6"/>';
-  // retina streak
-  var S=960*d.l/1000,full=S*MAG,cur=full,show=true;
-  if(tc!==null){var ph=tc%d.p;cur=Math.min(ph,d.l)*V*MAG;show=ph<d.l*(d.crt||1);}
-  s+='<line x1="'+RX+'" y1="'+(y+h/2)+'" x2="'+(RX+150)+'" y2="'+(y+h/2)+'" stroke="#DDE4EA" stroke-width="1"/>';
-  s+='<defs><linearGradient id="st'+i+'" x1="0" x2="1"><stop offset="0" stop-color="'+Y[0]+'" stop-opacity="0.15"/><stop offset="1" stop-color="'+Y[0]+'"/></linearGradient></defs>';
-  if(tc!==null)s+='<rect x="'+RX+'" y="'+(y+3)+'" width="'+Math.max(1,full)+'" height="'+(h-6)+'" rx="2" fill="none" stroke="#C9D2DC" stroke-dasharray="3 2"/>';
-  s+='<rect x="'+RX+'" y="'+(y+3)+'" width="'+Math.max(1.5,cur)+'" height="'+(h-6)+'" rx="2" fill="url(#st'+i+')"/>';
-  if(show)s+='<rect x="'+(RX+Math.max(1.5,cur)-3)+'" y="'+(y+1)+'" width="6" height="'+(h-2)+'" rx="2" fill="'+Y[0]+'" stroke="#9A6A00" stroke-width="0.6"/>';
-  s+=obj(y-4,S/Math.sqrt(12),i);
-  s+=T(RX,y+h+14,fmt(L.f,{P:nf(d.l,1),S:nf(S,S<10?1:0)}),'ts',S<=4?'#3B6D11':S<=10?'#9A6A00':'#B23B1E');});
- if(tc!==null){var xc=X0+tc*MS;s+='<line x1="'+xc+'" y1="44" x2="'+xc+'" y2="'+(Y0+(D.length-1)*DY+24)+'" stroke="#B23B1E" stroke-width="1.4"/>'+T(xc,Y0+(D.length-1)*DY+38,fmt(L.t,{T:nf(tc,1)}),'ts','#B23B1E','middle');}
- s+=T(X0,Y0+(D.length-1)*DY+38+(tc!==null?14:0),'0','ts')+T(X1,Y0+(D.length-1)*DY+38+(tc!==null?14:0),'50 ms','ts',null,'end');
+ D.forEach(function(d,i){s+=row(d,i,Y0+i*DY,L.rows[i][0],L.rows[i][1]);});
+ if(tc!==null){var xc=X0+tc*MS;s+='<line x1="'+xc+'" y1="44" x2="'+xc+'" y2="'+(yb+24)+'" stroke="#B23B1E" stroke-width="1.4"/>'+T(xc,yb+38,fmt(L.t,{T:nf(tc,1)}),'ts','#B23B1E','middle');}
+ s+=T(X0,yb+38+(tc!==null?14:0),'0','ts')+T(X1,yb+38+(tc!==null?14:0),'50 ms','ts',null,'end');
  document.getElementById('g').innerHTML=s;
+ drawTry();
  document.getElementById('pl').textContent=run?L.stop:L.play;}
 function loop(ts){if(!run)return;if(t0===null)t0=ts-(tc||0)*120;tc=((ts-t0)/120)%50;draw();requestAnimationFrame(loop)}
 function tog(){run=!run;t0=null;if(run){if(tc===null)tc=0;requestAnimationFrame(loop)}else{draw()}}
