@@ -15,14 +15,14 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 </style>
 </head>
 <body>
-<h2 class="sr-only">Five screens compared over 50 milliseconds: CRT at 60 Hz, OLED at 60 Hz, OLED at 120 Hz, OLED at 120 Hz with black frame insertion and an OLED monitor at 720 Hz. For each, on the left when the image is lit, in the middle the streak it leaves on the retina while the eye follows an object at 960 pixels per second, on the right how the moving object looks.</h2>
+<h2 class="sr-only">Six screens compared over 50 milliseconds: CRT at 60 Hz, plasma at 60 Hz, OLED at 60 Hz, OLED at 120 Hz, OLED at 120 Hz with black frame insertion and an OLED monitor at 720 Hz. For each, on the left when the image is lit, in the middle the streak it leaves on the retina while the eye follows an object at 960 pixels per second, on the right how the moving object looks.</h2>
 <div class="goalbox" role="note"><span aria-hidden="true" style="font-size:18px">🎯</span><div class="gt"><b>Goal</b> · see why what matters is how long each image stays lit, not how many hertz the screen has. The eye follows an object at 960 px/s; each lit image slides across the retina and leaves a streak.</div></div>
 <button id="pl" onclick="tog()"></button>
-<svg viewBox="0 0 680 410" aria-hidden="true"><g id="g"></g></svg>
+<svg viewBox="0 0 680 468" aria-hidden="true"><g id="g"></g></svg>
 <p class="note">Persistence P = how long each image stays lit. Streak on the retina = speed × P (pixels/s × s = pixels). Slow motion shows 50 ms in 6 s, that is 120 times slower. The streaks in the middle are magnified 8 times; in the last column the object is blurred by the real streak, in pixels.</p>
 <script>
-var L={"loc": "en-GB", "play": "▶ Slow motion", "stop": "❚❚ Pause", "h1": ["On the screen", "50 ms, refresh by refresh"], "h2": ["On the retina", "the streak, magnified ×8"], "h3": ["How you see it", "actual size"], "still": "still object, for comparison →", "rows": [["CRT · 60 Hz", "phosphor lit ≈ 1.5 ms"], ["OLED or LED · 60 Hz", "lit for the whole refresh"], ["OLED · 120 Hz", "lit for the whole refresh"], ["OLED · 120 Hz + BFI", "half the refresh black"], ["OLED monitor · 720 Hz", "lit for the whole refresh"]], "lg": ["image lit: each yellow stretch lasts P, the persistence", "screen dark"], "f": "960 px/s × {P} ms = {S} px", "t": "t = {T} ms"},run=false,t0=null,tc=null,rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-var D=[{p:1000/60,l:1.5,crt:1},{p:1000/60,l:1000/60},{p:1000/120,l:1000/120},{p:1000/120,l:500/120},{p:1000/720,l:1000/720}];
+var L={"loc": "en-GB", "play": "▶ Slow motion", "stop": "❚❚ Pause", "h1": ["On the screen", "50 ms, refresh by refresh"], "h2": ["On the retina", "the streak, magnified ×8"], "h3": ["How you see it", "actual size"], "still": "still object, for comparison →", "rows": [["CRT · 60 Hz", "phosphor lit ≈ 1.5 ms"], ["Plasma · 60 Hz", "pulses + phosphor ≈ 4 ms"], ["OLED or LED · 60 Hz", "lit for the whole refresh"], ["OLED · 120 Hz", "lit for the whole refresh"], ["OLED · 120 Hz + BFI", "half the refresh black"], ["OLED monitor · 720 Hz", "lit for the whole refresh"]], "lg": ["image lit: each yellow stretch lasts P, the persistence", "screen dark"], "f": "960 px/s × {P} ms = {S} px", "t": "t = {T} ms"},run=false,t0=null,tc=null,rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var D=[{p:1000/60,l:1.5,crt:2.2},{p:1000/60,l:4,crt:1.8},{p:1000/60,l:1000/60},{p:1000/120,l:1000/120},{p:1000/120,l:500/120},{p:1000/720,l:1000/720}];
 var X0=168,X1=400,MS=(X1-X0)/50,RX=416,CX=584,CW=92,MAG=8,V=0.96,Y0=66,DY=58,Y=['#F4D35E','#E9B949'];
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d,minimumFractionDigits:d})}
 function fmt(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
@@ -35,14 +35,14 @@ function obj(y,sd,id){var cx=CX+CW/2,cy=y+14,f=sd>0.25?' filter="url(#bl'+id+')"
  return o;}
 function draw(){
  var s=T(X0,22,L.h1[0],'th')+T(X0,38,L.h1[1],'ts')+T(RX,22,L.h2[0],'th')+T(RX,38,L.h2[1],'ts')+T(CX,22,L.h3[0],'th')+T(CX,38,L.h3[1],'ts');
- var yl=Y0+4*DY+54;
+ var yl=Y0+(D.length-1)*DY+54;
  s+='<rect x="'+X0+'" y="'+(yl-8)+'" width="10" height="8" fill="'+Y[0]+'"/>'+T(X0+14,yl,L.lg[0],'ts')+'<rect x="'+X0+'" y="'+(yl+8)+'" width="10" height="8" fill="#1E2630"/>'+T(X0+14,yl+16,L.lg[1],'ts');
  s+=T(CX-8,yl+40,L.still,'ts',null,'end')+obj(yl+22,0,'s');
  D.forEach(function(d,i){var y=Y0+i*DY,h=20;
   s+=T(8,y+10,L.rows[i][0],'th')+T(8,y+26,L.rows[i][1],'ts');
   s+='<rect x="'+X0+'" y="'+y+'" width="'+(X1-X0)+'" height="'+h+'" fill="#1E2630"/>';
   for(var k=0;k*d.p<50;k++){var a=k*d.p,b=Math.min(50,a+d.p),xa=X0+a*MS,lw=Math.min(d.l,50-a)*MS;
-   if(d.crt){s+='<defs><linearGradient id="cr'+k+'" x1="0" x2="1"><stop offset="0" stop-color="'+Y[0]+'"/><stop offset="1" stop-color="'+Y[0]+'" stop-opacity="0"/></linearGradient></defs><rect x="'+xa+'" y="'+y+'" width="'+(lw*2.2)+'" height="'+h+'" fill="url(#cr'+k+')"/>';}
+   if(d.crt){s+='<defs><linearGradient id="cr'+i+'_'+k+'" x1="0" x2="1"><stop offset="0" stop-color="'+Y[0]+'"/><stop offset="1" stop-color="'+Y[0]+'" stop-opacity="0"/></linearGradient></defs><rect x="'+xa+'" y="'+y+'" width="'+(lw*d.crt)+'" height="'+h+'" fill="url(#cr'+i+'_'+k+')"/>';}
    else s+='<rect x="'+xa+'" y="'+y+'" width="'+Math.max(0.8,lw)+'" height="'+h+'" fill="'+Y[0]+'"/>';
    if(k>0)s+='<line x1="'+xa+'" y1="'+y+'" x2="'+xa+'" y2="'+(y+h)+'" stroke="#FBFCFD" stroke-width="1.2"/>';}
   // bracket over the first lit stretch: that length is the persistence P
@@ -50,7 +50,7 @@ function draw(){
   s+='<rect x="'+X0+'" y="'+y+'" width="'+(X1-X0)+'" height="'+h+'" fill="none" stroke="#8696A4" stroke-width="0.6"/>';
   // retina streak
   var S=960*d.l/1000,full=S*MAG,cur=full,show=true;
-  if(tc!==null){var ph=tc%d.p;cur=Math.min(ph,d.l)*V*MAG;show=ph<d.l*(d.crt?2.2:1);}
+  if(tc!==null){var ph=tc%d.p;cur=Math.min(ph,d.l)*V*MAG;show=ph<d.l*(d.crt||1);}
   s+='<line x1="'+RX+'" y1="'+(y+h/2)+'" x2="'+(RX+150)+'" y2="'+(y+h/2)+'" stroke="#DDE4EA" stroke-width="1"/>';
   s+='<defs><linearGradient id="st'+i+'" x1="0" x2="1"><stop offset="0" stop-color="'+Y[0]+'" stop-opacity="0.15"/><stop offset="1" stop-color="'+Y[0]+'"/></linearGradient></defs>';
   if(tc!==null)s+='<rect x="'+RX+'" y="'+(y+3)+'" width="'+Math.max(1,full)+'" height="'+(h-6)+'" rx="2" fill="none" stroke="#C9D2DC" stroke-dasharray="3 2"/>';
@@ -58,8 +58,8 @@ function draw(){
   if(show)s+='<rect x="'+(RX+Math.max(1.5,cur)-3)+'" y="'+(y+1)+'" width="6" height="'+(h-2)+'" rx="2" fill="'+Y[0]+'" stroke="#9A6A00" stroke-width="0.6"/>';
   s+=obj(y-4,S/Math.sqrt(12),i);
   s+=T(RX,y+h+14,fmt(L.f,{P:nf(d.l,1),S:nf(S,S<10?1:0)}),'ts',S<=4?'#3B6D11':S<=10?'#9A6A00':'#B23B1E');});
- if(tc!==null){var xc=X0+tc*MS;s+='<line x1="'+xc+'" y1="44" x2="'+xc+'" y2="'+(Y0+4*DY+24)+'" stroke="#B23B1E" stroke-width="1.4"/>'+T(xc,Y0+4*DY+38,fmt(L.t,{T:nf(tc,1)}),'ts','#B23B1E','middle');}
- s+=T(X0,Y0+4*DY+38+(tc!==null?14:0),'0','ts')+T(X1,Y0+4*DY+38+(tc!==null?14:0),'50 ms','ts',null,'end');
+ if(tc!==null){var xc=X0+tc*MS;s+='<line x1="'+xc+'" y1="44" x2="'+xc+'" y2="'+(Y0+(D.length-1)*DY+24)+'" stroke="#B23B1E" stroke-width="1.4"/>'+T(xc,Y0+(D.length-1)*DY+38,fmt(L.t,{T:nf(tc,1)}),'ts','#B23B1E','middle');}
+ s+=T(X0,Y0+(D.length-1)*DY+38+(tc!==null?14:0),'0','ts')+T(X1,Y0+(D.length-1)*DY+38+(tc!==null?14:0),'50 ms','ts',null,'end');
  document.getElementById('g').innerHTML=s;
  document.getElementById('pl').textContent=run?L.stop:L.play;}
 function loop(ts){if(!run)return;if(t0===null)t0=ts-(tc||0)*120;tc=((ts-t0)/120)%50;draw();requestAnimationFrame(loop)}

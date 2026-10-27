@@ -103,7 +103,7 @@ figure.w iframe.h-simple{height:600px}
 figure.w iframe.h-game{height:1240px}
 figure.w iframe.h-sfida{height:1475px}
 figure.w iframe.h-film{height:1300px}
-figure.w iframe.h-pers{height:600px}
+figure.w iframe.h-pers{height:660px}
 @media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:580px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
@@ -432,7 +432,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   it slides across the retina and leaves a streak. The longer it stays lit, the longer the streak:</p>
   <p class="formula">blur ≈ speed × persistence</p>
   <div class="dim"><b>Checking the units</b><ul><li>(pixels / s) × s = pixels ✓. Example: an object crossing 1,920 pixels in 2 s moves at 960 pixels/s; with 16.7 ms of persistence it blurs over 960 × 0.0167 ≈ 16 pixels.</li></ul></div>
-  <p class="lead2"><b>In slow motion.</b> Five screens compared over 50 ms: on the left when the image is lit, in
+  <p class="lead2"><b>In slow motion.</b> Six screens compared over 50 ms: on the left when the image is lit, in
   the middle the streak it leaves on the retina, on the right how you see the moving object. Press ‘Slow motion’ and watch the streak grow only while the box is
   yellow.</p>
   <figure class="w">
@@ -441,7 +441,9 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   </figure>
   <p>LED and OLED keep the image lit for the whole frame: 16.7 ms at 60 Hz, 8.3 ms at 120 Hz. More hertz help, but
   only if the game really produces that many images per second. A CRT instead lights each phosphor dot for about
-  1.5 ms and then lets it fade: at 60 Hz it is sharper than an OLED at 120. That is why old CRTs were unbeatable in
+  1.5 ms and then lets it fade: at 60 Hz it is sharper than an OLED at 120. Plasma sat in between: it bunched its pulses into a few
+  milliseconds, but its phosphor fades more slowly, and it got to about 4 ms. Its frame interpolation, at 60 Hz, changes
+  nothing with a signal already at 60 fps: there is no image to invent. It was there for 24 fps films. That is why old CRTs were unbeatable in
   motion for decades, and curiously the only things that come close are today's 720 Hz OLED gaming monitors, at
   1.4 ms.</p>
   <p class="lead2"><b>The gaming-TV challenge.</b> Take an online shooter, where two things matter: the blur, because
