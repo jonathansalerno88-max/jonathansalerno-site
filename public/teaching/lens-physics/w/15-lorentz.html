@@ -18,8 +18,12 @@
 <div class="row"><button id="bt" onclick="beat()">▶ Heartbeat</button><span style="margin-left:auto">Coil current</span><button id="pw" onclick="ON=!ON;draw()"></button><input type="range" id="ic" min="-1" max="1" step="0.05" value="0.6" oninput="draw()" aria-label="Coil current"><output id="iv" style="min-width:150px;text-align:right;color:var(--text-primary);font-variant-numeric:tabular-nums"></output></div>
 <svg viewBox="0 0 680 360" aria-hidden="true"><g id="g"></g></svg>
 <div class="cap"><p>The field is fixed: the magnet provides it. What changes is the heart's current, which runs through the string and bends it. From the deflection you read the current: it measures.</p><p>You choose the current: it changes the field, and the field bends the beam. With the current you decide where the spot goes: it steers. Electrons are negative, so with the same current and the same field they deflect the other way.</p></div>
+<h3 style="font-size:15px;margin:16px 0 4px">And the washing machine? Same force, but to make things turn</h3>
+<div class="row"><span>Motor current</span><input type="range" id="mcur" min="0" max="1" step="0.05" value="0.5" aria-label="Motor current"><button id="mpw" onclick="MON=!MON"></button></div>
+<svg viewBox="0 0 680 200" aria-hidden="true"><g id="g2"></g></svg>
+<div class="cap"><p>Here the field is fixed, as in Einthoven's galvanometer, and the current runs through the rotor loop. On the two sides of the loop the current flows in opposite directions, so the two pushes F point opposite ways and make it turn: a torque. Every half turn the current is reversed (once by brushes, today by electronics), so the loop keeps turning the same way. More current, more torque: the drum speeds up and does work.</p></div>
 <script>
-var L={"sh": ["Long story short: a charge moving through a magnetic field gets pushed sideways,", "at right angles to both its motion and the field. More field, more speed: a bigger push."], "pw": ["⏻ on", "⏻ off"], "off": "current off: no field, the beam goes straight", "loc": "en-GB", "head": "Same principle: the Lorentz force", "f1": "F = q · v × B", "f2": "for a wire: F = I · L × B", "lt": "Einthoven's string galvanometer (1901)", "rt": "SEM scan coils", "l": {"N": "N", "S": "S", "lamp": "lamp", "str": "silver-coated quartz string", "cur": "heart's current ⊗ (into the page)", "lens": "lens", "film": "moving photographic paper", "ecg": "ECG"}, "r": {"coil": "electromagnet", "beam": "electron beam ⊗ (into the page)", "spot": "spot on|the sample"}},ON=true,TR=[],t0=null,run=false,I=0,raf=null;
+var L={"mpw": ["⏻ on", "⏻ off"], "mlab": {"rot": "rotor: one loop", "in_": "⊗ in", "out": "⊙ out", "drum": "drum", "rpm": "≈ {R} rpm"}, "sh": ["Long story short: a charge moving through a magnetic field gets pushed sideways,", "at right angles to both its motion and the field. More field, more speed: a bigger push."], "pw": ["⏻ on", "⏻ off"], "off": "current off: no field, the beam goes straight", "loc": "en-GB", "head": "Same principle: the Lorentz force", "f1": "F = q · v × B", "f2": "for a wire: F = I · L × B", "lt": "Einthoven's string galvanometer (1901)", "rt": "SEM scan coils", "l": {"N": "N", "S": "S", "lamp": "lamp", "str": "silver-coated quartz string", "cur": "heart's current ⊗ (into the page)", "lens": "lens", "film": "moving photographic paper", "ecg": "ECG"}, "r": {"coil": "electromagnet", "beam": "electron beam ⊗ (into the page)", "spot": "spot on|the sample"}},ON=true,TR=[],t0=null,run=false,I=0,raf=null;
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d,minimumFractionDigits:d})}
 function T(x,y,t,cl,col,anc,st){return '<text class="'+cl+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+(st?' style="'+st+'"':'')+'>'+t+'</text>'}
 function Ln(x1,y1,x2,y2,c,w,d,o){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+(w||1.2)+'"'+(d?' stroke-dasharray="'+d+'"':'')+(o!=null?' opacity="'+o+'"':'')+'/>'}
@@ -68,7 +72,33 @@ function draw(){var s='',Y=185,K=34,ic=ON?parseFloat(document.getElementById('ic
  document.getElementById('g').innerHTML=s+'</g>';}
 function step(ts){if(!run)return;if(t0===null)t0=ts;var t=(ts-t0)/1000;I=ecg(t)*1.0;TR.push(I);if(TR.length>100)TR.shift();draw();if(t<5.4)raf=requestAnimationFrame(step);else{run=false;I=0;draw();}}
 function beat(){TR=[];t0=null;run=true;cancelAnimationFrame(raf);raf=requestAnimationFrame(step);}
-draw();
+// motor: one loop between N and S; the current is reversed every half turn, so the torque keeps the same sign
+var MON=true,ANG=0,DR=0,W=0,lastT=null;
+function motor(ts){var dt=lastT===null?0:Math.min(0.05,(ts-lastT)/1000);lastT=ts;
+ var mi=MON?parseFloat(document.getElementById('mcur').value):0,target=mi*2*Math.PI*3;W+=(target-W)*Math.min(1,dt*1.5);ANG-=W*dt;DR+=W*dt*0.6;
+ var b=document.getElementById('mpw');b.textContent=L.mpw[MON?0:1];b.style.opacity=MON?1:0.6;
+ var s='',cx=165,cy=100,R=46;
+ s+='<path d="M40 40 L95 40 Q78 100 95 160 L40 160 Z" fill="#E9A7A1" stroke="#A33A30"/><path d="M290 40 L235 40 Q252 100 235 160 L290 160 Z" fill="#A9C4E8" stroke="#2D5FA3"/>';
+ s+=T(62,105,'N','th','#7A1F18','middle','font-size:18px')+T(268,105,'S','th','#1F3F73','middle','font-size:18px');
+ [56,144].forEach(function(y){s+=arr(100,y,230,y,'#534AB7',1.4);});s+=T(165,50,'B','th','#534AB7','middle');
+ s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="none" stroke="#DDE4EA" stroke-dasharray="3 3"/>';
+ var a=ANG%(2*Math.PI),x1=cx+R*Math.cos(a),y1=cy+R*Math.sin(a),x2=cx-R*Math.cos(a),y2=cy-R*Math.sin(a);
+ // the conductor on the left of the axis always carries current into the page (commutator)
+ var inL=x1<=cx,xi=inL?x1:x2,yi=inL?y1:y2,xo=inL?x2:x1,yo=inL?y2:y1,f=mi*30;
+ s+=Ln(x1,y1,x2,y2,'#C9772D',4)+'<circle cx="'+cx+'" cy="'+cy+'" r="4" fill="#55606C"/>';
+ s+='<circle cx="'+xi.toFixed(1)+'" cy="'+yi.toFixed(1)+'" r="8" fill="#FFF1E0" stroke="#C9772D" stroke-width="2"/>'+T(xi,yi+4,'⊗','ts','#7A4310','middle');
+ s+='<circle cx="'+xo.toFixed(1)+'" cy="'+yo.toFixed(1)+'" r="8" fill="#FFF1E0" stroke="#C9772D" stroke-width="2"/>'+T(xo,yo+4,'⊙','ts','#7A4310','middle');
+ // current into the page with B to the right: force down; out of the page: force up
+ if(f>1){s+=arr(xi,yi+10,xi,yi+10+f,'#C23B5A',2)+arr(xo,yo-10,xo,yo-10-f,'#C23B5A',2);}
+ s+=T(cx,190,L.mlab.rot+' · '+L.mlab.in_+' · '+L.mlab.out,'ts',null,'middle');
+ // washing machine
+ var mx=430;s+='<rect x="'+(mx-90)+'" y="20" width="180" height="170" rx="10" fill="#F3F5F7" stroke="#9DACB9"/><rect x="'+(mx-90)+'" y="20" width="180" height="26" rx="10" fill="#E3E8ED"/><circle cx="'+(mx+60)+'" cy="33" r="7" fill="#C9D2DC"/>';
+ s+='<circle cx="'+mx+'" cy="112" r="56" fill="#DDE7F1" stroke="#55697A" stroke-width="5"/><g transform="rotate('+(DR*180/Math.PI%360).toFixed(1)+' '+mx+' 112)">';
+ for(var k=0;k<3;k++){var aa=k*2.094;s+='<ellipse cx="'+(mx+28*Math.cos(aa)).toFixed(1)+'" cy="'+(112+28*Math.sin(aa)).toFixed(1)+'" rx="15" ry="9" transform="rotate('+(aa*57.3).toFixed(0)+' '+(mx+28*Math.cos(aa)).toFixed(1)+' '+(112+28*Math.sin(aa)).toFixed(1)+')" fill="'+['#E05A2B','#5AA7E6','#F4D35E'][k]+'" opacity="0.85"/>';s+=Ln(mx,112,mx+50*Math.cos(aa+1),112+50*Math.sin(aa+1),'#9DACB9',2);}
+ s+='</g>';var rpm=Math.round(W/(2*Math.PI*3)*1200);
+ s+=T(mx+110,100,L.mlab.drum,'ts')+T(mx+110,118,L.mlab.rpm.replace('{R}',Math.max(0,rpm)),'th','#16222E');
+ document.getElementById('g2').innerHTML=s;requestAnimationFrame(motor);}
+draw();requestAnimationFrame(motor);
 </script>
 </body>
 </html>
