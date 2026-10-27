@@ -179,9 +179,11 @@ footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
 .lang li a[aria-current]{color:var(--link); font-weight:600}
 .lang li a[aria-current]::after{content:" ✓"}
 .tright{display:flex; align-items:center; gap:.5rem}
-.sup ul{min-width:15rem}
+.sup ul{min-width:15rem; max-width:calc(100vw - 2rem)}
+@media (max-width:600px){.tright{position:relative} details.sup{position:static} .sup li a{white-space:normal!important}}
 .sup li a{white-space:nowrap}
 .sup li a{display:flex; align-items:center; gap:.5rem}
+.sup li a svg{flex:none}
 .sup li a[aria-current]::after{content:none}
 @media (max-width:480px){.sup .sl{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}}
 </style>
