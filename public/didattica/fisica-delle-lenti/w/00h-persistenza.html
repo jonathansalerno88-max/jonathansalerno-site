@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La persistenza al rallentatore</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+svg[viewBox]{min-width:0!important;max-width:100%!important}
+@media (max-width:600px){svg[viewBox]{min-width:560px!important;max-width:none!important}}
+#pl{font:inherit;font-size:13px;padding:5px 12px;border-radius:var(--radius);border:1.5px solid var(--border-accent);background:var(--surface-1);color:var(--text-accent);cursor:pointer;margin:0 0 8px}
+.note{font-size:12px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
+.goalbox{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;border:1.5px solid var(--border-accent);background:#EEF4FC;border-radius:10px;padding:8px 12px;margin:0 0 10px;font-size:14px;line-height:1.45}
+.goalbox .gt b{color:var(--text-accent)}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Cinque schermi a confronto in 50 millisecondi: CRT a 60 Hz, OLED a 60 Hz, OLED a 120 Hz, OLED a 120 Hz con black frame insertion e monitor OLED a 720 Hz. Per ognuno, a sinistra quando l'immagine è accesa, a destra la scia che lascia sulla retina mentre l'occhio insegue un oggetto a 960 pixel al secondo.</h2>
+<div class="goalbox" role="note"><span aria-hidden="true" style="font-size:18px">🎯</span><div class="gt"><b>Obiettivo</b> · vedere perché conta quanto resta accesa ogni immagine, e non quanti hertz ha lo schermo. L'occhio insegue un oggetto a 960 px/s; ogni immagine accesa gli scivola sulla retina e lascia una scia.</div></div>
+<button id="pl" onclick="tog()"></button>
+<svg viewBox="0 0 680 360" aria-hidden="true"><g id="g"></g></svg>
+<p class="note">Persistenza P = quanto resta accesa ogni immagine. Scia sulla retina = velocità × P (pixel/s × s = pixel). Il rallentatore mostra 50 ms in 6 s, cioè 120 volte più lento. Le scie sono ingrandite 8 volte rispetto alle caselle del tempo.</p>
+<script>
+var L={"loc": "it-IT", "play": "▶ Al rallentatore", "stop": "❚❚ Ferma", "h1": "Sullo schermo: 50 ms, refresh per refresh", "h2": "Sulla retina: la scia (×8)", "rows": [["CRT · 60 Hz", "fosforo acceso ≈ 1,5 ms"], ["OLED o LED · 60 Hz", "acceso tutto il refresh"], ["OLED · 120 Hz", "acceso tutto il refresh"], ["OLED · 120 Hz + BFI", "metà refresh nera"], ["Monitor OLED · 720 Hz", "acceso tutto il refresh"]], "lg": ["immagine accesa", "schermo spento"], "f": "960 px/s × {P} ms = {S} px", "t": "t = {T} ms"},run=false,t0=null,tc=null,rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var D=[{p:1000/60,l:1.5,crt:1},{p:1000/60,l:1000/60},{p:1000/120,l:1000/120},{p:1000/120,l:500/120},{p:1000/720,l:1000/720}];
+var X0=168,X1=468,MS=(X1-X0)/50,RX=492,MAG=8,V=0.96,Y0=58,DY=58,Y=['#F4D35E','#E9B949'];
+function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d,minimumFractionDigits:d})}
+function fmt(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
+function T(x,y,t,cl,col,anc){return '<text class="'+cl+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+'>'+t+'</text>'}
+function draw(){
+ var s=T(X0,22,L.h1,'th')+T(RX,22,L.h2,'th');
+ s+='<rect x="'+X0+'" y="30" width="10" height="8" fill="'+Y[0]+'"/>'+T(X0+14,38,L.lg[0],'ts')+'<rect x="'+(X0+120)+'" y="30" width="10" height="8" fill="#1E2630"/>'+T(X0+134,38,L.lg[1],'ts');
+ D.forEach(function(d,i){var y=Y0+i*DY,h=20;
+  s+=T(8,y+10,L.rows[i][0],'th')+T(8,y+26,L.rows[i][1],'ts');
+  s+='<rect x="'+X0+'" y="'+y+'" width="'+(X1-X0)+'" height="'+h+'" fill="#1E2630"/>';
+  for(var k=0;k*d.p<50;k++){var a=k*d.p,b=Math.min(50,a+d.p),xa=X0+a*MS,lw=Math.min(d.l,50-a)*MS;
+   if(d.crt){s+='<defs><linearGradient id="cr'+k+'" x1="0" x2="1"><stop offset="0" stop-color="'+Y[0]+'"/><stop offset="1" stop-color="'+Y[0]+'" stop-opacity="0"/></linearGradient></defs><rect x="'+xa+'" y="'+y+'" width="'+(lw*2.2)+'" height="'+h+'" fill="url(#cr'+k+')"/>';}
+   else s+='<rect x="'+xa+'" y="'+y+'" width="'+Math.max(0.8,lw)+'" height="'+h+'" fill="'+Y[k%2]+'"/>';
+   s+='<line x1="'+xa+'" y1="'+(y-2)+'" x2="'+xa+'" y2="'+(y+h+2)+'" stroke="#8696A4" stroke-width="0.6"/>';}
+  s+='<rect x="'+X0+'" y="'+y+'" width="'+(X1-X0)+'" height="'+h+'" fill="none" stroke="#8696A4" stroke-width="0.6"/>';
+  // retina streak
+  var S=960*d.l/1000,full=S*MAG,cur=full,show=true;
+  if(tc!==null){var ph=tc%d.p;cur=Math.min(ph,d.l)*V*MAG;show=ph<d.l*(d.crt?2.2:1);}
+  s+='<line x1="'+RX+'" y1="'+(y+h/2)+'" x2="'+(RX+170)+'" y2="'+(y+h/2)+'" stroke="#DDE4EA" stroke-width="1"/>';
+  s+='<defs><linearGradient id="st'+i+'" x1="0" x2="1"><stop offset="0" stop-color="'+Y[0]+'" stop-opacity="0.15"/><stop offset="1" stop-color="'+Y[0]+'"/></linearGradient></defs>';
+  if(tc!==null)s+='<rect x="'+RX+'" y="'+(y+3)+'" width="'+Math.max(1,full)+'" height="'+(h-6)+'" rx="2" fill="none" stroke="#C9D2DC" stroke-dasharray="3 2"/>';
+  s+='<rect x="'+RX+'" y="'+(y+3)+'" width="'+Math.max(1.5,cur)+'" height="'+(h-6)+'" rx="2" fill="url(#st'+i+')"/>';
+  if(show)s+='<rect x="'+(RX+Math.max(1.5,cur)-3)+'" y="'+(y+1)+'" width="6" height="'+(h-2)+'" rx="2" fill="'+Y[0]+'" stroke="#9A6A00" stroke-width="0.6"/>';
+  s+=T(RX,y+h+14,fmt(L.f,{P:nf(d.l,1),S:nf(S,S<10?1:0)}),'ts',S<=4?'#3B6D11':S<=10?'#9A6A00':'#B23B1E');});
+ if(tc!==null){var xc=X0+tc*MS;s+='<line x1="'+xc+'" y1="44" x2="'+xc+'" y2="'+(Y0+4*DY+24)+'" stroke="#B23B1E" stroke-width="1.4"/>'+T(xc,Y0+4*DY+38,fmt(L.t,{T:nf(tc,1)}),'ts','#B23B1E','middle');}
+ s+=T(X0,Y0+4*DY+38+(tc!==null?14:0),'0','ts')+T(X1,Y0+4*DY+38+(tc!==null?14:0),'50 ms','ts',null,'end');
+ document.getElementById('g').innerHTML=s;
+ document.getElementById('pl').textContent=run?L.stop:L.play;}
+function loop(ts){if(!run)return;if(t0===null)t0=ts-(tc||0)*120;tc=((ts-t0)/120)%50;draw();requestAnimationFrame(loop)}
+function tog(){run=!run;t0=null;if(run){if(tc===null)tc=0;requestAnimationFrame(loop)}else{draw()}}
+draw();
+</script>
+</body>
+</html>

@@ -103,7 +103,8 @@ figure.w iframe.h-simple{height:600px}
 figure.w iframe.h-game{height:1240px}
 figure.w iframe.h-sfida{height:1475px}
 figure.w iframe.h-film{height:1300px}
-@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px}}
+figure.w iframe.h-pers{height:570px}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:580px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -425,11 +426,19 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   <p><a href="https://forums.anandtech.com/threads/crt-clarity.2186781/">On another AnandTech forum, more than ten years ago, someone still games on a 19″ CRT because LCDs look less
   sharp to them. They ask whether anything has the clarity of a CRT, and whether a 120 Hz monitor would make a
   difference</a>.</p>
-  <p>The answer lies in a quantity that spec sheets do not list: <b>persistence</b>, that is how long each image
-  stays lit. When the eye follows a moving object, each still image slides across the retina for as long as it
-  stays lit:</p>
+  <p>The answer lies in a quantity that spec sheets do not list: <b>persistence</b>, that is how long each single
+  image stays lit. The problem starts here: the screen shows still images, one after another, while the eye, when
+  it follows an object, moves continuously. As long as an image stays lit the eye moves on and the image does not:
+  it slides across the retina and leaves a streak. The longer it stays lit, the longer the streak:</p>
   <p class="formula">blur ≈ speed × persistence</p>
   <div class="dim"><b>Checking the units</b><ul><li>(pixels / s) × s = pixels ✓. Example: an object crossing 1,920 pixels in 2 s moves at 960 pixels/s; with 16.7 ms of persistence it blurs over 960 × 0.0167 ≈ 16 pixels.</li></ul></div>
+  <p class="lead2"><b>In slow motion.</b> Five screens compared over 50 ms: on the left when the image is lit, on
+  the right the streak it leaves on the retina. Press ‘Slow motion’ and watch the streak grow only while the box is
+  yellow.</p>
+  <figure class="w">
+    <iframe src="w/00h-persistenza.html" title="Persistence in slow motion" loading="lazy" class="h-pers"></iframe>
+    <figcaption>Same object, same speed: only how long each image stays lit changes. <a href="w/00h-persistenza.html">Open full screen</a></figcaption>
+  </figure>
   <p>LED and OLED keep the image lit for the whole frame: 16.7 ms at 60 Hz, 8.3 ms at 120 Hz. More hertz help, but
   only if the game really produces that many images per second. A CRT instead lights each phosphor dot for about
   1.5 ms and then lets it fade: at 60 Hz it is sharper than an OLED at 120. That is why old CRTs were unbeatable in
