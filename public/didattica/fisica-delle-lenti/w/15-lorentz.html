@@ -15,17 +15,17 @@
 </head>
 <body>
 <h2 class="sr-only">Confronto visto dall'alto. A sinistra il galvanometro a corda di Einthoven: una corda di quarzo argentato fra i poli di un magnete; la corrente del cuore la attraversa e la forza di Lorentz la piega; la sua ombra, proiettata su una carta fotografica che scorre, traccia l'elettrocardiogramma. A destra le bobine di scansione del SEM: la corrente nelle bobine crea il campo, che piega il fascio di elettroni e sposta il punto sul campione. Stessa legge, F = q · v × B; gli elettroni sono negativi e deviano dalla parte opposta.</h2>
-<div class="row"><button id="bt" onclick="beat()">▶ Battito</button><span style="margin-left:auto">Corrente nelle bobine</span><input type="range" id="ic" min="-1" max="1" step="0.05" value="0.6" oninput="draw()" aria-label="Corrente nelle bobine"></div>
+<div class="row"><button id="bt" onclick="beat()">▶ Battito</button><span style="margin-left:auto">Corrente nelle bobine</span><button id="pw" onclick="ON=!ON;draw()"></button><input type="range" id="ic" min="-1" max="1" step="0.05" value="0.6" oninput="draw()" aria-label="Corrente nelle bobine"></div>
 <svg viewBox="0 0 680 330" aria-hidden="true"><g id="g"></g></svg>
 <div class="cap"><p>Il campo è fisso: lo dà il magnete. A cambiare è la corrente del cuore, che passa nella corda e la piega. Dalla deviazione si legge la corrente: si misura.</p><p>La corrente la scegli tu: cambia il campo, e il campo piega il fascio. Dalla corrente decidi dove va il punto: si pilota. Gli elettroni sono negativi, quindi con la stessa corrente e lo stesso campo deviano dalla parte opposta.</p></div>
 <script>
-var L={"loc": "it-IT", "head": "Stesso principio: la forza di Lorentz", "f1": "F = q · v × B", "f2": "per un filo percorso da corrente: F = I · L × B", "lt": "Galvanometro a corda di Einthoven (1901)", "rt": "Bobine di scansione del SEM", "l": {"N": "N", "S": "S", "lamp": "lampada", "str": "corda di quarzo argentato", "cur": "corrente del cuore ⊗ (entra nel foglio)", "lens": "lente", "film": "carta fotografica che scorre", "ecg": "ECG"}, "r": {"coil": "elettromagnete", "beam": "fascio di elettroni ⊗ (entra nel foglio)", "spot": "punto sul|campione"}},TR=[],t0=null,run=false,I=0,raf=null;
+var L={"pw": ["⏻ accesa", "⏻ spenta"], "off": "corrente spenta: nessun campo, il fascio va dritto", "loc": "it-IT", "head": "Stesso principio: la forza di Lorentz", "f1": "F = q · v × B", "f2": "per un filo percorso da corrente: F = I · L × B", "lt": "Galvanometro a corda di Einthoven (1901)", "rt": "Bobine di scansione del SEM", "l": {"N": "N", "S": "S", "lamp": "lampada", "str": "corda di quarzo argentato", "cur": "corrente del cuore ⊗ (entra nel foglio)", "lens": "lente", "film": "carta fotografica che scorre", "ecg": "ECG"}, "r": {"coil": "elettromagnete", "beam": "fascio di elettroni ⊗ (entra nel foglio)", "spot": "punto sul|campione"}},ON=true,TR=[],t0=null,run=false,I=0,raf=null;
 function T(x,y,t,cl,col,anc,st){return '<text class="'+cl+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+(st?' style="'+st+'"':'')+'>'+t+'</text>'}
 function Ln(x1,y1,x2,y2,c,w,d,o){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+(w||1.2)+'"'+(d?' stroke-dasharray="'+d+'"':'')+(o!=null?' opacity="'+o+'"':'')+'/>'}
 function arr(x1,y1,x2,y2,c,w){var a=Math.atan2(y2-y1,x2-x1),h=7;return Ln(x1,y1,x2,y2,c,w||2)+'<path d="M'+x2+' '+y2+' L'+(x2-h*Math.cos(a-0.45))+' '+(y2-h*Math.sin(a-0.45))+' L'+(x2-h*Math.cos(a+0.45))+' '+(y2-h*Math.sin(a+0.45))+' Z" fill="'+c+'"/>'}
 // a heartbeat current: P, QRS and T waves as gaussians (arbitrary units, R = 1)
 function ecg(t){var c=t%0.9,g=function(m,s,a){return a*Math.exp(-(c-m)*(c-m)/(2*s*s))};return g(0.16,0.025,0.12)+g(0.27,0.008,-0.12)+g(0.30,0.012,1)+g(0.33,0.01,-0.25)+g(0.55,0.04,0.3)}
-function draw(){var s='',Y=185,K=34,ic=parseFloat(document.getElementById('ic').value);
+function draw(){var s='',Y=185,K=34,ic=ON?parseFloat(document.getElementById('ic').value):0;var pw=document.getElementById('pw');pw.textContent=L.pw[ON?0:1];pw.setAttribute('aria-pressed',ON);pw.style.opacity=ON?1:0.6;
  // banner
  s+='<rect x="190" y="6" width="300" height="52" rx="8" fill="#EEF4FC" stroke="#1456A8"/>'+T(340,24,L.head,'th','#1456A8','middle')+T(340,42,L.f1,'th','#16222E','middle','font-size:15px')+T(340,55,L.f2,'ts',null,'middle','font-size:10.5px');
  s+=Ln(190,32,150,72,'#1456A8',1,'3 3')+Ln(490,32,530,72,'#1456A8',1,'3 3');
@@ -50,7 +50,8 @@ function draw(){var s='',Y=185,K=34,ic=parseFloat(document.getElementById('ic').
  s+=arr(262,Y+66,318,Y+66,'#8696A4',1.2)+T(290,Y+80,L.l.film,'ts',null,'middle','font-size:10.5px');
  // ---- SEM coils, seen from above: electrons go into the page ----
  var e=-ic*K,cx=470;
- [[380,'#C9772D'],[530,'#C9772D']].forEach(function(c){s+='<rect x="'+c[0]+'" y="'+(Y-50)+'" width="30" height="100" rx="4" fill="#E8C9A6" stroke="#7A4310"/>';for(var w=0;w<8;w++)s+=Ln(c[0]-3,Y-44+w*12,c[0]+33,Y-40+w*12,'#C9772D',2);});
+ var wc=ON?'#C9772D':'#B4BCC6';[380,530].forEach(function(x0){s+='<rect x="'+x0+'" y="'+(Y-50)+'" width="30" height="100" rx="4" fill="'+(ON?'#E8C9A6':'#EEF1F4')+'" stroke="'+(ON?'#7A4310':'#B4BCC6')+'"/>';for(var w=0;w<8;w++)s+=Ln(x0-3,Y-44+w*12,x0+33,Y-40+w*12,wc,2);});
+ if(!ON)s+=T(470,Y+96,L.off,'ts','#8696A4','middle');
  s+=T(395,Y+66,L.r.coil,'ts',null,'middle')+T(545,Y+66,L.r.coil,'ts',null,'middle');
  if(Math.abs(ic)>0.02){[Y-36,Y+36].forEach(function(y){s+=ic>0?arr(414,y,526,y,'#534AB7',1.2+Math.abs(ic)*1.4):arr(526,y,414,y,'#534AB7',1.2+Math.abs(ic)*1.4);});s+=T(cx,Y-44,'B','th','#534AB7','middle');}
  s+='<circle cx="'+cx+'" cy="'+(Y+e).toFixed(1)+'" r="5" fill="#5AA7E6" stroke="#185FA5"/>'+T(cx,Y+e+4,'×','ts','#16222E','middle','font-size:9px');
