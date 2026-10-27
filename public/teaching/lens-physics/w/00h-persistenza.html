@@ -16,6 +16,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 .try h3{font-size:14px;margin:0 0 4px;color:var(--text-accent)}
 .tog{display:flex;flex-wrap:wrap;align-items:center;gap:5px;font-size:13px;color:var(--text-secondary);margin:4px 0}
 .tog>span:first-child{min-width:86px}
+#rm2>span:first-child{min-width:0}
 .tog button{font:inherit;font-size:13px;padding:3px 9px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
 .tog button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
 .tog button:disabled{opacity:.45;cursor:default}
@@ -28,7 +29,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 <button id="pl" onclick="tog()"></button><div class="tog" id="rm"></div>
 <svg viewBox="0 0 760 548" aria-hidden="true"><g id="g"></g></svg>
 <div class="try"><h3>Try it yourself</h3>
-<div class="tog" id="t1"></div><div class="tog" id="t4"></div><div class="tog" id="t2"></div><div class="tog" id="t3"></div>
+<div class="tog" id="t1"></div><div class="tog" id="t4"></div><div class="tog" id="t2"></div><div class="tog" id="t3"></div><div class="tog" id="rm2"></div>
 <svg viewBox="0 0 760 112" aria-hidden="true"><g id="g2"></g></svg>
 <p id="ex" aria-live="polite"></p></div>
 <p class="note">Persistence P = how long each image stays lit. Streak on the retina = speed × P (pixels/s × s = pixels). In LCDs (QLED and Mini-LED) the pixel transition, here ≈ 5 ms for a VA panel and ≈ 3 ms for an IPS as indicative values, adds about half its duration. Slow motion shows 50 ms in 6 s, that is 120 times slower. The streaks in the middle are magnified 8 times; in the last column the object is blurred by the real streak, in pixels. Black: in a dark room, with white at about 150 nit (nit = cd/m²) and a native contrast of ≈ 5,000:1 for VA and ≈ 1,000:1 for IPS; with the lights on, the light reflected by the screen adds up, ≈ R × E / π: E in lux (lx = lm/m²), R the screen reflectance (indicative here: ≈ 1% WOLED, ≈ 1.5% LCD, ≈ 3% QD-OLED and plasma, ≈ 5% CRT), and dividing by π sr gives nits. Indicative values, and the greys in the boxes are exaggerated to make them visible. The CRT glow is light bouncing inside the thick glass of the screen; the Mini-LED halo is the zone of LEDs that stays lit around the bright object (blooming).</p>
@@ -100,7 +101,7 @@ function drawTry(){var fixed=st.t<2,c=cfg(),y=26;
  document.getElementById('t2').innerHTML=btns(L.hzL,HZ.map(function(h){return h+' Hz'}),st.h,'setH',function(i){return fixed&&i>0});
  document.getElementById('t3').innerHTML=btns(L.bfL,L.bf,st.b,'setB',function(i){return fixed&&i>0});
  document.getElementById('t4').innerHTML=btns(L.pnL,st.t===2?L.pno:L.pn,st.n,'setN',function(i){return st.t<2});
- document.getElementById('rm').innerHTML=btns(L.rmL,L.rmB,st.r,'setR');
+ document.getElementById('rm').innerHTML=document.getElementById('rm2').innerHTML=btns(L.rmL,L.rmB,st.r,'setR');
  var s=HATCH+row(c[0],'t',y,c[1],c[2],[X0,y+36]);
  if(c[0].tr)s+='<rect x="'+X0+'" y="'+(y+42)+'" width="14" height="10" fill="url(#hatch)"/>'+(c[0].off?'<rect x="'+(X0+16)+'" y="'+(y+42)+'" width="14" height="10" fill="url(#hatchD)"/>':'')+T(X0+(c[0].off?36:20),y+51,c[0].off?L.lgT:L.lgT.replace(/ \(.*\)/,''),'ts');
  if(tc!==null){var xc=X0+tc*MS;s+='<line x1="'+xc+'" y1="'+(y-6)+'" x2="'+xc+'" y2="'+(y+24)+'" stroke="#B23B1E" stroke-width="1.4"/>';}

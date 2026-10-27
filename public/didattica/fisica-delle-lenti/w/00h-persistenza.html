@@ -16,6 +16,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 .try h3{font-size:14px;margin:0 0 4px;color:var(--text-accent)}
 .tog{display:flex;flex-wrap:wrap;align-items:center;gap:5px;font-size:13px;color:var(--text-secondary);margin:4px 0}
 .tog>span:first-child{min-width:86px}
+#rm2>span:first-child{min-width:0}
 .tog button{font:inherit;font-size:13px;padding:3px 9px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
 .tog button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
 .tog button:disabled{opacity:.45;cursor:default}
@@ -28,7 +29,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 <button id="pl" onclick="tog()"></button><div class="tog" id="rm"></div>
 <svg viewBox="0 0 760 548" aria-hidden="true"><g id="g"></g></svg>
 <div class="try"><h3>Prova tu</h3>
-<div class="tog" id="t1"></div><div class="tog" id="t4"></div><div class="tog" id="t2"></div><div class="tog" id="t3"></div>
+<div class="tog" id="t1"></div><div class="tog" id="t4"></div><div class="tog" id="t2"></div><div class="tog" id="t3"></div><div class="tog" id="rm2"></div>
 <svg viewBox="0 0 760 112" aria-hidden="true"><g id="g2"></g></svg>
 <p id="ex" aria-live="polite"></p></div>
 <p class="note">Persistenza P = quanto resta accesa ogni immagine. Scia sulla retina = velocità × P (pixel/s × s = pixel). Negli LCD (QLED e Mini-LED) la transizione dei pixel, qui ≈ 5 ms per un pannello VA e ≈ 3 ms per un IPS come valori indicativi, aggiunge circa metà della sua durata. Il rallentatore mostra 50 ms in 6 s, cioè 120 volte più lento. Le scie al centro sono ingrandite 8 volte; nell'ultima colonna l'oggetto è sfocato della scia vera, in pixel. Il nero: in una stanza buia, con il bianco intorno a 150 nit (nit = cd/m²) e un contrasto nativo di ≈ 5.000:1 per il VA e ≈ 1.000:1 per l'IPS; con la luce accesa si aggiunge la luce riflessa dallo schermo, ≈ R × E / π: E in lux (lx = lm/m²), R la riflettanza dello schermo (qui indicativa: ≈ 1% WOLED, ≈ 1,5% LCD, ≈ 3% QD-OLED e plasma, ≈ 5% CRT), e dividendo per π sr si ottengono nit. Valori indicativi, e i grigi dei riquadri sono esagerati per renderli visibili. L'alone del CRT è luce che rimbalza nel vetro spesso dello schermo; quello del Mini-LED è la zona di LED che resta accesa intorno all'oggetto luminoso (blooming).</p>
@@ -100,7 +101,7 @@ function drawTry(){var fixed=st.t<2,c=cfg(),y=26;
  document.getElementById('t2').innerHTML=btns(L.hzL,HZ.map(function(h){return h+' Hz'}),st.h,'setH',function(i){return fixed&&i>0});
  document.getElementById('t3').innerHTML=btns(L.bfL,L.bf,st.b,'setB',function(i){return fixed&&i>0});
  document.getElementById('t4').innerHTML=btns(L.pnL,st.t===2?L.pno:L.pn,st.n,'setN',function(i){return st.t<2});
- document.getElementById('rm').innerHTML=btns(L.rmL,L.rmB,st.r,'setR');
+ document.getElementById('rm').innerHTML=document.getElementById('rm2').innerHTML=btns(L.rmL,L.rmB,st.r,'setR');
  var s=HATCH+row(c[0],'t',y,c[1],c[2],[X0,y+36]);
  if(c[0].tr)s+='<rect x="'+X0+'" y="'+(y+42)+'" width="14" height="10" fill="url(#hatch)"/>'+(c[0].off?'<rect x="'+(X0+16)+'" y="'+(y+42)+'" width="14" height="10" fill="url(#hatchD)"/>':'')+T(X0+(c[0].off?36:20),y+51,c[0].off?L.lgT:L.lgT.replace(/ \(.*\)/,''),'ts');
  if(tc!==null){var xc=X0+tc*MS;s+='<line x1="'+xc+'" y1="'+(y-6)+'" x2="'+xc+'" y2="'+(y+24)+'" stroke="#B23B1E" stroke-width="1.4"/>';}
