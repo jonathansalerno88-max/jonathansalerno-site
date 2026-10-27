@@ -38,7 +38,7 @@
 <div class="ctl"><span class="lb">Lesion</span>
 <button id="d7" onclick="setD(7)">Sympathetic pathway cut (Horner)</button>
 <button id="d8" onclick="setD(8)">Cranial nerve III cut</button></div>
-<svg width="100%" viewBox="0 0 680 750">
+<svg width="100%" viewBox="0 0 680 812">
 <defs>
 <marker id="aP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#185FA5"/></marker>
 <marker id="aS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#A32D2D"/></marker>
@@ -48,7 +48,7 @@
 <g id="path"></g>
 </svg>
 <p class="info" id="info"></p>
-<p class="note">Pupil diameters are indicative: the drawing shows the direction and order of magnitude of the effect, not a patient's values. The sphincter is stronger than the dilator, which is why a muscarinic agonist constricts the pupil even in the dark. The share of fibres going to the ciliary muscle (about 97%) is the classic estimate from anatomical studies of the ciliary ganglion. Colours: <b style="color:#185FA5">blue</b> parasympathetic, <b style="color:#A32D2D">red</b> sympathetic.</p>
+<p class="note">Pupil diameters are indicative: the drawing shows the direction and order of magnitude of the effect, not a patient's values. The sphincter is stronger than the dilator, which is why a muscarinic agonist constricts the pupil even in the dark. The share of fibres going to the ciliary muscle (about 97%) is the classic estimate from anatomical studies of the ciliary ganglion. If the ciliary ganglion is damaged, many ciliary fibres regrow onto the sphincter: Adie's tonic pupil. Bottom right, the reduced eye of a young emmetrope: the blur on the retina equals pupil × vergence error / 60 D. Colours: <b style="color:#185FA5">blue</b> parasympathetic, <b style="color:#A32D2D">red</b> sympathetic.</p>
 <script>
 var light='B',near=false,drug=0,CX=150,CY=230,PXMM=18,RI=108;
 var P='#185FA5',S='#A32D2D';
@@ -135,12 +135,35 @@ function upd(){
  p+='<path d="M'+(sx+140)+' '+(rys+58)+' L'+(sx+140)+' 538 L'+(LX+50)+' 538 L'+(LX+16)+' '+(cyT+2)+'" fill="none" stroke="'+S+'" stroke-width="1" stroke-dasharray="3 3" opacity="'+(sOn?0.85:0.3)+'"/>';
  p+=T(420,556,'β2: relaxes it a little','ts',S);
  var st=g.c==='F'?'contracted (forced)':g.c==='X'?'paralysed':Ac>1?'contracted':'almost relaxed (resting tone)';
- var tx=320,ty=600,L2=[['Ciliary muscle: '+st,'th','#16222E'],
-  ['accommodation ≈ '+nf(Ac,1)+' D · zonule '+(slack<0.2?'taut':'slack')+' · lens '+(Ac<1?'flat':'rounded'),'ts',null],
-  ['It receives almost all the parasympathetic fibres of the','ts',P],['ciliary ganglion, about 97%: only 3% reach the sphincter.','ts',P],
-  ['If the ganglion is damaged, many ciliary fibres regrow','ts',P],['onto the sphincter: Adie\'s tonic pupil.','ts',P],
-  ['The sympathetic β2 branch relaxes it slightly and slowly.','ts',S]];
- L2.forEach(function(l,i){p+=T(tx,ty+i*17+(i>0?4:0),l[0],l[1],l[2]);});
+ // reduced eye: one refracting surface of 60 D, retina 22.3 mm behind it; light from the left
+ var dem=near?2.5:0,E=g.c==='F'?6-dem:g.c==='S'?0.3:g.c==='X'?-dem:0,Aop=dem+E,P0=60,Lmm=22.3,K=9;
+ var x0=432,y0=662,xr=x0+Lmm*K,zmm=Lmm*P0/(P0+E),bmm=dm*Math.abs(E)/P0,arc=bmm/16.7*3438;
+ p+=T(330,584,'The reduced eye: where it focuses','th')+T(330,600,'one 60 D surface · retina at 22.3 mm','ts');
+ p+='<ellipse cx="'+((x0+xr)/2)+'" cy="'+y0+'" rx="'+((xr-x0)/2)+'" ry="52" fill="#F7FAFD" stroke="#B4B2A9" stroke-width="1"/>';
+ p+='<path d="M'+(x0+14)+' '+(y0-50)+' Q'+(x0-14)+' '+y0+' '+(x0+14)+' '+(y0+50)+'" fill="#E6F1FB" stroke="#888780" stroke-width="1"/>';
+ p+='<path d="M'+(xr-8)+' '+(y0-40)+' Q'+(xr+2)+' '+y0+' '+(xr-8)+' '+(y0+40)+'" fill="none" stroke="#993C1D" stroke-width="2.2"/>'+T(xr+6,y0-30,'retina','ts','#993C1D');
+ p+='<line x1="324" y1="'+y0+'" x2="'+(xr+40)+'" y2="'+y0+'" stroke="var(--b)" stroke-width="0.5" stroke-dasharray="4 4"/>';
+ var hp=dm/2*11;
+ [-1,1].forEach(function(sg){p+='<line x1="'+(x0+6)+'" y1="'+(y0+sg*(hp+1))+'" x2="'+(x0+6)+'" y2="'+(y0+sg*46)+'" stroke="#854F0B" stroke-width="3.5"/>';});
+ var zx=x0+zmm*K,col='#E8A33D',fs=Math.abs(E)<0.05;
+ [-1,-0.5,0.5,1].forEach(function(f){var h=f*hp,ys=y0+h;
+  p+=near?'<line x1="330" y1="'+y0+'" x2="'+x0+'" y2="'+ys+'" stroke="'+col+'" stroke-width="1.1"/>':'<line x1="330" y1="'+ys+'" x2="'+x0+'" y2="'+ys+'" stroke="'+col+'" stroke-width="1.1"/>';
+  var yr=y0+h*(1-(xr-x0)/(zx-x0));
+  p+='<line x1="'+x0+'" y1="'+ys+'" x2="'+xr+'" y2="'+yr+'" stroke="'+col+'" stroke-width="1.1"/>';
+  if(zx>xr+1){var xe=Math.min(zx,676),ye=y0+h*(1-(xe-x0)/(zx-x0));p+='<line x1="'+xr+'" y1="'+yr+'" x2="'+xe+'" y2="'+ye+'" stroke="'+col+'" stroke-width="1" stroke-dasharray="3 3"/>';}});
+ if(near)p+='<circle cx="330" cy="'+y0+'" r="2.5" fill="#16222E"/>'+T(330,y0+16,'point at 40 cm','ts');else p+=T(330,y0-hp-6,'distant point','ts');
+ if(zx<=676)p+='<circle cx="'+zx+'" cy="'+y0+'" r="2.5" fill="#16222E"/>'+T(zx,y0+16,'F','ts',null,'middle');
+ var bh=Math.max(2,hp*Math.abs(1-(xr-x0)/(zx-x0)));
+ p+='<line x1="'+(xr+1)+'" y1="'+(y0-bh)+'" x2="'+(xr+1)+'" y2="'+(y0+bh)+'" stroke="#B23B1E" stroke-width="3.5"/>';
+ var bum=bmm*1000,rI=Math.max(1.5,bum/10),cxI=610,cyI=764;
+ p+=T(cxI,cyI-34,'blur spot on the retina','ts',null,'middle')+'<circle cx="'+cxI+'" cy="'+cyI+'" r="'+rI+'" fill="#F4D35E" fill-opacity="0.85" stroke="#B23B1E" stroke-width="1"/>'+'<line x1="'+(cxI-10)+'" y1="'+(cyI+36)+'" x2="'+(cxI+10)+'" y2="'+(cyI+36)+'" stroke="#16222E" stroke-width="2"/>'+T(cxI+14,cyI+40,'100 µm','ts');
+ var where=fs?'in focus on the retina':E>0?'focus {E} D in front of the retina'.replace('{E}',nf(E,1)):'focus {E} D behind the retina'.replace('{E}',nf(-E,1));
+ var verd=arc<2?'sharp':arc<6?'slightly blurred':'blurred';
+ var yt=734;
+ p+=T(330,yt,'accommodation {A} D, needed {R} D'.replace('{A}',nf(Aop,1)).replace('{R}',nf(dem,1)),'ts')+T(330,yt+16,'→ '+where,'th',fs?'#3B6D11':'#16222E');
+ p+=T(330,yt+33,'blur = pupil × error / 60 D','ts')+T(330,yt+49,'= {P} mm × {E} D / 60 D ≈ {B} µm'.replace('{P}',nf(dm,1)).replace('{E}',nf(Math.abs(E),1)).replace('{B}',nf(bmm*1000,0)),'ts');
+ p+=T(330,yt+66,'≈ '+nf(arc,arc<10?1:0)+'′ of arc · ','ts')+T(330+84+(arc<10?8:0),yt+66,verd,'th',arc<2?'#3B6D11':arc<6?'#9A6A00':'#B23B1E');
+ p+=T(20,778,'Ciliary muscle: '+st,'ts')+T(20,794,'zonule '+(slack<0.2?'taut':'slack'),'ts');
  document.getElementById('path').innerHTML=p;
  document.getElementById('info').innerHTML=g.txt+(light==='D'&&drug===0&&!near?' In dim light the sympathetic system prevails and the pupil widens: this is what happens during an eclipse.':'')+(near&&g.c!=='X'?' <b>When looking near</b>, the Edinger–Westphal nucleus drives three things together: accommodation (ciliary muscle), miosis (sphincter) and convergence (medial recti, also cranial nerve III). This is the near triad.':'');
 }
