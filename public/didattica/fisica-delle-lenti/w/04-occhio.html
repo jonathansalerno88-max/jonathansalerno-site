@@ -64,14 +64,14 @@
 <path d="M300 100 Q340 160 300 220" fill="#E6F1FB" stroke="#888780" stroke-width="1"/>
 <rect id="irT" x="300" y="100" width="4" height="28" fill="#854F0B"/>
 <rect id="irB" x="300" y="192" width="4" height="28" fill="#854F0B"/>
-<g id="zon"></g>
 <ellipse id="cil1" cx="284" cy="96" rx="12" ry="6" fill="#F0997B" stroke="#993C1D" stroke-width="0.5"/>
 <ellipse id="cil2" cx="284" cy="224" rx="12" ry="6" fill="#F0997B" stroke="#993C1D" stroke-width="0.5"/>
+<g id="zon"></g>
 <ellipse id="crys" cx="284" cy="160" rx="14" ry="45" fill="#B5D4F4" opacity="0.6" stroke="#378ADD" stroke-width="0.5"/>
 <circle cx="70" cy="160" r="3" fill="#A32D2D"/>
 <text class="ts" x="62" y="152" text-anchor="end">fovea</text>
-<text class="ts" id="cilLbl" x="250" y="74" text-anchor="end">muscolo ciliare</text>
-<text class="ts" id="zonLbl" x="250" y="92" text-anchor="end">zonula</text>
+<text class="th" id="cilLbl" x="250" y="74" text-anchor="end" fill="#C4562B" style="paint-order:stroke;stroke:#FBFCFD;stroke-width:4px;stroke-linejoin:round">muscolo ciliare</text>
+<text class="ts" id="zonLbl" x="250" y="92" text-anchor="end" style="paint-order:stroke;stroke:#F1EFE8;stroke-width:3px;stroke-linejoin:round">zonula</text>
 <text class="ts" x="262" y="244" text-anchor="end">cristallino</text>
 <text class="ts" x="118" y="262" text-anchor="middle">retina</text>
 <g id="specs"></g>
@@ -165,11 +165,12 @@ s+='<path d="M'+(p1.x+nx*6)+' '+(p1.y+ny*6)+' L'+(pb.x-ny*6)+' '+(pb.y+nx*6)+' L
 [0.05,0.1].forEach(function(dt){var q=arcPt(r,tl-dt),q2=arcPt(r,tl-dt+0.04);var mx=q.x-q2.x,my=q.y-q2.y,l=Math.sqrt(mx*mx+my*my);mx/=l;my/=l;
 s+='<path d="M'+(q2.x-my*6)+' '+(q2.y+mx*6)+' L'+q.x+' '+q.y+' L'+(q2.x+my*6)+' '+(q2.y-mx*6)+'" fill="none" stroke="#2C2C2A" stroke-width="1.5"/>';});
 return s;}
-function zonula(A,cx){
-var slack=A/10,ry=45-A*1.2,top=Y0-ry,bot=Y0+ry,y1=100+A*0.5,y2=220-A*0.5,col=slack<0.2?'#444441':'#888780',w=slack<0.2?1.6:1;
-var s='';[[cx-6,-1],[cx+6,1]].forEach(function(z){var x=z[0],o=z[1]*8*slack;
-s+='<path d="M'+x+' '+y1+' Q'+(x+o)+' '+((y1+top)/2)+' '+x+' '+top+'" fill="none" stroke="'+col+'" stroke-width="'+w+'"/>';
-s+='<path d="M'+x+' '+y2+' Q'+(x+o)+' '+((y2+bot)/2)+' '+x+' '+bot+'" fill="none" stroke="'+col+'" stroke-width="'+w+'"/>';});
+function zonula(A,cx,ytop,ybot,lt,lb){
+var slack=Math.min(1,A/6),col=A<2?'#444441':'#888780',w=A<2?1.6:1.2;
+function wv(x1,y1,x2,y2){if(A<2)return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+col+'" stroke-width="'+w+'"/>';
+ var d='M'+x1+' '+y1,L=Math.abs(y2-y1),n=Math.max(2,Math.round(L/6)),a=1.2+1.8*slack;for(var k=1;k<=30;k++){var t=k/30;d+=' L'+(x1+(x2-x1)*t+a*Math.sin(t*n*2*Math.PI)).toFixed(1)+' '+(y1+(y2-y1)*t).toFixed(1);}
+ return '<path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="'+w+'"/>';}
+var s='';[-6,6].forEach(function(dx){s+=wv(cx+dx,ytop,cx+dx*0.7,lt)+wv(cx+dx,ybot,cx+dx*0.7,lb);});
 return s;}
 function fmt(x,d){return x.toFixed(d).replace('.',',');}
 function q(x1,x2,y,lbl,col,dash,arrowL,arrowR){var c=col,s='';
@@ -207,10 +208,11 @@ document.getElementById('irT').setAttribute('height',(Y0-pw)-100);
 document.getElementById('irB').setAttribute('y',Y0+pw);document.getElementById('irB').setAttribute('height',220-(Y0+pw));
 var rx=14+AL*0.6,cx=X0+rx;
 var cr=document.getElementById('crys');cr.setAttribute('rx',rx);cr.setAttribute('cx',cx);cr.setAttribute('ry',45-AL*1.2);
-['cil1','cil2'].forEach(function(id){var e=document.getElementById(id);e.setAttribute('cx',cx);e.setAttribute('ry',6+A*0.7);});
-document.getElementById('cil1').setAttribute('cy',96+A*0.5);document.getElementById('cil2').setAttribute('cy',224-A*0.5);
-document.getElementById('zon').innerHTML=zonula(A,cx);
-document.getElementById('cilLbl').textContent='muscolo ciliare: '+(A<0.5?'rilassato':A<6?'contratto in parte':'contratto');
+var para=drug==='C',con=A>=0.5&&!para,mry=7+A*0.8,cyT=86+A*1.4,cyB=234-A*1.4,lry=45-AL*1.2,mf=para?'#F0997B':A>=2?'#E8774F':'#F0997B';
+[['cil1',cyT],['cil2',cyB]].forEach(function(o){var e=document.getElementById(o[0]);e.setAttribute('cx',cx);e.setAttribute('cy',o[1]);e.setAttribute('rx',17);e.setAttribute('ry',mry);e.setAttribute('fill',mf);e.setAttribute('stroke-width','0.8');e.setAttribute('opacity',para?0.5:1);});
+var st='',sp=6-0.45*A;[cyT,cyB].forEach(function(cy){for(var xx=-15+sp/2;xx<15;xx+=sp){var hh=mry*Math.sqrt(Math.max(0,1-(xx/17)*(xx/17)))-1.5;if(hh>1)st+='<line x1="'+(cx+xx)+'" y1="'+(cy-hh)+'" x2="'+(cx+xx)+'" y2="'+(cy+hh)+'" stroke="#993C1D" stroke-width="0.8" opacity="'+(para?0.3:0.75)+'"/>';}});
+document.getElementById('zon').innerHTML=zonula(A,cx,cyT+mry-1,cyB-mry+1,Y0-lry,Y0+lry)+st;
+document.getElementById('cilLbl').textContent='muscolo ciliare: '+(drug==='C'?'paralizzato':A<0.5?'rilassato':A<6?'contratto in parte':'contratto');
 document.getElementById('zonLbl').textContent='zonula (sospensori): '+(A<2?'tesa':A<6?'in parte lassa':'lassa');
 document.getElementById('retImg').innerHTML=isInf?retArrow(TH,-TH):retArrow((Y0-(Y0-H))/(ox-X0),(Y0-(Y0+H))/(ox-X0));
 var Pr=60+excess[cond][0]+AL+(uL?-excess[cond][0]:0),fR=1000/Pr,d0mm=isInf?Infinity:(ox-X0)*PX,V0=isInf?0:1000/d0mm,Vi=Pr-V0,diR=Math.abs(Vi)<1e-6?Infinity:1000/Vi;
