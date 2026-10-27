@@ -16,10 +16,10 @@
 <body>
 <h2 class="sr-only">Comparison seen from above. On the left, Einthoven's string galvanometer: a silver-coated quartz string between the poles of a magnet; the heart's current runs through it and the Lorentz force bends it; its shadow, projected on moving photographic paper, traces the electrocardiogram. On the right, the SEM scan coils: the current in the coils makes the field, which bends the electron beam and moves the spot on the sample. Same law, F = q · v × B; electrons are negative and deflect the other way.</h2>
 <div class="row"><button id="bt" onclick="beat()">▶ Heartbeat</button><span style="margin-left:auto">Coil current</span><button id="pw" onclick="ON=!ON;draw()"></button><input type="range" id="ic" min="-1" max="1" step="0.05" value="0.6" oninput="draw()" aria-label="Coil current"></div>
-<svg viewBox="0 0 680 330" aria-hidden="true"><g id="g"></g></svg>
+<svg viewBox="0 0 680 360" aria-hidden="true"><g id="g"></g></svg>
 <div class="cap"><p>The field is fixed: the magnet provides it. What changes is the heart's current, which runs through the string and bends it. From the deflection you read the current: it measures.</p><p>You choose the current: it changes the field, and the field bends the beam. With the current you decide where the spot goes: it steers. Electrons are negative, so with the same current and the same field they deflect the other way.</p></div>
 <script>
-var L={"pw": ["⏻ on", "⏻ off"], "off": "current off: no field, the beam goes straight", "loc": "en-GB", "head": "Same principle: the Lorentz force", "f1": "F = q · v × B", "f2": "for a wire carrying a current: F = I · L × B", "lt": "Einthoven's string galvanometer (1901)", "rt": "SEM scan coils", "l": {"N": "N", "S": "S", "lamp": "lamp", "str": "silver-coated quartz string", "cur": "heart's current ⊗ (into the page)", "lens": "lens", "film": "moving photographic paper", "ecg": "ECG"}, "r": {"coil": "electromagnet", "beam": "electron beam ⊗ (into the page)", "spot": "spot on|the sample"}},ON=true,TR=[],t0=null,run=false,I=0,raf=null;
+var L={"sh": ["Long story short: a charge moving through a magnetic field gets pushed sideways,", "at right angles to both its motion and the field. More field, more speed: a bigger push."], "pw": ["⏻ on", "⏻ off"], "off": "current off: no field, the beam goes straight", "loc": "en-GB", "head": "Same principle: the Lorentz force", "f1": "F = q · v × B", "f2": "for a wire: F = I · L × B", "lt": "Einthoven's string galvanometer (1901)", "rt": "SEM scan coils", "l": {"N": "N", "S": "S", "lamp": "lamp", "str": "silver-coated quartz string", "cur": "heart's current ⊗ (into the page)", "lens": "lens", "film": "moving photographic paper", "ecg": "ECG"}, "r": {"coil": "electromagnet", "beam": "electron beam ⊗ (into the page)", "spot": "spot on|the sample"}},ON=true,TR=[],t0=null,run=false,I=0,raf=null;
 function T(x,y,t,cl,col,anc,st){return '<text class="'+cl+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+(st?' style="'+st+'"':'')+'>'+t+'</text>'}
 function Ln(x1,y1,x2,y2,c,w,d,o){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+(w||1.2)+'"'+(d?' stroke-dasharray="'+d+'"':'')+(o!=null?' opacity="'+o+'"':'')+'/>'}
 function arr(x1,y1,x2,y2,c,w){var a=Math.atan2(y2-y1,x2-x1),h=7;return Ln(x1,y1,x2,y2,c,w||2)+'<path d="M'+x2+' '+y2+' L'+(x2-h*Math.cos(a-0.45))+' '+(y2-h*Math.sin(a-0.45))+' L'+(x2-h*Math.cos(a+0.45))+' '+(y2-h*Math.sin(a+0.45))+' Z" fill="'+c+'"/>'}
@@ -27,8 +27,11 @@ function arr(x1,y1,x2,y2,c,w){var a=Math.atan2(y2-y1,x2-x1),h=7;return Ln(x1,y1,
 function ecg(t){var c=t%0.9,g=function(m,s,a){return a*Math.exp(-(c-m)*(c-m)/(2*s*s))};return g(0.16,0.025,0.12)+g(0.27,0.008,-0.12)+g(0.30,0.012,1)+g(0.33,0.01,-0.25)+g(0.55,0.04,0.3)}
 function draw(){var s='',Y=185,K=34,ic=ON?parseFloat(document.getElementById('ic').value):0;var pw=document.getElementById('pw');pw.textContent=L.pw[ON?0:1];pw.setAttribute('aria-pressed',ON);pw.style.opacity=ON?1:0.6;
  // banner
- s+='<rect x="190" y="6" width="300" height="52" rx="8" fill="#EEF4FC" stroke="#1456A8"/>'+T(340,24,L.head,'th','#1456A8','middle')+T(340,42,L.f1,'th','#16222E','middle','font-size:15px')+T(340,55,L.f2,'ts',null,'middle','font-size:10.5px');
- s+=Ln(190,32,150,72,'#1456A8',1,'3 3')+Ln(490,32,530,72,'#1456A8',1,'3 3');
+ s+='<rect x="70" y="4" width="540" height="84" rx="8" fill="#EEF4FC" stroke="#1456A8"/>'+T(340,22,L.head,'th','#1456A8','middle');
+ s+=T(340,41,L.sh[0],'ts','#16222E','middle','font-size:13px')+T(340,57,L.sh[1],'ts','#16222E','middle','font-size:13px');
+ s+=T(340,79,L.f1+'      ·      '+L.f2,'th','#16222E','middle','font-size:13px');
+ s+=Ln(150,88,165,106,'#1456A8',1,'3 3')+Ln(530,88,515,106,'#1456A8',1,'3 3');
+ s+='<g transform="translate(0,30)">';
  s+=T(165,90,L.lt,'th',null,'middle')+T(515,90,L.rt,'th',null,'middle')+Ln(340,70,340,320,'#DDE4EA',1);
  // ---- Einthoven, seen from above: light goes left to right through bores in the poles ----
  var d=I*K;
@@ -59,7 +62,7 @@ function draw(){var s='',Y=185,K=34,ic=ON?parseFloat(document.getElementById('ic
  s+=T(cx,Y+80,L.r.beam,'ts','#185FA5','middle');
  // the sample, with the spot
  s+='<rect x="600" y="'+(Y-55)+'" width="70" height="110" rx="4" fill="#2A2A2A"/>'+Ln(600,Y,670,Y,'#555',0.6,'2 2')+'<circle cx="635" cy="'+(Y+e*1.4).toFixed(1)+'" r="5" fill="#9FE3FF"/>'+T(635,Y+66,L.r.spot.split('|')[0],'ts',null,'middle','font-size:10.5px')+T(635,Y+79,L.r.spot.split('|')[1]||'','ts',null,'middle','font-size:10.5px');
- document.getElementById('g').innerHTML=s;}
+ document.getElementById('g').innerHTML=s+'</g>';}
 function step(ts){if(!run)return;if(t0===null)t0=ts;var t=(ts-t0)/1000;I=ecg(t)*1.0;TR.push(I);if(TR.length>100)TR.shift();draw();if(t<5.4)raf=requestAnimationFrame(step);else{run=false;I=0;draw();}}
 function beat(){TR=[];t0=null;run=true;cancelAnimationFrame(raf);raf=requestAnimationFrame(step);}
 draw();
