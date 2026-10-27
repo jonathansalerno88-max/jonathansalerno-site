@@ -102,8 +102,9 @@ figure.w iframe.h-game{height:1240px}
 figure.w iframe.h-sfida{height:1475px}
 figure.w iframe.h-film{height:1300px}
 figure.w iframe.h-micro{height:1075px}
+figure.w iframe.h-em{height:760px}
 figure.w iframe.h-pers{height:1505px}
-@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1295px}}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1295px} figure.w iframe.h-em{height:850px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -111,6 +112,7 @@ table{border-collapse:collapse; font-size:.9rem; margin:.4rem 0 1rem; width:100%
 .tscroll{overflow-x:auto; max-width:100%}
 .tscroll table{max-width:none; min-width:34rem}
 .tscroll td{white-space:nowrap}
+.tscroll.tw td{white-space:normal}
 th,td{text-align:left; padding:.45rem .6rem; border-bottom:1px solid var(--rule); vertical-align:top}
 th{font-weight:600; color:var(--mut); font-size:.8125rem}
 
@@ -270,6 +272,7 @@ dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
     <li><a href="#reale-virtuale">Real or virtual image</a></li>
     <li><a href="#occhiali">Spectacle lenses</a></li>
     <li><a href="#microscopio">The optical microscope</a></li>
+    <li><a href="#confocale-tem-sem">Confocal, TEM and SEM</a></li>
   </ol></div>
   </div>
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#fonti">Sources</a></p>
@@ -925,6 +928,45 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   <li>With the stage arrows move the slide to the right: which way does the image go? You can also drag the view with the mouse or a finger.</li>
   <li>Switch to the 100× without oil, then add the oil. And what if you put oil on the 40×?</li>
   <li>Make the condenser diverging, then remove it: does the image stay sharp? And bright?</li></ol></div>
+</section>
+
+<section id="confocale-tem-sem">
+  <h2>10 · Confocal, TEM and SEM</h2>
+  <h3>When light is not enough</h3>
+  <p>With visible light, resolution stops at about 0.2 µm: you can see mitochondria, but not the membrane (7–8 nm)
+  nor ribosomes (about 25 nm). From here there are two ways forward. The <b>confocal</b> keeps light, and so almost the
+  same resolution, but throws away the light coming from out of focus: in a thick sample you see a thin, sharp slice,
+  and by stacking the slices you rebuild the cell in 3D. <b>Electron</b> microscopes change the wave: they use
+  electrons, whose wavelength is a hundred thousand times shorter than green light.</p>
+  <p class="formula">λ = h / p ≈ h / √(2 · m · e · V)</p>
+  <div class="dim"><b>Checking the units</b><ul><li>Electrons accelerated at 100 kV: λ = 6.63·10⁻³⁴ J·s / √(2 × 9.11·10⁻³¹ kg × 1.60·10⁻¹⁹ C × 10⁵ V) ≈ 3.9·10⁻¹² m; with the relativistic correction, 3.7 pm.</li><li>Units: C · V = J = kg·m²/s², so √(kg · kg·m²/s²) = kg·m/s, a momentum; and J·s / (kg·m/s) = m ✓.</li></ul></div>
+  <p>Electrons are charged, so the lenses are <b>coils</b>: the magnetic field bends them as glass bends light, and
+  focusing is done by changing the current. The whole column is under vacuum, because air would stop them. Magnetic
+  lenses, though, have strong aberrations, and the real resolution does not reach 3.7 pm: it is about 0.1–0.2 nm, and
+  1–2 nm on biological sections, because there the limit is the sample.</p>
+  <p>The <b>TEM</b> (Transmission Electron Microscope) works like a projector: the beam passes through a 50–100 nm
+  section, stained with heavy metals (uranyl, lead) that deflect electrons where they bind, that is on the membranes.
+  It shows the inside, in projection. The <b>SEM</b> (Scanning Electron Microscope) instead does not form an image with
+  lenses: a pencil of electrons scans the surface line by line, and a detector counts the secondary electrons leaving
+  each point. It shows the surface, in relief.</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th></th><th>Optical</th><th>Confocal</th><th>TEM</th><th>SEM</th></tr></thead>
+    <tbody>
+      <tr><td>Uses</td><td>light</td><td>laser light, fluorescence</td><td>electrons, 60–300 kV</td><td>electrons, 1–30 kV</td></tr>
+      <tr><td>Lenses</td><td>glass</td><td>glass + pinhole</td><td>magnetic</td><td>magnetic + scanning</td></tr>
+      <tr><td>Resolution</td><td>≈ 0.2 µm</td><td>≈ 0.2 µm, ≈ 0.6 µm in depth</td><td>≈ 0.1–0.2 nm (1–2 nm on tissue)</td><td>≈ 1–10 nm</td></tr>
+      <tr><td>Sample</td><td>can be alive</td><td>can be alive, labelled</td><td>fixed, 50–100 nm section</td><td>fixed, dry, metal-coated</td></tr>
+      <tr><td>Shows</td><td>colours, 2D</td><td>optical sections, 3D</td><td>the inside, 2D</td><td>the surface, in relief</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="w">
+    <iframe src="w/14-confocale-tem-sem.html" title="Confocal, TEM and SEM in diagram form" loading="lazy" class="h-em"></iframe>
+    <figcaption>Three tabs, one per microscope. <a href="w/14-confocale-tem-sem.html">Open full screen</a></figcaption>
+  </figure>
+  <div class="try"><b>Try this.</b> <i>Goal</i>: understand what each one adds to the optical microscope.
+  <ol><li>Confocal: close the pinhole, then move the focal plane from 0 to 30 µm and watch the rings appear, widen and vanish.</li>
+  <li>TEM: with the 70 nm section, remove the staining. Then put it back and switch to 500 nm and 5 µm.</li>
+  <li>SEM: scan without coating, then with gold. Why is the metal needed?</li></ol></div>
 </section>
 
 <section id="fonti">

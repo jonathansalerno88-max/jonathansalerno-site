@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Confocale, TEM e SEM</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.tabs{display:flex;gap:6px;margin:0 0 8px;flex-wrap:wrap}
+.tabs button{font:inherit;font-size:14px;font-weight:600;padding:5px 14px;border-radius:999px;border:1px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.tabs button.act{background:var(--border-accent);border-color:var(--border-accent);color:#fff}
+.tabs button .ok{margin-left:6px;font-weight:700}
+.tog{display:flex;flex-wrap:wrap;align-items:center;gap:5px;font-size:13px;color:var(--text-secondary);margin:4px 0}
+.tog>span:first-child{min-width:110px}
+.tog button{font:inherit;font-size:13px;padding:3px 10px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.tog button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
+.tog input{flex:1 1 200px}
+.tog output{min-width:60px;text-align:right;color:var(--text-primary);font-variant-numeric:tabular-nums}
+#ex{font-size:13.5px;line-height:1.55;margin:6px 0 0}
+#idc{font-size:12.5px;line-height:1.5;color:var(--text-secondary);margin:6px 0 0;border-top:1px solid var(--border);padding-top:6px}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Tre microscopi in schema. Confocale: un laser accende un punto del campione e un forellino (pinhole) davanti al rivelatore blocca la luce che viene da sopra e da sotto il piano a fuoco; si sceglie il pinhole aperto o chiuso e la profondità del piano. TEM: un fascio di elettroni attraversa una sezione sottilissima, lenti magnetiche formano l'immagine su uno schermo; si scelgono spessore, colorazione con metalli pesanti e fuoco. SEM: un fascio di elettroni scansiona la superficie riga per riga e un rivelatore raccoglie gli elettroni secondari; si sceglie se rivestire il campione di metallo e si avvia la scansione.</h2>
+<div class="goalbox" role="note"><span class="gi" aria-hidden="true">🎯</span><div class="gt"><b>Obiettivo</b> · in ogni microscopio trova le impostazioni che danno l'immagine giusta.</div><span class="gs" id="gs" aria-live="polite"></span></div>
+<div class="tabs" id="tb" role="tablist"></div>
+<div id="ctl"></div>
+<svg viewBox="0 0 680 460" aria-hidden="true"><defs>
+<filter id="b1" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur id="g1" stdDeviation="0"/></filter>
+<filter id="b2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+<clipPath id="vc"><rect x="360" y="70" width="300" height="300" rx="6"/></clipPath>
+<radialGradient id="rbc" cx="0.45" cy="0.42" r="0.6"><stop offset="0" stop-color="#6E6E6E"/><stop offset="0.45" stop-color="#9A9A9A"/><stop offset="0.8" stop-color="#E9E9E9"/><stop offset="1" stop-color="#BDBDBD"/></radialGradient>
+</defs><g id="g"></g></svg>
+<p id="ex" aria-live="polite"></p>
+<p id="idc"></p>
+<script>
+var L={"loc": "it-IT", "gs": "{N} su 3", "tabs": ["Confocale", "TEM", "SEM"], "view": "Cosa vedi", "c": {"ph": "Pinhole", "pho": ["aperto", "chiuso"], "z": "Piano a fuoco", "lab": {"las": "laser", "dic": "specchio dicroico", "obj": "obiettivo", "smp": "campione spesso, cellule marcate", "fp": "piano a fuoco", "tl": "lente", "pin": "pinhole", "det": "rivelatore", "inf": "luce dal piano a fuoco", "oof": "luce da fuori fuoco"}, "id": "Sorgente: laser · lenti di vetro · risoluzione ≈ 0,2 µm di lato e ≈ 0,6 µm in profondità · campione anche vivo, marcato con molecole fluorescenti · immagine: sezioni ottiche, da cui si ricostruisce il 3D", "ex": ["Pinhole aperto: è come un microscopio a fluorescenza normale. Al rivelatore arriva anche la luce dei piani sopra e sotto: le cellule sono dischi impastati in un alone.", "Pinhole chiuso: passa solo la luce che nasce nel piano a fuoco, le altre convergono altrove e sbattono sul bordo del forellino. Vedi una sezione ottica sottile: della membrana marcata resta un anello, che cambia diametro se sposti il piano a fuoco."]}, "t": {"th": "Spessore", "tho": ["70 nm", "500 nm", "5 µm"], "st": "Colorazione", "sto": ["metalli pesanti", "nessuna"], "f": "Lente obiettivo", "lab": {"gun": "cannone elettronico|100 kV", "con": "lente condensatrice", "spc": "sezione su griglia", "obj": "lente obiettivo", "prj": "lente proiettrice", "scr": "schermo / camera", "vac": "tutto sotto vuoto · le lenti sono bobine", "mag": ""}, "id": "Sorgente: elettroni a 100 kV (λ ≈ 3,7 pm) · lenti magnetiche · risoluzione ≈ 0,2 nm dello strumento, 1–2 nm sulle sezioni biologiche · campione fissato, disidratato, tagliato a 50–100 nm, sotto vuoto · immagine: proiezione 2D in bianco e nero", "ex": {"ok": "Sezione da 70 nm colorata con uranile e piombo: gli elettroni attraversano il citoplasma e vengono deviati dove ci sono i metalli pesanti, cioè sulle membrane. Vedi nucleo, mitocondri con le creste, reticolo con i ribosomi.", "thin": "Più spessa è la sezione, più elettroni vengono deviati più volte o fermati: l'immagine si scurisce e si impasta. ", "thick": "A 5 µm gli elettroni non passano quasi più: schermo nero. ", "nost": "Senza metalli pesanti il campione biologico (carbonio, ossigeno, azoto) devia pochissimo gli elettroni: tutto è grigio su grigio. ", "foc": "L'immagine è sfocata: regola la corrente della lente obiettivo, che è una bobina e mette a fuoco cambiando il campo magnetico. "}}, "s": {"scan": "▶ Scansiona", "co": "Rivestimento", "coo": ["oro", "nessuno"], "lab": {"gun": "cannone elettronico|1–30 kV", "con": "lente condensatrice", "sc": "bobine di scansione", "obj": "lente obiettivo", "smp": "globuli rossi|su vetrino", "det": "rivelatore di|elettroni secondari", "vac": "tutto sotto vuoto"}, "id": "Sorgente: elettroni a 1–30 kV · lenti magnetiche e bobine di scansione · risoluzione ≈ 1–10 nm · campione fissato, disidratato, rivestito di metallo, sotto vuoto · immagine: la superficie in rilievo, in bianco e nero", "ex": {"idle": "Premi «Scansiona»: il fascio passa sulla superficie un punto alla volta, riga dopo riga, e l'immagine si costruisce così.", "run": "Il fascio scansiona la superficie: dove colpisce, il campione emette elettroni secondari, e il rivelatore li conta. Più ne arrivano, più chiaro è quel punto.", "ok": "Globuli rossi rivestiti d'oro: si vede il disco biconcavo in rilievo, con i bordi più chiari perché da lì escono più elettroni secondari. Non c'è lente che formi l'immagine: è una mappa punto per punto.", "nocoat": "Senza rivestimento il campione non conduce: gli elettroni si accumulano, la superficie si carica e respinge il fascio. Righe bianche, zone accecate, immagine che salta. Per questo si ricopre di un velo d'oro di pochi nanometri."}}, "badge": ["✓", "✗"]},TAB=0,C={ph:0,z:12},TE={th:0,st:0,f:6},SE={co:1,p:0,run:false},DONE=[false,false,false];
+function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d,minimumFractionDigits:d})}
+function T(x,y,t,cl,col,anc){return '<text class="'+cl+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+'>'+t+'</text>'}
+function Ln(x1,y1,x2,y2,c,w,d,o){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+(w||1.2)+'"'+(d?' stroke-dasharray="'+d+'"':'')+(o!=null?' opacity="'+o+'"':'')+'/>'}
+function lbl(x,y,t,col){var ls=t.split('|'),o=Ln(x,y,x+14,y,'#B4BCC6',0.8);ls.forEach(function(l,i){o+=T(x+18,y+4+(i-(ls.length-1)/2)*14,l,'ts',col)});return o}
+function row(lab,opts,cur,fn){var h='<div class="tog"><span>'+lab+'</span>';opts.forEach(function(k,j){h+='<button class="'+(cur===j?'act':'')+'" aria-pressed="'+(cur===j)+'" onclick="'+fn+'('+j+')">'+k+'</button>'});return h+'</div>'}
+function glass(x,y,w){return '<path d="M'+(x-w)+' '+y+' Q'+x+' '+(y-12)+' '+(x+w)+' '+y+' Q'+x+' '+(y+12)+' '+(x-w)+' '+y+' Z" fill="#B5D4F4" opacity="0.85" stroke="#185FA5" stroke-width="1.2"/>'}
+function coil(x,y,w){var s='';[-1,1].forEach(function(sg){var cx=x+sg*(w+12);s+='<rect x="'+(cx-11)+'" y="'+(y-11)+'" width="22" height="22" rx="3" fill="#C9772D" stroke="#7A4310"/>'+T(cx,y+5,sg<0?'⊗':'⊙','ts','#FFF','middle');});return s}
+function frame(s){return '<rect x="360" y="70" width="300" height="300" rx="6" fill="#000"/><g clip-path="url(#vc)">'+s+'</g><rect x="360" y="70" width="300" height="300" rx="6" fill="none" stroke="#16222E" stroke-width="3"/>'+T(510,56,L.view,'th',null,'middle')}
+function setTab(i){TAB=i;SE.run=false;draw()}
+function setC(k,v){C[k]=v;draw()}function setT(k,v){TE[k]=v;draw()}function setS(k,v){SE[k]=v;SE.p=0;SE.run=false;draw()}
+// ---------- confocal ----------
+var CELLS=[{x:450,y:150,z:8,r:6},{x:560,y:205,z:18,r:8},{x:465,y:290,z:25,r:5},{x:600,y:310,z:12,r:4.5}],PPU=5;
+function confocal(){var c=L.c,s='',closed=C.ph===1,z=C.z;
+ // side view: sample moves, focal plane fixed at y=372
+ var AX=150,YD=46,YP=78,YTL=128,YDI=210,YOB=318,YF=372,ytop=YF-z*2;
+ s+='<rect x="'+(AX-90)+'" y="'+ytop+'" width="180" height="62" fill="#1B2A36" opacity="0.08" stroke="#9DACB9"/>';
+ CELLS.forEach(function(k,i){s+='<circle cx="'+(AX-70+i*45)+'" cy="'+(ytop+k.z*2)+'" r="'+(k.r*2)+'" fill="none" stroke="#E05A2B" stroke-width="1.6"/>';});
+ s+=Ln(AX-100,YF,AX+100,YF,'#534AB7',1,'4 3')+T(AX+104,YF+4,c.lab.fp,'ts','#534AB7');
+ // laser in, dichroic, down to the focus
+ s+='<rect x="18" y="'+(YDI-9)+'" width="34" height="18" rx="3" fill="#2E8B57"/>'+T(35,YDI+28,c.lab.las,'ts',null,'middle');
+ s+=Ln(52,YDI,AX,YDI,'#3BB273',3)+Ln(AX,YDI,AX,YOB,'#3BB273',3,null,0.8);
+ s+='<polygon points="'+(AX-6)+','+(YOB+4)+' '+(AX+6)+','+(YOB+4)+' '+AX+','+YF+'" fill="#3BB273" opacity="0.7"/>';
+ s+=Ln(AX-26,YDI+26,AX+26,YDI-26,'#7A8794',3)+T(AX+30,YDI-22,c.lab.dic,'ts');
+ // emission rays: from the focal point (solid) and from a point 14 px deeper (dashed)
+ var F1=54,F2=50,pin=closed?2:30;
+ function ray(y0,xa,col,dash){var d=y0-YOB,sl=xa/d,s2=sl-xa/F1,x2=xa+s2*(YOB-YTL),s3=s2-x2/F2,xp=x2+s3*(YTL-YP),o='';
+  o+=Ln(AX,y0,AX+xa,YOB,col,1.2,dash)+Ln(AX+xa,YOB,AX+x2,YTL,col,1.2,dash);
+  if(Math.abs(xp)>pin){var t=(Math.sign(xp)*pin-x2)/s3,yb=YTL-Math.max(0,Math.min(YTL-YP,(YP-YTL)*-1*((Math.abs(xp)-pin)>0?1:1)));o+=Ln(AX+x2,YTL,AX+xp,YP+4,col,1.2,dash,0.9)+T(AX+xp,YP+12,'×','th',col,'middle');}
+  else o+=Ln(AX+x2,YTL,AX+xp,YP,col,1.2,dash)+Ln(AX+xp,YP,AX+xp*0.4,YD+8,col,1.2,dash);
+  return o;}
+ [-22,22].forEach(function(xa){s+=ray(YF+F1-F1+0,xa,'#E8A33D');});
+ [-18,18].forEach(function(xa){s+=ray(YF+30,xa,'#C23B5A','4 3');});
+ s+=glass(AX,YOB,40)+lbl(AX+46,YOB,c.lab.obj)+glass(AX,YTL,32)+lbl(AX+40,YTL,c.lab.tl);
+ s+='<rect x="'+(AX-60)+'" y="'+(YP-3)+'" width="'+(60-pin)+'" height="6" fill="#16222E"/><rect x="'+(AX+pin)+'" y="'+(YP-3)+'" width="'+(60-pin)+'" height="6" fill="#16222E"/>'+lbl(AX+64,YP,c.lab.pin);
+ s+='<rect x="'+(AX-26)+'" y="'+(YD-12)+'" width="52" height="16" rx="3" fill="#55697A"/>'+lbl(AX+30,YD-4,c.lab.det);
+ s+=Ln(370,392,386,392,'#E8A33D',2)+T(392,396,c.lab.inf,'ts')+Ln(370,410,386,410,'#C23B5A',2,'4 3')+T(392,414,c.lab.oof,'ts');
+ s+=T(AX,ytop+76,c.lab.smp,'ts',null,'middle');
+ // view
+ var v='';
+ CELLS.forEach(function(k){var dz=z-k.z,R=k.r*PPU;
+  if(closed){if(Math.abs(dz)<k.r){var r=R*Math.sqrt(1-dz*dz/(k.r*k.r));v+='<circle cx="'+k.x+'" cy="'+k.y+'" r="'+r.toFixed(1)+'" fill="none" stroke="#FF6A3D" stroke-width="3" opacity="0.95"/>';}}
+  else{v+='<g filter="url(#b2)"><circle cx="'+k.x+'" cy="'+k.y+'" r="'+R+'" fill="#FF6A3D" opacity="0.45"/></g>';
+   if(Math.abs(dz)<k.r){var r=R*Math.sqrt(1-dz*dz/(k.r*k.r));v+='<circle cx="'+k.x+'" cy="'+k.y+'" r="'+r.toFixed(1)+'" fill="none" stroke="#FF6A3D" stroke-width="3" opacity="0.6"/>';}}});
+ if(!closed)v='<rect x="360" y="70" width="300" height="300" fill="#FF6A3D" opacity="0.10"/>'+v;
+ v+=Ln(600,350,650,350,'#FFF',3)+T(625,342,'10 µm','ts','#FFF','middle');
+ s+=frame(v);
+ DONE[0]=closed;
+ return [s,c.ex[C.ph],c.id];}
+// ---------- TEM ----------
+function tem(){var t=L.t,s='',AX=126,ys=[36,104,176,228,300,384];
+ s+='<rect x="'+(AX-78)+'" y="20" width="156" height="388" rx="10" fill="#F3F5F7" stroke="#C9D2DC"/>'+T(AX,422,t.lab.vac,'ts','#8696A4','middle');
+ s+='<path d="M'+(AX-10)+' '+(ys[0]-8)+' L'+AX+' '+(ys[0]+6)+' L'+(AX+10)+' '+(ys[0]-8)+'" fill="none" stroke="#16222E" stroke-width="2"/>'+lbl(AX+82,ys[0],t.lab.gun);
+ var bw=[4,30,8,8,26,60],op=TE.th===2?0.15:TE.th===1?0.5:0.85;
+ // beam: cone shapes between elements
+ function cone(y1,w1,y2,w2,o){return '<path d="M'+(AX-w1)+' '+y1+' L'+(AX-w2)+' '+y2+' L'+(AX+w2)+' '+y2+' L'+(AX+w1)+' '+y1+' Z" fill="#5AA7E6" opacity="'+o+'"/>'}
+ s+=cone(ys[0]+6,2,ys[1],30,0.35)+cone(ys[1],30,ys[2],10,0.35)+cone(ys[2],10,ys[3],12,0.35*op/0.85+0.05)+cone(ys[3],12,ys[3]+30,1,0.35*op/0.85+0.05)+cone(ys[3]+30,1,ys[4],22,0.3*op/0.85+0.05)+cone(ys[4],22,ys[5],60,0.3*op/0.85+0.05);
+ s+=coil(AX,ys[1],34)+lbl(AX+82,ys[1],t.lab.con);
+ s+='<rect x="'+(AX-30)+'" y="'+(ys[2]-2-(TE.th*2))+'" width="60" height="'+(4+TE.th*4)+'" fill="'+(TE.st===0?'#4A3B5A':'#A79C8A')+'"/>'+Ln(AX-40,ys[2],AX+40,ys[2],'#8B8B8B',1,'2 2')+lbl(AX+82,ys[2],t.lab.spc);
+ s+=coil(AX,ys[3],34)+lbl(AX+82,ys[3],t.lab.obj)+coil(AX,ys[4],34)+lbl(AX+82,ys[4],t.lab.prj);
+ s+='<rect x="'+(AX-66)+'" y="'+ys[5]+'" width="132" height="8" fill="#7BD389" stroke="#2E7D32"/>'+lbl(AX+82,ys[5]+4,t.lab.scr);
+ // view: a piece of cell at about x15 000 (field 6 µm)
+ var thick=TE.th,stain=TE.st===0,def=Math.abs(TE.f),bg=thick===2?'#0E0E0E':thick===1?'#7C7C7C':'#D9D9D9';
+ var ink=stain?(thick===1?'#2A2A2A':'#1C1C1C'):(thick===1?'#6E6E6E':'#C6C6C6'),soft=stain?'#5A5A5A':'#CDCDCD',v='';
+ v+='<rect x="360" y="70" width="300" height="300" fill="'+bg+'"/>';
+ if(thick<2){
+  v+='<g filter="url(#b1)">';
+  v+='<path d="M360 70 L520 70 Q500 160 430 200 Q390 222 360 228 Z" fill="'+(stain?'#A8A8A8':'#D2D2D2')+'" opacity="'+(thick?0.7:1)+'"/>';
+  v+='<path d="M520 70 Q500 160 430 200 Q390 222 360 228" fill="none" stroke="'+ink+'" stroke-width="2.4"/><path d="M528 70 Q508 166 434 208 Q392 230 360 236" fill="none" stroke="'+ink+'" stroke-width="2"/>';
+  [[400,110,26,16],[460,95,20,12],[410,170,18,10]].forEach(function(h){v+='<ellipse cx="'+h[0]+'" cy="'+h[1]+'" rx="'+h[2]+'" ry="'+h[3]+'" fill="'+ink+'" opacity="0.55"/>';});
+  [[560,250,52,22,-20],[470,300,44,18,15],[600,150,40,17,70]].forEach(function(m){v+='<g transform="rotate('+m[4]+' '+m[0]+' '+m[1]+')"><ellipse cx="'+m[0]+'" cy="'+m[1]+'" rx="'+m[2]+'" ry="'+m[3]+'" fill="'+(stain?'#B9B9B9':'#D4D4D4')+'" stroke="'+ink+'" stroke-width="2.4"/>';
+   for(var k=-3;k<=3;k++)v+='<path d="M'+(m[0]+k*m[2]/4.2)+' '+(m[1]-m[3]+3)+' Q'+(m[0]+k*m[2]/4.2+6)+' '+m[1]+' '+(m[0]+k*m[2]/4.2)+' '+(m[1]+m[3]-3)+'" fill="none" stroke="'+ink+'" stroke-width="1.4"/>';
+   v+='</g>';});
+  for(var e=0;e<4;e++){var y=250+e*14;v+='<path d="M372 '+y+' Q410 '+(y-10)+' 440 '+(y-2)+'" fill="none" stroke="'+ink+'" stroke-width="1.6"/>';for(var r=0;r<7;r++)v+='<circle cx="'+(378+r*9)+'" cy="'+(y-3-r*0.6)+'" r="1.8" fill="'+ink+'"/>';}
+  [[620,320,8],[640,280,6],[590,345,7],[530,120,6]].forEach(function(c){v+='<circle cx="'+c[0]+'" cy="'+c[1]+'" r="'+c[2]+'" fill="none" stroke="'+soft+'" stroke-width="1.6"/>';});
+  v+='</g>';}
+ v+=Ln(590,352,640,352,thick===0?'#16222E':'#FFF',3)+T(615,344,'1 µm','ts',thick===0?'#16222E':'#FFF','middle');
+ s+=frame(v);
+ var bl=(def<=1?0:(def-1)*1.6)+(thick===1?2.2:0);document.getElementById('g1').setAttribute('stdDeviation',bl.toFixed(2));
+ var x='';if(thick===2)x=t.ex.thick;else{if(thick===1)x+=t.ex.thin;if(!stain)x+=t.ex.nost;if(def>1)x+=t.ex.foc;}
+ var ok=thick===0&&stain&&def<=1;if(ok)x=t.ex.ok;DONE[1]=ok;
+ return [s,x.trim(),t.id];}
+// ---------- SEM ----------
+var RBC=[[420,130,34,0],[505,110,36,20],[600,140,33,-10],[455,215,35,40],[560,225,37,0],[400,305,33,15],[495,315,36,-30],[610,310,34,10]];
+var STREAK=[118,161,163,232,276,277,330];
+function sem(){var m=L.s,s='',AX=126,ys=[36,96,156,214,330];
+ s+='<rect x="'+(AX-78)+'" y="20" width="156" height="350" rx="10" fill="#F3F5F7" stroke="#C9D2DC"/>'+T(AX,386,m.lab.vac,'ts','#8696A4','middle');
+ s+='<path d="M'+(AX-10)+' '+(ys[0]-8)+' L'+AX+' '+(ys[0]+6)+' L'+(AX+10)+' '+(ys[0]-8)+'" fill="none" stroke="#16222E" stroke-width="2"/>'+lbl(AX+82,ys[0],m.lab.gun);
+ var bx=SE.run||SE.p>0?((SE.p*37)%1)*2-1:0,tip=AX+bx*44;
+ s+='<path d="M'+(AX-2)+' '+(ys[0]+6)+' L'+(AX-20)+' '+ys[1]+' L'+(AX-3)+' '+ys[2]+' L'+(tip-1)+' '+ys[4]+' L'+(tip+1)+' '+ys[4]+' L'+(AX+3)+' '+ys[2]+' L'+(AX+20)+' '+ys[1]+' L'+(AX+2)+' '+(ys[0]+6)+' Z" fill="#5AA7E6" opacity="0.45"/>';
+ s+=coil(AX,ys[1],34)+lbl(AX+82,ys[1],m.lab.con);
+ s+='<rect x="'+(AX-30)+'" y="'+(ys[2]-8)+'" width="12" height="16" fill="#8E6BBF"/><rect x="'+(AX+18)+'" y="'+(ys[2]-8)+'" width="12" height="16" fill="#8E6BBF"/>'+lbl(AX+82,ys[2],m.lab.sc);
+ s+=coil(AX,ys[3],34)+lbl(AX+82,ys[3],m.lab.obj);
+ // sample surface with cells in profile
+ s+='<path d="M'+(AX-70)+' '+(ys[4]+8)+' L'+(AX+70)+' '+(ys[4]+8)+'" stroke="#7A8794" stroke-width="3"/>';
+ [-45,-5,35].forEach(function(dx){s+='<path d="M'+(AX+dx-16)+' '+(ys[4]+7)+' Q'+(AX+dx-14)+' '+(ys[4]-6)+' '+(AX+dx-6)+' '+(ys[4]-2)+' Q'+(AX+dx)+' '+(ys[4]+1)+' '+(AX+dx+6)+' '+(ys[4]-2)+' Q'+(AX+dx+14)+' '+(ys[4]-6)+' '+(AX+dx+16)+' '+(ys[4]+7)+'" fill="'+(SE.co===0?'#D4AF37':'#C98B8B')+'" stroke="#7A4310" stroke-width="0.8"/>';});
+ s+=lbl(AX+82,ys[4]+4,m.lab.smp);
+ // secondary electrons to the detector
+ s+='<rect x="'+(AX+48)+'" y="'+(ys[4]-62)+'" width="22" height="30" rx="3" fill="#55697A"/>'+T(AX+59,ys[4]-42,'+','th','#FFF','middle')+lbl(AX+82,ys[4]-48,m.lab.det);
+ if(SE.run||SE.p>=1)for(var k=0;k<3;k++)s+='<path d="M'+tip+' '+(ys[4]-2)+' q'+(8+k*6)+' '+(-8-k*4)+' '+(AX+48-tip)+' '+(-34+k*6)+'" fill="none" stroke="#E8A33D" stroke-width="1.2" stroke-dasharray="3 3"/>';
+ // view: built row by row
+ var p=SE.p,coat=SE.co===0,v='<rect x="360" y="70" width="300" height="300" fill="#2A2A2A"/>';
+ var cells='';RBC.forEach(function(c){cells+='<g transform="rotate('+c[3]+' '+c[0]+' '+c[1]+')"><ellipse cx="'+(c[0]+4)+'" cy="'+(c[1]+5)+'" rx="'+c[2]+'" ry="'+(c[2]*0.92)+'" fill="#111" opacity="0.6"/><ellipse cx="'+c[0]+'" cy="'+c[1]+'" rx="'+c[2]+'" ry="'+(c[2]*0.92)+'" fill="url(#rbc)"/><ellipse cx="'+c[0]+'" cy="'+c[1]+'" rx="'+c[2]+'" ry="'+(c[2]*0.92)+'" fill="none" stroke="#F4F4F4" stroke-width="2.2" opacity="0.8"/></g>';});
+ if(!coat){cells+='<g opacity="0.9">';STREAK.forEach(function(y,i){cells+='<rect x="360" y="'+y+'" width="300" height="'+(2+i%3*2)+'" fill="#FFF" opacity="'+(0.5+0.1*(i%4))+'"/>';});
+  cells+='<ellipse cx="560" cy="225" rx="40" ry="36" fill="#FFF" opacity="0.85"/><ellipse cx="420" cy="130" rx="36" ry="32" fill="#FFF" opacity="0.6"/></g>';
+  cells='<g transform="translate(0 0)">'+cells+'</g>';}
+ var hgt=Math.max(0,Math.min(1,p))*300;
+ v+='<clipPath id="sc"><rect x="360" y="70" width="300" height="'+hgt.toFixed(1)+'"/></clipPath><g clip-path="url(#sc)">'+cells+'</g>';
+ if(SE.run&&p<1)v+=Ln(360,70+hgt,660,70+hgt,'#9FE3FF',1.6);
+ v+='<rect x="588" y="343" width="56" height="22" rx="3" fill="#000" opacity="0.55"/>'+Ln(591,360,641,360,'#FFF',3)+T(616,355,'5 µm','ts','#FFF','middle');
+ s+=frame(v);
+ var x=p<=0?m.ex.idle:p<1?m.ex.run:coat?m.ex.ok:m.ex.nocoat;
+ DONE[2]=p>=1&&coat;
+ return [s,x,m.id];}
+function controls(){var h='';
+ if(TAB===0){h+=row(L.c.ph,L.c.pho,C.ph,"setC.bind(null,'ph')");h+='<div class="tog"><span>'+L.c.z+'</span><input type="range" min="0" max="30" step="0.5" value="'+C.z+'" oninput="C.z=parseFloat(this.value);draw(true)"><output id="zo"></output></div>';}
+ if(TAB===1){h+=row(L.t.th,L.t.tho,TE.th,"setT.bind(null,'th')")+row(L.t.st,L.t.sto,TE.st,"setT.bind(null,'st')");h+='<div class="tog"><span>'+L.t.f+'</span><input type="range" min="-10" max="10" step="0.5" value="'+TE.f+'" oninput="TE.f=parseFloat(this.value);draw(true)"><output id="zo"></output></div>';}
+ if(TAB===2){h+=row(L.s.co,L.s.coo,SE.co,"setS.bind(null,'co')")+'<div class="tog"><span></span><button onclick="scan()">'+L.s.scan+'</button></div>';}
+ document.getElementById('ctl').innerHTML=h;}
+function draw(keep){if(!keep)controls();
+ var r=TAB===0?confocal():TAB===1?tem():sem();
+ if(TAB!==1)document.getElementById('g1').setAttribute('stdDeviation','0');
+ document.getElementById('g').innerHTML=r[0];document.getElementById('ex').textContent=r[1];document.getElementById('idc').textContent=r[2];
+ var zo=document.getElementById('zo');if(zo)zo.textContent=TAB===0?nf(C.z,1)+' µm':(TE.f>0?'+':'')+nf(TE.f,1);
+ var tb='';L.tabs.forEach(function(t,i){tb+='<button role="tab" aria-selected="'+(TAB===i)+'" class="'+(TAB===i?'act':'')+'" onclick="setTab('+i+')">'+t+(DONE[i]?'<span class="ok">✓</span>':'')+'</button>';});
+ document.getElementById('tb').innerHTML=tb;
+ var n=DONE.filter(Boolean).length,G=document.getElementById('gs');G.textContent=L.gs.replace('{N}',n);G.className='gs '+(n===3?'ok':'no');}
+var raf=null;
+function scan(){SE.p=0;SE.run=true;var t0=null,dur=matchMedia('(prefers-reduced-motion: reduce)').matches?1:4000;cancelAnimationFrame(raf);
+ function f(ts){if(t0===null)t0=ts;SE.p=Math.min(1,(ts-t0)/dur);if(TAB!==2){SE.run=false;return;}draw(true);if(SE.p<1)raf=requestAnimationFrame(f);else{SE.run=false;draw(true);}}
+ raf=requestAnimationFrame(f);}
+draw();
+</script>
+</body>
+</html>

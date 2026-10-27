@@ -102,8 +102,9 @@ figure.w iframe.h-game{height:1240px}
 figure.w iframe.h-sfida{height:1475px}
 figure.w iframe.h-film{height:1300px}
 figure.w iframe.h-micro{height:1075px}
+figure.w iframe.h-em{height:760px}
 figure.w iframe.h-pers{height:1505px}
-@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1295px}}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1295px} figure.w iframe.h-em{height:850px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -111,6 +112,7 @@ table{border-collapse:collapse; font-size:.9rem; margin:.4rem 0 1rem; width:100%
 .tscroll{overflow-x:auto; max-width:100%}
 .tscroll table{max-width:none; min-width:34rem}
 .tscroll td{white-space:nowrap}
+.tscroll.tw td{white-space:normal}
 th,td{text-align:left; padding:.45rem .6rem; border-bottom:1px solid var(--rule); vertical-align:top}
 th{font-weight:600; color:var(--mut); font-size:.8125rem}
 
@@ -270,6 +272,7 @@ dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
     <li><a href="#reale-virtuale">Immagine reale o virtuale</a></li>
     <li><a href="#occhiali">Le lenti degli occhiali</a></li>
     <li><a href="#microscopio">Il microscopio ottico</a></li>
+    <li><a href="#confocale-tem-sem">Confocale, TEM e SEM</a></li>
   </ol></div>
   </div>
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#fonti">Fonti</a></p>
@@ -929,6 +932,45 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   <li>Con le frecce del tavolino sposta il vetrino a destra: da che parte va l'immagine? Puoi anche trascinare la vista con il mouse o con il dito.</li>
   <li>Passa al 100× senza olio, poi metti l'olio. E se metti l'olio al 40×?</li>
   <li>Rendi divergente il condensatore, poi toglilo: l'immagine resta nitida? E luminosa?</li></ol></div>
+</section>
+
+<section id="confocale-tem-sem">
+  <h2>10 · Confocale, TEM e SEM</h2>
+  <h3>Quando la luce non basta</h3>
+  <p>Con la luce visibile la risoluzione si ferma intorno a 0,2 µm: si vedono i mitocondri, ma non la membrana
+  (7–8 nm) né i ribosomi (circa 25 nm). Da qui si va avanti in due modi. Il <b>confocale</b> tiene la luce, e quindi
+  quasi la stessa risoluzione, ma scarta la luce che arriva da fuori fuoco: in un campione spesso vedi una fetta sottile
+  e nitida, e mettendo in fila le fette ricostruisci la cellula in 3D. I microscopi <b>elettronici</b> cambiano onda:
+  usano elettroni, che hanno una lunghezza d'onda centomila volte più corta della luce verde.</p>
+  <p class="formula">λ = h / p ≈ h / √(2 · m · e · V)</p>
+  <div class="dim"><b>Conti con le unità</b><ul><li>Elettroni accelerati a 100 kV: λ = 6,63·10⁻³⁴ J·s / √(2 × 9,11·10⁻³¹ kg × 1,60·10⁻¹⁹ C × 10⁵ V) ≈ 3,9·10⁻¹² m; con la correzione relativistica 3,7 pm.</li><li>Unità: C · V = J = kg·m²/s², quindi √(kg · kg·m²/s²) = kg·m/s, una quantità di moto; e J·s / (kg·m/s) = m ✓.</li></ul></div>
+  <p>Gli elettroni hanno carica, quindi le lenti sono <b>bobine</b>: il campo magnetico li curva come il vetro curva la
+  luce, e la messa a fuoco si fa cambiando la corrente. Tutta la colonna è sotto vuoto, perché l'aria li fermerebbe. Le
+  lenti magnetiche però hanno aberrazioni forti, e la risoluzione vera non arriva a 3,7 pm: è di circa 0,1–0,2 nm, e
+  sulle sezioni biologiche di 1–2 nm, perché lì il limite è il campione.</p>
+  <p>Il <b>TEM</b> (Transmission Electron Microscope) funziona come un proiettore: il fascio attraversa una sezione di
+  50–100 nm, colorata con metalli pesanti (uranile, piombo) che deviano gli elettroni dove si attaccano, cioè sulle
+  membrane. Mostra l'interno, in proiezione. Il <b>SEM</b> (Scanning Electron Microscope) invece non forma un'immagine
+  con le lenti: un pennello di elettroni scansiona la superficie riga per riga, e un rivelatore conta gli elettroni
+  secondari che escono da ogni punto. Mostra la superficie, in rilievo.</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th></th><th>Ottico</th><th>Confocale</th><th>TEM</th><th>SEM</th></tr></thead>
+    <tbody>
+      <tr><td>Usa</td><td>luce</td><td>luce laser, fluorescenza</td><td>elettroni, 60–300 kV</td><td>elettroni, 1–30 kV</td></tr>
+      <tr><td>Lenti</td><td>vetro</td><td>vetro + pinhole</td><td>magnetiche</td><td>magnetiche + scansione</td></tr>
+      <tr><td>Risoluzione</td><td>≈ 0,2 µm</td><td>≈ 0,2 µm, ≈ 0,6 µm in profondità</td><td>≈ 0,1–0,2 nm (1–2 nm su tessuti)</td><td>≈ 1–10 nm</td></tr>
+      <tr><td>Campione</td><td>anche vivo</td><td>anche vivo, marcato</td><td>fisso, sezione di 50–100 nm</td><td>fisso, secco, rivestito di metallo</td></tr>
+      <tr><td>Mostra</td><td>colori, 2D</td><td>sezioni ottiche, 3D</td><td>l'interno, 2D</td><td>la superficie, in rilievo</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="w">
+    <iframe src="w/14-confocale-tem-sem.html" title="Confocale, TEM e SEM in schema" loading="lazy" class="h-em"></iframe>
+    <figcaption>Tre schede, una per microscopio. <a href="w/14-confocale-tem-sem.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: capire che cosa aggiunge ciascuno rispetto al microscopio ottico.
+  <ol><li>Confocale: chiudi il pinhole, poi sposta il piano a fuoco da 0 a 30 µm e guarda gli anelli nascere, allargarsi e sparire.</li>
+  <li>TEM: con la sezione da 70 nm, togli la colorazione. Poi rimettila e passa a 500 nm e a 5 µm.</li>
+  <li>SEM: scansiona senza rivestimento, poi con l'oro. Perché serve il metallo?</li></ol></div>
 </section>
 
 <section id="fonti">
