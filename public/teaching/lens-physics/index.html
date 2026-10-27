@@ -103,7 +103,7 @@ figure.w iframe.h-simple{height:600px}
 figure.w iframe.h-game{height:1240px}
 figure.w iframe.h-sfida{height:1475px}
 figure.w iframe.h-film{height:1300px}
-figure.w iframe.h-pers{height:570px}
+figure.w iframe.h-pers{height:600px}
 @media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:580px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
@@ -432,8 +432,8 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   it slides across the retina and leaves a streak. The longer it stays lit, the longer the streak:</p>
   <p class="formula">blur ≈ speed × persistence</p>
   <div class="dim"><b>Checking the units</b><ul><li>(pixels / s) × s = pixels ✓. Example: an object crossing 1,920 pixels in 2 s moves at 960 pixels/s; with 16.7 ms of persistence it blurs over 960 × 0.0167 ≈ 16 pixels.</li></ul></div>
-  <p class="lead2"><b>In slow motion.</b> Five screens compared over 50 ms: on the left when the image is lit, on
-  the right the streak it leaves on the retina. Press ‘Slow motion’ and watch the streak grow only while the box is
+  <p class="lead2"><b>In slow motion.</b> Five screens compared over 50 ms: on the left when the image is lit, in
+  the middle the streak it leaves on the retina, on the right how you see the moving object. Press ‘Slow motion’ and watch the streak grow only while the box is
   yellow.</p>
   <figure class="w">
     <iframe src="w/00h-persistenza.html" title="Persistence in slow motion" loading="lazy" class="h-pers"></iframe>
@@ -443,18 +443,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   only if the game really produces that many images per second. A CRT instead lights each phosphor dot for about
   1.5 ms and then lets it fade: at 60 Hz it is sharper than an OLED at 120. That is why old CRTs were unbeatable in
   motion for decades, and curiously the only things that come close are today's 720 Hz OLED gaming monitors, at
-  1.4 ms. The game below also has black level, burn-in, price and the other missions.</p>
-  <figure class="w">
-    <iframe src="w/00d-schermi.html" title="Mission: projector, TV or gaming monitor" loading="lazy" class="h-game"></iframe>
-    <figcaption>Choose the mission, then move the sliders and buttons until the faces turn green. <a href="w/00d-schermi.html">Open full screen</a></figcaption>
-  </figure>
-  <div class="try"><b>Try it.</b> <i>Goal</i>: for each mission, find the device that passes it for the least money.
-  <ol><li>Evening mission: with the projector and the white screen, find the fewest lumens for 100″.</li>
-  <li>Switch to the afternoon mission without touching anything else: look at the contrast.</li>
-  <li>Raise the lumens, then try the grey screen and the ALR one: which passes, and at what price?</li>
-  <li>Switch to the TV and try the technologies one by one: which passes by day, which does not, and why?</li>
-  <li>Home-cinema mission: watch the ‘How you see black’ panel with LED, mini-LED and OLED. Who wins, and with what burn-in risk?</li>
-  <li>Retro-games mission: try the OLED at 60 and 120 Hz, then the CRT. Why is a 60 Hz CRT sharper than a 120 Hz OLED?</li></ol></div>
+  1.4 ms.</p>
   <p class="lead2"><b>The gaming-TV challenge.</b> Take an online shooter, where two things matter: the blur, because
   the target moves, and the <b>lag</b> between button and screen. Today's TVs offer two recipes for shortening the blur.
   The first, <b>strategy A</b>: the game at 60 <b>fps</b> (frames per second), <b>HDR</b> (High Dynamic Range) on, and frame
