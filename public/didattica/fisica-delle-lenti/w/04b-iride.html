@@ -79,12 +79,14 @@ function upd(){
  var dm=pupil(s,d),dmN=pupil(s0,d0),rp=dm/2*PXMM,rs=rp+1*PXMM;
  var sAct=Math.min(1,s/1),dAct=Math.min(1,d/1);
  // dilator: very thick only when it is really stimulated (dim light, phenylephrine); otherwise thin, even when stretched by the sphincter
+ // sphincter: thick only when it is really contracting (light, near gaze, muscarinic agonists); thin when relaxed (dim light) or blocked
+ var sOn2=s>=0.5,sW=sOn2?2.6+1.2*Math.min(1,(s-0.5)/1.5):0.8,sO=sOn2?0.95:0.35;
  var dOn=d>=0.7,dW=dOn?3.6+1.6*Math.min(1,(d-0.7)/0.8):1.1,dO=dOn?0.95:0.4;
  // iris
  var q='<circle cx="'+CX+'" cy="'+CY+'" r="'+(RI+14)+'" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1"/>';
  q+='<circle cx="'+CX+'" cy="'+CY+'" r="'+RI+'" fill="#D9C4A3"/>';
  for(var k=0;k<36;k++){var a=k*Math.PI/18;q+='<line x1="'+(CX+rs*Math.cos(a))+'" y1="'+(CY+rs*Math.sin(a))+'" x2="'+(CX+(RI-3)*Math.cos(a))+'" y2="'+(CY+(RI-3)*Math.sin(a))+'" stroke="'+S+'" stroke-width="'+dW+'" opacity="'+dO+'"/>';}
- for(var r=rp+3;r<rs;r+=3.2)q+='<circle cx="'+CX+'" cy="'+CY+'" r="'+r+'" fill="none" stroke="'+P+'" stroke-width="'+(1+1.4*sAct)+'" opacity="'+(0.2+0.75*sAct)+'"/>';
+ for(var r=rp+3;r<rs;r+=3.2)q+='<circle cx="'+CX+'" cy="'+CY+'" r="'+r+'" fill="none" stroke="'+P+'" stroke-width="'+sW+'" opacity="'+sO+'"/>';
  q+='<circle cx="'+CX+'" cy="'+CY+'" r="'+rp+'" fill="#16222E"/><circle cx="'+(CX-rp*0.35)+'" cy="'+(CY-rp*0.35)+'" r="'+Math.max(2,rp*0.15)+'" fill="#FFFFFF" opacity="0.7"/>';
  // labels with leaders
  q+='<line x1="'+(CX+rs*0.7)+'" y1="'+(CY+rs*0.7)+'" x2="96" y2="384" class="leader" style="stroke:'+P+'"/>'+T(20,398,'sfintere: fibre circolari','ts',P)+T(20,414,'stringe la pupilla (miosi)','ts',P);
