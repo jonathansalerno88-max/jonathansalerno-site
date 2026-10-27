@@ -192,7 +192,7 @@ document.getElementById('accL').textContent=(pres?'muscolo '+fmt(A,1)+' D → cr
 document.getElementById('o0').classList.toggle('act',isInf);
 [[1,2.5],[2,2],[3,1.5],[4,1],[5,0.7]].forEach(function(o){var x=X0+o[1]*fs0,b=document.getElementById('o'+o[0]);b.disabled=(x>650||x<330);b.classList.toggle('act',objM===o[1]);});
 var lb=document.getElementById('lensBtn');lb.disabled=cond==='E';lb.textContent=cond==='E'?'Nessuna lente serve':(lens?'Togli la lente':'Metti la lente giusta');
-var src={x:ox,y:Y0-H},srcB={x:ox,y:Y0+H},s='',fo='',imgs=[];
+var Hh=Math.min(H,(ox-X0)*TH),src={x:ox,y:Y0-Hh},srcB={x:ox,y:Y0+Hh},s='',fo='',imgs=[];
 var Lsv=uL?(-excess[cond][0]):0;
 for(var i=excess[cond].length-1;i>=0;i--){var P=Psys(i),op=i===0?1:0.4,IA,IB;
 if(isInf){IA=imageInf(TH,P);IB=imageInf(-TH,P);s+=bundleInf(TH,IA,'#BA7517','',op,pw,Lsv)+bundleInf(-TH,IB,'#185FA5','stroke-dasharray="5 3"',op,pw,Lsv);}
@@ -202,7 +202,7 @@ var f=1/P,sub=excess[cond].length>1?(i===0?'₁':'₂'):'';
 fo+=mark(X0-f,'F′'+sub,op,i===0)+mark(X0-2*f,'2F′'+sub,op,i===0)+mark(X0+f,'F'+sub,op,i===0)+mark(X0+2*f,'2F'+sub,op,i===0);}
 document.getElementById('rays').innerHTML=s;document.getElementById('foci').innerHTML=fo;
 if(isInf){document.getElementById('obj').innerHTML='<text class="th" x="660" y="160" text-anchor="end" dominant-baseline="central" style="font-size:22px">∞</text>';}
-else{document.getElementById('obj').innerHTML='<line x1="'+ox+'" y1="60" x2="'+ox+'" y2="260" stroke="var(--t)" stroke-width="2.5"/><path d="M'+(ox-6)+' 72 L'+ox+' 58 L'+(ox+6)+' 72 Z" fill="var(--t)"/><path d="M'+(ox-6)+' 246 L'+ox+' 254 L'+(ox+6)+' 246 M'+(ox-6)+' 238 L'+ox+' 246 L'+(ox+6)+' 238" fill="none" stroke="var(--t)" stroke-width="1.5"/><text class="th" x="'+(ox+12)+'" y="66">A</text><text class="th" x="'+(ox+12)+'" y="264">B</text>';}
+else{var yt=Y0-Hh,yb=Y0+Hh;document.getElementById('obj').innerHTML='<line x1="'+ox+'" y1="'+yt+'" x2="'+ox+'" y2="'+yb+'" stroke="var(--t)" stroke-width="2.5"/><path d="M'+(ox-6)+' '+(yt+14)+' L'+ox+' '+yt+' L'+(ox+6)+' '+(yt+14)+' Z" fill="var(--t)"/><path d="M'+(ox-6)+' '+(yb-8)+' L'+ox+' '+yb+' L'+(ox+6)+' '+(yb-8)+' M'+(ox-6)+' '+(yb-16)+' L'+ox+' '+(yb-8)+' L'+(ox+6)+' '+(yb-16)+'" fill="none" stroke="var(--t)" stroke-width="1.5"/><text class="th" x="'+(ox+12)+'" y="'+(yt+8)+'">A</text><text class="th" x="'+(ox+12)+'" y="'+(yb+4)+'">B</text>';}
 document.getElementById('specs').innerHTML=uL?'<path d="'+shapes[cond]+'" fill="#B5D4F4" opacity="0.8" stroke="#185FA5" stroke-width="0.8"/><text class="th" x="404" y="68" text-anchor="middle">'+lensName[cond][0]+'</text><text class="ts" x="404" y="86" text-anchor="middle">'+lensName[cond][1]+'</text>':'';
 document.getElementById('irT').setAttribute('height',(Y0-pw)-100);
 document.getElementById('irB').setAttribute('y',Y0+pw);document.getElementById('irB').setAttribute('height',220-(Y0+pw));
@@ -214,7 +214,7 @@ var st='',sp=6-0.45*A;[cyT,cyB].forEach(function(cy){for(var xx=-15+sp/2;xx<15;x
 document.getElementById('zon').innerHTML=zonula(A,cx,cyT+mry-1,cyB-mry+1,Y0-lry,Y0+lry)+st;
 document.getElementById('cilLbl').textContent='muscolo ciliare: '+(drug==='C'?'paralizzato':A<0.5?'rilassato':A<6?'contratto in parte':'contratto');
 document.getElementById('zonLbl').textContent='zonula (sospensori): '+(A<2?'tesa':A<6?'in parte lassa':'lassa');
-document.getElementById('retImg').innerHTML=isInf?retArrow(TH,-TH):retArrow((Y0-(Y0-H))/(ox-X0),(Y0-(Y0+H))/(ox-X0));
+document.getElementById('retImg').innerHTML=isInf?retArrow(TH,-TH):retArrow(Hh/(ox-X0),-Hh/(ox-X0));
 var Pr=60+excess[cond][0]+AL+(uL?-excess[cond][0]:0),fR=1000/Pr,d0mm=isInf?Infinity:(ox-X0)*PX,V0=isInf?0:1000/d0mm,Vi=Pr-V0,diR=Math.abs(Vi)<1e-6?Infinity:1000/Vi;
 var I0=imgs[0],qt='';
 qt+=isInf?q(X0,672,300,'d₀ = ∞','var(--t)',false,false,true):q(X0,ox,300,'d₀ = '+fmt(d0mm/10,1)+' cm','var(--t)');
