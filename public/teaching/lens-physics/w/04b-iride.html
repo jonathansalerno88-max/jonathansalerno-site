@@ -80,7 +80,7 @@ function upd(){
  var sAct=Math.min(1,s/1),dAct=Math.min(1,d/1);
  // dilator: very thick only when it is really stimulated (dim light, phenylephrine); otherwise thin, even when stretched by the sphincter
  // sphincter: thick only when it is really contracting (light, near gaze, muscarinic agonists); thin when relaxed (dim light) or blocked
- var sOn2=s>=0.5,sW=sOn2?2.6+1.2*Math.min(1,(s-0.5)/1.5):0.8,sO=sOn2?0.95:0.35;
+ var sOn2=s>=0.5,sW=sOn2?2.6+1.2*Math.min(1,(s-0.5)/1.5):0.5,sO=sOn2?0.95:0.2;
  var dOn=d>=0.7,dW=dOn?3.6+1.6*Math.min(1,(d-0.7)/0.8):1.1,dO=dOn?0.95:0.4;
  // iris
  var q='<circle cx="'+CX+'" cy="'+CY+'" r="'+(RI+14)+'" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1"/>';
@@ -138,7 +138,7 @@ function upd(){
  function slide(dir){var to=(dir*sh)+' 0',fr=(dir*sh0)+' 0';return rmo?'':'<animateTransform class="sl" attributeName="transform" type="translate" from="'+fr+'" to="'+to+'" dur="0.8s" begin="indefinite" fill="freeze"/>';}
  [-1,1].forEach(function(sg){var cy=LY+sg*off,ey=LY+sg*lry,col=slack<0.2?'#444441':'#888780',w=slack<0.2?1.6:1.2,ry=10+Ac;
   p+='<line x1="'+(LX-lrx-6)+'" y1="'+(LY+sg*rpS)+'" x2="'+(LX-lrx-6)+'" y2="'+(cy-sg*4)+'" stroke="#854F0B" stroke-width="4"/>';
-  p+='<line x1="'+(LX-lrx-6)+'" y1="'+(LY+sg*rpS)+'" x2="'+(LX-lrx-6)+'" y2="'+(LY+sg*(rpS+13))+'" stroke="'+P+'" stroke-width="'+(sOn2?7:3.5)+'" opacity="'+(sOn2?1:0.55)+'"/>';
+  p+='<line x1="'+(LX-lrx-6)+'" y1="'+(LY+sg*rpS)+'" x2="'+(LX-lrx-6)+'" y2="'+(LY+sg*(rpS+13))+'" stroke="'+P+'" stroke-width="'+(sOn2?7:2.5)+'" opacity="'+(sOn2?1:0.3)+'"/>';
   if(sg<0)p+=T(LX-lrx-14,LY-rpS-3,'sphincter','th',P,'end');
   [-7,7].forEach(function(dx){var x1=LX+dx,y1=cy-sg*(ry-1),x2=LX+dx*0.6,y2=ey,len=Math.hypot(x2-x1,y2-y1);
    p+=slack<0.2?'<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+col+'" stroke-width="'+w+'"/>':'<path d="'+wave(x1,y1,x2,y2,1.5+2*slack,Math.max(2,Math.round(len/7)))+'" fill="none" stroke="'+col+'" stroke-width="'+w+'"/>';});
