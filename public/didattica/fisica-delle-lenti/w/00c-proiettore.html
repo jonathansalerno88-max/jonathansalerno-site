@@ -24,6 +24,19 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 .cost{font-size:13px;color:var(--text-primary);margin:6px 0 0;min-height:1.5em}
 .cmp{margin-top:10px;padding:8px 11px;border-radius:8px;font-size:13.5px;background:#EEF3FA;color:#16222E;min-height:calc(4.5em + 16px);box-sizing:border-box}
 .cmp p{margin:0 0 4px}
+details.calc{margin:4px 0 0;font-size:13px}
+details.calc summary{cursor:pointer;color:var(--text-accent);font-weight:500;padding:2px 0;font-variant-numeric:tabular-nums}
+details.calc summary span{color:var(--text-primary)}
+/* phone: projector and TV stay side by side, so one slider moves both in view */
+@media (max-width:600px){
+ .row{flex-wrap:nowrap;gap:6px}
+ .cell{flex:1 1 0;padding:3px;border-radius:10px}
+ .cap{font-size:12.5px;line-height:1.3;margin:2px 0 4px}
+ .cost{font-size:12px;line-height:1.35}
+ details.calc{font-size:12px}
+ .f{font-size:11px;padding:4px 6px;min-height:0}
+ .cmp{font-size:13px;min-height:0}
+}
 .note{font-size:12px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
 </style>
 </head>
@@ -40,8 +53,8 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 <div class="ctl"><span>Luce nella stanza</span><input type="range" id="lx" min="0" max="1000" value="1000" oninput="stopP();upd(true)"><output id="lxO"></output></div>
 <button id="pl" onclick="tog()"></button>
 <div class="row">
-<div class="cell" id="c0"><p class="cap" id="h0"></p><svg viewBox="0 0 320 200" aria-hidden="true"><g id="s0"></g></svg><div class="f" id="f0"></div><p class="cost" id="k0"></p></div>
-<div class="cell" id="c1"><p class="cap" id="h1"></p><svg viewBox="0 0 320 200" aria-hidden="true"><g id="s1"></g></svg><div class="f" id="f1"></div><p class="cost" id="k1"></p></div>
+<div class="cell" id="c0"><p class="cap" id="h0"></p><svg viewBox="0 0 320 200" aria-hidden="true"><g id="s0"></g></svg><details class="calc"><summary>Il conto · <span id="cs0"></span></summary><div class="f" id="f0"></div></details><p class="cost" id="k0"></p></div>
+<div class="cell" id="c1"><p class="cap" id="h1"></p><svg viewBox="0 0 320 200" aria-hidden="true"><g id="s1"></g></svg><details class="calc"><summary>Il conto · <span id="cs1"></span></summary><div class="f" id="f1"></div></details><p class="cost" id="k1"></p></div>
 </div>
 <div class="cmp" id="cmp"></div>
 <p class="note">Modello semplificato. Contrasto = luminanza del bianco / luminanza del nero. Proiettore: la tela rimanda la luce del proiettore e quella della stanza con la stessa riflettanza (bianca ρ 0,9; ALR 0,8 per il proiettore e 0,15 per la stanza), contrasto nativo 1.000:1. Lumen che servono: dalla formula del contrasto si ricava E proiettore = E stanza × (C − 1) / (1 − C / 1.000), poi Φ = E × A. TV LED 400 nit, riflette l'1,5 %, nativo 3.000:1; TV OLED 250 nit, riflette l'1 %. Obiettivi AVIXA/ANSI: 80:1 video, 15:1 slide. Prezzi stimati solo per confrontare: proiettore 200 € + 0,30 € per lumen; tela bianca 80 € + 1,5 € per pollice, ALR 300 € + 12 €; TV LED circa 600 € a 55″, OLED circa 1.500 €, che crescono con la diagonale alla 2,5.</p>
@@ -87,12 +100,14 @@ function upd(keep){
  var rp=SCR[scr][0],ra=SCR[scr][1],Ep=F/area(d),Pw=rp*Ep/Math.PI+ra*E/Math.PI,Pb=rp*Ep/Math.PI/1000+ra*E/Math.PI,Cp=Pw/Pb,Eeff=ra/rp*E;
  document.getElementById('h0').textContent=fmt(L.hp,{F:nf(F),S:L.sn[scr]})+' · '+d+'″';
  document.getElementById('s0').innerHTML=scene(E,Pw,Pb,false,d);
+ document.getElementById('cs0').textContent=sig(Cp)+':1';
  document.getElementById('f0').innerHTML=fmt(L.fp,{F:nf(F),A:nf(area(d),1),Ep:sig(Ep),Es:sig(Eeff),Ep3:sig(Ep/1000),C:sig(Cp)});
  var pp=200+0.3*F,sp=scr?300+12*d:80+1.5*d;document.getElementById('k0').textContent=fmt(L.costp,{P:r10(pp+sp),Q:r10(pp),S:r10(sp)});
  // tv
  var dt=Math.min(d,t.max),Lr=t.R*E/Math.PI,Tw=t.L+Lr,Tb=t.L/t.C+Lr,Ct=Tw/Tb;
  document.getElementById('h1').textContent=fmt(L.ht,{T:L.tvs[tvk],D:dt});
  document.getElementById('s1').innerHTML=scene(E,Tw,Tb,true,dt);
+ document.getElementById('cs1').textContent=sig(Ct)+':1';
  document.getElementById('f1').innerHTML=fmt(L.ft,{Lt:t.L,R:nf(t.R,3),E:sig(E),W:sig(Tw),Lb0:sig(t.L/t.C),B:sig(Tb),C:sig(Ct)});
  document.getElementById('k1').textContent=fmt(L.cost,{P:nf(Math.round(t.p*Math.pow(dt/55,2.5)/50)*50)})+(d>t.max?fmt(L.tmax,{M:t.max}):'');
  window._g=[Cp>=Tg,Ct>=Tg,Tg];['c0','c1'].forEach(function(id,i){var ok=(i?Ct:Cp)>=Tg,c=document.getElementById(id);c.classList.toggle('okc',ok);c.classList.toggle('noc',!ok);
