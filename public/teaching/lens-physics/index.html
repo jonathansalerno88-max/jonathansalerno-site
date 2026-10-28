@@ -232,8 +232,13 @@ dialog.fx .fxbar{display:flex; align-items:center; gap:.6rem; padding:.5rem .8re
 dialog.fx .fxbar b{flex:1; min-width:0; font-size:.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 dialog.fx .fxbar button{font:inherit; font-size:.9rem; font-weight:600; border:1px solid var(--rule); background:var(--card); color:var(--ink); border-radius:8px; padding:.35rem .8rem; cursor:pointer}
 dialog.fx .fxhint{font-size:.78rem; color:var(--mut); padding:.3rem .8rem; margin:0}
-dialog.fx iframe{display:block; width:100%; height:calc(100dvh - 5.2rem); border:0; background:#FBFCFD}
-@media (orientation:landscape){dialog.fx .fxhint{display:none} dialog.fx iframe{height:calc(100dvh - 3rem)}}
+/* the figure keeps its wide layout (at least 720 px) and is scaled to fit; + and − zoom it, one finger pans */
+dialog.fx .fxw{height:calc(100dvh - 5.2rem); overflow:auto; -webkit-overflow-scrolling:touch; background:#FBFCFD}
+dialog.fx .fxs{position:relative}
+dialog.fx iframe{display:block; position:absolute; left:0; top:0; width:720px; border:0; background:#FBFCFD; transform-origin:0 0}
+dialog.fx .fxbar .fxz{padding:.35rem .6rem; min-width:2.4rem}
+dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align:center}
+@media (orientation:landscape){dialog.fx .fxhint{display:none} dialog.fx .fxw{height:calc(100dvh - 3rem)}}
 </style>
 </head>
 <body>
@@ -1145,7 +1150,7 @@ f.addEventListener('submit',function(e){e.preventDefault();
    else{s.appendChild(document.createTextNode(T.err+' '));var a=document.createElement('a');a.href='mailto:info@eraofprevention.com';a.textContent='info@eraofprevention.com';s.appendChild(a);s.appendChild(document.createTextNode('.'));}
    b.disabled=false;b.textContent=T.send;});});
 })();</script>
-<dialog class="fx" id="fx" aria-labelledby="fxt"><div class="fxbar"><b id="fxt"></b><button type="button" id="fxc">✕ Close</button></div><p class="fxhint">Turn your phone sideways to see it larger.</p><iframe id="fxf" title=""></iframe></dialog>
+<dialog class="fx" id="fx" aria-labelledby="fxt"><div class="fxbar"><b id="fxt"></b><button type="button" class="fxz" id="fxm" aria-label="Zoom out">−</button><span id="fxzv"></span><button type="button" class="fxz" id="fxp" aria-label="Zoom in">+</button><button type="button" id="fxc">✕ Close</button></div><p class="fxhint">Zoom with + and −, move with one finger. Sideways it is larger.</p><div class="fxw" id="fxw"><div class="fxs" id="fxs"><iframe id="fxf" title=""></iframe></div></div></dialog>
 <script>
 /* Phones: replace each wide interactive figure (not .ph) with a card; the figure opens full screen in a dialog,
    so the page stays short and nothing scrolls sideways. The hidden frames never load. */
@@ -1156,11 +1161,27 @@ f.addEventListener('submit',function(e){e.preventDefault();
     var b=document.createElement('button');b.type='button';b.className='fcard';
     b.innerHTML='<span class="fi" aria-hidden="true">▶</span><span><span class="ft"></span><span class="fo"></span></span>';
     b.querySelector('.ft').textContent=f.title;b.querySelector('.fo').textContent=T.open+' →';
-    b.addEventListener('click',function(){document.getElementById('fxt').textContent=f.title;fr.title=f.title;fr.src=f.getAttribute('src');d.showModal();});
+    b.addEventListener('click',function(){document.getElementById('fxt').textContent=f.title;fr.title=f.title;FIT=true;fr.src=f.getAttribute('src');d.showModal();lay();w.scrollTop=0;w.scrollLeft=0;});
     f.parentNode.insertBefore(b,f);
   });
   document.getElementById('fxc').addEventListener('click',function(){d.close();});
-  d.addEventListener('close',function(){fr.src='about:blank';});
+  // zoom: the frame is laid out at least 720 px wide (the figure's wide layout) and scaled
+  var w=document.getElementById('fxw'),sz=document.getElementById('fxs'),Z=1,FIT=true,ro=null;
+  function base(){return Math.max(720,w.clientWidth)}
+  function fitZ(){return w.clientWidth/base()}
+  function lay(){var W=base(),H=w.clientHeight;if(FIT)Z=fitZ();
+    try{H=Math.max(H/Z,fr.contentDocument.documentElement.offsetHeight+2)}catch(e){}
+    fr.style.width=W+'px';fr.style.height=H+'px';fr.style.transform='scale('+Z+')';
+    sz.style.width=Math.ceil(W*Z)+'px';sz.style.height=Math.ceil(H*Z)+'px';
+    document.getElementById('fxzv').textContent=Math.round(Z*100)+'%';}
+  function zoom(k){var cx=(w.scrollLeft+w.clientWidth/2)/Z,cy=(w.scrollTop+w.clientHeight/2)/Z;
+    Z=Math.max(fitZ(),Math.min(2,Z*k));FIT=Z<=fitZ()+1e-3;lay();
+    w.scrollLeft=cx*Z-w.clientWidth/2;w.scrollTop=cy*Z-w.clientHeight/2;}
+  document.getElementById('fxp').addEventListener('click',function(){zoom(1.25)});
+  document.getElementById('fxm').addEventListener('click',function(){zoom(0.8)});
+  fr.addEventListener('load',function(){lay();try{if(ro)ro.disconnect();if('ResizeObserver' in window){ro=new ResizeObserver(lay);ro.observe(fr.contentDocument.body);}}catch(e){}});
+  addEventListener('resize',function(){if(d.open)lay();});
+  d.addEventListener('close',function(){fr.src='about:blank';FIT=true;if(ro)ro.disconnect();});
 })();
 </script>
 </body>
