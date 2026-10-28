@@ -13,6 +13,7 @@
 @media (prefers-reduced-motion: reduce){#b1,#b2,#b3{transition:none}}
 .tag text{font-size:12px}
 .tag .v{font-size:13px;font-weight:500}
+@media (max-width:600px){.ctl input[type=range]{min-width:80px}}
 </style>
 </head>
 <body>
@@ -31,7 +32,7 @@
 <input type="range" id="cov" min="0" max="99" value="90" style="flex:1" oninput="upd()">
 <span id="covL" style="min-width:50px;text-align:right;color:var(--text-primary)">90%</span>
 </div>
-<svg width="100%" viewBox="0 0 680 620">
+<svg width="100%" viewBox="0 0 680 620" data-stack="0,80,352,260; 352,48,328,284; 6,342,328,460" data-stack-main="0">
 <defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#7F77DD" stroke-width="3"/></pattern><clipPath id="sunClip"><circle cx="90" cy="190" r="22"/></clipPath></defs>
 <text class="th" id="src1" x="20" y="24">Sole</text>
 <text class="ts" id="src2" x="20" y="42"> </text>
@@ -56,41 +57,41 @@
 <text class="ts" x="650" y="196" text-anchor="start">fovea</text>
 <text class="ts" id="pup" x="20" y="332" text-anchor="start">pupilla</text>
 <g id="tags"></g>
-<line class="leader" x1="20" y1="340" x2="660" y2="340"/>
-<text class="ts" x="20" y="364">Danno fotochimico (luce blu): dose = irradianza sulla retina × tempo, in <tspan font-weight="500">J/cm²</tspan>; si accumula</text>
+<line id="lead" class="leader" x1="20" y1="340" x2="660" y2="340"/>
+<text id="l1" class="ts" x="20" y="364">Danno fotochimico (luce blu): dose = irradianza sulla retina × tempo, in <tspan font-weight="500">J/cm²</tspan>; si accumula</text>
 <text class="th" id="v1" x="660" y="364" text-anchor="end">0%</text>
-<rect x="20" y="372" width="580" height="14" rx="3" fill="#D3D1C7" opacity="0.6"/>
+<rect id="g1" x="20" y="372" width="580" height="14" rx="3" fill="#D3D1C7" opacity="0.6"/>
 <rect id="b1" x="20" y="372" width="0" height="14" rx="3" fill="#EF9F27"/>
-<line x1="407" y1="366" x2="407" y2="392" stroke="#A32D2D" stroke-width="2"/>
-<text class="ts" x="407" y="405" text-anchor="middle">limite di esposizione</text>
-<text class="ts" x="20" y="428">Danno termico: irradianza sulla retina in <tspan font-weight="500">W/cm²</tspan>, istantanea; non si accumula</text>
+<line id="t1" x1="407" y1="366" x2="407" y2="392" stroke="#A32D2D" stroke-width="2"/>
+<text id="tl1" class="ts" x="407" y="405" text-anchor="middle">limite di esposizione</text>
+<text id="l2" class="ts" x="20" y="428">Danno termico: irradianza sulla retina in <tspan font-weight="500">W/cm²</tspan>, istantanea; non si accumula</text>
 <text class="th" id="v2" x="660" y="428" text-anchor="end">0%</text>
-<rect x="20" y="436" width="580" height="14" rx="3" fill="#D3D1C7" opacity="0.6"/>
+<rect id="g2" x="20" y="436" width="580" height="14" rx="3" fill="#D3D1C7" opacity="0.6"/>
 <rect id="b2" x="20" y="436" width="0" height="14" rx="3" fill="#EF9F27"/>
-<line x1="407" y1="430" x2="407" y2="456" stroke="#A32D2D" stroke-width="2"/>
-<text class="ts" x="407" y="469" text-anchor="middle">soglia</text>
+<line id="t2" x1="407" y1="430" x2="407" y2="456" stroke="#A32D2D" stroke-width="2"/>
+<text id="tl2" class="ts" x="407" y="469" text-anchor="middle">soglia</text>
 <text class="ts" id="lab3" x="20" y="492"> </text>
 <text class="th" id="v3" x="660" y="510" text-anchor="end">—</text>
-<rect x="20" y="516" width="580" height="14" rx="3" fill="#D3D1C7" opacity="0.6"/>
+<rect id="g3" x="20" y="516" width="580" height="14" rx="3" fill="#D3D1C7" opacity="0.6"/>
 <rect id="b3" x="20" y="516" width="0" height="14" rx="3" fill="#B5520C"/>
 <g id="chg">
-<circle cx="310" cy="523" r="6" fill="#534AB7"/>
-<text class="ts" x="310" y="548" text-anchor="middle">misurato da Chang: ritardo ≈ 1,5 h (5 sere × ≈ 4 ore)</text>
-<text class="ts" x="310" y="566" text-anchor="middle" font-style="italic">jet lag sociale = ridotta vigilanza mattutina</text>
-<circle cx="26" cy="586" r="5" fill="#534AB7"/>
-<text class="ts" x="38" y="590">misurato: Chang et al., PNAS 2015 · doi:10.1073/pnas.1418490112</text>
-<rect x="20" y="600" width="14" height="10" fill="url(#hatch)" stroke="#534AB7" stroke-width="0.5" stroke-dasharray="3 2"/>
-<text class="ts" x="42" y="609">stima: valori intermedi e traduzione in fusi orari (lo studio non li misura)</text>
+<circle id="cm" cx="310" cy="523" r="6" fill="#534AB7"/>
+<text id="c1" class="ts" x="310" y="548" text-anchor="middle">misurato da Chang: ritardo ≈ 1,5 h (5 sere × ≈ 4 ore)</text>
+<text id="c2" class="ts" x="310" y="566" text-anchor="middle" font-style="italic">jet lag sociale = ridotta vigilanza mattutina</text>
+<circle id="cd" cx="26" cy="586" r="5" fill="#534AB7"/>
+<text id="cl1" class="ts" x="38" y="590">misurato: Chang et al., PNAS 2015 · doi:10.1073/pnas.1418490112</text>
+<rect id="ch" x="20" y="600" width="14" height="10" fill="url(#hatch)" stroke="#534AB7" stroke-width="0.5" stroke-dasharray="3 2"/>
+<text id="cl2" class="ts" x="42" y="609">stima: valori intermedi e traduzione in fusi orari (lo studio non li misura)</text>
 </g>
 <g id="eclN">
-<text class="ts" x="20" y="554">Ogni mm² di falce visibile ha la stessa luminanza del sole pieno, in <tspan font-weight="500">nit</tspan>: cala solo l'illuminanza sull'occhio, in <tspan font-weight="500">lux</tspan>.</text>
-<text class="ts" x="20" y="574" font-style="italic">meno fastidio + pupilla più larga + retina senza dolore = si fissa più a lungo</text>
-<text class="ts" x="20" y="598">Occhiali conformi ISO 12312-2: lasciano passare circa lo 0,003% della luce visibile.</text>
+<text class="ts" id="e1" x="20" y="554">Ogni mm² di falce visibile ha la stessa luminanza del sole pieno, in <tspan font-weight="500">nit</tspan>: cala solo l'illuminanza sull'occhio, in <tspan font-weight="500">lux</tspan>.</text>
+<text class="ts" id="e2" x="20" y="574" font-style="italic">meno fastidio + pupilla più larga + retina senza dolore = si fissa più a lungo</text>
+<text class="ts" id="e3" x="20" y="598">Occhiali conformi ISO 12312-2: lasciano passare circa lo 0,003% della luce visibile.</text>
 </g>
 <g id="lasN">
-<text class="ts" x="20" y="554">Il fascio è collimato: entra tutto nella pupilla e si concentra in un punto. Per una sorgente puntiforme</text>
-<text class="ts" x="20" y="572">luminanza e troland perdono senso; contano la potenza, in <tspan font-weight="500">watt</tspan>, e l'irradianza, in <tspan font-weight="500">W/cm²</tspan>.</text>
-<text class="ts" x="20" y="596">Sotto 1 mW (classe 2) il riflesso di chiusura delle palpebre, circa 0,25 s, basta a proteggere.</text>
+<text class="ts" id="n1" x="20" y="554">Il fascio è collimato: entra tutto nella pupilla e si concentra in un punto. Per una sorgente puntiforme</text>
+<text class="ts" id="n2" x="20" y="572">luminanza e troland perdono senso; contano la potenza, in <tspan font-weight="500">watt</tspan>, e l'irradianza, in <tspan font-weight="500">W/cm²</tspan>.</text>
+<text class="ts" id="n3" x="20" y="596">Sotto 1 mW (classe 2) il riflesso di chiusura delle palpebre, circa 0,25 s, basta a proteggere.</text>
 </g>
 </svg>
 <p id="mioN" style="font-size:13px;color:#534AB7;margin:2px 0 0;min-height:0"></p>
@@ -117,6 +118,7 @@ function fmtT(t){if(t<1)return String(t.toFixed(1)).replace('.',',')+' s';if(t<6
 function fmtP(p){if(p===0)return '0%';if(p<0.0001)return '< 0,01%';var v=p*100;return (v<10?v.toFixed(1):Math.round(v)).toString().replace('.',',')+'%';}
 function show(id,on){document.getElementById(id).style.display=on?'':'none';}
 function upd(){
+var BW=MQ.matches?300:580;
 var t=0.1*Math.pow(10,Math.log10(TMAX/0.1)*document.getElementById('tS').value/100);
 document.getElementById('tL').textContent=fmtT(t);
 var isSunLike=(src==='sun'||src==='ecl');
@@ -186,25 +188,77 @@ document.getElementById('irB').setAttribute('y',190+gap/2);
 document.getElementById('irB').setAttribute('height',222-(190+gap/2));
 var dd=rate*t;
 var b1=document.getElementById('b1'),b2=document.getElementById('b2'),b3=document.getElementById('b3');
-b1.setAttribute('width',Math.min(dd,1.5)/1.5*580);b1.setAttribute('fill',dd>=1?'#E24B4A':'#EF9F27');
-b2.setAttribute('width',Math.min(th,1.5)/1.5*580);b2.setAttribute('fill',th>=1?'#E24B4A':'#EF9F27');
+b1.setAttribute('width',Math.min(dd,1.5)/1.5*BW);b1.setAttribute('fill',dd>=1?'#E24B4A':'#EF9F27');
+b2.setAttribute('width',Math.min(th,1.5)/1.5*BW);b2.setAttribute('fill',th>=1?'#E24B4A':'#EF9F27');
 document.getElementById('v1').textContent=fmtP(dd)+' del limite';
 document.getElementById('v2').textContent=fmtP(th)+(th>=1?' subito':' della soglia');
 if(src==='screen'){
  lab3='Orologio biologico in ritardo → jet lag sociale (sveglia fissa)';
  var f=Math.min(t/TMAX,1),h=1.5*f,end=f>=0.999,hs=(h<0.1?h.toFixed(2):h.toFixed(1)).replace('.',',');
  b3.setAttribute('fill','url(#hatch)');b3.setAttribute('stroke','#534AB7');b3.setAttribute('stroke-width','0.5');b3.setAttribute('stroke-dasharray','3 2');
- b3.setAttribute('width',h/3*580);b3.setAttribute('opacity',obs?0.55:1);
+ b3.setAttribute('width',h/3*BW);b3.setAttribute('opacity',obs?0.55:1);
  v3='ritardo ≈ '+hs+' ore'+(end?' (misurato)':' (stima)')+(obs?' · filtro: non dimostrato':'');
 }else{
  lab3='Fastidio (abbagliamento): segue l\'illuminanza sull\'occhio, in lux, non la luminanza';
  b3.setAttribute('fill','#B5520C');b3.removeAttribute('stroke');b3.removeAttribute('stroke-dasharray');b3.setAttribute('opacity',1);
- var E=Eeye||0;b3.setAttribute('width',Math.min(Math.max(Math.log10(Math.max(E,1))/5,0),1)*580);
+ var E=Eeye||0;b3.setAttribute('width',Math.min(Math.max(Math.log10(Math.max(E,1))/5,0),1)*BW);
  v3=E<0.05?'≈ 0 lux: nessun fastidio':'≈ '+sci(E)+' lux → '+(E>20000?'forte: distogli lo sguardo':E>2000?'moderato':'debole: riesci a fissare');
 }
 document.getElementById('mioN').textContent=mioN;document.getElementById('lab3').textContent=lab3;document.getElementById('v3').textContent=v3;
+lay();
+}
+/* Phones (stack.js): the scene is cut into two panels and the three bars are laid out again
+   in a narrow column below them, with the long captions wrapped onto several lines. */
+var MQ=matchMedia('(max-width:600px)'),NS='http://www.w3.org/2000/svg';
+function pg(id){return document.getElementById(id);}
+function at(el,o){if(!el._d)el._d={};for(var k in o){if(!(k in el._d))el._d[k]=el.getAttribute(k);el.setAttribute(k,o[k]);}}
+function unat(el){if(el._d)for(var k in el._d){if(el._d[k]===null)el.removeAttribute(k);else el.setAttribute(k,el._d[k]);}}
+function wrap(t,w){
+ var ln=t.querySelectorAll('tspan.ln');if(ln.length)return ln.length;
+ t._o=t.innerHTML;var words=[[]],x=t.getAttribute('x'),cur,k=0;
+ Array.prototype.slice.call(t.childNodes).forEach(function(n){
+  if(n.nodeType===3)n.textContent.split(/(\s+)/).forEach(function(p){if(!p)return;if(/^\s+$/.test(p))words.push([]);else words[words.length-1].push(document.createTextNode(p));});
+  else words[words.length-1].push(n.cloneNode(true));});
+ t.textContent='';
+ function nl(){cur=document.createElementNS(NS,'tspan');cur.setAttribute('class','ln');cur.setAttribute('x',x);cur.setAttribute('dy',k?'1.25em':'0');t.appendChild(cur);k++;}
+ nl();
+ words.filter(function(wd){return wd.length;}).forEach(function(wd){
+  var add=[];if(cur.childNodes.length){add.push(document.createTextNode(' '));}
+  add=add.concat(wd);add.forEach(function(n){cur.appendChild(n);});
+  if(cur.childNodes.length>add.length&&cur.getComputedTextLength()>w){add.forEach(function(n){cur.removeChild(n);});nl();wd.forEach(function(n){cur.appendChild(n);});}});
+ return k;}
+function unwrap(t){if(t.querySelector('tspan.ln'))t.innerHTML=t._o;}
+var WR=['src2','pup','l1','l2','tl1','tl2','lab3','v1','v2','v3','c1','c2','cl1','cl2','e1','e2','e3','n1','n2','n3'],
+    MV=['src1','src2','pup','lead','l1','v1','g1','b1','t1','tl1','l2','v2','g2','b2','t2','tl2','lab3','v3','g3','b3','cm','c1','c2','cd','cl1','ch','cl2','e1','e2','e3','n1','n2','n3'];
+function lay(){
+ if(!MQ.matches){WR.forEach(function(id){unwrap(pg(id));});MV.forEach(function(id){unat(pg(id));});return;}
+ var X=20,W=300,TX=X+W/1.5,y,n;
+ function txt(id,yy,w,lh,o){var t=pg(id);o=o||{};o.y=yy;at(t,o);return yy+(wrap(t,w)-1)*lh;}
+ at(pg('src1'),{y:96});at(pg('src2'),{y:114});wrap(pg('src2'),318);
+ at(pg('pup'),{y:318});wrap(pg('pup'),318);
+ at(pg('lead'),{display:'none'});
+ y=360;
+ [['l1','v1','g1','b1','t1','tl1'],['l2','v2','g2','b2','t2','tl2'],['lab3','v3','g3','b3']].forEach(function(r){
+  y=txt(r[0],y,W,15);
+  y=txt(r[1],y+19,W,17.5,{x:X,'text-anchor':'start'});
+  var by=y+8;at(pg(r[2]),{y:by,width:W});at(pg(r[3]),{y:by});
+  if(r[4]){at(pg(r[4]),{x1:TX,x2:TX,y1:by-6,y2:by+20});y=txt(r[5],by+33,W,15,{x:TX});y+=26;}
+  else y=by+14;});
+ var y0=y,bot=y;
+ if(src==='screen'){
+  at(pg('cm'),{cx:X+W/2,cy:y0-7});
+  y=txt('c1',y0+18,W,15,{x:X+W/2});y=txt('c2',y+18,W,15,{x:X+W/2});
+  y+=24;at(pg('cd'),{cy:y-4});y=txt('cl1',y,W-18,15);
+  y+=20;at(pg('ch'),{y:y-9});y=txt('cl2',y,W-22,15);bot=y;}
+ else if(src==='ecl'){y=txt('e1',y0+24,W,15);y=txt('e2',y+19,W,15);bot=txt('e3',y+24,W,15);}
+ else if(src==='laser'){y=txt('n1',y0+24,W,15);y=txt('n2',y+15,W,15);bot=txt('n3',y+24,W,15);}
+ var cp=document.querySelectorAll('svg.stk[aria-hidden]');
+ if(cp.length)cp[cp.length-1].setAttribute('viewBox','6 342 328 '+Math.round(bot-342+12));
 }
 upd();
+if(MQ.addEventListener)MQ.addEventListener('change',function(){upd();setTimeout(lay,0);});else if(MQ.addListener)MQ.addListener(function(){upd();setTimeout(lay,0);});
+document.addEventListener('DOMContentLoaded',lay);
 </script>
+<script src="stack.js"></script>
 </body>
 </html>

@@ -15,6 +15,8 @@
 #sv{touch-action:none}
 #handle{cursor:grab}
 #handle:active{cursor:grabbing}
+/* phones: the script redraws the figure on a narrower viewBox (shorter distance scale, same text size) */
+@media (max-width:600px){#sv{min-width:0;max-width:100%} #sv text{paint-order:stroke;stroke:#FBFCFD;stroke-width:3px;stroke-linejoin:round}}
 </style>
 </head>
 <body>
@@ -41,7 +43,12 @@
 <div class="eq" id="eq"></div>
 <p class="note">Convenzione: la luce va da destra a sinistra; d₀ e dᵢ positive per oggetto e immagine reali, f negativa per la lente divergente. Raggi: <span style="color:#BA7517">①</span> parallelo all'asse, poi per F′; <span style="color:#185FA5">②</span> per il centro, senza deviare; <span style="color:#0F6E56">③</span> per F, poi parallelo. Le altezze sono disegnate in una scala diversa dalle distanze.</p>
 <script>
-var typ='C',LX=340,AY=170,SX=5,SY=12,drag=false;
+var typ='C',LX=340,AY=170,SX=5,SY=12,drag=false,W=680;
+/* phones (≤600px): 400-unit-wide drawing, lens at 190, 3.4 units/cm, so object, lens and images fit while text keeps its size */
+var PH=matchMedia('(max-width:600px)');
+function geo(){var p=PH.matches;LX=p?190:340;SX=p?3.4:5;W=p?400:680;document.getElementById('sv').setAttribute('viewBox','0 -70 '+W+' 440');}
+/* phones only: move a centred label off the lens and inside the drawing (t = its text) */
+function cl(x,t){if(!PH.matches)return x;var h=t.length*3.4+2,g=16;if(x>=LX&&x-h<LX+g)x=LX+g+h;else if(x<LX&&x+h>LX-g)x=LX-g-h;return Math.max(h,Math.min(W-h,x));}
 function setT(t){typ=t;if(t==='M'){document.getElementById('fS').value=10;document.getElementById('dS').value=6;document.getElementById('hS').value=2;}upd();}
 function put(m){document.getElementById('dS').value=Math.max(2,Math.min(58,m*parseFloat(document.getElementById('fS').value)));upd();}
 function fmt(x,d){return x.toFixed(d).replace('.',',');}
@@ -51,7 +58,7 @@ function arrow(x,y0,y1,col,dash){var up=y1<y0,s=L(x,y0,x,y1,col,2.5,dash);var hy
 function q(x1,x2,y,lbl,col,dash){var a=Math.min(x1,x2),b=Math.max(x1,x2),s='';
 s+=L(a,y,b,y,col,1.5,dash?'4 3':null)+L(a,y-6,a,y+6,col,1.5)+L(b,y-6,b,y+6,col,1.5);
 return s+T((a+b)/2,y-6,lbl,'th','middle',col);}
-function mk(x,lbl){if(x<6||x>674)return '';return L(x,AY-6,x,AY+6,'#534AB7',2)+T(x,AY+22,lbl,'th','middle','#534AB7');}
+function mk(x,lbl){if(x<6||x>W-6)return '';return L(x,AY-6,x,AY+6,'#534AB7',2)+T(x,AY+22,lbl,'th','middle','#534AB7');}
 function svgPt(e){var sv=document.getElementById('sv'),p=sv.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(sv.getScreenCTM().inverse());}
 var hd=document.getElementById('handle');
 hd.addEventListener('pointerdown',function(e){drag=true;hd.setPointerCapture(e.pointerId);e.preventDefault();});
@@ -59,6 +66,7 @@ hd.addEventListener('pointermove',function(e){if(!drag)return;var p=svgPt(e);
 document.getElementById('dS').value=Math.max(2,Math.min(58,(p.x-LX)/SX));document.getElementById('hS').value=Math.max(0.5,Math.min(9,(AY-p.y)/SY));upd();});
 hd.addEventListener('pointerup',function(e){drag=false;hd.releasePointerCapture(e.pointerId);});
 function upd(){
+geo();
 ['C','D','M'].forEach(function(k){document.getElementById('t'+k).classList.toggle('act',typ===k);});
 ['p1','p2','p3','p4','p5'].forEach(function(id){document.getElementById(id).disabled=typ==='D';});
 var d0=parseFloat(document.getElementById('dS').value),fa=parseFloat(document.getElementById('fS').value),h=parseFloat(document.getElementById('hS').value);
@@ -66,7 +74,7 @@ var f=typ==='D'?-fa:fa;
 document.getElementById('dL').textContent=fmt(d0,1)+' cm';document.getElementById('fL').textContent=fmt(fa,1)+' cm';document.getElementById('hL').textContent=fmt(h,1)+' cm';
 var inv=1/f-1/d0,inf=Math.abs(inv)<2e-4,di=inf?Infinity:1/inv,m=inf?Infinity:-di/d0,hi=inf?0:m*h;
 var xo=LX+d0*SX,yt=AY-h*SY,xi=inf?-1e6:LX-di*SX,yi=AY-hi*SY;
-var s=L(10,AY,670,AY,'var(--b)',0.6,'4 4');
+var s=L(10,AY,W-10,AY,'var(--b)',0.6,'4 4');
 if(typ==='M'){
 s+='<line x1="'+(LX+8)+'" y1="34" x2="'+(LX+62)+'" y2="-52" stroke="#854F0B" stroke-width="16" stroke-linecap="round"/>';
 s+='<line x1="'+(LX+8)+'" y1="34" x2="'+(LX+22)+'" y2="12" stroke="#5F5E5A" stroke-width="10" stroke-linecap="round"/>';
@@ -92,11 +100,11 @@ s+=L(xo,yt,LX,y3,'#0F6E56')+out(y3,cs,'#0F6E56');
 if(typ!=='D'&&d0<f)s+=L(xF,AY,xo,yt,'#0F6E56',1,'3 4',0.6);
 if(typ==='D')s+=L(LX,y3,xF,AY,'#0F6E56',1,'3 4',0.6);}
 if(typ==='M'){var ex=LX-80;s+='<ellipse cx="'+ex+'" cy="'+AY+'" rx="22" ry="14" fill="#F1EFE8" stroke="#888780" stroke-width="1"/><circle cx="'+(ex+10)+'" cy="'+AY+'" r="6" fill="#2C2C2A"/>'+T(ex,AY+34,'occhio','ts','middle');}
-s+=arrow(xo,AY,yt,'var(--t)');s+=T(xo,yt-14,'oggetto','ts','middle');
-if(!inf&&xi>4&&xi<676){var yic=Math.max(-50,Math.min(296,yi));s+=arrow(xi,AY,yic,'#D85A30',di<0?'5 4':null);s+=T(xi,(hi>0?yic-14:yic+20),di<0?'immagine virtuale':'immagine reale','ts','middle','#D85A30');}
-else if(!inf)s+=T(di>0?10:670,AY-30,di>0?'← immagine':'immagine →','th',di>0?'start':'end','#D85A30');
+s+=arrow(xo,AY,yt,'var(--t)');s+=T(cl(xo,'oggetto'),yt-14,'oggetto','ts','middle');
+if(!inf&&xi>4&&xi<W-4){var yic=Math.max(-50,Math.min(296,yi));s+=arrow(xi,AY,yic,'#D85A30',di<0?'5 4':null);var il=di<0?'immagine virtuale':'immagine reale';s+=T(cl(xi,il),(hi>0?yic-14:yic+20),il,'ts','middle','#D85A30');}
+else if(!inf)s+=T(di>0?10:W-10,AY-30,di>0?'← immagine':'immagine →','th',di>0?'start':'end','#D85A30');
 s+=q(LX,xo,316,'d₀ = '+fmt(d0,1)+' cm','var(--t)');
-if(!inf){var xic=Math.max(6,Math.min(674,xi));s+=q(xic,LX,338,'dᵢ = '+fmt(di,1)+' cm'+(di<0?' (virtuale)':''),'#D85A30',di<0);}
+if(!inf){var xic=Math.max(6,Math.min(W-6,xi));s+=q(xic,LX,338,'dᵢ = '+fmt(di,1)+' cm'+(di<0?' (virtuale)':''),'#D85A30',di<0);}
 else s+=T(LX-40,338,'dᵢ = ∞','th','end','#D85A30');
 s+=q(xF2,LX,360,'f = '+(f>0?'+':'−')+fmt(fa,1)+' cm','#534AB7',f<0);
 document.getElementById('sc').innerHTML=s;
@@ -109,6 +117,7 @@ if(typ==='M')e+='<br><b>Ingrandimento della lente ≈ 25 cm / f</b> = '+fmt(25/f
 document.getElementById('eq').innerHTML=e;
 }
 upd();
+if(PH.addEventListener)PH.addEventListener('change',upd);else if(PH.addListener)PH.addListener(upd);
 </script>
 </body>
 </html>

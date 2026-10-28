@@ -5,9 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Forme delle lenti</title>
 <link rel="stylesheet" href="widget.css">
+<style>
+/* phones: the six lenses as a single column (same shapes and labels) */
+.ph{display:none}
+@media (max-width:600px){svg.dk{display:none} svg.ph{display:block}}
+</style>
 </head>
 <body>
-<svg width="100%" viewBox="0 0 680 400" role="img"><title>Forme delle lenti</title><desc>Lenti convergenti (biconvessa, piano-convessa, menisco convergente) e divergenti (biconcava, piano-concava, menisco divergente) in sezione.</desc>
+<svg class="dk" width="100%" viewBox="0 0 680 400" role="img"><title>Forme delle lenti</title><desc>Lenti convergenti (biconvessa, piano-convessa, menisco convergente) e divergenti (biconcava, piano-concava, menisco divergente) in sezione.</desc>
 <text class="th" x="40" y="30">Convergenti: più spesse al centro</text>
 <path d="M150 50 Q180 100 150 150 Q120 100 150 50 Z" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
 <path d="M330 50 Q370 100 330 150 Z" fill="#B5D4F4" stroke="#185FA5" stroke-width="1"/>
@@ -29,6 +34,29 @@
 <text class="ts" x="340" y="392" text-anchor="middle">una faccia piatta</text>
 <text class="th" x="530" y="374" text-anchor="middle">Menisco divergente</text>
 <text class="ts" x="530" y="392" text-anchor="middle">occhiali per miopi</text>
+</svg>
+<svg class="ph stk" viewBox="0 0 340 538" role="img"><title>Forme delle lenti</title><desc>Lenti convergenti (biconvessa, piano-convessa, menisco convergente) e divergenti (biconcava, piano-concava, menisco divergente) in sezione.</desc>
+<text class="th" x="2" y="18">Convergenti: più spesse al centro</text>
+<path transform="translate(36 67) scale(.64) translate(-150 -100)" d="M150 50 Q180 100 150 150 Q120 100 150 50 Z" fill="#B5D4F4" stroke="#185FA5" stroke-width="1.5"/>
+<text class="th" x="80" y="64">Biconvessa</text>
+<text class="ts" x="80" y="82">due facce convesse</text>
+<path transform="translate(36 145) scale(.64) translate(-340 -100)" d="M330 50 Q370 100 330 150 Z" fill="#B5D4F4" stroke="#185FA5" stroke-width="1.5"/>
+<text class="th" x="80" y="142">Piano-convessa</text>
+<text class="ts" x="80" y="160">una faccia piatta</text>
+<path transform="translate(36 223) scale(.64) translate(-522 -100)" d="M530 50 Q496 100 530 150 Q514 100 530 50 Z" fill="#B5D4F4" stroke="#185FA5" stroke-width="1.5"/>
+<text class="th" x="80" y="220">Menisco convergente</text>
+<text class="ts" x="80" y="238">occhiali per ipermetropi</text>
+<line class="leader" x1="2" y1="272" x2="338" y2="272"/>
+<text class="th" x="2" y="296">Divergenti: più spesse ai bordi</text>
+<path transform="translate(36 345) scale(.64) translate(-150 -300)" d="M136 250 L164 250 Q146 300 164 350 L136 350 Q154 300 136 250 Z" fill="#B5D4F4" stroke="#185FA5" stroke-width="1.5"/>
+<text class="th" x="80" y="342">Biconcava</text>
+<text class="ts" x="80" y="360">due facce concave</text>
+<path transform="translate(36 423) scale(.64) translate(-340 -300)" d="M326 250 L354 250 Q334 300 354 350 L326 350 Z" fill="#B5D4F4" stroke="#185FA5" stroke-width="1.5"/>
+<text class="th" x="80" y="420">Piano-concava</text>
+<text class="ts" x="80" y="438">una faccia piatta</text>
+<path transform="translate(36 501) scale(.64) translate(-525 -300)" d="M520 250 Q508 300 520 350 L536 350 Q500 300 536 250 Z" fill="#B5D4F4" stroke="#185FA5" stroke-width="1.5"/>
+<text class="th" x="80" y="498">Menisco divergente</text>
+<text class="ts" x="80" y="516">occhiali per miopi</text>
 </svg>
 </body>
 </html>

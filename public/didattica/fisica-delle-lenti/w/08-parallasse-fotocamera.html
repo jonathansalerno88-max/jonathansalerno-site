@@ -10,6 +10,8 @@
 .ctl button{font:inherit;font-size:13px;padding:6px 12px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
 .ctl button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
 .note{font-size:13px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
+/* phones (stack.js): the strip is shown narrower than the rest, so its text is set larger */
+@media (max-width:600px){#stripT{font-size:18px;transform:translateX(82px)} #sepL{font-size:16px}}
 </style>
 </head>
 <body>
@@ -27,14 +29,14 @@
 <button id="play" onclick="toggle()">Fai ruotare</button>
 </div>
 <div class="ctl"><span>Rotazione</span><input type="range" id="rot" min="-25" max="25" value="0" style="flex:1" oninput="stop();upd()"><span id="rotL" style="min-width:40px;text-align:right;color:var(--text-primary)">0°</span></div>
-<svg width="100%" viewBox="0 0 680 390">
+<svg width="100%" viewBox="0 0 680 390" data-stack="15,0,335,290; 345,85,335,130; 98,296,477,96" data-stack-main="0">
 <text class="th" x="20" y="24">Vista dall'alto</text>
 <g id="fov"></g><g id="sight"></g>
 <circle id="blue" r="8" fill="#378ADD"/><circle id="red" r="8" fill="#E24B4A"/>
 <text class="ts" id="blueL" text-anchor="middle">vicino</text><text class="ts" id="redL" text-anchor="middle">lontano</text>
 <g id="cam"></g><g id="pivot"></g><g id="labels"></g>
 <line class="leader" x1="20" y1="292" x2="660" y2="292"/>
-<text class="th" x="20" y="314">Cosa vede la fotocamera</text>
+<text class="th" id="stripT" x="20" y="314">Cosa vede la fotocamera</text>
 <rect x="120" y="324" width="440" height="44" rx="6" fill="none" stroke="var(--b)" stroke-width="0.5"/>
 <line x1="340" y1="324" x2="340" y2="368" stroke="var(--b)" stroke-width="0.5" stroke-dasharray="3 3"/>
 <circle id="pR" cx="340" cy="346" r="7" fill="#E24B4A"/><circle id="pB" cx="340" cy="346" r="7" fill="#378ADD"/>
@@ -87,7 +89,10 @@ lab+='<text class="ts" x="'+P.x+'" y="'+(P.y+92)+'" text-anchor="middle" fill="#
 document.getElementById('labels').innerHTML=lab;
 function ang(o){return Math.atan2(o.y-EP.y,o.x-EP.x)*180/Math.PI-deg;}
 var aB=ang(B),aR=ang(R);
-document.getElementById('pB').setAttribute('cx',340+aB/26*220);document.getElementById('pR').setAttribute('cx',340+aR/26*220);
+/* phones: the strip is cropped to the frame, so dots outside it are drawn squeezed against its edge */
+var ph=matchMedia('(max-width:600px)').matches;
+function sx(a){var x=340+a/26*220;return ph&&x<120?120-(120-x)*0.09:ph&&x>560?560+(x-560)*0.09:x;}
+document.getElementById('pB').setAttribute('cx',sx(aB));document.getElementById('pR').setAttribute('cx',sx(aR));
 var sep=Math.abs(aB-aR);
 document.getElementById('sepL').textContent=sep<0.05?'vicino e lontano allineati: nessuna parallasse':'scarto fra vicino e lontano: '+sep.toFixed(1).replace('.',',')+'°';
 var n;
@@ -97,6 +102,8 @@ else n='Obiettivo composto, rotazione sulla pupilla d\'entrata: il punto di vist
 document.getElementById('note').textContent=n;
 }
 upd();
+var mq=matchMedia('(max-width:600px)');if(mq.addEventListener)mq.addEventListener('change',upd);else if(mq.addListener)mq.addListener(upd);
 </script>
+<script src="stack.js"></script>
 </body>
 </html>

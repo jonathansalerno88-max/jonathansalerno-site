@@ -13,6 +13,13 @@
 .info{font-size:13px;color:var(--text-secondary);margin:6px 0 0;line-height:1.6}
 .info b{color:var(--text-primary);font-weight:500}
 .eq{font-size:14px;color:var(--text-primary);background:var(--surface-1);border-radius:var(--radius);padding:10px 12px;margin-top:8px;line-height:1.7}
+.capm{display:none}
+@media (max-width:600px){
+.capm{display:block;margin:0 0 4px;line-height:1.4}
+.capm b{display:block;font-size:14px;font-weight:500;color:var(--text-primary)}
+.capm span{display:block;font-size:12px;color:var(--text-secondary)}
+#cap,#cap2{display:none}
+}
 </style>
 </head>
 <body>
@@ -49,7 +56,8 @@
 <span>contracted</span>
 <span id="accL" style="min-width:150px;text-align:right;color:var(--text-primary)"></span>
 </div>
-<svg width="100%" viewBox="0 0 680 455">
+<div class="capm" aria-hidden="true"><b id="capM"></b><span id="cap2M"></span></div>
+<svg width="100%" viewBox="0 0 680 455" data-stack="0,30,345,316; 335,30,345,316; 0,344,345,232">
 <defs>
 <filter id="fIso" x="-100%" y="-50%" width="300%" height="200%"><feGaussianBlur id="gIso" stdDeviation="3.5"/></filter>
 <filter id="fAst" x="-100%" y="-50%" width="300%" height="200%"><feGaussianBlur id="gAst" stdDeviation="0.3 6"/></filter>
@@ -83,6 +91,7 @@
 <text class="th" x="270" y="212" text-anchor="middle" fill="#185FA5">N′</text>
 <g id="obj"></g>
 <g id="quote"></g>
+<g id="seenBox">
 <rect x="430" y="340" width="220" height="88" rx="8" fill="none" stroke="var(--b)" stroke-width="0.5"/>
 <text class="ts" x="442" y="360">How you see it</text>
 <g id="seen" transform="translate(70,0)">
@@ -93,12 +102,13 @@
 <text class="ts" id="seenLbl" x="442" y="380"> </text>
 <text class="ts" id="blurLbl" x="442" y="398"> </text>
 <text class="ts" id="pupLbl" x="442" y="416"> </text>
+</g>
 <line x1="24" y1="364" x2="44" y2="364" stroke="#BA7517" stroke-width="2"/>
 <text class="ts" x="50" y="368">rays from tip A</text>
 <line x1="24" y1="386" x2="44" y2="386" stroke="#185FA5" stroke-width="2" stroke-dasharray="5 3"/>
 <text class="ts" x="50" y="390">rays from tail B</text>
 <text class="ts" id="astLeg" x="24" y="410"> </text>
-<text class="ts" x="24" y="446">Distances measured from N′ · lengths in the drawing not to scale, values real</text>
+<text class="ts" id="foot" x="24" y="446">Distances measured from N′ · lengths in the drawing not to scale, values real</text>
 </svg>
 <div class="eq" id="eqBox"></div>
 <p class="info" id="caseInfo"></p>
@@ -260,6 +270,25 @@ document.getElementById('astLeg').textContent=(cond==='A'&&!uL)?'pale rays and �
 document.getElementById('drugInfo').innerHTML=(mio?dInfo.M:(drug!=='N'?dInfo[drug]+' The eye drops that constrict only the pupil are not added here: '+(drug==='P'?'the pupil is already constricted.':'atropine blocks the same muscarinic receptors of the iris sphincter that the drops act on.'):''))+(pres?' <b>Presbyopia</b>: the ciliary muscle still contracts and the zonule slackens, but the crystalline lens, grown larger and stiff, no longer rounds up. Of the accommodation commanded, at most about 1 D reaches the lens, while reading at 40 cm needs 2.5. The command is there; the lens does not respond.':'');
 }
 upd();
+// Phones: stack.js cuts the drawing into panels (eye | object | legend).
+// Caption shown as HTML above; labels kept out of the seam between the two ray panels (object letters
+// go to the left of a near object, the virtual dᵢ label to the right);
+// footnote on two lines and the "seen" box moved under the legend.
+(function(){var MQ=matchMedia('(max-width:600px)'),u0=upd,ft=document.getElementById('foot'),ftT=ft.textContent;
+function ph(){var on=MQ.matches,sb=document.getElementById('seenBox');
+ document.getElementById('capM').textContent=document.getElementById('cap').textContent;
+ document.getElementById('cap2M').textContent=document.getElementById('cap2').textContent;
+ if(!on){sb.removeAttribute('transform');ft.textContent=ftT;return;}
+ sb.setAttribute('transform','translate(-406,140)');
+ var k=ftT.indexOf(' · ');ft.innerHTML='';[ftT.slice(0,k),ftT.slice(k+3)].forEach(function(l,i){var t=document.createElementNS('http://www.w3.org/2000/svg','tspan');t.setAttribute('x','24');if(i)t.setAttribute('dy','16');t.textContent=l;ft.appendChild(t);});
+ ['quote','foci','specs','obj'].forEach(function(id){Array.prototype.forEach.call(document.querySelectorAll('#'+id+' text'),function(t){t.removeAttribute('transform');var b=t.getBBox();
+  if(!b.width||b.x>=345||b.x+b.width<=335)return;
+  var dx=id==='obj'?parseFloat(t.getAttribute('x'))-20-(b.x+b.width):(b.x+b.width/2<340&&t.getAttribute('y')!=='311')?333-(b.x+b.width):347-b.x;
+  t.setAttribute('transform','translate('+dx+',0)');});});}
+upd=function(){u0();ph();};ph();
+if(MQ.addEventListener)MQ.addEventListener('change',ph);else if(MQ.addListener)MQ.addListener(ph);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(ph);})();
 </script>
+<script src="stack.js"></script>
 </body>
 </html>

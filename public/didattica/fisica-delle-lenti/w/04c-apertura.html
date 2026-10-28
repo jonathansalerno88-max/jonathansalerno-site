@@ -18,6 +18,15 @@
 .take ul{margin:4px 0 0;padding-left:18px}
 .take li{margin:3px 0}
 .note{font-size:12.5px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
+.capm{display:none}
+@media (max-width:600px){
+.capm{display:block;margin:0 0 4px;line-height:1.4}
+.capm b{display:block;font-size:14px;font-weight:500;color:var(--text-primary)}
+.capm span{display:block;font-size:12px;color:var(--text-secondary)}
+#zmS.one+svg.stk{display:none}
+.sl{grid-template-columns:auto minmax(0,1fr) 60px;gap:8px}
+.sl input{min-width:0;width:100%}
+}
 </style>
 </head>
 <body>
@@ -30,8 +39,9 @@
 </div>
 <div class="ctl"><span style="min-width:150px">Coni nei riquadri</span><button id="v0" onclick="real=false;upd()">Pixel omogenei: dove arriva la luce</button><button id="v1" onclick="real=true;upd()">Coni veri: come la percepisci</button></div>
 <div class="sl"><span>Diametro della pupilla</span><input type="range" id="D" min="1.5" max="8" step="0.1" value="6" oninput="upd()"><output id="DO"></output></div>
-<svg width="100%" viewBox="0 0 680 250"><g id="g"></g></svg>
-<svg width="100%" viewBox="0 0 680 318"><g id="zm"></g></svg>
+<div class="capm" aria-hidden="true"><b id="capM"></b><span id="cap2M"></span></div>
+<svg width="100%" viewBox="0 0 680 250" data-stack="0,36,320,206; 320,36,360,206"><g id="g"></g></svg>
+<svg width="100%" viewBox="0 0 680 318" id="zmS" data-stack="92,-28,266,356; 322,28,266,262"><g id="zm"></g></svg>
 <div class="out" id="out"></div>
 <p class="note" id="nt"></p>
 <div class="take"><b>In sintesi</b>
@@ -48,7 +58,12 @@ var mode=0,real=false,CY=126,PX=200,RX=560,K=14; // K: px per mm of pupil height
 function nf(x,d){return x.toLocaleString('it-IT',{maximumFractionDigits:d});}
 function T(x,y,t,cls,col,anc){return '<text class="'+cls+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+'>'+t+'</text>';}
 function L(x1,y1,x2,y2,c,w,op,da){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+(w||1.2)+'" opacity="'+(op==null?1:op)+'"'+(da?' stroke-dasharray="'+da+'"':'')+'/>';}
+// phones: lines of at most max characters, centred on x, the last one at y (up) or the first one at y
+function TC(x,y,t,cls,col,max,up){var ls=[''];t.split(' ').forEach(function(w){var l=ls[ls.length-1];if(l&&(l+' '+w).length>max)ls.push(w);else ls[ls.length-1]=l?l+' '+w:w;});
+ return ls.map(function(l,i){return T(x,y+15*(up?i-ls.length+1:i),l,cls,col,'middle');}).join('');}
 function upd(){
+ var ph=matchMedia('(max-width:600px)').matches; // phones: stack.js shows each drawing as two panels; captions go above in HTML
+ document.getElementById('zmS').classList.toggle('one',ph&&mode===3);
  var D=parseFloat(document.getElementById('D').value);document.getElementById('DO').textContent=nf(D,1)+' mm';
  for(var i=0;i<4;i++)document.getElementById('m'+i).classList.toggle('act',mode===i);
  document.getElementById('v0').classList.toggle('act',!real);document.getElementById('v1').classList.toggle('act',real);
@@ -78,13 +93,15 @@ function upd(){
  s+='<rect x="'+(PX-4)+'" y="'+(CY-70)+'" width="7" height="'+(70-hp)+'" fill="#854F0B"/><rect x="'+(PX-4)+'" y="'+(CY+hp)+'" width="7" height="'+(70-hp)+'" fill="#854F0B"/>';
  s+='<ellipse cx="'+(PX+12)+'" cy="'+CY+'" rx="7" ry="66" fill="#B5D4F4" opacity="0.55" stroke="#378ADD" stroke-width="0.6"/>';
  s+=T(PX-10,CY-58,'iride','ts',null,'end')+T(PX+22,CY-60,'cristallino','ts',null,'start');
- s+=T(16,46,mode===0?'raggi da un punto vicino (libro a 40 cm)':'raggi da un punto lontano','ts');
+ var sub=mode===0?'raggi da un punto vicino (libro a 40 cm)':'raggi da un punto lontano';document.getElementById('cap2M').textContent=sub;
+ if(!ph)s+=T(16,46,sub,'ts');
  if(mode===0)s+='<circle cx="16" cy="'+CY+'" r="3" fill="#16222E"/>';
  s+=T(16,CY+108,'in grigio: raggi fermati dall\'iride','ts','#888780');
  // posterior nodal point and N'-retina distance
  var NX=PX+20;s+='<circle cx="'+NX+'" cy="'+CY+'" r="4" fill="#185FA5" stroke="#fff" stroke-width="1"/>'+T(NX+6,CY-8,'N′','th','#185FA5');
  var qy=CY+88;s+=L(NX,qy,RX,qy,'#534AB7',1.5)+L(NX,qy-6,NX,qy+6,'#534AB7',1.5)+L(RX,qy-6,RX,qy+6,'#534AB7',1.5);
- s+=T((NX+RX)/2,qy-6,'N′–retina = 16,7 mm: la distanza focale N′F′'+(mode===0?' (oggetto lontano)':''),'ts','#534AB7','middle');
+ var nl='N′–retina = 16,7 mm: la distanza focale N′F′'+(mode===0?' (oggetto lontano)':''),nk=nl.indexOf(': ');
+ s+=ph?T(440,qy-22,nl.slice(0,nk+1),'ts','#534AB7','middle')+T(440,qy-6,nl.slice(nk+2),'ts','#534AB7','middle'):T((NX+RX)/2,qy-6,nl,'ts','#534AB7','middle');
  // retina and spot
  s+=L(RX,CY-84,RX,CY+84,'#D85A30',3)+T(RX+8,CY-70,'retina','ts');
  var top=Math.min.apply(null,hits),bot=Math.max.apply(null,hits);
@@ -94,7 +111,7 @@ function upd(){
  s+='<defs><filter id="dg" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="'+(gh*0.35+0.5)+'"/></filter></defs>';
  s+='<ellipse cx="'+RX+'" cy="'+CY+'" rx="'+(3+gh*0.25)+'" ry="'+gh+'" fill="#EF9F27" opacity="0.55" filter="url(#dg)"/>';
  if(D<3.2){s+=L(PX+4,CY-hp,RX,CY-gh,'#EF9F27',1,0.5,'2 3')+L(PX+4,CY+hp,RX,CY+gh,'#EF9F27',1,0.5,'2 3');
-  s+=T(RX-10,CY-gh-10,'diffrazione: il buco piccolo allarga la luce','ts','#BA7517','end');}
+  s+=T(ph?RX-6:RX-10,CY-gh-10,'diffrazione: il buco piccolo allarga la luce','ts','#BA7517','end');}
  // pixel view: same 8 arcmin on human and eagle retina, cones light up like pixels
  var airy=0.42*22.4/D,geo=mode===0?25*D:mode===1?0.08*D*D*D:mode===2?6*D:0,tot=Math.sqrt(geo*geo+airy*airy);
  var ARC=8/60*Math.PI/180;
@@ -132,11 +149,11 @@ function upd(){
    else q+='<text class="ts" x="'+cx+'" y="'+(y0+16)+'" text-anchor="middle" fill="#D9CCFF">alone viola: esce dal riquadro</text>';}
   return q+'</g>';}
  var z='';
- z+=T(340,20,real?'Coni veri: L (rossi) e M (verdi); i coni S (blu) mancano nel centro della fovea, circa 20 primi':'8 primi d\'arco di fovea, in scala vera: ogni cerchietto è un cono, che si accende come un pixel','ts',null,'middle');
+ var hd=real?'Coni veri: L (rossi) e M (verdi); i coni S (blu) mancano nel centro della fovea, circa 20 primi':'8 primi d\'arco di fovea, in scala vera: ogni cerchietto è un cono, che si accende come un pixel';z+=ph?TC(225,20,hd,'ts',null,40,true):T(340,20,hd,'ts',null,'middle');
  var hS=sig(geo,airy),h0=sig(0,airy);
  if(mode===3){
-  z+=mosaic(245,'zA',16.7,2.5,h0,null,true);
-  z+=T(340,246,'Uomo, a fuoco','th',null,'middle')+T(340,264,um(airy)+', '+cn(airy,2.5),'ts',null,'middle')+T(340,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
+  var c3=ph?225:340;z+=mosaic(ph?130:245,'zA',16.7,2.5,h0,null,true);
+  z+=T(c3,246,'Uomo, a fuoco','th',null,'middle')+T(c3,264,um(airy)+', '+cn(airy,2.5),'ts',null,'middle')+T(c3,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
  }else{
   var BANDS=[[-1.3,[150,70,255],0.01,0.01],[-0.8,[60,120,255],0.05,0.08],[-0.04,[90,220,90],0.75,1],[0.04,[255,230,50],1,0.8],[0.14,[255,150,40],0.9,0.45],[0.28,[255,60,50],0.45,0.1]];
   function bands(Dp){return BANDS.map(function(b){return {s:sig(7.5*Dp*Math.abs(b[0]),airy),c:b[1],L:b[2],M:b[3]};});}
@@ -145,11 +162,12 @@ function upd(){
   z+=T(225,246,mode===0?'Uomo, presbite':mode===1?'Uomo, aberrazione sferica':'Uomo, aberrazione cromatica','th',null,'middle')+T(225,264,um(tot)+', '+cn(tot,2.5),'ts',null,'middle')+T(225,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
   z+=T(455,246,mode===0?'Stesso occhio, a fuoco':'Stesso occhio, ottica perfetta','th',null,'middle')+T(455,264,um(airy)+', '+cn(airy,2.5),'ts',null,'middle')+T(455,282,'N′F′ 16,7 mm · 1 cono = 0,51′','ts','#534AB7','middle');
  }
- z+=T(340,310,'angolo di un cono = larghezza del cono / N′F′ = 2,5 µm / 16,7 mm ≈ 0,5 primi','ts','#888780','middle');
+ z+=ph?TC(225,306,'angolo di un cono = larghezza del cono / N′F′ = 2,5 µm / 16,7 mm ≈ 0,5 primi','ts','#888780',40):T(340,310,'angolo di un cono = larghezza del cono / N′F′ = 2,5 µm / 16,7 mm ≈ 0,5 primi','ts','#888780','middle');
  document.getElementById('zm').innerHTML=z;
  var lab=mode===3?'tutti i raggi vanno a fuoco sulla retina':mode===0?'fuoco dietro la retina: manca accomodazione':mode===1?'i raggi periferici vanno a fuoco prima di quelli centrali':'il blu va a fuoco prima, il rosso dopo; il verde sulla retina';
- s+=T(16,22,lab,'th');
- s+=T(300,CY+108,'raggi: distanze non in scala; i riquadri sotto sono in scala vera','ts','#888780');
+ document.getElementById('capM').textContent=lab;
+ if(!ph)s+=T(16,22,lab,'th');
+ s+=T(ph?326:300,CY+108,'raggi: distanze non in scala; i riquadri sotto sono in scala vera','ts','#888780');
  document.getElementById('g').innerHTML=s;
  var r=D/4,sp=mode===3?1/r:mode===1?r*r*r:r;
  var best=1.5,bv=1e9;for(var x=1.5;x<=8.001;x+=0.05){var gx=mode===0?25*x:mode===1?0.08*x*x*x:mode===2?6*x:0,ax=0.42*22.4/x,tx=Math.sqrt(gx*gx+ax*ax);if(tx<bv){bv=tx;best=x;}}
@@ -165,6 +183,8 @@ function upd(){
  document.getElementById('nt').innerHTML=nt;
 }
 upd();
+var MQph=matchMedia('(max-width:600px)');if(MQph.addEventListener)MQph.addEventListener('change',upd);else if(MQph.addListener)MQph.addListener(upd);
 </script>
+<script src="stack.js"></script>
 </body>
 </html>

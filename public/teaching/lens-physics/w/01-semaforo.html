@@ -27,6 +27,9 @@ td.rad b{color:var(--text-primary);font-weight:500}
 tr.chg td.val{background:#FCEEDD}
 .same{font-size:12px;color:var(--text-secondary)}
 .note{font-size:12.5px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
+@media (max-width:600px){.ctl span[style="flex:1"]{flex-basis:100%!important;height:0;margin-top:-10px}}
+/* phone: the table wraps instead of scrolling sideways */
+@media (max-width:600px){table{min-width:0!important;font-size:12px!important}th,td{padding-left:4px!important;padding-right:4px!important}}
 </style>
 </head>
 <body>
@@ -39,7 +42,7 @@ tr.chg td.val{background:#FCEEDD}
 <button id="uL" onclick="rad=false;upd()">Light (lumens, lux…)</button>
 <button id="uW" onclick="rad=true;upd()">Energy (watts)</button>
 </div>
-<svg width="100%" viewBox="0 0 680 440">
+<svg width="100%" viewBox="0 0 680 440" data-stack="0,0,345,422; 340,88,340,410" data-stack-main="0">
 <line x1="0" y1="332" x2="680" y2="332" stroke="var(--b)" stroke-width="0.5"/>
 <circle cx="70" cy="178" r="26" fill="#FAC775" stroke="#BA7517" stroke-width="0.8"/>
 <text class="th" x="110" y="168">Sun</text>
@@ -74,7 +77,7 @@ tr.chg td.val{background:#FCEEDD}
 </div>
 <p class="note" id="note"></p>
 <script>
-var moved=false,snow=false,rad=false;
+var moved=false,snow=false,rad=false,MQ=matchMedia('(max-width:600px)');
 var C={phi:'#534AB7',int:'#185FA5',lum:'#0F6E56',ill:'#B5520C',td:'#A32D2D'};
 function tag(x,y,w,col,name,val,unit,extra){
   var h=extra?54:38;
@@ -84,6 +87,7 @@ function tag(x,y,w,col,name,val,unit,extra){
   (extra?'<text x="'+(x+9)+'" y="'+(y+47)+'" fill="#55697A" font-size="11">'+extra+'</text>':'')+'</g>';}
 function fmt(n){return n.toLocaleString('en-GB');}
 function upd(){
+  var ph=MQ.matches,lx=ph?350:212,ry=ph?440:378;
   var rho=snow?0.85:0.2,E=10000,Ls=Math.round(rho*E/Math.PI/100)*100;
   var pd=moved?2:(snow?2.5:3),pa=moved?3:(snow?5:7);
   var Eroad=Math.round(Math.PI/2*Ls/100)*100,Eeye=Eroad+(moved?40000:0),tdRoad=Ls*pa,tdSun=moved?'≈ 5×10⁹':'—';
@@ -108,23 +112,25 @@ function upd(){
   t+=tag(10,52,205,C.int,'intensity I','2.9×10²⁷ candela','(cd = lm/sr)');
   t+=tag(10,96,205,C.lum,'sun luminance L','≈ 1.6×10⁹ nit','(cd/m²)');
   t+=tag(10,378,195,C.ill,'road illuminance E',fmt(E)+' lux','(lm/m²)');
-  t+=tag(212,378,196,C.lum,'road luminance L','≈ '+fmt(Ls)+' nit','(cd/m²)');
-  t+=tag(414,378,262,C.td,'retinal illuminance',fmt(tdRoad)+' troland','(nit · mm²)',moved?'staring at the sun: ≈ 5×10⁹ troland':'');
+  t+=tag(lx,378,196,C.lum,'road luminance L','≈ '+fmt(Ls)+' nit','(cd/m²)');
+  t+=tag(414,ry,262,C.td,'retinal illuminance',fmt(tdRoad)+' troland','(nit · mm²)',moved?'staring at the sun: ≈ 5×10⁹ troland':'');
   t+=tag(470,96,205,C.ill,'eye illuminance E','≈ '+fmt(Eeye)+' lux','(lm/m²)',moved?'of which 40,000 from the sun':'');
   }else{
   t+=tag(10,8,205,C.phi,'radiant flux','3.6×10²⁶ watts','(W = J/s)');
   t+=tag(10,52,205,C.int,'radiant intensity','2.9×10²⁵ W/sr','');
   t+=tag(10,96,205,C.lum,'sun radiance','≈ 1.6×10⁷ W/(m²·sr)','');
   t+=tag(10,378,195,C.ill,'road irradiance','≈ 100 W/m²','');
-  t+=tag(212,378,196,C.lum,'road radiance','≈ '+f2(Rs)+' W/(m²·sr)','');
-  t+=tag(414,378,262,C.td,'retinal irradiance',f2(irrRet)+' W/m²','',moved?'staring at the sun: ≈ 2×10⁵ W/m² (20 W/cm²)':'');
+  t+=tag(lx,378,196,C.lum,'road radiance','≈ '+f2(Rs)+' W/(m²·sr)','');
+  t+=tag(414,ry,262,C.td,'retinal irradiance',f2(irrRet)+' W/m²','',moved?'staring at the sun: ≈ 2×10⁵ W/m² (20 W/cm²)':'');
   t+=tag(470,96,205,C.ill,'eye irradiance','≈ '+fmt(Eeye/100)+' W/m²','',moved?'of which 400 from the sun':'');
   }
   t+='<line x1="70" y1="134" x2="70" y2="151" stroke="'+C.lum+'" stroke-width="1"/>';
   t+='<line x1="580" y1="'+(moved?150:134)+'" x2="556" y2="182" stroke="'+C.ill+'" stroke-width="1"/>';
-  t+='<line x1="640" y1="378" x2="648" y2="252" stroke="'+C.td+'" stroke-width="1"/>';
-  t+='<line x1="313" y1="378" x2="420" y2="342" stroke="'+C.lum+'" stroke-width="1"/>';
-  t+='<line x1="105" y1="378" x2="200" y2="340" stroke="'+C.ill+'" stroke-width="1"/>';
+  t+='<line x1="640" y1="'+ry+'" x2="648" y2="252" stroke="'+C.td+'" stroke-width="1"/>';
+  t+='<line x1="'+(ph?420:313)+'" y1="378" x2="420" y2="342" stroke="'+C.lum+'" stroke-width="1"/>';
+  t+='<line x1="'+(ph?40:105)+'" y1="378" x2="'+(ph?130:200)+'" y2="'+(ph?338:340)+'" stroke="'+C.ill+'" stroke-width="1"/>';
+  /* phones: the road label stays in the left panel, the box of the road luminance and the retinal box in the right one */
+  var rl=document.getElementById('roadLbl');rl.setAttribute('x',ph?336:330);rl.setAttribute('text-anchor',ph?'end':'middle');
   document.getElementById('tags').innerHTML=t;
   var rows=[
    ['phi','Luminous flux Φ','<b>lumen</b> (lm)','how much light the source emits in total, in all directions','sun','3.6×10²⁸ lm',false,'radiant flux, <b>watt</b>: 3.6×10²⁶ W'],
@@ -139,6 +145,8 @@ function upd(){
   document.getElementById('note').innerHTML='Same colour, same quantity and same unit. The sun\'s three quantities never change: neither the traffic light nor the snow touches the sun. '+(moved?'Without the traffic light, the direct light of the sun adds to the light from the road: <b>40,000 lux</b> more at the eye (it dazzles) and, if you stare at it, an image of the sun of about <b>5×10⁹ trolands</b> on the retina (it causes damage). The pupil constricts to 2 mm.':'Behind the traffic light only what reaches you changes: the direct light of the sun disappears, and at the eye only the light reflected by the road remains, about '+fmt(Eroad)+' lux.')+(snow?' With snow the luminance of the road rises, and the trolands with it, even though the pupil constricts.':'')+' To go from light to energy, for sunlight: about <b>100 lumens per watt</b> (luminous efficacy). Values: orders of magnitude, low sun at dawn; skylight, which also reaches the eye, is not counted.';
 }
 upd();
+if(MQ.addEventListener)MQ.addEventListener('change',upd);else if(MQ.addListener)MQ.addListener(upd);
 </script>
+<script src="stack.js"></script>
 </body>
 </html>

@@ -10,6 +10,8 @@
 .ctl button{font:inherit;font-size:13px;padding:6px 12px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
 .ctl button.act{border:1.5px solid var(--border-accent);color:var(--text-accent)}
 .note{font-size:13px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
+/* phones (stack.js): panel titles moved into their panels; the strip is shown narrower, so its text is set larger */
+@media (max-width:600px){#topT{transform:translateX(105px)} #stripT{font-size:18px;transform:translateX(82px)} #sepL{font-size:16px}}
 </style>
 </head>
 <body>
@@ -23,14 +25,14 @@
 <button id="play" onclick="toggle()">Rotate</button>
 </div>
 <div class="ctl"><span>Rotation</span><input type="range" id="rot" min="-25" max="25" value="0" style="flex:1" oninput="stop();upd()"><span id="rotL" style="min-width:40px;text-align:right;color:var(--text-primary)">0°</span></div>
-<svg width="100%" viewBox="0 0 680 400">
-<text class="th" x="20" y="24">Top view</text>
+<svg width="100%" viewBox="0 0 680 400" data-stack="115,0,310,290; 425,85,255,125; 98,306,477,96" data-stack-main="0">
+<text class="th" id="topT" x="20" y="24">Top view</text>
 <g id="fov"></g><g id="sight"></g>
 <circle id="blue" r="8" fill="#378ADD"/><circle id="red" r="8" fill="#E24B4A"/>
 <text class="ts" id="blueL" text-anchor="middle">near</text><text class="ts" id="redL" text-anchor="middle">far</text>
 <g id="eye"></g><g id="pivot"></g><g id="labels"></g>
 <line class="leader" x1="20" y1="302" x2="660" y2="302"/>
-<text class="th" x="20" y="324">What the eye sees</text>
+<text class="th" id="stripT" x="20" y="324">What the eye sees</text>
 <rect x="120" y="334" width="440" height="44" rx="6" fill="none" stroke="var(--b)" stroke-width="0.5"/>
 <line x1="340" y1="334" x2="340" y2="378" stroke="var(--b)" stroke-width="0.5" stroke-dasharray="3 3"/>
 <circle id="dR" cx="340" cy="356" r="7" fill="#E24B4A"/><circle id="dB" cx="340" cy="356" r="7" fill="#378ADD"/>
@@ -75,7 +77,8 @@ document.getElementById('sight').innerHTML=L(EP.x,EP.y,R.x,R.y,'#888780',1,'3 3'
 document.getElementById('pivot').innerHTML='<path d="M'+(P.x-9)+' '+P.y+' L'+(P.x+9)+' '+P.y+' M'+P.x+' '+(P.y-9)+' L'+P.x+' '+(P.y+9)+'" stroke="#A32D2D" stroke-width="2"/>';
 var FM=W((RET+NX)/2,78);
 var lab='<text class="ts" x="'+FM.x+'" y="'+(FM.y+8)+'" text-anchor="middle" fill="#D85A30">f = N′ → retina = 16.7 mm</text>';
-lab+='<text class="ts" x="'+EP.x+'" y="'+(EP.y-56)+'" text-anchor="start" fill="#0F6E56">entrance pupil (3 mm)</text>';
+var ph=matchMedia('(max-width:600px)').matches;
+lab+='<text class="ts" x="'+EP.x+'" y="'+(EP.y-56)+'" text-anchor="start" fill="#0F6E56">'+(ph?'<tspan>entrance pupil</tspan><tspan x="'+EP.x+'" dy="14">(3 mm)</tspan>':'entrance pupil (3 mm)')+'</text>';
 lab+='<text class="ts" x="'+NP.x+'" y="'+(NP.y-74)+'" text-anchor="middle" fill="#D85A30">N′ (7.3 mm)</text>';
 lab+=L(NP.x,NP.y-66,NP.x,NP.y-8,'#D85A30',0.5);
 lab+='<text class="ts" x="'+CR.x+'" y="'+(CR.y-96)+'" text-anchor="middle">centre of rotation (13.5 mm)</text>'+L(CR.x,CR.y-88,CR.x,CR.y-8,'var(--b)',0.5);
@@ -84,13 +87,17 @@ lab+='<text class="ts" x="'+P.x+'" y="'+(P.y+108)+'" text-anchor="middle" fill="
 document.getElementById('labels').innerHTML=lab;
 function ang(o){return Math.atan2(o.y-EP.y,o.x-EP.x)*180/Math.PI-deg;}
 var aB=ang(B),aR=ang(R);
-document.getElementById('dB').setAttribute('cx',340+aB/26*220);document.getElementById('dR').setAttribute('cx',340+aR/26*220);
+/* phones: the strip is cropped to the frame, so dots outside it are drawn squeezed against its edge */
+function sx(a){var x=340+a/26*220;return ph&&x<120?120-(120-x)*0.09:ph&&x>560?560+(x-560)*0.09:x;}
+document.getElementById('dB').setAttribute('cx',sx(aB));document.getElementById('dR').setAttribute('cx',sx(aR));
 var sep=Math.abs(aB-aR);
 document.getElementById('sepL').textContent=sep<0.05?'near and far aligned: no parallax':'offset between near and far: '+sep.toFixed(1)+'°';
 var n=piv==='R'?'How the eye really moves: it rotates about the centre of rotation, about 13.5 mm behind the cornea. The entrance pupil traces a wide arc, so there is parallax: this is ocular parallax, small but real.':piv==='N'?'Rotation about N′: the entrance pupil lies 4 mm further forward and moves, so the parallax remains, though smaller. As in the camera, the nodal point is not the right point.':'Rotation about the entrance pupil: the viewpoint stays still, near and far stay superimposed. No parallax, but the real eye does not rotate this way.';
 document.getElementById('note').innerHTML=n+' Distances in mm from the cornea; the objects are much closer than in reality, to make the effect visible.';
 }
 upd();
+var mq=matchMedia('(max-width:600px)');if(mq.addEventListener)mq.addEventListener('change',upd);else if(mq.addListener)mq.addListener(upd);
 </script>
+<script src="stack.js"></script>
 </body>
 </html>

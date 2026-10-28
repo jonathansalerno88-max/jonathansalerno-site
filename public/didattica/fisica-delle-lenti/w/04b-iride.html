@@ -16,6 +16,7 @@
 .info{font-size:13px;color:var(--text-secondary);line-height:1.6;margin:8px 0 0}
 .info b{color:var(--text-primary);font-weight:500}
 .note{font-size:12px;color:var(--text-secondary);margin:8px 0 0;line-height:1.5}
+@media (max-width:600px){.ctl .lb:empty,.ctl .sep{display:none}}
 </style>
 </head>
 <body>
@@ -38,7 +39,7 @@
 <div class="ctl"><span class="lb">Lesione</span>
 <button id="d7" onclick="setD(7)">Via simpatica interrotta (Horner)</button>
 <button id="d8" onclick="setD(8)">III nervo interrotto</button></div>
-<svg width="100%" viewBox="0 0 680 870">
+<svg width="100%" viewBox="0 0 680 870" data-stack="0,0,298,468; 298,0,382,370; 0,468,322,412; 324,570,356,240" data-stack-main="2">
 <defs>
 <marker id="aP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#185FA5"/></marker>
 <marker id="aS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#A32D2D"/></marker>
@@ -70,7 +71,9 @@ function pupil(s,d){return 1.5+7*d/(d+3*s+0.1);}
 function T(x,y,t,cls,col,anc,extra){return '<text class="'+cls+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+(extra||'')+'>'+t+'</text>';}
 function box(x,y,w,l1,l2,col,on){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+(l2?38:24)+'" rx="5" fill="#FFFFFF" stroke="'+col+'" stroke-width="'+(on?1.2:0.8)+'" opacity="'+(on?1:0.45)+'"/>'+
  T(x+8,y+16,l1,'ts',on?'#16222E':'#888780')+(l2?T(x+8,y+31,l2,'ts',on?col:'#B4B2A9'):'');}
+function TW(x,y,t,cls,col,max){var ls=[''];t.split(' ').forEach(function(w){var l=ls[ls.length-1];if(l&&(l+' '+w).length>max)ls.push(w);else ls[ls.length-1]=l?l+' '+w:w;});return ls.map(function(l,i){return T(x,y+15*i,l,cls,col);}).join('');}
 function upd(){
+ var ph=matchMedia('(max-width:600px)').matches; // phones: panels stacked by stack.js, some labels moved or wrapped
  document.getElementById('lB').classList.toggle('act',light==='B');document.getElementById('lD').classList.toggle('act',light==='D');
  for(var i=0;i<9;i++)document.getElementById('d'+i).classList.toggle('act',drug===i);
  document.getElementById('gF').classList.toggle('act',!near);document.getElementById('gN').classList.toggle('act',near);
@@ -122,13 +125,13 @@ function upd(){
  // links to the iris
  var yl=Math.max(ry,rys)+58;
  p+='<path d="M'+(px+30)+' '+(ry+58)+' L'+(px+30)+' '+(yl+20)+' L'+(CX+rs+4)+' '+(yl+20)+' L'+(CX+rs*0.75)+' '+(CY+rs*0.75)+'" fill="none" stroke="'+P+'" stroke-width="1.2" stroke-dasharray="4 3" opacity="'+(pOn?0.9:0.3)+'"/>';
- p+=T(250,yl+15,'≈ 3 % → sfintere','ts',P);
+ p+=T(ph?336:250,yl+15,'≈ 3 % → sfintere','ts',P);
  p+='<path d="M'+(sx+30)+' '+(rys+58)+' L'+(sx+30)+' '+(yl+36)+' L'+(CX+RI*0.6)+' '+(yl+36)+' L'+(CX+RI*0.62)+' '+(CY+RI*0.62)+'" fill="none" stroke="'+S+'" stroke-width="1.2" stroke-dasharray="4 3" opacity="'+(sOn?0.9:0.3)+'"/>';
  // ciliary muscle
  // ciliary muscle, side view
  var base=near?2.5:0.5,Ac=g.c==='F'?Math.max(6,base):g.c==='S'?base+0.3:g.c==='X'?0:base;
  var LX=170,LY=636,lry=54,lrx=10+Ac*2.6,off=100-Ac*2,slack=Math.min(1,Ac/6),rpS=Math.max(6,dm/2*7);
- p+=T(20,500,'Il muscolo ciliare visto di lato <tspan class="ts" fill="#55697A" font-weight="400">· la luce arriva da sinistra</tspan>','th');
+ p+=ph?T(20,484,'Il muscolo ciliare visto di lato','th')+T(20,500,'la luce arriva da sinistra','ts','#55697A'):T(20,500,'Il muscolo ciliare visto di lato <tspan class="ts" fill="#55697A" font-weight="400">· la luce arriva da sinistra</tspan>','th');
  p+='<line x1="20" y1="'+LY+'" x2="300" y2="'+LY+'" stroke="var(--b)" stroke-width="0.5" stroke-dasharray="4 4"/>';
  p+='<path d="M'+(LX-46)+' '+(LY-108)+' Q'+(LX-128)+' '+LY+' '+(LX-46)+' '+(LY+108)+'" fill="#E6F1FB" fill-opacity="0.5" stroke="#888780" stroke-width="1"/>'+T(LX-96,LY-70,'cornea','ts',null,'end');
  p+='<ellipse cx="'+LX+'" cy="'+LY+'" rx="'+lrx+'" ry="'+lry+'" fill="#B5D4F4" opacity="0.7" stroke="#378ADD" stroke-width="0.8"/>';
@@ -158,14 +161,14 @@ function upd(){
     '<line x1="'+zx+'" y1="'+(Y-11)+'" x2="'+(zx-s2*48)+'" y2="'+(Y-11)+'" stroke="'+ac+'" stroke-width="2"/><line x1="'+zx+'" y1="'+(Y+11)+'" x2="'+(zx-s2*48)+'" y2="'+(Y+11)+'" stroke="'+ac+'" stroke-width="2"/></g>';});
   p+='</g>';
   p+=T(X-70+sh,Y+32,'linea Z','ts',null,'middle')+T(X,Y+30,'miosina','ts',mo,'middle')+T(X+60,Y-20,'actina','ts',ac);
-  p+=T(20,Y+48,g.c==='X'?'nessun segnale: il sarcomero resta lungo':con?'contratto: l\'actina scorre sulla miosina, il sarcomero si accorcia':'rilassato: sarcomero lungo, la zonula tira il cristallino','ts',con?'#993C1D':null);
+  p+=(ph?TW:T)(20,Y+48,g.c==='X'?'nessun segnale: il sarcomero resta lungo':con?'contratto: l\'actina scorre sulla miosina, il sarcomero si accorcia':'rilassato: sarcomero lungo, la zonula tira il cristallino','ts',con?'#993C1D':null,ph?46:null);
  })();
  p+=T(LX+32,LY+off+5,'muscolo ciliare','th','#C4562B')+T(LX+22,LY-off-(10+Ac)-6,'muscolo ciliare','th','#C4562B','end')+T(LX+26,LY-lry-8,'zonula '+(slack<0.2?'tesa':'lassa'),'ts')+T(LX+lrx+8,LY+4,'cristallino','ts')+T(LX-lrx-12,LY+off-14,'iride','ts',null,'end');
  var cyT=LY-off;
  p+='<path d="M'+(px+140)+' '+(ry+58)+' L'+(px+140)+' 520 L'+(LX+36)+' 520 L'+(LX+14)+' '+(cyT-6)+'" fill="none" stroke="'+P+'" stroke-width="4" opacity="'+(pOn&&g.c!=='X'?0.85:0.3)+'"/>';
- p+=T(px+146,512,'≈ 97 % → <tspan fill="#C4562B" font-weight="600">muscolo ciliare</tspan>','ts',P);
+ p+=T(ph?446:px+146,ph?yl+52:512,'≈ 97 % → <tspan fill="#C4562B" font-weight="600">muscolo ciliare</tspan>','ts',P);
  p+='<path d="M'+(sx+140)+' '+(rys+58)+' L'+(sx+140)+' 538 L'+(LX+50)+' 538 L'+(LX+16)+' '+(cyT+2)+'" fill="none" stroke="'+S+'" stroke-width="1" stroke-dasharray="3 3" opacity="'+(sOn?0.85:0.3)+'"/>';
- p+=T(420,556,'β2: rilassa poco','ts',S);
+ p+=ph?T(sx+134,yl+70,'β2: rilassa poco','ts',S,'end'):T(420,556,'β2: rilassa poco','ts',S);
  var st=g.c==='F'?'contratto (forzato)':g.c==='X'?'paralizzato':Ac>1?'contratto':'quasi rilassato (tono di fondo)';
  // reduced eye: one refracting surface of 60 D, retina 22.3 mm behind it; light from the left
  var dem=near?2.5:0,E=g.c==='F'?6-dem:g.c==='S'?0.3:g.c==='X'?-dem:0,Aop=dem+E,P0=60,Lmm=22.3,K=9;
@@ -201,6 +204,8 @@ function upd(){
  document.getElementById('info').innerHTML=g.txt+(light==='D'&&drug===0&&!near?' In penombra il simpatico prevale e la pupilla si allarga: è quello che succede durante un\'eclissi.':'')+(near&&g.c!=='X'?' <b>Guardando vicino</b> il nucleo di Edinger-Westphal comanda insieme tre cose: accomodazione (muscolo ciliare), miosi (sfintere) e convergenza (retti mediali, sempre III nervo). È la triade del vicino.':'');
 }
 upd();
+var MQph=matchMedia('(max-width:600px)');if(MQph.addEventListener)MQph.addEventListener('change',upd);else if(MQph.addListener)MQph.addListener(upd);
 </script>
+<script src="stack.js"></script>
 </body>
 </html>
