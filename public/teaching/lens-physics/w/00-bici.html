@@ -23,6 +23,10 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 .chk b{display:inline-block;min-width:26px;text-align:center;border-radius:999px;padding:1px 8px;font-size:12px}
 .best{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--text-accent);margin:6px 0 8px}
 .res{margin-top:8px;padding:8px 11px;border-radius:8px;font-size:13.5px;font-weight:500;min-height:calc(3em + 16px);box-sizing:border-box}
+details.calc{margin:0 0 6px;font-size:13px}
+details.calc summary{cursor:pointer;color:var(--text-accent);font-weight:500;padding:3px 0;font-variant-numeric:tabular-nums}
+details.calc summary span{color:var(--text-primary)}
+details.calc[open] summary{margin-bottom:4px}
 .note{font-size:12px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
 </style>
 </head>
@@ -40,7 +44,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 <div class="row">
 <svg viewBox="0 0 240 300" aria-hidden="true"><defs><linearGradient id="bg" x1="0" y1="1" x2="0" y2="0"><stop id="g0" offset="0"/><stop id="g1" offset=".5"/><stop id="g2" offset="1"/></linearGradient></defs><g id="g"></g></svg>
 <div class="side">
-<div class="f" id="f1"></div><div class="f flux" id="f2"></div><div class="f" id="f3"></div><div class="f ill" id="f4"></div><div class="f" id="f5"></div>
+<details class="calc"><summary>The working · <span id="s1"></span></summary><div class="f" id="f1"></div><div class="f flux" id="f2"></div><div class="f" id="f3"></div><div class="f ill" id="f4"></div><div class="f" id="f5"></div></details>
 <div class="chk"><b id="k1"></b><span>You see the pothole at the stopping distance</span></div>
 <div class="chk"><b id="k2"></b><span>The beam covers the lane</span></div>
 <div class="chk"><b id="k3"></b><span>Estimated cost</span></div>
@@ -74,6 +78,7 @@ function upd(keep){
  document.getElementById('f2').innerHTML=fmt(L.f2,{H:nf(al/2,al%2?1:0),O:nf(O,O<0.1?3:2)});
  document.getElementById('f3').innerHTML=fmt(L.f3,{F:nf(F),O:nf(O,O<0.1?3:2),I:nf(r50(I))});
  document.getElementById('f4').innerHTML=fmt(L.f4,{D:nf(D,1),I:nf(r50(I)),E:nf(E,E<10?1:0),T:Tg});
+ document.getElementById('s1').textContent='d ≈ '+nf(D,1)+' m · I ≈ '+nf(r50(I))+' cd · E ≈ '+nf(E,E<10?1:0)+' lx';
  document.getElementById('f5').innerHTML=fmt(L.f5,{D:nf(D,1),H:nf(al/2,al%2?1:0),W:nf(W,1)});
  window._g=[far,wide];[['k1',far],['k2',wide]].forEach(function(k){var e=document.getElementById(k[0]);e.textContent=k[1]?L.yes:L.no;e.style.background=k[1]?'#EAF3DE':'#FCEBEB';e.style.color=k[1]?'#27500A':'#A32D2D'});
  var r=document.getElementById('res'),msg=far&&wide?L.both:far?L.onlyfar:wide?L.onlywide:L.none;r.textContent=msg;
