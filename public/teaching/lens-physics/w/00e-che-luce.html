@@ -24,6 +24,10 @@ h3:first-of-type{margin-top:2px}
 #kS,#pS{min-height:40px}
 .note{font-size:12px;color:var(--text-secondary);margin:10px 0 0;line-height:1.5}
 .hide{display:none}
+details.calc{margin:6px 0 2px;font-size:13px}
+details.calc summary{cursor:pointer;color:var(--text-accent);font-weight:500;padding:3px 0;font-variant-numeric:tabular-nums}
+details.calc summary span{color:var(--text-primary)}
+details.calc[open] summary{margin-bottom:2px}
 </style>
 </head>
 <body>
@@ -33,16 +37,16 @@ h3:first-of-type{margin-top:2px}
 <div class="tog"><span>Units</span><span id="uB"></span></div>
 <div class="ctl"><span>Speed</span><input type="range" id="v" min="10" max="45" step="1" value="30" oninput="upd()"><output id="vO"></output></div>
 <div class="tog"><span>Road</span><span id="rB"></span></div>
-<div class="f" id="f1"></div><p class="fn" id="f1n"></p>
+<details class="calc"><summary>The working · <span id="s1"></span></summary><div class="f" id="f1"></div><p class="fn" id="f1n"></p></details>
 <h3>2 · How much light you need there</h3>
 <div class="tog"><span>Street lighting</span><span id="lB"></span></div>
-<div class="f" id="f2"></div><p class="fn" id="f2n"></p>
+<details class="calc"><summary>The working · <span id="s2"></span></summary><div class="f" id="f2"></div><p class="fn" id="f2n"></p></details>
 <h3>3 · Read the box</h3>
 <div class="tog"><span>Standard</span><span id="sB"></span></div>
 <div class="ctl" id="kS"><span>Declared lux at 10 m</span><input type="range" id="k" min="10" max="150" step="5" value="40" oninput="upd()"><output id="kO"></output></div>
 <div class="ctl hide" id="pS"><span>Declared beam distance</span><input type="range" id="p" min="50" max="400" step="5" value="120" oninput="upd()"><output id="pO"></output></div>
-<div class="f" id="f3"></div>
-<div class="f" id="f4"></div>
+<details class="calc"><summary>The working · <span id="s3"></span></summary><div class="f" id="f3"></div>
+<div class="f" id="f4"></div></details>
 <svg viewBox="0 0 340 130" aria-hidden="true"><g id="g"></g></svg>
 <div class="res" id="res"></div>
 <p class="note">Simplified model: beam pointing straight at the pothole, peak values (centre of the beam). Braking: 5 m/s² dry, 3 m/s² wet. Indicative targets: 10 lux (lx = lm/m²) with street lights, 30 lux on a dark road; the StVZO legal minimum is 10 lux at 10 m. Candelas: cd = lm/sr.</p>
@@ -64,6 +68,8 @@ function upd(){
  document.getElementById('f1').innerHTML=fmt(L.f1,{V:nf(v,1),A:a,R:nf(R,1),B:nf(B,1),D:nf(D,1)});
  document.getElementById('f1n').textContent=fmt(L.f1n,{V0:V+(U?' mph':' km/h'),V:nf(v,1),A:a});
  document.getElementById('f2').innerHTML=fmt(L.f2,{E:E,D:nf(D,1),D2:nf(D*D),I:nf(r50(Imin))});
+ document.getElementById('s1').textContent='d ≈ '+nf(D,1)+' m';
+ document.getElementById('s2').textContent=(L.loc==='it-IT'?'servono almeno ':'you need at least ')+nf(r50(Imin))+' cd';
  document.getElementById('f2n').textContent=fmt(L.f2n,{E:E,L:L.litn[lit]});
  var K=+document.getElementById('k').value,P=+document.getElementById('p').value,I;
  document.getElementById('kO').textContent=K+' lx';document.getElementById('pO').textContent=P+' m';
@@ -72,6 +78,7 @@ function upd(){
  var Ed=I/(D*D),ok=Ed>=E;window._g=[ok];
  document.getElementById('f4').innerHTML=fmt(L.f4,{D:nf(D,1),I:nf(r50(I)),D2:nf(D*D,0),E:nf(Ed,Ed<10?1:0)});
  var need=std===0?fmt(L.needS,{K:Math.ceil(Imin/100)}):fmt(L.needA,{P:Math.ceil(2*Math.sqrt(Imin))});
+ document.getElementById('s3').textContent=nf(r50(I))+' cd → '+nf(Ed,Ed<10?1:0)+' lx '+(L.loc==='it-IT'?'a ':'at ')+nf(D,1)+' m';
  var r=document.getElementById('res');r.textContent=fmt(ok?L.ok:L.no,{D:nf(D,1),E:nf(Ed,Ed<10?1:0),T:E,M:need});
  r.style.background=ok?'#EAF3DE':'#FCEEDD';r.style.color=ok?'#27500A':'#8A4A0B';
  // scene: road side view, lamp at x=20, distance scale 0..50 m -> 20..330
