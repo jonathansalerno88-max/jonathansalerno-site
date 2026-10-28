@@ -143,6 +143,9 @@ ul.qty figure.paused::after{opacity:.9}
 .qsub li{margin:.2rem 0}
 .dim{font-size:.875rem; color:var(--mut); border-left:3px solid var(--q-int); background:var(--card); border-radius:0 6px 6px 0; padding:.35rem .7rem .3rem; margin:.5rem 0 .2rem; max-width:38rem}
 .dim b{color:var(--ink); font-weight:600}
+details.dim summary{cursor:pointer; color:var(--ink); font-weight:600; padding:.1rem 0}
+details.dim summary:focus-visible{outline:2px solid var(--link); outline-offset:2px; border-radius:2px}
+details.dim:not([open]){padding-bottom:.35rem}
 .dim ul{margin:.15rem 0 0; padding-left:1.1rem; list-style:disc}
 .dim li{margin:.15rem 0}
 figure.w.qcalc{margin:.9rem 0 .2rem; max-width:none!important}
@@ -313,7 +316,7 @@ dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
     4π ≈ 12,6 sr.</li>
     <li>Intensità = flusso / angolo solido, cioè I = Φ / Ω. Gli stessi 100 lumen sparsi su tutta la sfera danno
     circa 8 cd; stretti in un cono di 10° (Ω ≈ 0,024 sr) danno circa 4.200 cd, più di 500 volte tanto.</li></ul>
-    <div class="dim"><b>Conti con le unità</b><ul><li>I = Φ / Ω: lm / sr = cd ✓. Al contrario, 1 lm = 1 cd · sr: un lumen è una candela <i>moltiplicata</i> per uno steradiante.</li></ul></div></div></li>
+    <details class="dim"><summary>Conti con le unità</summary><ul><li>I = Φ / Ω: lm / sr = cd ✓. Al contrario, 1 lm = 1 cd · sr: un lumen è una candela <i>moltiplicata</i> per uno steradiante.</li></ul></details></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <path d="M4 110 L156 110 L140 88 L20 88 Z" fill="var(--card)" stroke="var(--rule)"/>
 <path fill="var(--q-ill)" fill-opacity=".08" d="M80 16 L34 98 L126 98 Z"><animate attributeName="d" values="M80 16 L34 98 L126 98 Z;M80 56 L56 98 L104 98 Z;M80 16 L34 98 L126 98 Z" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></path>
@@ -351,7 +354,7 @@ dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
 </svg><figcaption>Stessa intensità da una lente più piccola: più nit, più abbagliamento.</figcaption></figure><div><b>Cd/m²</b>, cioè nit: la luminanza <b>L</b> della lente, L = I / A, con A l'area della lente vista da chi guarda. Dice quanto la lampada abbaglia chi la guarda in
     faccia, non quanto illumina la strada. Su una scheda tecnica è quasi certamente un errore per
     «candele», come sospetta una delle risposte.
-    <div class="dim"><b>Conti con le unità</b><ul><li>L = I / A: cd / m² = nit ✓. Attenzione: anche I / d² fa cd / m², ma lì c'è uno steradiante sottinteso ed è un'illuminanza (lux). Stesse unità sulla carta, grandezze diverse: per questo «cd/m²» e «lux» si confondono.</li></ul></div></div></li>
+    <details class="dim"><summary>Conti con le unità</summary><ul><li>L = I / A: cd / m² = nit ✓. Attenzione: anche I / d² fa cd / m², ma lì c'è uno steradiante sottinteso ed è un'illuminanza (lux). Stesse unità sulla carta, grandezze diverse: per questo «cd/m²» e «lux» si confondono.</li></ul></details></div></li>
   </ul>
   <p class="qhint">Clicca su un disegno per fermarlo, clicca di nuovo per farlo ripartire.</p>
   <p class="lead2"><b>Torniamo al thread per dichiarare il vincitore.</b> Chi vince fra la luce A, 1.000 lumen <span class="u">(lm, flusso totale)</span> in un
@@ -388,7 +391,7 @@ dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
     Sotto lo stesso sole l'asfalto (ρ ≈ 0,2) e la neve fresca (ρ ≈ 0,85) ricevono gli stessi lux, ma la neve
     manda circa quattro volte i nit, e sulla retina arrivano circa quattro volte i troland <span class="u">(Td = cd/m² × mm²)</span>.
     In pratica un po' meno, perché la pupilla si stringe.
-    <div class="dim"><b>Conti con le unità</b><ul><li>L = ρ · E / π: ρ è un numero puro, e il π sono π steradianti, quanto «pesa» la semisfera per una superficie opaca. Quindi lx / sr = lm / (m² · sr) = cd / m² = nit ✓.</li></ul></div></div></li>
+    <details class="dim"><summary>Conti con le unità</summary><ul><li>L = ρ · E / π: ρ è un numero puro, e il π sono π steradianti, quanto «pesa» la semisfera per una superficie opaca. Quindi lx / sr = lm / (m² · sr) = cd / m² = nit ✓.</li></ul></details></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <rect x="0" y="0" width="160" height="120" rx="8" fill="#1B2029"><animate attributeName="fill" values="#1B2029;#E9E3D6;#1B2029" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect>
 <rect x="130" y="16" width="22" height="40" fill="#2A3140" stroke="#8C7C60"><animate attributeName="fill" values="#2A3140;#FFF8E1;#2A3140" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect><line x1="141" y1="16" x2="141" y2="56" stroke="#8C7C60"/>
@@ -403,7 +406,7 @@ dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
     semplifica:<br><span class="formula">contrasto ≈ 1 + E<sub>proiettore</sub> / E<sub>stanza</sub></span><br>
     Al buio, con circa 1 lux dalla stanza, anche pochi lumen <span class="u">(lm, flusso totale)</span> danno un
     contrasto altissimo; di giorno, con centinaia di lux dalle finestre, ne servono tantissimi.
-    <div class="dim"><b>Conti con le unità</b><ul><li>Contrasto = L bianco / L nero: nit / nit, numero puro ✓. Anche 1 + E<sub>proiettore</sub> / E<sub>stanza</sub> è lux / lux, numero puro ✓.</li></ul></div></div></li>
+    <details class="dim"><summary>Conti con le unità</summary><ul><li>Contrasto = L bianco / L nero: nit / nit, numero puro ✓. Anche 1 + E<sub>proiettore</sub> / E<sub>stanza</sub> è lux / lux, numero puro ✓.</li></ul></details></div></li>
   </ul>
   <script>(function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
 document.querySelectorAll("ul.qty figure:not(.w)").forEach(function(f){var s=f.querySelector(".qsvg");
@@ -462,7 +465,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   l'occhio va avanti e lei no: gli scivola sulla retina e lascia una scia. Più a lungo resta accesa, più lunga è la
   scia:</p>
   <p class="formula">sfocatura ≈ velocità × persistenza</p>
-  <div class="dim"><b>Conti con le unità</b><ul><li>(pixel / s) × s = pixel ✓. Esempio: un oggetto che attraversa 1.920 pixel in 2 s va a 960 pixel/s; con 16,7 ms di persistenza si sfoca su 960 × 0,0167 ≈ 16 pixel.</li></ul></div>
+  <details class="dim"><summary>Conti con le unità</summary><ul><li>(pixel / s) × s = pixel ✓. Esempio: un oggetto che attraversa 1.920 pixel in 2 s va a 960 pixel/s; con 16,7 ms di persistenza si sfoca su 960 × 0,0167 ≈ 16 pixel.</li></ul></details>
   <p class="lead2"><b>Al rallentatore.</b> Sei schermi a confronto per 50 ms: a sinistra quando l'immagine è
   accesa, al centro la scia che lascia sulla retina, poi come vedi l'oggetto in movimento e, nell'ultima
   colonna, com'è il nero di quello schermo: in alto scegli quanta luce c'è nella
@@ -509,7 +512,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   e dimezzava la scia. Nel film passa da 24 a 120: quattro immagini su cinque sono inventate, la persistenza scende da
   41,7 a 8,3 ms e la scia da 40 a 8 px. Spariscono anche gli scatti nelle panoramiche, che sugli OLED si vedono di
   più perché i pixel cambiano all'istante.</p>
-  <div class="dim"><b>Conti con le unità</b><ul><li>1 / 24 fps = 1 / (24 s⁻¹) = 0,0417 s = 41,7 ms; 960 px/s × 0,0417 s = 40 px ✓</li><li>1 / 120 Hz = 1 / (120 s⁻¹) = 0,0083 s = 8,3 ms; 960 px/s × 0,0083 s = 8 px ✓</li></ul></div>
+  <details class="dim"><summary>Conti con le unità</summary><ul><li>1 / 24 fps = 1 / (24 s⁻¹) = 0,0417 s = 41,7 ms; 960 px/s × 0,0417 s = 40 px ✓</li><li>1 / 120 Hz = 1 / (120 s⁻¹) = 0,0083 s = 8,3 ms; 960 px/s × 0,0083 s = 8 px ✓</li></ul></details>
   <p><b>Il prezzo quasi non c'è.</b> Il ritardo, che nello sparatutto era il difetto peggiore, qui non conta: nessuno
   preme tasti, e la TV ritarda anche l'audio per tenerlo insieme all'immagine. Gli aloni restano, ma non stai mirando
   a niente, e l'interpolazione standard, che ha più tempo per calcolare, ne fa meno di quella da gioco.</p>
@@ -887,7 +890,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   <b>reale, capovolta e ingrandita</b>, l'immagine intermedia. L'<b>oculare</b> guarda quell'immagine come una lente
   d'ingrandimento: se cade nel suo fuoco, ne escono raggi paralleli e l'occhio la vede all'infinito, senza accomodare.</p>
   <p class="formula">ingrandimento totale = ingrandimento dell'obiettivo × ingrandimento dell'oculare</p>
-  <div class="dim"><b>Conti con le unità</b><ul><li>Obiettivo 40× e oculare 10×: 40 × 10 = 400×. Gli ingrandimenti sono numeri puri, rapporti fra lunghezze (mm / mm).</li><li>L'oculare ingrandisce circa 250 mm / f, come la lente d'ingrandimento della sezione 6: con f = 25 mm, 250 mm / 25 mm = 10×.</li></ul></div>
+  <details class="dim"><summary>Conti con le unità</summary><ul><li>Obiettivo 40× e oculare 10×: 40 × 10 = 400×. Gli ingrandimenti sono numeri puri, rapporti fra lunghezze (mm / mm).</li><li>L'oculare ingrandisce circa 250 mm / f, come la lente d'ingrandimento della sezione 6: con f = 25 mm, 250 mm / 25 mm = 10×.</li></ul></details>
   <p>Sotto il vetrino c'è il <b>condensatore</b>, anche lui convergente: non ingrandisce niente, concentra la luce
   della lampada sul campione. Senza, l'immagine resterebbe nitida e ingrandita uguale, solo più buia: le lenti che
   fanno l'immagine sono due. Mettere a fuoco vuol dire spostare il vetrino finché l'immagine intermedia cade nel
@@ -913,7 +916,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   deviare o riflettersi: per questo il 100× arriva a NA 1,25, ma solo con l'olio. Gli obiettivi a secco invece
   sono calcolati per l'aria, e con l'olio peggiorano.</p>
   <p class="formula">risoluzione d = 0,61 · λ / NA</p>
-  <div class="dim"><b>Conti con le unità</b><ul><li>Luce verde, λ = 0,55 µm; obiettivo 40×, NA 0,65: d = 0,61 × 0,55 µm / 0,65 ≈ 0,52 µm. NA è un numero puro (n è un rapporto fra velocità, sin θ un rapporto fra lunghezze), quindi d resta in µm.</li><li>Campo visivo = numero di campo dell'oculare / ingrandimento dell'obiettivo: 20 mm / 40 = 0,5 mm.</li></ul></div>
+  <details class="dim"><summary>Conti con le unità</summary><ul><li>Luce verde, λ = 0,55 µm; obiettivo 40×, NA 0,65: d = 0,61 × 0,55 µm / 0,65 ≈ 0,52 µm. NA è un numero puro (n è un rapporto fra velocità, sin θ un rapporto fra lunghezze), quindi d resta in µm.</li><li>Campo visivo = numero di campo dell'oculare / ingrandimento dell'obiettivo: 20 mm / 40 = 0,5 mm.</li></ul></details>
   <p>Per mettere a fuoco ci sono due viti. La <b>macrometrica</b> sposta il tavolino a scatti grandi e si usa con il
   4× e il 10×. La <b>micrometrica</b> lo sposta di pochi micrometri e serve con il 40× e il 100×, dove la profondità
   di campo è di circa un micrometro. Con questi obiettivi la macrometrica è pericolosa: la distanza di lavoro è sotto
@@ -944,7 +947,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   e nitida, e mettendo in fila le fette ricostruisci la cellula in 3D. I microscopi <b>elettronici</b> cambiano onda:
   usano elettroni, che hanno una lunghezza d'onda centomila volte più corta della luce verde.</p>
   <p class="formula">λ = h / p ≈ h / √(2 · m · e · V)</p>
-  <div class="dim"><b>Conti con le unità</b><ul><li>Elettroni accelerati a 100 kV: λ = 6,63·10⁻³⁴ J·s / √(2 × 9,11·10⁻³¹ kg × 1,60·10⁻¹⁹ C × 10⁵ V) ≈ 3,9·10⁻¹² m; con la correzione relativistica 3,7 pm.</li><li>Unità: C · V = J = kg·m²/s², quindi √(kg · kg·m²/s²) = kg·m/s, una quantità di moto; e J·s / (kg·m/s) = m ✓.</li></ul></div>
+  <details class="dim"><summary>Conti con le unità</summary><ul><li>Elettroni accelerati a 100 kV: λ = 6,63·10⁻³⁴ J·s / √(2 × 9,11·10⁻³¹ kg × 1,60·10⁻¹⁹ C × 10⁵ V) ≈ 3,9·10⁻¹² m; con la correzione relativistica 3,7 pm.</li><li>Unità: C · V = J = kg·m²/s², quindi √(kg · kg·m²/s²) = kg·m/s, una quantità di moto; e J·s / (kg·m/s) = m ✓.</li></ul></details>
   <p>Gli elettroni hanno carica, quindi le lenti sono <b>bobine</b>: il campo magnetico li curva come il vetro curva la
   luce, e la messa a fuoco si fa cambiando la corrente. Tutta la colonna è sotto vuoto, perché l'aria li fermerebbe. Le
   lenti magnetiche però hanno aberrazioni forti, e la risoluzione vera non arriva a 3,7 pm: è di circa 0,1–0,2 nm, e
@@ -962,7 +965,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   disegnava l'immagine sul fosforo, qui la legge sul campione. Anche le lenti del TEM e del SEM sono elettromagneti, ma
   invece di spostare il fascio lo stringono, come il vetro fa con la luce.</p>
   <p class="formula">F = q · v × B</p>
-  <div class="dim"><b>Conti con le unità</b><ul><li>q in C, v in m/s, B in T, con T = kg/(C·s): C × m/s × kg/(C·s) = kg·m/s² = N ✓.</li></ul></div>
+  <details class="dim"><summary>Conti con le unità</summary><ul><li>q in C, v in m/s, B in T, con T = kg/(C·s): C × m/s × kg/(C·s) = kg·m/s² = N ✓.</li></ul></details>
   <p>È lo stesso principio del primo elettrocardiografo. Nel galvanometro a corda di Einthoven (1901) una corda di
   quarzo argentato, spessa pochi micrometri, è tesa fra i poli di un elettromagnete. La corrente del cuore, raccolta dalle
   tre derivazioni (le due mani e un piede immersi in secchi di acqua salata), la attraversa, e la forza di Lorentz la

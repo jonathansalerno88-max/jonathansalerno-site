@@ -143,6 +143,9 @@ ul.qty figure.paused::after{opacity:.9}
 .qsub li{margin:.2rem 0}
 .dim{font-size:.875rem; color:var(--mut); border-left:3px solid var(--q-int); background:var(--card); border-radius:0 6px 6px 0; padding:.35rem .7rem .3rem; margin:.5rem 0 .2rem; max-width:38rem}
 .dim b{color:var(--ink); font-weight:600}
+details.dim summary{cursor:pointer; color:var(--ink); font-weight:600; padding:.1rem 0}
+details.dim summary:focus-visible{outline:2px solid var(--link); outline-offset:2px; border-radius:2px}
+details.dim:not([open]){padding-bottom:.35rem}
 .dim ul{margin:.15rem 0 0; padding-left:1.1rem; list-style:disc}
 .dim li{margin:.15rem 0}
 figure.w.qcalc{margin:.9rem 0 .2rem; max-width:none!important}
@@ -312,7 +315,7 @@ dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
     of 1 m radius round the lamp, the cone cuts out a cap of Ω m². The whole sphere is 4π ≈ 12.6 sr.</li>
     <li>Intensity = flux / solid angle, that is I = Φ / Ω. The same 100 lumens spread over the whole sphere give
     about 8 cd; squeezed into a 10° cone (Ω ≈ 0.024 sr) they give about 4,200 cd, more than 500 times as much.</li></ul>
-    <div class="dim"><b>Checking the units</b><ul><li>I = Φ / Ω: lm / sr = cd ✓. The other way round, 1 lm = 1 cd · sr: a lumen is a candela <i>times</i> a steradian.</li></ul></div></div></li>
+    <details class="dim"><summary>Checking the units</summary><ul><li>I = Φ / Ω: lm / sr = cd ✓. The other way round, 1 lm = 1 cd · sr: a lumen is a candela <i>times</i> a steradian.</li></ul></details></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <path d="M4 110 L156 110 L140 88 L20 88 Z" fill="var(--card)" stroke="var(--rule)"/>
 <path fill="var(--q-ill)" fill-opacity=".08" d="M80 16 L34 98 L126 98 Z"><animate attributeName="d" values="M80 16 L34 98 L126 98 Z;M80 56 L56 98 L104 98 Z;M80 16 L34 98 L126 98 Z" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></path>
@@ -350,7 +353,7 @@ dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
 </svg><figcaption>Same intensity from a smaller lens: more nits, more glare.</figcaption></figure><div><b>Cd/m²</b>, that is nits: the luminance <b>L</b> of the lens, L = I / A, with A the area of the lens as seen by the viewer. It says how much the lamp dazzles someone looking
     straight at it, not how much it lights the road. On a spec sheet it is almost certainly a mistake for
     ‘candelas’, as one of the replies suspects.
-    <div class="dim"><b>Checking the units</b><ul><li>L = I / A: cd / m² = nit ✓. Careful: I / d² also gives cd / m², but there a steradian is understood and it is an illuminance (lux). Same units on paper, different quantities: that is why ‘cd/m²’ and ‘lux’ get mixed up.</li></ul></div></div></li>
+    <details class="dim"><summary>Checking the units</summary><ul><li>L = I / A: cd / m² = nit ✓. Careful: I / d² also gives cd / m², but there a steradian is understood and it is an illuminance (lux). Same units on paper, different quantities: that is why ‘cd/m²’ and ‘lux’ get mixed up.</li></ul></details></div></li>
   </ul>
   <p class="qhint">Click a drawing to pause it, click again to resume.</p>
   <p class="lead2"><b>Back to the thread to declare the winner.</b> Who wins between light A, 1,000 lumens <span class="u">(lm, total flux)</span> in a
@@ -387,7 +390,7 @@ dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
     Under the same sun asphalt (ρ ≈ 0.2) and fresh snow (ρ ≈ 0.85) receive the same lux, but snow sends back
     about four times the nits, and about four times the trolands <span class="u">(Td = cd/m² × mm²)</span> reach the retina.
     A little less in practice, because the pupil narrows.
-    <div class="dim"><b>Checking the units</b><ul><li>L = ρ · E / π: ρ is a pure number, and the π is π steradians, how much the hemisphere ‘weighs’ for a matte surface. So lx / sr = lm / (m² · sr) = cd / m² = nit ✓.</li></ul></div></div></li>
+    <details class="dim"><summary>Checking the units</summary><ul><li>L = ρ · E / π: ρ is a pure number, and the π is π steradians, how much the hemisphere ‘weighs’ for a matte surface. So lx / sr = lm / (m² · sr) = cd / m² = nit ✓.</li></ul></details></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <rect x="0" y="0" width="160" height="120" rx="8" fill="#1B2029"><animate attributeName="fill" values="#1B2029;#E9E3D6;#1B2029" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect>
 <rect x="130" y="16" width="22" height="40" fill="#2A3140" stroke="#8C7C60"><animate attributeName="fill" values="#2A3140;#FFF8E1;#2A3140" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" dur="5s" repeatCount="indefinite"/></rect><line x1="141" y1="16" x2="141" y2="56" stroke="#8C7C60"/>
@@ -402,7 +405,7 @@ dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
     <span class="formula">contrast ≈ 1 + E<sub>projector</sub> / E<sub>room</sub></span><br>
     In the dark, with about 1 lux from the room, even a few lumens <span class="u">(lm, total flux)</span> give a
     very high contrast; by day, with hundreds of lux from the windows, you need a great many.
-    <div class="dim"><b>Checking the units</b><ul><li>Contrast = L white / L black: nits / nits, a pure number ✓. 1 + E<sub>projector</sub> / E<sub>room</sub> is lux / lux, a pure number too ✓.</li></ul></div></div></li>
+    <details class="dim"><summary>Checking the units</summary><ul><li>Contrast = L white / L black: nits / nits, a pure number ✓. 1 + E<sub>projector</sub> / E<sub>room</sub> is lux / lux, a pure number too ✓.</li></ul></details></div></li>
   </ul>
   <script>(function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
 document.querySelectorAll("ul.qty figure:not(.w)").forEach(function(f){var s=f.querySelector(".qsvg");
@@ -461,7 +464,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   it follows an object, moves continuously. As long as an image stays lit the eye moves on and the image does not:
   it slides across the retina and leaves a streak. The longer it stays lit, the longer the streak:</p>
   <p class="formula">blur ≈ speed × persistence</p>
-  <div class="dim"><b>Checking the units</b><ul><li>(pixels / s) × s = pixels ✓. Example: an object crossing 1,920 pixels in 2 s moves at 960 pixels/s; with 16.7 ms of persistence it blurs over 960 × 0.0167 ≈ 16 pixels.</li></ul></div>
+  <details class="dim"><summary>Checking the units</summary><ul><li>(pixels / s) × s = pixels ✓. Example: an object crossing 1,920 pixels in 2 s moves at 960 pixels/s; with 16.7 ms of persistence it blurs over 960 × 0.0167 ≈ 16 pixels.</li></ul></details>
   <p class="lead2"><b>In slow motion.</b> Six screens compared over 50 ms: on the left when the image is lit, in
   the middle the streak it leaves on the retina, then how you see the moving object and, in the last
   column, how black that screen gets: at the top you choose how much light there is in
@@ -506,7 +509,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   halved the blur. In a film it goes from 24 to 120: four images in five are invented, persistence drops from 41.7 to
   8.3 ms and the blur from 40 to 8 px. The judder in camera pans disappears too, and on OLEDs it shows more because
   the pixels change instantly.</p>
-  <div class="dim"><b>Checking the units</b><ul><li>1 / 24 fps = 1 / (24 s⁻¹) = 0.0417 s = 41.7 ms; 960 px/s × 0.0417 s = 40 px ✓</li><li>1 / 120 Hz = 1 / (120 s⁻¹) = 0.0083 s = 8.3 ms; 960 px/s × 0.0083 s = 8 px ✓</li></ul></div>
+  <details class="dim"><summary>Checking the units</summary><ul><li>1 / 24 fps = 1 / (24 s⁻¹) = 0.0417 s = 41.7 ms; 960 px/s × 0.0417 s = 40 px ✓</li><li>1 / 120 Hz = 1 / (120 s⁻¹) = 0.0083 s = 8.3 ms; 960 px/s × 0.0083 s = 8 px ✓</li></ul></details>
   <p><b>The price is almost nil.</b> Lag, which was the worst flaw in the shooter, does not matter here: nobody presses
   buttons, and the TV delays the sound too to keep it with the picture. Halos remain, but you are not aiming at
   anything, and standard interpolation, which has more time to compute, makes fewer of them than the gaming kind.</p>
@@ -883,7 +886,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   <b>real, upside-down, magnified</b> image, the intermediate image. The <b>eyepiece</b> looks at that image like a
   magnifying glass: if it falls at its focus, parallel rays come out and the eye sees it at infinity, without accommodating.</p>
   <p class="formula">total magnification = objective magnification × eyepiece magnification</p>
-  <div class="dim"><b>Checking the units</b><ul><li>A 40× objective and a 10× eyepiece: 40 × 10 = 400×. Magnifications are pure numbers, ratios of lengths (mm / mm).</li><li>The eyepiece magnifies about 250 mm / f, like the magnifying glass in section 6: with f = 25 mm, 250 mm / 25 mm = 10×.</li></ul></div>
+  <details class="dim"><summary>Checking the units</summary><ul><li>A 40× objective and a 10× eyepiece: 40 × 10 = 400×. Magnifications are pure numbers, ratios of lengths (mm / mm).</li><li>The eyepiece magnifies about 250 mm / f, like the magnifying glass in section 6: with f = 25 mm, 250 mm / 25 mm = 10×.</li></ul></details>
   <p>Below the slide is the <b>condenser</b>, also converging: it magnifies nothing, it concentrates the lamp's
   light on the specimen. Without it the image would stay just as sharp and magnified, only darker: the lenses
   that make the image are two. Focusing means moving the slide until the intermediate image falls at the eyepiece focus:
@@ -909,7 +912,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   away or being reflected: that is why the 100× reaches NA 1.25, but only with oil. Dry objectives, instead, are
   designed for air, and oil makes them worse.</p>
   <p class="formula">resolution d = 0.61 · λ / NA</p>
-  <div class="dim"><b>Checking the units</b><ul><li>Green light, λ = 0.55 µm; 40× objective, NA 0.65: d = 0.61 × 0.55 µm / 0.65 ≈ 0.52 µm. NA is a pure number (n is a ratio of speeds, sin θ a ratio of lengths), so d stays in µm.</li><li>Field of view = eyepiece field number / objective magnification: 20 mm / 40 = 0.5 mm.</li></ul></div>
+  <details class="dim"><summary>Checking the units</summary><ul><li>Green light, λ = 0.55 µm; 40× objective, NA 0.65: d = 0.61 × 0.55 µm / 0.65 ≈ 0.52 µm. NA is a pure number (n is a ratio of speeds, sin θ a ratio of lengths), so d stays in µm.</li><li>Field of view = eyepiece field number / objective magnification: 20 mm / 40 = 0.5 mm.</li></ul></details>
   <p>There are two focus knobs. The <b>coarse</b> knob moves the stage in large steps and is used with the 4× and
   the 10×. The <b>fine</b> knob moves it by a few micrometres and is needed with the 40× and the 100×, where the depth
   of field is about a micrometre. With these objectives the coarse knob is dangerous: the working distance is under a
@@ -940,7 +943,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   and by stacking the slices you rebuild the cell in 3D. <b>Electron</b> microscopes change the wave: they use
   electrons, whose wavelength is a hundred thousand times shorter than green light.</p>
   <p class="formula">λ = h / p ≈ h / √(2 · m · e · V)</p>
-  <div class="dim"><b>Checking the units</b><ul><li>Electrons accelerated at 100 kV: λ = 6.63·10⁻³⁴ J·s / √(2 × 9.11·10⁻³¹ kg × 1.60·10⁻¹⁹ C × 10⁵ V) ≈ 3.9·10⁻¹² m; with the relativistic correction, 3.7 pm.</li><li>Units: C · V = J = kg·m²/s², so √(kg · kg·m²/s²) = kg·m/s, a momentum; and J·s / (kg·m/s) = m ✓.</li></ul></div>
+  <details class="dim"><summary>Checking the units</summary><ul><li>Electrons accelerated at 100 kV: λ = 6.63·10⁻³⁴ J·s / √(2 × 9.11·10⁻³¹ kg × 1.60·10⁻¹⁹ C × 10⁵ V) ≈ 3.9·10⁻¹² m; with the relativistic correction, 3.7 pm.</li><li>Units: C · V = J = kg·m²/s², so √(kg · kg·m²/s²) = kg·m/s, a momentum; and J·s / (kg·m/s) = m ✓.</li></ul></details>
   <p>Electrons are charged, so the lenses are <b>coils</b>: the magnetic field bends them as glass bends light, and
   focusing is done by changing the current. The whole column is under vacuum, because air would stop them. Magnetic
   lenses, though, have strong aberrations, and the real resolution does not reach 3.7 pm: it is about 0.1–0.2 nm, and
@@ -958,7 +961,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   from the sample. The lenses of TEM and SEM are electromagnets too, but instead of moving the beam they squeeze it, as
   glass does with light.</p>
   <p class="formula">F = q · v × B</p>
-  <div class="dim"><b>Checking the units</b><ul><li>q in C, v in m/s, B in T, with T = kg/(C·s): C × m/s × kg/(C·s) = kg·m/s² = N ✓.</li></ul></div>
+  <details class="dim"><summary>Checking the units</summary><ul><li>q in C, v in m/s, B in T, with T = kg/(C·s): C × m/s × kg/(C·s) = kg·m/s² = N ✓.</li></ul></details>
   <p>It is the same principle as the first electrocardiograph. In Einthoven's string galvanometer (1901) a
   silver-coated quartz string, a few micrometres thick, is stretched between the poles of an electromagnet. The heart's
   current, picked up by the three leads (both hands and one foot dipped in buckets of salt water), runs through it, and
