@@ -46,9 +46,9 @@ svg[viewBox]{min-width:0!important;max-width:100%!important}
 <div class="goalbox" role="note"><span aria-hidden="true" style="font-size:18px">🎯</span><div class="gt"><b>Obiettivo</b> · vedere perché conta quanto resta accesa ogni immagine, e non quanti hertz ha lo schermo. L'occhio insegue un oggetto a 960 px/s; ogni immagine accesa gli scivola sulla retina e lascia una scia.</div></div>
 <button id="pl" onclick="tog()"></button><div class="tog" id="rm"></div>
 <svg viewBox="0 0 760 584" aria-hidden="true"><g id="g"></g></svg>
-<div class="try"><h3>Prova tu</h3>
-<div class="trytop"><div class="tryl"><div class="ctlz"><div class="tog" id="t1"></div><div class="tog" id="t4"></div><div class="tog" id="t2"></div><div class="tog" id="t3"></div><div class="tog" id="rm2"></div><div class="tog cpc" id="pz"></div><div class="tog cpc" id="wnr"><span id="wnL"></span><input type="range" id="wn" min="100" max="1000" step="50" value="150" oninput="drawCmp()"><output id="wnO"></output></div></div></div>
-<div class="cmp"><h4 id="cpt"></h4><svg viewBox="0 0 336 116" aria-hidden="true"><g id="g4"></g></svg><svg class="trysv" viewBox="0 0 310 256" aria-hidden="true"><g id="g2"></g></svg></div></div>
+<div class="try">
+<div class="trytop"><div class="tryl"><h3>Prova tu</h3><div class="ctlz"><div class="tog" id="t1"></div><div class="tog" id="t4"></div><div class="tog" id="t2"></div><div class="tog" id="t3"></div><div class="tog" id="rm2"></div><div class="tog cpc" id="pz"></div><div class="tog cpc" id="wnr"><span id="wnL"></span><input type="range" id="wn" min="100" max="1000" step="50" value="150" oninput="drawCmp()"><output id="wnO"></output></div></div></div>
+<div class="cmp"><h4 id="cpt" class="sr-only"></h4><svg viewBox="0 0 336 116" aria-hidden="true"><g id="g4"></g></svg><svg class="trysv" viewBox="0 0 310 200" aria-hidden="true"><g id="g2"></g></svg></div></div>
 <p id="cpx" aria-live="polite"></p>
 <p class="thp" id="thp"></p>
 <p id="ex" aria-live="polite"></p>
@@ -103,11 +103,13 @@ function row(d,i,y,lab,sub,fx,ly){var h=20,s='',off=d.off||0,tr=d.tr||0;ly=ly||{
  // retina streak: P, plus half of any pixel transition that happens while the light is on
  var ov=tr?Math.max(0,Math.min(tr,off+d.l)-off):0,Pe=d.l+ov/2,S=0.96*Pe,full=S*MAG,cur=full,show=true;
  if(tc!==null){var ph=tc%d.p;cur=Math.max(0,Math.min(1,(ph-off)/d.l))*full;show=ph>=off&&ph<off+d.l*(d.crt||1);}
+ if(!ly.noret){
  s+='<line x1="'+rx+'" y1="'+(yr+h/2)+'" x2="'+(rx+150)+'" y2="'+(yr+h/2)+'" stroke="#DDE4EA" stroke-width="1"/>';
  s+='<defs><linearGradient id="st'+i+'" x1="0" x2="1"><stop offset="0" stop-color="'+Y[0]+'" stop-opacity="0.15"/><stop offset="1" stop-color="'+Y[0]+'"/></linearGradient></defs>';
  if(tc!==null)s+='<rect x="'+rx+'" y="'+(yr+3)+'" width="'+Math.max(1,full)+'" height="'+(h-6)+'" rx="2" fill="none" stroke="#C9D2DC" stroke-dasharray="3 2"/>';
  s+='<rect x="'+rx+'" y="'+(yr+3)+'" width="'+Math.max(1.5,cur)+'" height="'+(h-6)+'" rx="2" fill="url(#st'+i+')"/>';
  if(show)s+='<rect x="'+(rx+Math.max(1.5,cur)-3)+'" y="'+(yr+1)+'" width="6" height="'+(h-2)+'" rx="2" fill="'+Y[0]+'" stroke="#9A6A00" stroke-width="0.6"/>';
+ }
  var Wv=WH*(d.w||1);s+=obj(yo,S/Math.sqrt(12),i,Wv,cxo)+blk(yo,d.k,i,Wv,bxo);
  s+=T(cxo,yo+40,fmt(L.wt[0],{W:nf(Wv,0)}),'ts',d.w?'#B23B1E':null)+(d.w?T(cxo,yo+53,L.wt[1],'ts','#B23B1E'):'');
  var col=S<=4?'#3B6D11':S<=10?'#9A6A00':'#B23B1E',txt=ov?fmt(L.f2,{P:nf(d.l,1),R:nf(ov,1),S:nf(S,S<10?1:0)}):fmt(L.f,{P:nf(d.l,1),S:nf(S,S<10?1:0)});
@@ -166,8 +168,8 @@ function drawTry(){var fixed=st.t<2,c=cfg(),y=26;
  document.getElementById('t4').innerHTML=btns(L.pnL,st.t===2?L.pno:L.pn,st.n,'setN',function(i){return st.t<2});
  document.getElementById('rm').innerHTML=document.getElementById('rm2').innerHTML=btns(L.rmL,L.rmB,st.r,'setR');
  // vertical strip: timeline, then the streak on the retina, then the object as seen and the contrast
- var s=HATCH+row(c[0],'t',44,c[1],c[2],[0,78],{lx:0,ly:0,x0:0,x1:300,yb:44,rx:0,yr:124,cx:0,bx:112,yo:174});
- s+=T(0,116,L.h2[0]+' · '+L.h2[1],'ts')+T(0,168,L.h3[0],'ts')+T(112,168,L.h4[0],'ts');
+ var s=HATCH+row(c[0],'t',44,c[1],c[2],[0,78],{lx:0,ly:0,x0:0,x1:300,yb:44,cx:0,bx:112,yo:122,noret:1});
+ s+=T(0,116,L.h3[0],'ts')+T(112,116,L.h4[0],'ts');
  if(c[0].tr)s+='<rect x="0" y="86" width="14" height="10" fill="url(#hatch)"/>'+(c[0].off?'<rect x="16" y="86" width="14" height="10" fill="url(#hatchD)"/>':'')+T(c[0].off?36:20,95,c[0].off?L.lgT.replace(/ \(.*\)/,''):L.lgT.replace(/ \(.*\)/,''),'ts');
  if(tc!==null){var xc=tc*6;s+='<line x1="'+xc+'" y1="38" x2="'+xc+'" y2="68" stroke="#B23B1E" stroke-width="1.4"/>';}
  document.getElementById('g2').innerHTML=s;drawCmp();document.getElementById('halo').innerHTML=st.t>=3?L.halo:'';
