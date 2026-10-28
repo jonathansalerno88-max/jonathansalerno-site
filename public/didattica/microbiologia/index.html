@@ -113,6 +113,17 @@ table{border-collapse:collapse; font-size:.9rem; margin:.4rem 0 1rem; width:100%
 .tscroll{overflow-x:auto; max-width:100%}
 .tscroll table{max-width:none; min-width:34rem}
 .tscroll td{white-space:nowrap}
+.flow{margin:1rem 0 1.2rem}
+.flow .fs{border:1px solid var(--rule);border-radius:10px;background:var(--card);padding:.6rem .8rem;font-size:.9375rem;line-height:1.55}
+.flow .fs h4{margin:0 0 .25rem;font-size:.9375rem;font-family:var(--sans)}
+.flow .fs p{margin:0 0 .35rem}
+.flow .fs ul{margin:.2rem 0 0;padding-left:1.1rem}
+.flow .fs li{margin:0 0 .2rem}
+.flow .fa{text-align:center;color:var(--faint);font-size:1.1rem;line-height:1.4}
+.flow .fg{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+.flow .fg .fs{border-top:3px solid var(--link)}
+.flow .fs .t{font-family:var(--mono);font-size:.75rem;color:var(--faint);display:block;margin:0 0 .15rem}
+@media (max-width:640px){.flow .fg{grid-template-columns:1fr}}
 .tscroll.tw table{min-width:40rem}
 .tscroll.tw td{white-space:normal;vertical-align:top}
 .tscroll.tw td:first-child{font-weight:600}
@@ -386,6 +397,68 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <iframe src="w/03-caso-tubercolosi.html" title="Caso clinico guidato: tosse da due mesi e una caverna" loading="lazy" class="ph"></iframe>
     <figcaption>Radiografia, granuloma, caverna, striscio e terapia. <a href="w/03-caso-tubercolosi.html">Apri a schermo intero</a></figcaption>
   </figure>
+
+  <h3>Dall'espettorato alla diagnosi</h3>
+  <p>Che cosa succede, in pratica, a un paziente con sospetta tubercolosi polmonare. Il campione non va a un solo
+  esame: va a tre, che rispondono a domande diverse e arrivano in tempi diversi.</p>
+  <div class="flow">
+    <div class="fs"><h4>1 · Sospetto e isolamento</h4>
+    <p>Tosse da più di due settimane, febbre serale, sudori notturni, calo di peso, emottisi; radiografia del torace.
+    Se il sospetto è concreto, isolamento respiratorio subito, senza aspettare i risultati.</p></div>
+    <div class="fa">↓</div>
+    <div class="fs"><h4>2 · Campioni</h4>
+    <p>Due o tre espettorati, almeno uno al primo mattino. Se il paziente non espettora: espettorato indotto con
+    soluzione salina ipertonica, oppure broncoscopia con lavaggio broncoalveolare; nei bambini piccoli l'aspirato gastrico.</p></div>
+    <div class="fa">↓</div>
+    <div class="fs"><h4>3 · In laboratorio il campione prende tre strade</h4>
+    <p>Una parte va al test molecolare così com'è. Il resto viene <b>decontaminato</b> con
+    <b>NALC-NaOH</b> (N-acetil-L-cisteina e idrossido di sodio), che scioglie il muco e uccide la flora della bocca
+    (crescerebbe molto prima del bacillo e coprirebbe la coltura), poi <b>concentrato</b> per centrifugazione.
+    Dal sedimento si fanno striscio e coltura.</p></div>
+    <div class="fa">↓</div>
+    <div class="fg">
+      <div class="fs"><span class="t">CIRCA 2 ORE</span><h4>Test molecolare</h4>
+      <p>Xpert MTB/RIF Ultra, direttamente sull'espettorato. Dice se c'è DNA del complesso M. tuberculosis e se ci sono
+      le mutazioni di rpoB della resistenza alla rifampicina.</p>
+      <p>L'<b>OMS</b> (Organizzazione mondiale della sanità) dal 2020 lo raccomanda come <b>primo esame per tutti</b>,
+      al posto dello striscio, non solo nelle persone con HIV.</p></div>
+      <div class="fs"><span class="t">IN GIORNATA</span><h4>Striscio</h4>
+      <p>Auramina-rodamina in fluorescenza (si legge più in fretta, a ingrandimento più basso) e Ziehl–Neelsen di conferma.
+      Dice «BAAR sì o no» e quanti: la carica conta per la contagiosità.</p>
+      <p>Si ripete durante la terapia per vedere quando si negativizza: il test molecolare non serve a questo,
+      perché trova anche il DNA dei bacilli morti.</p></div>
+      <div class="fs"><span class="t">DA 2 A 8 SETTIMANE</span><h4>Coltura</h4>
+      <p>In terreno <b>liquido e solido insieme</b>, non l'uno o l'altro: <b>MGIT</b> (Mycobacteria Growth Indicator Tube),
+      più rapido e sensibile, e Löwenstein–Jensen o Middlebrook 7H10/7H11, che fanno vedere le colonie e recuperano
+      ceppi che il liquido perde.</p>
+      <p>È il riferimento: conferma che il bacillo è vivo e permette l'antibiogramma completo.</p></div>
+    </div>
+    <div class="fa">↓</div>
+    <div class="fs"><h4>4 · Come leggo i risultati</h4>
+    <ul>
+      <li><b>Molecolare positivo, rifampicina sensibile</b>: tubercolosi; si inizia 2HRZE/4HR. Si cerca anche la resistenza
+      all'isoniazide, che il test non vede.</li>
+      <li><b>Molecolare positivo, rifampicina resistente</b>: si sospetta una forma <b>MDR</b> (multiresistente); si cercano
+      le resistenze ai fluorochinoloni e agli altri farmaci e si imposta una terapia per forme resistenti.</li>
+      <li><b>Striscio positivo, molecolare negativo</b>: probabile micobatterio non tubercolare; decide la coltura.</li>
+      <li><b>Tutto negativo ma sospetto forte</b>: altri campioni, broncoscopia, e si aspetta la coltura, che è più
+      sensibile dello striscio; a volte si tratta sulla base del quadro clinico.</li>
+      <li><b>Coltura positiva</b>: si identifica la specie (per esempio con il test rapido dell'antigene MPT64, presente
+      nel complesso M. tuberculosis) e si fa l'antibiogramma.</li>
+      <li>Nelle persone con <b>HIV</b> (virus dell'immunodeficienza umana) gravi o con pochi CD4 si aggiunge, in parallelo,
+      la ricerca del <b>LAM</b> (lipoarabinomannano) nelle urine.</li>
+    </ul></div>
+  </div>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Esame</th><th>Tempi</th><th>Che cosa dice</th><th>Da sapere</th></tr></thead>
+    <tbody>
+    <tr><td>Striscio (Ziehl–Neelsen, auramina-rodamina)</td><td>ore</td><td>bacilli alcol-acido resistenti sì o no, e quanti</td><td>serve una carica di 5.000–10.000 bacilli/mL; anche pochi bacilli contano come positivo, ma «BAAR» non vuol dire M. tuberculosis</td></tr>
+    <tr><td>Xpert MTB/RIF Ultra</td><td>circa 2 ore</td><td>DNA del complesso M. tuberculosis e resistenza alla rifampicina</td><td>primo esame per tutti secondo l'OMS; positivo anche con bacilli morti, quindi non segue la terapia</td></tr>
+    <tr><td>Coltura solida (Löwenstein–Jensen, Middlebrook 7H10/7H11)</td><td>3–8 settimane</td><td>bacilli vivi, colonie, antibiogramma</td><td>riferimento diagnostico</td></tr>
+    <tr><td>MGIT, coltura liquida</td><td>di solito 1–3 settimane; negativa dopo 42 giorni</td><td>crescita, vista con un fluorocromo che si accende quando il bacillo consuma l'ossigeno</td><td>Middlebrook 7H9 modificato con fattori di crescita e PANTA (polimixina B, amfotericina B, acido nalidixico, trimetoprim, azlocillina) contro i contaminanti</td></tr>
+    <tr><td>LAM urinario (AlereLAM)</td><td>25 minuti</td><td>lipoarabinomannano del bacillo nelle urine</td><td>solo nelle persone con HIV, in aggiunta agli altri esami; sensibilità bassa, circa 40 %. Il FujiLAM, più sensibile negli studi (circa 70 %), non è raccomandato dall'OMS</td></tr>
+    <tr><td><b>IGRA</b> (QuantiFERON, T-SPOT.TB)</td><td>1–2 giorni</td><td>memoria immunitaria contro il bacillo</td><td>non diagnostica la malattia attiva: serve per l'infezione latente</td></tr>
+    </tbody></table></div>
 </section>
 
 <section id="fonti">
@@ -408,7 +481,9 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <a href="https://www.nice.org.uk/guidance/ng240">nice.org.uk/guidance/ng240</a></li>
     <li>Ramakrishnan L. Revisiting the role of the granuloma in tuberculosis. <i>Nat Rev Immunol</i> 2012;12:352–66.
     <a href="https://doi.org/10.1038/nri3211">doi:10.1038/nri3211</a></li>
-    <li>World Health Organization. WHO consolidated guidelines on tuberculosis: Module 1 (prevention), Module 3 (diagnosis), Module 4 (treatment).</li>
+    <li>World Health Organization. WHO consolidated guidelines on tuberculosis: Module 1 (prevention), Module 3 (diagnosis), Module 4 (treatment).
+    <a href="https://tbksp.who.int/en/node/2772">tbksp.who.int</a></li>
+    <li>Broger T, Sossen B, du Toit E, et al. Novel lipoarabinomannan point-of-care tuberculosis test for people with HIV: a diagnostic accuracy study. <i>Lancet Infect Dis</i> 2019;19:852–61.</li>
   </ol>
   <p class="caveat">Il resto è materiale da manuale di microbiologia medica; gli schemi sono semplificati e non in scala. I casi clinici sono inventati a scopo didattico; dosi e schemi vanno sempre verificati sulle linee guida aggiornate.</p>
 </section>

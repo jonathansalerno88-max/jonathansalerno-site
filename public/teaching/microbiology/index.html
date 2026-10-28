@@ -113,6 +113,17 @@ table{border-collapse:collapse; font-size:.9rem; margin:.4rem 0 1rem; width:100%
 .tscroll{overflow-x:auto; max-width:100%}
 .tscroll table{max-width:none; min-width:34rem}
 .tscroll td{white-space:nowrap}
+.flow{margin:1rem 0 1.2rem}
+.flow .fs{border:1px solid var(--rule);border-radius:10px;background:var(--card);padding:.6rem .8rem;font-size:.9375rem;line-height:1.55}
+.flow .fs h4{margin:0 0 .25rem;font-size:.9375rem;font-family:var(--sans)}
+.flow .fs p{margin:0 0 .35rem}
+.flow .fs ul{margin:.2rem 0 0;padding-left:1.1rem}
+.flow .fs li{margin:0 0 .2rem}
+.flow .fa{text-align:center;color:var(--faint);font-size:1.1rem;line-height:1.4}
+.flow .fg{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+.flow .fg .fs{border-top:3px solid var(--link)}
+.flow .fs .t{font-family:var(--mono);font-size:.75rem;color:var(--faint);display:block;margin:0 0 .15rem}
+@media (max-width:640px){.flow .fg{grid-template-columns:1fr}}
 .tscroll.tw table{min-width:40rem}
 .tscroll.tw td{white-space:normal;vertical-align:top}
 .tscroll.tw td:first-child{font-weight:600}
@@ -386,6 +397,68 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <iframe src="w/03-caso-tubercolosi.html" title="Guided clinical case: a two-month cough and a cavity" loading="lazy" class="ph"></iframe>
     <figcaption>X-ray, granuloma, cavity, smear and treatment. <a href="w/03-caso-tubercolosi.html">Open full screen</a></figcaption>
   </figure>
+
+  <h3>From sputum to diagnosis</h3>
+  <p>What actually happens to a patient with suspected pulmonary tuberculosis. The sample does not go to one test:
+  it goes to three, which answer different questions and report at different times.</p>
+  <div class="flow">
+    <div class="fs"><h4>1 · Suspicion and isolation</h4>
+    <p>Cough for more than two weeks, evening fever, night sweats, weight loss, haemoptysis; chest X-ray.
+    If the suspicion is real, respiratory isolation at once, without waiting for results.</p></div>
+    <div class="fa">↓</div>
+    <div class="fs"><h4>2 · Samples</h4>
+    <p>Two or three sputum samples, at least one first thing in the morning. If the patient cannot produce sputum:
+    sputum induction with hypertonic saline, or bronchoscopy with bronchoalveolar lavage; in young children, gastric aspirate.</p></div>
+    <div class="fa">↓</div>
+    <div class="fs"><h4>3 · In the lab the sample takes three paths</h4>
+    <p>One part goes to the molecular test as it is. The rest is <b>decontaminated</b> with
+    <b>NALC-NaOH</b> (N-acetyl-L-cysteine and sodium hydroxide), which dissolves mucus and kills the mouth flora
+    (it would grow long before the bacillus and swamp the culture), then <b>concentrated</b> by centrifugation.
+    Smear and culture are made from the sediment.</p></div>
+    <div class="fa">↓</div>
+    <div class="fg">
+      <div class="fs"><span class="t">ABOUT 2 HOURS</span><h4>Molecular test</h4>
+      <p>Xpert MTB/RIF Ultra, directly on sputum. It tells whether there is DNA of the M. tuberculosis complex and
+      whether there are rpoB mutations giving rifampicin resistance.</p>
+      <p>Since 2020 the <b>WHO</b> (World Health Organization) has recommended it as the <b>first test for everyone</b>,
+      instead of the smear, not only for people with HIV.</p></div>
+      <div class="fs"><span class="t">SAME DAY</span><h4>Smear</h4>
+      <p>Auramine-rhodamine under fluorescence (read faster, at lower magnification) and Ziehl–Neelsen to confirm.
+      It says "AFB yes or no" and how many: the load matters for infectiousness.</p>
+      <p>It is repeated during treatment to see when it turns negative: the molecular test cannot do this,
+      because it also detects DNA from dead bacilli.</p></div>
+      <div class="fs"><span class="t">2 TO 8 WEEKS</span><h4>Culture</h4>
+      <p>On <b>liquid and solid media together</b>, not one or the other: <b>MGIT</b> (Mycobacteria Growth Indicator Tube),
+      faster and more sensitive, and Löwenstein–Jensen or Middlebrook 7H10/7H11, which show the colonies and recover
+      strains the liquid misses.</p>
+      <p>It is the reference: it confirms the bacillus is alive and allows full susceptibility testing.</p></div>
+    </div>
+    <div class="fa">↓</div>
+    <div class="fs"><h4>4 · How to read the results</h4>
+    <ul>
+      <li><b>Molecular positive, rifampicin susceptible</b>: tuberculosis; start 2HRZE/4HR. Isoniazid resistance, which
+      the test does not see, is also looked for.</li>
+      <li><b>Molecular positive, rifampicin resistant</b>: suspected <b>MDR</b> (multidrug-resistant) disease; resistance to
+      fluoroquinolones and other drugs is tested and a regimen for resistant disease is set up.</li>
+      <li><b>Smear positive, molecular negative</b>: probably a non-tuberculous mycobacterium; culture decides.</li>
+      <li><b>Everything negative but strong suspicion</b>: more samples, bronchoscopy, and wait for the culture, which is
+      more sensitive than the smear; sometimes treatment starts on clinical grounds.</li>
+      <li><b>Culture positive</b>: the species is identified (for example with the rapid MPT64 antigen test, present in
+      the M. tuberculosis complex) and susceptibility is tested.</li>
+      <li>In people with <b>HIV</b> (human immunodeficiency virus) who are severely ill or have few CD4 cells, urine
+      <b>LAM</b> (lipoarabinomannan) is added in parallel.</li>
+    </ul></div>
+  </div>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Test</th><th>Time</th><th>What it tells you</th><th>Worth knowing</th></tr></thead>
+    <tbody>
+    <tr><td>Smear (Ziehl–Neelsen, auramine-rhodamine)</td><td>hours</td><td>acid-fast bacilli yes or no, and how many</td><td>needs a load of 5,000–10,000 bacilli/mL; even a few bacilli count as positive, but "AFB" does not mean M. tuberculosis</td></tr>
+    <tr><td>Xpert MTB/RIF Ultra</td><td>about 2 hours</td><td>DNA of the M. tuberculosis complex and rifampicin resistance</td><td>first test for everyone according to the WHO; positive with dead bacilli too, so it does not monitor treatment</td></tr>
+    <tr><td>Solid culture (Löwenstein–Jensen, Middlebrook 7H10/7H11)</td><td>3–8 weeks</td><td>live bacilli, colonies, susceptibility</td><td>diagnostic reference</td></tr>
+    <tr><td>MGIT, liquid culture</td><td>usually 1–3 weeks; negative after 42 days</td><td>growth, seen with a fluorochrome that lights up when the bacillus uses up the oxygen</td><td>modified Middlebrook 7H9 with growth factors and PANTA (polymyxin B, amphotericin B, nalidixic acid, trimethoprim, azlocillin) against contaminants</td></tr>
+    <tr><td>Urine LAM (AlereLAM)</td><td>25 minutes</td><td>the bacillus' lipoarabinomannan in urine</td><td>only in people with HIV, on top of the other tests; low sensitivity, about 40%. FujiLAM, more sensitive in studies (about 70%), is not recommended by the WHO</td></tr>
+    <tr><td><b>IGRA</b> (QuantiFERON, T-SPOT.TB)</td><td>1–2 days</td><td>immune memory against the bacillus</td><td>does not diagnose active disease: it is for latent infection</td></tr>
+    </tbody></table></div>
 </section>
 
 <section id="sources">
@@ -408,7 +481,9 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <a href="https://www.nice.org.uk/guidance/ng240">nice.org.uk/guidance/ng240</a></li>
     <li>Ramakrishnan L. Revisiting the role of the granuloma in tuberculosis. <i>Nat Rev Immunol</i> 2012;12:352–66.
     <a href="https://doi.org/10.1038/nri3211">doi:10.1038/nri3211</a></li>
-    <li>World Health Organization. WHO consolidated guidelines on tuberculosis: Module 1 (prevention), Module 3 (diagnosis), Module 4 (treatment).</li>
+    <li>World Health Organization. WHO consolidated guidelines on tuberculosis: Module 1 (prevention), Module 3 (diagnosis), Module 4 (treatment).
+    <a href="https://tbksp.who.int/en/node/2772">tbksp.who.int</a></li>
+    <li>Broger T, Sossen B, du Toit E, et al. Novel lipoarabinomannan point-of-care tuberculosis test for people with HIV: a diagnostic accuracy study. <i>Lancet Infect Dis</i> 2019;19:852–61.</li>
   </ol>
   <p class="caveat">The rest is standard medical microbiology textbook material; the diagrams are simplified and not to scale. The clinical cases are invented for teaching; doses and regimens should always be checked against current guidelines.</p>
 </section>
