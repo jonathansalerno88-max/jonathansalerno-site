@@ -273,7 +273,8 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <h1>Microbiology</h1>
   <div class="lede">
     <p>Microbiology with interactive figures, one block at a time. It starts with the bacterial
-    cell: a Gram-positive, a Gram-negative and a mycobacterium side by side, structure by structure.</p>
+    cell, with a Gram-positive, a Gram-negative and a mycobacterium side by side, and with two guided clinical
+    cases: meningococcal meningitis and tuberculosis.</p>
     <p class="caveat">Simplified, not-to-scale diagrams: they help you remember the structures and link them
     to the clinic, not replace the reference textbook.</p>
   </div>
@@ -284,6 +285,10 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <div class="tg">
   <div><p class="tp">Part I · General bacteriology</p><ol start="1">
     <li><a href="#cell">The bacterial cell: Gram+, Gram− and mycobacterium</a></li>
+  </ol></div>
+  <div><p class="tp">Part II · Clinical cases</p><ol start="2">
+    <li><a href="#meningococcus">Fever, neck stiffness and purpura: the meningococcus</a></li>
+    <li><a href="#tuberculosis">A two-month cough and a cavity: tuberculosis</a></li>
   </ol></div>
   </div>
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#sources">Sources</a></p>
@@ -345,6 +350,44 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <li>Where are the β-lactamases in the Gram-negative, and why are they most troublesome there?</li></ol></div>
 </section>
 
+<div class="part"><span class="pn">Part II</span><span class="pt">Clinical cases</span></div>
+
+<section id="meningococcus">
+  <h2>2 · Fever, neck stiffness and purpura: the meningococcus</h2>
+  <p>A guided case in five steps, from the emergency department to the contacts. Each step has a figure to explore
+  and a question: the right answer opens the explanation and the next step. If you just want to review,
+  "Show the whole case" opens all the steps at once.</p>
+  <figure class="w">
+    <iframe src="w/02-caso-meningococco.html" title="Guided clinical case: fever, neck stiffness and purpura" loading="lazy" class="ph"></iframe>
+    <figcaption>Skin and glass test, CSF, Gram stain, structure of the meningococcus, contacts. <a href="w/02-caso-meningococco.html">Open full screen</a></figcaption>
+  </figure>
+  <h3>Meningococcus and gonococcus</h3>
+  <p>Same genus and same look under the microscope, coffee-bean Gram-negative diplococci, but very different
+  diseases. Almost all of the difference lies in the capsule.</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th></th><th>Neisseria meningitidis</th><th>Neisseria gonorrhoeae</th></tr></thead>
+    <tbody>
+    <tr><td>Capsule</td><td>yes: serogroups A, B, C, W, X, Y</td><td>no</td></tr>
+    <tr><td>Maltose</td><td>fermented (as well as glucose)</td><td>not fermented (glucose only)</td></tr>
+    <tr><td>Where it lives</td><td>pharynx: healthy carriers in 5–10% of adults</td><td>genital mucosa, rectum, pharynx, conjunctiva</td></tr>
+    <tr><td>Diseases</td><td>meningitis, sepsis, purpura fulminans</td><td>urethritis, cervicitis, pelvic inflammatory disease, neonatal conjunctivitis, disseminated infection with arthritis</td></tr>
+    <tr><td>Medium</td><td>chocolate agar (sterile samples)</td><td>Thayer–Martin (samples with flora)</td></tr>
+    <tr><td>Vaccine</td><td>yes: conjugate MenACWY, protein MenB</td><td>no: pili and Opa keep changing</td></tr>
+    <tr><td>Treatment</td><td>ceftriaxone; prophylaxis for close contacts</td><td>intramuscular ceftriaxone, with rising resistance; partners are treated and chlamydia is looked for</td></tr>
+    </tbody></table></div>
+</section>
+
+<section id="tuberculosis">
+  <h2>3 · A two-month cough and a cavity: tuberculosis</h2>
+  <p>A second guided case in five steps: the X-ray with the cavity, compared with primary and miliary disease,
+  the granuloma under the microscope and how it becomes a cavity, the smear, the treatment and the contacts. The
+  granuloma can also be viewed with Ziehl–Neelsen, to look for the bacilli.</p>
+  <figure class="w">
+    <iframe src="w/03-caso-tubercolosi.html" title="Guided clinical case: a two-month cough and a cavity" loading="lazy" class="ph"></iframe>
+    <figcaption>X-ray, granuloma, cavity, smear and treatment. <a href="w/03-caso-tubercolosi.html">Open full screen</a></figcaption>
+  </figure>
+</section>
+
 <section id="sources">
   <h2>Sources</h2>
   <ol class="refs">
@@ -357,8 +400,17 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <li>Alteri CJ, Xicohténcatl-Cortes J, Hess S, et al. <i>Mycobacterium tuberculosis</i> produces pili during human infection. <i>PNAS</i> 2007;104:5145–50.
     <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC1817835/">PMC1817835</a></li>
     <li>World Health Organization. Lateral flow urine lipoarabinomannan assay (LF-LAM) for the diagnosis of active tuberculosis in people living with HIV: policy update 2019.</li>
+    <li>Stephens DS, Greenwood B, Brandtzaeg P. Epidemic meningitis, meningococcaemia, and <i>Neisseria meningitidis</i>. <i>Lancet</i> 2007;369:2196–210.
+    <a href="https://doi.org/10.1016/S0140-6736(07)61016-2">doi:10.1016/S0140-6736(07)61016-2</a></li>
+    <li>van de Beek D, Cabellos C, Dzupova O, et al. ESCMID guideline: diagnosis and treatment of acute bacterial meningitis. <i>Clin Microbiol Infect</i> 2016;22 Suppl 3:S37–62.
+    <a href="https://doi.org/10.1016/j.cmi.2016.01.007">doi:10.1016/j.cmi.2016.01.007</a></li>
+    <li>National Institute for Health and Care Excellence. Meningitis (bacterial) and meningococcal disease: recognition, diagnosis and management (NG240), 2024.
+    <a href="https://www.nice.org.uk/guidance/ng240">nice.org.uk/guidance/ng240</a></li>
+    <li>Ramakrishnan L. Revisiting the role of the granuloma in tuberculosis. <i>Nat Rev Immunol</i> 2012;12:352–66.
+    <a href="https://doi.org/10.1038/nri3211">doi:10.1038/nri3211</a></li>
+    <li>World Health Organization. WHO consolidated guidelines on tuberculosis: Module 1 (prevention), Module 3 (diagnosis), Module 4 (treatment).</li>
   </ol>
-  <p class="caveat">The rest is standard medical microbiology textbook material; the diagrams are simplified and not to scale.</p>
+  <p class="caveat">The rest is standard medical microbiology textbook material; the diagrams are simplified and not to scale. The clinical cases are invented for teaching; doses and regimens should always be checked against current guidelines.</p>
 </section>
 
 <footer>

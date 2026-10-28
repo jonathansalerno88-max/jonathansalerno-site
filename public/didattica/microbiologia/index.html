@@ -273,7 +273,8 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <h1>Microbiologia</h1>
   <div class="lede">
     <p>Microbiologia con disegni interattivi, un blocco alla volta. Si comincia dalla cellula
-    batterica: un Gram positivo, un Gram negativo e un micobatterio affiancati, struttura per struttura.</p>
+    batterica, con un Gram positivo, un Gram negativo e un micobatterio affiancati, e da due casi clinici
+    guidati: la meningite meningococcica e la tubercolosi.</p>
     <p class="caveat">Schemi semplificati e non in scala: servono a ricordare le strutture e a collegarle
     alla clinica, non a sostituire il testo di riferimento.</p>
   </div>
@@ -284,6 +285,10 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <div class="tg">
   <div><p class="tp">Parte I · Batteriologia generale</p><ol start="1">
     <li><a href="#cellula">La cellula batterica: Gram+, Gram− e micobatterio</a></li>
+  </ol></div>
+  <div><p class="tp">Parte II · Casi clinici</p><ol start="2">
+    <li><a href="#meningococco">Febbre, rigidità nucale e porpora: il meningococco</a></li>
+    <li><a href="#tubercolosi">Tosse da due mesi e una caverna: la tubercolosi</a></li>
   </ol></div>
   </div>
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#fonti">Fonti</a></p>
@@ -345,6 +350,44 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <li>Dove stanno le β-lattamasi nel Gram−, e perché lì danno più fastidio?</li></ol></div>
 </section>
 
+<div class="part"><span class="pn">Parte II</span><span class="pt">Casi clinici</span></div>
+
+<section id="meningococco">
+  <h2>2 · Febbre, rigidità nucale e porpora: il meningococco</h2>
+  <p>Un caso guidato in cinque passi, dal pronto soccorso ai contatti. Ogni passo ha una figura da esplorare
+  e una domanda: la risposta giusta apre la spiegazione e il passo successivo. Se vuoi solo ripassare,
+  «Mostra tutto il caso» apre tutti i passi insieme.</p>
+  <figure class="w">
+    <iframe src="w/02-caso-meningococco.html" title="Caso clinico guidato: febbre, rigidità nucale e porpora" loading="lazy" class="ph"></iframe>
+    <figcaption>Pelle e test del bicchiere, liquor, Gram, struttura del meningococco, contatti. <a href="w/02-caso-meningococco.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <h3>Meningococco e gonococco</h3>
+  <p>Stesso genere e stesso aspetto al microscopio, diplococchi Gram negativi a chicco di caffè, ma malattie
+  molto diverse. Quasi tutta la differenza sta nella capsula.</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th></th><th>Neisseria meningitidis</th><th>Neisseria gonorrhoeae</th></tr></thead>
+    <tbody>
+    <tr><td>Capsula</td><td>sì: sierogruppi A, B, C, W, X, Y</td><td>no</td></tr>
+    <tr><td>Maltosio</td><td>fermentato (oltre al glucosio)</td><td>non fermentato (solo glucosio)</td></tr>
+    <tr><td>Dove vive</td><td>faringe: portatori sani nel 5–10 % degli adulti</td><td>mucose genitali, retto, faringe, congiuntiva</td></tr>
+    <tr><td>Malattie</td><td>meningite, sepsi, porpora fulminante</td><td>uretrite, cervicite, malattia infiammatoria pelvica, congiuntivite del neonato, infezione disseminata con artrite</td></tr>
+    <tr><td>Terreno</td><td>agar cioccolato (campioni sterili)</td><td>Thayer–Martin (campioni con flora)</td></tr>
+    <tr><td>Vaccino</td><td>sì: MenACWY coniugato, MenB proteico</td><td>no: pili e Opa cambiano di continuo</td></tr>
+    <tr><td>Terapia</td><td>ceftriaxone; profilassi ai contatti stretti</td><td>ceftriaxone intramuscolo, con resistenze in aumento; si trattano i partner e si cerca la clamidia</td></tr>
+    </tbody></table></div>
+</section>
+
+<section id="tubercolosi">
+  <h2>3 · Tosse da due mesi e una caverna: la tubercolosi</h2>
+  <p>Un secondo caso guidato in cinque passi: la radiografia con la caverna e il confronto con primaria e miliare,
+  il granuloma al microscopio e come diventa una caverna, lo striscio, la terapia e i contatti. Il granuloma si
+  può guardare anche con la Ziehl–Neelsen, per cercare i bacilli.</p>
+  <figure class="w">
+    <iframe src="w/03-caso-tubercolosi.html" title="Caso clinico guidato: tosse da due mesi e una caverna" loading="lazy" class="ph"></iframe>
+    <figcaption>Radiografia, granuloma, caverna, striscio e terapia. <a href="w/03-caso-tubercolosi.html">Apri a schermo intero</a></figcaption>
+  </figure>
+</section>
+
 <section id="fonti">
   <h2>Fonti</h2>
   <ol class="refs">
@@ -357,8 +400,17 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <li>Alteri CJ, Xicohténcatl-Cortes J, Hess S, et al. <i>Mycobacterium tuberculosis</i> produces pili during human infection. <i>PNAS</i> 2007;104:5145–50.
     <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC1817835/">PMC1817835</a></li>
     <li>World Health Organization. Lateral flow urine lipoarabinomannan assay (LF-LAM) for the diagnosis of active tuberculosis in people living with HIV: policy update 2019.</li>
+    <li>Stephens DS, Greenwood B, Brandtzaeg P. Epidemic meningitis, meningococcaemia, and <i>Neisseria meningitidis</i>. <i>Lancet</i> 2007;369:2196–210.
+    <a href="https://doi.org/10.1016/S0140-6736(07)61016-2">doi:10.1016/S0140-6736(07)61016-2</a></li>
+    <li>van de Beek D, Cabellos C, Dzupova O, et al. ESCMID guideline: diagnosis and treatment of acute bacterial meningitis. <i>Clin Microbiol Infect</i> 2016;22 Suppl 3:S37–62.
+    <a href="https://doi.org/10.1016/j.cmi.2016.01.007">doi:10.1016/j.cmi.2016.01.007</a></li>
+    <li>National Institute for Health and Care Excellence. Meningitis (bacterial) and meningococcal disease: recognition, diagnosis and management (NG240), 2024.
+    <a href="https://www.nice.org.uk/guidance/ng240">nice.org.uk/guidance/ng240</a></li>
+    <li>Ramakrishnan L. Revisiting the role of the granuloma in tuberculosis. <i>Nat Rev Immunol</i> 2012;12:352–66.
+    <a href="https://doi.org/10.1038/nri3211">doi:10.1038/nri3211</a></li>
+    <li>World Health Organization. WHO consolidated guidelines on tuberculosis: Module 1 (prevention), Module 3 (diagnosis), Module 4 (treatment).</li>
   </ol>
-  <p class="caveat">Il resto è materiale da manuale di microbiologia medica; gli schemi sono semplificati e non in scala.</p>
+  <p class="caveat">Il resto è materiale da manuale di microbiologia medica; gli schemi sono semplificati e non in scala. I casi clinici sono inventati a scopo didattico; dosi e schemi vanno sempre verificati sulle linee guida aggiornate.</p>
 </section>
 
 <footer>

@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clinical case: fever, neck stiffness and purpura</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+svg[viewBox]{min-width:0!important;max-width:100%!important;width:100%}
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;margin:0 0 10px}
+.pg{display:flex;gap:5px;align-items:center;font-size:12.5px;color:var(--text-secondary)}
+.pg i{display:inline-block;width:22px;height:6px;border-radius:3px;background:var(--border)}
+.pg i.on{background:#93B4DD}.pg i.ok{background:#1456A8}
+.top button,.ctl button,.nx{font:inherit;font-size:13px;padding:4px 11px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.ctl{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 6px;align-items:center}
+.ctl button.act{border:1.5px solid var(--border-accent);color:var(--text-accent);background:#EEF4FC}
+.ctl .sep{flex:1}
+.ctl button.lbt{font-size:12px;padding:3px 9px}
+.step{border-left:3px solid #93B4DD;padding:2px 0 4px 12px;margin:0 0 18px}
+.step.solved{border-left-color:#1456A8}
+.shd{display:flex;align-items:center;gap:8px;margin:0 0 6px}
+.sn{flex:none;width:24px;height:24px;border-radius:50%;background:#1456A8;color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.shd h3{font-size:16px;margin:0;line-height:1.3}
+.story{font-size:14.5px;line-height:1.55}
+.story p{margin:0 0 8px}
+.vt{display:flex;flex-wrap:wrap;gap:4px 6px;margin:0 0 8px}
+.vt span{font-size:12.5px;background:#FFFFFF;border:1px solid var(--border);border-radius:6px;padding:2px 7px}
+.vt span b{font-weight:600}
+.vt span.al{background:#FCE8E3;border-color:#F0B8AC;color:#8E1F1F}
+.fig{margin:8px 0 10px;padding:8px;border:1px solid var(--border);border-radius:10px;background:#FFFFFF}
+.fig .sv svg{border-radius:6px}
+.fig .sv svg+svg{margin-top:6px}
+.fig [data-k]{cursor:pointer;outline:none}
+.fig [data-k] .ol{opacity:0;pointer-events:none;transition:opacity .12s}
+.fig [data-k].hi .ol,.fig [data-k]:focus-visible .ol{opacity:1}
+.fig svg text{pointer-events:none}
+.kd{font-size:13.5px;line-height:1.5;margin:6px 0 0;padding:7px 10px;border-radius:8px;background:#F6F8FA;min-height:2.6em}
+.kd b{color:#B4481A}
+.kd .ht{color:var(--text-secondary);font-size:12.5px}
+.kd table{border-collapse:collapse;margin:4px 0 0;font-size:13px}
+.kd td{padding:1px 10px 1px 0;vertical-align:top}
+.kd td:first-child{color:var(--text-secondary)}
+.q{margin:8px 0 0;padding:9px 10px;border-radius:10px;background:#EEF4FC;border:1px solid #C9DAF0}
+.qt{font-size:14.5px;font-weight:600;margin:0 0 6px}
+.opts{display:flex;flex-direction:column;gap:5px}
+.opts button{font:inherit;font-size:14px;text-align:left;padding:6px 10px;border-radius:8px;border:1px solid var(--border-strong);background:#FFFFFF;color:var(--text-primary);cursor:pointer;line-height:1.4}
+.opts button.ok{border:1.5px solid #3B7D1F;background:#EAF5E1}
+.opts button.no{border:1.5px solid #C24B4B;background:#FCEDEA}
+.fb{font-size:13.5px;line-height:1.5;margin:6px 0 0}
+.fb:empty{display:none}
+.fb.ok b{color:#2E6B14}.fb.no b{color:#A32D2D}
+.after{margin:10px 0 0;padding:9px 10px;border-radius:10px;background:#FFF8EC;border:1px solid #F1D9A8;font-size:14px;line-height:1.55}
+.after p{margin:0 0 6px}
+.after h4{font-size:13px;margin:0 0 4px;color:#8A4A0B;text-transform:uppercase;letter-spacing:.04em}
+.nx{margin:4px 0 0;background:#1456A8;color:#fff;border-color:#1456A8;font-weight:600}
+.end{font-weight:600;color:#1456A8;margin:6px 0 0}
+@media (max-width:600px){.story{font-size:14px}.opts button{font-size:13.5px}}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Guided clinical case in five steps: a young man with fever, neck stiffness and purpura. Each step has a figure to explore and a question; the right answer opens the next step.</h2>
+<div class="top"><div class="pg" id="pg"></div><button id="all" type="button"></button></div>
+<div id="case"></div>
+<script>
+var D={"ui": {"lab": "Labels", "step": "Step", "all": "Show the whole case", "restart": "Start again", "next": "Next ↓", "end": "End of the case.", "ok": "Right.", "no": "Not quite."}, "figs": {"rash": {"ls": 1.35, "modes": ["Marco's skin", "Viral rash"], "flags": ["Press the glass"], "hint": "Hover over or tap the lesions, then press the glass. Compare with the viral rash.", "lab": {"pet": "Petechiae (< 2 mm)", "pur": "Purpura (> 2 mm)", "vir": "Viral rash: blurred pink patches", "gm": "Still visible under the glass", "gv": "Fades under the glass", "aria": "Skin of the leg with petechiae and purpura, and the glass test"}, "K": {"pet": ["Petechiae", "Red or purple dots under 2 mm: small bleeds into the skin. With fever they are the warning sign to look for all over the body, including the conjunctivae and the palate."], "pur": ["Purpura", "Patches over 2 mm, purple, sometimes with a dark necrotic centre. They can spread within hours: mark their edges with a pen to follow them. Purpura fulminans is the most severe form."], "glass": ["Glass test", "Pressing a clear glass on the skin, redness from vasodilation fades, because blood is pushed out of the capillaries. Petechiae stay: the blood is already outside the vessels. A non-blanching rash with fever is treated as meningococcal sepsis."], "vir": ["Viral rash", "Pink, blurred patches, sometimes merging: this is vasodilation, and it fades under the glass. Beware: in the first hours meningococcal disease can also give a blanching macular rash."]}}, "csf": {"ls": 1.3, "nolab": true, "hint": "Tap a tube to read its values. There is a printed sheet behind them: you can read through a clear CSF.", "lab": {"tA": "normal", "tB": "tuberculous", "tC": "bacterial", "tD": "viral", "aria": "Four tubes of cerebrospinal fluid in front of a printed sheet"}, "K": {"tA": ["Tube A", "<table><tr><td>Appearance</td><td>clear, \"gin-clear\"</td></tr><tr><td>Cells</td><td>2/µL, lymphocytes</td></tr><tr><td>Glucose</td><td>62 mg/dL (blood glucose 100: ratio 0.62)</td></tr><tr><td>Protein</td><td>30 mg/dL</td></tr><tr><td>Opening pressure</td><td>15 cmH₂O</td></tr></table>", "A · Normal CSF"], "tB": ["Tube B", "<table><tr><td>Appearance</td><td>clear or opalescent; left standing, it forms a \"cobweb\" of fibrin</td></tr><tr><td>Cells</td><td>260/µL, 80% lymphocytes</td></tr><tr><td>Glucose</td><td>28 mg/dL (blood glucose 105: ratio 0.27)</td></tr><tr><td>Protein</td><td>380 mg/dL</td></tr><tr><td>Opening pressure</td><td>28 cmH₂O</td></tr></table>", "B · Tuberculous meningitis"], "tC": ["Tube C", "<table><tr><td>Appearance</td><td>cloudy</td></tr><tr><td>Cells</td><td>3,800/µL, 92% neutrophils</td></tr><tr><td>Glucose</td><td>18 mg/dL (blood glucose 110: ratio 0.16)</td></tr><tr><td>Protein</td><td>280 mg/dL</td></tr><tr><td>Opening pressure</td><td>34 cmH₂O</td></tr></table>", "C · Bacterial meningitis: Marco's"], "tD": ["Tube D", "<table><tr><td>Appearance</td><td>clear</td></tr><tr><td>Cells</td><td>180/µL, 85% lymphocytes</td></tr><tr><td>Glucose</td><td>64 mg/dL (blood glucose 105: ratio 0.61)</td></tr><tr><td>Protein</td><td>72 mg/dL</td></tr><tr><td>Opening pressure</td><td>20 cmH₂O</td></tr></table>", "D · Viral meningitis"]}}, "gram": {"ls": 1.35, "labs": {"o1": "Lancet-shaped Gram+", "o2": "Small Gram− coccobacilli"}, "modes": ["Marco's CSF", "Pneumococcus", "Haemophilus"], "hint": "Hover over or tap the cells; switch bacterium to compare.", "lab": {"neu": "Neutrophil", "intra": "Inside neutrophils", "extra": "Free", "o1": "Lancet-shaped Gram+ diplococci, with a capsule", "o2": "Small Gram− coccobacilli", "m0": "Gram · CSF", "m1": "Gram · pneumococcus", "m2": "Gram · Haemophilus", "aria": "Gram stain of the cerebrospinal fluid under the microscope"}, "K": {"neu": ["Neutrophil", "Granulocyte with a nucleus in 3–5 lobes. In the Gram stain it takes up safranin and stains pink. Thousands per microlitre: the response to acute bacterial infection."], "intra": ["Diplococci inside neutrophils", "Pairs of coffee-bean cocci, flat sides facing, engulfed by neutrophils. Pink: Gram-negative. In a CSF this picture is almost always Neisseria meningitidis."], "extra": ["Free diplococci", "The same diplococci outside the cells. The capsule protects them from phagocytosis until antibodies and complement coat them."], "o1": ["Pneumococcus", "Streptococcus pneumoniae: lancet-shaped Gram-positive (purple) diplococci, with a clear halo, the capsule. It is the most common cause of bacterial meningitis in adults."], "o2": ["Haemophilus influenzae", "Small Gram-negative coccobacilli of variable shape. Type b (Hib) was the leading cause of meningitis in young children before the conjugate vaccine."]}}, "nm": {"split": ["0 0 314 380", "314 14 286 356"], "modes": ["N. meningitidis", "N. gonorrhoeae"], "hint": "Hover over or tap the structures in the close-up.", "lab": {"caps": "capsule", "los": "LOS", "pg": "peptidoglycan", "im": "inner membrane", "peri": "periplasm", "ves": "vesicle", "pil": "pilus", "iga": "IgA1 cut", "nm": "Neisseria meningitidis", "gc": "Neisseria gonorrhoeae: no capsule", "aria": "The meningococcus, a diplococcus, and a close-up of its envelope"}, "K": {"caps": ["Capsule", "Polysaccharide that hinders phagocytosis and complement. It defines the serogroups: A, B, C, W, X and Y cause almost all cases. The gonococcus has no capsule."], "los": ["LOS (lipooligosaccharide)", "The LPS of Neisseria, but with short sugar chains and no O antigen. Lipid A is the endotoxin: it activates <b>TLR4</b> (Toll-like receptor 4) and leads to shock, <b>DIC</b> (disseminated intravascular coagulation) and, in the worst cases, adrenal haemorrhage (Waterhouse–Friderichsen syndrome)."], "ves": ["Outer-membrane vesicles", "The meningococcus keeps shedding blebs of outer membrane loaded with LOS: this is why endotoxin in the blood reaches very high levels. The same vesicles, purified, are one component of a serogroup B vaccine."], "por": ["PorB", "Outer-membrane porin: the channel through which small hydrophilic molecules enter, including some antibiotics. It is also an antibody target and is used to type strains."], "opa": ["Opa", "Adhesion proteins that bind CEACAM molecules on mucosal cells and neutrophils. They switch on and off (phase variation): the bacterium changes its face during infection."], "fhbp": ["fHbp and factor H", "The factor H binding protein (fHbp) captures a human complement regulator: on the bacterial surface complement is switched off. It is one of the antigens in serogroup B vaccines."], "pil": ["Type IV pili", "Long filaments that attach the bacterium to pharyngeal cells and, in the blood, to the endothelium of small vessels; retracting, they drag it along. In the gonococcus they keep changing (antigenic variation): that is why reinfection is possible."], "iga": ["IgA1 protease", "Secreted enzyme that cuts IgA1 in the hinge region and disables mucosal antibodies. Pneumococcus and Haemophilus, which colonise the same airways, have it too."], "pg": ["Peptidoglycan", "Thin, in the periplasm, as in all Gram-negatives. Ceftriaxone blocks the PBPs that build it."], "im": ["Inner membrane", "The cytoplasmic membrane, with the respiratory chain. The complement membrane attack complex (C5b-9) inserts into the outer membrane and leads to rupture of the inner one: it is the key defence against Neisseria."]}}}, "steps": [{"h": "In the emergency department", "figs": ["rash"], "story": "<p>Marco, 19, a student away from home, lives in a university residence. This morning: high fever, severe headache and vomiting; in the afternoon he is confused and light hurts his eyes. Small red-purple spots appear on his legs.</p><div class=\"vt\"><span class=\"al\">Temperature 39.6 °C</span><span class=\"al\">Blood pressure 92/54 mmHg</span><span class=\"al\">Heart rate 124/min</span><span>Respiratory rate 24/min</span><span class=\"al\">Capillary refill 4 s</span><span>Cold hands and feet</span><span class=\"al\">Neck stiffness</span><span><b>GCS</b> (Glasgow Coma Scale) 13</span></div><p>Look at the skin and try the glass test.</p>", "q": {"t": "What do you do first?", "o": [["Brain CT, then lumbar puncture, then the antibiotic chosen from the CSF", false, "That takes hours. With fever, purpura and signs of shock, the antibiotic waits for neither the CT nor the lumbar puncture: mortality rises with every hour of delay."], ["Blood cultures and IV ceftriaxone straight away, with fluids for the shock", true, "Blood cultures take a few minutes and must not delay the antibiotic. Ceftriaxone covers meningococcus and pneumococcus and gets well into the CSF. Fast pulse, low pressure and slow capillary refill mean shock: he needs fluids and monitoring."], ["Wait for the culture to give a targeted antibiotic", false, "Culture takes 24–48 hours. Empirical treatment starts now and is adjusted later, with the result."], ["It is a drug eruption: antihistamine and observation", false, "Non-blanching purpura in a febrile, hypotensive patient is meningococcal sepsis until proven otherwise."]]}, "after": "<h4>Remember</h4><p>Petechiae and purpura are blood outside the vessels: that is why the pressure of the glass does not make them disappear. In meningococcal sepsis they come from endothelial damage, small-vessel thrombosis and <b>DIC</b> (disseminated intravascular coagulation), triggered by endotoxin.</p><p>Dexamethasone is used in suspected bacterial meningitis, before or with the first antibiotic dose: it reduces deafness and other sequelae, especially in pneumococcal disease. In meningococcal sepsis with shock the guidelines are more cautious.</p>"}, {"h": "The CSF", "figs": ["csf"], "story": "<p>After 40 minutes of ceftriaxone and fluids his blood pressure rises. Marco is confused, so a CT is done before the lumbar puncture: it is normal. Platelets and clotting are acceptable, and the lumbar puncture goes ahead.</p><p>The lab has four CSF samples from today, but the name labels have come off. Tap the tubes to read the values.</p>", "q": {"t": "Which tube is Marco's?", "o": [["Tube A", false, "A is a normal CSF: clear, almost no cells, glucose about 60% of blood glucose."], ["Tube B", false, "B has low glucose and very high protein, but with lymphocytes and a fibrin web: it is the picture of tuberculous meningitis, which develops over weeks."], ["Tube C", true, "Cloudy from thousands of neutrophils, glucose collapsed and protein high: acute bacterial meningitis. Glucose is always judged against blood glucose: here 18 out of 110, about 0.16."], ["Tube D", false, "D has a few hundred lymphocytes, normal glucose and slightly raised protein: it is the picture of viral meningitis."]]}, "after": "<h4>How to read it</h4><p>Neutrophils, low glucose and high protein: bacterial. Lymphocytes with normal glucose: viral. Lymphocytes with low glucose and very high protein: tuberculous, or fungal. An antibiotic given before the lumbar puncture lowers the culture yield, but the Gram stain stays useful in the first hours and <b>PCR</b> (polymerase chain reaction) often stays positive.</p>"}, {"h": "The Gram stain of the CSF", "figs": ["gram"], "story": "<p>Under the microscope, the CSF sediment stained with Gram. Compare it with pneumococcus and with Haemophilus influenzae, the other classic causes of bacterial meningitis.</p>", "q": {"t": "Gram-negative diplococci inside neutrophils. How do you confirm it is Neisseria meningitidis?", "o": [["Blood agar: α-haemolysis and optochin sensitivity", false, "Those are the tests for pneumococcus, which is Gram-positive."], ["Chocolate agar in CO₂: oxidase-positive colonies that ferment glucose and maltose; in parallel, PCR on CSF and blood", true, "Neisseria grows on chocolate agar in a CO₂-enriched atmosphere and is oxidase-positive. The meningococcus ferments glucose and maltose, the gonococcus only glucose. PCR works even if the antibiotic has already sterilised the culture, and gives the serogroup."], ["Catalase and coagulase", false, "They distinguish staphylococci and streptococci, Gram-positive cocci."], ["Ziehl–Neelsen on the CSF", false, "It looks for mycobacteria, acid-fast bacilli: here there are Gram-negative diplococci."]]}, "after": "<h4>Remember</h4><p><b>M</b>altose for <b>M</b>eningitidis: the meningococcus ferments glucose and maltose, the gonococcus only glucose. Thayer–Martin is a chocolate agar with antibiotics (vancomycin, colistin, nystatin, trimethoprim) that suppress the normal flora: it is used for non-sterile samples, such as genital or pharyngeal ones, not for CSF.</p>"}, {"h": "Why it is so fast", "figs": ["nm"], "story": "<p>Twenty-four hours ago Marco was well. Look at how the meningococcus is built: almost every structure of its envelope serves to escape defences or to do damage. Then compare it with the gonococcus.</p>", "q": {"t": "Marco recovers. In the same residence a young woman has had meningococcal meningitis twice in three years. What do you look for?", "o": [["IgA deficiency", false, "It mainly gives mucosal infections (respiratory, or intestinal such as giardiasis) and reactions to transfusions, not recurrent meningococcal disease."], ["A T-cell deficiency, for example from HIV", false, "T-cell defects predispose to intracellular and opportunistic pathogens: Listeria, Cryptococcus, mycobacteria, Pneumocystis."], ["A deficiency of the terminal complement components (C5–C9)", true, "Without the membrane attack complex (C5b-9) Neisseria is not killed and meningococcal infections recur. Eculizumab, which blocks C5, gives the same risk: people taking it must be vaccinated. It is detected by measuring complement haemolytic activity."], ["Chronic granulomatous disease (NADPH oxidase defect)", false, "It predisposes to catalase-positive bacteria and fungi, such as S. aureus and Aspergillus, with granulomas and abscesses."]]}, "after": "<h4>Remember</h4><p>Asplenia and complement deficiencies predispose to encapsulated bacteria: pneumococcus, meningococcus, Haemophilus influenzae type b. That is why people without a spleen are vaccinated against all three. The gonococcus, without a capsule, mostly causes localised infections (urethritis, cervicitis) and, thanks to antigenic variation, leaves no immunity.</p>"}, {"h": "The contacts", "figs": [], "story": "<p>Marco's roommate and his girlfriend, who kissed him two days ago, ask what to do. PCR shows serogroup B. The case must be notified to the public health authority at once.</p>", "q": {"t": "What do you offer close contacts?", "o": [["Nothing: the meningococcus does not spread from person to person", false, "It spreads through droplets and respiratory secretions, in close and prolonged contact: people living with the patient, people who kissed him."], ["Only the vaccine", false, "The vaccine protects over the following weeks but does not immediately clear the bacterium from carriers' throats: antibiotic prophylaxis comes first."], ["Antibiotic prophylaxis as soon as possible, ideally within 24 hours: single-dose ciprofloxacin, or rifampicin for 2 days, or single-dose intramuscular ceftriaxone", true, "It clears the meningococcus from the throats of contacts, who may carry the same strain. Ceftriaxone is preferred in pregnancy; rifampicin turns urine and tears orange and reduces the effectiveness of the pill. Vaccinated contacts get it too."], ["Amoxicillin for 10 days", false, "Penicillin cures the disease but does not reliably clear pharyngeal carriage."]]}, "after": "<h4>The vaccines</h4><p><b>MenACWY</b> (conjugate vaccine against serogroups A, C, W and Y) links the capsular polysaccharide to a protein: this way it activates helper T cells and gives memory even in infants. The serogroup B polysaccharide, a polysialic acid, resembles molecules of our own nervous tissue and induces almost no antibodies: <b>MenB</b> vaccines (against serogroup B) therefore use surface proteins, such as fHbp, and outer-membrane vesicles. Schedules vary by country; in Italy MenB is given in the first year of life, MenACWY in childhood and adolescence.</p><p>Marco, treated with ceftriaxone, needs nothing else to clear the bacterium from his throat.</p>"}]};
+// ---------- helpers ----------
+function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;var t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function f1(v){return Math.round(v*10)/10;}
+function cpath(p){var n=p.length,d='M'+f1(p[0][0])+' '+f1(p[0][1]);
+  for(var i=0;i<n;i++){var p0=p[(i-1+n)%n],q1=p[i],q2=p[(i+1)%n],p3=p[(i+2)%n];
+    d+=' C'+f1(q1[0]+(q2[0]-p0[0])/6)+' '+f1(q1[1]+(q2[1]-p0[1])/6)+' '+f1(q2[0]-(p3[0]-q1[0])/6)+' '+f1(q2[1]-(p3[1]-q1[1])/6)+' '+f1(q2[0])+' '+f1(q2[1]);}
+  return d+'Z';}
+function bpts(R,cx,cy,rx,ry,irr,n){var p=[],a0=R()*6.28,h1=R()*6.28,h2=R()*6.28;n=n||10;
+  for(var i=0;i<n;i++){var a=a0+i/n*6.2832,k=1+irr*(.55*Math.sin(2*a+h1)+.45*Math.sin(3*a+h2))+irr*.6*(R()-.5);p.push([cx+Math.cos(a)*rx*k,cy+Math.sin(a)*ry*k]);}return p;}
+function blob(R,cx,cy,rx,ry,irr,n){return cpath(bpts(R,cx,cy,rx,ry,irr,n));}
+var LS=1;
+function tx(x,y,t,a,o){o=o||{};return '<text x="'+x+'" y="'+y+'" font-size="'+f1((o.s||18)*LS)+'" text-anchor="'+(a||'start')+'" fill="'+(o.c||'#fff')+'"'+(o.h===''?'':' stroke="'+(o.h||'#000')+'" stroke-width="'+(o.hw||4)+'" paint-order="stroke" stroke-linejoin="round"')+' font-weight="'+(o.w||500)+'">'+t+'</text>';}
+function ld(x1,y1,x2,y2,c){c=c||'#fff';return '<path d="M'+x1+' '+y1+' L'+x2+' '+y2+'" stroke="'+c+'" stroke-width="1.5" fill="none"/><circle cx="'+x2+'" cy="'+y2+'" r="3" fill="'+c+'"/>';}
+function hs(k,hit,ol){return '<g data-k="'+k+'" tabindex="0">'+hit+'<g class="ol">'+(ol||'')+'</g></g>';}
+function hc(x,y,r){return '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="transparent"/>';}
+function he(x,y,rx,ry){return '<ellipse cx="'+x+'" cy="'+y+'" rx="'+rx+'" ry="'+ry+'" fill="transparent"/>';}
+function hr(x,y,w,h){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="transparent"/>';}
+function oc(x,y,r,c){return '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="none" stroke="'+(c||'#FFB547')+'" stroke-width="2.5" stroke-dasharray="6 4"/>';}
+function oe(x,y,rx,ry,c){return '<ellipse cx="'+x+'" cy="'+y+'" rx="'+rx+'" ry="'+ry+'" fill="none" stroke="'+(c||'#FFB547')+'" stroke-width="2.5" stroke-dasharray="6 4"/>';}
+function orc(x,y,w,h,c){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="6" fill="none" stroke="'+(c||'#E0662B')+'" stroke-width="2.5" stroke-dasharray="6 4"/>';}
+function blur(id,sd){return '<filter id="'+id+'" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="'+sd+'"/></filter>';}
+function rod(x,y,a,l,c,w,bead){var dx=Math.cos(a)*l/2,dy=Math.sin(a)*l/2,bx=-Math.sin(a)*l*.07,by=Math.cos(a)*l*.07;
+  return '<path d="M'+f1(x-dx)+' '+f1(y-dy)+' Q'+f1(x+bx)+' '+f1(y+by)+' '+f1(x+dx)+' '+f1(y+dy)+'" stroke="'+c+'" stroke-width="'+w+'" stroke-linecap="round" fill="none"'+(bead?' stroke-dasharray="'+(w*1.1)+' '+(w*.55)+'"':'')+'/>';}
+var FIG={};
+
+// ======================= TUBERCULOSIS =======================
+// Chest X-ray, PA view: patient's right on the viewer's left
+FIG.cxr=function(st,L,u){
+  var R=rng(5),m=st.m,s='',lb=L.lab;
+  var RL='M196 56 C232 60 258 92 264 140 C268 180 262 205 258 230 C254 260 262 300 272 345 C276 365 280 382 276 392 C250 384 212 372 182 378 C148 386 118 412 92 452 C78 410 66 340 68 270 C70 190 92 120 128 84 C150 64 172 54 196 56Z';
+  var LL='M404 56 C440 56 474 80 496 118 C520 170 532 250 532 330 C532 380 524 425 512 462 C490 440 470 425 448 418 C440 416 434 415 430 414 C425 380 412 330 392 300 C380 280 374 260 372 240 C372 222 366 205 372 190 C380 175 375 160 362 150 C350 140 344 120 346 100 C350 72 374 56 404 56Z';
+  s+='<defs>'+blur(u+'b8',8)+blur(u+'b4',4)+blur(u+'b2',2.2)+blur(u+'b1',1)+blur(u+'b05',.6)+
+    '<clipPath id="'+u+'cl"><path d="'+RL+'"/><path d="'+LL+'"/></clipPath>'+
+    '<radialGradient id="'+u+'lg" cx="50%" cy="45%" r="65%"><stop offset="0" stop-color="#121314"/><stop offset=".75" stop-color="#1c1e20"/><stop offset="1" stop-color="#34373a"/></radialGradient>'+
+    '<filter id="'+u+'gr" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/><feColorMatrix values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 .10"/></filter>'+
+    '</defs>';
+  s+='<rect width="600" height="540" fill="#040404"/>';
+  s+='<path d="M252 0 L348 0 C350 40 362 62 404 74 C478 92 548 104 576 156 C592 220 594 400 596 540 L4 540 C6 400 8 220 24 156 C52 104 122 92 196 74 C238 62 250 40 252 0Z" fill="#666" filter="url(#'+u+'b4)"/>';
+  s+='<path d="M40 410 C150 370 450 370 560 410 L590 540 L10 540Z" fill="#8e8e8e" filter="url(#'+u+'b8)"/>';
+  s+='<path d="M262 0 L338 0 L346 100 C344 130 360 145 372 160 C384 180 372 205 374 240 C378 285 404 305 424 345 C442 382 452 414 446 432 L284 432 C270 405 262 380 258 340 C252 300 252 262 256 232 C260 200 266 160 260 120Z" fill="#d0d0d0" filter="url(#'+u+'b4)"/>';
+  for(var i=0;i<18;i++) s+='<rect x="283" y="'+(i*30+4)+'" width="34" height="24" rx="5" fill="#fff" opacity=".07"/>';
+  s+='<g filter="url(#'+u+'b2)"><path d="'+RL+'" fill="url(#'+u+'lg)"/><path d="'+LL+'" fill="url(#'+u+'lg)"/></g>';
+  s+='<path d="M300 0 L300 186 M298 188 L262 228 M302 188 L352 232" stroke="#404040" stroke-width="20" stroke-linecap="round" fill="none" filter="url(#'+u+'b4)" opacity=".85"/>';
+  // vessels
+  var v='';
+  function br(x,y,a,l,w,d){var x2=x+Math.cos(a)*l,y2=y+Math.sin(a)*l;v+='<path d="M'+f1(x)+' '+f1(y)+' L'+f1(x2)+' '+f1(y2)+'" stroke-width="'+f1(w)+'"/>';
+    if(d>0){br(x2,y2,a-(.22+R()*.3),l*(.7+R()*.14),w*.68,d-1);br(x2,y2,a+(.22+R()*.3),l*(.7+R()*.14),w*.68,d-1);}}
+  var hy=m===0?214:232;
+  [3.95,3.6,3.25,2.9,2.55,2.3].forEach(function(a){br(254,hy,a,34+R()*10,5,5);});
+  [-.9,-.55,-.2,.15,.5,.8].forEach(function(a){br(362,236,a,34+R()*10,5,5);});
+  var les='';
+  if(m===0){
+    for(i=0;i<9;i++) les+='<path d="'+blob(R,168+R()*80-40,160+R()*100-50,28+R()*22,24+R()*18,.25)+'" fill="#a0a0a0" opacity=".26" filter="url(#'+u+'b8)"/>';
+    les+='<path d="M120 70 C160 60 210 64 240 84" stroke="#9a9a9a" stroke-width="9" fill="none" opacity=".55" filter="url(#'+u+'b2)"/>';
+    for(i=0;i<5;i++){var sx=160+R()*50,sy=150+R()*30;les+='<path d="M'+f1(sx)+' '+f1(sy)+' Q'+f1(sx+40+R()*20)+' '+f1(sy+10+R()*20)+' '+f1(244+R()*10)+' '+f1(206+R()*16)+'" stroke="#b8b8b8" stroke-width="'+f1(1.6+R()*1.6)+'" fill="none" opacity=".5" filter="url(#'+u+'b05)"/>';}
+    for(i=0;i<6;i++) les+='<path d="'+blob(R,170+R()*40-20,138+R()*36-18,34+R()*16,30+R()*14,.3)+'" fill="#969696" opacity=".38" filter="url(#'+u+'b4)"/>';
+    les+='<path d="'+blob(R,170,134,47,41,.2,12)+'" fill="#a9a9a9" opacity=".92" filter="url(#'+u+'b2)"/>';
+    les+='<path d="'+blob(R,174,130,31,25,.26,12)+'" fill="#0d0d0d" filter="url(#'+u+'b1)"/>';
+    les+='<path d="M152 120 C164 130 176 134 192 146" stroke="#555" stroke-width="2" fill="none" opacity=".7" filter="url(#'+u+'b05)"/>';
+    les+='<path d="'+blob(R,216,184,20,17,.2,9)+'" fill="#a3a3a3" opacity=".9" filter="url(#'+u+'b2)"/>';
+    les+='<path d="'+blob(R,218,183,10,8,.25,8)+'" fill="#0d0d0d" filter="url(#'+u+'b1)"/>';
+    [[150,262],[196,300],[124,330],[218,250],[456,300],[482,346],[440,350]].forEach(function(c){
+      for(var j=0;j<7;j++) les+='<circle cx="'+f1(c[0]+R()*44-22)+'" cy="'+f1(c[1]+R()*40-20)+'" r="'+f1(3+R()*3.5)+'" fill="#a8a8a8" opacity=".6" filter="url(#'+u+'b1)"/>';});
+    les+='<circle cx="468" cy="262" r="5" fill="#f2f2f2" filter="url(#'+u+'b05)"/><circle cx="477" cy="270" r="2.8" fill="#eee" filter="url(#'+u+'b05)"/>';
+    les+='<g fill="#efefef" filter="url(#'+u+'b05)"><circle cx="376" cy="252" r="3.6"/><circle cx="383" cy="258" r="3"/><circle cx="372" cy="260" r="2.6"/></g>';
+    s+='<circle cx="254" cy="212" r="14" fill="#a0a0a0" opacity=".7" filter="url(#'+u+'b2)"/><ellipse cx="362" cy="238" rx="12" ry="22" fill="#9a9a9a" opacity=".6" filter="url(#'+u+'b2)"/>';
+  }else if(m===1){
+    les+='<path d="'+blob(R,98,300,34,30,.2)+'" fill="#a8a8a8" opacity=".35" filter="url(#'+u+'b8)"/>';
+    les+='<path d="'+blob(R,96,302,19,17,.2)+'" fill="#b8b8b8" opacity=".75" filter="url(#'+u+'b2)"/>';
+    les+='<path d="M112 296 C160 280 200 250 236 232" stroke="#a0a0a0" stroke-width="2.4" fill="none" opacity=".45" filter="url(#'+u+'b1)"/>';
+    s+='<ellipse cx="362" cy="238" rx="12" ry="22" fill="#9a9a9a" opacity=".6" filter="url(#'+u+'b2)"/>';
+  }else{
+    for(i=0;i<720;i++) les+='<circle cx="'+f1(66+R()*470)+'" cy="'+f1(56+R()*410)+'" r="'+f1(1.7+R()*1.1)+'" fill="#b4b4b4" opacity=".75"/>';
+    s+='<ellipse cx="250" cy="232" rx="12" ry="22" fill="#9a9a9a" opacity=".6" filter="url(#'+u+'b2)"/><ellipse cx="362" cy="238" rx="12" ry="22" fill="#9a9a9a" opacity=".6" filter="url(#'+u+'b2)"/>';
+  }
+  s+='<g clip-path="url(#'+u+'cl)"><g stroke="#909090" stroke-linecap="round" fill="none" opacity=".42" filter="url(#'+u+'b2)">'+v+'</g>'+(m===2?'<g filter="url(#'+u+'b05)">'+les+'</g>':les)+'</g>';
+  if(m===1){
+    s+='<path d="'+blob(R,240,224,22,30,.18,9)+'" fill="#bdbdbd" opacity=".9" filter="url(#'+u+'b4)"/>';
+    s+='<path d="'+blob(R,266,150,13,22,.15,8)+'" fill="#bdbdbd" opacity=".75" filter="url(#'+u+'b4)"/>';
+  }
+  if(m===0){s+='<ellipse cx="250" cy="232" rx="0" ry="0"/>';}
+  // ribs
+  var rb='';
+  var lat=[150,112,90,78,72,69,68,70,74,80];
+  for(i=0;i<10;i++){var y0=72+i*32,lx=lat[i];
+    rb+='<path d="M288 '+y0+' C246 '+(y0-30)+' '+(lx+30)+' '+(y0-30)+' '+(lx-6)+' '+(y0+30)+'"/>';
+    rb+='<path d="M312 '+y0+' C354 '+(y0-30)+' '+(600-lx-30)+' '+(y0-30)+' '+(606-lx)+' '+(y0+30)+'"/>';}
+  s+='<g stroke="#d0d0d0" stroke-width="10" fill="none" opacity=".14" stroke-linecap="round" filter="url(#'+u+'b1)">'+rb+'</g>';
+  var ar='';
+  for(i=0;i<6;i++){var y1=100+i*34,l1=lat[i+1];
+    ar+='<path d="M'+(l1+2)+' '+(y1+12)+' C'+(l1+60)+' '+(y1+38)+' 190 '+(y1+62)+' 236 '+(y1+78)+'"/>';
+    ar+='<path d="M'+(598-l1)+' '+(y1+12)+' C'+(540-l1)+' '+(y1+38)+' 410 '+(y1+62)+' 364 '+(y1+78)+'"/>';}
+  s+='<g stroke="#d0d0d0" stroke-width="9" fill="none" opacity=".1" stroke-linecap="round" filter="url(#'+u+'b2)">'+ar+'</g>';
+  s+='<g stroke="#dcdcdc" stroke-width="11" fill="none" opacity=".38" stroke-linecap="round" filter="url(#'+u+'b1)"><path d="M284 110 C250 98 205 100 165 86 C132 76 100 70 70 84"/><path d="M316 110 C350 98 395 100 435 86 C468 76 500 70 530 84"/></g>';
+  s+='<ellipse cx="470" cy="478" rx="30" ry="15" fill="#2c2c2c" filter="url(#'+u+'b4)"/>';
+  s+='<rect width="600" height="540" filter="url(#'+u+'gr)"/>';
+  s+=tx(18,34,lb.side,'start',{s:22,w:700,h:''})+tx(18,58,'PA','start',{s:14,h:'',c:'#bbb'});
+  // labels + hotspots
+  var lab='',hot='';
+  if(m===0){
+    lab+=tx(64,34,lb.cav,'start')+ld(150,38,160,104);
+    lab+=tx(14,252,lb.fib,'start')+ld(76,258,206,200);
+    lab+=tx(300,520,lb.nod,'middle')+ld(252,504,190,300)+ld(348,504,460,330);
+    lab+=tx(586,34,lb.ranke,'end')+ld(520,40,470,258);
+    hot+=hs('cav',hc(178,145,62),oc(176,140,60))+hs('fib',he(222,204,34,22),oe(222,204,36,24))+hs('nod',he(170,292,70,52)+he(462,330,46,42),oe(170,292,70,52)+oe(462,330,46,42))+hs('ranke',hc(470,262,16)+hc(378,256,14),oc(470,264,16)+oc(378,256,14));
+  }else if(m===1){
+    lab+=tx(14,520,lb.ghon,'start')+ld(80,504,96,322);
+    lab+=tx(64,34,lb.node,'start')+ld(150,40,236,206);
+    hot+=hs('ghon',hc(98,302,36),oc(98,302,34))+hs('node',he(244,200,34,64),oe(244,200,34,64));
+  }else{
+    lab+=tx(300,520,lb.mil,'middle');
+    hot+=hs('mil','<path d="'+RL+'" fill="transparent"/><path d="'+LL+'" fill="transparent"/>','<path d="'+RL+'" fill="none" stroke="#FFB547" stroke-width="2.5" stroke-dasharray="6 4"/><path d="'+LL+'" fill="none" stroke="#FFB547" stroke-width="2.5" stroke-dasharray="6 4"/>');
+  }
+  return '<svg viewBox="0 0 600 540" class="fsv" role="img" aria-label="'+lb.aria+'">'+s+(st.lab?'<g class="lb">'+lab+'</g>':'')+hot+'</svg>';
+};
+
+// Granuloma, H&E (or Ziehl–Neelsen)
+FIG.gran=function(st,L,u){
+  var R=rng(11),zn=st.m===1,lb=L.lab,s='',cx=300,cy=226,RX=206,RY=180;
+  var P=zn?{bg:'#EEF3FA',alv:'#FBFDFF',sep:'#A9BFDD',sn:'#2F4F8F',cap:'#C9D8EC',col:'#AFC4E2',spn:'#2C4C8C',ly:'#D9E4F2',lyn:'#22407E',ep:'#E2EAF5',epn:'#7D97C6',eps:'#5A79B2',lg:'#D4DFF0',lgs:'#9FB5D8',lgn:'#36589A',cas:'#CBD7E8',cas2:'#B9C9E0',dust:'#334F8A',rbc:'#C9A9B8'}
+         :{bg:'#F7E6EE',alv:'#FFFDFE',sep:'#E2A9C2',sn:'#5D3A8E',cap:'#EDA9C4',col:'#DD8FB0',spn:'#6E3F94',ly:'#EBC8DB',lyn:'#3F2370',ep:'#F4D4E2',epn:'#AA8DCB',eps:'#7C5BA6',lg:'#EAB2CA',lgs:'#D592B2',lgn:'#6A479E',cas:'#E7A6C2',cas2:'#DC92B4',dust:'#5D3A8E',rbc:'#E0526A'};
+  function E(rho,a){var k=1+.05*Math.sin(3*a+1)+.035*Math.sin(5*a+2);return [cx+Math.cos(a)*RX*rho*k,cy+Math.sin(a)*RY*rho*k];}
+  function ring(r){var p=[];for(var i=0;i<60;i++)p.push(E(r,i/60*6.2832));return cpath(p);}
+  function cas(){var p=[];for(var i=0;i<40;i++){var a=i/40*6.2832;p.push(E(.4*(1+.1*Math.sin(4*a+.5)+.06*Math.sin(7*a+1.3)),a));}return cpath(p);}
+  s+='<defs>'+blur(u+'b2',2)+blur(u+'b1',.8)+'<clipPath id="'+u+'cc"><path d="'+cas()+'"/></clipPath></defs>';
+  s+='<rect width="600" height="450" fill="'+P.bg+'"/>';
+  // parenchyma: alveoli outside the granuloma
+  var al='';
+  for(var gy=-10;gy<470;gy+=30)for(var gx=-10;gx<620;gx+=30){var x=gx+(R()-.5)*14+(gy/30%2)*15,y=gy+(R()-.5)*14;
+    var dx=(x-cx)/RX,dy=(y-cy)/RY;if(dx*dx+dy*dy<1.17)continue;
+    al+='<path d="'+blob(R,x,y,11+R()*4,10+R()*4,.18,7)+'"/>';}
+  s+='<g fill="'+P.alv+'" stroke="'+P.sep+'" stroke-width="2.6">'+al+'</g>';
+  var sd='';for(var i=0;i<260;i++){var a=R()*6.2832,rr=1.08+R()*.9,p=E(rr,a);if(p[0]<0||p[0]>600||p[1]<0||p[1]>450)continue;
+    sd+=R()<.7?'<ellipse cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" rx="2.6" ry="1.8" fill="'+P.sn+'" transform="rotate('+f1(R()*180)+' '+f1(p[0])+' '+f1(p[1])+')"/>':'<circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="1.8" fill="'+P.rbc+'"/>';}
+  s+=sd;
+  // concentric zones
+  s+='<g filter="url(#'+u+'b2)"><path d="'+ring(1.04)+'" fill="'+P.cap+'"/><path d="'+ring(.93)+'" fill="'+P.ly+'"/><path d="'+ring(.74)+'" fill="'+P.ep+'"/></g>';
+  // collagen strands and spindle nuclei in the capsule
+  var cl='';for(i=0;i<22;i++){var r0=.94+R()*.1,a0=R()*6.28,a1=a0+.4+R()*.9,pp=[];for(var t=0;t<=8;t++)pp.push(E(r0+(R()-.5)*.01,a0+(a1-a0)*t/8));
+    cl+='<path d="M'+pp.map(function(q){return f1(q[0])+' '+f1(q[1]);}).join(' L')+'" />';}
+  s+='<g stroke="'+P.col+'" stroke-width="1.6" fill="none" opacity=".9">'+cl+'</g>';
+  var sp='';for(i=0;i<90;i++){var a=R()*6.2832,p=E(.93+R()*.11,a),ang=Math.atan2(Math.cos(a)*RY,-Math.sin(a)*RX)*0+ (a*180/Math.PI+90);
+    sp+='<ellipse cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" rx="'+f1(5+R()*2.5)+'" ry="1.3" transform="rotate('+f1(ang+(R()-.5)*20)+' '+f1(p[0])+' '+f1(p[1])+')"/>';}
+  s+='<g fill="'+P.spn+'">'+sp+'</g>';
+  // lymphocytes
+  var ly='';for(i=0;i<1150;i++){var a=R()*6.2832,rr=.72+Math.pow(R(),.8)*.24,p=E(rr,a);ly+='<circle cx="'+f1(p[0]+(R()-.5)*3)+'" cy="'+f1(p[1]+(R()-.5)*3)+'" r="'+f1(2.3+R()*.9)+'"/>';}
+  for(i=0;i<70;i++){var a=R()*6.2832,p=E(.45+R()*.28,a);ly+='<circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="2.5"/>';}
+  s+='<g fill="'+P.lyn+'" opacity=".88">'+ly+'</g>';
+  // Langhans giant cells
+  var LG=[[-.55,.6],[2.25,.58],[3.95,.6]],lgs='',lgHit='',lgOl='';
+  LG.forEach(function(g,ix){var p=E(g[1],g[0]),rot=g[0]*180/Math.PI+90,rx=37,ry=27;
+    var cell='<ellipse cx="0" cy="0" rx="'+rx+'" ry="'+ry+'" fill="'+P.lg+'" stroke="'+P.lgs+'" stroke-width="1"/>';
+    var n=11+ix,open=(R()*6.28),span=3.7;
+    for(var j=0;j<n;j++){var aa=open+span*j/(n-1),nx=Math.cos(aa)*rx*.74,ny=Math.sin(aa)*ry*.7;
+      cell+='<ellipse cx="'+f1(nx)+'" cy="'+f1(ny)+'" rx="4.8" ry="3" fill="'+P.lgn+'" opacity=".92" transform="rotate('+f1(aa*180/Math.PI+90)+' '+f1(nx)+' '+f1(ny)+')"/>';}
+    lgs+='<g transform="translate('+f1(p[0])+' '+f1(p[1])+') rotate('+f1(rot)+')">'+cell+'</g>';
+    lgHit+='<ellipse cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" rx="40" ry="40" fill="transparent"/>';lgOl+=oc(f1(p[0]),f1(p[1]),38,'#E0662B');
+  });
+  // epithelioid nuclei, avoiding the giant cells
+  var en='';for(i=0;i<330;i++){var a=R()*6.2832,rr=.42+R()*.32,p=E(rr,a),ok=true;
+    LG.forEach(function(g){var q=E(g[1],g[0]);if(Math.hypot(q[0]-p[0],q[1]-p[1])<42)ok=false;});if(!ok)continue;
+    var ang=a*180/Math.PI+(R()-.5)*50;
+    en+='<ellipse cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" rx="'+f1(5.5+R()*2)+'" ry="'+f1(2.2+R()*.6)+'" transform="rotate('+f1(ang)+' '+f1(p[0])+' '+f1(p[1])+')"/>';}
+  s+='<g fill="'+P.epn+'" stroke="'+P.eps+'" stroke-width=".7">'+en+'</g>'+lgs;
+  // caseous necrosis: amorphous, granular, no cell outlines
+  s+='<path d="'+cas()+'" fill="'+P.cas+'" filter="url(#'+u+'b1)"/>';
+  var gr='';for(i=0;i<1400;i++){var a=R()*6.2832,rr=Math.sqrt(R())*.44,p=E(rr,a);gr+='<circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="'+f1(.5+R()*1.1)+'"/>';}
+  s+='<g clip-path="url(#'+u+'cc)"><g fill="'+P.cas2+'" opacity=".75">'+gr+'</g>';
+  var du='';for(i=0;i<220;i++){var a=R()*6.2832,rr=.18+Math.pow(R(),.5)*.26,p=E(rr,a);du+='<circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="'+f1(.6+R()*1)+'"/>';}
+  s+='<g fill="'+P.dust+'" opacity=".7">'+du+'</g></g>';
+  if(zn){var bc='';for(i=0;i<14;i++){var a=R()*6.2832,p=E(.3+R()*.14,a);bc+=rod(p[0],p[1],R()*3.14,7+R()*3,'#D7265B',1.6);}
+    for(i=0;i<4;i++){var a=R()*6.2832,p=E(.5+R()*.2,a);bc+=rod(p[0],p[1],R()*3.14,7,'#D7265B',1.6);}s+=bc;}
+  // scale bar
+  s+='<g><rect x="214" y="432" width="104" height="6" fill="#1f2a36"/>'+tx(326,440,'100 µm','start',{s:14,c:'#1f2a36',h:'#fff',hw:3})+'</g>';
+  var lab='',c='#16222E',H={c:c,h:'#fff',hw:4.5,s:17,w:600};
+  lab+=tx(300,232,lb.cas,'middle',H);
+  lab+=tx(14,30,lb.ep,'start',H)+ld(96,36,E(.58,3.6)[0],E(.58,3.6)[1],c);
+  var lgp=E(.6,-.55);lab+=tx(586,30,lb.lg,'end',H)+ld(500,36,f1(lgp[0]+8),f1(lgp[1]-6),c);
+  var lyp=E(.84,.9);lab+=tx(586,440,lb.ly,'end',H)+ld(540,424,f1(lyp[0]),f1(lyp[1]),c);
+  var fp=E(.99,2.5);lab+=tx(14,440,lb.fib,'start',H)+ld(60,424,f1(fp[0]),f1(fp[1]),c);
+  lab+=tx(586,232,lb.par,'end',H);
+  if(zn) lab+=tx(300,256,lb.bac,'middle',{c:'#B0183F',h:'#fff',hw:4,s:14,w:600});
+  var hot='';
+  hot+=hs('par','<path d="M0 0H600V450H0Z '+ring(1.04)+'" fill="transparent" fill-rule="evenodd"/>','<path d="'+ring(1.06)+'" fill="none" stroke="#E0662B" stroke-width="2.5" stroke-dasharray="6 4"/>');
+  hot+=hs('fib','<path d="'+ring(1.04)+' '+ring(.93)+'" fill="transparent" fill-rule="evenodd"/>','<path d="'+ring(1.04)+' '+ring(.93)+'" fill="#E0662B" fill-opacity=".18" fill-rule="evenodd" stroke="#E0662B" stroke-width="2" stroke-dasharray="6 4"/>');
+  hot+=hs('ly','<path d="'+ring(.93)+' '+ring(.73)+'" fill="transparent" fill-rule="evenodd"/>','<path d="'+ring(.93)+' '+ring(.73)+'" fill="#E0662B" fill-opacity=".15" fill-rule="evenodd" stroke="#E0662B" stroke-width="2" stroke-dasharray="6 4"/>');
+  hot+=hs('ep','<path d="'+ring(.73)+' '+cas()+'" fill="transparent" fill-rule="evenodd"/>','<path d="'+ring(.73)+' '+cas()+'" fill="#E0662B" fill-opacity=".15" fill-rule="evenodd" stroke="#E0662B" stroke-width="2" stroke-dasharray="6 4"/>');
+  hot+=hs('cas','<path d="'+cas()+'" fill="transparent"/>','<path d="'+cas()+'" fill="#E0662B" fill-opacity=".12" stroke="#E0662B" stroke-width="2.5" stroke-dasharray="6 4"/>');
+  hot+=hs('lg',lgHit,lgOl);
+  return '<svg viewBox="0 0 600 450" class="fsv" role="img" aria-label="'+lb.aria+'">'+s+(st.lab?'<g class="lb">'+lab+'</g>':'')+hot+'</svg>';
+};
+
+// From granuloma to cavity: four stages
+FIG.cav=function(st,L,u){
+  var R=rng(21),lb=L.lab,s='<defs>'+blur(u+'b1',.8)+'</defs>',hot='';
+  for(var i=0;i<4;i++){var x0=4+i*149,y0=4,w=143,h=150,cx=x0+62,cy=y0+92;
+    s+='<clipPath id="'+u+'p'+i+'"><rect x="'+x0+'" y="'+y0+'" width="'+w+'" height="'+h+'" rx="10"/></clipPath>';
+    var g='<rect x="'+x0+'" y="'+y0+'" width="'+w+'" height="'+h+'" fill="#F7E6EE"/>';
+    for(var k=0;k<34;k++){var ax=x0+R()*w,ay=y0+R()*h;if(Math.hypot(ax-cx,ay-cy)<48+i*4)continue;g+='<circle cx="'+f1(ax)+'" cy="'+f1(ay)+'" r="'+f1(7+R()*4)+'" fill="#FFFDFE" stroke="#E2A9C2" stroke-width="1.6"/>';}
+    // bronchus from the top right
+    var bx=x0+w-30;g+='<path d="M'+(bx+14)+' '+(y0-4)+' C'+(bx+12)+' '+(y0+30)+' '+(bx-4)+' '+(y0+50)+' '+(cx+44)+' '+(cy-30)+'" stroke="#C98AA8" stroke-width="20" fill="none"/>';
+    g+='<path d="M'+(bx+14)+' '+(y0-4)+' C'+(bx+12)+' '+(y0+30)+' '+(bx-4)+' '+(y0+50)+' '+(cx+44)+' '+(cy-30)+'" stroke="#FFFFFF" stroke-width="13" fill="none"/>';
+    var r=34+i*4;
+    g+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(r+5)+'" fill="#EDA9C4"/>';
+    var lyd='';for(k=0;k<160;k++){var a=R()*6.28,rr=r-2-R()*8;lyd+='<circle cx="'+f1(cx+Math.cos(a)*rr)+'" cy="'+f1(cy+Math.sin(a)*rr)+'" r="1.5"/>';}
+    g+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="#EBC8DB"/><circle cx="'+cx+'" cy="'+cy+'" r="'+(r-9)+'" fill="#F4D4E2"/><g fill="#3F2370" opacity=".85">'+lyd+'</g>';
+    var en='';for(k=0;k<26;k++){var a=R()*6.28,rr=(i?r*.5:6)+R()*(r-12-(i?r*.5:6));en+='<ellipse cx="'+f1(cx+Math.cos(a)*rr)+'" cy="'+f1(cy+Math.sin(a)*rr)+'" rx="3.4" ry="1.5" fill="#AA8DCB" transform="rotate('+f1(a*57.3)+' '+f1(cx+Math.cos(a)*rr)+' '+f1(cy+Math.sin(a)*rr)+')"/>';}
+    g+=en;
+    var cr=[0,14,19,22][i];
+    if(i===1) g+='<path d="'+blob(R,cx,cy,cr,cr,.15,8)+'" fill="#E7A6C2"/>';
+    if(i===2){g+='<path d="'+blob(R,cx,cy,cr,cr,.12,8)+'" fill="#F6DDE8" stroke="#E7A6C2" stroke-width="3"/>';
+      for(k=0;k<26;k++){var a=R()*6.28,rr=R()*(cr-4);g+=rod(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr,R()*3.14,5,'#D7265B',1.5);}}
+    if(i===3){g+='<path d="M'+(cx+14)+' '+(cy-16)+' L'+(cx+44)+' '+(cy-30)+'" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>';
+      g+='<path d="'+blob(R,cx,cy,cr+2,cr,.1,9)+'" fill="#FFFFFF" stroke="#E7A6C2" stroke-width="4"/>';
+      for(k=0;k<10;k++){var a=R()*6.28;g+=rod(cx+Math.cos(a)*(cr-1),cy+Math.sin(a)*(cr-1),a+1.57,5,'#D7265B',1.5);}
+      for(k=0;k<6;k++){var t=k/5,px=(cx+40)+(bx+10-(cx+40))*t,py=(cy-30)+((y0+6)-(cy-30))*t;g+=rod(px+(R()-.5)*5,py,R()*3.14,5,'#D7265B',1.6);}
+      g+='<path d="M'+(bx+20)+' '+(y0+40)+' l0 -18 m-5 6 l5 -6 l5 6" stroke="#B0183F" stroke-width="2" fill="none"/>';
+      g+=tx(cx,cy+5,lb.air,'middle',{s:12,c:'#55697A',h:''});
+      g+='<circle cx="'+(x0+22)+'" cy="'+(y0+136)+'" r="7" fill="#EDA9C4"/><circle cx="'+(x0+22)+'" cy="'+(y0+136)+'" r="4" fill="#E7A6C2"/>';}
+    s+='<g clip-path="url(#'+u+'p'+i+')">'+g+'</g><rect x="'+x0+'" y="'+y0+'" width="'+w+'" height="'+h+'" rx="10" fill="none" stroke="#C7B4C0"/>';
+    s+='<circle cx="'+(x0+16)+'" cy="'+(y0+16)+'" r="11" fill="#16222E"/>'+tx(x0+16,y0+21,String(i+1),'middle',{s:13,w:700,h:''});
+    s+=tx(x0+w/2,y0+h+22,lb['c'+(i+1)],'middle',{s:15,c:'#16222E',h:'',w:600});
+    hot+=hs('c'+(i+1),hr(x0,y0,w,h+30),orc(x0-2,y0-2,w+4,h+4));
+  }
+  return '<svg viewBox="0 0 600 186" class="fsv" role="img" aria-label="'+lb.aria+'">'+s+hot+'</svg>';
+};
+
+// Sputum smear: Ziehl–Neelsen or auramine
+FIG.zn=function(st,L,u){
+  var R=rng(31),au=st.m===1,lb=L.lab,s='',cx=300,cy=182,r=172;
+  s+='<defs>'+blur(u+'g',1.6)+blur(u+'b3',3)+'<clipPath id="'+u+'f"><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'"/></clipPath></defs>';
+  s+='<rect width="600" height="364" fill="#0b0b0b"/>';
+  var g='<rect width="600" height="364" fill="'+(au?'#060807':'#D2E2F2')+'"/>';
+  var mu='';for(var i=0;i<7;i++){var y=40+i*46+R()*20;mu+='<path d="M100 '+f1(y)+' C200 '+f1(y-40+R()*80)+' 380 '+f1(y-40+R()*80)+' 520 '+f1(y+R()*30-15)+'" stroke-width="'+f1(12+R()*18)+'"/>';}
+  g+='<g stroke="'+(au?'#121a12':'#A9C3E2')+'" fill="none" opacity=".55" filter="url(#'+u+'b3)">'+mu+'</g>';
+  var ep='',ne='',ba='';
+  [[200,120],[400,250],[420,92]].forEach(function(c){ep+='<path d="'+blob(R,c[0],c[1],40,30,.22,7)+'" fill="'+(au?'#0e120e':'#E3EDF8')+'" stroke="'+(au?'#172017':'#9AB5D6')+'" stroke-width="1.2"/><circle cx="'+(c[0]+4)+'" cy="'+(c[1]-2)+'" r="5" fill="'+(au?'#141a14':'#5B7FB7')+'"/>';});
+  var NE=[];for(i=0;i<15;i++){var a=R()*6.28,rr=Math.sqrt(R())*150,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;NE.push([x,y]);
+    ne+='<circle cx="'+f1(x)+'" cy="'+f1(y)+'" r="9" fill="'+(au?'#0d110d':'#C6D8EE')+'"/>';
+    if(!au){for(var j=0;j<3;j++){var aa=R()*6.28;ne+='<circle cx="'+f1(x+Math.cos(aa)*3.6)+'" cy="'+f1(y+Math.sin(aa)*3.6)+'" r="2.9" fill="#3E62A3"/>';}}}
+  var col=au?'#E4FF6A':'#D21F57';NE.sort(function(a,b){return Math.hypot(a[0]-500,a[1]-60)-Math.hypot(b[0]-500,b[1]-60);});
+  for(i=0;i<46;i++){var a=R()*6.28,rr=Math.sqrt(R())*155;ba+=rod(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr,R()*3.14,10+R()*6,col,2.1,R()<.4);}
+  // a small cord of parallel bacilli
+  for(i=0;i<9;i++)ba+=rod(250+i*2.2+R()*2,232+i*3.2,.5+R()*.12,16,col,2.2,R()<.3);
+  g+=ep+ne+(au?'<g filter="url(#'+u+'g)" opacity=".9">'+ba+'</g>':'')+ba;
+  s+='<g clip-path="url(#'+u+'f)">'+g+'</g><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="#333" stroke-width="3"/>';
+  s+=tx(586,354,au?lb.au:lb.zn,'end',{s:14,c:'#cfd6dd',h:''})+tx(14,354,'×1000','start',{s:14,c:'#cfd6dd',h:''});
+  var lab='',hot='';
+  lab+=tx(14,34,lb.bac,'start',{s:16})+ld(110,40,252,234);
+  lab+=tx(586,34,lb.ne,'end',{s:16})+ld(530,40,f1(NE[0][0]),f1(NE[0][1]));
+  lab+=tx(14,320,lb.ep,'start',{s:16})+ld(60,304,186,132);
+  hot+=hs('bac',he(262,246,26,24),oe(262,246,26,24));
+  hot+=hs('ne',hc(f1(NE[0][0]),f1(NE[0][1]),16),oc(f1(NE[0][0]),f1(NE[0][1]),15));
+  hot+=hs('ep',he(200,120,46,36)+he(400,250,46,36)+he(420,92,46,36),oe(200,120,46,36)+oe(400,250,46,36)+oe(420,92,46,36));
+  return '<svg viewBox="0 0 600 364" class="fsv" role="img" aria-label="'+lb.aria+'">'+s+(st.lab?'<g class="lb">'+lab+'</g>':'')+hot+'</svg>';
+};
+
+// Treatment timeline 2HRZE / 4HR
+FIG.rx=function(st,L,u){
+  var lb=L.lab,s='',x0=LS>1?186:150,mw=LS>1?66:72,rows=[['H','#1456A8',6],['R','#D2601A',6],['Z','#7A4BA6',2],['E','#2E8B57',2]],hot='';
+  for(var m=0;m<=6;m++){s+='<line x1="'+(x0+m*mw)+'" y1="18" x2="'+(x0+m*mw)+'" y2="196" stroke="#DDE4EA"/>'+tx(x0+m*mw,214,String(m),'middle',{s:13,c:'#55697A',h:''});}
+  s+=tx(x0+3*mw,234,lb.months,'middle',{s:13,c:'#55697A',h:''});
+  rows.forEach(function(r,i){var y=28+i*38;
+    s+=tx(14,y+19,'<tspan font-weight="700" fill="'+r[1]+'">'+r[0]+'</tspan> '+lb[r[0]],'start',{s:15,c:'#16222E',h:''});
+    s+='<rect x="'+x0+'" y="'+y+'" width="'+(r[2]*mw)+'" height="26" rx="6" fill="'+r[1]+'" opacity=".85"/>';
+    hot+=hs(r[0],hr(0,y-6,x0+r[2]*mw+4,38),orc(x0-3,y-3,r[2]*mw+6,32));
+  });
+  s+='<path d="M'+(x0+2)+' 186 h'+(2*mw-4)+'" stroke="#16222E" stroke-width="2"/><path d="M'+(x0+2*mw+2)+' 186 h'+(4*mw-4)+'" stroke="#16222E" stroke-width="2" stroke-dasharray="5 4"/>';
+  s+=tx(x0+mw,180,lb.p1,'middle',{s:13,c:'#16222E',h:'#fff',hw:4,w:600})+tx(x0+4*mw,180,lb.p2,'middle',{s:13,c:'#16222E',h:'#fff',hw:4,w:600});
+  hot+=hs('p1',hr(x0,166,2*mw,26),orc(x0,166,2*mw,26))+hs('p2',hr(x0+2*mw,166,4*mw,26),orc(x0+2*mw,166,4*mw,26));
+  return '<svg viewBox="0 0 600 244" class="fsv" role="img" aria-label="'+lb.aria+'">'+s+hot+'</svg>';
+};
+
+// ======================= MENINGOCOCCUS =======================
+// Rash and the glass test
+FIG.rash=function(st,L,u){
+  var R=rng(41),vir=st.m===1,gl=st.f[0],lb=L.lab,s='',GX=392,GY=168,GR=100;
+  s+='<defs>'+blur(u+'b3',3)+blur(u+'b1',.7)+blur(u+'b6',6)+
+    '<linearGradient id="'+u+'sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E7C1A6"/><stop offset=".5" stop-color="#EECDB5"/><stop offset="1" stop-color="#DDB096"/></linearGradient>'+
+    '<clipPath id="'+u+'gc"><circle cx="'+GX+'" cy="'+GY+'" r="'+(GR-6)+'"/></clipPath></defs>';
+  var skin='<rect width="600" height="336" fill="url(#'+u+'sk)"/>';
+  for(var i=0;i<260;i++) skin+='<circle cx="'+f1(R()*600)+'" cy="'+f1(R()*336)+'" r="'+f1(.6+R()*.8)+'" fill="#C99B80" opacity=".35"/>';
+  for(i=0;i<40;i++){var x=R()*600,y=R()*336,a=R()*.6+1.1;skin+='<path d="M'+f1(x)+' '+f1(y)+' q3 -5 '+f1(Math.cos(a)*14)+' '+f1(-Math.sin(a)*14)+'" stroke="#8E6A52" stroke-width=".7" fill="none" opacity=".45"/>';}
+  var spots='',pet='',pur='';
+  if(!vir){
+    var CL=[[110,90],[200,220],[300,120],[420,80],[470,230],[380,200],[540,140],[90,250],[250,300]];
+    CL.forEach(function(c){for(var j=0;j<18;j++){var x=c[0]+(R()-.5)*90,y=c[1]+(R()-.5)*70,r=.9+R()*1.6;pet+='<circle cx="'+f1(x)+'" cy="'+f1(y)+'" r="'+f1(r+.7)+'" fill="#C6475E" opacity=".5"/><circle cx="'+f1(x)+'" cy="'+f1(y)+'" r="'+f1(r)+'" fill="#9E1B3A"/>';}});
+    [[160,150,15],[350,110,11],[410,190,18],[520,260,13],[230,80,8],[90,180,9],[300,250,10]].forEach(function(p){
+      pur+='<path d="'+blob(R,p[0],p[1],p[2]+4,p[2]*.85+3,.3,9)+'" fill="#8E2A55" opacity=".55" filter="url(#'+u+'b1)"/><path d="'+blob(R,p[0],p[1],p[2],p[2]*.85,.3,9)+'" fill="#6F2149"/>'+(p[2]>14?'<path d="'+blob(R,p[0]+2,p[1],p[2]*.35,p[2]*.3,.3,7)+'" fill="#33121F"/>':'');});
+    spots=pet+pur;
+  }else{
+    for(i=0;i<44;i++){spots+='<path d="'+blob(R,R()*600,R()*336,10+R()*16,8+R()*14,.35,8)+'" fill="#E0605E" opacity=".38" filter="url(#'+u+'b3)"/>';}
+    for(i=0;i<70;i++){spots+='<circle cx="'+f1(R()*600)+'" cy="'+f1(R()*336)+'" r="'+f1(1.6+R()*1.8)+'" fill="#D9534F" opacity=".35"/>';}
+  }
+  s+=skin+spots;
+  if(gl){
+    // pressure blanches the skin under the glass; extravasated blood stays visible
+    s+='<g clip-path="url(#'+u+'gc)"><rect width="600" height="336" fill="#F5E2D6"/>'+(vir?'':pet+pur)+'</g>';
+    s+='<circle cx="'+GX+'" cy="'+GY+'" r="'+GR+'" fill="#DDEEFF" fill-opacity=".12" stroke="#8FB0C8" stroke-width="10" stroke-opacity=".55"/>';
+    s+='<circle cx="'+GX+'" cy="'+GY+'" r="'+(GR-9)+'" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-opacity=".7"/>';
+    s+='<path d="M'+(GX-70)+' '+(GY-55)+' A90 90 0 0 1 '+(GX+20)+' '+(GY-88)+'" stroke="#FFFFFF" stroke-width="7" stroke-opacity=".6" fill="none" stroke-linecap="round"/>';
+  }
+  var lab='',hot='',H={s:17,c:'#16222E',h:'#fff',hw:4.5,w:600};
+  if(!vir){lab+=tx(14,30,lb.pet,'start',H)+ld(90,36,112,84,'#16222E');lab+=tx(14,326,lb.pur,'start',H)+ld(70,310,150,160,'#16222E');
+    hot+=hs('pet',he(112,92,46,36)+he(200,220,46,36),oe(112,92,46,36)+oe(200,220,46,36))+hs('pur',hc(160,150,22)+hc(410,190,24)+hc(520,260,20),oc(160,150,22)+oc(410,190,24)+oc(520,260,20));}
+  else{lab+=tx(14,30,lb.vir,'start',H);hot+=hs('vir',hr(0,0,600,336),'');}
+  if(gl){lab+=tx(586,326,vir?lb.gv:lb.gm,'end',H);hot+=hs('glass',hc(GX,GY,GR),oc(GX,GY,GR+6,'#E0662B'));}
+  return '<svg viewBox="0 0 600 336" class="fsv" role="img" aria-label="'+lb.aria+'">'+s+(st.lab?'<g class="lb">'+lab+'</g>':'')+hot+'</svg>';
+};
+
+// Four CSF tubes in front of printed text
+FIG.csf=function(st,L,u){
+  var R=rng(51),lb=L.lab,s='',hot='';
+  s+='<defs><linearGradient id="'+u+'gl" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/><stop offset=".8" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".35"/></linearGradient>'+blur(u+'b2',2)+'</defs>';
+  s+='<rect width="600" height="320" fill="#EEF2F5"/><rect x="18" y="44" width="564" height="196" rx="6" fill="#FFFFFF" stroke="#DDE4EA"/>';
+  var ln='';for(var y=58;y<236;y+=13){var x=30;while(x<565){var w=12+R()*44;if(x+w>570)w=570-x;ln+='<rect x="'+f1(x)+'" y="'+y+'" width="'+f1(w)+'" height="5" rx="2"/>';x+=w+6;}}
+  s+='<g fill="#2A3440" opacity=".75">'+ln+'</g>';
+  var T=[['tA','#EEF6FB',.18,0,0],['tB','#F2EEDC',.42,1,0],['tC','#EEE5C6',.94,0,1],['tD','#EEF6FB',.18,0,0]];
+  var CAP=['#C0392B','#1F6FB2','#2E8B57','#7A4BA6'];
+  T.forEach(function(t,i){var cx=105+i*130,x=cx-30,top=34,bot=232;
+    var tube='M'+x+' '+top+' L'+x+' '+bot+' Q'+x+' '+(bot+34)+' '+cx+' '+(bot+36)+' Q'+(x+60)+' '+(bot+34)+' '+(x+60)+' '+bot+' L'+(x+60)+' '+top+'Z';
+    s+='<clipPath id="'+u+'t'+i+'"><path d="'+tube+'"/></clipPath>';
+    var liq='<rect x="'+x+'" y="112" width="60" height="170" fill="'+t[1]+'" opacity="'+t[2]+'"/>';
+    liq+='<ellipse cx="'+cx+'" cy="112" rx="30" ry="4" fill="'+t[1]+'" opacity="'+Math.min(1,t[2]+.3)+'" stroke="#B9C5CF" stroke-width=".8"/>';
+    if(t[3]){var web='';for(var k=0;k<9;k++){web+='<path d="M'+f1(x+6+R()*48)+' '+f1(150+R()*60)+' Q'+f1(x+R()*60)+' '+f1(140+R()*80)+' '+f1(x+6+R()*48)+' '+f1(150+R()*80)+'"/>';}
+      liq+='<g stroke="#FFFFFF" stroke-width="1.3" fill="none" opacity=".95">'+web+'</g><g stroke="#C9C2A8" stroke-width=".6" fill="none">'+web+'</g>';}
+    if(t[4]) liq+='<path d="M'+x+' 248 Q'+cx+' 240 '+(x+60)+' 248 L'+(x+60)+' 290 L'+x+' 290Z" fill="#E2D2A0" filter="url(#'+u+'b2)"/>';
+    s+='<g clip-path="url(#'+u+'t'+i+')">'+liq+'<rect x="'+x+'" y="'+top+'" width="60" height="240" fill="url(#'+u+'gl)"/></g>';
+    s+='<path d="'+tube+'" fill="none" stroke="#7E8F9E" stroke-width="2"/>';
+    s+='<rect x="'+(x-4)+'" y="12" width="68" height="26" rx="5" fill="'+CAP[i]+'"/>';
+    s+=tx(cx,296,'ABCD'[i],'middle',{s:20,w:700,c:'#16222E',h:''});
+    if(st.done) s+=tx(cx,316,lb[t[0]],'middle',{s:13,c:'#B4481A',h:'',w:600});
+    hot+=hs(t[0],hr(x-8,8,76,300),orc(x-8,8,76,300));
+  });
+  return '<svg viewBox="0 0 600 322" class="fsv" role="img" aria-label="'+lb.aria+'">'+s+hot+'</svg>';
+};
+
+// Gram stain of CSF
+FIG.gram=function(st,L,u){
+  var R=rng(61),m=st.m,lb=L.lab,s='',cx=300,cy=182,r=172;
+  s+='<defs><clipPath id="'+u+'f"><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'"/></clipPath>'+blur(u+'b1',.6)+'</defs><rect width="600" height="364" fill="#0b0b0b"/>';
+  var g='<rect width="600" height="364" fill="#F7E4EB"/>';
+  for(var i=0;i<60;i++) g+='<circle cx="'+f1(R()*600)+'" cy="'+f1(R()*364)+'" r="'+f1(1+R()*2)+'" fill="#EFC9D6" opacity=".6"/>';
+  function bean(x,y,a,c){var d='',k;for(k=-1;k<=1;k+=2){var ox=Math.cos(a)*4.2*k,oy=Math.sin(a)*4.2*k;
+      d+='<ellipse cx="'+f1(x+ox)+'" cy="'+f1(y+oy)+'" rx="3.5" ry="5" fill="'+c+'" transform="rotate('+f1(a*57.3)+' '+f1(x+ox)+' '+f1(y+oy)+')"/>';}
+    return d+'<line x1="'+f1(x-Math.sin(a)*4.5)+'" y1="'+f1(y+Math.cos(a)*4.5)+'" x2="'+f1(x+Math.sin(a)*4.5)+'" y2="'+f1(y-Math.cos(a)*4.5)+'" stroke="#F7E4EB" stroke-width="1"/>';}
+  function lance(x,y,a){var d='<ellipse cx="'+f1(x)+'" cy="'+f1(y)+'" rx="12" ry="6.5" fill="#FFFFFF" opacity=".75" transform="rotate('+f1(a*57.3)+' '+f1(x)+' '+f1(y)+')"/>';
+    for(var k=-1;k<=1;k+=2){var ox=Math.cos(a)*4.4*k,oy=Math.sin(a)*4.4*k;d+='<path d="M-5 0 Q-1 -3.6 4 0 Q-1 3.6 -5 0Z" fill="#4A2A8C" transform="translate('+f1(x+ox)+' '+f1(y+oy)+') rotate('+f1(a*57.3+(k>0?0:180))+')"/>';}return d;}
+  var NE=[[220,130],[360,220],[300,90],[180,250],[420,120],[260,300],[450,280],[150,160]],neu='',org='';
+  NE.forEach(function(p){neu+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="18" fill="#F1C3D2" stroke="#E2A2B8"/>';
+    var a0=R()*6.28,pts=[];for(var k=0;k<4;k++){var aa=a0+k*1.2;pts.push([p[0]+Math.cos(aa)*8,p[1]+Math.sin(aa)*8]);}
+    neu+='<path d="M'+pts.map(function(q){return f1(q[0])+' '+f1(q[1]);}).join(' L')+'" stroke="#A9305A" stroke-width="1.6" fill="none"/>';
+    pts.forEach(function(q){neu+='<circle cx="'+f1(q[0])+'" cy="'+f1(q[1])+'" r="4.6" fill="#A9305A"/>';});});
+  var intra=[0,1,4,6];
+  if(m===0){intra.forEach(function(ix){var p=NE[ix];for(var k=0;k<3+(ix%2);k++){var a=R()*6.28,rr=8+R()*6;org+=bean(p[0]+Math.cos(a)*rr,p[1]+Math.sin(a)*rr,R()*3.14,'#D23C6D');}});
+    for(i=0;i<12;i++){var a=R()*6.28,rr=40+R()*120;org+=bean(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr,R()*3.14,'#D23C6D');}}
+  else if(m===1){for(i=0;i<20;i++){var a=R()*6.28,rr=30+R()*130;org+=lance(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr,R()*3.14);}
+    org+=lance(222,124,.6)+lance(362,226,2);}
+  else{for(i=0;i<70;i++){var a=R()*6.28,rr=Math.sqrt(R())*160,l=3+R()*4;org+=rod(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr,R()*3.14,l,'#D44A78',2.4);}}
+  g+=neu+'<g filter="url(#'+u+'b1)">'+org+'</g>'+org;
+  s+='<g clip-path="url(#'+u+'f)">'+g+'</g><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="#333" stroke-width="3"/>'+tx(14,354,'×1000','start',{s:14,c:'#cfd6dd',h:''})+tx(586,354,lb['m'+m],'end',{s:14,c:'#cfd6dd',h:''});
+  var lab='',hot='';
+  lab+=tx(586,34,lb.neu,'end',{s:16})+ld(530,40,428,112);
+  if(m===0){lab+=tx(14,34,lb.intra,'start',{s:16})+ld(120,40,214,124);lab+=tx(14,330,lb.extra,'start',{s:16})+ld(70,314,150,240);
+    hot+=hs('intra',hc(220,130,22)+hc(360,220,22),oc(220,130,22)+oc(360,220,22))+hs('extra',hr(80,180,100,110),orc(80,180,100,110,'#FFB547'));}
+  else{lab+=tx(14,34,lb['o'+m],'start',{s:16});hot+=hs('o'+m,hr(130,20,200,40)+hc(300,190,120),oc(300,190,120));}
+  hot+=hs('neu',hc(420,120,22),oc(420,120,22));
+  return '<svg viewBox="0 0 600 364" class="fsv" role="img" aria-label="'+lb.aria+'">'+s+(st.lab?'<g class="lb">'+lab+'</g>':'')+hot+'</svg>';
+};
+
+// Meningococcus (or gonococcus): diplococcus and envelope close-up
+FIG.nm=function(st,L,u){
+  var R=rng(71),gc=st.m===1,lb=L.lab,s='',hot='';
+  s+='<defs>'+blur(u+'b2',2)+'</defs><rect width="600" height="380" fill="#FBFCFD"/>';
+  // left: the diplococcus
+  function beanPath(cx,cy,dir){ // flat side facing the partner
+    var rx=58,ry=74,fx=cx-dir*rx*.62;
+    return 'M'+fx+' '+(cy-ry*.78)+' C'+(fx+dir*rx*.9)+' '+(cy-ry*1.12)+' '+(cx+dir*rx*1.08)+' '+(cy-ry*.6)+' '+(cx+dir*rx*1.02)+' '+cy+
+      ' C'+(cx+dir*rx*1.08)+' '+(cy+ry*.6)+' '+(fx+dir*rx*.9)+' '+(cy+ry*1.12)+' '+fx+' '+(cy+ry*.78)+' C'+(fx+dir*12)+' '+(cy+ry*.3)+' '+(fx+dir*12)+' '+(cy-ry*.3)+' '+fx+' '+(cy-ry*.78)+'Z';}
+  var A=beanPath(112,190,-1),B=beanPath(204,190,1);
+  if(!gc) s+='<path d="'+blob(R,158,190,148,118,.06,12)+'" fill="#DCEAF7" stroke="#7FA6CF" stroke-width="1.5" stroke-dasharray="5 4"/>';
+  var pil='';for(var i=0;i<9;i++){var a=R()*6.28,x=158+Math.cos(a)*100,y=190+Math.sin(a)*84,l=50+R()*50,pp='M'+f1(x)+' '+f1(y);
+    for(var k=1;k<=6;k++){pp+=' L'+f1(x+Math.cos(a)*l*k/6+(R()-.5)*8)+' '+f1(y+Math.sin(a)*l*k/6+(R()-.5)*8);}pil+='<path d="'+pp+'"/>';}
+  s+='<g stroke="#5C7A3A" stroke-width="1.6" fill="none" stroke-linejoin="round">'+pil+'</g>';
+  [A,B].forEach(function(p){s+='<path d="'+p+'" fill="#F6F0E2" stroke="#2E5E8C" stroke-width="4"/><path d="'+p+'" fill="none" stroke="#8B6BB8" stroke-width="1.2" transform="translate(0 0)" stroke-dasharray="2 2" opacity=".0"/>';});
+  s+='<g fill="none" stroke="#B9A47A" stroke-width="1.6"><path d="M90 170 c10 -14 26 6 12 18 c-14 12 4 30 16 16"/><path d="M196 176 c-12 -10 -24 8 -10 18 c14 10 -2 28 -16 18"/></g>';
+  var bl='';[[50,120],[262,108],[268,262],[60,270],[156,84]].forEach(function(b){bl+='<circle cx="'+b[0]+'" cy="'+b[1]+'" r="'+f1(5+R()*3)+'" fill="#EEF4FA" stroke="#2E5E8C" stroke-width="2"/>';});
+  s+=bl;
+  // zoom marker
+  s+='<rect x="248" y="150" width="24" height="44" fill="none" stroke="#E0662B" stroke-width="2"/><path d="M272 150 L318 20 M272 194 L318 364" stroke="#E0662B" stroke-width="1" stroke-dasharray="4 3"/>';
+  s+=tx(158,360,gc?lb.gc:lb.nm,'middle',{s:16,c:'#16222E',h:'',w:600});
+  // right: envelope close-up (outside at the top)
+  var X0=318,X1=592;
+  s+='<rect x="'+X0+'" y="20" width="'+(X1-X0)+'" height="344" rx="8" fill="#FFFFFF" stroke="#E0662B" stroke-width="1.5"/>';
+  var OM=168,IM=268;
+  if(!gc){var ch='';for(var cx=X0+16;cx<X1-10;cx+=22){var yy=OM-12;for(var k=0;k<7;k++){ch+='<circle cx="'+f1(cx+Math.sin(k)*3)+'" cy="'+f1(yy-k*13)+'" r="4.2"/>';}}
+    s+='<g fill="#BFD6EC" stroke="#7FA6CF" stroke-width="1">'+ch+'</g>';}
+  // outer membrane: LOS outer leaflet + phospholipid inner leaflet
+  var om='';for(var x=X0+6;x<X1-4;x+=9){om+='<circle cx="'+x+'" cy="'+(OM-6)+'" r="3.6" fill="#E59B3C"/><path d="M'+(x-1.5)+' '+(OM-3)+' v12 M'+(x+1.5)+' '+(OM-3)+' v12" stroke="#E59B3C" stroke-width="1"/>';
+    om+='<path d="M'+x+' '+(OM-10)+' l-3 -7 m3 7 l4 -8" stroke="#C47A1E" stroke-width="1.3"/>';
+    om+='<circle cx="'+x+'" cy="'+(OM+20)+'" r="3.4" fill="#9BB7CF"/><path d="M'+(x-1.5)+' '+(OM+17)+' v-10 M'+(x+1.5)+' '+(OM+17)+' v-10" stroke="#9BB7CF" stroke-width="1"/>';}
+  s+=om;
+  // periplasm and thin peptidoglycan
+  s+='<path d="M'+(X0+4)+' '+(OM+52)+' H'+(X1-4)+'" stroke="#8B6BB8" stroke-width="3"/>';
+  var pg='';for(x=X0+10;x<X1-6;x+=14)pg+='<path d="M'+x+' '+(OM+46)+' v12"/>';s+='<g stroke="#8B6BB8" stroke-width="1.5">'+pg+'</g>';
+  // inner membrane
+  var im='';for(x=X0+6;x<X1-4;x+=9){im+='<circle cx="'+x+'" cy="'+(IM-14)+'" r="3.4" fill="#E0A26A"/><path d="M'+(x-1.5)+' '+(IM-11)+' v10 M'+(x+1.5)+' '+(IM-11)+' v10" stroke="#E0A26A" stroke-width="1"/><circle cx="'+x+'" cy="'+(IM+12)+'" r="3.4" fill="#E0A26A"/><path d="M'+(x-1.5)+' '+(IM+9)+' v-10 M'+(x+1.5)+' '+(IM+9)+' v-10" stroke="#E0A26A" stroke-width="1"/>';}
+  s+=im;
+  // proteins
+  var por='<rect x="352" y="'+(OM-14)+'" width="30" height="42" rx="9" fill="#4C8BC9"/><rect x="362" y="'+(OM-14)+'" width="10" height="42" rx="4" fill="#DCEBF8"/>';
+  var opa='<path d="M410 '+(OM+14)+' v-24 q10 -16 20 0 v24Z" fill="#8E5BB5"/>';
+  var fh=gc?'':'<path d="M468 '+(OM-8)+' v-22" stroke="#2E9E7A" stroke-width="3"/><circle cx="468" cy="'+(OM-36)+'" r="9" fill="#2E9E7A"/>'+(function(){var c='';for(var k=0;k<8;k++)c+='<circle cx="'+f1(476+k*7)+'" cy="'+f1(OM-44-k*6+Math.sin(k)*3)+'" r="4" fill="#E8A13A" stroke="#B87A1E" stroke-width=".8"/>';return c;})();
+  var pq='<rect x="524" y="'+(OM-14)+'" width="26" height="44" rx="6" fill="#6E8F4A"/>';
+  var pil2='<path d="M537 '+(OM-12)+' C533 120 545 90 535 60 S540 30 536 22" stroke="#5C7A3A" stroke-width="6" fill="none"/><path d="M537 '+(OM-12)+' C533 120 545 90 535 60 S540 30 536 22" stroke="#9CB97A" stroke-width="2" fill="none" stroke-dasharray="3 3"/>';
+  s+=por+opa+fh+pq+pil2;
+  // outer-membrane vesicle budding off, and IgA1 cut by the protease
+  s+='<circle cx="'+(X0+34)+'" cy="'+(OM-34)+'" r="15" fill="#FFF6EA" stroke="#E59B3C" stroke-width="5"/>';
+  var ig='<g transform="translate(410 70)"><path d="M0 0 v30 M0 0 l-16 -22 M0 0 l16 -22" stroke="#C24B4B" stroke-width="5" stroke-linecap="round" fill="none"/></g><path d="M398 60 l24 0" stroke="#16222E" stroke-width="1.5" stroke-dasharray="3 2"/><path d="M432 92 l14 -8 a6 6 0 1 1 3 6 l-14 8Z" fill="#C24B4B"/>';
+  s+=ig;
+  var T={s:12.5,c:'#16222E',h:'#fff',hw:3.5,w:600};
+  var lab='';
+  if(!gc) lab+=tx(X0+8,38,lb.caps,'start',T);
+  lab+=tx(X1-8,OM+5,lb.los,'end',{s:12,c:'#8A4A0B',h:'#fff',hw:3,w:600})+tx(X0+8,OM+70,lb.pg,'start',T)+tx(X0+8,IM+40,lb.im,'start',T)+tx(X1-8,OM+40,lb.peri,'end',{s:11.5,c:'#55697A',h:'#fff',hw:3})+tx(X0+52,OM-56,lb.ves,'start',T)+tx(367,OM+44,'PorB','middle',T)+tx(420,OM+30,'Opa','middle',T)+(gc?'':tx(468,OM-62,'fHbp','middle',T))+tx(548,46,lb.pil,'end',T)+tx(452,60,lb.iga,'start',T);
+  hot+=hs('caps',gc?'':hr(X0,24,X1-X0-70,OM-40),gc?'':orc(X0+4,24,X1-X0-80,OM-50));
+  hot+=hs('los',hr(X0,OM-20,X1-X0,22),orc(X0+2,OM-20,X1-X0-4,22));
+  hot+=hs('ves',hc(X0+34,OM-34,22)+bl.replace(/fill="#EEF4FA"/g,'fill="transparent"'),oc(X0+34,OM-34,22,'#E0662B'));
+  hot+=hs('por',hr(348,OM-18,40,50),orc(348,OM-18,40,50));
+  hot+=hs('opa',hr(404,OM-26,32,44),orc(404,OM-26,32,44));
+  if(!gc) hot+=hs('fhbp',hr(456,OM-100,74,96),orc(456,OM-100,74,96));
+  hot+=hs('pil',hr(520,20,34,OM+12)+'<g stroke="transparent" stroke-width="12" fill="none">'+pil+'</g>',orc(518,20,38,OM+12));
+  hot+=hs('iga',hr(390,44,74,56),orc(390,44,74,56));
+  hot+=hs('pg',hr(X0,OM+40,X1-X0,26),orc(X0+2,OM+40,X1-X0-4,26));
+  hot+=hs('im',hr(X0,IM-22,X1-X0,48),orc(X0+2,IM-22,X1-X0-4,48));
+  return '<svg viewBox="0 0 600 380" class="fsv" role="img" aria-label="'+lb.aria+'">'+s+(st.lab?'<g class="lb">'+lab+'</g>':'')+hot+'</svg>';
+};
+
+var FS={},done=[],shown=1,N=D.steps.length,MQ=matchMedia('(max-width:600px)');
+function reAll(){for(var k in FS)render(k);}if(MQ.addEventListener)MQ.addEventListener('change',reAll);else if(MQ.addListener)MQ.addListener(reAll);
+function $(s,e){return (e||document).querySelector(s);}
+function kdText(id,k){var F=D.figs[id],K=F.K[k];if(!K)return '<span class="ht">'+F.hint+'</span>';var st=FS[id],t=(st.done&&K[2])?K[2]:K[0];return '<b>'+t+'</b> — '+K[1];}
+function render(id){var st=FS[id],box=st.el,F=D.figs[id];
+  var ph=MQ.matches,F2=F;LS=(ph&&F.ls)||1;
+  if(ph&&F.labs){F2={};for(var q in F)F2[q]=F[q];F2.lab={};for(q in F.lab)F2.lab[q]=F.lab[q];for(q in F.labs)F2.lab[q]=F.labs[q];}
+  var html=FIG[id](st,F2,id+'_');LS=1;if(F.split&&MQ.matches)html=F.split.map(function(vb){return html.replace(/viewBox="[^"]*"/,'viewBox="'+vb+'"');}).join('');
+  $('.sv',box).innerHTML=html;
+  var bs=box.querySelectorAll('.ctl button[data-m]');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('act',+bs[i].getAttribute('data-m')===st.m);
+  var fl=box.querySelectorAll('.ctl button[data-fl]');for(i=0;i<fl.length;i++)fl[i].classList.toggle('act',!!st.f[+fl[i].getAttribute('data-fl')]);
+  var lb=$('.ctl .lbt',box);if(lb)lb.classList.toggle('act',st.lab);
+  if(st.k&&$('[data-k="'+st.k+'"]',box))show(id,st.k);else{st.k=null;$('.kd',box).innerHTML='<span class="ht">'+F.hint+'</span>';}}
+function show(id,k){var st=FS[id],box=st.el;st.k=k;
+  var all=box.querySelectorAll('[data-k]');for(var i=0;i<all.length;i++)all[i].classList.toggle('hi',all[i].getAttribute('data-k')===k);
+  $('.kd',box).innerHTML=kdText(id,k);}
+function initFig(id,box){var F=D.figs[id],st=FS[id]={m:0,f:(F.flags||[]).map(function(){return 0;}),lab:true,done:0,k:null,el:box};
+  var c='';(F.modes||[]).forEach(function(m,i){if(F.modes.length>1)c+='<button type="button" data-m="'+i+'">'+m+'</button>';});
+  (F.flags||[]).forEach(function(f,i){c+='<button type="button" data-fl="'+i+'">'+f+'</button>';});
+  if(!F.nolab)c+='<span class="sep"></span><button type="button" class="lbt">'+D.ui.lab+'</button>';
+  $('.ctl',box).innerHTML=c;if(!c)$('.ctl',box).style.display='none';
+  $('.ctl',box).addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+    if(b.hasAttribute('data-m'))st.m=+b.getAttribute('data-m');else if(b.hasAttribute('data-fl')){var j=+b.getAttribute('data-fl');st.f[j]=st.f[j]?0:1;}else st.lab=!st.lab;render(id);});
+  var sv=$('.sv',box);
+  function pick(e){var g=e.target.closest&&e.target.closest('[data-k]');if(g)show(id,g.getAttribute('data-k'));}
+  sv.addEventListener('mouseover',pick);sv.addEventListener('click',pick);sv.addEventListener('focusin',pick);
+  render(id);}
+function prog(){var h='';for(var i=0;i<N;i++)h+='<i class="'+(done[i]?'ok':(i<shown?'on':''))+'"></i>';$('#pg').innerHTML=D.ui.step+' '+Math.min(shown,N)+'/'+N+' '+h;
+  $('#all').textContent=shown>=N?D.ui.restart:D.ui.all;}
+function reveal(n){shown=Math.max(shown,n);for(var i=0;i<N;i++)$('#s'+i).hidden=i>=shown;prog();}
+var root=$('#case');
+D.steps.forEach(function(s,i){var sec=document.createElement('section');sec.className='step';sec.id='s'+i;
+  var h='<div class="shd"><span class="sn">'+(i+1)+'</span><h3>'+s.h+'</h3></div><div class="story">'+s.story+'</div>';
+  (s.figs||[]).forEach(function(f){h+='<div class="fig" data-f="'+f+'"><div class="ctl"></div><div class="sv"></div><p class="kd" aria-live="polite"></p></div>';});
+  h+='<div class="q"><p class="qt">'+s.q.t+'</p><div class="opts">';
+  s.q.o.forEach(function(o,j){h+='<button type="button" data-j="'+j+'">'+o[0]+'</button>';});
+  h+='</div><div class="fb" aria-live="polite"></div></div><div class="after" hidden>'+s.after+(i<N-1?'<button type="button" class="nx">'+D.ui.next+'</button>':'<p class="end">'+D.ui.end+'</p>')+'</div>';
+  sec.innerHTML=h;root.appendChild(sec);
+  (s.figs||[]).forEach(function(f){initFig(f,$('.fig[data-f="'+f+'"]',sec));});
+  $('.opts',sec).addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var o=s.q.o[+b.getAttribute('data-j')];
+    b.classList.add(o[1]?'ok':'no');var fb=$('.fb',sec);fb.className='fb '+(o[1]?'ok':'no');fb.innerHTML='<b>'+(o[1]?D.ui.ok:D.ui.no)+'</b> '+o[2];
+    if(o[1]&&!done[i]){done[i]=1;sec.classList.add('solved');$('.after',sec).hidden=false;(s.figs||[]).forEach(function(f){FS[f].done=1;render(f);});prog();}});
+  var nx=$('.nx',sec);if(nx)nx.addEventListener('click',function(){reveal(i+2);var nxt=$('#s'+(i+1));try{nxt.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){nxt.scrollIntoView();}});
+});
+$('#all').addEventListener('click',function(){if(shown>=N){location.reload();return;}reveal(N);});
+reveal(1);
+</script>
+</body>
+</html>
