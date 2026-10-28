@@ -29,6 +29,11 @@ svg{display:block; max-width:100%; height:auto}
   svg[viewBox]{min-width:600px; max-width:none}
   html{overflow-x:auto}
 }
+/* …unless the figure can be cut into panels stacked one under the other (stack.js) */
+@media (max-width:600px){
+  body{padding:10px 8px 12px}
+  svg[viewBox].stk{min-width:0!important; max-width:100%!important; width:100%!important; height:auto; margin:0 0 6px}
+}
 svg text{font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
 .th{font-size:14px; font-weight:500}
 .ts{font-size:12px}

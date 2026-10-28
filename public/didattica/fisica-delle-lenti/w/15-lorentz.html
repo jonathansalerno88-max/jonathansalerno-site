@@ -11,19 +11,23 @@
 .row input{flex:1 1 180px}
 .cap{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;line-height:1.5;margin:6px 0 0}
 .cap p{flex:1 1 260px;margin:0}
+.ban{max-width:540px;margin:0 auto 10px;padding:7px 14px 8px;background:#EEF4FC;border:1px solid #1456A8;border-radius:8px;text-align:center;font-size:13px;line-height:1.45;color:#16222E}
+.ban b{display:block;color:#1456A8;font-size:14px;font-weight:500;margin-bottom:2px}
+.ban p{margin:0}.ban .fm{font-weight:500;margin-top:4px}
 </style>
 </head>
 <body>
 <h2 class="sr-only">Confronto visto dall'alto. A sinistra il galvanometro a corda di Einthoven: una corda di quarzo argentato fra i poli di un magnete; la corrente del cuore la attraversa e la forza di Lorentz la piega; la sua ombra, proiettata su una carta fotografica che scorre, traccia l'elettrocardiogramma. A destra le bobine di scansione del SEM: la corrente nelle bobine crea il campo, che piega il fascio di elettroni e sposta il punto sul campione. Stessa legge, F = q · v × B; gli elettroni sono negativi e deviano dalla parte opposta.</h2>
+<div class="ban" aria-hidden="true"><b>Stesso principio: la forza di Lorentz</b><p>In breve: una carica che si muove in un campo magnetico viene spinta di lato, perpendicolare sia al suo moto sia al campo. Più campo, più velocità: più spinta.</p><p class="fm">F = q · v × B &nbsp;·&nbsp; per un filo: F = I · L × B</p></div>
 <div class="row"><button id="bt" onclick="beat()">▶ Battito</button><span style="margin-left:auto">Corrente nelle bobine</span><button id="pw" onclick="ON=!ON;draw()"></button><input type="range" id="ic" min="-1" max="1" step="0.05" value="0.6" oninput="draw()" aria-label="Corrente nelle bobine"><output id="iv" style="min-width:150px;text-align:right;color:var(--text-primary);font-variant-numeric:tabular-nums"></output></div>
-<svg viewBox="0 0 680 360" aria-hidden="true"><g id="g"></g></svg>
+<svg viewBox="0 98 680 228" aria-hidden="true" data-stack="0,98,338,228; 342,98,338,228"><g id="g"></g></svg>
 <div class="cap"><p>Il campo è fisso: lo dà il magnete. A cambiare è la corrente del cuore, che passa nella corda e la piega. Dalla deviazione si legge la corrente: si misura.</p><p>La corrente la scegli tu: cambia il campo, e il campo piega il fascio. Dalla corrente decidi dove va il punto: si pilota. Gli elettroni sono negativi, quindi con la stessa corrente e lo stesso campo deviano dalla parte opposta.</p></div>
 <h3 style="font-size:15px;margin:16px 0 4px">E la lavatrice? Stessa forza, ma per far girare</h3>
 <div class="row"><span>Corrente nel motore</span><input type="range" id="mcur" min="0" max="1" step="0.05" value="0.5" aria-label="Corrente nel motore"><button id="mpw" onclick="MON=!MON"></button></div>
-<svg viewBox="0 0 680 200" aria-hidden="true"><g id="g2"></g></svg>
+<svg viewBox="0 0 680 200" aria-hidden="true" data-stack="0,10,330,190; 335,10,345,190"><g id="g2"></g></svg>
 <div class="cap"><p>Qui il campo è fisso, come in Einthoven, e la corrente passa nella spira del rotore. Sui due lati della spira la corrente va in versi opposti, quindi le due spinte F vanno in versi opposti e fanno ruotare: una coppia. A ogni mezzo giro la corrente viene invertita (prima dalle spazzole, oggi dall'elettronica), così la spira continua a girare nello stesso verso. Più corrente, più coppia: il cestello accelera e fa lavoro.</p></div>
 <script>
-var L={"mpw": ["⏻ acceso", "⏻ spento"], "mlab": {"rot": "rotore: una spira", "in_": "⊗ entra", "out": "⊙ esce", "drum": "cestello", "rpm": "≈ {R} giri/min"}, "sh": ["In breve: una carica che si muove in un campo magnetico viene spinta di lato,", "perpendicolare sia al suo moto sia al campo. Più campo, più velocità: più spinta."], "pw": ["⏻ accesa", "⏻ spenta"], "off": "corrente spenta: nessun campo, il fascio va dritto", "loc": "it-IT", "head": "Stesso principio: la forza di Lorentz", "f1": "F = q · v × B", "f2": "per un filo: F = I · L × B", "lt": "Galvanometro a corda di Einthoven (1901)", "rt": "Bobine di scansione del SEM", "l": {"N": "N", "S": "S", "lamp": "lampada", "str": "corda di quarzo argentato", "cur": "corrente del cuore ⊗ (entra nel foglio)", "lens": "lente", "film": "carta fotografica che scorre", "ecg": "ECG"}, "r": {"coil": "elettromagnete", "beam": "fascio di elettroni ⊗ (entra nel foglio)", "spot": "punto sul|campione"}},ON=true,TR=[],t0=null,run=false,I=0,raf=null;
+var L={"mpw": ["⏻ acceso", "⏻ spento"], "mlab": {"rot": "rotore: una spira", "in_": "⊗ entra", "out": "⊙ esce", "drum": "cestello", "rpm": "≈ {R} giri/min"}, "sh": ["In breve: una carica che si muove in un campo magnetico viene spinta di lato,", "perpendicolare sia al suo moto sia al campo. Più campo, più velocità: più spinta."], "pw": ["⏻ accesa", "⏻ spenta"], "off": "corrente spenta: nessun campo, il fascio va dritto", "loc": "it-IT", "head": "Stesso principio: la forza di Lorentz", "f1": "F = q · v × B", "f2": "per un filo: F = I · L × B", "lt": "Galvanometro a corda di Einthoven (1901)", "rt": "Bobine di scansione del SEM", "l": {"N": "N", "S": "S", "lamp": "lampada", "str": "corda di quarzo argentato", "cur": "corrente del cuore ⊗ (entra nel foglio)", "lens": "lente", "film": "carta fotografica|che scorre", "ecg": "ECG"}, "r": {"coil": "elettromagnete", "beam": "fascio di elettroni ⊗ (entra nel foglio)", "spot": "punto sul|campione"}},ON=true,TR=[],t0=null,run=false,I=0,raf=null;
 function nf(x,d){return x.toLocaleString(L.loc,{maximumFractionDigits:d,minimumFractionDigits:d})}
 function T(x,y,t,cl,col,anc,st){return '<text class="'+cl+'" x="'+x+'" y="'+y+'"'+(col?' fill="'+col+'"':'')+(anc?' text-anchor="'+anc+'"':'')+(st?' style="'+st+'"':'')+'>'+t+'</text>'}
 function Ln(x1,y1,x2,y2,c,w,d,o){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+(w||1.2)+'"'+(d?' stroke-dasharray="'+d+'"':'')+(o!=null?' opacity="'+o+'"':'')+'/>'}
@@ -32,10 +36,6 @@ function arr(x1,y1,x2,y2,c,w){var a=Math.atan2(y2-y1,x2-x1),h=7;return Ln(x1,y1,
 function ecg(t){var c=t%0.9,g=function(m,s,a){return a*Math.exp(-(c-m)*(c-m)/(2*s*s))};return g(0.16,0.025,0.12)+g(0.27,0.008,-0.12)+g(0.30,0.012,1)+g(0.33,0.01,-0.25)+g(0.55,0.04,0.3)}
 function draw(){var s='',Y=185,K=34,ic=ON?parseFloat(document.getElementById('ic').value):0;var pw=document.getElementById('pw');pw.textContent=L.pw[ON?0:1];pw.setAttribute('aria-pressed',ON);pw.style.opacity=ON?1:0.6;
  // banner
- s+='<rect x="70" y="4" width="540" height="84" rx="8" fill="#EEF4FC" stroke="#1456A8"/>'+T(340,22,L.head,'th','#1456A8','middle');
- s+=T(340,41,L.sh[0],'ts','#16222E','middle','font-size:13px')+T(340,57,L.sh[1],'ts','#16222E','middle','font-size:13px');
- s+=T(340,79,L.f1+'      ·      '+L.f2,'th','#16222E','middle','font-size:13px');
- s+=Ln(150,88,165,106,'#1456A8',1,'3 3')+Ln(530,88,515,106,'#1456A8',1,'3 3');
  s+='<g transform="translate(0,30)">';
  s+=T(165,90,L.lt,'th',null,'middle')+T(515,90,L.rt,'th',null,'middle')+Ln(340,70,340,320,'#DDE4EA',1);
  // ---- Einthoven, seen from above: light goes left to right through bores in the poles ----
@@ -55,7 +55,7 @@ function draw(){var s='',Y=185,K=34,ic=ON?parseFloat(document.getElementById('ic
  for(var g=0;g<=80;g+=10)s+=Ln(250+g,Y-55,250+g,Y+55,'#E9D9A8',0.6);
  s+=Ln(228,Y,250,Y-d*1.2,'#16222E',0.8,'2 2');
  if(TR.length>1){var p='';TR.forEach(function(q,i){var x=250+(TR.length-1-i)*0.9;if(x<=330)p+=(p?'L':'M')+x.toFixed(1)+' '+(Y-q*K*1.2).toFixed(1);});s+='<path d="'+p+'" fill="none" stroke="#16222E" stroke-width="1.3"/>';}
- s+=arr(262,Y+66,318,Y+66,'#8696A4',1.2)+T(290,Y+80,L.l.film,'ts',null,'middle','font-size:10.5px');
+ s+=arr(262,Y+66,318,Y+66,'#8696A4',1.2)+T(290,Y+80,L.l.film.split('|')[0],'ts',null,'middle','font-size:10.5px')+T(290,Y+93,L.l.film.split('|')[1],'ts',null,'middle','font-size:10.5px');
  // ---- SEM coils, seen from above: electrons go into the page ----
  var e=-ic*K,cx=470;
  var wc=ON?'#C9772D':'#B4BCC6';[380,530].forEach(function(x0){s+='<rect x="'+x0+'" y="'+(Y-50)+'" width="30" height="100" rx="4" fill="'+(ON?'#E8C9A6':'#EEF1F4')+'" stroke="'+(ON?'#7A4310':'#B4BCC6')+'"/>';for(var w=0;w<8;w++)s+=Ln(x0-3,Y-44+w*12,x0+33,Y-40+w*12,wc,2);});
@@ -100,5 +100,6 @@ function motor(ts){var dt=lastT===null?0:Math.min(0.05,(ts-lastT)/1000);lastT=ts
  document.getElementById('g2').innerHTML=s;requestAnimationFrame(motor);}
 draw();requestAnimationFrame(motor);
 </script>
+<script src="stack.js"></script>
 </body>
 </html>

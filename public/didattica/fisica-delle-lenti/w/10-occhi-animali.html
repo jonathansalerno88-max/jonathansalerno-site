@@ -26,7 +26,7 @@
 </div>
 <div class="ctl"><span>N′ → F′</span><input type="range" id="fS" min="6" max="40" step="0.1" value="16.7" style="flex:1" oninput="sel=-1;upd()"><span id="fL" style="min-width:70px;text-align:right;color:var(--text-primary)"></span></div>
 <div class="ctl"><span>Pupilla</span><input type="range" id="dS" min="1" max="15" step="0.5" value="4" style="flex:1" oninput="sel=-1;upd()"><span id="dL" style="min-width:70px;text-align:right;color:var(--text-primary)"></span></div>
-<svg width="100%" viewBox="0 0 680 300">
+<svg width="100%" viewBox="0 0 680 300" data-stack="95,30,300,270; 398,30,282,262">
 <defs><clipPath id="box"><rect x="400" y="80" width="260" height="170" rx="6"/></clipPath></defs>
 <g id="eye"></g>
 <text class="th" x="400" y="52">Fovea, ingrandita</text>
@@ -90,5 +90,6 @@ document.getElementById('note').textContent=(sel>=0?notes[sel]+' ':'')+'I valori
 }
 upd();
 </script>
+<script src="stack.js"></script>
 </body>
 </html>

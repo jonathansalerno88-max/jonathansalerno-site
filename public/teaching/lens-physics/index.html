@@ -105,7 +105,7 @@ figure.w iframe.h-micro{height:1075px}
 figure.w iframe.h-em{height:760px}
 figure.w iframe.h-lz{height:895px}
 figure.w iframe.h-pers{height:1505px}
-@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1295px} figure.w iframe.h-em{height:850px} figure.w iframe.h-lz{height:1095px}}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1720px} figure.w iframe.h-em{height:1300px} figure.w iframe.h-lz{height:1600px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -216,10 +216,10 @@ dialog.cf button:disabled{opacity:.6; cursor:default}
 dialog.cf .cf-msg{margin:.7rem 0 0; font-size:.9rem}
 dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
 
-/* Phones: each interactive figure becomes a card that opens it full screen */
+/* Phones: figures that fit a phone (.ph: narrow, or stacked into panels by w/stack.js) stay in the page; each other figure becomes a card that opens it full screen */
 .fcard{display:none}
 @media (max-width:600px){
-  figure.w iframe{display:none!important}
+  figure.w iframe:not(.ph){display:none!important}
   .fcard{display:flex; align-items:center; gap:.8rem; width:100%; text-align:left; font:inherit; color:var(--ink);
     background:var(--card); border:1px solid var(--rule); border-left:4px solid var(--link); border-radius:10px; padding:.8rem .9rem; cursor:pointer}
   .fcard .fi{flex:none; width:2.4rem; height:2.4rem; border-radius:50%; background:var(--link); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1rem}
@@ -358,7 +358,7 @@ dialog.fx iframe{display:block; width:100%; height:calc(100dvh - 5.2rem); border
     other measuring system: a StVZO light with 100 lux at 10 m has I = 100 lm/m² × (10 m)²/sr = 10,000 cd, the
     same intensity.</li></ul>
     <p class="qci"><b>Try it.</b> How many candelas do you need, at least, in different conditions: speed, dry or wet road, lit or dark street? And which parameter on the box lets you check it: lux at 10 m (StVZO) or beam distance (ANSI FL1)?</p>
-    <figure class="w qcalc"><iframe src="w/00e-che-luce.html" title="Which light do you need? From stopping distance to the spec sheet" loading="lazy"></iframe>
+    <figure class="w qcalc"><iframe class="ph" src="w/00e-che-luce.html" title="Which light do you need? From stopping distance to the spec sheet" loading="lazy"></iframe>
     <figcaption>Choose speed, road and street lighting, then move the light's slider until you reach the goal. <a href="w/00e-che-luce.html">Open full screen</a></figcaption></figure></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <defs><radialGradient id="qglow"><stop offset="0" stop-color="#FFE9A8" stop-opacity="1"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></radialGradient></defs>
@@ -378,7 +378,7 @@ dialog.fx iframe{display:block; width:100%; height:calc(100dvh - 5.2rem); border
   <p class="lead2"><b>Back to the thread to declare the winner.</b> Who wins between light A, 1,000 lumens <span class="u">(lm, total flux)</span> in a
   40° beam, and light B, 400 lumens in a 10° beam? Let us put them on a bike at 30 km/h, at night.</p>
   <figure class="w">
-    <iframe src="w/00-bici.html" title="Lumens or candelas? A bike light on the road, at the stopping distance" loading="lazy"></iframe>
+    <iframe class="ph" src="w/00-bici.html" title="Lumens or candelas? A bike light on the road, at the stopping distance" loading="lazy"></iframe>
     <figcaption>Bike at 30 km/h on dry asphalt, dark road: choose light A or B, then change lumens and beam width, the road and the street lighting. <a href="w/00-bici.html">Open full screen</a></figcaption>
   </figure>
   <p><b>And the winner is… nobody.</b> On a dark road B sees the pothole at the stopping distance, but only in a
@@ -439,7 +439,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   1,500 lumens bring about 450 lux onto it, 4,500 lumens about 1,350, and the windows easily add 500. The <b>goal</b> comes from the AVIXA/ANSI image contrast standard: at least
   <b>80:1 for a film</b>, 15:1 for slides.</p>
   <figure class="w">
-    <iframe src="w/00c-proiettore.html" title="Projector and TV side by side: same contrast, how many lumens?" loading="lazy" class="h-simple"></iframe>
+    <iframe src="w/00c-proiettore.html" title="Projector and TV side by side: same contrast, how many lumens?" loading="lazy" class="ph h-simple"></iframe>
     <figcaption>Projector and TV side by side in the living room from the thread, at the same diagonal: move the room light and see how many lumens the projector would need to match the TV's contrast. <a href="w/00c-proiettore.html">Open full screen</a></figcaption>
   </figure>
   <p><b>And the winner is… the TV.</b> By day the 1,500 lm projector sits at about 2:1 and the 4,500 lm one at
@@ -510,7 +510,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   Insertion). Half of every refresh is black and persistence drops to 4.2 ms, but the light is halved, and at 60 Hz the
   screen flickers. Below, strategy A is on the left and the best compromise on the right.</p>
   <figure class="w">
-    <iframe src="w/00f-sfida-gaming.html" title="Online shooter: strategy A versus the best compromise" loading="lazy" class="h-sfida"></iframe>
+    <iframe src="w/00f-sfida-gaming.html" title="Online shooter: strategy A versus the best compromise" loading="lazy" class="ph h-sfida"></iframe>
     <figcaption>On the left strategy A (60 fps, interpolation, HDR), on the right the best compromise (120 fps, BFI). The blur is magnified three times, and the little square moves only with the images the TV really shows. <a href="w/00f-sfida-gaming.html">Open full screen</a></figcaption>
   </figure>
   <p><b>And the winner is… 120 Hz with BFI, if the game runs at 120 fps.</b> It gives 4 px of blur and 9 ms of lag.
@@ -533,7 +533,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   buttons, and the TV delays the sound too to keep it with the picture. Halos remain, but you are not aiming at
   anything, and standard interpolation, which has more time to compute, makes fewer of them than the gaming kind.</p>
   <figure class="w">
-    <iframe src="w/00g-film.html" title="A film at 24 fps: native or interpolated to 120 Hz" loading="lazy" class="h-film"></iframe>
+    <iframe src="w/00g-film.html" title="A film at 24 fps: native or interpolated to 120 Hz" loading="lazy" class="ph h-film"></iframe>
     <figcaption>The same film at 24 fps, on the left without interpolation and on the right with it: watch the little square, the two grids and the frame in slow motion. <a href="w/00g-film.html">Open full screen</a></figcaption>
   </figure>
   <p><b>And the winner is… interpolation, if you like the soap opera effect.</b> The real world has no frames: the more
@@ -773,7 +773,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
     that do not rotate in the orbit: the head rotates instead.</li>
   </ul>
   <figure class="w">
-    <iframe src="w/10-occhi-animali.html" title="Varying the nodal point–focal point distance: human, cat, bird of prey, owl" loading="lazy"></iframe>
+    <iframe class="ph" src="w/10-occhi-animali.html" title="Varying the nodal point–focal point distance: human, cat, bird of prey, owl" loading="lazy"></iframe>
     <figcaption>Indicative values, chosen to show the strategies. <a href="w/10-occhi-animali.html">Open full screen</a></figcaption>
   </figure>
   <h3>Why don't we have a raptor's focal length?</h3>
@@ -940,7 +940,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   is enough. And since the image is upside down, when you move the slide to the right with the stage knobs the image
   in the eyepiece goes left: at first everyone moves the wrong way.</p>
   <figure class="w">
-    <iframe src="w/13-microscopio.html" title="Optical microscope: choose the lenses and focus" loading="lazy" class="h-micro"></iframe>
+    <iframe src="w/13-microscopio.html" title="Optical microscope: choose the lenses and focus" loading="lazy" class="ph h-micro"></iframe>
     <figcaption>Choose lenses, objective and oil, then focus with the two knobs. <a href="w/13-microscopio.html">Open full screen</a></figcaption>
   </figure>
   <div class="try"><b>Try this.</b> <i>Goal</i>: understand why you need two converging lenses, and how you go from 40× to 1000×.
@@ -989,7 +989,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   beam. And with a fixed field and the current in a loop that can rotate, the same push turns the washing machine
   motor: it is at the bottom of the figure.</p>
   <figure class="w">
-    <iframe src="w/15-lorentz.html" title="Same principle: Einthoven's galvanometer and the SEM coils" loading="lazy" class="h-lz"></iframe>
+    <iframe src="w/15-lorentz.html" title="Same principle: Einthoven's galvanometer and the SEM coils" loading="lazy" class="ph h-lz"></iframe>
     <figcaption>Press ‘Heartbeat’, move the coil current and the motor current. Both drawings are seen from above. <a href="w/15-lorentz.html">Open full screen</a></figcaption>
   </figure>
   <div class="tscroll tw"><table>
@@ -1003,7 +1003,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
     </tbody>
   </table></div>
   <figure class="w">
-    <iframe src="w/14-confocale-tem-sem.html" title="Confocal, TEM and SEM in diagram form" loading="lazy" class="h-em"></iframe>
+    <iframe src="w/14-confocale-tem-sem.html" title="Confocal, TEM and SEM in diagram form" loading="lazy" class="ph h-em"></iframe>
     <figcaption>Three tabs, one per microscope. <a href="w/14-confocale-tem-sem.html">Open full screen</a></figcaption>
   </figure>
   <div class="try"><b>Try this.</b> <i>Goal</i>: understand what each one adds to the optical microscope.
@@ -1147,12 +1147,12 @@ f.addEventListener('submit',function(e){e.preventDefault();
 })();</script>
 <dialog class="fx" id="fx" aria-labelledby="fxt"><div class="fxbar"><b id="fxt"></b><button type="button" id="fxc">✕ Close</button></div><p class="fxhint">Turn your phone sideways to see it larger.</p><iframe id="fxf" title=""></iframe></dialog>
 <script>
-/* Phones: replace each interactive figure with a card; the figure opens full screen in a dialog,
+/* Phones: replace each wide interactive figure (not .ph) with a card; the figure opens full screen in a dialog,
    so the page stays short and nothing scrolls sideways. The hidden frames never load. */
 (function(){
   var T={"open": "Open the experiment"},d=document.getElementById('fx'),fr=document.getElementById('fxf');
   if(!d||typeof d.showModal!=='function')return;
-  document.querySelectorAll('figure.w iframe').forEach(function(f){
+  document.querySelectorAll('figure.w iframe:not(.ph)').forEach(function(f){
     var b=document.createElement('button');b.type='button';b.className='fcard';
     b.innerHTML='<span class="fi" aria-hidden="true">▶</span><span><span class="ft"></span><span class="fo"></span></span>';
     b.querySelector('.ft').textContent=f.title;b.querySelector('.fo').textContent=T.open+' →';

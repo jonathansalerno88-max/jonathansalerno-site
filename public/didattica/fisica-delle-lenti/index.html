@@ -105,7 +105,7 @@ figure.w iframe.h-micro{height:1075px}
 figure.w iframe.h-em{height:760px}
 figure.w iframe.h-lz{height:895px}
 figure.w iframe.h-pers{height:1505px}
-@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1295px} figure.w iframe.h-em{height:850px} figure.w iframe.h-lz{height:1095px}}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1720px} figure.w iframe.h-em{height:1300px} figure.w iframe.h-lz{height:1600px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
 figure.w figcaption a{font-weight:500}
 
@@ -216,10 +216,10 @@ dialog.cf button:disabled{opacity:.6; cursor:default}
 dialog.cf .cf-msg{margin:.7rem 0 0; font-size:.9rem}
 dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
 
-/* Phones: each interactive figure becomes a card that opens it full screen */
+/* Phones: figures that fit a phone (.ph: narrow, or stacked into panels by w/stack.js) stay in the page; each other figure becomes a card that opens it full screen */
 .fcard{display:none}
 @media (max-width:600px){
-  figure.w iframe{display:none!important}
+  figure.w iframe:not(.ph){display:none!important}
   .fcard{display:flex; align-items:center; gap:.8rem; width:100%; text-align:left; font:inherit; color:var(--ink);
     background:var(--card); border:1px solid var(--rule); border-left:4px solid var(--link); border-radius:10px; padding:.8rem .9rem; cursor:pointer}
   .fcard .fi{flex:none; width:2.4rem; height:2.4rem; border-radius:50%; background:var(--link); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1rem}
@@ -359,7 +359,7 @@ dialog.fx iframe{display:block; width:100%; height:calc(100dvh - 5.2rem); border
     altro sistema di misura: una luce StVZO con 100 lux a 10 m ha I = 100 lm/m² × (10 m)²/sr = 10.000 cd, la
     stessa intensità.</li></ul>
     <p class="qci"><b>Prova tu.</b> Quante candele ti servono, come minimo, nelle diverse condizioni: velocità, asfalto asciutto o bagnato, strada illuminata o buia? E quale parametro trovi sulla confezione per verificarlo: i lux a 10 m (StVZO) o la portata (ANSI FL1)?</p>
-    <figure class="w qcalc"><iframe src="w/00e-che-luce.html" title="Che luce ti serve? Dallo spazio di arresto alla scheda tecnica" loading="lazy"></iframe>
+    <figure class="w qcalc"><iframe class="ph" src="w/00e-che-luce.html" title="Che luce ti serve? Dallo spazio di arresto alla scheda tecnica" loading="lazy"></iframe>
     <figcaption>Scegli velocità, strada e illuminazione, poi muovi il cursore della luce finché raggiungi l'obiettivo. <a href="w/00e-che-luce.html">Apri a schermo intero</a></figcaption></figure></div></li>
     <li><figure><svg class="qsvg" viewBox="0 0 160 120" aria-hidden="true">
 <defs><radialGradient id="qglow"><stop offset="0" stop-color="#FFE9A8" stop-opacity="1"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></radialGradient></defs>
@@ -379,7 +379,7 @@ dialog.fx iframe{display:block; width:100%; height:calc(100dvh - 5.2rem); border
   <p class="lead2"><b>Torniamo al thread per dichiarare il vincitore.</b> Chi vince fra la luce A, 1.000 lumen <span class="u">(lm, flusso totale)</span> in un
   fascio di 40°, e la luce B, 400 lumen in un fascio di 10°? Montiamole su una bici a 30 km/h, di notte.</p>
   <figure class="w">
-    <iframe src="w/00-bici.html" title="Lumen o candele? Una luce da bici sulla strada, allo spazio di arresto" loading="lazy"></iframe>
+    <iframe class="ph" src="w/00-bici.html" title="Lumen o candele? Una luce da bici sulla strada, allo spazio di arresto" loading="lazy"></iframe>
     <figcaption>Bici a 30 km/h su asfalto asciutto, strada buia: scegli la luce A o la B, poi cambia lumen e ampiezza del fascio, la strada e l'illuminazione. <a href="w/00-bici.html">Apri a schermo intero</a></figcaption>
   </figure>
   <p><b>E il vincitore è… nessuno.</b> Su strada buia la B vede la buca allo spazio di arresto, ma solo in una
@@ -440,7 +440,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   ci portano circa 450 lux, 4.500 lumen circa 1.350, e le finestre ne aggiungono facilmente 500. L'<b>obiettivo</b> lo dà lo standard AVIXA/ANSI sul contrasto delle
   immagini: almeno <b>80:1 per un film</b>, 15:1 per le slide.</p>
   <figure class="w">
-    <iframe src="w/00c-proiettore.html" title="Proiettore e TV affiancati: stesso contrasto, quanti lumen?" loading="lazy" class="h-simple"></iframe>
+    <iframe src="w/00c-proiettore.html" title="Proiettore e TV affiancati: stesso contrasto, quanti lumen?" loading="lazy" class="ph h-simple"></iframe>
     <figcaption>Proiettore e TV affiancati nel soggiorno del thread, alla stessa diagonale: muovi la luce della stanza e guarda quanti lumen servirebbero al proiettore per lo stesso contrasto della TV. <a href="w/00c-proiettore.html">Apri a schermo intero</a></figcaption>
   </figure>
   <p><b>E il vincitore è… la TV.</b> Di giorno il proiettore da 1.500 lm sta a circa 2:1 e quello da 4.500 lm a circa
@@ -512,7 +512,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   Frame Insertion). Metà di ogni refresh è nera e la persistenza scende a 4,2 ms, ma la luce si dimezza, e a 60 Hz lo
   schermo sfarfalla. Qui sotto la strategia A è a sinistra, il miglior compromesso a destra.</p>
   <figure class="w">
-    <iframe src="w/00f-sfida-gaming.html" title="Sparatutto online: strategia A contro il miglior compromesso" loading="lazy" class="h-sfida"></iframe>
+    <iframe src="w/00f-sfida-gaming.html" title="Sparatutto online: strategia A contro il miglior compromesso" loading="lazy" class="ph h-sfida"></iframe>
     <figcaption>A sinistra la strategia A (60 fps, interpolazione, HDR), a destra il miglior compromesso (120 fps, BFI). La scia è ingrandita tre volte, e il quadratino si muove solo con le immagini che la TV mostra davvero. <a href="w/00f-sfida-gaming.html">Apri a schermo intero</a></figcaption>
   </figure>
   <p><b>E il vincitore è… 120 Hz con la BFI, se il gioco gira a 120 fps.</b> Dà 4 px di scia e 9 ms di ritardo. La
@@ -536,7 +536,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   preme tasti, e la TV ritarda anche l'audio per tenerlo insieme all'immagine. Gli aloni restano, ma non stai mirando
   a niente, e l'interpolazione standard, che ha più tempo per calcolare, ne fa meno di quella da gioco.</p>
   <figure class="w">
-    <iframe src="w/00g-film.html" title="Film a 24 fps: nativo o interpolato a 120 Hz" loading="lazy" class="h-film"></iframe>
+    <iframe src="w/00g-film.html" title="Film a 24 fps: nativo o interpolato a 120 Hz" loading="lazy" class="ph h-film"></iframe>
     <figcaption>Lo stesso film a 24 fps, a sinistra senza interpolazione e a destra con l'interpolazione: guarda il quadratino, le due griglie e il fotogramma al rallentatore. <a href="w/00g-film.html">Apri a schermo intero</a></figcaption>
   </figure>
   <p><b>E il vincitore è… l'interpolazione, se ti piace l'effetto soap opera.</b> Il mondo reale non ha fotogrammi:
@@ -776,7 +776,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
     che non ruotano nell'orbita: ruota la testa.</li>
   </ul>
   <figure class="w">
-    <iframe src="w/10-occhi-animali.html" title="Variare la distanza nodale–fuoco: uomo, gatto, rapace, gufo" loading="lazy"></iframe>
+    <iframe class="ph" src="w/10-occhi-animali.html" title="Variare la distanza nodale–fuoco: uomo, gatto, rapace, gufo" loading="lazy"></iframe>
     <figcaption>Valori indicativi, scelti per mostrare le strategie. <a href="w/10-occhi-animali.html">Apri a schermo intero</a></figcaption>
   </figure>
   <h3>Perché non abbiamo la focale di un rapace?</h3>
@@ -944,7 +944,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   ritocco di micrometrica. E siccome l'immagine è capovolta, quando sposti il vetrino a destra con le manopole del
   tavolino l'immagine nell'oculare va a sinistra: all'inizio si sbaglia sempre direzione.</p>
   <figure class="w">
-    <iframe src="w/13-microscopio.html" title="Microscopio ottico: scegli le lenti e metti a fuoco" loading="lazy" class="h-micro"></iframe>
+    <iframe src="w/13-microscopio.html" title="Microscopio ottico: scegli le lenti e metti a fuoco" loading="lazy" class="ph h-micro"></iframe>
     <figcaption>Scegli lenti, obiettivo e olio, poi metti a fuoco con le due viti. <a href="w/13-microscopio.html">Apri a schermo intero</a></figcaption>
   </figure>
   <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: capire perché servono due lenti convergenti, e come si passa da 40× a 1000×.
@@ -993,7 +993,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
   con il campo fisso e la corrente in una spira che può ruotare, la stessa spinta fa girare il motore della lavatrice:
   è in fondo alla figura.</p>
   <figure class="w">
-    <iframe src="w/15-lorentz.html" title="Lo stesso principio: il galvanometro di Einthoven e le bobine del SEM" loading="lazy" class="h-lz"></iframe>
+    <iframe src="w/15-lorentz.html" title="Lo stesso principio: il galvanometro di Einthoven e le bobine del SEM" loading="lazy" class="ph h-lz"></iframe>
     <figcaption>Premi «Battito», muovi la corrente nelle bobine e quella del motore. Tutti e due i disegni sono visti dall'alto. <a href="w/15-lorentz.html">Apri a schermo intero</a></figcaption>
   </figure>
   <div class="tscroll tw"><table>
@@ -1007,7 +1007,7 @@ s.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.prev
     </tbody>
   </table></div>
   <figure class="w">
-    <iframe src="w/14-confocale-tem-sem.html" title="Confocale, TEM e SEM in schema" loading="lazy" class="h-em"></iframe>
+    <iframe src="w/14-confocale-tem-sem.html" title="Confocale, TEM e SEM in schema" loading="lazy" class="ph h-em"></iframe>
     <figcaption>Tre schede, una per microscopio. <a href="w/14-confocale-tem-sem.html">Apri a schermo intero</a></figcaption>
   </figure>
   <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: capire che cosa aggiunge ciascuno rispetto al microscopio ottico.
@@ -1151,12 +1151,12 @@ f.addEventListener('submit',function(e){e.preventDefault();
 })();</script>
 <dialog class="fx" id="fx" aria-labelledby="fxt"><div class="fxbar"><b id="fxt"></b><button type="button" id="fxc">✕ Chiudi</button></div><p class="fxhint">Ruota il telefono in orizzontale per vederlo più grande.</p><iframe id="fxf" title=""></iframe></dialog>
 <script>
-/* Phones: replace each interactive figure with a card; the figure opens full screen in a dialog,
+/* Phones: replace each wide interactive figure (not .ph) with a card; the figure opens full screen in a dialog,
    so the page stays short and nothing scrolls sideways. The hidden frames never load. */
 (function(){
   var T={"open": "Apri l'esperimento"},d=document.getElementById('fx'),fr=document.getElementById('fxf');
   if(!d||typeof d.showModal!=='function')return;
-  document.querySelectorAll('figure.w iframe').forEach(function(f){
+  document.querySelectorAll('figure.w iframe:not(.ph)').forEach(function(f){
     var b=document.createElement('button');b.type='button';b.className='fcard';
     b.innerHTML='<span class="fi" aria-hidden="true">▶</span><span><span class="ft"></span><span class="fo"></span></span>';
     b.querySelector('.ft').textContent=f.title;b.querySelector('.fo').textContent=T.open+' →';
