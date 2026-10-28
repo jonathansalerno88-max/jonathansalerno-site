@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Microbiologia — Jonathan Salerno</title>
+<link rel="alternate" hreflang="it" href="/didattica/microbiologia/">
+<link rel="alternate" hreflang="en" href="/teaching/microbiology/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
+<meta name="description" content="Supporto allo studio interattivo di microbiologia: la cellula batterica, Gram positivi, Gram negativi e micobatteri a confronto, con parete, membrana, citoplasma, flagelli e pili, colorazioni di Gram e Ziehl–Neelsen e i bersagli degli antibiotici.">
+<meta name="author" content="Jonathan Salerno">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Microbiologia">
+<meta property="og:description" content="Supporto allo studio interattivo di microbiologia.">
+<style>
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-ext-600-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-greek-400-normal.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-ext-500-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+:root{
+  --paper:#FBFCFD; --ink:#16222E; --mut:#55697A; --faint:#8696A4;
+  --rule:#DDE4EA; --link:#1456A8; --mark:#B5520C; --axis:#9DACB9; --card:#F1F4F7;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0E151B; --ink:#E2E9EF; --mut:#9BAAB7; --faint:#6C7D8C;
+  --rule:#27343F; --link:#6FA8EA; --mark:#F08A3C; --axis:#50616F; --card:#16212A;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#0E151B; --ink:#E2E9EF; --mut:#9BAAB7; --faint:#6C7D8C;
+  --rule:#27343F; --link:#6FA8EA; --mark:#F08A3C; --axis:#50616F; --card:#16212A;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans);
+  font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased}
+.page{max-width:47rem; margin:0 auto; padding:clamp(2rem,6vw,4.5rem) 16px clamp(3rem,8vw,6rem)}
+a{color:var(--link); font-weight:600; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:.2em}
+a:hover{text-decoration-thickness:2px}
+a:focus-visible{outline:2px solid var(--link); outline-offset:3px; border-radius:2px}
+
+.back{font-size:.875rem; margin:0 0 1.6rem}
+.kicker{font-family:var(--mono); font-size:.75rem; color:var(--faint); letter-spacing:.04em; margin:0 0 .4rem}
+h1{font-family:var(--serif); font-weight:500; font-size:clamp(2.2rem,6vw,3rem); line-height:1.08;
+  letter-spacing:-.02em; margin:0 0 .9rem}
+.lede{max-width:38rem; color:var(--ink); font-size:1.0625rem}
+.lede p{margin:0 0 .8rem}
+
+nav.toc{margin:2rem 0 0; padding:1rem 1.2rem; background:var(--card); border-radius:10px}
+nav.toc h2{margin:0 0 .5rem; padding:0; border:0}
+nav.toc ol{margin:0; padding-left:1.4rem; font-size:.9375rem; columns:2 17rem; column-gap:2rem}
+nav.toc li{margin:.15rem 0; break-inside:avoid}
+nav.toc a{font-weight:500}
+.part{margin:clamp(3.4rem,8vw,5rem) 0 -1rem; padding-top:1rem; border-top:2px solid var(--ink)}
+.part .pn{display:block; font-family:var(--mono); font-size:.75rem; letter-spacing:.06em; color:var(--faint); text-transform:uppercase}
+.part .pt{display:block; font-family:var(--serif); font-size:clamp(1.5rem,4vw,1.9rem); line-height:1.15; margin-top:.2rem}
+.xref{font-size:.9rem; color:var(--mut); background:var(--card); border-left:3px solid var(--link); border-radius:0 6px 6px 0; padding:.5rem .8rem; margin:0 0 1rem; max-width:38rem}
+.xref b{color:var(--ink)}
+h3[id],h2[id]{scroll-margin-top:1rem}
+nav.toc .tg{display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:.6rem 2rem}
+nav.toc .tp{font-size:.75rem; font-family:var(--mono); color:var(--faint); letter-spacing:.04em; margin:0 0 .25rem; text-transform:uppercase}
+nav.toc .tg ol{columns:auto}
+nav.toc li ul{margin:.1rem 0 .25rem; padding-left:1.1rem; font-size:.875rem; list-style:disc}
+nav.toc li ul li{margin:.05rem 0}
+nav.toc li ul a{font-weight:400}
+
+section{margin-top:clamp(2.8rem,7vw,4rem); scroll-margin-top:1rem}
+h2{font-family:var(--sans); font-weight:600; font-size:.8125rem; color:var(--mut);
+  margin:0 0 1rem; padding-bottom:.5rem; border-bottom:1px solid var(--rule); letter-spacing:.005em}
+h3{font-family:var(--serif); font-weight:500; font-size:1.45rem; line-height:1.25; margin:0 0 .8rem; letter-spacing:-.01em}
+section p, section ul, section ol{max-width:38rem}
+section p{margin:0 0 .85rem}
+section ul{padding-left:1.2rem; margin:0 0 .9rem}
+section li{margin:.25rem 0}
+.formula{font-family:var(--mono); font-size:.9rem; background:var(--card); border-radius:6px;
+  padding:.55rem .8rem; display:inline-block; margin:.1rem 0 .9rem}
+.try{font-size:.9375rem; color:var(--mut); border-left:3px solid var(--axis); padding:.1rem 0 .1rem .9rem; margin:1rem 0}
+.try ul,.try ol{margin:.35rem 0 0; padding-left:1.3rem}
+.try li{margin:.15rem 0}
+.try b{color:var(--ink); font-weight:600}
+
+figure.w{margin:1.4rem 0 1.2rem}
+figure.w iframe{display:block; width:100%; height:560px; border:1px solid var(--rule);
+  border-radius:10px; background:#FBFCFD}
+figure.w iframe.h-simple{height:600px}
+figure.w iframe.h-game{height:1240px}
+figure.w iframe.h-sfida{height:1475px}
+figure.w iframe.h-film{height:1300px}
+figure.w iframe.h-micro{height:1075px}
+figure.w iframe.h-em{height:760px}
+figure.w iframe.h-lz{height:895px}
+figure.w iframe.h-pers{height:1505px}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1720px} figure.w iframe.h-em{height:1300px} figure.w iframe.h-lz{height:1600px}}
+figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
+figure.w figcaption a{font-weight:500}
+
+table{border-collapse:collapse; font-size:.9rem; margin:.4rem 0 1rem; width:100%; max-width:38rem}
+.tscroll{overflow-x:auto; max-width:100%}
+.tscroll table{max-width:none; min-width:34rem}
+.tscroll td{white-space:nowrap}
+.tscroll.tw table{min-width:40rem}
+.tscroll.tw td{white-space:normal;vertical-align:top}
+.tscroll.tw td:first-child{font-weight:600}
+.tscroll.tw td{white-space:normal}
+th,td{text-align:left; padding:.45rem .6rem; border-bottom:1px solid var(--rule); vertical-align:top}
+th{font-weight:600; color:var(--mut); font-size:.8125rem}
+
+ul.qty{list-style:none; padding:0; margin:0 0 1.1rem; max-width:38rem}
+ul.qty>li{display:grid; grid-template-columns:9.5rem 1fr; gap:.4rem 1rem; align-items:start; margin:0 0 1.1rem}
+ul.qty figure{margin:.2rem 0 0}
+ul.qty .qsvg{display:block; width:100%; height:auto; background:var(--card); border-radius:8px}
+ul.qty figcaption{font-size:.75rem; line-height:1.35; color:var(--faint); margin-top:.3rem}
+ul.qty figure{position:relative; container-type:inline-size}
+ul.qty .qsvg{cursor:pointer}
+ul.qty .qsvg:focus-visible{outline:2px solid var(--link); outline-offset:2px}
+ul.qty figure.paused .qsvg *{animation-play-state:paused!important}
+ul.qty figure::after{content:""; position:absolute; top:calc(75cqw - 1.45rem); right:.35rem; width:1.1rem; height:1.1rem; border-radius:50%; background-color:var(--paper); opacity:0; transition:opacity .2s;
+  background-image:linear-gradient(var(--mut),var(--mut)),linear-gradient(var(--mut),var(--mut)); background-size:2px 8px,2px 8px; background-position:6px 50%,10px 50%; background-repeat:no-repeat; pointer-events:none}
+ul.qty figure.paused::after{opacity:.9}
+.qnote{font-size:.9375rem; background:var(--card); border-radius:8px; padding:.6rem .85rem; margin:.7rem 0 0}
+.qnote ul{margin:.3rem 0 .45rem; padding-left:1.2rem}
+.qnote li{margin:.1rem 0}
+.qtake{max-width:38rem; border:1.5px solid var(--link); border-radius:10px; padding:.8rem 1rem .4rem; margin:0 0 1.4rem; font-size:.9375rem}
+.qtake .qtt{font-family:var(--serif); font-size:1.15rem; margin:0 0 .5rem}
+.qtake p{margin:0 0 .4rem}
+.qtake ul{margin:0 0 .6rem; padding-left:1.2rem}
+.qtake li{margin:.15rem 0}
+.qtake .formula{display:block; margin:.2rem 0 .5rem; white-space:normal}
+#proiettore,#movimento{margin-top:2.6rem; scroll-margin-top:1rem}
+.qsub{list-style:disc; padding-left:1.2rem; margin:.35rem 0 0}
+.qsub li{margin:.2rem 0}
+.dim{font-size:.875rem; color:var(--mut); border-left:3px solid var(--q-int); background:var(--card); border-radius:0 6px 6px 0; padding:.35rem .7rem .3rem; margin:.5rem 0 .2rem; max-width:38rem}
+.dim b{color:var(--ink); font-weight:600}
+details.dim summary{cursor:pointer; color:var(--ink); font-weight:600; padding:.1rem 0}
+details.dim summary:focus-visible{outline:2px solid var(--link); outline-offset:2px; border-radius:2px}
+details.dim:not([open]){padding-bottom:.35rem}
+.dim ul{margin:.15rem 0 0; padding-left:1.1rem; list-style:disc}
+.dim li{margin:.15rem 0}
+figure.w.qcalc{margin:.9rem 0 .2rem; max-width:none!important}
+ul.qty figure.w::after{display:none}
+.qci{margin:.9rem 0 0; font-size:.95rem}
+.qhint{font-size:.8125rem; color:var(--faint); margin:-.4rem 0 1rem}
+@media (max-width:30rem){ul.qty>li{grid-template-columns:1fr} ul.qty figure{max-width:15rem}}
+:root{--q-flux:#534AB7; --q-int:#185FA5; --q-ill:#B5520C; --q-lum:#0F6E56}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--q-flux:#A39BF0; --q-int:#6FA8EA; --q-ill:#F08A3C; --q-lum:#4FC9A6}}
+:root[data-theme="dark"]{--q-flux:#A39BF0; --q-int:#6FA8EA; --q-ill:#F08A3C; --q-lum:#4FC9A6}
+.qsvg .q-t{font:600 10px var(--mono)}
+.qsvg .q-body{fill:var(--paper); stroke:var(--mut); stroke-width:1.2}
+.qsvg .q-wave{fill:none; stroke:var(--q-flux); stroke-width:2; transform-box:fill-box; transform-origin:center; animation:qwave 2.6s ease-out infinite}
+@keyframes qwave{from{transform:scale(.25); opacity:.9} to{transform:scale(1); opacity:0}}
+.qsvg .q-rays line{stroke-dasharray:4 4; animation:qflow 1s linear infinite}
+.qsvg .q-rays2 line{animation:qflow 1s linear infinite}
+@keyframes qflow{to{stroke-dashoffset:-8}}
+.qsvg .q-fl{transform-box:fill-box; transform-origin:50% 100%; animation:qfl 1.3s ease-in-out infinite alternate}
+@keyframes qfl{from{transform:scale(1,1)} 50%{transform:scale(.94,1.08)} to{transform:scale(1.03,.95)}}
+.u{font-family:var(--mono); font-size:.8em; color:var(--mut); white-space:nowrap; font-weight:400}
+ol.refs{font-size:.875rem; color:var(--mut); padding-left:1.2rem}
+ol.refs li{margin:.45rem 0}
+.caveat{font-size:.875rem; color:var(--mut)}
+footer{margin-top:clamp(3rem,8vw,4.5rem); padding-top:1.1rem; border-top:1px solid var(--rule);
+  color:var(--faint); font-size:.8125rem}
+footer p{margin:0}
+footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
+.topbar{display:flex; justify-content:space-between; align-items:center; gap:1rem; font-size:.875rem; margin:0 0 1.6rem}
+.lang{position:relative}
+.lang summary{list-style:none; cursor:pointer; display:flex; align-items:center; gap:.4rem; padding:.35rem .7rem;
+  border:1px solid var(--rule); border-radius:8px; background:var(--card,transparent); color:var(--ink); font-weight:600; font-size:.875rem}
+.lang summary::-webkit-details-marker{display:none}
+.lang summary::after{content:"▾"; font-size:.75rem; color:var(--mut)}
+.lang[open] summary::after{content:"▴"}
+.lang ul{position:absolute; right:0; top:calc(100% + 4px); margin:0; padding:.3rem; list-style:none; background:var(--paper);
+  border:1px solid var(--rule); border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,.14); min-width:9.5rem; z-index:10}
+.lang li a{display:block; padding:.4rem .6rem; border-radius:6px; text-decoration:none; color:var(--ink); font-weight:500}
+.lang li a:hover,.lang li a:focus-visible{background:var(--card,rgba(127,127,127,.12))}
+.lang li a[aria-current]{color:var(--link); font-weight:600}
+.lang li a[aria-current]::after{content:" ✓"}
+.tright{display:flex; align-items:center; gap:.5rem}
+.sup ul{min-width:15rem; max-width:calc(100vw - 2rem)}
+@media (max-width:600px){.tright{position:relative} details.sup{position:static} .sup li a{white-space:normal!important}}
+.sup li a{white-space:nowrap}
+.sup li a{display:flex; align-items:center; gap:.5rem}
+.sup li a svg{flex:none}
+.sup li a[aria-current]::after{content:none}
+@media (max-width:480px){.sup .sl{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}}
+
+/* Contact form (dialog opened from the Contact menu) */
+dialog.cf{width:min(32rem,calc(100vw - 2rem)); border:1px solid var(--rule); border-radius:12px; padding:1.1rem 1.2rem 1rem;
+  background:var(--paper); color:var(--ink); box-shadow:0 12px 40px rgba(0,0,0,.25)}
+dialog.cf::backdrop{background:rgba(14,21,27,.45)}
+dialog.cf h2{margin:0 0 .2rem; padding:0; border:0; font-size:1.15rem; color:var(--ink); text-transform:none; letter-spacing:0; font-family:var(--sans)}
+dialog.cf p.cf-sub{margin:0 0 .8rem; color:var(--mut); font-size:.875rem}
+dialog.cf label{display:block; font-size:.875rem; font-weight:600; margin:.6rem 0 .25rem}
+dialog.cf label span{font-weight:400; color:var(--faint)}
+dialog.cf input,dialog.cf textarea{width:100%; box-sizing:border-box; font:inherit; font-size:.9375rem; color:var(--ink); background:var(--card);
+  border:1px solid var(--rule); border-radius:8px; padding:.5rem .6rem}
+dialog.cf textarea{min-height:8rem; resize:vertical}
+dialog.cf input:focus-visible,dialog.cf textarea:focus-visible{outline:2px solid var(--link); outline-offset:1px}
+dialog.cf .cf-hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+dialog.cf .cf-priv{font-size:.8125rem; color:var(--mut); margin:.7rem 0 0}
+dialog.cf .cf-row{display:flex; gap:.6rem; justify-content:flex-end; align-items:center; margin-top:.9rem; flex-wrap:wrap}
+dialog.cf button{font:inherit; font-size:.9375rem; border-radius:8px; padding:.45rem .9rem; cursor:pointer; border:1px solid var(--rule); background:var(--card); color:var(--ink)}
+dialog.cf button.cf-send{background:var(--link); border-color:var(--link); color:#fff; font-weight:600}
+dialog.cf button:disabled{opacity:.6; cursor:default}
+dialog.cf .cf-msg{margin:.7rem 0 0; font-size:.9rem}
+dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
+
+/* Phones: figures that fit a phone (.ph: narrow, or stacked into panels by w/stack.js) stay in the page; each other figure becomes a card that opens it full screen */
+.fcard{display:none}
+@media (max-width:600px){
+  figure.w iframe:not(.ph){display:none!important}
+  .fcard{display:flex; align-items:center; gap:.8rem; width:100%; text-align:left; font:inherit; color:var(--ink);
+    background:var(--card); border:1px solid var(--rule); border-left:4px solid var(--link); border-radius:10px; padding:.8rem .9rem; cursor:pointer}
+  .fcard .fi{flex:none; width:2.4rem; height:2.4rem; border-radius:50%; background:var(--link); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1rem}
+  .fcard .ft{display:block; font-weight:600; font-size:.95rem; line-height:1.35}
+  .fcard .fo{display:block; color:var(--link); font-size:.85rem; font-weight:600; margin-top:.2rem}
+}
+dialog.fx{width:100vw; height:100dvh; max-width:none; max-height:none; margin:0; padding:0; border:0; background:var(--paper); color:var(--ink)}
+dialog.fx::backdrop{background:rgba(14,21,27,.6)}
+dialog.fx .fxbar{display:flex; align-items:center; gap:.6rem; padding:.5rem .8rem; border-bottom:1px solid var(--rule); height:3rem; box-sizing:border-box}
+dialog.fx .fxbar b{flex:1; min-width:0; font-size:.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+dialog.fx .fxbar button{font:inherit; font-size:.9rem; font-weight:600; border:1px solid var(--rule); background:var(--card); color:var(--ink); border-radius:8px; padding:.35rem .8rem; cursor:pointer}
+dialog.fx .fxhint{font-size:.78rem; color:var(--mut); padding:.3rem .8rem; margin:0}
+/* the figure keeps its wide layout (at least 720 px) and is scaled to fit; + and − zoom it, one finger pans */
+dialog.fx .fxw{height:calc(100dvh - 5.2rem); overflow:auto; -webkit-overflow-scrolling:touch; background:#FBFCFD}
+dialog.fx .fxs{position:relative}
+dialog.fx iframe{display:block; position:absolute; left:0; top:0; width:720px; border:0; background:#FBFCFD; transform-origin:0 0}
+dialog.fx .fxbar .fxz{padding:.35rem .6rem; min-width:2.4rem}
+dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align:center}
+@media (orientation:landscape){dialog.fx .fxhint{display:none} dialog.fx .fxw{height:calc(100dvh - 3rem)}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="topbar">
+  <a href="/">Jonathan Salerno</a>
+  <div class="tright">
+  <details class="lang sup">
+    <summary aria-label="Contatti e sostegno"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg> <span class="sl">Contatti</span></summary>
+    <ul>
+      <li><a href="/bio/"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg> Chi sono</a></li>
+      <li><a data-contact href="mailto:info@eraofprevention.com?subject=Microbiologia"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> Segnala errori o mandami le tue idee</a></li>
+      <li><a href="https://buy.stripe.com/7sYfZh0rzgJTb9a7TG3Nm01" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg> Sostieni la cultura senza pubblicità né tracciamento</a></li>
+    </ul>
+  </details>
+  <details class="lang">
+    <summary aria-label="Lingua / Language"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg> Italiano</summary>
+    <ul>
+      <li><a href="/didattica/microbiologia/" lang="it" hreflang="it" aria-current="page">Italiano</a></li>
+      <li><a href="/teaching/microbiology/" lang="en" hreflang="en">English</a></li>
+    </ul>
+  </details>
+  </div>
+</div>
+
+<header>
+  <p class="kicker">SUPPORTO ALLO STUDIO</p>
+  <h1>Microbiologia</h1>
+  <div class="lede">
+    <p>Microbiologia con disegni interattivi, un blocco alla volta. Si comincia dalla cellula
+    batterica: un Gram positivo, un Gram negativo e un micobatterio affiancati, struttura per struttura.</p>
+    <p class="caveat">Schemi semplificati e non in scala: servono a ricordare le strutture e a collegarle
+    alla clinica, non a sostituire il testo di riferimento.</p>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sommario">
+  <h2>Sommario</h2>
+  <div class="tg">
+  <div><p class="tp">Parte I · Batteriologia generale</p><ol start="1">
+    <li><a href="#cellula">La cellula batterica: Gram+, Gram− e micobatterio</a></li>
+  </ol></div>
+  </div>
+  <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#fonti">Fonti</a></p>
+</nav>
+
+<div class="part"><span class="pn">Parte I</span><span class="pt">Batteriologia generale</span></div>
+
+<section id="cellula">
+  <h2>1 · La cellula batterica: Gram+, Gram− e micobatterio</h2>
+  <p>I batteri sono <b>procarioti</b>: niente nucleo, niente organelli con membrana, ribosomi 70S invece degli 80S
+  delle nostre cellule. Misurano in genere 1–5 µm. Quasi tutti hanno attorno alla membrana un involucro con il
+  <b>peptidoglicano</b>, una rete che resiste alla pressione osmotica interna. Il modo in cui questo involucro è
+  costruito divide i batteri in tre grandi gruppi, e decide come si colorano e quali antibiotici li raggiungono.</p>
+  <h3>Tre involucri a confronto</h3>
+  <p>Nel disegno le tre cellule hanno la stessa forma, così si confrontano le strutture e non la morfologia. Passa
+  il mouse o tocca una parte: si apre sotto l'ingrandimento della stessa struttura nei tre batteri. Dentro
+  l'ingrandimento ogni strato ha la sua scheda, con a cosa serve e quali farmaci lo colpiscono.</p>
+  <figure class="w">
+    <iframe src="w/01-cellula.html" title="La cellula batterica: Gram+, Gram− e micobatterio a confronto" loading="lazy" class="ph"></iframe>
+    <figcaption>Scegli una parte, poi esplora l'ingrandimento. In alto puoi simulare le colorazioni. <a href="w/01-cellula.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <h3>L'involucro decide la colorazione</h3>
+  <p>Nella <b>colorazione di Gram</b> tutti i batteri prendono il cristalvioletto, fissato dal lugol. Poi l'alcol
+  decide: nei Gram+ disidrata il peptidoglicano spesso, che chiude le maglie e trattiene il colorante (viola); nei
+  Gram− scioglie la membrana esterna, e il peptidoglicano sottile non trattiene nulla (rosa, dalla safranina). I
+  micobatteri si colorano male con il Gram, perché la parete cerosa lascia entrare poco colorante. Per loro serve la
+  <b>Ziehl–Neelsen</b>: la carbolfucsina, a caldo, entra negli acidi micolici e non esce più nemmeno con
+  l'alcol-acido. Sono i <b>BAAR</b> (bacilli alcol-acido resistenti), rossi su fondo blu.</p>
+  <h3>L'involucro decide anche gli antibiotici</h3>
+  <p>La <b>vancomicina</b> è una molecola grande: nei Gram+ arriva al peptidoglicano, nei Gram− la membrana esterna
+  la ferma. I <b>β-lattamici</b> passano dalle porine dei Gram−, ma nel periplasma trovano le β-lattamasi, proprio
+  sulla strada verso le PBP. Le <b>polimixine</b> (colistina) fanno il contrario: legano il lipide A e funzionano
+  solo sui Gram−. Nei micobatteri pochi farmaci comuni superano lo strato di acidi micolici: per questo la terapia
+  antitubercolare usa farmaci propri, come l'<b>isoniazide</b> (sintesi degli acidi micolici),
+  l'<b>etambutolo</b> (arabinogalattano) e la <b>rifampicina</b> (RNA polimerasi).</p>
+  <p>La differenza conta anche quando il batterio muore. Il <b>lipide A</b> dell'LPS è un'endotossina: si libera con
+  la lisi batterica, anche durante la terapia, e attraverso il TLR4 può dare febbre, ipotensione e shock settico.
+  I Gram+ non hanno LPS, ma gli acidi lipoteicoici attivano il TLR2 e alcune loro tossine (superantigeni) danno
+  quadri simili.</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th></th><th>Gram positivo</th><th>Gram negativo</th><th>Micobatterio</th></tr></thead>
+    <tbody>
+    <tr><td>Peptidoglicano</td><td>spesso, 20–80 nm</td><td>sottile, 1–2 strati, nel periplasma</td><td>legato ad arabinogalattano e acidi micolici</td></tr>
+    <tr><td>Membrana esterna</td><td>no</td><td>sì, con LPS</td><td>micomembrana di acidi micolici e lipidi liberi</td></tr>
+    <tr><td>Endotossina (lipide A)</td><td>no</td><td>sì</td><td>no</td></tr>
+    <tr><td>Acidi teicoici</td><td>sì</td><td>no</td><td>no</td></tr>
+    <tr><td>Lipidi nell'involucro</td><td>pochi (&lt; 5 %)</td><td>circa 10–20 %</td><td>fino a circa il 60 %</td></tr>
+    <tr><td>Gram</td><td>viola</td><td>rosa</td><td>si colora male</td></tr>
+    <tr><td>Ziehl–Neelsen</td><td>blu</td><td>blu</td><td>rosso (BAAR)</td></tr>
+    <tr><td>Farmaci tipici</td><td>vancomicina, daptomicina</td><td>polimixine; la vancomicina non entra</td><td>isoniazide, etambutolo, rifampicina, pirazinamide</td></tr>
+    <tr><td>Esempi</td><td>Staphylococcus, Streptococcus, Enterococcus, Bacillus, Clostridium, Listeria</td><td>Escherichia, Klebsiella, Pseudomonas, Neisseria, Haemophilus, Salmonella</td><td>M. tuberculosis, M. leprae, micobatteri non tubercolari</td></tr>
+    </tbody></table></div>
+  <p class="caveat">Le percentuali di lipidi sono ordini di grandezza da manuale e cambiano molto fra le specie.</p>
+  <div class="try"><b>Da provare.</b> <i>Obiettivo</i>: collegare ogni strato alla colorazione e ai farmaci.
+  <ol><li>Scegli «Involucro» e passa sul lipide A del Gram−: perché un batterio morto può ancora dare shock settico?</li>
+  <li>Accendi la colorazione di Gram: perché il micobatterio si colora così poco? Poi passa a Ziehl–Neelsen.</li>
+  <li>Confronta il flagello del Gram+ e del Gram−: quali anelli mancano, e perché?</li>
+  <li>Trova dove agiscono vancomicina, isoniazide, etambutolo, rifampicina e bedachilina.</li>
+  <li>Dove stanno le β-lattamasi nel Gram−, e perché lì danno più fastidio?</li></ol></div>
+</section>
+
+<section id="fonti">
+  <h2>Fonti</h2>
+  <ol class="refs">
+    <li>Silhavy TJ, Kahne D, Walker S. The bacterial cell envelope. <i>Cold Spring Harb Perspect Biol</i> 2010;2:a000414.
+    <a href="https://doi.org/10.1101/cshperspect.a000414">doi:10.1101/cshperspect.a000414</a></li>
+    <li>Brennan PJ, Nikaido H. The envelope of mycobacteria. <i>Annu Rev Biochem</i> 1995;64:29–63.
+    <a href="https://doi.org/10.1146/annurev.bi.64.070195.000333">doi:10.1146/annurev.bi.64.070195.000333</a></li>
+    <li>Kalscheuer R, Palacios A, Anso I, et al. The <i>Mycobacterium tuberculosis</i> capsule: a cell structure with key implications in pathogenesis. <i>Biochem J</i> 2019;476:1995–2016.
+    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6698057/">PMC6698057</a></li>
+    <li>Alteri CJ, Xicohténcatl-Cortes J, Hess S, et al. <i>Mycobacterium tuberculosis</i> produces pili during human infection. <i>PNAS</i> 2007;104:5145–50.
+    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC1817835/">PMC1817835</a></li>
+    <li>World Health Organization. Lateral flow urine lipoarabinomannan assay (LF-LAM) for the diagnosis of active tuberculosis in people living with HIV: policy update 2019.</li>
+  </ol>
+  <p class="caveat">Il resto è materiale da manuale di microbiologia medica; gli schemi sono semplificati e non in scala.</p>
+</section>
+
+<footer>
+  <p>Jonathan Salerno · Firenze · <a href="/">jonathansalerno.org</a></p>
+  <p class="lic">© 2026 Jonathan Salerno. Testi e disegni interattivi sono distribuiti con licenza
+  <a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/deed.it">Creative Commons
+  Attribuzione – Non commerciale 4.0 Internazionale (CC BY-NC 4.0)</a>: puoi condividerli e adattarli
+  citando l'autore, non a scopo commerciale. I dati e le opere di terzi restano dei rispettivi autori
+  (vedi Fonti).</p>
+</footer>
+
+</div>
+<script>
+/* Each figure is a page of its own in an iframe from this site, so the frame
+   can be sized to its content and kept in step as the figure changes. */
+(function(){
+  var frames = document.querySelectorAll('figure.w iframe');
+  Array.prototype.forEach.call(frames, function(f){
+    function fit(){
+      try{
+        var d = f.contentDocument;
+        if (d && d.documentElement) f.style.height = Math.ceil(d.documentElement.offsetHeight) + 2 + 'px';
+      }catch(e){}
+    }
+    f.addEventListener('load', function(){
+      fit();
+      try{
+        if ('ResizeObserver' in window) new ResizeObserver(fit).observe(f.contentDocument.body);
+      }catch(e){}
+    });
+  });
+})();
+</script>
+<script>document.addEventListener('click',function(e){document.querySelectorAll('details.lang[open]').forEach(function(d){if(!d.contains(e.target))d.removeAttribute('open');});});</script>
+<script>
+/* In-page links: the interactive figures load lazily and grow while they load,
+   pushing the target down after the jump. Jump instantly, then keep the target
+   in place for a few seconds while the layout settles, unless the reader scrolls. */
+(function(){
+  var stop=true;
+  function pin(id){
+    var t=document.getElementById(id); if(!t) return;
+    stop=false; var t0=performance.now();
+    t.scrollIntoView({behavior:'instant',block:'start'});
+    (function step(){
+      if(stop) return;
+      var top=t.getBoundingClientRect().top, want=parseFloat(getComputedStyle(t).scrollMarginTop)||0;
+      if(Math.abs(top-want)>3) t.scrollIntoView({behavior:'instant',block:'start'});
+      if(performance.now()-t0<4000) requestAnimationFrame(step); else stop=true;
+    })();
+  }
+  ['wheel','touchstart','keydown'].forEach(function(ev){addEventListener(ev,function(){stop=true},{passive:true})});
+  document.addEventListener('click',function(e){
+    var a=e.target.closest && e.target.closest('a[href^="#"]'); if(!a) return;
+    var id=decodeURIComponent(a.getAttribute('href').slice(1)); if(!id||!document.getElementById(id)) return;
+    e.preventDefault();
+    var d=a.closest('details'); if(d) d.removeAttribute('open');
+    history.pushState(null,'','#'+id); pin(id);
+  });
+  if(location.hash) addEventListener('load',function(){pin(decodeURIComponent(location.hash.slice(1)))});
+})();
+</script>
+<dialog class="cf" id="cf" aria-labelledby="cf-t">
+<form id="cf-f" novalidate>
+  <h2 id="cf-t">Segnala errori o mandami le tue idee</h2>
+  <p class="cf-sub">Ti rispondo all’indirizzo che scrivi qui sotto.</p>
+  <label for="cf-n">Nome <span>(facoltativo)</span></label><input id="cf-n" name="name" maxlength="100" autocomplete="name">
+  <label for="cf-e">La tua email</label><input id="cf-e" name="email" type="email" maxlength="200" autocomplete="email" required>
+  <label for="cf-m">Messaggio</label><textarea id="cf-m" name="message" maxlength="5000" required></textarea>
+  <div class="cf-hp" aria-hidden="true"><label for="cf-w">Website</label><input id="cf-w" name="website" tabindex="-1" autocomplete="off"></div>
+  <p class="cf-priv">Uso nome ed email solo per risponderti: il messaggio arriva nella mia casella e non viene salvato da nessun’altra parte.</p>
+  <p class="cf-msg" id="cf-s" role="status" aria-live="polite"></p>
+  <div class="cf-row"><button type="button" id="cf-x">Annulla</button><button type="submit" class="cf-send" id="cf-b">Invia</button></div>
+</form>
+</dialog>
+<script>(function(){
+var T={"cancel": "Annulla", "send": "Invia", "sending": "Invio…", "ok": "Grazie! Il messaggio è arrivato. Ti rispondo appena posso.", "err": "Non sono riuscito a inviarlo. Riprova, oppure scrivimi a", "errmail": "Controlla l’indirizzo email.", "errmsg": "Scrivi un messaggio un po’ più lungo.", "close": "Chiudi"},d=document.getElementById('cf'),f=document.getElementById('cf-f'),s=document.getElementById('cf-s'),b=document.getElementById('cf-b'),x=document.getElementById('cf-x'),t0=0;
+if(!d||typeof d.showModal!=='function')return; // old browsers keep the plain mailto link
+document.querySelectorAll('a[data-contact]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();
+ var m=a.closest('details');if(m)m.removeAttribute('open');
+ if(d.dataset.done){f.reset();s.textContent='';s.className='cf-msg';b.hidden=false;b.disabled=false;x.textContent=T.cancel;delete d.dataset.done;}
+ t0=Date.now();d.showModal();document.getElementById('cf-e').focus();});});
+x.addEventListener('click',function(){d.close();});
+f.addEventListener('submit',function(e){e.preventDefault();
+ var em=f.email.value.trim(),ms=f.message.value.trim();
+ if(!/^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(em)){s.className='cf-msg no';s.textContent=T.errmail;f.email.focus();return;}
+ if(ms.length<5){s.className='cf-msg no';s.textContent=T.errmsg;f.message.focus();return;}
+ b.disabled=true;b.textContent=T.sending;s.className='cf-msg';s.textContent='';
+ fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:f.name.value,email:em,message:ms,website:f.website.value,elapsed:Date.now()-t0,page:location.pathname})})
+ .then(function(r){return r.json().catch(function(){return{ok:false}}).then(function(j){if(!r.ok||!j.ok)throw j;return j;})})
+ .then(function(){s.className='cf-msg ok';s.textContent=T.ok;b.hidden=true;x.textContent=T.close;d.dataset.done='1';})
+ .catch(function(j){s.className='cf-msg no';s.innerHTML='';
+   if(j&&j.error==='email'){s.textContent=T.errmail;}else if(j&&j.error==='message'){s.textContent=T.errmsg;}
+   else{s.appendChild(document.createTextNode(T.err+' '));var a=document.createElement('a');a.href='mailto:info@eraofprevention.com';a.textContent='info@eraofprevention.com';s.appendChild(a);s.appendChild(document.createTextNode('.'));}
+   b.disabled=false;b.textContent=T.send;});});
+})();</script>
+<dialog class="fx" id="fx" aria-labelledby="fxt"><div class="fxbar"><b id="fxt"></b><button type="button" class="fxz" id="fxm" aria-label="Rimpicciolisci">−</button><span id="fxzv"></span><button type="button" class="fxz" id="fxp" aria-label="Ingrandisci">+</button><button type="button" id="fxc">✕ Chiudi</button></div><p class="fxhint">Ingrandisci con + e −, spostati con un dito. In orizzontale la vedi più grande.</p><div class="fxw" id="fxw"><div class="fxs" id="fxs"><iframe id="fxf" title=""></iframe></div></div></dialog>
+<script>
+/* Phones: replace each wide interactive figure (not .ph) with a card; the figure opens full screen in a dialog,
+   so the page stays short and nothing scrolls sideways. The hidden frames never load. */
+(function(){
+  var T={"open": "Apri l'esperimento"},d=document.getElementById('fx'),fr=document.getElementById('fxf');
+  if(!d||typeof d.showModal!=='function')return;
+  document.querySelectorAll('figure.w iframe:not(.ph)').forEach(function(f){
+    var b=document.createElement('button');b.type='button';b.className='fcard';
+    b.innerHTML='<span class="fi" aria-hidden="true">▶</span><span><span class="ft"></span><span class="fo"></span></span>';
+    b.querySelector('.ft').textContent=f.title;b.querySelector('.fo').textContent=T.open+' →';
+    b.addEventListener('click',function(){document.getElementById('fxt').textContent=f.title;fr.title=f.title;FIT=true;fr.src=f.getAttribute('src');d.showModal();lay();w.scrollTop=0;w.scrollLeft=0;});
+    f.parentNode.insertBefore(b,f);
+  });
+  document.getElementById('fxc').addEventListener('click',function(){d.close();});
+  // zoom: the frame is laid out at least 720 px wide (the figure's wide layout) and scaled
+  var w=document.getElementById('fxw'),sz=document.getElementById('fxs'),Z=1,FIT=true,ro=null;
+  function base(){return Math.max(720,w.clientWidth)}
+  function fitZ(){return w.clientWidth/base()}
+  function lay(){var W=base(),H=w.clientHeight;if(FIT)Z=fitZ();
+    try{H=Math.max(H/Z,fr.contentDocument.documentElement.offsetHeight+2)}catch(e){}
+    fr.style.width=W+'px';fr.style.height=H+'px';fr.style.transform='scale('+Z+')';
+    sz.style.width=Math.ceil(W*Z)+'px';sz.style.height=Math.ceil(H*Z)+'px';
+    document.getElementById('fxzv').textContent=Math.round(Z*100)+'%';}
+  function zoom(k){var cx=(w.scrollLeft+w.clientWidth/2)/Z,cy=(w.scrollTop+w.clientHeight/2)/Z;
+    Z=Math.max(fitZ(),Math.min(2,Z*k));FIT=Z<=fitZ()+1e-3;lay();
+    w.scrollLeft=cx*Z-w.clientWidth/2;w.scrollTop=cy*Z-w.clientHeight/2;}
+  document.getElementById('fxp').addEventListener('click',function(){zoom(1.25)});
+  document.getElementById('fxm').addEventListener('click',function(){zoom(0.8)});
+  fr.addEventListener('load',function(){lay();try{if(ro)ro.disconnect();if('ResizeObserver' in window){ro=new ResizeObserver(lay);ro.observe(fr.contentDocument.body);}}catch(e){}});
+  addEventListener('resize',function(){if(d.open)lay();});
+  d.addEventListener('close',function(){fr.src='about:blank';FIT=true;if(ro)ro.disconnect();});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La cellula batterica: Gram+, Gram− e micobatterio</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+svg[viewBox]{min-width:0!important;max-width:100%!important}
+.tog{display:flex;flex-wrap:wrap;align-items:center;gap:5px;font-size:13px;color:var(--text-secondary);margin:0 0 6px}
+.tog>span:first-child{min-width:78px}
+.tog button{font:inherit;font-size:13px;padding:4px 10px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.tog button.act{border:1.5px solid var(--border-accent);color:var(--text-accent);background:#EEF4FC}
+.hint{font-size:12.5px;color:var(--text-secondary);margin:2px 0 8px}
+.cells{display:flex;gap:10px}
+.cell{flex:1 1 0;min-width:0;text-align:center}
+.cell h4{font-size:14px;margin:0;font-weight:600}
+.cell .ex{font-size:11.5px;color:var(--text-secondary);margin:1px 0 0;line-height:1.3;min-height:2.6em}
+.cell .st{font-size:12.5px;font-weight:600;margin:2px 0 0;min-height:1.4em}
+svg.cs [data-p]{cursor:pointer;transition:opacity .15s}
+svg.cs.has [data-p]:not(.on){opacity:.28}
+svg.cs [data-p].on{filter:drop-shadow(0 0 2px #E0662B)}
+.stx{font-size:13px;line-height:1.5;margin:6px 0 0;padding:6px 10px;border-radius:8px;background:#F3EEF9}
+.stx:empty{display:none}
+.zoom{margin:10px 0 0;border:1.5px solid #E0662B;border-radius:10px;padding:8px 10px 10px;background:#FFFBF8}
+.zoom h3{font-size:15px;margin:0 0 2px;color:#B4481A}
+.zoom .zp{font-size:13.5px;line-height:1.5;margin:0 0 6px}
+.zoom .sh{font-size:12px;color:var(--text-secondary);margin:0 0 6px}
+.zc{display:flex;gap:10px}
+.zc>div{flex:1 1 0;min-width:0}
+.zc h5{font-size:13px;margin:0 0 2px;text-align:center}
+.zc .zn{font-size:12.5px;line-height:1.45;margin:4px 0 0;color:var(--text-primary)}
+.zc .ab{font-size:13px;color:var(--text-secondary);text-align:center;padding:40px 0;border:1px dashed var(--border-strong);border-radius:8px}
+.zw{margin:0 0 4px}
+.kl{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 0;justify-content:center}
+.kl button{font:inherit;font-size:11.5px;padding:2px 7px;border-radius:999px;border:0.5px solid var(--border-strong);background:#FFFFFF;color:var(--text-primary);cursor:pointer}
+.kl button.act{border-color:#E0662B;color:#B4481A;background:#FFF1E8}
+svg.zs [data-k]{cursor:pointer}
+svg.zs.has [data-k]:not(.hi){opacity:.3}
+svg.zs [data-k].hi{filter:drop-shadow(0 0 2px #E0662B)}
+.zd{margin:8px 0 0;padding:8px 10px;border-radius:8px;background:#FFFFFF;border:1px solid var(--border);font-size:13.5px;line-height:1.5;min-height:3em}
+.zd b{color:#B4481A}
+svg text{pointer-events:none}
+@media (max-width:600px){.zc{flex-direction:column;gap:14px}.zc svg.zs{max-width:230px;margin:0 auto;display:block}.cells{gap:4px}.cell .ex{font-size:10.5px}}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Tre cellule batteriche affiancate: un Gram positivo, un Gram negativo e un micobatterio. Passando il mouse o toccando una parte (capsula, involucro, membrana, citoplasma, flagello, pili) si apre sotto un ingrandimento della stessa struttura nei tre batteri, con le sottostrutture da esplorare. Si possono simulare la colorazione di Gram e quella di Ziehl–Neelsen.</h2>
+<div class="tog" id="sb"></div>
+<div class="tog" id="pb"></div>
+<p class="hint" id="hint"></p>
+<div class="cells" id="cells"></div>
+<p class="stx" id="stx"></p>
+<div class="zoom" id="zoom"><h3 id="zt"></h3><p class="zp" id="zp"></p><p class="sh" id="sh"></p><div id="zb"></div><div class="zd" id="zd"></div></div>
+<script>
+var L={"loc": "it-IT", "stL": "Colorazione", "st": ["nessuna", "Gram", "Ziehl–Neelsen"], "pL": "Parte", "orgs": [["Gram positivo", "es. Staphylococcus, Streptococcus, Bacillus"], ["Gram negativo", "es. Escherichia, Klebsiella, Pseudomonas"], ["Micobatterio", "es. Mycobacterium tuberculosis"]], "parts": {"caps": "Capsula", "wall": "Involucro", "mem": "Membrana", "cyto": "Citoplasma", "flag": "Flagello", "pili": "Pili"}, "hint": "Passa il mouse o tocca una parte, nei disegni o nei pulsanti.", "subhint": "Passa il mouse o tocca le parti del disegno ingrandito, o i nomi qui sotto.", "out": "esterno", "inn": "citoplasma", "none": "Assente", "stres": {"gram": ["viola", "rosa", "si colora poco"], "zn": ["blu", "blu", "rosso: BAAR"]}, "stx": {"gram": "Gram: cristalvioletto, poi lugol (che lo fissa in un complesso), poi alcol-acetone, poi safranina. Gram+ viola: il peptidoglicano spesso, disidratato dall'alcol, trattiene il complesso. Gram− rosa: l'alcol scioglie la membrana esterna e il peptidoglicano sottile non trattiene nulla, resta solo la safranina. Micobatterio: la parete cerosa fa entrare poco colorante e si colora male, debolmente Gram+ o quasi invisibile («cellule fantasma»).", "zn": "Ziehl–Neelsen: carbolfucsina a caldo, poi alcol-acido, poi blu di metilene. Gli acidi micolici trattengono la fucsina anche contro l'acido: il micobatterio resta rosso, è un bacillo alcol-acido resistente (BAAR). Gram+ e Gram− si decolorano e prendono il blu."}, "top": {"caps": "Strato esterno di polisaccaridi (a volte di polipeptidi), che non tutti i batteri hanno. Ostacola la fagocitosi e il complemento: è un fattore di virulenza. Molti vaccini usano proprio il polisaccaride capsulare, coniugato a una proteina.", "wall": "L'involucro sta fra l'ambiente e la membrana. Il peptidoglicano c'è in tutti e tre, ma cambiano lo spessore e quello che ci sta sopra: è questo a decidere la colorazione e la sensibilità a molti antibiotici.", "mem": "La membrana citoplasmatica è simile nei tre: fosfolipidi senza colesterolo, con la catena respiratoria (i batteri non hanno mitocondri), l'ATP sintasi, i trasportatori e le PBP.", "cyto": "Nel citoplasma non ci sono organelli con membrana e il DNA non è chiuso in un nucleo. Ribosomi, girasi e RNA polimerasi sono diversi da quelli umani: sono i bersagli di molti antibiotici.", "flag": "Il flagello è un filamento di flagellina (antigene H) che ruota come un'elica, spinto da un motore alla base alimentato dal flusso di protoni. Serve a muoversi e a seguire le sostanze chimiche (chemiotassi).", "pili": "Pili e fimbrie sono filamenti proteici sottili, più corti e numerosi del flagello. Servono ad aderire alle cellule (fimbrie) o a passare DNA a un altro batterio (pilo sessuale)."}, "org": {"caps": ["Es. Streptococcus pneumoniae (polisaccaride, più di 90 sierotipi). Bacillus anthracis ha una capsula di acido poli-D-glutammico.", "Es. Klebsiella pneumoniae, Neisseria meningitidis, Haemophilus influenzae tipo b; in E. coli è l'antigene K.", "Lo strato più esterno è una «capsula» di α-glucano, arabinomannano e proteine, poco legata: in coltura si perde facilmente."], "wall": ["Peptidoglicano spesso (20–80 nm, decine di strati), attraversato da acidi teicoici. Nessuna membrana esterna.", "Peptidoglicano sottile (1–2 strati) nel periplasma, sotto una seconda membrana, la membrana esterna, con l'LPS.", "Peptidoglicano legato all'arabinogalattano, che a sua volta porta gli acidi micolici: un involucro ricchissimo di lipidi, ceroso e poco permeabile."], "mem": ["Bersaglio della daptomicina, che agisce solo sui Gram+.", "È la membrana interna. Le polimixine (colistina) la danneggiano dopo aver aperto la membrana esterna.", "L'ATP sintasi del micobatterio è il bersaglio della bedachilina."], "cyto": ["Alcuni Gram+ (Bacillus, Clostridium) formano endospore: forme dormienti che resistono a calore, essiccamento e disinfettanti.", "Stessi bersagli dei Gram+, ma il farmaco deve prima attraversare la membrana esterna e sfuggire alle pompe di efflusso.", "Si divide circa ogni 18–24 ore (E. coli ogni 20 minuti): colture lente, di settimane. La rifampicina, sull'RNA polimerasi, è un farmaco chiave."], "flag": ["Solo due anelli (MS e C): l'asse attraversa il peptidoglicano spesso senza anelli L e P.", "Quattro anelli: L e P ancorano l'asse nella membrana esterna e nel peptidoglicano.", "Niente flagelli: il micobatterio è immobile."], "pili": ["Pili costruiti dalla sortasi e legati al peptidoglicano, es. in Streptococcus e Corynebacterium: adesione.", "Fimbrie di adesione numerose e, in alcuni ceppi, il pilo sessuale per la coniugazione.", "Descritti pili sottili (MTP) di adesione; nessun pilo sessuale."]}, "nm": {"prot": "proteine di superficie", "wta": "acidi teicoici", "lta": "acidi lipoteicoici", "pg": "peptidoglicano", "pbp": "PBP", "mem": "membrana citoplasmatica", "o": "antigene O", "core": "core", "lipa": "lipide A", "porin": "porine", "om": "membrana esterna", "braun": "lipoproteina di Braun", "peri": "periplasma", "blac": "β-lattamasi", "mcap": "capsula esterna", "tdm": "lipidi liberi", "myc": "acidi micolici", "ag": "arabinogalattano", "lam": "LAM", "caps": "capsula", "fil": "filamento", "hook": "uncino", "L": "anello L", "P": "anello P", "MS": "anello MS", "C": "anello C", "mot": "statori", "gpili": "pili", "fimb": "fimbrie", "sex": "pilo sessuale", "mtp": "pili sottili", "etc": "catena respiratoria", "atp": "ATP sintasi", "tr": "trasportatori", "nucl": "nucleoide", "gyr": "DNA girasi", "rnap": "RNA polimerasi", "r30": "ribosoma 30S", "r50": "ribosoma 50S", "plas": "plasmide", "incl": "inclusioni"}, "sub": {"prot": "Proteine di superficie ancorate al peptidoglicano dalla sortasi: es. la proteina A di S. aureus, che lega la parte Fc delle IgG, e la proteina M di S. pyogenes, antifagocitaria.", "wta": "Acidi teicoici di parete: polimeri di ribitolo- o glicerolo-fosfato legati al peptidoglicano. Hanno carica negativa, legano cationi e sono antigeni di superficie.", "lta": "Acidi lipoteicoici: ancorati ai lipidi della membrana, attraversano il peptidoglicano verso l'esterno. Attivano TLR2: nei Gram+ fanno in parte quello che l'LPS fa nei Gram−.", "pg": "Peptidoglicano (mureina): catene di NAG e NAM alternati, unite da ponti peptidici. Le PBP chiudono i ponti e i β-lattamici le bloccano; la vancomicina si lega al D-Ala-D-Ala dei precursori; il lisozima taglia il legame fra NAM e NAG.", "gp:pg": "Peptidoglicano spesso: 20–80 nm, fino a circa 40 strati. Disidratato dall'alcol, trattiene il cristalvioletto nella colorazione di Gram. Le PBP chiudono i ponti peptidici e i β-lattamici le bloccano; la vancomicina si lega al D-Ala-D-Ala dei precursori.", "gn:pg": "Peptidoglicano sottile: 1–2 strati, pochi nm, dentro il periplasma. Non trattiene il cristalvioletto. È lo stesso bersaglio dei β-lattamici, ma il farmaco deve prima passare dalle porine e sfuggire alle β-lattamasi.", "mb:pg": "Peptidoglicano legato covalentemente all'arabinogalattano; il suo acido muramico è glicolilato invece che acetilato. Da solo non decide nulla: è coperto dal resto dell'involucro.", "mem": "Membrana citoplasmatica: doppio strato di fosfolipidi senza steroli (tranne Mycoplasma). Contiene la catena respiratoria, l'ATP sintasi, i trasportatori e le PBP.", "pbp": "PBP (penicillin-binding proteins): transpeptidasi sul lato esterno della membrana che chiudono i ponti del peptidoglicano. I β-lattamici le inattivano. Una PBP modificata, la PBP2a (gene mecA), rende S. aureus resistente alla meticillina (MRSA).", "o": "Antigene O: catena di zuccheri ripetuti, la parte più esterna dell'LPS. Cambia da ceppo a ceppo e definisce il sierotipo (es. E. coli O157).", "core": "Core: oligosaccaride che unisce l'antigene O al lipide A. Contiene il KDO ed è più costante fra le specie.", "lipa": "Lipide A: la parte tossica dell'LPS, l'endotossina. Liberato quando il batterio si lisa, anche per effetto degli antibiotici, attiva il TLR4: febbre, ipotensione, coagulazione intravascolare disseminata, shock settico. Le polimixine lo legano.", "om": "Membrana esterna: doppio strato asimmetrico, fosfolipidi all'interno e LPS all'esterno. Ferma le molecole grandi o idrofobe: per questo la vancomicina e molti altri antibiotici non funzionano sui Gram−.", "porin": "Porine (es. OmpF, OmpC): canali che lasciano passare piccole molecole idrofile, compresi molti β-lattamici. Se il batterio ne produce meno, diventa meno sensibile.", "braun": "Lipoproteina di Braun: lega covalentemente la membrana esterna al peptidoglicano.", "peri": "Periplasma: gel fra le due membrane. Contiene il peptidoglicano sottile, proteine di trasporto ed enzimi, comprese le β-lattamasi.", "blac": "β-lattamasi: enzimi che aprono l'anello β-lattamico. Nei Gram− restano nel periplasma, proprio sulla strada del farmaco verso le PBP (es. ESBL, carbapenemasi KPC).", "mcap": "«Capsula» esterna di α-glucano, arabinomannano e proteine: poco legata, modula la risposta immunitaria.", "tdm": "Lipidi liberi del foglietto esterno: trealosio dimicolato (fattore cordale, che fa crescere i bacilli a cordoni e favorisce il granuloma), sulfolipidi, PDIM. Contribuiscono alla virulenza e all'impermeabilità.", "myc": "Acidi micolici: acidi grassi lunghissimi (60–90 atomi di carbonio) legati all'arabinogalattano. Formano il foglietto interno della micomembrana: un involucro ceroso, impermeabile, resistente a disinfettanti e a molti antibiotici. Trattengono la fucsina anche contro l'acido (alcol-acido resistenza). L'isoniazide blocca la loro sintesi (enzima InhA).", "ag": "Arabinogalattano: polisaccaride ramificato che unisce il peptidoglicano agli acidi micolici. L'etambutolo blocca la sua sintesi (arabinosiltransferasi).", "lam": "Lipoarabinomannano (LAM): glicolipide ancorato alla membrana citoplasmatica che arriva fino alla superficie. Modula i macrofagi. Nelle urine è un test rapido per la tubercolosi nelle persone con HIV.", "gp:caps": "Capsula polisaccaridica, es. S. pneumoniae: più di 90 sierotipi, la base dei vaccini pneumococcici. B. anthracis ha invece una capsula di acido poli-D-glutammico.", "gn:caps": "Capsula polisaccaridica, es. Klebsiella pneumoniae, Neisseria meningitidis, Haemophilus influenzae tipo b (vaccino Hib coniugato). In E. coli è l'antigene K.", "fil": "Filamento: flagellina, l'antigene H (es. E. coli O157:H7). Il sistema immunitario la riconosce con il TLR5.", "hook": "Uncino: giunto flessibile fra il motore e il filamento.", "L": "Anello L: nella membrana esterna, quindi solo nei Gram−.", "P": "Anello P: nel peptidoglicano dei Gram−.", "MS": "Anello MS: nella membrana citoplasmatica, è parte del rotore.", "C": "Anello C: nel citoplasma, cambia il verso di rotazione e così la direzione del nuoto (chemiotassi).", "mot": "Statori (MotA/MotB): canali per i protoni attorno al rotore. Il flusso di protoni fa girare il motore.", "gpili": "Pili dei Gram+: costruiti dalla sortasi e legati al peptidoglicano, es. in Streptococcus e Corynebacterium. Servono all'adesione.", "fimb": "Fimbrie di adesione: es. le fimbrie P di E. coli uropatogeno, che si attaccano all'urotelio; i pili di Neisseria gonorrhoeae, con variazione antigenica.", "sex": "Pilo sessuale (F): avvicina due batteri per la coniugazione, il passaggio di plasmidi, anche di resistenza.", "mtp": "Pili sottili (MTP), descritti in M. tuberculosis anche durante l'infezione umana: servono all'adesione alle cellule dell'ospite.", "etc": "Catena respiratoria: nei batteri sta nella membrana citoplasmatica, non nei mitocondri. Pompa protoni verso l'esterno.", "atp": "ATP sintasi: usa il ritorno dei protoni per fare ATP. Nel micobatterio è il bersaglio della bedachilina.", "tr": "Trasportatori: portano dentro i nutrienti e fuori le scorie. Le pompe di efflusso espellono anche gli antibiotici: è un meccanismo di resistenza.", "nucl": "Nucleoide: di solito un solo cromosoma circolare, superavvolto, senza membrana nucleare.", "gyr": "DNA girasi e topoisomerasi IV: regolano il superavvolgimento del DNA. Sono il bersaglio dei fluorochinoloni.", "rnap": "RNA polimerasi: la rifampicina blocca la sua subunità β (gene rpoB). Mutazioni in rpoB danno la resistenza nel M. tuberculosis.", "r30": "Subunità 30S del ribosoma 70S (nell'uomo è 80S): bersaglio di aminoglicosidi e tetracicline.", "r50": "Subunità 50S del ribosoma 70S: bersaglio di macrolidi, clindamicina, cloramfenicolo e linezolid.", "plas": "Plasmidi: piccoli DNA circolari in più, che si replicano da soli. Portano spesso geni di resistenza o di tossine e passano da un batterio all'altro.", "incl": "Inclusioni di riserva: glicogeno, poli-β-idrossibutirrato, granuli di polifosfato (metacromatici in Corynebacterium diphtheriae). Nel micobatterio sono soprattutto gocce di lipidi, usate durante la latenza."}},ST=0,PT='wall',PK=null,KEYS=['caps','wall','mem','cyto','flag','pili'],OG=['gp','gn','mb'];
+function T(x,y,t,a,c,s){return '<text x="'+x+'" y="'+y+'" font-size="'+(s||11)+'"'+(a?' text-anchor="'+a+'"':'')+' fill="'+(c||'#55697A')+'">'+t+'</text>'}
+function g(k,inner,hit){return '<g data-k="'+k+'">'+(hit?'<rect x="'+hit[0]+'" y="'+hit[1]+'" width="'+hit[2]+'" height="'+hit[3]+'" fill="transparent"/>':'')+inner+'</g>'}
+function wavy(x,y0,y1,a,c,w){var p='M'+x+' '+y0,n=Math.max(2,Math.round(Math.abs(y1-y0)/10));for(var i=1;i<=n;i++){var y=y0+(y1-y0)*i/n;p+=' Q'+(x+(i%2?a:-a))+' '+(y-(y1-y0)/n/2)+' '+x+' '+y;}return '<path d="'+p+'" fill="none" stroke="'+c+'" stroke-width="'+(w||1.5)+'"/>'}
+// ---------- the three cells ----------
+function cell(o){var s='',X=80,top=30,H=170,W=o==='mb'?64:70,x0=X-W/2,r=W/2;
+ // capsule / outer layer
+ s+='<g data-p="caps"><rect x="'+(x0-11)+'" y="'+(top-11)+'" width="'+(W+22)+'" height="'+(H+22)+'" rx="'+(r+11)+'" fill="'+(o==='mb'?'#F2EEDC':'#EEF3E2')+'" stroke="#9BAF7A" stroke-dasharray="3 3"/></g>';
+ // pili
+ var pl='';if(o!=='mb'){var n=o==='gn'?14:5;for(var i=0;i<n;i++){var a=i/n*2*Math.PI+0.3,px=X+(r+1)*Math.cos(a)*1.0,py=top+H/2+(H/2+1)*Math.sin(a)*0.98,len=o==='gn'?9:12;pl+='<line x1="'+px+'" y1="'+py+'" x2="'+(px+len*Math.cos(a))+'" y2="'+(py+len*Math.sin(a))+'" stroke="#7A8B99" stroke-width="1.2"/>';}
+  if(o==='gn')pl+='<path d="M'+(X+r-4)+' '+(top+40)+' q22 -14 30 -30" fill="none" stroke="#7A8B99" stroke-width="2.2"/>';}
+ else{for(var i=0;i<4;i++){var a=i*1.6+0.5,px=X+r*Math.cos(a),py=top+H/2+H/2*Math.sin(a);pl+='<line x1="'+px+'" y1="'+py+'" x2="'+(px+14*Math.cos(a))+'" y2="'+(py+14*Math.sin(a))+'" stroke="#9AA6B0" stroke-width="0.8"/>';}}
+ s+='<g data-p="pili">'+pl+'</g>';
+ // flagella
+ if(o!=='mb')s+='<g data-p="flag">'+wavy(X,top+H,248,6,'#5D6D7E',1.8)+wavy(x0+8,top+H-24,top+H+30,5,'#5D6D7E',1.6).replace('M'+(x0+8),'M'+(x0+8))+'</g>';
+ // envelope
+ if(o==='gp')s+='<g data-p="wall"><rect x="'+x0+'" y="'+top+'" width="'+W+'" height="'+H+'" rx="'+r+'" fill="#CDB8EA" stroke="#8E6CC0"/></g>';
+ else if(o==='gn')s+='<g data-p="wall"><rect x="'+x0+'" y="'+top+'" width="'+W+'" height="'+H+'" rx="'+r+'" fill="#E7F2EC" stroke="#2E7D5B" stroke-width="2.4"/><rect x="'+(x0+3.5)+'" y="'+(top+3.5)+'" width="'+(W-7)+'" height="'+(H-7)+'" rx="'+(r-3.5)+'" fill="none" stroke="#A98BD6" stroke-width="1.4"/></g>';
+ else s+='<g data-p="wall"><rect x="'+x0+'" y="'+top+'" width="'+W+'" height="'+H+'" rx="'+r+'" fill="#E9D9A6" stroke="#B8962E"/><rect x="'+(x0+6)+'" y="'+(top+6)+'" width="'+(W-12)+'" height="'+(H-12)+'" rx="'+(r-6)+'" fill="none" stroke="#A98BD6" stroke-width="1.4"/></g>';
+ var ins=o==='gp'?8:o==='gn'?7:9;
+ // cytoplasm and contents
+ var cx0=x0+ins,cw=W-2*ins,ch=H-2*ins,cr=cw/2,c='';
+ c+='<rect x="'+cx0+'" y="'+(top+ins)+'" width="'+cw+'" height="'+ch+'" rx="'+cr+'" fill="#FBF8F1"/>';
+ c+='<path d="M'+(X-10)+' '+(top+60)+' c18 -6 20 14 4 18 c-16 4 -14 20 4 16 c16 -4 12 18 -6 18 c-14 0 -12 -16 0 -22 c10 -6 -8 -20 -2 -30 z" fill="none" stroke="#3B6EA5" stroke-width="1.4"/>';
+ for(var i=0;i<14;i++){var rx=cx0+6+((i*37)%(cw-12)),ry=top+ins+14+((i*53)%(ch-28));c+='<circle cx="'+rx+'" cy="'+ry+'" r="1.6" fill="#8E7CC3"/>';}
+ c+='<circle cx="'+(X+12)+'" cy="'+(top+H-50)+'" r="5" fill="none" stroke="#C0392B" stroke-width="1.3"/>';
+ c+=o==='mb'?'<circle cx="'+(X-10)+'" cy="'+(top+H-34)+'" r="4.5" fill="#F4D35E" opacity=".9"/><circle cx="'+(X+2)+'" cy="'+(top+38)+'" r="3.5" fill="#F4D35E" opacity=".9"/>':'<circle cx="'+(X-10)+'" cy="'+(top+H-34)+'" r="3.5" fill="#B9C2CB"/>';
+ s+='<g data-p="cyto">'+c+'</g>';
+ // membrane: visible line plus a wider invisible hit line
+ s+='<g data-p="mem"><rect x="'+cx0+'" y="'+(top+ins)+'" width="'+cw+'" height="'+ch+'" rx="'+cr+'" fill="none" stroke="transparent" stroke-width="7"/><rect x="'+cx0+'" y="'+(top+ins)+'" width="'+cw+'" height="'+ch+'" rx="'+cr+'" fill="none" stroke="#6B4FA0" stroke-width="1.8"/></g>';
+ // stain overlay
+ var tint=ST===1?['#7B3FB0','#E06A98','#CDB9E2'][OG.indexOf(o)]:ST===2?(o==='mb'?'#D1284A':'#3F6FB5'):null;
+ if(tint)s+='<rect x="'+x0+'" y="'+top+'" width="'+W+'" height="'+H+'" rx="'+r+'" fill="'+tint+'" opacity="'+(ST===1&&o==='mb'?0.35:0.62)+'" pointer-events="none"/>';
+ return '<svg class="cs" viewBox="0 0 160 252" aria-hidden="true">'+s+'</svg>';}
+// ---------- zoom drawings ----------
+function bil(y,x0,x1,head,k){var s='';for(var x=x0+4;x<x1;x+=8){s+='<circle cx="'+x+'" cy="'+(y+3)+'" r="2.8" fill="'+head+'"/><circle cx="'+x+'" cy="'+(y+21)+'" r="2.8" fill="'+head+'"/><line x1="'+(x-1)+'" y1="'+(y+6)+'" x2="'+(x-1)+'" y2="'+(y+18)+'" stroke="#C9B98F" stroke-width=".8"/><line x1="'+(x+1)+'" y1="'+(y+6)+'" x2="'+(x+1)+'" y2="'+(y+18)+'" stroke="#C9B98F" stroke-width=".8"/>';}return s}
+function hatch(x,y,w,h,c){var s='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+c+'"/>';for(var yy=y+4;yy<y+h;yy+=7)s+='<line x1="'+x+'" y1="'+yy+'" x2="'+(x+w)+'" y2="'+yy+'" stroke="#8E6CC0" stroke-width=".7"/>';for(var xx=x+6;xx<x+w;xx+=12)s+='<line x1="'+xx+'" y1="'+y+'" x2="'+xx+'" y2="'+(y+h)+'" stroke="#8E6CC0" stroke-width=".5" stroke-dasharray="2 2"/>';return s}
+function memb(y){return g('mem',bil(y,0,200,'#6B4FA0'),[0,y,200,24])}
+function pbp(x,y){return g('pbp','<ellipse cx="'+x+'" cy="'+y+'" rx="9" ry="6" fill="#E0662B"/>'+T(x,y+3.5,'PBP','middle','#FFFFFF',8),[x-10,y-7,20,14])}
+function ends(){return T(4,10,L.out,'start','#8696A4',10)+T(4,246,L.inn,'start','#8696A4',10)}
+function zWall(o){var s=ends();
+ if(o==='gp'){s+=g('pg',hatch(0,70,200,112,'#DCCDF0'),[0,70,200,112]);
+  var w='';[30,80,130,175].forEach(function(x){w+='<path d="M'+x+' 120 l4 -8 l-4 -8 l4 -8 l-4 -8 l4 -8 l-4 -8 l4 -8" fill="none" stroke="#8E44AD" stroke-width="1.6"/>';});s+=g('wta',w,[20,52,170,70]);
+  var l2='';[55,105,155].forEach(function(x){l2+='<line x1="'+x+'" y1="190" x2="'+x+'" y2="58" stroke="#C0392B" stroke-width="1.6"/><circle cx="'+x+'" cy="58" r="2.5" fill="#C0392B"/>';});s+=g('lta',l2,[45,56,120,136]);
+  var pr='';[18,68,118,168].forEach(function(x){pr+='<line x1="'+x+'" y1="70" x2="'+x+'" y2="44" stroke="#2E86C1" stroke-width="2"/><ellipse cx="'+x+'" cy="38" rx="9" ry="7" fill="#5DADE2"/>';});s+=g('prot',pr,[6,28,190,42]);
+  s+=memb(190)+pbp(90,184);}
+ else if(o==='gn'){var lp='';
+  for(var x=8;x<200;x+=16){lp+='<path d="M'+x+' 14 q4 5 0 10 q-4 5 0 10 q4 5 0 10" fill="none" stroke="#1E8449" stroke-width="1.5"/>';}
+  s+=g('o',lp,[0,12,200,34]);var cr='';for(var x=8;x<200;x+=16)cr+='<polygon points="'+(x-4)+',46 '+(x+4)+',46 '+(x+6)+',52 '+(x+4)+',58 '+(x-4)+',58 '+(x-6)+',52" fill="#82E0AA" stroke="#1E8449" stroke-width=".8"/>';s+=g('core',cr,[0,45,200,14]);
+  var la='';for(var x=4;x<200;x+=8)la+='<circle cx="'+x+'" cy="'+67+'" r="3" fill="#C0392B"/>';s+=g('lipa',la,[0,62,200,10]);
+  var om='';for(var x=4;x<200;x+=8)om+='<circle cx="'+x+'" cy="89" r="2.8" fill="#2E7D5B"/><line x1="'+x+'" y1="70" x2="'+x+'" y2="86" stroke="#C9B98F" stroke-width="1.6"/>';s+=g('om',om,[0,72,200,20]);
+  s+=g('porin','<rect x="96" y="60" width="18" height="34" rx="6" fill="#48C9B0" stroke="#117A65"/><rect x="102" y="62" width="6" height="30" fill="#E8F8F5"/>',[94,58,22,38]);
+  s+=g('peri','<rect x="0" y="94" width="200" height="94" fill="#EEF6F1"/>',[0,94,200,94]);
+  s+=g('pg',hatch(0,128,200,10,'#DCCDF0'),[0,126,200,14]);
+  s+=g('braun','<line x1="36" y1="92" x2="36" y2="128" stroke="#7D6608" stroke-width="2"/><line x1="166" y1="92" x2="166" y2="128" stroke="#7D6608" stroke-width="2"/>',[30,92,142,36]);
+  s+=g('blac','<ellipse cx="70" cy="112" rx="8" ry="6" fill="#F5B041" stroke="#B9770E"/><ellipse cx="140" cy="164" rx="8" ry="6" fill="#F5B041" stroke="#B9770E"/>',[60,104,90,68]);
+  s+=memb(190)+pbp(96,184);}
+ else{var cp='';for(var x=6;x<200;x+=14)cp+=wavy(x,4,22,3,'#A9B98A',1.2);s+=g('mcap',cp,[0,2,200,22]);
+  var td='';for(var x=10;x<200;x+=20){td+='<circle cx="'+x+'" cy="30" r="3.4" fill="#D35400"/><line x1="'+(x-1.5)+'" y1="33" x2="'+(x-1.5)+'" y2="46" stroke="#E59866" stroke-width="1.2"/><line x1="'+(x+1.5)+'" y1="33" x2="'+(x+1.5)+'" y2="46" stroke="#E59866" stroke-width="1.2"/>';}s+=g('tdm',td,[0,25,200,22]);
+  var my='';for(var x=5;x<200;x+=6)my+='<line x1="'+x+'" y1="48" x2="'+x+'" y2="98" stroke="#B8962E" stroke-width="1.6"/>';s+=g('myc','<rect x="0" y="46" width="200" height="54" fill="#F6EBC6"/>'+my,[0,46,200,54]);
+  var ag='';for(var x=12;x<200;x+=24)ag+='<path d="M'+x+' 140 L'+x+' 100 M'+x+' 128 l-8 -10 M'+x+' 116 l8 -10 M'+x+' 108 l-6 -6" fill="none" stroke="#7D3C98" stroke-width="1.4"/>';s+=g('ag',ag,[0,100,200,40]);
+  s+=g('pg',hatch(0,140,200,18,'#DCCDF0'),[0,140,200,18]);
+  s+=memb(190)+pbp(70,184);
+  s+=g('lam','<line x1="172" y1="192" x2="172" y2="26" stroke="#1F618D" stroke-width="2.2"/><path d="M172 30 l-8 -8 M172 30 l8 -8 M172 40 l-7 -6 M172 40 l7 -6" fill="none" stroke="#1F618D" stroke-width="1.6"/>',[164,18,16,176]);}
+ return '<svg class="zs" viewBox="0 0 200 250" aria-hidden="true">'+s+'</svg>';}
+function zCaps(o){var s='',base=o==='gp'?hatch(0,112,200,38,'#DCCDF0'):o==='gn'?bil(112,0,200,'#2E7D5B'):'<rect x="0" y="112" width="200" height="38" fill="#F6EBC6"/>';
+ var str='';for(var x=8;x<200;x+=12)str+=wavy(x,108,o==='mb'?70:14,4,o==='mb'?'#A9B98A':'#7DAA4F',1.4);
+ s+=base+g(o==='mb'?'mcap':'caps','<rect x="0" y="10" width="200" height="100" fill="transparent"/>'+str,null)+T(4,10,L.out,'start','#8696A4',10);
+ return '<svg class="zs" viewBox="0 0 200 150" aria-hidden="true">'+s+'</svg>';}
+function zFlag(o){if(o==='mb')return '';var s=ends(),rod='#5D6D7E';
+ if(o==='gp'){s+=hatch(0,84,200,98,'#ECE3F7')+bil(190,0,200,'#B9A9D6');
+  s+=g('fil',wavy(100,4,48,6,rod,3),[86,0,28,50])+g('hook','<path d="M100 48 q12 8 0 20 q-6 6 0 12" fill="none" stroke="#2C3E50" stroke-width="4"/>',[88,46,24,36]);
+  s+='<line x1="100" y1="80" x2="100" y2="214" stroke="#2C3E50" stroke-width="3"/>';}
+ else{s+=bil(66,0,200,'#B7D9C8')+'<rect x="0" y="94" width="200" height="94" fill="#F4FAF6"/>'+hatch(0,128,200,10,'#ECE3F7')+bil(190,0,200,'#B9A9D6');
+  s+=g('fil',wavy(100,4,30,6,rod,3),[86,0,28,32])+g('hook','<path d="M100 30 q12 8 0 18 q-6 6 0 12" fill="none" stroke="#2C3E50" stroke-width="4"/>',[88,28,24,34]);
+  s+='<line x1="100" y1="60" x2="100" y2="214" stroke="#2C3E50" stroke-width="3"/>';
+  s+=g('L','<rect x="84" y="70" width="32" height="12" rx="5" fill="#16A085"/>',[82,68,36,16])+g('P','<rect x="84" y="127" width="32" height="12" rx="5" fill="#8E44AD"/>',[82,125,36,16]);}
+ s+=g('MS','<rect x="80" y="196" width="40" height="12" rx="5" fill="#2471A3"/>',[78,194,44,16]);
+ s+=g('C','<path d="M72 222 h56 v14 h-56 z" fill="#5DADE2"/>',[70,220,60,18]);
+ s+=g('mot','<rect x="56" y="188" width="10" height="28" rx="3" fill="#E67E22"/><rect x="134" y="188" width="10" height="28" rx="3" fill="#E67E22"/>',[54,186,94,32]);
+ return '<svg class="zs" viewBox="0 0 200 250" aria-hidden="true">'+s+'</svg>';}
+function zPili(o){var s='';
+ if(o==='gp'){s+=hatch(0,120,200,80,'#DCCDF0')+bil(206,0,200,'#B9A9D6');var p='';[40,100,160].forEach(function(x){p+='<path d="M'+x+' 120 '+'L'+(x+8)+' 30" stroke="#5D6D7E" stroke-width="2.4"/><circle cx="'+(x+8)+'" cy="28" r="3" fill="#5D6D7E"/>';});s+=g('gpili',p,[30,20,150,100]);}
+ else if(o==='gn'){s+=bil(150,0,200,'#2E7D5B')+'<rect x="0" y="174" width="200" height="34" fill="#EEF6F1"/>'+bil(208,0,200,'#B9A9D6');
+  var f='';for(var x=10;x<200;x+=14){if(Math.abs(x-108)<10)continue;f+='<line x1="'+x+'" y1="150" x2="'+(x+3)+'" y2="96" stroke="#7A8B99" stroke-width="1.4"/>';}s+=g('fimb',f,[0,92,200,58]);
+  s+=g('sex','<path d="M108 150 Q102 80 118 6" fill="none" stroke="#34495E" stroke-width="4"/>',[96,2,30,148]);}
+ else{s+='<rect x="0" y="110" width="200" height="60" fill="#F6EBC6"/>'+bil(206,0,200,'#B9A9D6');var p='';[50,120,170].forEach(function(x){p+='<path d="M'+x+' 110 Q'+(x-10)+' 60 '+(x+4)+' 14" fill="none" stroke="#9AA6B0" stroke-width="1.2"/>';});s+=g('mtp',p,[30,10,160,100]);}
+ return '<svg class="zs" viewBox="0 0 200 250" aria-hidden="true">'+s+T(4,10,L.out,'start','#8696A4',10)+'</svg>';}
+function zMem(){var s=T(6,14,L.out,'start','#8696A4',11)+T(6,166,L.inn,'start','#8696A4',11);
+ for(var x=4;x<600;x+=8)s+='<circle cx="'+x+'" cy="64" r="3" fill="#6B4FA0"/><circle cx="'+x+'" cy="104" r="3" fill="#6B4FA0"/><line x1="'+x+'" y1="68" x2="'+x+'" y2="100" stroke="#C9B98F" stroke-width="1"/>';
+ s+=g('pbp','<ellipse cx="90" cy="50" rx="22" ry="12" fill="#E0662B"/>'+T(90,54,'PBP','middle','#FFFFFF',11)+'<line x1="90" y1="62" x2="90" y2="84" stroke="#E0662B" stroke-width="4"/>',[66,36,48,50]);
+ s+=g('etc','<rect x="200" y="54" width="34" height="62" rx="8" fill="#5D6D7E"/><rect x="242" y="58" width="26" height="54" rx="8" fill="#85929E"/><path d="M226 50 l0 -22 m-6 6 l6 -6 l6 6" fill="none" stroke="#C0392B" stroke-width="2"/>'+T(234,22,'H⁺','middle','#C0392B',12),[196,10,76,110]);
+ s+=g('atp','<rect x="350" y="52" width="40" height="64" rx="10" fill="#1F618D"/><rect x="364" y="116" width="12" height="16" fill="#1F618D"/><circle cx="370" cy="146" r="18" fill="#5DADE2"/><path d="M380 30 l0 20" stroke="#C0392B" stroke-width="2"/>'+T(388,26,'H⁺','start','#C0392B',12)+T(370,150,'ATP','middle','#0B3954',11),[346,22,60,146]);
+ s+=g('tr','<rect x="470" y="50" width="44" height="68" rx="14" fill="#48C9B0" stroke="#117A65"/><rect x="487" y="52" width="10" height="64" fill="#E8F8F5"/><path d="M492 30 l0 18 m-5 -5 l5 5 l5 -5" fill="none" stroke="#117A65" stroke-width="2"/>',[466,26,52,96]);
+ [['pbp',90],['etc',234],['atp',370],['tr',492]].forEach(function(a){s+=T(a[1],180,L.nm[a[0]],'middle','#16222E',12)});
+ return '<svg class="zs" viewBox="0 0 600 190" aria-hidden="true">'+s+'</svg>';}
+function zCyto(){var s='<rect x="0" y="0" width="600" height="220" rx="10" fill="#FBF8F1"/>';
+ s+=g('nucl','<path d="M60 110 C60 40 150 30 180 70 C210 110 120 120 140 160 C160 200 260 190 270 140 C280 90 200 60 220 40 C240 20 300 40 290 90 C280 140 190 150 170 120 C150 90 90 200 60 110 Z" fill="none" stroke="#3B6EA5" stroke-width="2.2"/>',[50,20,250,190]);
+ s+=g('gyr','<circle cx="180" cy="70" r="11" fill="#F5B041" stroke="#B9770E"/>',[168,58,24,24]);
+ s+=g('rnap','<ellipse cx="262" cy="160" rx="16" ry="11" fill="#58D68D" stroke="#1D8348"/>',[244,148,36,24]);
+ s+=g('r50','<ellipse cx="420" cy="78" rx="34" ry="24" fill="#8E7CC3"/>'+T(420,82,'50S','middle','#FFFFFF',12),[384,52,72,50]);
+ s+=g('r30','<ellipse cx="420" cy="118" rx="26" ry="15" fill="#BB8FCE"/>'+T(420,122,'30S','middle','#FFFFFF',11)+'<path d="M384 132 q36 -8 72 0" fill="none" stroke="#C0392B" stroke-width="1.4"/>',[392,102,56,32]);
+ s+=g('plas','<circle cx="560" cy="56" r="20" fill="none" stroke="#C0392B" stroke-width="2"/><circle cx="560" cy="56" r="15" fill="none" stroke="#C0392B" stroke-width="1"/>',[536,32,48,48]);
+ s+=g('incl','<circle cx="510" cy="164" r="13" fill="#F4D35E" opacity=".9"/><circle cx="542" cy="176" r="9" fill="#B9C2CB"/><circle cx="548" cy="150" r="7" fill="#F4D35E" opacity=".9"/>',[494,140,64,52]);
+ [['nucl',120,206,'middle'],['gyr',180,46,'middle'],['rnap',300,182,'middle'],['r50',458,62,'start'],['r30',450,136,'start'],['plas',560,96,'middle'],['incl',530,212,'middle']].forEach(function(a){s+=T(a[1],a[2],L.nm[a[0]],a[3],'#16222E',12)});
+ return '<svg class="zs" viewBox="0 0 600 220" aria-hidden="true">'+s+'</svg>';}
+var PER={caps:[['caps'],['caps'],['mcap']],wall:[['prot','wta','lta','pg','pbp','mem'],['o','core','lipa','om','porin','braun','peri','blac','pg','pbp','mem'],['mcap','tdm','myc','ag','pg','lam','pbp','mem']],flag:[['fil','hook','MS','C','mot'],['fil','hook','L','P','MS','C','mot'],[]],pili:[['gpili'],['fimb','sex'],['mtp']]};
+var SHARED={mem:['pbp','etc','atp','tr'],cyto:['nucl','gyr','rnap','r30','r50','plas','incl']};
+function txt(o,k){return L.sub[o+':'+k]||L.sub[k]}
+function kl(keys,o){return '<div class="kl">'+keys.map(function(k){return '<button data-k="'+k+'" data-o="'+(o||'')+'">'+L.nm[k]+'</button>'}).join('')+'</div>'}
+function drawZoom(){var z='',P=PT;document.getElementById('zt').textContent=L.parts[P];document.getElementById('zp').textContent=L.top[P];document.getElementById('sh').textContent=L.subhint;
+ if(SHARED[P]){z+='<div class="zw">'+(P==='mem'?zMem():zCyto())+'</div>'+kl(SHARED[P],'')+'<div class="zc">';OG.forEach(function(o,i){z+='<div><h5>'+L.orgs[i][0]+'</h5><p class="zn">'+L.org[P][i]+'</p></div>'});z+='</div>';}
+ else{z+='<div class="zc">';OG.forEach(function(o,i){var sv=P==='wall'?zWall(o):P==='caps'?zCaps(o):P==='flag'?zFlag(o):zPili(o);
+  z+='<div data-o="'+o+'"><h5>'+L.orgs[i][0]+'</h5>'+(sv||'<div class="ab">'+L.none+'</div>')+(PER[P][i].length?kl(PER[P][i],o):'')+'<p class="zn">'+L.org[P][i]+'</p></div>';});z+='</div>';}
+ var zb=document.getElementById('zb');zb.innerHTML=z;PK=null;showK(null,null);
+ zb.querySelectorAll('[data-k]').forEach(function(e){var o=e.getAttribute('data-o')||(e.closest('[data-o]')?e.closest('[data-o]').getAttribute('data-o'):'');
+  var f=function(){showK(e.getAttribute('data-k'),o)};e.addEventListener('mouseenter',f);e.addEventListener('click',f);});}
+function showK(k,o){var d=document.getElementById('zd');
+ document.querySelectorAll('svg.zs').forEach(function(sv){var col=sv.closest('[data-o]'),same=!col||!o||col.getAttribute('data-o')===o;var any=false;
+  sv.querySelectorAll('[data-k]').forEach(function(e){var on=!!k&&e.getAttribute('data-k')===k&&same;e.classList.toggle('hi',on);if(on)any=true;});sv.classList.toggle('has',any);});
+ document.querySelectorAll('.kl button').forEach(function(b){b.classList.toggle('act',!!k&&b.getAttribute('data-k')===k&&(!o||!b.getAttribute('data-o')||b.getAttribute('data-o')===o))});
+ // phones: the explanation goes right under the drawing that was touched
+ var col=o&&matchMedia('(max-width:600px)').matches?document.querySelector('.zc>div[data-o="'+o+'"]'):null;
+ if(col){col.appendChild(d)}else if(d.parentNode!==document.getElementById('zoom'))document.getElementById('zoom').appendChild(d);
+ if(!k){d.innerHTML='<span style="color:#8696A4">'+L.subhint+'</span>';return;}
+ d.innerHTML='<b>'+L.nm[k]+(o?' · '+L.orgs[OG.indexOf(o)][0]:'')+'</b> — '+txt(o||'',k);}
+function setP(p){PT=p;drawCells();drawZoom();}
+function setS(i){ST=i;drawCells();}
+function btns(lab,arr,cur,fn){var h='<span>'+lab+'</span>';arr.forEach(function(t,i){h+='<button class="'+(i===cur?'act':'')+'" aria-pressed="'+(i===cur)+'" onclick="'+fn+'('+i+')">'+t+'</button>'});return h}
+function drawCells(){
+ document.getElementById('sb').innerHTML=btns(L.stL,L.st,ST,'setS');
+ document.getElementById('pb').innerHTML=btns(L.pL,KEYS.map(function(k){return L.parts[k]}),KEYS.indexOf(PT),'setPi');
+ document.getElementById('hint').textContent=L.hint;
+ var h='';OG.forEach(function(o,i){h+='<div class="cell" data-o="'+o+'"><h4>'+L.orgs[i][0]+'</h4><p class="ex">'+L.orgs[i][1]+'</p>'+cell(o)+'<p class="st" style="color:'+(ST===0?'inherit':ST===1?['#6C2EA0','#C2457A','#8E7AA8'][i]:(o==='mb'?'#B11E3C':'#2F5D9E'))+'">'+(ST?L.stres[ST===1?'gram':'zn'][i]:'')+'</p></div>';});
+ var c=document.getElementById('cells');c.innerHTML=h;
+ c.querySelectorAll('svg.cs').forEach(function(sv){sv.classList.add('has');sv.querySelectorAll('[data-p]').forEach(function(e){var p=e.getAttribute('data-p');e.classList.toggle('on',p===PT);
+  e.addEventListener('mouseenter',function(){if(PT!==p)setP(p)});e.addEventListener('click',function(){if(PT!==p)setP(p)});});});
+ document.getElementById('stx').textContent=ST?L.stx[ST===1?'gram':'zn']:'';}
+function setPi(i){setP(KEYS[i])}
+drawCells();drawZoom();
+</script>
+</body>
+</html>
