@@ -215,6 +215,25 @@ dialog.cf button.cf-send{background:var(--link); border-color:var(--link); color
 dialog.cf button:disabled{opacity:.6; cursor:default}
 dialog.cf .cf-msg{margin:.7rem 0 0; font-size:.9rem}
 dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
+
+/* Phones: each interactive figure becomes a card that opens it full screen */
+.fcard{display:none}
+@media (max-width:600px){
+  figure.w iframe{display:none!important}
+  .fcard{display:flex; align-items:center; gap:.8rem; width:100%; text-align:left; font:inherit; color:var(--ink);
+    background:var(--card); border:1px solid var(--rule); border-left:4px solid var(--link); border-radius:10px; padding:.8rem .9rem; cursor:pointer}
+  .fcard .fi{flex:none; width:2.4rem; height:2.4rem; border-radius:50%; background:var(--link); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1rem}
+  .fcard .ft{display:block; font-weight:600; font-size:.95rem; line-height:1.35}
+  .fcard .fo{display:block; color:var(--link); font-size:.85rem; font-weight:600; margin-top:.2rem}
+}
+dialog.fx{width:100vw; height:100dvh; max-width:none; max-height:none; margin:0; padding:0; border:0; background:var(--paper); color:var(--ink)}
+dialog.fx::backdrop{background:rgba(14,21,27,.6)}
+dialog.fx .fxbar{display:flex; align-items:center; gap:.6rem; padding:.5rem .8rem; border-bottom:1px solid var(--rule); height:3rem; box-sizing:border-box}
+dialog.fx .fxbar b{flex:1; min-width:0; font-size:.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+dialog.fx .fxbar button{font:inherit; font-size:.9rem; font-weight:600; border:1px solid var(--rule); background:var(--card); color:var(--ink); border-radius:8px; padding:.35rem .8rem; cursor:pointer}
+dialog.fx .fxhint{font-size:.78rem; color:var(--mut); padding:.3rem .8rem; margin:0}
+dialog.fx iframe{display:block; width:100%; height:calc(100dvh - 5.2rem); border:0; background:#FBFCFD}
+@media (orientation:landscape){dialog.fx .fxhint{display:none} dialog.fx iframe{height:calc(100dvh - 3rem)}}
 </style>
 </head>
 <body>
@@ -1126,5 +1145,23 @@ f.addEventListener('submit',function(e){e.preventDefault();
    else{s.appendChild(document.createTextNode(T.err+' '));var a=document.createElement('a');a.href='mailto:info@eraofprevention.com';a.textContent='info@eraofprevention.com';s.appendChild(a);s.appendChild(document.createTextNode('.'));}
    b.disabled=false;b.textContent=T.send;});});
 })();</script>
+<dialog class="fx" id="fx" aria-labelledby="fxt"><div class="fxbar"><b id="fxt"></b><button type="button" id="fxc">✕ Close</button></div><p class="fxhint">Turn your phone sideways to see it larger.</p><iframe id="fxf" title=""></iframe></dialog>
+<script>
+/* Phones: replace each interactive figure with a card; the figure opens full screen in a dialog,
+   so the page stays short and nothing scrolls sideways. The hidden frames never load. */
+(function(){
+  var T={"open": "Open the experiment"},d=document.getElementById('fx'),fr=document.getElementById('fxf');
+  if(!d||typeof d.showModal!=='function')return;
+  document.querySelectorAll('figure.w iframe').forEach(function(f){
+    var b=document.createElement('button');b.type='button';b.className='fcard';
+    b.innerHTML='<span class="fi" aria-hidden="true">▶</span><span><span class="ft"></span><span class="fo"></span></span>';
+    b.querySelector('.ft').textContent=f.title;b.querySelector('.fo').textContent=T.open+' →';
+    b.addEventListener('click',function(){document.getElementById('fxt').textContent=f.title;fr.title=f.title;fr.src=f.getAttribute('src');d.showModal();});
+    f.parentNode.insertBefore(b,f);
+  });
+  document.getElementById('fxc').addEventListener('click',function(){d.close();});
+  d.addEventListener('close',function(){fr.src='about:blank';});
+})();
+</script>
 </body>
 </html>
