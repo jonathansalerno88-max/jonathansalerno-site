@@ -34,6 +34,9 @@ svg[viewBox]{min-width:0!important;max-width:100%!important;width:100%}
 .fig [data-k] .ol{opacity:0;pointer-events:none;transition:opacity .12s}
 .fig [data-k].hi .ol,.fig [data-k]:focus-visible .ol{opacity:1}
 .fig svg text{pointer-events:none}
+.fn{font-size:13px;line-height:1.5;margin:6px 0 0;padding:7px 10px;border-radius:8px;background:#FFF8EC;border:1px solid #F1D9A8}
+.fn:empty{display:none}
+.fn b{color:#8A4A0B}
 .kd{font-size:13.5px;line-height:1.5;margin:6px 0 0;padding:7px 10px;border-radius:8px;background:#F6F8FA;min-height:2.6em}
 .kd b{color:#B4481A}
 .kd .ht{color:var(--text-secondary);font-size:12.5px}
@@ -160,6 +163,34 @@ FIG.cxr=function(st,L,u){
   s+='<ellipse cx="470" cy="478" rx="30" ry="15" fill="#2c2c2c" filter="url(#'+u+'b4)"/>';
   s+='<rect width="600" height="540" filter="url(#'+u+'gr)"/>';
   s+=tx(18,34,lb.side,'start',{s:22,w:700,h:''})+tx(18,58,'PA','start',{s:14,h:'',c:'#bbb'});
+  // lobes and segments, projected on the PA view (approximate: lobes overlap front to back)
+  if(st.f[0]||st.f[1]){
+    var ov='<clipPath id="'+u+'cl2"><path d="'+RL+'"/><path d="'+LL+'"/></clipPath><g clip-path="url(#'+u+'cl2)">';
+    if(st.f[0]){
+      var LO=[['#4C8BF5','M0 0 H300 V236 L258 232 C200 232 120 236 66 246 L0 250Z'],
+              ['#3BB273','M66 246 C120 236 200 232 258 232 L300 236 V410 L232 394 C190 340 120 280 66 246Z'],
+              ['#F2A541','M0 250 L66 246 C120 280 190 340 232 394 L300 410 V540 H0Z'],
+              ['#4C8BF5','M300 0 H600 V250 L532 250 C470 300 410 360 372 412 L300 412Z'],
+              ['#F2A541','M532 250 H600 V540 H300 V412 L372 412 C410 360 470 300 532 250Z']];
+      LO.forEach(function(l){ov+='<path d="'+l[1]+'" fill="'+l[0]+'" fill-opacity=".2" stroke="none"/>';});
+      ov+='<path d="M66 246 C120 236 200 232 258 232" stroke="#fff" stroke-width="2.4" fill="none"/>';
+      ov+='<path d="M66 246 C120 280 190 340 232 394 M532 250 C470 300 410 360 372 412" stroke="#fff" stroke-width="1.8" fill="none" stroke-dasharray="7 5"/>';
+      ov+='<path d="M372 270 C420 266 470 262 512 266" stroke="#fff" stroke-width="1.4" fill="none" stroke-dasharray="2 4"/>';
+    }
+    ov+='</g>';
+    if(st.f[0]){var LT={s:15,w:700,h:'#000',hw:4};
+      ov+=tx(80,206,lb.rul,'start',Object.assign({c:'#A9C8FF'},LT))+tx(244,300,lb.rml,'end',Object.assign({c:'#9BE3B8'},LT))+tx(80,352,lb.rll,'start',Object.assign({c:'#FFD08A'},LT));
+      ov+=tx(500,200,lb.lul,'end',Object.assign({c:'#A9C8FF'},LT))+tx(392,300,lb.ling,'start',Object.assign({c:'#A9C8FF'},LT))+tx(522,398,lb.lll,'end',Object.assign({c:'#FFD08A'},LT));}
+    if(st.f[1]){
+      // [label, x, y, posterior?]
+      var SG=[['1',186,82],['2',112,160,1],['3',246,208],['4',112,290],['5',226,330],['6',150,262,1],['7',262,372],['8',196,372],['9',110,398],['10',154,424,1],
+              ['1+2',420,96,1],['3',372,206],['4',474,290],['5',420,352],['6',454,250,1],['7+8',446,398],['9',508,412],['10',484,440,1]];
+      SG.forEach(function(g){var r=g[0].length>2?15:11.5;
+        ov+='<circle cx="'+g[1]+'" cy="'+g[2]+'" r="'+r+'" fill="#16222E" fill-opacity=".78" stroke="#FFE08A" stroke-width="1.6"'+(g[3]?' stroke-dasharray="3 2.5"':'')+'/>';
+        ov+=tx(g[1],g[2]+4.5,g[0],'middle',{s:g[0].length>2?11:12.5,w:700,c:'#FFE08A',h:''});});
+    }
+    s+='<g pointer-events="none">'+ov+'</g>';
+  }
   // labels + hotspots
   var lab='',hot='';
   if(m===0){
@@ -511,6 +542,7 @@ function render(id){var st=FS[id],box=st.el,F=D.figs[id];
   var bs=box.querySelectorAll('.ctl button[data-m]');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('act',+bs[i].getAttribute('data-m')===st.m);
   var fl=box.querySelectorAll('.ctl button[data-fl]');for(i=0;i<fl.length;i++)fl[i].classList.toggle('act',!!st.f[+fl[i].getAttribute('data-fl')]);
   var lb=$('.ctl .lbt',box);if(lb)lb.classList.toggle('act',st.lab);
+  $('.fn',box).innerHTML=(F.fhint||[]).filter(function(t,i){return st.f[i];}).join(' ');
   if(st.k&&$('[data-k="'+st.k+'"]',box))show(id,st.k);else{st.k=null;$('.kd',box).innerHTML='<span class="ht">'+F.hint+'</span>';}}
 function show(id,k){var st=FS[id],box=st.el;st.k=k;
   var all=box.querySelectorAll('[data-k]');for(var i=0;i<all.length;i++)all[i].classList.toggle('hi',all[i].getAttribute('data-k')===k);
@@ -532,7 +564,7 @@ function reveal(n){shown=Math.max(shown,n);for(var i=0;i<N;i++)$('#s'+i).hidden=
 var root=$('#case');
 D.steps.forEach(function(s,i){var sec=document.createElement('section');sec.className='step';sec.id='s'+i;
   var h='<div class="shd"><span class="sn">'+(i+1)+'</span><h3>'+s.h+'</h3></div><div class="story">'+s.story+'</div>';
-  (s.figs||[]).forEach(function(f){h+='<div class="fig" data-f="'+f+'"><div class="ctl"></div><div class="sv"></div><p class="kd" aria-live="polite"></p></div>';});
+  (s.figs||[]).forEach(function(f){h+='<div class="fig" data-f="'+f+'"><div class="ctl"></div><div class="sv"></div><p class="fn"></p><p class="kd" aria-live="polite"></p></div>';});
   h+='<div class="q"><p class="qt">'+s.q.t+'</p><div class="opts">';
   s.q.o.forEach(function(o,j){h+='<button type="button" data-j="'+j+'">'+o[0]+'</button>';});
   h+='</div><div class="fb" aria-live="polite"></div></div><div class="after" hidden>'+s.after+(i<N-1?'<button type="button" class="nx">'+D.ui.next+'</button>':'<p class="end">'+D.ui.end+'</p>')+'</div>';
