@@ -327,17 +327,14 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   conductance</b> of the wall (L<sub>p</sub>, how much fluid crosses each cm² of wall per mmHg: mL·min⁻¹·mmHg⁻¹·cm⁻²).
   So K<sub>f</sub> = surface area × L<sub>p</sub>. The mmHg is a pressure: 1 mmHg ≈ 133.3 Pa (Pa = N/m²).</p>
   <h4>Dimensional analysis</h4>
+  <p>Base quantities: mass [M], length [L], time [T].</p>
   <ul>
-    <li><b>Inside the brackets</b> pressures are subtracted from pressures: (P<sub>c</sub> − P<sub>i</sub>) is in mmHg, (π<sub>c</sub> − π<sub>i</sub>) is in mmHg.
-    σ is a pure number, so σ·(π<sub>c</sub> − π<sub>i</sub>) stays in mmHg. That is why the subtraction is allowed: the net driving force is in mmHg.</li>
-    <li><b>The flow:</b> J<sub>v</sub> = K<sub>f</sub> × net driving force → [mL·min⁻¹·mmHg⁻¹] × [mmHg] = [mL·min⁻¹]. The mmHg cancel:
-    what is left is a volume per time, a flow.</li>
-    <li><b>The coefficient:</b> K<sub>f</sub> = surface area × L<sub>p</sub> → [cm²] × [mL·min⁻¹·mmHg⁻¹·cm⁻²] = [mL·min⁻¹·mmHg⁻¹].
-    The cm² cancel.</li>
-    <li><b>What L<sub>p</sub> is:</b> since 1 mL = 1 cm³, L<sub>p</sub> = cm³·min⁻¹·mmHg⁻¹·cm⁻² = cm·min⁻¹·mmHg⁻¹: a velocity
-    (cm/min) per mmHg. It is how fast fluid crosses the wall for each mmHg of driving force.</li>
-    <li><b>In SI base units</b> (kg, m, s): pressure Pa = N/m² = kg·m⁻¹·s⁻²; J<sub>v</sub> in m³·s⁻¹;
-    K<sub>f</sub> = m³·s⁻¹ / (kg·m⁻¹·s⁻²) = m⁴·s·kg⁻¹; L<sub>p</sub> = m²·s·kg⁻¹. Check: m⁴·s·kg⁻¹ × kg·m⁻¹·s⁻² = m³·s⁻¹ ✓.</li>
+    <li>Pressure (force / area): [P] = [M L T⁻²] / [L²] = [M L⁻¹ T⁻²]</li>
+    <li>σ: pure number, [1]; so σ(π<sub>c</sub> − π<sub>i</sub>) = [M L⁻¹ T⁻²], like (P<sub>c</sub> − P<sub>i</sub>)</li>
+    <li>J<sub>v</sub> (volume / time): [L³ T⁻¹]</li>
+    <li>K<sub>f</sub> = J<sub>v</sub> / P = [L³ T⁻¹] / [M L⁻¹ T⁻²] = [M⁻¹ L⁴ T]</li>
+    <li>Surface area: [L²]; L<sub>p</sub> = K<sub>f</sub> / area = [M⁻¹ L² T], i.e. a velocity [L T⁻¹] divided by a pressure</li>
+    <li>Check: K<sub>f</sub> × P = [M⁻¹ L⁴ T] × [M L⁻¹ T⁻²] = [L³ T⁻¹] = J<sub>v</sub> ✓</li>
   </ul>
   <p>In the widget above the numbers are the <b>net driving force</b> in mmHg, not the flow: to get J<sub>v</sub> you would
   multiply them by that bed's K<sub>f</sub>, which the model does not compute.</p>
