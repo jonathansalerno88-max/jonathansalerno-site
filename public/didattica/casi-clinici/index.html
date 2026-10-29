@@ -309,6 +309,27 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   all'inizio vince la spinta e il liquido esce, alla fine nel modello classico vince il richiamo e il liquido rientra.
   Quello che avanza lo riportano i linfatici. L'edema compare quando anche il versante venoso filtra e il filtrato supera
   i linfatici.</p>
+  <h4>Le sei variabili</h4>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Simbolo</th><th>Che cos'è</th><th>Effetto sul flusso</th><th>Unità</th></tr></thead>
+    <tbody>
+    <tr><td>P<sub>c</sub></td><td>pressione idrostatica nel capillare</td><td>spinge il liquido fuori</td><td>mmHg</td></tr>
+    <tr><td>P<sub>i</sub></td><td>pressione idrostatica nell'interstizio</td><td>si oppone alla P<sub>c</sub></td><td>mmHg</td></tr>
+    <tr><td>π<sub>c</sub></td><td>pressione oncotica del plasma (soprattutto albumina)</td><td>richiama il liquido dentro</td><td>mmHg</td></tr>
+    <tr><td>π<sub>i</sub></td><td>pressione oncotica dell'interstizio</td><td>richiama il liquido fuori</td><td>mmHg</td></tr>
+    <tr><td>K<sub>f</sub></td><td>coefficiente di filtrazione</td><td>dice quanto liquido passa per ogni mmHg di spinta</td><td>mL·min⁻¹·mmHg⁻¹</td></tr>
+    <tr><td>σ</td><td>coefficiente di riflessione delle proteine</td><td>pesa la differenza oncotica, da 0 a 1</td><td>nessuna (numero puro)</td></tr>
+    </tbody></table></div>
+  <p>Le prime quattro sono le <b>forze</b>: messe insieme danno la spinta netta, in mmHg. σ non è una forza:
+  moltiplica la sola differenza oncotica e dice quanta parte di essa conta davvero per quella parete.
+  K<sub>f</sub> è la costante di proporzionalità che trasforma la spinta in flusso: J<sub>v</sub> = K<sub>f</sub> × spinta netta,
+  in mL/min. Un K<sub>f</sub> alto indica un capillare molto permeabile all'acqua (glomerulo); un K<sub>f</sub> basso, un capillare
+  poco permeabile (encefalo).</p>
+  <p>K<sub>f</sub> è il prodotto di due fattori: la <b>superficie</b> capillare disponibile (cm²) e la <b>conduttanza idraulica</b>
+  della parete (L<sub>p</sub>, cioè quanto liquido passa per ogni cm² di parete e per ogni mmHg: mL·min⁻¹·mmHg⁻¹·cm⁻²).
+  Quindi K<sub>f</sub> = superficie × L<sub>p</sub>. Il mmHg è una pressione: 1 mmHg ≈ 133,3 Pa (Pa = N/m²).</p>
+  <p>Nel widget qui sopra i numeri sono la <b>spinta netta</b> in mmHg, non il flusso: per avere J<sub>v</sub> bisognerebbe
+  moltiplicarli per il K<sub>f</sub> di quel letto, che il modello non calcola.</p>
   <p class="caveat">Valori indicativi, a scopo didattico. Oggi si sa che in molti tessuti il riassorbimento venoso è
   modesto e che il glicocalice dell'endotelio pesa sulle forze oncotiche: la logica dell'equazione però resta quella.</p>
 </section>
