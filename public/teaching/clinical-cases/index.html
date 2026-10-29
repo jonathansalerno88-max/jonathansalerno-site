@@ -308,17 +308,21 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   the wall holds back proteins (1 = fully, 0 = not at all). Along the capillary P<sub>c</sub> falls: at the start the push wins and
   fluid leaves, at the end, in the classic model, the pull wins and fluid comes back. The lymphatics return what is left.
   Oedema appears when the venous end filters too and the filtrate exceeds the lymphatics.</p>
-  <h4>The six variables</h4>
+  <h4>The six variables (and the result)</h4>
   <div class="tscroll tw"><table>
-    <thead><tr><th>Symbol</th><th>What it is</th><th>Effect on flow</th><th>Unit</th></tr></thead>
+    <thead><tr><th>Symbol</th><th>What it is</th><th>Effect on flow</th><th>Unit</th><th>Dimensions</th></tr></thead>
     <tbody>
-    <tr><td>P<sub>c</sub></td><td>capillary hydrostatic pressure</td><td>pushes fluid out</td><td>mmHg</td></tr>
-    <tr><td>P<sub>i</sub></td><td>interstitial hydrostatic pressure</td><td>opposes P<sub>c</sub></td><td>mmHg</td></tr>
-    <tr><td>π<sub>c</sub></td><td>plasma oncotic pressure (mainly albumin)</td><td>pulls fluid in</td><td>mmHg</td></tr>
-    <tr><td>π<sub>i</sub></td><td>interstitial oncotic pressure</td><td>pulls fluid out</td><td>mmHg</td></tr>
-    <tr><td>K<sub>f</sub></td><td>filtration coefficient</td><td>how much fluid crosses per mmHg of driving force</td><td>mL·min⁻¹·mmHg⁻¹</td></tr>
-    <tr><td>σ</td><td>protein reflection coefficient</td><td>weights the oncotic difference, from 0 to 1</td><td>none (pure number)</td></tr>
+    <tr><td>J<sub>v</sub></td><td>net flow across the wall (the result)</td><td>positive = out, negative = back in</td><td>mL·min⁻¹</td><td>[L³ T⁻¹]</td></tr>
+    <tr><td>P<sub>c</sub></td><td>capillary hydrostatic pressure</td><td>pushes fluid out</td><td>mmHg</td><td>[M L⁻¹ T⁻²]</td></tr>
+    <tr><td>P<sub>i</sub></td><td>interstitial hydrostatic pressure</td><td>opposes P<sub>c</sub></td><td>mmHg</td><td>[M L⁻¹ T⁻²]</td></tr>
+    <tr><td>π<sub>c</sub></td><td>plasma oncotic pressure (mainly albumin)</td><td>pulls fluid in</td><td>mmHg</td><td>[M L⁻¹ T⁻²]</td></tr>
+    <tr><td>π<sub>i</sub></td><td>interstitial oncotic pressure</td><td>pulls fluid out</td><td>mmHg</td><td>[M L⁻¹ T⁻²]</td></tr>
+    <tr><td>K<sub>f</sub></td><td>filtration coefficient</td><td>how much fluid crosses per mmHg of driving force</td><td>mL·min⁻¹·mmHg⁻¹</td><td>[M⁻¹ L⁴ T]</td></tr>
+    <tr><td>σ</td><td>protein reflection coefficient</td><td>weights the oncotic difference, from 0 to 1</td><td>none (pure number)</td><td>[1]</td></tr>
     </tbody></table></div>
+  <p class="caveat">[M] mass, [L] length, [T] time. Pressure = force / area = [M L T⁻²] / [L²].
+  Check: K<sub>f</sub> × pressure = [M⁻¹ L⁴ T] × [M L⁻¹ T⁻²] = [L³ T⁻¹] = J<sub>v</sub> ✓.
+  L<sub>p</sub> = K<sub>f</sub> / area = [M⁻¹ L² T].</p>
   <p>The first four are the <b>forces</b>: together they give the net driving force, in mmHg. σ is not a force: it
   multiplies only the oncotic difference and says how much of it really counts for that wall. K<sub>f</sub> is the
   constant of proportionality that turns force into flow: J<sub>v</sub> = K<sub>f</sub> × net driving force, in mL/min. A high
@@ -326,16 +330,6 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <p>K<sub>f</sub> is the product of two factors: the capillary <b>surface area</b> available (cm²) and the <b>hydraulic
   conductance</b> of the wall (L<sub>p</sub>, how much fluid crosses each cm² of wall per mmHg: mL·min⁻¹·mmHg⁻¹·cm⁻²).
   So K<sub>f</sub> = surface area × L<sub>p</sub>. The mmHg is a pressure: 1 mmHg ≈ 133.3 Pa (Pa = N/m²).</p>
-  <h4>Dimensional analysis</h4>
-  <p>Base quantities: mass [M], length [L], time [T].</p>
-  <ul>
-    <li>Pressure (force / area): [P] = [M L T⁻²] / [L²] = [M L⁻¹ T⁻²]</li>
-    <li>σ: pure number, [1]; so σ(π<sub>c</sub> − π<sub>i</sub>) = [M L⁻¹ T⁻²], like (P<sub>c</sub> − P<sub>i</sub>)</li>
-    <li>J<sub>v</sub> (volume / time): [L³ T⁻¹]</li>
-    <li>K<sub>f</sub> = J<sub>v</sub> / P = [L³ T⁻¹] / [M L⁻¹ T⁻²] = [M⁻¹ L⁴ T]</li>
-    <li>Surface area: [L²]; L<sub>p</sub> = K<sub>f</sub> / area = [M⁻¹ L² T], i.e. a velocity [L T⁻¹] divided by a pressure</li>
-    <li>Check: K<sub>f</sub> × P = [M⁻¹ L⁴ T] × [M L⁻¹ T⁻²] = [L³ T⁻¹] = J<sub>v</sub> ✓</li>
-  </ul>
   <p>In the widget above the numbers are the <b>net driving force</b> in mmHg, not the flow: to get J<sub>v</sub> you would
   multiply them by that bed's K<sub>f</sub>, which the model does not compute.</p>
   <p class="caveat">Indicative values, for teaching. We now know that in many tissues venous reabsorption is modest and that
