@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Il vecchietto con le caviglie gonfie: da dove viene il liquido</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+svg[viewBox]{min-width:0!important;max-width:100%!important;width:100%}
+.card{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:9px 11px;margin:0 0 8px}
+.card h3{font-size:16px;margin:0 0 4px}
+.story{font-size:14px;line-height:1.55;margin:0}
+.top{display:flex;gap:8px;margin:0 0 8px;align-items:stretch}
+.top>div{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:4px}
+.top .hm{flex:360 1 0;min-width:0}.top .pa{flex:290 1 0;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.top h4{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-secondary);margin:4px 6px}
+@media (max-width:600px){.top{flex-direction:column}}
+.ctl{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:8px 10px;margin:0 0 8px}
+.ctl .row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0 0 6px;font-size:13px}
+.ctl .row:last-child{margin:0}
+.ctl label{min-width:150px;font-weight:600}
+.ctl input[type=range]{flex:1 1 160px}
+.ctl .v{min-width:86px;font-weight:700;color:var(--text-accent)}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chips button{font:inherit;font-size:13px;padding:4px 10px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.chips button.act{border:1.5px solid var(--border-accent);color:var(--text-accent);background:#EEF4FC;font-weight:600}
+.chips .lab{font-size:12px;color:var(--text-secondary);align-self:center;margin-right:2px}
+.st{border:1.5px solid #7A4BA6;border-radius:10px;background:#FFFFFF;padding:8px 10px;margin:0 0 8px}
+.st h3{font-size:15px;margin:0 0 2px;color:#5B2F8A}
+.st .eq{font-size:15px;margin:4px 0 6px;font-family:"IBM Plex Sans",system-ui,sans-serif}
+.st .eq b{color:#5B2F8A}
+.st .nt{font-size:13.5px;line-height:1.55;margin:6px 0 0}
+.st .nt b{color:#16222E}
+.st .verdict{font-size:13.5px;line-height:1.5;margin:6px 0 0;padding:6px 9px;border-radius:8px}
+.st .verdict.ok{background:#EAF5E1;color:#1F4D0B}.st .verdict.no{background:#FCE8E3;color:#7A1F1F}
+.hm [data-b]{cursor:pointer}
+.drop{animation:dr 1.6s ease-in infinite}
+@keyframes dr{0%{opacity:0;transform:translateY(-3px)}30%{opacity:.9}100%{opacity:0;transform:translateY(7px)}}
+@media (prefers-reduced-motion:reduce){.drop{animation:none;opacity:.8}}
+</style>
+</head>
+<body>
+<h2 class="sr-only">L'homunculus circolatorio: grande circolo, piccolo circolo e i due sistemi portali (fegato: vena–capillare–vena; rene: arteria–capillare–arteria), accanto al paziente a letto a 45°. Toccando un letto capillare si vede l'equazione di Starling lungo il capillare; con i cursori di albumina e pressione venosa centrale si vede quando anche il versante venoso filtra e compare l'edema.</h2>
+<div class="card"><h3 id="ttl"></h3><p class="story" id="story"></p></div>
+<div class="top"><div class="hm"><h4 id="h_hm"></h4><div id="hm"></div></div><div class="pa"><h4 id="h_pa"></h4><div id="pa"></div></div></div>
+<div class="ctl">
+  <div class="row"><div class="chips" id="pre"></div></div>
+  <div class="row"><label for="alb" id="l_alb"></label><input type="range" id="alb" min="1.5" max="5" step="0.1"><span class="v" id="v_alb"></span></div>
+  <div class="row"><label for="cvp" id="l_cvp"></label><input type="range" id="cvp" min="0" max="25" step="1"><span class="v" id="v_cvp"></span></div>
+</div>
+<div class="st"><div class="chips" id="beds"></div><h3 id="bt"></h3><p class="eq" id="eq"></p><div id="graph"></div><p class="verdict" id="vd"></p><p class="nt" id="bn"></p></div>
+<script>
+var D={"ui": {"dec": ",", "title": "Il vecchietto con le caviglie gonfie", "story": "Ottantadue anni, magro, «secco secco». La figlia ti chiama a casa: da qualche settimana ha le caviglie gonfissime e la pancia comincia a crescere. Sei il medico di famiglia, a domicilio. Prima di pensare ai farmaci: da dove viene il liquido, e perché si ferma proprio lì? Tocca un letto capillare, poi muovi albumina e pressione venosa.", "hHm": "Homunculus circolatorio", "hPa": "Il paziente a letto, a 45°", "ariaHm": "Schema della circolazione chiusa con grande e piccolo circolo, fegato e rene", "ariaPa": "Il paziente a letto", "ariaG": "Pressioni lungo il capillare", "lAlb": "Albumina nel sangue", "lCvp": "Pressione venosa centrale", "preL": "Situazioni:", "bedL": "Letto capillare:", "eqA": "Inizio", "eqV": "Fine", "hm": {"lung": "Polmoni", "head": "Testa e braccia", "gut": "Intestino", "liver": "Fegato: sinusoidi", "glom": "Glomerulo", "ptc": "Peritubulari", "leg": "Gambe e caviglie", "portal": "vena porta", "hv1": "vene", "hv2": "sovraepatiche", "eff": "efferente", "aff": "afferente", "aca": "arteria–capillare–arteria", "vcv": "vena–capillare–vena", "cvp": "PVC", "small": "Piccolo circolo", "big": "Grande circolo", "ra": "AD", "rv": "VD", "la": "AS", "lv": "VS", "hint": "Tocca un letto capillare per vedere le forze di Starling"}, "pl": {"w": "Peso", "asc": "Ascite", "leg": "Edemi", "sac": "Edema sacrale", "jvp": "Giugulari turgide"}, "g": {"pc": "Pc: spinge fuori", "pull": "Pi + σ(πc − πi): richiama dentro", "aend3": "dalla vena porta", "aend": "versante arterioso", "vend": "versante venoso", "aend2": "lato afferente", "vend2": "lato efferente", "vend3": "verso le vene sovraepatiche"}, "vd": {"ok": "Bilancio: il filtrato netto medio ({m} mmHg) resta sotto quello che i linfatici portano via (circa {l}). Niente edema.", "venOut": "Anche il versante venoso filtra: il liquido non rientra più nel capillare. Filtrato netto medio {m} mmHg; i linfatici reggono fino a circa {l}: per ora ce la fanno.", "edema": "Anche il versante venoso filtra, e il filtrato netto medio ({m} mmHg) supera quello che i linfatici portano via (circa {l}): il liquido resta nei tessuti. È l'edema.", "ascites": "I sinusoidi filtrano più di quanto i linfatici del fegato riescano a smaltire (filtrato medio {m} mmHg contro circa {l}): il liquido trasuda nel peritoneo. È l'ascite.", "sinOk": "I sinusoidi filtrano sempre, anche nel sano: è la linfa del fegato, che i linfatici smaltiscono. Niente ascite.", "glom": "Nel glomerulo si filtra lungo tutto il capillare: è il lavoro del rene, non un edema. Verso la fine le proteine concentrate pareggiano le forze."}, "bedOrder": ["leg", "head", "gut", "liver", "glom", "ptc", "lung"], "beds": {"leg": {"s": "Caviglie", "t": "Gambe e caviglie", "n": "Qui si forma l'edema del vecchietto. A 45° le gambe stanno sotto il cuore e la gravità aggiunge pressione ai capillari. Nel sano il capillare filtra sul versante arterioso e riassorbe su quello venoso; il poco che avanza lo riportano i linfatici. Ci sono due modi per far filtrare anche il versante venoso: <b>alzare la pressione venosa</b> (il cuore destro non spinge avanti il sangue: P<sub>c</sub> sale) oppure <b>abbassare l'albumina</b> (π<sub>c</sub> scende e la linea verde si abbassa). Prova tutti e due: l'edema è lo stesso, la causa no."}, "head": {"s": "Testa e braccia", "t": "Testa e braccia", "n": "La parte alta del corpo sta sopra il cuore: la gravità toglie pressione ai capillari, e il versante venoso continua a riassorbire anche con la pressione venosa alta. Per questo l'edema cardiaco parte dal basso. Con l'albumina molto bassa, invece, si gonfiano anche le palpebre: è tipico della nefrosi."}, "gut": {"s": "Intestino", "t": "Intestino", "n": "Il sangue venoso dell'intestino non torna direttamente al cuore: passa nella vena porta e poi nel fegato. Se la pressione nella porta sale, per fegato congesto o cirrotico, sale anche la pressione nei capillari dell'intestino, che si fa edematoso. Anche il peritoneo trasuda: è una parte dell'ascite."}, "liver": {"s": "Fegato", "t": "Fegato: i sinusoidi (sistema portale venoso)", "n": "Primo sistema portale: <b>vena–capillare–vena</b>. La vena porta porta il sangue dell'intestino ai sinusoidi, e da lì le vene sovraepatiche lo portano alla cava. I sinusoidi hanno buchi grandi e lasciano passare le proteine: σ ≈ 0,1, quindi l'albumina conta pochissimo e conta quasi solo la pressione. Il fegato produce normalmente molta linfa. Se la pressione venosa sale, i sinusoidi filtrano moltissimo e la linfa supera quello che il dotto toracico riesce a portare via; il dotto, per giunta, si svuota proprio in una vena a pressione alta. Il liquido trasuda dalla capsula del fegato nel peritoneo: è un'ascite ricca di proteine, con gradiente siero-ascite alto e proteine sopra 2,5 g/dL."}, "glom": {"s": "Glomerulo", "t": "Glomerulo (sistema portale arterioso)", "n": "Secondo sistema portale: <b>arteria–capillare–arteria</b>. L'arteriola efferente, a valle, tiene alta la pressione nei capillari (circa 50 mmHg) per tutto il tratto: si filtra dall'inizio alla fine. Lungo il capillare, però, le proteine si concentrano perché l'acqua se ne va, e π<sub>c</sub> sale: verso la fine le forze si pareggiano (equilibrio di filtrazione). Qui P<sub>i</sub> è la pressione nella capsula di Bowman."}, "ptc": {"s": "Peritubulari", "t": "Capillari peritubulari", "n": "Vengono dopo l'efferente: pressione bassa e proteine concentrate, perché il glomerulo ha appena tolto acqua. Per questo riassorbono il liquido che il tubulo ha recuperato. Con la pressione venosa alta il riassorbimento cala e il rene si congestiona: è una delle ragioni per cui, nello scompenso, la creatinina sale e sgonfiare il paziente la fa scendere."}, "lung": {"s": "Polmone", "t": "Polmone (piccolo circolo)", "n": "Nel polmone le pressioni sono basse (capillari a circa 8–11 mmHg) e i linfatici sono molto efficienti: normalmente resta asciutto. Nel vecchietto con scompenso destro il polmone non c'entra. Se cedesse il cuore sinistro salirebbe la pressione dell'atrio sinistro, e qui si formerebbe l'edema polmonare: è un cursore da aggiungere più avanti."}}}, "pre": [{"t": "Sano", "alb": 4.2, "cvp": 4}, {"t": "Il vecchietto", "alb": 3.4, "cvp": 16}, {"t": "Solo albumina bassa", "alb": 2.0, "cvp": 4}, {"t": "Solo pressione venosa alta", "alb": 4.2, "cvp": 16}]},U=D.ui,ALB=D.pre[1].alb,CVP=D.pre[1].cvp,BED='leg',PRE=1;
+function $(s){return document.querySelector(s);}
+function f1(v){return Math.round(v*10)/10;}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function nf(v,n){return (n==null?f1(v):v.toFixed(n)).toString().replace('.',U.dec);}
+function tx(x,y,t,a,o){o=o||{};return '<text x="'+x+'" y="'+y+'" font-size="'+(o.s||12)+'" text-anchor="'+(a||'start')+'" fill="'+(o.c||'#16222E')+'"'+(o.w?' font-weight="'+o.w+'"':'')+(o.h?' stroke="#FFFFFF" stroke-width="3" paint-order="stroke"':'')+'>'+t+'</text>';}
+// ---------- the Starling model (indicative values, mmHg) ----------
+// pi_c from albumin; each bed: pressure at the arterial and venous end, interstitial pressure and oncotic pressure, reflection coefficient, lymph capacity
+function model(alb,cvp){
+  var pc=5.8*alb+0.4, pp=4+0.9*cvp, phv=cvp+1, B={};
+  B.head={pa:30+0.3*cvp,pv:6+0.75*cvp,pi:0,pii:3,sig:0.9,pic:pc,lym:12};
+  B.leg ={pa:38+0.3*cvp,pv:16+0.75*cvp,pi:0,pii:3,sig:0.9,pic:pc,lym:12};
+  B.gut ={pa:32+0.3*cvp,pv:pp+4,pi:0,pii:3,sig:0.9,pic:pc,lym:10};
+  B.liver={pa:(pp+phv)/2+1.5,pv:(pp+phv)/2-1.5,pi:2,pii:0.8*pc,sig:0.1,pic:pc,lym:12-0.3*cvp,sinus:1};
+  B.glom={pa:50,pv:49,pi:15,pii:0,sig:1,pic:pc,pic2:1.4*pc,lym:99,glom:1};
+  B.ptc ={pa:20+0.4*cvp,pv:14+0.5*cvp,pi:6,pii:3,sig:0.9,pic:1.25*pc,lym:14};
+  B.lung={pa:11,pv:8,pi:-2,pii:0.4*pc,sig:0.8,pic:pc,lym:12};
+  for(var k in B){var b=B[k],e=b.pic2||b.pic;
+    b.netA=(b.pa-b.pi)-b.sig*(b.pic-b.pii);b.netV=(b.pv-b.pi)-b.sig*(e-b.pii);
+    b.mean=(b.netA+b.netV)/2;b.ex=Math.max(0,b.mean-b.lym);}
+  var leg=clamp(B.leg.ex/2,0,6),asc=clamp((B.liver.ex+0.6*B.gut.ex)/3,0,7);
+  return {B:B,pc:pc,pp:pp,leg:leg,asc:asc,cvp:cvp};}
+// ---------- the circulatory homunculus ----------
+function mesh(x,y,w,h,col){var s='',n=5;for(var i=0;i<n;i++){var yy=y+h*(i+0.5)/n;s+='<path d="M'+x+' '+f1(yy)+' C'+f1(x+w*0.3)+' '+f1(yy-5)+' '+f1(x+w*0.6)+' '+f1(yy+5)+' '+(x+w)+' '+f1(yy)+'"/>';}
+  for(i=1;i<4;i++){var xx=x+w*i/4;s+='<path d="M'+f1(xx)+' '+y+' C'+f1(xx-4)+' '+f1(y+h*0.4)+' '+f1(xx+4)+' '+f1(y+h*0.6)+' '+f1(xx)+' '+(y+h)+'"/>';}
+  return '<g fill="none" stroke="url(#'+col+')" stroke-width="1.6">'+s+'</g>';}
+function drops(x,y,w,h,n){var s='';for(var i=0;i<n;i++){var dx=x+((i*37)%w),dy=y+((i*23)%h);s+='<path class="drop" style="animation-delay:'+(i*0.27).toFixed(2)+'s" d="M'+dx+' '+dy+' q-2.6 4.2 0 5.4 q2.6 -1.2 0 -5.4Z" fill="#5AA9E6"/>';}return s;}
+function bed(k,x,y,w,h,lab,m,grad){var b=m.B[k],sel=BED===k,s='<g data-b="'+k+'">';
+  s+='<rect x="'+(x-4)+'" y="'+(y-4)+'" width="'+(w+8)+'" height="'+(h+8)+'" rx="8" fill="'+(sel?'#F3ECFA':'#FFFFFF')+'" stroke="'+(sel?'#7A4BA6':'#C9D3DC')+'" stroke-width="'+(sel?2.4:1)+'"/>';
+  s+=mesh(x,y,w,h,grad||'gAV');
+  if(b.ex>0.5)s+=drops(x-2,y+h-2,w+4,10,Math.min(8,Math.round(b.ex)));
+  s+=tx(x+w/2,y-8,lab,'middle',{s:10.5,w:700,c:sel?'#5B2F8A':'#55697A',h:1});
+  return s+'</g>';}
+function homunculus(m){var L=U.hm,o='';
+  o+='<defs><linearGradient id="gAV" x1="0" x2="1"><stop offset="0" stop-color="#C24B4B"/><stop offset="1" stop-color="#3E6FB0"/></linearGradient>'+
+     '<linearGradient id="gVA" x1="0" x2="1"><stop offset="0" stop-color="#3E6FB0"/><stop offset="1" stop-color="#C24B4B"/></linearGradient>'+
+     '<linearGradient id="gVV" x1="0" x2="1"><stop offset="0" stop-color="#2F4F8F"/><stop offset="1" stop-color="#3E6FB0"/></linearGradient></defs>';
+  o+='<rect width="360" height="470" fill="#FBFCFD"/>';
+  var vw=f1(3+m.cvp/3);
+  // superior vena cava (drawn first, passes under the pulmonary veins)
+  o+='<path d="M262 88 C236 88 236 126 200 132 C172 136 156 140 150 150" stroke="#3E6FB0" stroke-width="'+f1(2.5+m.cvp/5)+'" fill="none"/>';
+  // pulmonary circulation
+  o+='<path d="M134 180 C100 160 104 80 130 62" stroke="#3E6FB0" stroke-width="4" fill="none"/>';
+  o+='<path d="M230 62 C252 84 246 136 206 150" stroke="#FBFCFD" stroke-width="9" fill="none"/><path d="M230 62 C252 84 246 136 206 150" stroke="#C24B4B" stroke-width="4" fill="none"/>';
+  // aorta and branches
+  o+='<path d="M200 176 C214 128 286 112 304 146 L304 440 C304 452 290 456 278 448 C270 440 266 428 262 420" stroke="#C24B4B" stroke-width="5" fill="none"/>';
+  o+='<path d="M297 126 L300 92" stroke="#C24B4B" stroke-width="3.5"/><path d="M304 264 L262 264" stroke="#C24B4B" stroke-width="3.5"/><path d="M304 336 L270 336" stroke="#C24B4B" stroke-width="3.5"/>';
+  // inferior vena cava and its tributaries
+  o+='<path d="M40 448 L40 206 C40 180 84 170 128 168" stroke="#3E6FB0" stroke-width="'+vw+'" fill="none"/>';
+  o+='<path d="M124 416 C84 416 52 424 42 440" stroke="#3E6FB0" stroke-width="4" fill="none"/><path d="M96 264 L42 264" stroke="#3E6FB0" stroke-width="4"/><path d="M172 336 L42 336" stroke="#3E6FB0" stroke-width="4"/>';
+  o+=tx(69,282,L.hv1,'middle',{s:9,w:700,c:'#2F4F8F',h:1})+tx(69,292,L.hv2,'middle',{s:9,w:700,c:'#2F4F8F',h:1});
+  // portal vein: vein – capillary – vein
+  o+='<path d="M204 264 L152 264" stroke="#2F4F8F" stroke-width="'+f1(3+Math.max(0,m.pp-7)/3)+'"/>';
+  o+=tx(178,296,L.portal,'middle',{s:9.5,w:700,c:'#2F4F8F',h:1})+tx(178,307,L.vcv,'middle',{s:9,c:'#2F4F8F',h:1});
+  // kidney: afferent – glomerulus – efferent – peritubular
+  o+='<path d="M243 336 L222 336" stroke="#C24B4B" stroke-width="2.4"/>';
+  o+=tx(288,354,L.aff,'middle',{s:9,c:'#B03A3A',w:600,h:1})+tx(232,360,L.eff,'middle',{s:9,c:'#B03A3A',w:600,h:1})+tx(238,374,L.aca,'middle',{s:9.5,w:700,c:'#B03A3A',h:1});
+  // capillary beds
+  o+=bed('lung',128,26,104,34,L.lung,m,'gVA');
+  o+=bed('head',262,66,76,26,L.head,m);
+  o+=bed('gut',204,250,58,28,L.gut,m);
+  o+=bed('liver',96,250,56,28,L.liver,m,'gVV');
+  var gs=BED==='glom';
+  o+='<g data-b="glom"><circle cx="256" cy="336" r="'+(gs?15:13)+'" fill="'+(gs?'#F3ECFA':'#FFFFFF')+'" stroke="'+(gs?'#7A4BA6':'#C9D3DC')+'" stroke-width="'+(gs?2.4:1)+'"/>';
+  var tf='';for(var q=0;q<6;q++){var aq=q/6*6.28;tf+='<circle cx="'+f1(256+Math.cos(aq)*5)+'" cy="'+f1(336+Math.sin(aq)*5)+'" r="4"/>';}
+  o+='<g fill="none" stroke="#C24B4B" stroke-width="1.5">'+tf+'</g>'+tx(256,316,L.glom,'middle',{s:10,w:700,c:gs?'#5B2F8A':'#55697A',h:1})+'</g>';
+  o+=bed('ptc',172,326,48,20,L.ptc,m);
+  o+=bed('leg',124,402,138,28,L.leg,m);
+  // heart
+  o+='<rect x="128" y="150" width="40" height="24" rx="6" fill="#B9D0EC" stroke="#3E6FB0"/><rect x="128" y="176" width="40" height="40" rx="9" fill="#B9D0EC" stroke="#3E6FB0"/>';
+  o+='<rect x="172" y="150" width="40" height="24" rx="6" fill="#F2BDBD" stroke="#B03A3A"/><rect x="172" y="176" width="40" height="40" rx="9" fill="#F2BDBD" stroke="#B03A3A"/>';
+  o+=tx(148,166,L.ra,'middle',{s:10,w:700})+tx(148,200,L.rv,'middle',{s:10,w:700})+tx(192,166,L.la,'middle',{s:10,w:700})+tx(192,200,L.lv,'middle',{s:10,w:700});
+  o+=tx(48,228,L.cvp+' '+Math.round(m.cvp)+' mmHg','start',{s:10.5,w:700,c:m.cvp>10?'#A32D2D':'#3E6FB0',h:1});
+  o+=tx(8,112,L.small,'start',{s:10.5,w:700,c:'#7A4BA6',h:1})+tx(352,206,L.big,'end',{s:10.5,w:700,c:'#7A4BA6',h:1});
+  o+=tx(180,464,L.hint,'middle',{s:10,c:'#55697A'});
+  return '<svg viewBox="0 0 360 470" role="img" aria-label="'+U.ariaHm+'">'+o+'</svg>';}
+// ---------- the patient (same drawing as in the heart failure case) ----------
+function patient(m){var s={sbp:110,day:0,asc:m.asc,leg:m.leg,cvp:m.cvp,w:58+m.asc+m.leg*1.2},L=U.pl,o='';
+  // ---- the patient, lying in bed with the backrest at about 45° ----
+  var pale=s.sbp<98, skin=pale?'#E8D9CF':'#F0C6A4', shirt='#9CC0E6', pants='#5E6E80';
+  var HX=122,HY=246; // hinge of the bed = the patient's hips
+  var o0=o;o='';
+  // bed: frame, foot section of the mattress, raised backrest
+  o+='<rect x="10" y="262" width="272" height="12" rx="4" fill="#B08A63"/><rect x="16" y="274" width="9" height="52" fill="#9A7752"/><rect x="266" y="274" width="9" height="52" fill="#9A7752"/><rect x="270" y="196" width="10" height="78" rx="4" fill="#B08A63"/>';
+  o+='<rect x="'+HX+'" y="'+HY+'" width="146" height="16" rx="5" fill="#DDE3EA" stroke="#B9C5CF"/>';
+  o+='<g transform="translate('+HX+' '+HY+') rotate(-136)"><rect x="0" y="-16" width="148" height="16" rx="5" fill="#DDE3EA" stroke="#B9C5CF"/></g>';
+  o+='<path d="M'+(HX-34)+' '+(HY+8)+' A34 34 0 0 1 '+f1(HX-34*Math.cos(0.768))+' '+f1(HY+8-34*Math.sin(0.768))+'" stroke="#8696A4" stroke-width="1.2" fill="none" stroke-dasharray="3 2"/>'+tx(HX-50,HY+2,'45°','middle',{s:11,c:'#55697A',w:600});
+  // sacral oedema: in a patient in bed the fluid collects at the lowest point, the sacrum
+  var sac=s.leg*0.45;
+  if(sac>0.2)o+='<ellipse cx="'+(HX+4)+'" cy="'+(HY+1)+'" rx="'+f1(10+3.2*sac)+'" ry="'+f1(3+1.6*sac)+'" fill="'+skin+'" stroke="#C99B80" stroke-width="1"/>';
+  // legs on the mattress: pyjama trousers, then calves and ankles with oedema
+  var ah=4.2*s.leg;
+  o+='<path d="M'+(HX-6)+' '+(HY-28)+' L206 '+(HY-24)+' L206 '+HY+' L'+(HX-6)+' '+HY+' Z" fill="'+pants+'"/>';
+  o+='<path d="M204 '+(HY-22)+' C226 '+(HY-22)+' 238 '+f1(HY-18-ah*0.4)+' 252 '+f1(HY-17-ah)+' C258 '+f1(HY-17-ah)+' 262 '+f1(HY-14-ah*0.6)+' 262 '+(HY-10)+' L262 '+HY+' L204 '+HY+' Z" fill="'+skin+'"/>';
+  if(s.leg>1.5)o+='<ellipse cx="248" cy="'+f1(HY-12-ah*0.6)+'" rx="3.5" ry="2.2" fill="#000" opacity=".13"/>';
+  o+='<path d="M258 '+HY+' L258 '+(HY-40)+' Q264 '+(HY-46)+' 270 '+(HY-38)+' L272 '+HY+' Z" fill="'+skin+'"/>';
+  // torso, belly, arm, neck and head in the frame of the backrest (x towards the head, y towards the front)
+  var g='';
+  g+='<ellipse cx="160" cy="-26" rx="34" ry="12" fill="#FFFFFF" stroke="#C9D3DC"/>';
+  g+='<path d="M-4 0 L112 0 Q120 0 120 8 L120 26 Q120 32 110 32 L-4 34 Z" fill="'+shirt+'"/>';
+  var by=4+4.6*s.asc;
+  g+='<ellipse cx="34" cy="31" rx="'+f1(36+1.5*s.asc)+'" ry="'+f1(by)+'" fill="'+shirt+'"/>';
+  if(s.asc>2.5)g+='<path d="M24 '+f1(40+by-6)+' q8 4 16 0" stroke="#6E93BC" stroke-width="1.4" fill="none"/>';
+  g+='<path d="M104 30 C80 36 56 38 30 '+f1(33+by*0.5)+'" stroke="'+shirt+'" stroke-width="15" fill="none" stroke-linecap="round"/><circle cx="26" cy="'+f1(33+by*0.5)+'" r="8" fill="'+skin+'"/>';
+  g+='<rect x="114" y="8" width="24" height="22" rx="6" fill="'+skin+'"/>';
+  var jv=clamp((s.cvp-8)/12,0,1)*24;
+  if(jv>1)g+='<path d="M116 24 L'+f1(116+jv)+' 24" stroke="#3E6FB0" stroke-width="3.2" stroke-linecap="round"/>';
+  g+='<circle cx="160" cy="18" r="24" fill="'+skin+'"/><path d="M138 8 C140 -8 176 -10 184 4 C174 -2 150 -2 140 14Z" fill="#C9CDD2"/>';
+  g+='<circle cx="166" cy="30" r="2.2" fill="#2B2B2B"/><path d="M158 40 l4 7 l3 -6" stroke="#B9876A" stroke-width="1.6" fill="none"/>';
+  g+='<path d="M146 38 q'+(pale?'-2':'3')+' 5 0 10" stroke="#8A5A44" stroke-width="1.6" fill="none"/>';
+  if(false)g+='<path d="M160 46 C150 60 132 52 124 40 C116 30 100 30 90 20" stroke="#7FB3D5" stroke-width="2" fill="none" opacity="'+f1(clamp(s.day,0,1))+'"/>';
+  o+='<g transform="translate('+HX+' '+(HY-2)+') rotate(-136)">'+g+'</g>';
+  o=o0+'<g transform="translate(26 22) scale(0.9)">'+o+'</g>';
+  o+=tx(14,92,L.w+' '+nf(s.w)+' kg','start',{s:13,w:600});
+  if(s.asc>0.3)o+=tx(160,150,L.asc+' '+nf(s.asc)+' L','start',{s:11.5,c:'#55697A'});
+  if(s.leg>0.3)o+=tx(220,186,L.leg,'start',{s:11.5,c:'#55697A'})+tx(220,200,nf(s.leg)+' L','start',{s:11.5,c:'#55697A'});
+  if(sac>0.3)o+='<path d="M150 288 L139 252" stroke="#8696A4" stroke-width="1"/>'+tx(150,300,L.sac,'start',{s:11.5,c:'#55697A'});
+  if(s.cvp>12)o+='<path d="M126 98 L84 126" stroke="#3E6FB0" stroke-width="1"/>'+tx(128,96,L.jvp,'start',{s:11.5,c:'#3E6FB0',w:600});
+
+  return '<svg viewBox="0 70 290 270" role="img" aria-label="'+U.ariaPa+'">'+o+'</svg>';}
+// ---------- Starling along the selected capillary ----------
+function graph(b){var X0=58,X1=566,Y0=196,Y1=24,mx=60,sy=function(p){return Y0-(clamp(p,-10,mx)+10)/(mx+10)*(Y0-Y1);},o='';
+  var e1=b.pic, e2=b.pic2||b.pic, pull=function(t){return b.pi+b.sig*((e1+(e2-e1)*t)-b.pii);}, pcx=function(t){return b.pa+(b.pv-b.pa)*t;};
+  o+='<rect width="600" height="250" fill="#FFFFFF"/>';
+  for(var p=0;p<=60;p+=10){o+='<line x1="'+X0+'" y1="'+f1(sy(p))+'" x2="'+X1+'" y2="'+f1(sy(p))+'" stroke="#EEF2F5"/>'+tx(X0-6,f1(sy(p)+4),String(p),'end',{s:10,c:'#8696A4'});}
+  o+=tx(12,f1((Y0+Y1)/2),'mmHg','middle',{s:10,c:'#8696A4'}).replace('<text','<text transform="rotate(-90 12 '+f1((Y0+Y1)/2)+')"');
+  // filling between the two curves, sampled along the capillary
+  var N=40,fo='';for(var i=0;i<N;i++){var t0=i/N,t1=(i+1)/N,a=pcx(t0)-pull(t0),b2=pcx(t1)-pull(t1),xa=X0+(X1-X0)*t0,xb=X0+(X1-X0)*t1;
+    fo+='<path d="M'+f1(xa)+' '+f1(sy(pcx(t0)))+' L'+f1(xb)+' '+f1(sy(pcx(t1)))+' L'+f1(xb)+' '+f1(sy(pull(t1)))+' L'+f1(xa)+' '+f1(sy(pull(t0)))+'Z" fill="'+((a+b2)/2>=0?'#F4C7C3':'#C9DCF2')+'"/>';}
+  o+=fo;
+  o+='<path d="M'+X0+' '+f1(sy(pull(0)))+' L'+X1+' '+f1(sy(pull(1)))+'" stroke="#2E8B57" stroke-width="2.6" stroke-dasharray="7 4"/>';
+  o+='<line x1="'+X0+'" y1="'+f1(sy(pcx(0)))+'" x2="'+X1+'" y2="'+f1(sy(pcx(1)))+'" stroke="url(#pcg)" stroke-width="3.4"/>';
+  o+='<defs><linearGradient id="pcg" x1="0" x2="1"><stop offset="0" stop-color="#C24B4B"/><stop offset="1" stop-color="#3E6FB0"/></linearGradient></defs>';
+  o+=tx(X0+6,f1(sy(pcx(0))-8),U.g.pc,'start',{s:11.5,w:700,c:'#B03A3A',h:1});
+  o+=tx(X1-6,f1(sy(pull(1))+(pull(1)>pcx(1)?-8:16)),U.g.pull,'end',{s:11.5,w:700,c:'#2E6B14',h:1});
+  // the capillary itself, with arrows out (filtration) or in (reabsorption)
+  var cy=226;o+='<rect x="'+X0+'" y="'+(cy-7)+'" width="'+(X1-X0)+'" height="14" rx="7" fill="url(#pcg)" opacity=".85"/>';
+  for(i=0;i<9;i++){var t=(i+0.5)/9,n=pcx(t)-pull(t),x=X0+(X1-X0)*t,len=clamp(Math.abs(n)*0.9,3,16);
+    if(Math.abs(n)<0.6)continue;
+    if(n>0)o+='<path d="M'+f1(x)+' '+(cy-9)+' l0 -'+f1(len)+' m-4 5 l4 -5 l4 5" stroke="#C24B4B" stroke-width="2" fill="none"/>';
+    else o+='<path d="M'+f1(x)+' '+f1(cy-9-len)+' l0 '+f1(len)+' m-4 -5 l4 5 l4 -5" stroke="#3E6FB0" stroke-width="2" fill="none"/>';}
+  o+=tx(X0,cy+22,b.glom?U.g.aend2:(b.sinus?U.g.aend3:U.g.aend),'start',{s:11,w:600,c:'#B03A3A'})+tx(X1,cy+22,b.glom?U.g.vend2:(b.sinus?U.g.vend3:U.g.vend),'end',{s:11,w:600,c:'#3E6FB0'});
+  return '<svg viewBox="0 0 600 252" role="img" aria-label="'+U.ariaG+'">'+o+'</svg>';}
+function sgn(v){return (v>=0?'+':'−')+nf(Math.abs(v));}
+function render(){var m=model(ALB,CVP),b=m.B[BED],T=U.beds[BED];
+  $('#hm').innerHTML=homunculus(m);$('#pa').innerHTML=patient(m);
+  $('#v_alb').textContent=nf(ALB)+' g/dL';$('#v_cvp').textContent=Math.round(CVP)+' mmHg';$('#alb').value=ALB;$('#cvp').value=CVP;
+  [].forEach.call($('#pre').querySelectorAll('button'),function(x,i){x.classList.toggle('act',i===PRE);});
+  [].forEach.call($('#beds').querySelectorAll('button'),function(x){x.classList.toggle('act',x.getAttribute('data-b')===BED);});
+  $('#bt').textContent=T.t;
+  var eb=b.pic2?' … '+nf(b.pic2):'';
+  $('#eq').innerHTML='<b>J<sub>v</sub> = K<sub>f</sub> · [ (P<sub>c</sub> − P<sub>i</sub>) − σ (π<sub>c</sub> − π<sub>i</sub>) ]</b><br>'+
+    U.eqA+': ('+nf(b.pa)+' − '+nf(b.pi)+') − '+nf(b.sig,1)+' · ('+nf(b.pic)+' − '+nf(b.pii)+') = <b>'+sgn(b.netA)+'</b> mmHg &nbsp;·&nbsp; '+
+    U.eqV+': ('+nf(b.pv)+' − '+nf(b.pi)+') − '+nf(b.sig,1)+' · ('+nf(b.pic2||b.pic)+' − '+nf(b.pii)+') = <b>'+sgn(b.netV)+'</b> mmHg';
+  $('#graph').innerHTML=graph(b);
+  var v;
+  if(b.glom)v=['ok',U.vd.glom];
+  else if(b.sinus&&b.ex<=0.5)v=['ok',U.vd.sinOk];
+  else if(b.sinus&&b.ex>0.5)v=['no',U.vd.ascites.replace('{m}',nf(b.mean)).replace('{l}',nf(b.lym))];
+  else if(b.ex>0.5)v=['no',U.vd.edema.replace('{m}',nf(b.mean)).replace('{l}',nf(b.lym))];
+  else if(b.netV>0.6)v=['no',U.vd.venOut.replace('{m}',nf(b.mean)).replace('{l}',nf(b.lym))];
+  else v=['ok',U.vd.ok.replace('{m}',nf(b.mean)).replace('{l}',nf(b.lym))];
+  $('#vd').className='verdict '+v[0];$('#vd').innerHTML=v[1];
+  $('#bn').innerHTML=T.n;}
+// ---------- wiring ----------
+$('#ttl').textContent=U.title;$('#story').innerHTML=U.story;$('#h_hm').textContent=U.hHm;$('#h_pa').textContent=U.hPa;
+$('#l_alb').textContent=U.lAlb;$('#l_cvp').textContent=U.lCvp;
+$('#pre').innerHTML='<span class="lab">'+U.preL+'</span>'+D.pre.map(function(p){return '<button type="button">'+p.t+'</button>';}).join('');
+$('#beds').innerHTML='<span class="lab">'+U.bedL+'</span>'+U.bedOrder.map(function(k){return '<button type="button" data-b="'+k+'">'+U.beds[k].s+'</button>';}).join('');
+$('#pre').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;PRE=[].indexOf.call(this.querySelectorAll('button'),b);ALB=D.pre[PRE].alb;CVP=D.pre[PRE].cvp;render();});
+$('#beds').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;BED=b.getAttribute('data-b');render();});
+$('#hm').addEventListener('click',function(e){var g=e.target.closest('[data-b]');if(!g)return;BED=g.getAttribute('data-b');render();});
+$('#alb').addEventListener('input',function(){ALB=+this.value;PRE=-1;render();});
+$('#cvp').addEventListener('input',function(){CVP=+this.value;PRE=-1;render();});
+render();
+</script>
+</body>
+</html>
