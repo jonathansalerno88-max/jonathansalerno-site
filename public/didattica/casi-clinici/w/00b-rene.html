@@ -99,7 +99,6 @@ function gauge(x,y,v,lab,col){var a=(-120+cl(v,0,120)/120*240)*Math.PI/180,o='';
 function tap(x,y,R,col,lab,auto){var hw=9,r=Math.pow(R,-0.25),n=cl(hw*r*r,3,16),o='';
   o+='<path d="M'+(x-24)+' '+(y-hw)+' C'+(x-10)+' '+(y-hw)+' '+(x-8)+' '+f1(y-n)+' '+x+' '+f1(y-n)+' C'+(x+8)+' '+f1(y-n)+' '+(x+10)+' '+(y-hw)+' '+(x+24)+' '+(y-hw)+
      ' L'+(x+24)+' '+(y+hw)+' C'+(x+10)+' '+(y+hw)+' '+(x+8)+' '+f1(y+n)+' '+x+' '+f1(y+n)+' C'+(x-8)+' '+f1(y+n)+' '+(x-10)+' '+(y+hw)+' '+(x-24)+' '+(y+hw)+'Z" fill="'+col+'"/>';
-  o+='<path d="M'+(x-14)+' '+(y-17)+' L'+(x+14)+' '+(y+17)+' M'+(x-14)+' '+(y+17)+' L'+(x+14)+' '+(y-17)+'" stroke="#55697A" stroke-width="1.4" fill="none" opacity=".55"/>';
   o+='<line x1="'+x+'" y1="'+(y-hw-1)+'" x2="'+x+'" y2="'+(y-30)+'" stroke="#55697A" stroke-width="3"/>';
   var ang=cl((R-1)*45,-30,90);
   o+='<g transform="rotate('+f1(ang)+' '+x+' '+(y-34)+')"><rect x="'+(x-15)+'" y="'+(y-37)+'" width="30" height="6" rx="3" fill="'+(auto?'#7A4BA6':'#C26A1B')+'"/></g><circle cx="'+x+'" cy="'+(y-34)+'" r="3.5" fill="#55697A"/>';
