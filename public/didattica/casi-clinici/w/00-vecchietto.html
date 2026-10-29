@@ -181,7 +181,7 @@ function patient(m){var s={sbp:110,day:0,asc:m.asc,leg:m.leg,cvp:m.cvp,w:58+m.as
   return '<svg viewBox="0 70 290 270" role="img" aria-label="'+U.ariaPa+'">'+o+'</svg>';}
 // ---------- the cardiovascular counterpart, drawn on the body ----------
 function overlay(m){var o='',L=U.hm,B=m.B,vw=f1(1.2+m.cvp/9);
-  var P={heart:[86,170],head:[44,130],lung:[76,156],liver:[110,192],gut:[128,206],kid:[146,214],sac:[140,247],leg:[248,232]};
+  var P={heart:[82,168],head:[44,130],lung:[76,156],liver:[110,192],gut:[128,206],kid:[146,214],sac:[140,247],leg:[248,232]};
   o+='<rect x="0" y="70" width="290" height="270" fill="#FFFFFF" opacity=".55"/>';
   // heart level and the slope of the dependent parts
   o+='<line x1="4" y1="170" x2="286" y2="170" stroke="#7A4BA6" stroke-width=".8" stroke-dasharray="3 2"/>'+tx(284,166,L.hlev,'end',{s:6.5,w:700,c:'#7A4BA6',h:1});
@@ -194,8 +194,14 @@ function overlay(m){var o='',L=U.hm,B=m.B,vw=f1(1.2+m.cvp/9);
   o+='<path d="M128 206 L110 192" stroke="#2F4F8F" stroke-width="'+f1(1+Math.max(0,m.pp-7)/6)+'"/><path d="M110 192 L98 198" stroke="#3E6FB0" stroke-width="1.2"/>';
   // dependent venous pooling: wider veins in the lowest parts
   if(m.cvp>8){var pw=f1(1+(m.cvp-8)/3);o+='<path d="M170 240 L250 240" stroke="#3E6FB0" stroke-width="'+pw+'" opacity=".55" stroke-linecap="round"/><ellipse cx="140" cy="244" rx="'+f1(4+(m.cvp-8)/3)+'" ry="'+f1(2+(m.cvp-8)/6)+'" fill="#3E6FB0" opacity=".35"/>';}
-  // heart
-  var h=P.heart;o+='<g transform="translate('+h[0]+' '+h[1]+') rotate(-44)"><rect x="-8" y="-7" width="7.5" height="6" rx="1.5" fill="#B9D0EC" stroke="#3E6FB0" stroke-width=".6"/><rect x="-8" y="0" width="7.5" height="8" rx="2" fill="#B9D0EC" stroke="#3E6FB0" stroke-width=".6"/><rect x="0.5" y="-7" width="7.5" height="6" rx="1.5" fill="#F2BDBD" stroke="#B03A3A" stroke-width=".6"/><rect x="0.5" y="0" width="7.5" height="8" rx="2" fill="#F2BDBD" stroke="#B03A3A" stroke-width=".6"/></g>';
+  // heart, enlarged: the right chambers dilate when venous pressure is high
+  var h=P.heart,rv=clamp(0.9+(m.cvp-4)/24,0.9,1.45),L2=U.hm;
+  var hg='<rect x="'+f1(-21*rv)+'" y="-17" width="'+f1(20*rv)+'" height="'+f1(14*rv)+'" rx="3" fill="#B9D0EC" stroke="#3E6FB0" stroke-width=".9"/>'+
+    '<rect x="'+f1(-21*rv)+'" y="'+f1(-17+14*rv+1.5)+'" width="'+f1(20*rv)+'" height="'+f1(19*rv)+'" rx="5" fill="#B9D0EC" stroke="#3E6FB0" stroke-width="'+(m.cvp>12?1.6:.9)+'"/>'+
+    '<rect x="1" y="-17" width="20" height="14" rx="3" fill="#F2BDBD" stroke="#B03A3A" stroke-width=".9"/>'+
+    '<rect x="1" y="-1.5" width="20" height="19" rx="5" fill="#F2BDBD" stroke="#B03A3A" stroke-width=".9"/>'+
+    tx(f1(-11*rv),f1(-17+7*rv+2.5),L2.ra,'middle',{s:6.5,w:700})+tx(f1(-11*rv),f1(-17+14*rv+1.5+9.5*rv+2.5),L2.rv,'middle',{s:6.5,w:700})+tx(11,-7.5,L2.la,'middle',{s:6.5,w:700})+tx(11,10.5,L2.lv,'middle',{s:6.5,w:700});
+  o+='<g transform="translate('+h[0]+' '+h[1]+') rotate(-44)">'+hg+'</g>';
   // capillary beds with their net Starling balance
   function badge(k,x,y,lab,side){var b=B[k],st=b.glom?'ok':(b.ex>0.5?'no':(b.netV>0.6&&!b.sinus?'mid':'ok')),col={ok:'#2E8B57',mid:'#D9822B',no:'#C24B4B'}[st],sel=BED===k;
     var g='<g data-b="'+k+'"><circle cx="'+x+'" cy="'+y+'" r="'+(sel?8:6.5)+'" fill="#FFFFFF" stroke="'+(sel?'#7A4BA6':col)+'" stroke-width="'+(sel?2.2:1.6)+'"/>';
@@ -205,7 +211,7 @@ function overlay(m){var o='',L=U.hm,B=m.B,vw=f1(1.2+m.cvp/9);
     g+=tx(tx0,ty,lab,an,{s:6.2,w:700,c:sel?'#5B2F8A':'#16222E',h:1})+tx(tx0,ty+7,b.glom?U.okWord:(sgn(b.mean)),an,{s:6.2,w:700,c:col,h:1});
     return g+'<circle cx="'+x+'" cy="'+y+'" r="11" fill="transparent"/></g>';}
   o+='<defs><linearGradient id="gAVo" x1="0" x2="1"><stop offset="0" stop-color="#C24B4B"/><stop offset="1" stop-color="#3E6FB0"/></linearGradient></defs>';
-  o+=badge('head',P.head[0],P.head[1]-8,L.head,'r')+badge('lung',P.lung[0]-6,P.lung[1]-12,L.lung,'l')+badge('liver',P.liver[0]-8,P.liver[1]-6,L.liver,'l')+badge('gut',P.gut[0]+6,P.gut[1]-14,L.gut,'r');
+  o+=badge('head',P.head[0],P.head[1]-8,L.head,'r')+badge('lung',P.lung[0]-12,P.lung[1]-14,L.lung,'l')+badge('liver',P.liver[0]+4,P.liver[1]+20,L.liver,'l')+badge('gut',P.gut[0]+12,P.gut[1]-8,L.gut,'u');
   o+=badge('glom',P.kid[0]+12,P.kid[1]-6,L.kid,'r')+badge('sac',P.sac[0]-8,P.sac[1]+10,L.sac,'l')+badge('leg',P.leg[0]-6,P.leg[1]-12,L.leg,'u');
   return o;}
 
