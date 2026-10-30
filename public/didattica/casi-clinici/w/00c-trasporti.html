@@ -110,7 +110,8 @@ function draw(t,blind){var o='',W=640,M0=280,M1=360,n=t.subs.length,CA=!blind&&t
     o+='<rect x="'+(W-96)+'" y="'+(y+20-hB)+'" width="26" height="'+hB+'" rx="3" fill="#9AA5AE" opacity=".55"/>'+tx(W-83,y+34,q.lB,'middle',{s:10.5,w:700,c:'#55697A'});
     var ab=q.dir==='AB',x1=ab?120:W-120,x2=ab?W-120:120,dd=ab?1:-1;
     o+='<line x1="'+x1+'" y1="'+y+'" x2="'+(x2-dd*10)+'" y2="'+y+'" stroke="'+col+'" stroke-width="'+(q.w||3)+'"/><path d="M'+x2+' '+y+' l'+(-dd*(12+(q.w||3)))+' -'+(5+(q.w||3))+' v'+(10+2*(q.w||3))+'Z" fill="'+col+'"/>';
-    o+='<g class="mv" style="--d:'+(dd*(W-260))+'px;animation-delay:'+(i*0.5)+'s"><circle cx="'+(ab?130:W-130)+'" cy="'+y+'" r="13" fill="#FFFFFF" stroke="'+col+'" stroke-width="2"/>'+tx(ab?130:W-130,y+4,q.sh||q.s,'middle',{s:q.s.length>3?8.5:10.5,w:700,c:col})+'</g>';
+    var stop=t._f!=null&&t._f<0.3,dur=t._f!=null?f1(2.4/Math.max(t._f,0.3)):2.4;
+    o+='<g class="'+(stop?'':'mv')+'" style="--d:'+(dd*(W-260))+'px;animation-delay:'+(i*0.5)+'s;animation-duration:'+dur+'s"><circle cx="'+(ab?130:W-130)+'" cy="'+y+'" r="13" fill="#FFFFFF" stroke="'+col+'" stroke-width="2"/>'+tx(ab?130:W-130,y+4,q.sh||q.s,'middle',{s:q.s.length>3?8.5:10.5,w:700,c:col})+'</g>';
     o+=tx(ab?150:W-150,y-12,q.s+(blind?'':' · '+(q.up?U.up:U.down)),ab?'start':'end',{s:11.5,w:700,c:col});
     if(!blind&&t._f!=null&&t._f<0.3)o+=tx(W-150,y+22,q.s==='Cl⁻'?U.ca.clNo:U.ca.hcNo,'end',{s:10.5,w:700,c:'#B03A3A'});});
   // secondary active: draw, dashed, the pump that really paid, on the other membrane of the same cell
