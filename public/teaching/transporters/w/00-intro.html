@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>What a transporter is</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+svg[viewBox]{min-width:0!important;max-width:560px!important;width:100%;margin:0 auto}
+.top{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 8px}
+.top button{font:inherit;font-size:13px;padding:5px 11px;border-radius:var(--radius);border:1px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.top button.act{border:1.5px solid var(--border-accent);color:var(--text-accent);background:#EEF4FC;font-weight:700}
+.top .sp{flex:1 1 auto}
+.top #pz.on{border-color:#B5520C;background:#FCEEDD;color:#7A3E0B}
+.pnl{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:6px;margin:0 0 8px}
+.txt{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:9px 12px;font-size:14px;line-height:1.55}
+.txt h3{font-size:16px;margin:0 0 4px}
+.txt p{margin:0 0 6px}.txt p:last-child{margin:0}
+.rule{margin-top:8px;background:#F7FAFC}.rule ul{margin:4px 0 0;padding-left:20px}
+.badge{display:inline-block;font-weight:700;font-size:13px;padding:3px 10px;border-radius:999px;margin:0 6px 6px 0;color:#FFFFFF}
+.b-pas{background:#1F5FA8}.b-pri{background:#C2571A}.b-sec{background:#6A3A96}.b-ty{background:#EEF2F5;color:#16222E}
+body.paused *{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<style id="kf"></style>
+</head>
+<body>
+<h2 class="sr-only">How a substance crosses the membrane: simple diffusion, channel, carrier, symport, antiport and pump</h2>
+<div class="top" id="tabs"></div>
+<div class="pnl" id="sc"></div>
+<div class="txt" id="tx"></div>
+<div class="txt rule" id="rl"></div>
+<script>
+var D={"ui": {"out": "OUTSIDE the cell", "inn": "INSIDE the cell", "conc": "concentration", "pause": "❚❚ Pause", "play": "▶ Resume", "rule": "<b>The rule, in three lines</b><ul>\n<li><span class=\"badge b-pas\">Passive</span> the substance goes <b>down</b> its electrochemical gradient: no energy. On its own through the lipids (simple diffusion) or through a protein, channel or carrier (facilitated diffusion).</li>\n<li><span class=\"badge b-pri\">Primary active</span> the substance goes <b>up</b> and the protein pays itself, by hydrolysing ATP: it is a <b>pump</b> (ATPase).</li>\n<li><span class=\"badge b-sec\">Secondary active</span> the substance goes <b>up</b>, but the protein does not touch ATP: it is dragged by another ion going <b>down</b>, usually Na⁺, in the <b>same carrier</b> (symport or antiport). That Na⁺ gradient was built beforehand by the Na⁺/K⁺ pump: hence “secondary”.</li></ul>"}, "modes": [{"k": "diff", "n": "Simple diffusion", "cls": "Passive", "bc": "b-pas", "prot": "no protein", "t": ["Small, uncharged molecules such as O₂, CO₂ and steroid hormones cross the lipid bilayer on their own, from the side where they are more concentrated to the side where they are less.", "The flux is proportional to the concentration difference (Fick’s law) and never saturates: more gradient, more flux. Ions and large polar molecules cannot cross: they need a protein."]}, {"k": "chan", "n": "Channel", "cls": "Passive", "bc": "b-pas", "prot": "channel (pore)", "t": ["A channel is a water-filled pore across the membrane: when it is open, ions flow through it down their electrochemical gradient, up to millions per second. It is <b>facilitated</b> diffusion: the protein opens the way but does not push.", "Many channels open and close (voltage, ligand, hormones). Kidney examples: <b>ENaC</b> (Na⁺), <b>ROMK</b> (K⁺), <b>aquaporins</b> (water). A channel can never move a substance against its gradient."]}, {"k": "uni", "n": "Carrier (uniport)", "cls": "Passive", "bc": "b-pas", "prot": "carrier · 1 substance", "t": ["A carrier binds the molecule on one side, changes shape and releases it on the other: it is never open on both sides at once. That is why it is much slower than a channel and <b>saturates</b>: when all carriers are busy the flux stops rising (V<sub>max</sub>).", "If it moves a single substance down its gradient it is a <b>uniporter</b> and is passive (facilitated diffusion). Example: <b>GLUT2</b>, which lets glucose leave the proximal tubule cell towards the blood."]}, {"k": "sym", "n": "Symport", "cls": "Secondary active", "bc": "b-sec", "prot": "carrier · 2 substances, same direction", "t": ["Na⁺ is high outside and low inside: as it enters it goes <b>down</b> and releases energy. The carrier uses it to bring in, in the same cycle, glucose, which goes <b>up</b> (there is already more inside).", "Same direction = <b>symport</b> (cotransport). It is <b>secondary</b> active because nobody here spends ATP: the Na⁺ gradient was built by the Na⁺/K⁺ pump on the other membrane. Examples: <b>SGLT2</b> (Na⁺ + glucose), <b>NKCC2</b> (Na⁺, K⁺, 2 Cl⁻)."]}, {"k": "anti", "n": "Antiport", "cls": "Secondary active", "bc": "b-sec", "prot": "carrier · 2 substances, opposite directions", "t": ["Na⁺ enters going down; in exchange, in the same carrier, an H⁺ leaves going <b>up</b>, towards the side where H⁺ is already higher.", "Opposite directions = <b>antiport</b> (exchanger). Here too the energy comes from the Na⁺ gradient, so it is secondary active. Example: <b>NHE3</b> of the proximal tubule, which pushes H⁺ into the lumen. Note: AE1 and pendrin are Cl⁻/HCO₃⁻ antiporters that do not use Na⁺."]}, {"k": "pump", "n": "Pump", "cls": "Primary active", "bc": "b-pri", "prot": "pump (ATPase)", "t": ["The pump hydrolyses ATP and uses that energy to move substances <b>against</b> their gradient: Na⁺/K⁺-ATPase pushes out 3 Na⁺ and brings in 2 K⁺ per ATP, both uphill.", "This is the pump that keeps Na⁺ low inside the cell: without it, symporters and antiporters would stop. Other examples: the H⁺-ATPase and H⁺/K⁺-ATPase of α-intercalated cells, Ca²⁺-ATPase."]}]},U=D.ui,M=D.modes,CUR=0,PZ=false;
+function $(q){return document.querySelector(q);}
+function tx(x,y,t,a,o){o=o||{};return '<text x="'+x+'" y="'+y+'" font-size="'+(o.s||12)+'" text-anchor="'+(a||'start')+'" fill="'+(o.c||'#16222E')+'"'+(o.w?' font-weight="'+o.w+'"':'')+'>'+t+'</text>';}
+var COL={Na:'#7A4BA6',K:'#C2571A',glu:'#B03A3A',H:'#1F5FA8',gas:'#55697A'};
+// keyframes made on the fly: each token follows its own list of [percent, x, y, opacity]
+var KF='';
+function kf(name,fr){KF+='@keyframes '+name+'{'+fr.map(function(f){return f[0]+'%{transform:translate('+f[1]+'px,'+f[2]+'px);opacity:'+(f[3]==null?1:f[3])+'}';}).join('')+'}';}
+function tok(name,dur,delay,sp,lab){var c=COL[sp],r=lab.length>3?16:13;return '<g style="animation:'+name+' '+dur+'s linear '+(delay||0)+'s infinite;opacity:0"><circle r="'+r+'" fill="#FFFFFF" stroke="'+c+'" stroke-width="2.4"/>'+tx(0,4,lab,'middle',{s:lab.length>3?10:11,w:700,c:c})+'</g>';}
+function dots(sp,n,x0,x1,seed){var o='',c=COL[sp];for(var i=0;i<n;i++){var x=x0+((i*37+seed*11)%100)/100*(x1-x0),y=70+((i*53+seed*29)%100)/100*160;o+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="4" fill="'+c+'" opacity=".45"/>';}return o;}
+function bars(items){var o='';items.forEach(function(b,i){var y=34+i*20,c=COL[b[0]];
+  o+=tx(136,y+4,b[1],'start',{s:11,w:700,c:c})+'<rect x="172" y="'+(y-6)+'" width="'+b[2]*1.6+'" height="10" rx="3" fill="'+c+'" opacity=".6"/>';
+  o+='<rect x="'+(504-b[3]*1.6)+'" y="'+(y-6)+'" width="'+b[3]*1.6+'" height="10" rx="3" fill="'+c+'" opacity=".6"/>'+tx(398,y+4,b[1],'end',{s:11,w:700,c:c});});
+  return tx(215,14,U.conc,'middle',{s:10,c:'#55697A'})+tx(425,14,U.conc,'middle',{s:10,c:'#55697A'})+o;}
+var OPEN_OUT='M292 98 L348 98 L348 222 L292 222 L292 200 L334 160 L292 120 Z',OPEN_IN='M292 98 L348 98 L348 120 L306 160 L348 200 L348 222 L292 222 Z';
+function carrier(dur,flips,col,fill){var a='',b='';
+  // flips: list of [percent, 'out'|'in'] states: the two shapes cross-fade
+  var o1=flips.map(function(f){return f[0]+'%{opacity:'+(f[1]==='out'?1:0)+'}';}).join(''),o2=flips.map(function(f){return f[0]+'%{opacity:'+(f[1]==='in'?1:0)+'}';}).join('');
+  KF+='@keyframes cOut{'+o1+'}@keyframes cIn{'+o2+'}';
+  return '<path d="'+OPEN_OUT+'" fill="'+fill+'" stroke="'+col+'" stroke-width="2.4" style="animation:cOut '+dur+'s steps(1,end) infinite"/><path d="'+OPEN_IN+'" fill="'+fill+'" stroke="'+col+'" stroke-width="2.4" style="animation:cIn '+dur+'s steps(1,end) infinite"/>';}
+function scene(m){KF='';var o='',W=640,H=260;
+  o+='<rect x="130" y="0" width="170" height="'+H+'" fill="#F7FAFC"/><rect x="340" y="0" width="170" height="'+H+'" fill="#F3ECFA"/>';
+  for(var y=4;y<H;y+=12){o+='<circle cx="304" cy="'+y+'" r="4.6" fill="#E8C76A"/><circle cx="336" cy="'+y+'" r="4.6" fill="#E8C76A"/>';}
+  o+='<rect x="309" y="0" width="22" height="'+H+'" fill="#FBF3D6"/>';
+  o+=tx(215,H-8,U.out,'middle',{s:12,w:700,c:'#55697A'})+tx(425,H-8,U.inn,'middle',{s:12,w:700,c:'#55697A'});
+  var k=m.k;
+  if(k==='diff'){o+=bars([['gas','CO₂',60,15]])+dots('gas',18,140,285,1)+dots('gas',5,355,500,2);
+    [0,1,2].forEach(function(i){kf('g'+i,[[0,160,95+i*50,0],[10,180,95+i*50],[80,460,100+i*45],[100,490,100+i*45,0]]);o+=tok('g'+i,3,i*1,'gas','CO₂');});}
+  if(k==='chan'){o+=bars([['Na','Na⁺',60,8]])+dots('Na',18,140,285,3)+dots('Na',3,355,500,4);
+    o+='<rect x="292" y="70" width="18" height="180" rx="7" fill="#9DB8DE" stroke="#1F5FA8" stroke-width="2"/><rect x="330" y="70" width="18" height="180" rx="7" fill="#9DB8DE" stroke="#1F5FA8" stroke-width="2"/>';
+    [0,1,2,3].forEach(function(i){kf('c'+i,[[0,200,160,0],[10,230,160],[60,410,160],[80,460,150,0],[100,460,150,0]]);o+=tok('c'+i,1.6,i*0.4,'Na','Na⁺');});}
+  if(k==='uni'){o+=bars([['glu','glu',40,10]])+dots('glu',12,140,285,5)+dots('glu',3,355,500,6);
+    o+=carrier(4,[[0,'out'],[45,'in'],[95,'out'],[100,'out']],'#6A3A96','#D9C2EE');
+    kf('u0',[[0,200,160,0],[8,220,160],[40,316,160],[50,324,160],[90,440,160],[100,470,160,0]]);o+=tok('u0',4,0,'glu','glu');}
+  if(k==='sym'){o+=bars([['Na','Na⁺',60,8],['glu','glu',8,40]])+dots('Na',14,140,285,7)+dots('Na',3,355,500,8)+dots('glu',3,140,285,9)+dots('glu',12,355,500,10);
+    o+=carrier(4,[[0,'out'],[45,'in'],[95,'out'],[100,'out']],'#6A3A96','#D9C2EE');
+    kf('s0',[[0,200,140,0],[8,220,140],[40,316,146],[50,324,146],[90,440,140],[100,470,140,0]]);kf('s1',[[0,200,180,0],[8,220,180],[40,316,174],[50,324,174],[90,440,180],[100,470,180,0]]);
+    o+=tok('s0',4,0,'Na','Na⁺')+tok('s1',4,0,'glu','glu');}
+  if(k==='anti'){o+=bars([['Na','Na⁺',60,8],['H','H⁺',30,8]])+dots('Na',14,140,285,11)+dots('Na',3,355,500,12)+dots('H',10,140,285,13)+dots('H',3,355,500,14);
+    o+=carrier(6,[[0,'out'],[30,'in'],[63,'out'],[100,'out']],'#6A3A96','#D9C2EE');
+    kf('a0',[[0,200,160,0],[6,220,160],[26,316,160],[34,324,160],[55,440,160],[60,470,160,0],[100,470,160,0]]);
+    kf('a1',[[0,470,160,0],[34,470,160,0],[38,440,160],[58,324,160],[66,316,160],[94,200,160],[100,180,160,0]]);
+    o+=tok('a0',6,0,'Na','Na⁺')+tok('a1',6,0,'H','H⁺');}
+  if(k==='pump'){o+=bars([['Na','Na⁺',60,8],['K','K⁺',4,60]])+dots('Na',14,140,285,15)+dots('Na',3,355,500,16)+dots('K',2,140,285,17)+dots('K',14,355,500,18);
+    o+=carrier(6,[[0,'in'],[30,'out'],[63,'in'],[100,'in']],'#C2571A','#F6C7A8');
+    kf('p0',[[0,470,145,0],[6,440,145],[26,324,150],[34,316,150],[55,200,145],[60,180,145,0],[100,180,145,0]]);
+    kf('p1',[[0,180,175,0],[34,180,175,0],[38,220,175],[58,316,170],[66,324,170],[94,440,175],[100,470,175,0]]);
+    kf('atp',[[0,320,72,0],[20,320,72,0],[24,320,72,1],[34,320,72,1],[40,320,60,0],[100,320,60,0]]);
+    o+=tok('p0',6,0,'Na','3 Na⁺')+tok('p1',6,0,'K','2 K⁺');
+    o+='<g style="animation:atp 6s linear infinite"><rect x="-44" y="-11" width="88" height="22" rx="11" fill="#C2571A"/>'+tx(0,4,'ATP → ADP + Pi','middle',{s:10,w:700,c:'#FFFFFF'})+'</g>';}
+  $('#kf').textContent=KF;
+  return '<svg viewBox="130 0 380 '+H+'" role="img" aria-label="'+m.n+'">'+o+'</svg>';}
+function render(){var m=M[CUR];
+  $('#tabs').innerHTML=M.map(function(x,i){return '<button type="button" data-i="'+i+'"'+(i===CUR?' class="act"':'')+'>'+x.n+'</button>';}).join('')+'<span class="sp"></span><button type="button" id="pz"'+(PZ?' class="on"':'')+'>'+(PZ?U.play:U.pause)+'</button>';
+  $('#sc').innerHTML=scene(m);
+  $('#tx').innerHTML='<h3>'+m.n+'</h3><p><span class="badge '+m.bc+'">'+m.cls+'</span><span class="badge b-ty">'+m.prot+'</span></p>'+m.t.map(function(p){return '<p>'+p+'</p>';}).join('');}
+$('#tabs').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+  if(b.id==='pz'){PZ=!PZ;document.body.classList.toggle('paused',PZ);b.textContent=PZ?U.play:U.pause;b.classList.toggle('on',PZ);return;}
+  CUR=+b.getAttribute('data-i');render();});
+$('#rl').innerHTML=U.rule;
+render();
+</script>
+</body>
+</html>

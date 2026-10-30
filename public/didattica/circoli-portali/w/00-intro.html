@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Che cos’è un circolo portale</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+@media (max-width:600px){svg[viewBox]{min-width:560px!important;max-width:none!important}}
+.top{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 8px}
+.top button{font:inherit;font-size:13px;padding:5px 11px;border-radius:var(--radius);border:1px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.top button.act{border:1.5px solid var(--border-accent);color:var(--text-accent);background:#EEF4FC;font-weight:700}
+.top .sp{flex:1 1 auto}
+.top #pz.on{border-color:#B5520C;background:#FCEEDD;color:#7A3E0B}
+.pnl{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:6px;margin:0 0 8px;overflow-x:auto}
+.txt{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:9px 12px;font-size:14px;line-height:1.55}
+.txt h3{font-size:16px;margin:0 0 4px}
+.txt p{margin:0 0 6px}.txt p:last-child{margin:0}
+.def{margin:0 0 8px;background:#EEF4FC;border-color:#9DBBE3}
+.tag{display:inline-block;font-weight:700;font-size:12.5px;padding:2px 9px;border-radius:999px;margin:0 6px 6px 0;background:#EEF2F5}
+.fl{fill:none;stroke-linecap:round;stroke-dasharray:0.1 14;animation:fl 1.2s linear infinite}
+@keyframes fl{to{stroke-dashoffset:-14.1}}
+.cg{animation:cg 4.8s linear infinite;opacity:0}
+body.paused *{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}.cg{opacity:0}}
+</style>
+<style id="kf"></style>
+</head>
+<body>
+<h2 class="sr-only">Circolo normale, portale venoso del fegato e dell’ipofisi, portale arterioso del rene</h2>
+<div class="txt def" id="df"></div>
+<div class="top" id="tabs"></div>
+<div class="pnl" id="sc"></div>
+<div class="txt" id="tx"></div>
+<script>
+var D={"ui": {"portal": "vaso portale", "cV": "conc.", "chP": "— pressione idrostatica (mmHg)", "chPi": "- - pressione oncotica (mmHg)", "pause": "❚❚ Pausa", "play": "▶ Riprendi", "def": "<b>Che cos’è un circolo portale.</b> Di regola il sangue, fra un passaggio nel cuore e il successivo, attraversa <b>un solo</b> letto capillare: arteria → capillari → vena. In un circolo portale ne attraversa <b>due in serie</b>, collegati da un vaso, il <b>vaso portale</b>. Se il vaso in mezzo è una vena il portale è <b>venoso</b> (fegato, ipofisi); se è un’arteriola è <b>arterioso</b> (rene). A che cosa servono due letti? Nel portale venoso il secondo letto riceve per primo, concentrato, quello che il primo ha raccolto; nel rene i due letti lavorano a pressioni diverse: uno filtra, l’altro riassorbe."}, "modes": [{"n": "Circolo normale", "seq": "arteria → capillari → vena", "ck": "P", "parts": [{"t": "v", "c": ["a", "a"], "name": "arteria"}, {"t": "b", "c": ["a", "v"], "name": "capillari|dei tessuti", "note": "all’inizio esce liquido,|alla fine rientra"}, {"t": "v", "c": ["v", "v"], "name": "vena"}], "series": [[95, 90], [35, 15], [12, 5]], "pi": [null, [25, 25], null], "t": ["Un solo letto capillare. La pressione cade soprattutto nelle arteriole, appena prima dei capillari: circa 35 mmHg all’inizio del capillare e 15 alla fine.", "Lungo il capillare la pressione idrostatica (linea nera) scende sotto l’oncotica (linea viola tratteggiata, circa 25 mmHg): all’inizio il liquido esce, alla fine rientra. È l’equazione di Starling del caso del vecchietto."], "c": null}, {"n": "Portale venoso: fegato", "seq": "a. mesenterica → capillari dell’intestino → vena porta → sinusoidi del fegato → vene sovraepatiche → cava", "ck": "C", "chC": "— nutrienti nel sangue dopo un pasto (unità arbitrarie)", "cargo": true, "feed": 3, "feedName": "a. epatica", "parts": [{"t": "v", "c": ["a", "a"], "name": "a. mesenterica"}, {"t": "b", "c": ["a", "v"], "name": "capillari|dell’intestino", "note": "assorbono nutrienti|e farmaci"}, {"t": "v", "c": ["v", "v"], "name": "vena porta", "portal": true}, {"t": "b", "c": ["v", "v"], "name": "sinusoidi|del fegato", "note": "il fegato li lavora|per primo"}, {"t": "v", "c": ["v", "v"], "name": "vene sovraepatiche|→ cava"}], "series": [[5, 5], [5, 70], [70, 70], [70, 20], [20, 15]], "t": ["Quello che l’intestino assorbe (glucosio, aminoacidi, farmaci, tossine, l’ammoniaca prodotta dai batteri) passa prima per il fegato, che lo immagazzina, lo trasforma o lo elimina prima che arrivi al resto del corpo. Per i farmaci presi per bocca è l’<b>effetto di primo passaggio</b>.", "Il fegato ha un doppio afflusso: circa tre quarti del sangue arrivano dalla vena porta, un quarto dall’arteria epatica, che porta gran parte dell’ossigeno. Le pressioni sono basse: fra vena porta e cava la differenza è normalmente 1–5 mmHg. Se il fegato si indurisce (cirrosi) la pressione portale sale: è l’<b>ipertensione portale</b>, clinicamente significativa da 10 mmHg, con varici esofagee, splenomegalia e ascite. Le pareti dei sinusoidi lasciano passare le proteine, quindi qui l’oncotica conta poco."], "c": null}, {"n": "Portale venoso: ipotalamo–ipofisi", "seq": "a. ipofisaria superiore → plesso primario → vene portali ipofisarie → plesso secondario → vene ipofisarie", "ck": "C", "chC": "— un ormone di rilascio, es. CRH (unità arbitrarie)", "cargo": true, "parts": [{"t": "v", "c": ["a", "a"], "name": "a. ipofisaria|superiore"}, {"t": "b", "c": ["a", "v"], "name": "plesso primario|(eminenza mediana)", "note": "i neuroni ipotalamici|versano gli ormoni"}, {"t": "v", "c": ["v", "v"], "name": "vene portali|ipofisarie", "portal": true}, {"t": "b", "c": ["v", "v"], "name": "plesso secondario|(adenoipofisi)", "note": "gli ormoni arrivano|concentrati"}, {"t": "v", "c": ["v", "v"], "name": "vene ipofisarie|→ seno cavernoso"}], "series": [[2, 2], [2, 80], [80, 80], [80, 60], [60, 3]], "t": ["I neuroni dell’ipotalamo liberano gli ormoni di rilascio e di inibizione (TRH, CRH, GnRH, GHRH, somatostatina, dopamina) nei capillari dell’eminenza mediana. Le vene portali li portano direttamente all’adenoipofisi: sono quantità minime, ma arrivano concentrate. Nella circolazione generale si diluirebbero in cinque litri di sangue.", "La neuroipofisi invece non usa il portale: ADH e ossitocina scendono lungo gli assoni dei nuclei sopraottico e paraventricolare e vengono liberati direttamente nel sangue. Clinica: se si interrompe il peduncolo ipofisario (trauma, chirurgia) calano quasi tutti gli ormoni dell’adenoipofisi, ma la prolattina sale, perché non arriva più la dopamina che la frena."], "c": null}, {"n": "Portale arterioso: rene", "seq": "a. afferente → glomerulo → a. efferente → capillari peritubulari → vena renale", "ck": "P", "tubule": "tubulo → urina", "filt": "filtra", "reab": "riassorbe", "parts": [{"t": "v", "c": ["a", "a"], "name": "a. afferente"}, {"t": "b", "c": ["a", "a"], "name": "glomerulo"}, {"t": "v", "c": ["a", "a"], "name": "a. efferente", "portal": true}, {"t": "b", "c": ["a", "v"], "name": "capillari|peritubulari"}, {"t": "v", "c": ["v", "v"], "name": "vena renale"}], "series": [[95, 58], [57, 56], [55, 18], [18, 10], [8, 4]], "pi": [null, [25, 35], [35, 35], [35, 30], null], "t": ["Fra i due letti capillari c’è un’<b>arteriola</b>, non una vena: il sangue che esce dal glomerulo è ancora rosso, perché filtrare non consuma ossigeno. Le due arteriole sono due rubinetti in serie: regolandole, il rene tiene la pressione del glomerulo alta (circa 55 mmHg, quasi costante lungo tutto il capillare) anche quando la pressione arteriosa cambia.", "Il glomerulo filtra (circa 180 L al giorno) perché la pressione idrostatica supera l’oncotica, che però cresce man mano che l’acqua se ne va e le proteine restano. Dopo l’efferente la situazione si rovescia: nei capillari peritubulari la pressione è bassa (circa 15 mmHg) e l’oncotica è alta, quindi il liquido che il tubulo riassorbe rientra nel sangue. Nei nefroni iuxtamidollari l’efferente continua nei <b>vasa recta</b>. Il rene in dettaglio è nel widget qui sotto."], "c": null}]},U=D.ui,M=D.modes,CUR=0,PZ=false;
+function $(q){return document.querySelector(q);}
+function esc(t){return String(t);}
+function tx(x,y,t,a,o){o=o||{};return '<text x="'+x+'" y="'+y+'" font-size="'+(o.s||12)+'" text-anchor="'+(a||'start')+'" fill="'+(o.c||'#16222E')+'"'+(o.w?' font-weight="'+o.w+'"':'')+(o.i?' font-style="italic"':'')+'>'+t+'</text>';}
+function lines(x,y,t,a,o,dy){return String(t).split('|').map(function(s,i){return tx(x,y+i*(dy||13),s,a,o);}).join('');}
+var RED='#C0392B',BLUE='#2E5C9A',X0=60,X1=630,YV=96;
+var GID=0;
+function grad(c0,c1){var id='g'+(GID++);return {id:id,def:'<linearGradient id="'+id+'" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="'+c0+'"/><stop offset="1" stop-color="'+c1+'"/></linearGradient>'};}
+function col(c){return c==='a'?RED:BLUE;}
+function scene(m){var o='',defs='',n=m.parts.length,W=X1-X0;
+  var w=n===3?[0.28,0.44,0.28]:[0.17,0.22,0.22,0.22,0.17],xs=[X0];w.forEach(function(f,i){xs.push(xs[i]+f*W);});
+  m.parts.forEach(function(p,i){var a=xs[i],b=xs[i+1],c0=col(p.c[0]),c1=col(p.c[1]);
+    if(p.t==='v'){
+      o+='<line x1="'+a+'" y1="'+YV+'" x2="'+b+'" y2="'+YV+'" stroke="'+c0+'" stroke-width="14" stroke-linecap="butt"/>';
+      o+='<line class="fl" x1="'+a+'" y1="'+YV+'" x2="'+b+'" y2="'+YV+'" stroke="#FFFFFF" stroke-width="5"/>';
+      if(p.portal)o+='<rect x="'+(a+4)+'" y="'+(YV-22)+'" width="'+(b-a-8)+'" height="44" rx="10" fill="none" stroke="#B5520C" stroke-width="2" stroke-dasharray="5 4"/>'+tx((a+b)/2,YV+38,U.portal,'middle',{s:11,w:700,c:'#B5520C'});
+    }else{
+      var g=grad(c0,c1);defs+=g.def;
+      o+='<rect x="'+a+'" y="'+(YV-36)+'" width="'+(b-a)+'" height="72" rx="14" fill="#FBF6EE" stroke="#D8CBB5" stroke-width="1.5"/>';
+      [-24,-8,8,24].forEach(function(d,j){var y=YV+d,q=(b-a)/4,pth='M'+a+' '+YV+' C'+(a+q*0.6)+' '+YV+' '+(a+q*0.6)+' '+y+' '+(a+q)+' '+y+' S'+(a+q*2)+' '+(y+(j%2?-6:6))+' '+(a+q*2)+' '+y+' S'+(b-q*1.0)+' '+(y+(j%2?6:-6))+' '+(b-q)+' '+y+' C'+(b-q*0.6)+' '+y+' '+(b-q*0.6)+' '+YV+' '+b+' '+YV;
+        o+='<path d="'+pth+'" fill="none" stroke="url(#'+g.id+')" stroke-width="4"/><path class="fl" d="'+pth+'" stroke="#FFFFFF" stroke-width="2.4" style="animation-duration:1.8s"/>';});
+      if(p.note)o+=lines((a+b)/2,YV+54,p.note,'middle',{s:11,c:'#55697A',i:1});}
+    o+=lines((a+b)/2,p.name.indexOf('|')>=0?26:38,p.name,'middle',{s:11.5,w:700});});
+  // extra feeder from above (hepatic artery)
+  if(m.feed!=null){var a=xs[m.feed],fp='M'+(a-24)+' 10 L'+(a+14)+' '+(YV-30);o+='<path d="'+fp+'" stroke="'+RED+'" stroke-width="8" stroke-linecap="round"/><path class="fl" d="'+fp+'" stroke="#FFFFFF" stroke-width="3"/>'+tx(a-32,16,m.feedName,'end',{s:11,w:700,c:RED});}
+  // cargo particles: born in bed 1, carried by the portal vessel, taken up in bed 2
+  if(m.cargo){var c1=(xs[1]+xs[2])/2,c2=(xs[3]+xs[4])/2,KF='@keyframes cg{0%{transform:translate('+c1+'px,'+YV+'px) scale(.2);opacity:0}12%{transform:translate('+(c1+10)+'px,'+YV+'px) scale(1);opacity:1}78%{transform:translate('+(c2-10)+'px,'+YV+'px) scale(1);opacity:1}100%{transform:translate('+c2+'px,'+YV+'px) scale(.2);opacity:0}}';
+    $('#kf').textContent=KF;
+    for(var i=0;i<4;i++)o+='<g class="cg" style="animation-delay:'+(i*1.2)+'s"><circle r="7" fill="#F2B705" stroke="#8A6A00" stroke-width="1.5"/></g>';
+}
+  else $('#kf').textContent='';
+  // kidney: the tubule under the two beds
+  if(m.tubule){var g1=(xs[1]+xs[2])/2,g2=(xs[3]+xs[4])/2,ty=YV+62;
+    o+='<path d="M'+g1+' '+(YV+36)+' L'+g1+' '+ty+' L'+(xs[4]+14)+' '+ty+'" fill="none" stroke="#E0B33A" stroke-width="10" stroke-linejoin="round"/>';
+    o+='<path class="fl" d="M'+g1+' '+(YV+36)+' L'+g1+' '+ty+' L'+(xs[4]+14)+' '+ty+'" stroke="#8A6A00" stroke-width="3"/>';
+    o+=tx(xs[4]+20,ty+4,m.tubule,'start',{s:11,w:700,c:'#8A6A00'});
+    o+=tx(g1+10,YV+52,m.filt,'start',{s:11,w:700,c:'#16222E'});
+    [-26,0,26].forEach(function(d){var x=g2+d;o+='<path d="M'+x+' '+(ty-7)+' L'+x+' '+(YV+40)+'" stroke="#1F5FA8" stroke-width="2" marker-end="url(#ar)"/>';});
+    o+=tx(g2+36,YV+52,m.reab,'start',{s:11,w:700,c:'#1F5FA8'});
+    defs+='<marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#1F5FA8"/></marker>';}
+  // chart
+  var cy0=330,cy1=220,ch='';function Y(v){return cy0-(v/100)*(cy0-cy1);}
+  ch+='<line x1="'+X0+'" y1="'+cy0+'" x2="'+X1+'" y2="'+cy0+'" stroke="#8696A4"/>';
+  [0,25,50,75,100].forEach(function(v){ch+='<line x1="'+X0+'" y1="'+Y(v)+'" x2="'+X1+'" y2="'+Y(v)+'" stroke="#EEF2F5"/>'+tx(X0-6,Y(v)+4,v,'end',{s:10,c:'#55697A'});});
+  xs.slice(1,-1).forEach(function(x){ch+='<line x1="'+x+'" y1="'+cy1+'" x2="'+x+'" y2="'+cy0+'" stroke="#DDE4EA" stroke-dasharray="3 3"/>';});
+  function series(arr,colr,dash,lab,below){var pts=[],t='';arr.forEach(function(v,i){if(!v)return;var a=xs[i]+8,b=xs[i+1]-8;pts.push([a,v[0]],[b,v[1]]);});
+    if(!pts.length)return '';
+    t+='<polyline points="'+pts.map(function(p){return p[0].toFixed(1)+','+Y(p[1]).toFixed(1);}).join(' ')+'" fill="none" stroke="'+colr+'" stroke-width="2.6"'+(dash?' stroke-dasharray="6 4"':'')+'/>';
+    if(lab)arr.forEach(function(v,i){if(!v)return;var a=xs[i]+8,b=xs[i+1]-8;
+      t+='<circle cx="'+a+'" cy="'+Y(v[0])+'" r="3" fill="'+colr+'"/><circle cx="'+b+'" cy="'+Y(v[1])+'" r="3" fill="'+colr+'"/>';
+      var under=below&&below[i]&&Math.max(v[0],v[1])<Math.min(below[i][0],below[i][1]);
+      t+=tx((a+b)/2,under?Math.min(Y(Math.min(v[0],v[1]))+15,cy0-4):Math.min(Y(Math.max(v[0],v[1]))-6,cy0-4),v[0]===v[1]?v[0]:v[0]+'→'+v[1],'middle',{s:10,w:700,c:colr});});
+    return t;}
+  ch+=series(m.series,m.ck==='P'?'#16222E':'#B58A00',false,true,m.pi);
+  if(m.pi)ch+=series(m.pi,'#7A4BA6',true,true);
+  ch+=tx(X0,cy1-14,m.ck==='P'?U.chP:m.chC,'start',{s:11.5,w:700,c:m.ck==='P'?'#16222E':'#8A6A00'});
+  if(m.pi)ch+=tx(X1,cy1-14,U.chPi,'end',{s:11.5,w:700,c:'#7A4BA6'});
+  return '<svg viewBox="0 0 640 '+(cy0+8)+'" role="img" aria-label="'+m.n+'"><defs>'+defs+'</defs>'+o+ch+'</svg>';}
+
+function vt(v){return v[0]===v[1]?v[0]:v[0]+'→'+v[1];}
+function sceneV(m){var o='',defs='',XV=62,y=8,KF='',ys=[];
+  m.parts.forEach(function(p,i){var h=p.t==='v'?(p.portal?92:74):122,a=y,b=y+h,c0=col(p.c[0]),c1=col(p.c[1]);ys.push([a,b]);
+    if(p.t==='v'){o+='<line x1="'+XV+'" y1="'+a+'" x2="'+XV+'" y2="'+b+'" stroke="'+c0+'" stroke-width="14"/><line class="fl" x1="'+XV+'" y1="'+a+'" x2="'+XV+'" y2="'+b+'" stroke="#FFFFFF" stroke-width="5"/>';
+      if(p.portal)o+='<rect x="'+(XV-22)+'" y="'+(a+4)+'" width="44" height="'+(h-8)+'" rx="10" fill="none" stroke="#B5520C" stroke-width="2" stroke-dasharray="5 4"/>';}
+    else{var g='gv'+i;defs+='<linearGradient id="'+g+'" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="'+c0+'"/><stop offset="1" stop-color="'+c1+'"/></linearGradient>';
+      o+='<rect x="'+(XV-44)+'" y="'+a+'" width="88" height="'+h+'" rx="14" fill="#FBF6EE" stroke="#D8CBB5" stroke-width="1.5"/>';
+      [-27,-9,9,27].forEach(function(d,j){var x=XV+d,q=h/4,pth='M'+XV+' '+a+' C'+XV+' '+(a+q*0.6)+' '+x+' '+(a+q*0.6)+' '+x+' '+(a+q)+' S'+(x+(j%2?-5:5))+' '+(a+q*2)+' '+x+' '+(a+q*2)+' S'+(x+(j%2?5:-5))+' '+(b-q)+' '+x+' '+(b-q)+' C'+x+' '+(b-q*0.6)+' '+XV+' '+(b-q*0.6)+' '+XV+' '+b;
+        o+='<path d="'+pth+'" fill="none" stroke="url(#'+g+')" stroke-width="4"/><path class="fl" d="'+pth+'" stroke="#FFFFFF" stroke-width="2.4" style="animation-duration:1.8s"/>';});}
+    var ty=a+(p.t==='b'?20:16),tl='';
+    var nl=p.name.split('|').length;tl+=lines(124,ty,p.name,'start',{s:13,w:700},15);ty+=15*nl+2;
+    if(p.portal){tl+=tx(124,ty,U.portal,'start',{s:11.5,w:700,c:'#B5520C'});ty+=15;}
+    var note=p.note||'';if(m.tubule&&i===1)note=m.filt+' → '+m.tubule;if(m.tubule&&i===3)note=m.reab;
+    if(m.feed===i)note=(note?note+'|':'')+'+ '+m.feedName;
+    if(note){tl+=lines(124,ty,note,'start',{s:11.5,c:'#55697A',i:1},14);ty+=14*note.split('|').length+2;}
+    var v=m.series[i];if(v){tl+=tx(124,ty+2,(m.ck==='P'?'P ':U.cV+' ')+vt(v)+(m.ck==='P'?' mmHg':''),'start',{s:12,w:700,c:m.ck==='P'?'#16222E':'#8A6A00'});ty+=16;}
+    if(m.pi&&m.pi[i])tl+=tx(124,ty+2,'π '+vt(m.pi[i])+' mmHg','start',{s:12,w:700,c:'#7A4BA6'});
+    o+=tl;y=b;});
+  if(m.cargo){var c1=(ys[1][0]+ys[1][1])/2,c2=(ys[3][0]+ys[3][1])/2;KF='@keyframes cg{0%{transform:translate('+XV+'px,'+c1+'px) scale(.2);opacity:0}12%{transform:translate('+XV+'px,'+(c1+10)+'px) scale(1);opacity:1}78%{transform:translate('+XV+'px,'+(c2-10)+'px) scale(1);opacity:1}100%{transform:translate('+XV+'px,'+c2+'px) scale(.2);opacity:0}}';
+    for(var i=0;i<4;i++)o+='<g class="cg" style="animation-delay:'+(i*1.2)+'s"><circle r="7" fill="#F2B705" stroke="#8A6A00" stroke-width="1.5"/></g>';}
+  $('#kf').textContent=KF;
+  return '<svg class="stk" viewBox="0 0 340 '+(y+8)+'" role="img" aria-label="'+m.n+'"><defs>'+defs+'</defs>'+o+'</svg>';}
+function narrow(){return (document.documentElement.clientWidth||innerWidth)<560;}
+var NW=null;addEventListener('resize',function(){if(narrow()!==NW)render();});
+function render(){var m=M[CUR];NW=narrow();
+  $('#tabs').innerHTML=M.map(function(x,i){return '<button type="button" data-i="'+i+'"'+(i===CUR?' class="act"':'')+'>'+x.n+'</button>';}).join('')+'<span class="sp"></span><button type="button" id="pz"'+(PZ?' class="on"':'')+'>'+(PZ?U.play:U.pause)+'</button>';
+  $('#sc').innerHTML=NW?sceneV(m):scene(m);
+  $('#tx').innerHTML='<h3>'+m.n+'</h3><p><span class="tag">'+m.seq+'</span></p>'+m.t.map(function(p){return '<p>'+p+'</p>';}).join('');}
+$('#tabs').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+  if(b.id==='pz'){PZ=!PZ;document.body.classList.toggle('paused',PZ);b.textContent=PZ?U.play:U.pause;b.classList.toggle('on',PZ);return;}
+  CUR=+b.getAttribute('data-i');render();});
+$('#df').innerHTML=U.def;
+render();
+</script>
+</body>
+</html>
