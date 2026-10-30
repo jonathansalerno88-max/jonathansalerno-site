@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Membrane transport in the nephron</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+svg[viewBox]{min-width:0!important;max-width:100%!important;width:100%}
+.card{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:9px 11px;margin:0 0 8px}
+.card h3{font-size:16px;margin:0 0 4px}
+.story{font-size:14px;line-height:1.55;margin:0}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:8px 0 0}
+@media (max-width:560px){.rule{grid-template-columns:1fr}}
+.rule div{border-radius:9px;padding:6px 9px;font-size:13px;line-height:1.4;border:1.5px solid transparent;transition:border-color .2s,box-shadow .2s}
+.rule b{display:block;font-size:13.5px;margin:0 0 2px}
+.r-pas{background:#EAF2FB;color:#173F6E}.r-pri{background:#FCE6D9;color:#7A3410}.r-sec{background:#EFE4F8;color:#4A2370}
+.rule div.on{border-color:currentColor;box-shadow:0 0 0 2px rgba(0,0,0,.04)}
+.q{font-size:13px;margin:6px 0 0;color:var(--text-secondary)}
+.tabs{display:flex;gap:6px;margin:0 0 8px}
+.tabs button,.chips button,.ans button,.nx{font:inherit;font-size:13px;padding:5px 12px;border-radius:var(--radius);border:1px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.tabs button.act{border:1.5px solid var(--border-accent);color:var(--text-accent);background:#EEF4FC;font-weight:700}
+.pnl{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:8px 10px;margin:0 0 8px}
+.grp{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:0 0 6px}
+.grp .lab{font-size:12px;font-weight:700;color:var(--text-secondary);min-width:96px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chips button{padding:4px 10px}
+.chips button.act{border:1.5px solid var(--border-accent);color:var(--text-accent);background:#EEF4FC;font-weight:700}
+.info{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px 14px;font-size:13.5px;line-height:1.5;margin:6px 0 0}
+@media (max-width:560px){.info{grid-template-columns:1fr}}
+.info p{margin:0}
+.badge{display:inline-block;font-weight:700;font-size:13px;padding:3px 10px;border-radius:999px;margin:0 6px 4px 0}
+.b-pas{background:#1F5FA8;color:#FFFFFF}.b-pri{background:#C2571A;color:#FFFFFF}.b-sec{background:#6A3A96;color:#FFFFFF}.b-ty{background:#EEF2F5;color:#16222E}
+.ans{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+.ans button.ok{background:#2E7D32;border-color:#2E7D32;color:#FFFFFF}.ans button.no{background:#B03A3A;border-color:#B03A3A;color:#FFFFFF}
+.ans button:disabled{cursor:default}
+.ql{font-size:13.5px;font-weight:700;margin:6px 0 2px}
+.fb{font-size:13.5px;line-height:1.5;padding:7px 10px;border-radius:8px;margin:4px 0 6px}
+.fb.ok{background:#EAF5E1;color:#1F4D0B}.fb.no{background:#FCE8E3;color:#7A1F1F}
+.score{font-size:13px;font-weight:700;color:var(--text-accent);margin-left:auto;align-self:center}
+.nx{border-color:var(--border-accent);color:var(--text-accent);font-weight:700}
+.mv{animation:mv 2.4s linear infinite}
+@keyframes mv{0%{transform:translateX(0);opacity:0}12%{opacity:1}88%{opacity:1}100%{transform:translateX(var(--d));opacity:0}}
+@media (prefers-reduced-motion:reduce){.mv{animation:none;opacity:1}}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Classification of membrane transport: passive, primary active, secondary active. For each nephron transporter the drawing shows the concentrations on the two sides, the protein (channel, carrier or pump) and whether each substance goes down or up its gradient. There is also a quiz.</h2>
+<div class="card"><h3 id="ttl"></h3><p class="story" id="story"></p>
+  <div class="rule"><div class="r-pas" id="rp"></div><div class="r-pri" id="rr"></div><div class="r-sec" id="rs"></div></div>
+  <p class="q" id="rq"></p></div>
+<div class="tabs"><button type="button" id="t1"></button><button type="button" id="t2"></button></div>
+<div class="pnl" id="ex"><div id="pick"></div><div id="dg"></div><div class="info" id="info"></div></div>
+<div class="pnl" id="qz" hidden><div style="display:flex;gap:8px;flex-wrap:wrap"><b id="qt"></b><span class="score" id="sc"></span></div><div id="qdg"></div>
+  <p class="ql" id="q1"></p><div class="ans" id="a1"></div><p class="ql" id="q2"></p><div class="ans" id="a2"></div><div id="qfb"></div><button type="button" class="nx" id="nx" hidden></button></div>
+<script>
+var D={"ui": {"title": "Membrane transport in the nephron", "story": "One question decides everything: <b>does the substance go down or up its gradient?</b> If it goes down, transport is passive. If it goes up, someone has to pay: ATP directly (primary active) or another ion that goes down at the same time, in the same protein and the same cycle (secondary active). Pick a transporter and look at the bars: they are the concentrations on the two sides.", "rp": "<b>Passive</b>goes down its gradient. Without a protein (simple diffusion) or through a channel or a carrier (facilitated diffusion).", "rr": "<b>Primary active</b>goes up against its gradient and the pump spends ATP directly (ATPase).", "rs": "<b>Secondary active</b>goes up against its gradient, pulled by another ion that goes down, in the same carrier: symport (same direction) or antiport (opposite).", "rq": "For ions the <b>electrochemical</b> gradient counts: concentration and charge. The cell is negative inside (about −70 mV): it attracts cations (Na⁺, K⁺, H⁺) and repels anions (Cl⁻).", "t1": "Explore", "t2": "Test yourself", "side": {"lum": "lumen (urine)", "cell": "cell", "blood": "blood"}, "prot": {"none": "no protein", "chan": "channel", "carr": "carrier", "pump": "pump (ATPase)"}, "cls": {"pas": "passive", "pri": "primary active", "sec": "secondary active"}, "mode": {"uni": "uniport", "sym": "symport", "anti": "antiport"}, "coupled": "coupled", "up": "goes up", "down": "goes down", "why": "Why:", "drug": "Drugs:", "clin": "Clinically:", "qn": "Question {i} of {n}", "score": "score {s}/{n}", "q1": "1. Which protein is it?", "q2": "2. Which transport is it?", "right": "Right.", "wrong": "Not quite.", "next": "Next →", "again": "Start again"}, "groups": [{"k": "prox", "n": "Proximal"}, {"k": "loop", "n": "Loop of Henle"}, {"k": "dist", "n": "Distal"}, {"k": "cd", "n": "Collecting duct"}, {"k": "all", "n": "Everywhere"}, {"k": "none", "n": "No protein"}], "tr": [{"id": "sglt2", "g": "prox", "n": "SGLT2", "full": "sodium-glucose cotransporter 2", "where": "proximal tubule, lumen side", "A": "lum", "B": "cell", "prot": "carr", "cls": "sec", "mode": "sym", "subs": [{"s": "Na⁺", "cA": 140, "cB": 12, "lA": "140 mM", "lB": "12 mM", "dir": "AB", "up": false}, {"s": "glucose", "cA": 1, "cB": 5, "lA": "1 mM", "lB": "5 mM", "dir": "AB", "up": true, "sh": "glu"}], "why": "Glucose enters uphill (5 mM in the cell against about 1 in the lumen), pulled by Na⁺ going down. One protein, two substances, one cycle: symport, secondary active. Na⁺ pays, and its gradient was made by the Na⁺/K⁺-ATPase.", "drug": "gliflozins (dapagliflozin, empagliflozin).", "clin": "Glycosuria. More salt reaches the macula densa, which narrows the afferent: glomerular pressure falls and the kidney is protected. One of the four pillars of heart failure."}, {"id": "nhe3", "g": "prox", "n": "NHE3", "full": "sodium-hydrogen exchanger 3", "where": "proximal tubule, lumen side", "A": "lum", "B": "cell", "prot": "carr", "cls": "sec", "mode": "anti", "subs": [{"s": "Na⁺", "cA": 140, "cB": 12, "lA": "140 mM", "lB": "12 mM", "dir": "AB", "up": false}, {"s": "H⁺", "cA": 0.16, "cB": 0.063, "lA": "pH 6.8", "lB": "pH 7.2", "dir": "BA", "up": true}], "why": "Na⁺ enters going down and pays for H⁺ to leave, uphill towards a more acidic lumen. Opposite directions in the same protein: antiport, secondary active.", "drug": "none in common use; acetazolamide slows it indirectly (less H⁺ available in the cell).", "clin": "Angiotensin II (AT1 receptors) and the sympathetic system (α1) stimulate it: one of the ways they retain sodium. It also recovers filtered bicarbonate."}, {"id": "glut2", "g": "prox", "n": "GLUT2", "full": "glucose transporter 2", "where": "proximal tubule, blood side", "A": "cell", "B": "blood", "prot": "carr", "cls": "pas", "mode": "uni", "subs": [{"s": "glucose", "cA": 6, "cB": 5, "lA": "6 mM", "lB": "5 mM", "dir": "AB", "up": false, "sh": "glu"}], "why": "Glucose taken up by SGLT2 builds up in the cell and leaves towards the blood going down. The carrier moves one substance (uniport) and uses no energy: facilitated diffusion, passive.", "drug": "none.", "clin": "Without GLUT2 glucose would be trapped in the cell (Fanconi-Bickel syndrome)."}, {"id": "aqp1", "g": "loop", "n": "AQP1", "full": "aquaporin 1", "where": "proximal tubule and descending limb", "A": "lum", "B": "cell", "prot": "chan", "cls": "pas", "mode": "", "subs": [{"s": "H₂O", "cA": 2, "cB": 1, "lA": "300 → 600 mOsm", "lB": "more concentrated", "dir": "AB", "up": false, "sh": "H₂O"}], "why": "Water goes down from where it is more dilute to where it is more concentrated (the medullary interstitium), through a pore: channel, passive.", "drug": "none.", "clin": "Always present, no hormone needed: in the proximal tubule and descending limb water follows salt by itself."}, {"id": "nkcc2", "g": "loop", "n": "NKCC2", "full": "Na⁺-K⁺-2Cl⁻ cotransporter", "where": "thick ascending limb, lumen side", "A": "lum", "B": "cell", "prot": "carr", "cls": "sec", "mode": "sym", "subs": [{"s": "Na⁺", "cA": 140, "cB": 12, "lA": "140 mM", "lB": "12 mM", "dir": "AB", "up": false}, {"s": "K⁺", "cA": 4, "cB": 140, "lA": "4 mM", "lB": "140 mM", "dir": "AB", "up": true}, {"s": "2 Cl⁻", "cA": 120, "cB": 20, "lA": "120 mM", "lB": "20 mM, −70 mV", "dir": "AB", "up": true, "sh": "Cl⁻"}], "why": "Na⁺ goes down and pulls one K⁺ and two Cl⁻ with it. K⁺ clearly goes up (140 mM inside the cell). Cl⁻ goes up because of charge: the cell is negative and repels it. Same direction: symport, secondary active.", "drug": "loop diuretics: furosemide, torasemide, bumetanide.", "clin": "It is also the sensor of the macula densa. Blocking it sends more salt downstream and loses more K⁺. A relative (NKCC1) is in the inner ear: ototoxicity at high doses."}, {"id": "ncc", "g": "dist", "n": "NCC", "full": "Na⁺-Cl⁻ cotransporter", "where": "distal tubule, lumen side", "A": "lum", "B": "cell", "prot": "carr", "cls": "sec", "mode": "sym", "subs": [{"s": "Na⁺", "cA": 60, "cB": 12, "lA": "60 mM", "lB": "12 mM", "dir": "AB", "up": false}, {"s": "Cl⁻", "cA": 60, "cB": 20, "lA": "60 mM", "lB": "20 mM, −70 mV", "dir": "AB", "up": true}], "why": "Na⁺ goes down and pulls Cl⁻, which goes up because of charge. Same direction: symport, secondary active.", "drug": "thiazides: hydrochlorothiazide, chlortalidone, indapamide; metolazone.", "clin": "Hyponatraemia, hypokalaemia, hyperuricaemia and hypercalcaemia (more calcium is reabsorbed). Gitelman syndrome: NCC does not work."}, {"id": "enac", "g": "cd", "n": "ENaC", "full": "epithelial sodium channel", "where": "collecting duct, principal cell, lumen side", "A": "lum", "B": "cell", "prot": "chan", "cls": "pas", "mode": "", "subs": [{"s": "Na⁺", "cA": 50, "cB": 12, "lA": "50 mM", "lB": "12 mM", "dir": "AB", "up": false}], "why": "Na⁺ goes down from the lumen into the cell through a pore: channel, passive. The gradient exists because the Na⁺/K⁺-ATPase keeps Na⁺ low inside, but that does not make the channel active.", "drug": "amiloride, triamterene (block the channel); spironolactone and eplerenone block the aldosterone receptor that makes it.", "clin": "Aldosterone increases it. The Na⁺ that enters leaves the lumen negative, and K⁺ and H⁺ go out. Liddle syndrome: ENaC always open, with hypertension and hypokalaemia."}, {"id": "romk", "g": "cd", "n": "ROMK", "full": "renal outer medullary potassium channel", "where": "thick ascending limb and collecting duct, lumen side", "A": "cell", "B": "lum", "prot": "chan", "cls": "pas", "mode": "", "subs": [{"s": "K⁺", "cA": 140, "cB": 20, "lA": "140 mM", "lB": "20 mM", "dir": "AB", "up": false}], "why": "K⁺ leaves the cell (140 mM) towards the lumen (about 20 mM), helped by the negative lumen: channel, passive.", "drug": "none in common use.", "clin": "In the loop it recycles the K⁺ that NKCC2 needs; in the collecting duct it is the route by which potassium is lost. Bartter syndrome type 2: ROMK does not work."}, {"id": "aqp2", "g": "cd", "n": "AQP2", "full": "aquaporin 2", "where": "collecting duct, principal cell, lumen side", "A": "lum", "B": "cell", "prot": "chan", "cls": "pas", "mode": "", "subs": [{"s": "H₂O", "cA": 2, "cB": 1, "lA": "dilute urine", "lB": "concentrated interstitium", "dir": "AB", "up": false, "sh": "H₂O"}], "why": "Water passes through a pore going down towards the more concentrated interstitium: channel, passive. ADH only decides whether the pore is there (it inserts it into the membrane), it gives no energy.", "drug": "vaptans (tolvaptan, which blocks V2 receptors); lithium reduces them (nephrogenic diabetes insipidus).", "clin": "Without ADH the collecting duct is impermeable to water and the urine is dilute."}, {"id": "hatp", "g": "cd", "n": "H⁺-ATPase", "full": "proton pump", "where": "α intercalated cell, lumen side", "A": "cell", "B": "lum", "prot": "pump", "cls": "pri", "mode": "", "subs": [{"s": "H⁺", "cA": 0.063, "cB": 31.6, "lA": "pH 7.2", "lB": "pH 4.5", "dir": "AB", "up": true}], "why": "H⁺ leaves towards a lumen up to 500 times more acidic (pH 4.5 against 7.2): the climb is steep and needs ATP, primary active. The negative lumen helps, but is not enough.", "drug": "none.", "clin": "If it fails: distal renal tubular acidosis (type 1), with urine that cannot go below pH 5.5."}, {"id": "hkatp", "g": "cd", "n": "H⁺/K⁺-ATPase", "full": "hydrogen-potassium pump", "where": "α intercalated cell, lumen side", "A": "cell", "B": "lum", "prot": "pump", "cls": "pri", "mode": "", "subs": [{"s": "H⁺", "cA": 0.063, "cB": 31.6, "lA": "pH 7.2", "lB": "pH 4.5", "dir": "AB", "up": true}, {"s": "K⁺", "cA": 140, "cB": 5, "lA": "140 mM", "lB": "5 mM", "dir": "BA", "up": true}], "why": "H⁺ out and K⁺ in, both uphill, spending ATP: primary active. It is similar to the proton pump of the stomach.", "drug": "proton pump inhibitors (omeprazole) block the gastric version.", "clin": "It works harder when potassium is low: it recovers K⁺ and loses H⁺ (alkalosis)."}, {"id": "ae1", "g": "cd", "n": "AE1", "full": "anion exchanger 1 (band 3)", "where": "α intercalated cell, blood side", "A": "cell", "B": "blood", "prot": "carr", "cls": "sec", "mode": "anti", "subs": [{"s": "HCO₃⁻", "cA": 30, "cB": 24, "lA": "30 mM", "lB": "24 mM", "dir": "AB", "up": false, "sh": "HCO₃"}, {"s": "Cl⁻", "cA": 20, "cB": 105, "lA": "20 mM, −70 mV", "lB": "105 mM", "dir": "BA", "up": true}], "why": "HCO₃⁻, made in the cell by carbonic anhydrase, leaves towards the blood going down and pays for Cl⁻ to enter, which goes up because of charge. Opposite directions: antiport, secondary active.", "drug": "none.", "clin": "Every H⁺ thrown into the urine matches an HCO₃⁻ returned to the blood. Faulty AE1: distal tubular acidosis. It is the same protein as band 3 of red cells."}, {"id": "pen", "g": "cd", "n": "pendrin", "full": "apical Cl⁻/HCO₃⁻ exchanger", "where": "β intercalated cell, lumen side", "A": "cell", "B": "lum", "prot": "carr", "cls": "sec", "mode": "anti", "subs": [{"s": "HCO₃⁻", "cA": 30, "cB": 10, "lA": "30 mM", "lB": "10 mM", "dir": "AB", "up": false, "sh": "HCO₃"}, {"s": "Cl⁻", "cA": 20, "cB": 60, "lA": "20 mM, −70 mV", "lB": "60 mM", "dir": "BA", "up": true}], "why": "The mirror image of AE1: HCO₃⁻ leaves towards the lumen going down and pays for Cl⁻ to enter. Antiport, secondary active.", "drug": "none.", "clin": "Used in alkalosis. The Cl⁻ it takes back goes with the Na⁺ of ENaC, which is why angiotensin II and aldosterone stimulate it. Mutated in Pendred syndrome (deafness and goitre)."}, {"id": "nak", "g": "all", "n": "Na⁺/K⁺-ATPase", "full": "sodium-potassium pump", "where": "every segment, blood side", "A": "cell", "B": "blood", "prot": "pump", "cls": "pri", "mode": "", "subs": [{"s": "3 Na⁺", "cA": 12, "cB": 140, "lA": "12 mM", "lB": "140 mM", "dir": "AB", "up": true, "sh": "Na⁺"}, {"s": "2 K⁺", "cA": 140, "cB": 4, "lA": "140 mM", "lB": "4 mM", "dir": "BA", "up": true, "sh": "K⁺"}], "why": "It moves 3 Na⁺ out and 2 K⁺ in, both uphill, spending ATP: primary active. It makes the gradients that drive almost all the others.", "drug": "digoxin (blocks it, mainly in the heart).", "clin": "Aldosterone increases it in the collecting duct. It keeps Na⁺ low and K⁺ high inside every cell."}, {"id": "co2", "g": "none", "n": "CO₂", "full": "carbon dioxide", "where": "every cell", "A": "cell", "B": "blood", "prot": "none", "cls": "pas", "mode": "", "subs": [{"s": "CO₂", "cA": 2, "cB": 1.4, "lA": "pCO₂ 50", "lB": "pCO₂ 46", "dir": "AB", "up": false}], "why": "CO₂ is small and lipid-soluble: it crosses the lipid bilayer by itself, going down its gradient. No protein: simple diffusion, passive.", "drug": "—", "clin": "O₂ and lipid-soluble substances cross the same way. In the proximal tubule CO₂ enters the cell and carbonic anhydrase turns it into H⁺ and HCO₃⁻."}]},U=D.ui,T=D.tr,SEL=T[0].id,MODE='ex';
+function $(q){return document.querySelector(q);}
+function tx(x,y,t,a,o){o=o||{};return '<text x="'+x+'" y="'+y+'" font-size="'+(o.s||12)+'" text-anchor="'+(a||'start')+'" fill="'+(o.c||'#16222E')+'"'+(o.w?' font-weight="'+o.w+'"':'')+'>'+t+'</text>';}
+function byId(id){for(var i=0;i<T.length;i++)if(T[i].id===id)return T[i];}
+var CLS={pas:['b-pas','#1F5FA8'],pri:['b-pri','#C2571A'],sec:['b-sec','#6A3A96']};
+
+// the drawing: side A on the left, membrane in the middle, side B on the right
+function draw(t,blind){var o='',W=640,M0=280,M1=360,n=t.subs.length,H=Math.max(230,96+n*72);
+  o+='<rect x="0" y="0" width="'+M0+'" height="'+H+'" fill="'+(t.A==='lum'?'#FFF6CF':t.A==='cell'?'#F3ECFA':'#FBE3E3')+'"/>';
+  o+='<rect x="'+M1+'" y="0" width="'+(W-M1)+'" height="'+H+'" fill="'+(t.B==='lum'?'#FFF6CF':t.B==='cell'?'#F3ECFA':'#FBE3E3')+'"/>';
+  o+=tx(12,22,U.side[t.A],'start',{s:13,w:700,c:'#55697A'})+tx(W-12,22,U.side[t.B],'end',{s:13,w:700,c:'#55697A'});
+  // lipid bilayer
+  for(var yy=0;yy<H;yy+=12){o+='<circle cx="'+(M0+8)+'" cy="'+(yy+6)+'" r="5" fill="#E8C76A"/><circle cx="'+(M1-8)+'" cy="'+(yy+6)+'" r="5" fill="#E8C76A"/>';}
+  o+='<rect x="'+(M0+13)+'" y="0" width="'+(M1-M0-26)+'" height="'+H+'" fill="#FBF3D6"/>';
+  // the protein
+  var cy0=46,cy1=H-20,pc='#7A8B99';
+  if(blind){o+='<rect x="'+(M0-6)+'" y="'+cy0+'" width="'+(M1-M0+12)+'" height="'+(cy1-cy0)+'" rx="14" fill="#E3E8EC" stroke="#8696A4" stroke-width="2" stroke-dasharray="6 4"/>'+tx((M0+M1)/2,(cy0+cy1)/2+10,'?','middle',{s:30,w:700,c:'#8696A4'});}
+  else if(t.prot==='chan'){o+='<rect x="'+(M0+4)+'" y="'+cy0+'" width="22" height="'+(cy1-cy0)+'" rx="9" fill="#9DB8DE" stroke="#1F5FA8" stroke-width="1.6"/><rect x="'+(M1-26)+'" y="'+cy0+'" width="22" height="'+(cy1-cy0)+'" rx="9" fill="#9DB8DE" stroke="#1F5FA8" stroke-width="1.6"/>';pc='#1F5FA8';}
+  else if(t.prot==='carr'||t.prot==='pump'){var f=t.prot==='pump'?'#F6C7A8':'#D9C2EE',s=t.prot==='pump'?'#C2571A':'#6A3A96';pc=s;
+    o+='<rect x="'+(M0-6)+'" y="'+cy0+'" width="'+(M1-M0+12)+'" height="'+(cy1-cy0)+'" rx="26" fill="'+f+'" stroke="'+s+'" stroke-width="2"/>';
+    if(t.prot==='pump')o+='<rect x="'+((M0+M1)/2-32)+'" y="'+(cy1-34)+'" width="64" height="22" rx="11" fill="#C2571A"/>'+tx((M0+M1)/2,cy1-19,'ATP → ADP','middle',{s:11,w:700,c:'#FFFFFF'});
+    if(n>1)o+='<path d="M'+(M0+20)+' '+(cy0+18)+' L'+(M0+20)+' '+(cy1-18)+'" stroke="'+s+'" stroke-width="2" stroke-dasharray="3 3"/>'+tx(M0+26,(cy0+cy1)/2+4,U.coupled,'start',{s:10,w:700,c:s});}
+  if(!blind)o+=tx((M0+M1)/2,H-4,U.prot[t.prot],'middle',{s:11,w:700,c:pc});
+  // each substance: concentration bars on the two sides, an arrow that goes down (green) or up (red)
+  t.subs.forEach(function(q,i){var y=78+i*72,lA=Math.log(q.cA*10+1)/Math.log(10),lB=Math.log(q.cB*10+1)/Math.log(10),mx=Math.max(lA,lB,1),hA=6+36*lA/mx,hB=6+36*lB/mx;
+    var col=blind?'#55697A':(q.up?'#C0392B':'#2E7D32');
+    o+='<rect x="70" y="'+(y+20-hA)+'" width="26" height="'+hA+'" rx="3" fill="#9AA5AE" opacity=".55"/>'+tx(83,y+34,q.lA,'middle',{s:10.5,w:700,c:'#55697A'});
+    o+='<rect x="'+(W-96)+'" y="'+(y+20-hB)+'" width="26" height="'+hB+'" rx="3" fill="#9AA5AE" opacity=".55"/>'+tx(W-83,y+34,q.lB,'middle',{s:10.5,w:700,c:'#55697A'});
+    var ab=q.dir==='AB',x1=ab?120:W-120,x2=ab?W-120:120,dd=ab?1:-1;
+    o+='<line x1="'+x1+'" y1="'+y+'" x2="'+(x2-dd*10)+'" y2="'+y+'" stroke="'+col+'" stroke-width="3"/><path d="M'+x2+' '+y+' l'+(-dd*12)+' -7 v14Z" fill="'+col+'"/>';
+    o+='<g class="mv" style="--d:'+(dd*(W-260))+'px;animation-delay:'+(i*0.5)+'s"><circle cx="'+(ab?130:W-130)+'" cy="'+y+'" r="13" fill="#FFFFFF" stroke="'+col+'" stroke-width="2"/>'+tx(ab?130:W-130,y+4,q.sh||q.s,'middle',{s:q.s.length>3?8.5:10.5,w:700,c:col})+'</g>';
+    o+=tx(ab?150:W-150,y-12,q.s+(blind?'':' · '+(q.up?U.up:U.down)),ab?'start':'end',{s:11.5,w:700,c:col});});
+  return '<svg viewBox="0 0 640 '+H+'" role="img" aria-label="'+t.n+'">'+o+'</svg>';}
+
+function ruleOn(c){['rp','rr','rs'].forEach(function(id,i){$('#'+id).classList.toggle('on',c===['pas','pri','sec'][i]);});}
+function info(t){var c=CLS[t.cls];
+  return '<p><span class="badge '+c[0]+'">'+U.cls[t.cls]+(t.mode?' · '+U.mode[t.mode]:'')+'</span><span class="badge b-ty">'+U.prot[t.prot]+'</span></p><p><b>'+t.n+'</b> ('+t.full+') · '+t.where+'</p>'+
+    '<p><b>'+U.why+'</b> '+t.why+'</p><p><b>'+U.drug+'</b> '+t.drug+'</p><p style="grid-column:1/-1"><b>'+U.clin+'</b> '+t.clin+'</p>';}
+function renderEx(){var t=byId(SEL);
+  $('#pick').innerHTML=D.groups.map(function(g){return '<div class="grp"><span class="lab">'+g.n+'</span><div class="chips">'+T.filter(function(x){return x.g===g.k;}).map(function(x){return '<button type="button" data-id="'+x.id+'"'+(x.id===SEL?' class="act"':'')+'>'+x.n+'</button>';}).join('')+'</div></div>';}).join('');
+  $('#dg').innerHTML=draw(t,false);$('#info').innerHTML=info(t);ruleOn(t.cls);}
+$('#pick').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;SEL=b.getAttribute('data-id');renderEx();});
+
+// quiz
+var QO=[],QI=0,SC=0,SN=0,A1=null,A2=null;
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),k=a[i];a[i]=a[j];a[j]=k;}return a;}
+function newQuiz(){QO=shuffle(T.slice());QI=0;SC=0;SN=0;renderQ();}
+function renderQ(){var t=QO[QI];A1=null;A2=null;ruleOn('');
+  $('#qt').textContent=U.qn.replace('{i}',QI+1).replace('{n}',QO.length)+': '+t.n+' · '+t.where;$('#sc').textContent=U.score.replace('{s}',SC).replace('{n}',SN);
+  $('#qdg').innerHTML=draw(t,true);$('#q1').textContent=U.q1;$('#q2').textContent=U.q2;
+  $('#a1').innerHTML=['none','chan','carr','pump'].map(function(k){return '<button type="button" data-k="'+k+'">'+U.prot[k]+'</button>';}).join('');
+  $('#a2').innerHTML=['pas','pri','sec'].map(function(k){return '<button type="button" data-k="'+k+'">'+U.cls[k]+'</button>';}).join('');
+  $('#qfb').innerHTML='';$('#nx').hidden=true;}
+function check(){if(A1===null||A2===null)return;var t=QO[QI],ok1=A1===t.prot,ok2=A2===t.cls;SN++;if(ok1&&ok2)SC++;
+  [['#a1',t.prot],['#a2',t.cls]].forEach(function(p){[].forEach.call($(p[0]).querySelectorAll('button'),function(b){b.disabled=true;var k=b.getAttribute('data-k');if(k===p[1])b.classList.add('ok');else if(b.classList.contains('sel'))b.classList.add('no');});});
+  $('#qfb').innerHTML='<p class="fb '+(ok1&&ok2?'ok':'no')+'"><b>'+(ok1&&ok2?U.right:U.wrong)+'</b> '+t.why+'</p>';
+  $('#qdg').innerHTML=draw(t,false);ruleOn(t.cls);$('#sc').textContent=U.score.replace('{s}',SC).replace('{n}',SN);
+  $('#nx').hidden=false;$('#nx').textContent=QI<QO.length-1?U.next:U.again;}
+['#a1','#a2'].forEach(function(id,i){$(id).addEventListener('click',function(e){var b=e.target.closest('button');if(!b||b.disabled)return;
+  [].forEach.call($(id).querySelectorAll('button'),function(x){x.classList.remove('sel');x.style.outline='';});b.classList.add('sel');b.style.outline='2px solid #1456A8';
+  if(i===0)A1=b.getAttribute('data-k');else A2=b.getAttribute('data-k');check();});});
+$('#nx').addEventListener('click',function(){if(QI<QO.length-1){QI++;renderQ();}else newQuiz();});
+
+function setMode(m){MODE=m;$('#ex').hidden=m!=='ex';$('#qz').hidden=m!=='qz';$('#t1').classList.toggle('act',m==='ex');$('#t2').classList.toggle('act',m==='qz');if(m==='qz')newQuiz();else renderEx();}
+$('#t1').addEventListener('click',function(){setMode('ex');});$('#t2').addEventListener('click',function(){setMode('qz');});
+$('#ttl').textContent=U.title;$('#story').innerHTML=U.story;$('#rp').innerHTML=U.rp;$('#rr').innerHTML=U.rr;$('#rs').innerHTML=U.rs;$('#rq').innerHTML=U.rq;
+$('#t1').textContent=U.t1;$('#t2').textContent=U.t2;
+setMode('ex');
+</script>
+</body>
+</html>

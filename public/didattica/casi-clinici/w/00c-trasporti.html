@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>I trasporti di membrana nel nefrone</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+svg[viewBox]{min-width:0!important;max-width:100%!important;width:100%}
+.card{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:9px 11px;margin:0 0 8px}
+.card h3{font-size:16px;margin:0 0 4px}
+.story{font-size:14px;line-height:1.55;margin:0}
+.rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:8px 0 0}
+@media (max-width:560px){.rule{grid-template-columns:1fr}}
+.rule div{border-radius:9px;padding:6px 9px;font-size:13px;line-height:1.4;border:1.5px solid transparent;transition:border-color .2s,box-shadow .2s}
+.rule b{display:block;font-size:13.5px;margin:0 0 2px}
+.r-pas{background:#EAF2FB;color:#173F6E}.r-pri{background:#FCE6D9;color:#7A3410}.r-sec{background:#EFE4F8;color:#4A2370}
+.rule div.on{border-color:currentColor;box-shadow:0 0 0 2px rgba(0,0,0,.04)}
+.q{font-size:13px;margin:6px 0 0;color:var(--text-secondary)}
+.tabs{display:flex;gap:6px;margin:0 0 8px}
+.tabs button,.chips button,.ans button,.nx{font:inherit;font-size:13px;padding:5px 12px;border-radius:var(--radius);border:1px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.tabs button.act{border:1.5px solid var(--border-accent);color:var(--text-accent);background:#EEF4FC;font-weight:700}
+.pnl{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:8px 10px;margin:0 0 8px}
+.grp{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:0 0 6px}
+.grp .lab{font-size:12px;font-weight:700;color:var(--text-secondary);min-width:96px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chips button{padding:4px 10px}
+.chips button.act{border:1.5px solid var(--border-accent);color:var(--text-accent);background:#EEF4FC;font-weight:700}
+.info{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px 14px;font-size:13.5px;line-height:1.5;margin:6px 0 0}
+@media (max-width:560px){.info{grid-template-columns:1fr}}
+.info p{margin:0}
+.badge{display:inline-block;font-weight:700;font-size:13px;padding:3px 10px;border-radius:999px;margin:0 6px 4px 0}
+.b-pas{background:#1F5FA8;color:#FFFFFF}.b-pri{background:#C2571A;color:#FFFFFF}.b-sec{background:#6A3A96;color:#FFFFFF}.b-ty{background:#EEF2F5;color:#16222E}
+.ans{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+.ans button.ok{background:#2E7D32;border-color:#2E7D32;color:#FFFFFF}.ans button.no{background:#B03A3A;border-color:#B03A3A;color:#FFFFFF}
+.ans button:disabled{cursor:default}
+.ql{font-size:13.5px;font-weight:700;margin:6px 0 2px}
+.fb{font-size:13.5px;line-height:1.5;padding:7px 10px;border-radius:8px;margin:4px 0 6px}
+.fb.ok{background:#EAF5E1;color:#1F4D0B}.fb.no{background:#FCE8E3;color:#7A1F1F}
+.score{font-size:13px;font-weight:700;color:var(--text-accent);margin-left:auto;align-self:center}
+.nx{border-color:var(--border-accent);color:var(--text-accent);font-weight:700}
+.mv{animation:mv 2.4s linear infinite}
+@keyframes mv{0%{transform:translateX(0);opacity:0}12%{opacity:1}88%{opacity:1}100%{transform:translateX(var(--d));opacity:0}}
+@media (prefers-reduced-motion:reduce){.mv{animation:none;opacity:1}}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Classificazione dei trasporti di membrana: passivo, attivo primario, attivo secondario. Per ogni trasportatore del nefrone il disegno mostra le concentrazioni ai due lati, la proteina (canale, trasportatore o pompa) e se ogni sostanza scende o sale lungo il suo gradiente. C'è anche un quiz.</h2>
+<div class="card"><h3 id="ttl"></h3><p class="story" id="story"></p>
+  <div class="rule"><div class="r-pas" id="rp"></div><div class="r-pri" id="rr"></div><div class="r-sec" id="rs"></div></div>
+  <p class="q" id="rq"></p></div>
+<div class="tabs"><button type="button" id="t1"></button><button type="button" id="t2"></button></div>
+<div class="pnl" id="ex"><div id="pick"></div><div id="dg"></div><div class="info" id="info"></div></div>
+<div class="pnl" id="qz" hidden><div style="display:flex;gap:8px;flex-wrap:wrap"><b id="qt"></b><span class="score" id="sc"></span></div><div id="qdg"></div>
+  <p class="ql" id="q1"></p><div class="ans" id="a1"></div><p class="ql" id="q2"></p><div class="ans" id="a2"></div><div id="qfb"></div><button type="button" class="nx" id="nx" hidden></button></div>
+<script>
+var D={"ui": {"title": "I trasporti di membrana nel nefrone", "story": "Una sola domanda decide tutto: <b>la sostanza scende o sale lungo il suo gradiente?</b> Se scende, il trasporto è passivo. Se sale, qualcuno deve pagare: l'ATP direttamente (attivo primario) oppure un altro ione che intanto scende, nella stessa proteina e nello stesso ciclo (attivo secondario). Scegli un trasportatore e guarda le barre: sono le concentrazioni ai due lati.", "rp": "<b>Passivo</b>scende lungo il suo gradiente. Senza proteina (diffusione semplice) o con un canale o un trasportatore (diffusione facilitata).", "rr": "<b>Attivo primario</b>sale contro gradiente e la pompa consuma ATP direttamente (ATPasi).", "rs": "<b>Attivo secondario</b>sale contro gradiente trascinato da un altro ione che scende, nello stesso trasportatore: simporto (stessa direzione) o antiporto (opposta).", "rq": "Per gli ioni conta il gradiente <b>elettrochimico</b>: concentrazione e carica. La cellula è negativa dentro (circa −70 mV): attira i cationi (Na⁺, K⁺, H⁺) e respinge gli anioni (Cl⁻).", "t1": "Esplora", "t2": "Mettiti alla prova", "side": {"lum": "lume (urina)", "cell": "cellula", "blood": "sangue"}, "prot": {"none": "nessuna proteina", "chan": "canale", "carr": "trasportatore", "pump": "pompa (ATPasi)"}, "cls": {"pas": "passivo", "pri": "attivo primario", "sec": "attivo secondario"}, "mode": {"uni": "uniporto", "sym": "simporto", "anti": "antiporto"}, "coupled": "accoppiati", "up": "sale", "down": "scende", "why": "Perché:", "drug": "Farmaci:", "clin": "In clinica:", "qn": "Domanda {i} di {n}", "score": "punteggio {s}/{n}", "q1": "1. Che proteina è?", "q2": "2. Che trasporto è?", "right": "Giusto.", "wrong": "Non proprio.", "next": "Avanti →", "again": "Ricomincia"}, "groups": [{"k": "prox", "n": "Prossimale"}, {"k": "loop", "n": "Ansa di Henle"}, {"k": "dist", "n": "Distale"}, {"k": "cd", "n": "Collettore"}, {"k": "all", "n": "Ovunque"}, {"k": "none", "n": "Senza proteina"}], "tr": [{"id": "sglt2", "g": "prox", "n": "SGLT2", "full": "cotrasportatore sodio-glucosio di tipo 2", "where": "tubulo prossimale, lato lume", "A": "lum", "B": "cell", "prot": "carr", "cls": "sec", "mode": "sym", "subs": [{"s": "Na⁺", "cA": 140, "cB": 12, "lA": "140 mM", "lB": "12 mM", "dir": "AB", "up": false}, {"s": "glucosio", "cA": 1, "cB": 5, "lA": "1 mM", "lB": "5 mM", "dir": "AB", "up": true, "sh": "glu"}], "why": "Il glucosio entra in salita (5 mM nella cellula contro circa 1 nel lume), trascinato dal Na⁺ che scende. Una sola proteina, due sostanze, un solo ciclo: simporto, attivo secondario. Paga il Na⁺, il cui gradiente l'ha creato la Na⁺/K⁺-ATPasi.", "drug": "gliflozine (dapagliflozin, empagliflozin).", "clin": "Glicosuria. Più sale arriva alla macula densa, che chiude l'afferente: la pressione nel glomerulo scende e il rene è protetto. Sono uno dei quattro pilastri dello scompenso."}, {"id": "nhe3", "g": "prox", "n": "NHE3", "full": "scambiatore sodio-idrogeno di tipo 3", "where": "tubulo prossimale, lato lume", "A": "lum", "B": "cell", "prot": "carr", "cls": "sec", "mode": "anti", "subs": [{"s": "Na⁺", "cA": 140, "cB": 12, "lA": "140 mM", "lB": "12 mM", "dir": "AB", "up": false}, {"s": "H⁺", "cA": 0.16, "cB": 0.063, "lA": "pH 6,8", "lB": "pH 7,2", "dir": "BA", "up": true}], "why": "Il Na⁺ entra scendendo e paga l'uscita dell'H⁺, che sale verso un lume più acido. Direzioni opposte nella stessa proteina: antiporto, attivo secondario.", "drug": "nessuno di uso comune; l'acetazolamide lo frena in modo indiretto (meno H⁺ disponibile nella cellula).", "clin": "L'angiotensina II (recettori AT1) e il simpatico (α1) lo stimolano: è uno dei modi con cui trattengono sodio. Serve anche a recuperare il bicarbonato filtrato."}, {"id": "glut2", "g": "prox", "n": "GLUT2", "full": "trasportatore del glucosio di tipo 2", "where": "tubulo prossimale, lato sangue", "A": "cell", "B": "blood", "prot": "carr", "cls": "pas", "mode": "uni", "subs": [{"s": "glucosio", "cA": 6, "cB": 5, "lA": "6 mM", "lB": "5 mM", "dir": "AB", "up": false, "sh": "glu"}], "why": "Il glucosio ripreso dall'SGLT2 si accumula nella cellula ed esce verso il sangue scendendo. Il trasportatore porta una sola sostanza (uniporto) e non usa energia: diffusione facilitata, passivo.", "drug": "nessuno.", "clin": "Senza GLUT2 il glucosio resterebbe intrappolato nella cellula (sindrome di Fanconi-Bickel)."}, {"id": "aqp1", "g": "loop", "n": "AQP1", "full": "acquaporina 1", "where": "tubulo prossimale e ansa discendente", "A": "lum", "B": "cell", "prot": "chan", "cls": "pas", "mode": "", "subs": [{"s": "H₂O", "cA": 2, "cB": 1, "lA": "300 → 600 mOsm", "lB": "più concentrato", "dir": "AB", "up": false, "sh": "H₂O"}], "why": "L'acqua scende da dove è più diluita a dove è più concentrata (l'interstizio della midollare), attraverso un poro: canale, passivo.", "drug": "nessuno.", "clin": "Sempre presenti, senza bisogno di ormoni: nel prossimale e nell'ansa discendente l'acqua segue il sale da sola."}, {"id": "nkcc2", "g": "loop", "n": "NKCC2", "full": "cotrasportatore Na⁺-K⁺-2Cl⁻", "where": "ramo ascendente spesso, lato lume", "A": "lum", "B": "cell", "prot": "carr", "cls": "sec", "mode": "sym", "subs": [{"s": "Na⁺", "cA": 140, "cB": 12, "lA": "140 mM", "lB": "12 mM", "dir": "AB", "up": false}, {"s": "K⁺", "cA": 4, "cB": 140, "lA": "4 mM", "lB": "140 mM", "dir": "AB", "up": true}, {"s": "2 Cl⁻", "cA": 120, "cB": 20, "lA": "120 mM", "lB": "20 mM, −70 mV", "dir": "AB", "up": true, "sh": "Cl⁻"}], "why": "Il Na⁺ scende e trascina con sé un K⁺ e due Cl⁻. Il K⁺ sale chiaramente (140 mM dentro la cellula). Il Cl⁻ sale per la carica: la cellula è negativa e lo respinge. Stessa direzione: simporto, attivo secondario.", "drug": "diuretici dell'ansa: furosemide, torasemide, bumetanide.", "clin": "È anche il sensore della macula densa. Bloccarlo fa arrivare più sale a valle e far perdere più K⁺. Un suo parente (NKCC1) sta nell'orecchio interno: ototossicità ad alte dosi."}, {"id": "ncc", "g": "dist", "n": "NCC", "full": "cotrasportatore Na⁺-Cl⁻", "where": "tubulo distale, lato lume", "A": "lum", "B": "cell", "prot": "carr", "cls": "sec", "mode": "sym", "subs": [{"s": "Na⁺", "cA": 60, "cB": 12, "lA": "60 mM", "lB": "12 mM", "dir": "AB", "up": false}, {"s": "Cl⁻", "cA": 60, "cB": 20, "lA": "60 mM", "lB": "20 mM, −70 mV", "dir": "AB", "up": true}], "why": "Il Na⁺ scende e trascina il Cl⁻, che per la carica sale. Stessa direzione: simporto, attivo secondario.", "drug": "tiazidici: idroclorotiazide, clortalidone, indapamide; metolazone.", "clin": "Iponatriemia, ipokaliemia, iperuricemia e ipercalcemia (si riprende più calcio). Sindrome di Gitelman: l'NCC non funziona."}, {"id": "enac", "g": "cd", "n": "ENaC", "full": "canale epiteliale del sodio", "where": "dotto collettore, cellula principale, lato lume", "A": "lum", "B": "cell", "prot": "chan", "cls": "pas", "mode": "", "subs": [{"s": "Na⁺", "cA": 50, "cB": 12, "lA": "50 mM", "lB": "12 mM", "dir": "AB", "up": false}], "why": "Il Na⁺ scende dal lume alla cellula attraverso un poro: canale, passivo. Il gradiente c'è perché la Na⁺/K⁺-ATPasi tiene basso il Na⁺ dentro, ma questo non rende attivo il canale.", "drug": "amiloride, triamterene (bloccano il canale); spironolattone ed eplerenone bloccano il recettore dell'aldosterone che lo fa produrre.", "clin": "L'aldosterone lo aumenta. Il Na⁺ che entra lascia il lume negativo, e K⁺ e H⁺ escono. Sindrome di Liddle: ENaC sempre aperto, con ipertensione e ipokaliemia."}, {"id": "romk", "g": "cd", "n": "ROMK", "full": "canale del potassio della midollare esterna", "where": "ansa ascendente spessa e dotto collettore, lato lume", "A": "cell", "B": "lum", "prot": "chan", "cls": "pas", "mode": "", "subs": [{"s": "K⁺", "cA": 140, "cB": 20, "lA": "140 mM", "lB": "20 mM", "dir": "AB", "up": false}], "why": "Il K⁺ esce dalla cellula (140 mM) verso il lume (circa 20 mM), aiutato dal lume negativo: canale, passivo.", "drug": "nessuno di uso comune.", "clin": "Nell'ansa ricicla il K⁺ che serve all'NKCC2; nel collettore è la via da cui si perde potassio. Sindrome di Bartter di tipo 2: ROMK che non funziona."}, {"id": "aqp2", "g": "cd", "n": "AQP2", "full": "acquaporina 2", "where": "dotto collettore, cellula principale, lato lume", "A": "lum", "B": "cell", "prot": "chan", "cls": "pas", "mode": "", "subs": [{"s": "H₂O", "cA": 2, "cB": 1, "lA": "urina diluita", "lB": "interstizio concentrato", "dir": "AB", "up": false, "sh": "H₂O"}], "why": "L'acqua passa per un poro scendendo verso l'interstizio più concentrato: canale, passivo. L'ADH decide solo se il poro c'è (lo inserisce in membrana), non dà energia.", "drug": "vaptani (tolvaptan, che blocca i recettori V2); il litio le riduce (diabete insipido nefrogenico).", "clin": "Senza ADH il collettore è impermeabile all'acqua e l'urina esce diluita."}, {"id": "hatp", "g": "cd", "n": "H⁺-ATPasi", "full": "pompa protonica", "where": "intercalata α, lato lume", "A": "cell", "B": "lum", "prot": "pump", "cls": "pri", "mode": "", "subs": [{"s": "H⁺", "cA": 0.063, "cB": 31.6, "lA": "pH 7,2", "lB": "pH 4,5", "dir": "AB", "up": true}], "why": "L'H⁺ esce verso un lume fino a 500 volte più acido (pH 4,5 contro 7,2): la salita è ripida e serve ATP, attivo primario. Il lume negativo aiuta, ma non basta.", "drug": "nessuno.", "clin": "Se non funziona: acidosi tubulare renale distale (tipo 1), con l'urina che non scende sotto pH 5,5."}, {"id": "hkatp", "g": "cd", "n": "H⁺/K⁺-ATPasi", "full": "pompa idrogeno-potassio", "where": "intercalata α, lato lume", "A": "cell", "B": "lum", "prot": "pump", "cls": "pri", "mode": "", "subs": [{"s": "H⁺", "cA": 0.063, "cB": 31.6, "lA": "pH 7,2", "lB": "pH 4,5", "dir": "AB", "up": true}, {"s": "K⁺", "cA": 140, "cB": 5, "lA": "140 mM", "lB": "5 mM", "dir": "BA", "up": true}], "why": "H⁺ fuori e K⁺ dentro, tutti e due in salita, consumando ATP: attivo primario. È simile alla pompa protonica dello stomaco.", "drug": "gli inibitori di pompa (omeprazolo) bloccano la versione gastrica.", "clin": "Lavora di più quando il potassio è basso: recupera K⁺ e perde H⁺ (alcalosi)."}, {"id": "ae1", "g": "cd", "n": "AE1", "full": "scambiatore anionico 1 (banda 3)", "where": "intercalata α, lato sangue", "A": "cell", "B": "blood", "prot": "carr", "cls": "sec", "mode": "anti", "subs": [{"s": "HCO₃⁻", "cA": 30, "cB": 24, "lA": "30 mM", "lB": "24 mM", "dir": "AB", "up": false, "sh": "HCO₃"}, {"s": "Cl⁻", "cA": 20, "cB": 105, "lA": "20 mM, −70 mV", "lB": "105 mM", "dir": "BA", "up": true}], "why": "L'HCO₃⁻, prodotto nella cellula dall'anidrasi carbonica, esce verso il sangue scendendo e paga l'ingresso del Cl⁻, che per la carica sale. Direzioni opposte: antiporto, attivo secondario.", "drug": "nessuno.", "clin": "Ogni H⁺ buttato nell'urina corrisponde a un HCO₃⁻ restituito al sangue. AE1 difettoso: acidosi tubulare distale. È la stessa proteina della banda 3 dei globuli rossi."}, {"id": "pen", "g": "cd", "n": "pendrina", "full": "scambiatore Cl⁻/HCO₃⁻ apicale", "where": "intercalata β, lato lume", "A": "cell", "B": "lum", "prot": "carr", "cls": "sec", "mode": "anti", "subs": [{"s": "HCO₃⁻", "cA": 30, "cB": 10, "lA": "30 mM", "lB": "10 mM", "dir": "AB", "up": false, "sh": "HCO₃"}, {"s": "Cl⁻", "cA": 20, "cB": 60, "lA": "20 mM, −70 mV", "lB": "60 mM", "dir": "BA", "up": true}], "why": "È l'immagine speculare dell'AE1: l'HCO₃⁻ esce verso il lume scendendo e paga l'ingresso del Cl⁻. Antiporto, attivo secondario.", "drug": "nessuno.", "clin": "Serve nell'alcalosi. Il Cl⁻ che riprende accompagna il Na⁺ dell'ENaC, per questo angiotensina II e aldosterone la stimolano. Mutata nella sindrome di Pendred (sordità e gozzo)."}, {"id": "nak", "g": "all", "n": "Na⁺/K⁺-ATPasi", "full": "pompa sodio-potassio", "where": "tutti i tratti, lato sangue", "A": "cell", "B": "blood", "prot": "pump", "cls": "pri", "mode": "", "subs": [{"s": "3 Na⁺", "cA": 12, "cB": 140, "lA": "12 mM", "lB": "140 mM", "dir": "AB", "up": true, "sh": "Na⁺"}, {"s": "2 K⁺", "cA": 140, "cB": 4, "lA": "140 mM", "lB": "4 mM", "dir": "BA", "up": true, "sh": "K⁺"}], "why": "Porta 3 Na⁺ fuori e 2 K⁺ dentro, tutti e due in salita, consumando ATP: attivo primario. Crea i gradienti che fanno funzionare quasi tutti gli altri.", "drug": "digossina (la blocca, soprattutto nel cuore).", "clin": "L'aldosterone ne aumenta il numero nel collettore. Tiene il Na⁺ basso e il K⁺ alto dentro tutte le cellule."}, {"id": "co2", "g": "none", "n": "CO₂", "full": "anidride carbonica", "where": "tutte le cellule", "A": "cell", "B": "blood", "prot": "none", "cls": "pas", "mode": "", "subs": [{"s": "CO₂", "cA": 2, "cB": 1.4, "lA": "pCO₂ 50", "lB": "pCO₂ 46", "dir": "AB", "up": false}], "why": "Il CO₂ è piccolo e liposolubile: attraversa da solo il doppio strato lipidico, scendendo lungo il suo gradiente. Nessuna proteina: diffusione semplice, passivo.", "drug": "—", "clin": "Così passano anche O₂ e le sostanze liposolubili. Nel prossimale il CO₂ entra nella cellula e l'anidrasi carbonica lo trasforma in H⁺ e HCO₃⁻."}]},U=D.ui,T=D.tr,SEL=T[0].id,MODE='ex';
+function $(q){return document.querySelector(q);}
+function tx(x,y,t,a,o){o=o||{};return '<text x="'+x+'" y="'+y+'" font-size="'+(o.s||12)+'" text-anchor="'+(a||'start')+'" fill="'+(o.c||'#16222E')+'"'+(o.w?' font-weight="'+o.w+'"':'')+'>'+t+'</text>';}
+function byId(id){for(var i=0;i<T.length;i++)if(T[i].id===id)return T[i];}
+var CLS={pas:['b-pas','#1F5FA8'],pri:['b-pri','#C2571A'],sec:['b-sec','#6A3A96']};
+
+// the drawing: side A on the left, membrane in the middle, side B on the right
+function draw(t,blind){var o='',W=640,M0=280,M1=360,n=t.subs.length,H=Math.max(230,96+n*72);
+  o+='<rect x="0" y="0" width="'+M0+'" height="'+H+'" fill="'+(t.A==='lum'?'#FFF6CF':t.A==='cell'?'#F3ECFA':'#FBE3E3')+'"/>';
+  o+='<rect x="'+M1+'" y="0" width="'+(W-M1)+'" height="'+H+'" fill="'+(t.B==='lum'?'#FFF6CF':t.B==='cell'?'#F3ECFA':'#FBE3E3')+'"/>';
+  o+=tx(12,22,U.side[t.A],'start',{s:13,w:700,c:'#55697A'})+tx(W-12,22,U.side[t.B],'end',{s:13,w:700,c:'#55697A'});
+  // lipid bilayer
+  for(var yy=0;yy<H;yy+=12){o+='<circle cx="'+(M0+8)+'" cy="'+(yy+6)+'" r="5" fill="#E8C76A"/><circle cx="'+(M1-8)+'" cy="'+(yy+6)+'" r="5" fill="#E8C76A"/>';}
+  o+='<rect x="'+(M0+13)+'" y="0" width="'+(M1-M0-26)+'" height="'+H+'" fill="#FBF3D6"/>';
+  // the protein
+  var cy0=46,cy1=H-20,pc='#7A8B99';
+  if(blind){o+='<rect x="'+(M0-6)+'" y="'+cy0+'" width="'+(M1-M0+12)+'" height="'+(cy1-cy0)+'" rx="14" fill="#E3E8EC" stroke="#8696A4" stroke-width="2" stroke-dasharray="6 4"/>'+tx((M0+M1)/2,(cy0+cy1)/2+10,'?','middle',{s:30,w:700,c:'#8696A4'});}
+  else if(t.prot==='chan'){o+='<rect x="'+(M0+4)+'" y="'+cy0+'" width="22" height="'+(cy1-cy0)+'" rx="9" fill="#9DB8DE" stroke="#1F5FA8" stroke-width="1.6"/><rect x="'+(M1-26)+'" y="'+cy0+'" width="22" height="'+(cy1-cy0)+'" rx="9" fill="#9DB8DE" stroke="#1F5FA8" stroke-width="1.6"/>';pc='#1F5FA8';}
+  else if(t.prot==='carr'||t.prot==='pump'){var f=t.prot==='pump'?'#F6C7A8':'#D9C2EE',s=t.prot==='pump'?'#C2571A':'#6A3A96';pc=s;
+    o+='<rect x="'+(M0-6)+'" y="'+cy0+'" width="'+(M1-M0+12)+'" height="'+(cy1-cy0)+'" rx="26" fill="'+f+'" stroke="'+s+'" stroke-width="2"/>';
+    if(t.prot==='pump')o+='<rect x="'+((M0+M1)/2-32)+'" y="'+(cy1-34)+'" width="64" height="22" rx="11" fill="#C2571A"/>'+tx((M0+M1)/2,cy1-19,'ATP → ADP','middle',{s:11,w:700,c:'#FFFFFF'});
+    if(n>1)o+='<path d="M'+(M0+20)+' '+(cy0+18)+' L'+(M0+20)+' '+(cy1-18)+'" stroke="'+s+'" stroke-width="2" stroke-dasharray="3 3"/>'+tx(M0+26,(cy0+cy1)/2+4,U.coupled,'start',{s:10,w:700,c:s});}
+  if(!blind)o+=tx((M0+M1)/2,H-4,U.prot[t.prot],'middle',{s:11,w:700,c:pc});
+  // each substance: concentration bars on the two sides, an arrow that goes down (green) or up (red)
+  t.subs.forEach(function(q,i){var y=78+i*72,lA=Math.log(q.cA*10+1)/Math.log(10),lB=Math.log(q.cB*10+1)/Math.log(10),mx=Math.max(lA,lB,1),hA=6+36*lA/mx,hB=6+36*lB/mx;
+    var col=blind?'#55697A':(q.up?'#C0392B':'#2E7D32');
+    o+='<rect x="70" y="'+(y+20-hA)+'" width="26" height="'+hA+'" rx="3" fill="#9AA5AE" opacity=".55"/>'+tx(83,y+34,q.lA,'middle',{s:10.5,w:700,c:'#55697A'});
+    o+='<rect x="'+(W-96)+'" y="'+(y+20-hB)+'" width="26" height="'+hB+'" rx="3" fill="#9AA5AE" opacity=".55"/>'+tx(W-83,y+34,q.lB,'middle',{s:10.5,w:700,c:'#55697A'});
+    var ab=q.dir==='AB',x1=ab?120:W-120,x2=ab?W-120:120,dd=ab?1:-1;
+    o+='<line x1="'+x1+'" y1="'+y+'" x2="'+(x2-dd*10)+'" y2="'+y+'" stroke="'+col+'" stroke-width="3"/><path d="M'+x2+' '+y+' l'+(-dd*12)+' -7 v14Z" fill="'+col+'"/>';
+    o+='<g class="mv" style="--d:'+(dd*(W-260))+'px;animation-delay:'+(i*0.5)+'s"><circle cx="'+(ab?130:W-130)+'" cy="'+y+'" r="13" fill="#FFFFFF" stroke="'+col+'" stroke-width="2"/>'+tx(ab?130:W-130,y+4,q.sh||q.s,'middle',{s:q.s.length>3?8.5:10.5,w:700,c:col})+'</g>';
+    o+=tx(ab?150:W-150,y-12,q.s+(blind?'':' · '+(q.up?U.up:U.down)),ab?'start':'end',{s:11.5,w:700,c:col});});
+  return '<svg viewBox="0 0 640 '+H+'" role="img" aria-label="'+t.n+'">'+o+'</svg>';}
+
+function ruleOn(c){['rp','rr','rs'].forEach(function(id,i){$('#'+id).classList.toggle('on',c===['pas','pri','sec'][i]);});}
+function info(t){var c=CLS[t.cls];
+  return '<p><span class="badge '+c[0]+'">'+U.cls[t.cls]+(t.mode?' · '+U.mode[t.mode]:'')+'</span><span class="badge b-ty">'+U.prot[t.prot]+'</span></p><p><b>'+t.n+'</b> ('+t.full+') · '+t.where+'</p>'+
+    '<p><b>'+U.why+'</b> '+t.why+'</p><p><b>'+U.drug+'</b> '+t.drug+'</p><p style="grid-column:1/-1"><b>'+U.clin+'</b> '+t.clin+'</p>';}
+function renderEx(){var t=byId(SEL);
+  $('#pick').innerHTML=D.groups.map(function(g){return '<div class="grp"><span class="lab">'+g.n+'</span><div class="chips">'+T.filter(function(x){return x.g===g.k;}).map(function(x){return '<button type="button" data-id="'+x.id+'"'+(x.id===SEL?' class="act"':'')+'>'+x.n+'</button>';}).join('')+'</div></div>';}).join('');
+  $('#dg').innerHTML=draw(t,false);$('#info').innerHTML=info(t);ruleOn(t.cls);}
+$('#pick').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;SEL=b.getAttribute('data-id');renderEx();});
+
+// quiz
+var QO=[],QI=0,SC=0,SN=0,A1=null,A2=null;
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),k=a[i];a[i]=a[j];a[j]=k;}return a;}
+function newQuiz(){QO=shuffle(T.slice());QI=0;SC=0;SN=0;renderQ();}
+function renderQ(){var t=QO[QI];A1=null;A2=null;ruleOn('');
+  $('#qt').textContent=U.qn.replace('{i}',QI+1).replace('{n}',QO.length)+': '+t.n+' · '+t.where;$('#sc').textContent=U.score.replace('{s}',SC).replace('{n}',SN);
+  $('#qdg').innerHTML=draw(t,true);$('#q1').textContent=U.q1;$('#q2').textContent=U.q2;
+  $('#a1').innerHTML=['none','chan','carr','pump'].map(function(k){return '<button type="button" data-k="'+k+'">'+U.prot[k]+'</button>';}).join('');
+  $('#a2').innerHTML=['pas','pri','sec'].map(function(k){return '<button type="button" data-k="'+k+'">'+U.cls[k]+'</button>';}).join('');
+  $('#qfb').innerHTML='';$('#nx').hidden=true;}
+function check(){if(A1===null||A2===null)return;var t=QO[QI],ok1=A1===t.prot,ok2=A2===t.cls;SN++;if(ok1&&ok2)SC++;
+  [['#a1',t.prot],['#a2',t.cls]].forEach(function(p){[].forEach.call($(p[0]).querySelectorAll('button'),function(b){b.disabled=true;var k=b.getAttribute('data-k');if(k===p[1])b.classList.add('ok');else if(b.classList.contains('sel'))b.classList.add('no');});});
+  $('#qfb').innerHTML='<p class="fb '+(ok1&&ok2?'ok':'no')+'"><b>'+(ok1&&ok2?U.right:U.wrong)+'</b> '+t.why+'</p>';
+  $('#qdg').innerHTML=draw(t,false);ruleOn(t.cls);$('#sc').textContent=U.score.replace('{s}',SC).replace('{n}',SN);
+  $('#nx').hidden=false;$('#nx').textContent=QI<QO.length-1?U.next:U.again;}
+['#a1','#a2'].forEach(function(id,i){$(id).addEventListener('click',function(e){var b=e.target.closest('button');if(!b||b.disabled)return;
+  [].forEach.call($(id).querySelectorAll('button'),function(x){x.classList.remove('sel');x.style.outline='';});b.classList.add('sel');b.style.outline='2px solid #1456A8';
+  if(i===0)A1=b.getAttribute('data-k');else A2=b.getAttribute('data-k');check();});});
+$('#nx').addEventListener('click',function(){if(QI<QO.length-1){QI++;renderQ();}else newQuiz();});
+
+function setMode(m){MODE=m;$('#ex').hidden=m!=='ex';$('#qz').hidden=m!=='qz';$('#t1').classList.toggle('act',m==='ex');$('#t2').classList.toggle('act',m==='qz');if(m==='qz')newQuiz();else renderEx();}
+$('#t1').addEventListener('click',function(){setMode('ex');});$('#t2').addEventListener('click',function(){setMode('qz');});
+$('#ttl').textContent=U.title;$('#story').innerHTML=U.story;$('#rp').innerHTML=U.rp;$('#rr').innerHTML=U.rr;$('#rs').innerHTML=U.rs;$('#rq').innerHTML=U.rq;
+$('#t1').textContent=U.t1;$('#t2').textContent=U.t2;
+setMode('ex');
+</script>
+</body>
+</html>
