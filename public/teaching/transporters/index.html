@@ -7,7 +7,7 @@
 <link rel="alternate" hreflang="it" href="/didattica/trasportatori/">
 <link rel="alternate" hreflang="en" href="/teaching/transporters/">
 <link rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
-<meta name="description" content="How a substance crosses the membrane, animated: simple diffusion, channels, carriers, symport, antiport and pumps; passive, primary active and secondary active. Then the transporters of the nephron, segment by segment, with the intercalated cells.">
+<meta name="description" content="The three routes across a membrane, animated: simple diffusion, channels (always open, voltage-gated, ligand-gated, mechanosensitive) and carriers (uniport, symport, antiport), with who pays: passive, secondary active, primary active. Then the transporters of the nephron, segment by segment, with the intercalated cells.">
 <meta name="author" content="Jonathan Salerno">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
@@ -281,35 +281,29 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 <nav class="toc" aria-label="Contents">
   <h2>Contents</h2>
   <ol>
-    <li><a href="#what">What a transporter is</a></li>
+    <li><a href="#what">How to cross a membrane</a></li>
     <li><a href="#kidney">The transporters of the kidney</a></li>
   </ol>
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#sources">Sources</a></p>
 </nav>
 
 <section id="what">
-  <h2>1 · What a transporter is</h2>
-  <p>The membrane is a lipid bilayer: on their own, only small uncharged molecules get through. Everything else,
-  ions, glucose, amino acids, even water in useful amounts, needs a protein. There are two questions to ask:
-  <b>which protein</b> (channel, carrier or pump) and <b>who pays</b>, that is, whether the substance goes down or up its
-  electrochemical gradient.</p>
+  <h2>1 · How to cross a membrane</h2>
+  <p>The membrane is a lipid bilayer. There are <b>three routes</b> across it: straight through the lipids (simple
+  diffusion, only for small uncharged molecules), through a <b>channel</b>, or carried by a <b>carrier</b>. Then you look
+  inside each route: channels differ in what opens them, carriers in how many substances they carry and in which
+  direction. Only carriers raise a second question: who pays.</p>
   <figure class="w">
-    <iframe src="w/00-intro.html" title="What a transporter is: simple diffusion, channel, uniport, symport, antiport, pump" loading="lazy" class="ph"></iframe>
-    <figcaption>Pick a mechanism and watch the molecules cross the membrane; the Pause button stops the animation. <a href="w/00-intro.html">Open full screen</a></figcaption>
+    <iframe src="w/00-intro.html" title="How to cross a membrane: simple diffusion, channel, carrier" loading="lazy" class="ph"></iframe>
+    <figcaption>Pick one of the three routes, then the type of channel or carrier; the Pause button stops the animation. <a href="w/00-intro.html">Open full screen</a></figcaption>
   </figure>
   <div class="tscroll tw"><table>
-    <thead><tr><th>Mechanism</th><th>Protein</th><th>Energy</th><th>Saturates?</th><th>Kidney examples</th></tr></thead>
+    <thead><tr><th>Route</th><th>Subtypes</th><th>Who pays</th><th>Saturates?</th><th>Examples</th></tr></thead>
     <tbody>
-    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#9A7400"></span>Simple diffusion</td><td>none</td><td>passive</td><td>no</td><td>CO₂ in intercalated cells</td></tr>
-    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#1F6FB2"></span>Channel</td><td>pore</td><td>passive (facilitated diffusion)</td><td>hardly ever</td><td>ENaC, ROMK, aquaporins, ClC-Kb</td></tr>
-    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#2E7D4F"></span>Uniport</td><td>carrier</td><td>passive (facilitated diffusion)</td><td>yes</td><td>GLUT2</td></tr>
-    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#2E7D4F"></span>Symport</td><td>carrier</td><td>secondary active if one of the two goes up; passive if both go down</td><td>yes</td><td>SGLT2, NKCC2, NCC; NBCe1 (here Na⁺ is the one going up)</td></tr>
-    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#2E7D4F"></span>Antiport</td><td>carrier</td><td>secondary active if one of the two goes up; passive if both go down</td><td>yes</td><td>NHE3, NCX (secondary active); red cell AE1 (passive)</td></tr>
-    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#C2571A"></span>Pump</td><td>ATPase</td><td>primary active</td><td>yes</td><td>Na⁺/K⁺-ATPase, H⁺-ATPase, H⁺/K⁺-ATPase</td></tr>
+    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#9A7400"></span>Simple diffusion</td><td>none: no protein</td><td>nobody: always passive</td><td>no</td><td>O₂, CO₂, steroid hormones</td></tr>
+    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#1F6FB2"></span>Channel</td><td>always open, voltage-gated, ligand-gated, mechanosensitive</td><td>nobody: always passive</td><td>hardly ever</td><td>K2P, Na<sub>v</sub>, nicotinic receptor, Piezo; in the kidney ENaC, ROMK, aquaporins</td></tr>
+    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#2E7D4F"></span>Carrier</td><td>uniport, symport, antiport</td><td>nobody (passive), Na⁺ going down (secondary active) or ATP (pump, primary active)</td><td>yes</td><td>GLUT2; SGLT2, NKCC2; NHE3, AE1; Na⁺/K⁺-ATPase</td></tr>
     </tbody></table></div>
-  <p>Careful: symport and antiport describe only the direction of the two substances, not the energy. They are
-  secondary active when one of the two goes up; if both go down they are passive. The converse always holds: every
-  secondary active transport is a symport or an antiport.</p>
 </section>
 
 <section id="kidney">

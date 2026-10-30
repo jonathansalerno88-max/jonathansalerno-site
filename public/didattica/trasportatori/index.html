@@ -7,7 +7,7 @@
 <link rel="alternate" hreflang="it" href="/didattica/trasportatori/">
 <link rel="alternate" hreflang="en" href="/teaching/transporters/">
 <link rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
-<meta name="description" content="Come una sostanza attraversa la membrana, animato: diffusione semplice, canali, trasportatori, simporto, antiporto e pompe; passivo, attivo primario e attivo secondario. Poi i trasportatori del nefrone, segmento per segmento, con le cellule intercalate.">
+<meta name="description" content="Le tre vie per attraversare una membrana, animate: diffusione semplice, canali (sempre aperti, voltaggio-, ligando-dipendenti, meccanosensibili) e trasportatori (uniporto, simporto, antiporto), con chi paga: passivo, attivo secondario, attivo primario. Poi i trasportatori del nefrone, segmento per segmento, con le cellule intercalate.">
 <meta name="author" content="Jonathan Salerno">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
@@ -281,35 +281,30 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 <nav class="toc" aria-label="Sommario">
   <h2>Sommario</h2>
   <ol>
-    <li><a href="#cosa">Che cos'è un trasportatore</a></li>
+    <li><a href="#cosa">Come si attraversa una membrana</a></li>
     <li><a href="#rene">I trasportatori del rene</a></li>
   </ol>
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#fonti">Fonti</a></p>
 </nav>
 
 <section id="cosa">
-  <h2>1 · Che cos'è un trasportatore</h2>
-  <p>La membrana è un doppio strato di lipidi: lascia passare da sole solo le molecole piccole e senza carica.
-  Tutto il resto, ioni, glucosio, aminoacidi, perfino l'acqua in quantità utili, ha bisogno di una proteina.
-  Le domande da fare sono due: <b>quale proteina</b> (canale, trasportatore o pompa) e <b>chi paga</b>, cioè se la
-  sostanza scende o sale lungo il suo gradiente elettrochimico.</p>
+  <h2>1 · Come si attraversa una membrana</h2>
+  <p>La membrana è un doppio strato di lipidi. Per attraversarla ci sono <b>tre vie</b>: passare direttamente
+  attraverso i lipidi (diffusione semplice, solo per molecole piccole e senza carica), passare per un <b>canale</b>
+  oppure farsi portare da un <b>trasportatore</b>. Poi si guarda dentro ciascuna via: i canali si distinguono per
+  che cosa li apre, i trasportatori per quante sostanze portano e in che direzione. Solo per i trasportatori c'è
+  una seconda domanda: chi paga.</p>
   <figure class="w">
-    <iframe src="w/00-intro.html" title="Che cos'è un trasportatore: diffusione semplice, canale, uniporto, simporto, antiporto, pompa" loading="lazy" class="ph"></iframe>
-    <figcaption>Scegli un meccanismo e guarda le molecole attraversare la membrana; il pulsante Pausa ferma l'animazione. <a href="w/00-intro.html">Apri a schermo intero</a></figcaption>
+    <iframe src="w/00-intro.html" title="Come si attraversa una membrana: diffusione semplice, canale, trasportatore" loading="lazy" class="ph"></iframe>
+    <figcaption>Scegli una delle tre vie, poi il tipo di canale o di trasportatore; il pulsante Pausa ferma l'animazione. <a href="w/00-intro.html">Apri a schermo intero</a></figcaption>
   </figure>
   <div class="tscroll tw"><table>
-    <thead><tr><th>Meccanismo</th><th>Proteina</th><th>Energia</th><th>Si satura?</th><th>Esempi nel rene</th></tr></thead>
+    <thead><tr><th>Via</th><th>Sottotipi</th><th>Chi paga</th><th>Si satura?</th><th>Esempi</th></tr></thead>
     <tbody>
-    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#9A7400"></span>Diffusione semplice</td><td>nessuna</td><td>passivo</td><td>no</td><td>CO₂ nelle cellule intercalate</td></tr>
-    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#1F6FB2"></span>Canale</td><td>poro</td><td>passivo (diffusione facilitata)</td><td>quasi mai</td><td>ENaC, ROMK, acquaporine, ClC-Kb</td></tr>
-    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#2E7D4F"></span>Uniporto</td><td>trasportatore</td><td>passivo (diffusione facilitata)</td><td>sì</td><td>GLUT2</td></tr>
-    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#2E7D4F"></span>Simporto</td><td>trasportatore</td><td>attivo secondario se una delle due sostanze sale; passivo se scendono entrambe</td><td>sì</td><td>SGLT2, NKCC2, NCC; NBCe1 (qui a salire è il Na⁺)</td></tr>
-    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#2E7D4F"></span>Antiporto</td><td>trasportatore</td><td>attivo secondario se una delle due sostanze sale; passivo se scendono entrambe</td><td>sì</td><td>NHE3, NCX (attivi secondari); AE1 del globulo rosso (passivo)</td></tr>
-    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#C2571A"></span>Pompa</td><td>ATPasi</td><td>attivo primario</td><td>sì</td><td>Na⁺/K⁺-ATPasi, H⁺-ATPasi, H⁺/K⁺-ATPasi</td></tr>
+    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#9A7400"></span>Diffusione semplice</td><td>nessuno: niente proteina</td><td>nessuno: sempre passiva</td><td>no</td><td>O₂, CO₂, ormoni steroidei</td></tr>
+    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#1F6FB2"></span>Canale</td><td>sempre aperto, voltaggio-dipendente, ligando-dipendente, meccanosensibile</td><td>nessuno: sempre passivo</td><td>quasi mai</td><td>K2P, Na<sub>v</sub>, recettore nicotinico, Piezo; nel rene ENaC, ROMK, acquaporine</td></tr>
+    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#2E7D4F"></span>Trasportatore</td><td>uniporto, simporto, antiporto</td><td>nessuno (passivo), il Na⁺ che scende (attivo secondario) o l'ATP (pompa, attivo primario)</td><td>sì</td><td>GLUT2; SGLT2, NKCC2; NHE3, AE1; Na⁺/K⁺-ATPasi</td></tr>
     </tbody></table></div>
-  <p>Attenzione: simporto e antiporto descrivono solo la direzione delle due sostanze, non l'energia. Sono attivi
-  secondari quando una delle due sale; se scendono entrambe sono passivi. Vale invece sempre il contrario: ogni
-  trasporto attivo secondario è un simporto o un antiporto.</p>
 </section>
 
 <section id="rene">
