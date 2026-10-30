@@ -174,7 +174,7 @@ function tap(x,y,R,col,lab,auto,lock,lx){lx=x+(lx||0);var hw=9,o='',fr=cl(0.45+0
   o+='<line x1="'+x+'" y1="'+(y-hw-21)+'" x2="'+x+'" y2="'+(y-hw-30)+'" stroke="#55697A" stroke-width="2.5"/>';
   o+='<ellipse cx="'+x+'" cy="'+(y-hw-31)+'" rx="12" ry="3.6" fill="'+hc+'"/>';
   if(lock)o+='<g transform="translate('+(x+15)+' '+(y-hw-38)+')"><path d="M2 6 V3.5 a3.5 3.5 0 0 1 7 0 V6" fill="none" stroke="#8E1F1F" stroke-width="1.8"/><rect x="0" y="6" width="11" height="8" rx="1.5" fill="#8E1F1F"/></g>';
-  o+=tx(lx,y+hw+15,lab,'middle',{s:11.5,w:700,c:'#16222E'})+tx(lx,y+hw+28,(lock?U.locked:U.vs[vstate(R)])+' · R ×'+nf(R,2),'middle',{s:11,w:600,c:lock?'#8E1F1F':hc});
+  o+=tx(lx,y+hw+15,lab,'middle',{s:11.5,w:700,c:'#16222E'});
   return o;}
 function diagram(m){var y=92,hw=9,o='',G=U.dg;
   o+='<defs><linearGradient id="pg" x1="0" x2="1"><stop offset="0" stop-color="#C24B4B"/><stop offset="1" stop-color="#3E6FB0"/></linearGradient></defs>';
@@ -184,7 +184,7 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
   o+='<rect x="416" y="174" width="9" height="158" fill="'+yel+'"/>';
   o+='<path d="M420.5 330 A19 19 0 0 0 461 330" stroke="'+yel+'" stroke-width="9" fill="none"/>';
   o+='<rect x="455" y="206" width="12" height="126" fill="#E0A94A"/>';
-  o+='<rect x="455" y="203" width="12" height="9" fill="#8A5A14"/>';
+  for(var md=0;md<3;md++)o+='<rect x="'+(451+md*7)+'" y="200" width="6.4" height="13" rx="2" fill="#E86A8C" stroke="#FFFFFF" stroke-width=".7"/>';
   o+='<path d="M461 208 q8 -7 16 0 q8 7 16 0 q8 -7 16 0 q8 7 16 0 q8 -7 16 0" stroke="'+yel+'" stroke-width="11" fill="none" stroke-linecap="round"/>';
   o+='<rect x="542" y="202" width="14" height="156" rx="4" fill="#D8B24E"/>';
   var tp=function(x,yy,t,c){var w=t.length*6.1+10;return '<rect x="'+f1(x-w/2)+'" y="'+(yy-7.5)+'" width="'+f1(w)+'" height="15" rx="7.5" fill="'+c+'" stroke="#FFFFFF" stroke-width="1"/>'+tx(x,yy+4,t,'middle',{s:9.5,w:700,c:'#FFFFFF'});};
@@ -221,8 +221,6 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
     o+='<rect x="'+f1(330-pw/2)+'" y="221" width="'+f1(pw)+'" height="17" rx="8.5" fill="'+(dmg===2?'#8E1F1F':'#B5520C')+'"/>'+tx(330,233,pt,'middle',{s:10.5,w:700,c:'#FFFFFF'});}
   // juxtaglomerular apparatus at the vascular pole: granular cells (afferent wall), extraglomerular mesangium, macula densa
   var jx=250-gr-9;
-  o+='<rect x="'+f1(jx-44)+'" y="'+(y+25)+'" width="46" height="13" rx="6.5" fill="#E8C76A"/>';
-  for(var mi=0;mi<5;mi++)o+='<rect x="'+f1(jx-41+mi*8.6)+'" y="'+(y+20)+'" width="7.6" height="10" rx="2.4" fill="#E86A8C" stroke="#FFFFFF" stroke-width=".7"/>';
   [[jx-24,y+hw+6],[jx-14,y+hw+5],[jx-4,y+hw+6],[jx-19,y+hw+12.5],[jx-9,y+hw+12]].forEach(function(c){o+='<circle cx="'+f1(c[0])+'" cy="'+f1(c[1])+'" r="4.6" fill="#C9A6E4" stroke="#7A4BA6" stroke-width=".9"/><circle cx="'+f1(c[0])+'" cy="'+f1(c[1])+'" r="1.3" fill="#7A4BA6"/>';});
   [[jx-34,y+hw-2],[jx-23,y+hw-2],[jx-12,y+hw-2]].forEach(function(c){o+='<ellipse cx="'+f1(c[0])+'" cy="'+f1(c[1])+'" rx="5.4" ry="3.6" fill="#7CCB7C" stroke="#2E7D32" stroke-width=".9"/><circle cx="'+f1(c[0]-1.6)+'" cy="'+f1(c[1])+'" r="1" fill="#1F5C33"/><circle cx="'+f1(c[0]+1.6)+'" cy="'+f1(c[1])+'" r="1" fill="#1F5C33"/>';});
   o+='<circle cx="12" cy="234" r="4.5" fill="#E86A8C"/>'+tx(20,238,G.jgMd,'start',{s:9.5,w:700,c:'#8E1F44'})+'<circle cx="94" cy="234" r="4.5" fill="#7CCB7C" stroke="#2E7D32"/>'+tx(102,238,G.jgGr,'start',{s:9.5,w:700,c:'#1F5C33'})+'<circle cx="196" cy="234" r="4.5" fill="#C9A6E4" stroke="#7A4BA6"/>'+tx(204,238,G.jgMe,'start',{s:9.5,w:700,c:'#5B2F8A'});
@@ -272,8 +270,9 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
   if(S.dr.diu){var C=U.ch,ace=S.dr.ace,nb=function(x,yy,n,c){return '<circle cx="'+x+'" cy="'+yy+'" r="8.5" fill="'+c+'"/>'+tx(x,yy+4,n,'middle',{s:11,w:700,c:'#FFFFFF'});};
     o+='<g class="k1"><rect x="430" y="258" width="62" height="54" rx="12" fill="none" stroke="#D9822B" stroke-width="3"/>'+nb(430,258,'1','#D9822B')+'</g>';
     o+='<g class="k2"><rect x="4" y="156" width="98" height="60" rx="8" fill="none" stroke="#D9822B" stroke-width="3"/>'+nb(8,156,'2','#D9822B')+'</g>';
-    o+='<g class="k3"><circle cx="203" cy="'+y+'" r="13" fill="none" stroke="#2E9D57" stroke-width="3"/>'+nb(203,y-24,'3','#2E9D57')+tx(192,y-19,C.ren,'end',{s:10.5,w:700,c:'#2E7D32'})+'</g>';
-    var dots='';for(var q=0;q<5;q++)dots+='<circle cx="'+(200-q*9)+'" cy="'+(y-3+(q%2)*6)+'" r="3" fill="'+(ace?'#9AA5AE':'#2E9D57')+'" stroke="#FFFFFF" stroke-width=".8"/>';
+    var gx=250-gr-9-23;
+    o+='<g class="k3"><ellipse cx="'+f1(gx)+'" cy="'+(y+hw-2)+'" rx="21" ry="11" fill="none" stroke="#2E9D57" stroke-width="3"/>'+nb(gx,y-22,'3','#2E9D57')+tx(gx+11,y-18,C.ren,'start',{s:10.5,w:700,c:'#2E7D32'})+'</g>';
+    var dots='';for(var q=0;q<5;q++)dots+='<circle cx="'+f1(gx+6-q*8)+'" cy="'+(y+2-(q%2)*5)+'" r="3" fill="'+(ace?'#9AA5AE':'#2E9D57')+'" stroke="#FFFFFF" stroke-width=".8"/>';
     o+='<g class="rn">'+dots+'</g>';
     o+='<g class="k4"><circle cx="346" cy="'+y+'" r="21" fill="none" stroke="'+(ace?'#B03A3A':'#2E9D57')+'" stroke-width="3"'+(ace?' stroke-dasharray="5 4"':'')+'/>'+nb(372,y-22,'4',ace?'#B03A3A':'#2E9D57')+tx(384,y-18,ace?C.angNo:C.ang,'start',{s:10.5,w:700,c:ace?'#8E1F1F':'#2E7D32'})+'</g>';}
   var Y0=0,nv='',rv='',rb='';if(S.dr.sym){
@@ -309,8 +308,9 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
     rb+=bx(524,yy,112,A.ald,ace?A.aldLo:A.ald2,ace?'#F3F6F8':'#FCEEDD',ace?'#7A8792':'#9A5512',ace);
     // links: renin comes from the juxtaglomerular cells, angiotensin II goes back to the efferent (AT1)
     var ah=function(x,yy2,ang,c){return '<path d="M'+x+' '+yy2+' l-9 -5 v10Z" fill="'+c+'" transform="rotate('+ang+' '+x+' '+yy2+')"/>';};
-    rv+='<path d="M203 '+(yv+11)+' L203 '+(yv+64)+' L244 '+(yv+64)+' L244 '+(yy-4)+' L176 '+(yy+16)+'" stroke="#2E7D32" stroke-width="1.8" stroke-dasharray="4 4" fill="none"/>';
-    rb+=ah(203,yv+44,90,'#2E7D32')+ah(244,yv+200,90,'#2E7D32')+ah(176,yy+16,163,'#2E7D32');
+    var gx2=f1(250-gr-9-23);
+    rv+='<path d="M'+gx2+' '+(yv+hw+3)+' L'+gx2+' '+(yv+64)+' L244 '+(yv+64)+' L244 '+(yy-4)+' L176 '+(yy+16)+'" stroke="#2E7D32" stroke-width="1.8" stroke-dasharray="4 4" fill="none"/>';
+    rb+=ah(gx2,yv+50,90,'#2E7D32')+ah(244,yv+200,90,'#2E7D32')+ah(176,yy+16,163,'#2E7D32');
     rv+='<path d="M394 '+yy+' L394 '+(yv+13)+' L362 '+(yv+13)+'" stroke="'+g2+'" stroke-width="1.8" stroke-dasharray="5 4" fill="none"/>';
     rb+=ah(358,yv+13,180,g2)+ah(394,yv+200,-90,g2)+ah(394,yy-40,-90,g2);
     var ac=ace?'#9AA5AE':'#9A5512';
