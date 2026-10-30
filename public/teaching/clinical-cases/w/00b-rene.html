@@ -256,7 +256,7 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
   o+=tx(68,304,T.axon,'start',{s:9.5,c:'#5B2F8A'})+tx(68,316,T.stim,'start',{s:9.5,c:'#55697A'});
   o+=hb(8,330,214,36,T.pit,(adhHi?T.adhHi:T.adhN),'#F1EAF8','#5B2F8A');
   var adhC='#1F5FA8',alC=aldo==='lo'?'#9AA5AE':'#9A5512';
-  o+='<path d="M222 348 L236 348 L236 456 L524 456 L524 306 L533 306" stroke="'+adhC+'" stroke-width="'+(adhHi?2.6:1.6)+'" fill="none"/><path d="M540 306 l-8 -4.5 v9Z" fill="'+adhC+'"/>';
+  o+='<path d="M222 348 L236 348 L236 456 L524 456 L524 306 L533 306" stroke="'+adhC+'" stroke-width="'+(adhHi?4:1.2)+'" fill="none"/><path d="M540 306 l-'+(adhHi?11:8)+' -'+(adhHi?6.5:4.5)+' v'+(adhHi?13:9)+'Z" fill="'+adhC+'"/>';
   o+=tx(470,451,T.adhLane,'middle',{s:9.5,w:700,c:adhC});
 
   // blood volume: a tank that fills when the body keeps more than it loses
@@ -297,25 +297,25 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
   }
   // RAAS: the conversion chain in a band at the bottom, with its links to the arterioles
   if(S.rs){var A=U.ra,B0=Y0+468,ace=S.dr.ace,yv=Y0+y,
-    lev=S.re*(S.dr.diu&&!ace?1.6:1)*(S.dr.sym&&!ace?1.3:1),lv=ace?A.lvBlk:lev>1.2?A.lvHi:lev<0.9?A.lvLo:A.lvN,
+    lev=S.re*(S.dr.diu&&!ace?1.6:1)*(S.dr.sym&&!ace?1.3:1),E3=drugs(),renW=(E3.map<90||S.dr.diu||S.dr.sym||lev>1.2)?4:2,angW=ace?1:lev>1.2?4:lev<0.9?1:2,lv=ace?A.lvBlk:lev>1.2?A.lvHi:lev<0.9?A.lvLo:A.lvN,
     bx=function(x,yy,w,t1,t2,fill,c,dash){return '<rect x="'+x+'" y="'+yy+'" width="'+w+'" height="40" rx="7" fill="'+fill+'" stroke="'+c+'" stroke-width="1.5"'+(dash?' stroke-dasharray="4 3"':'')+'/>'+tx(x+w/2,yy+17,t1,'middle',{s:10.5,w:700,c:c})+tx(x+w/2,yy+31,t2,'middle',{s:10,c:c});},
-    arw=function(x1,x2,yy,c,t,blk){return '<line x1="'+x1+'" y1="'+yy+'" x2="'+(x2-7)+'" y2="'+yy+'" stroke="'+c+'" stroke-width="2"/><path d="M'+x2+' '+yy+' l-8 -4.5 v9Z" fill="'+c+'"/>'+tx((x1+x2)/2,yy-7,t,'middle',{s:10,w:700,c:blk?'#B03A3A':c})+(blk?'<rect x="'+((x1+x2)/2-14)+'" y="'+(yy+5)+'" width="28" height="13" rx="6.5" fill="#B03A3A"/>'+tx((x1+x2)/2,yy+15,A.stop,'middle',{s:9.5,w:700,c:'#FFFFFF'}):'');};
+    arw=function(x1,x2,yy,c,t,blk,wd){wd=wd||2;return '<line x1="'+x1+'" y1="'+yy+'" x2="'+(x2-7)+'" y2="'+yy+'" stroke="'+c+'" stroke-width="'+wd+'"/><path d="M'+x2+' '+yy+' l-8 -4.5 v9Z" fill="'+c+'"/>'+tx((x1+x2)/2,yy-7,t,'middle',{s:10,w:700,c:blk?'#B03A3A':c})+(blk?'<rect x="'+((x1+x2)/2-14)+'" y="'+(yy+5)+'" width="28" height="13" rx="6.5" fill="#B03A3A"/>'+tx((x1+x2)/2,yy+15,A.stop,'middle',{s:9.5,w:700,c:'#FFFFFF'}):'');};
     var g2=ace?'#9AA5AE':'#2E7D32',yy=B0+30;
     rb+='<line x1="4" x2="636" y1="'+(B0+6)+'" y2="'+(B0+6)+'" stroke="#DDE4EA"/>'+tx(4,B0+20,A.title,'start',{s:11,w:700,c:'#16222E'});
-    rb+=bx(4,yy,120,A.agt,A.agt2,'#FFF8EC','#8A6D00')+arw(124,204,yy+20,'#2E7D32',A.ren,false);
-    rb+=bx(204,yy,110,A.a1,A.a1b,'#F3F6F8','#55697A')+arw(314,384,yy+20,'#2E7D32',A.ace,ace);
-    rb+=bx(384,yy,112,A.a2,lv,ace?'#F3F6F8':'#E3F3E8',g2,ace)+arw(496,524,yy+20,g2,'',false);
+    rb+=bx(4,yy,120,A.agt,A.agt2,'#FFF8EC','#8A6D00')+arw(124,204,yy+20,'#2E7D32',A.ren,false,renW);
+    rb+=bx(204,yy,110,A.a1,A.a1b,'#F3F6F8','#55697A')+arw(314,384,yy+20,'#2E7D32',A.ace,ace,ace?1:renW);
+    rb+=bx(384,yy,112,A.a2,lv,ace?'#F3F6F8':'#E3F3E8',g2,ace)+arw(496,524,yy+20,g2,'',false,angW);
     rb+=bx(524,yy,112,A.ald,ace?A.aldLo:A.ald2,ace?'#F3F6F8':'#FCEEDD',ace?'#7A8792':'#9A5512',ace);
     // links: renin comes from the juxtaglomerular cells, angiotensin II goes back to the efferent (AT1)
-    var ah=function(x,yy2,ang,c){return '<path d="M'+x+' '+yy2+' l-9 -5 v10Z" fill="'+c+'" transform="rotate('+ang+' '+x+' '+yy2+')"/>';};
+    var ah=function(x,yy2,ang,c,big){return '<path d="M'+x+' '+yy2+' '+(big?'l-12 -7 v14Z':'l-9 -5 v10Z')+'" fill="'+c+'" transform="rotate('+ang+' '+x+' '+yy2+')"/>';};
     var gx2=f1(250-gr-9-23);
-    rv+='<path d="M'+gx2+' '+(yv+hw+3)+' L'+gx2+' '+(yv+64)+' L244 '+(yv+64)+' L244 '+(yy-4)+' L176 '+(yy+16)+'" stroke="#2E7D32" stroke-width="1.8" stroke-dasharray="4 4" fill="none"/>';
-    rb+=ah(gx2,yv+50,90,'#2E7D32')+ah(244,yv+200,90,'#2E7D32')+ah(176,yy+16,163,'#2E7D32');
-    rv+='<path d="M394 '+yy+' L394 '+(yv+13)+' L362 '+(yv+13)+'" stroke="'+g2+'" stroke-width="1.8" stroke-dasharray="5 4" fill="none"/>';
-    rb+=ah(358,yv+13,180,g2)+ah(394,yv+200,-90,g2)+ah(394,yy-40,-90,g2);
+    rv+='<path d="M'+gx2+' '+(yv+hw+3)+' L'+gx2+' '+(yv+64)+' L244 '+(yv+64)+' L244 '+(yy-4)+' L176 '+(yy+16)+'" stroke="#2E7D32" stroke-width="'+renW+'" stroke-dasharray="'+(renW>2?'7 4':'4 4')+'" fill="none"/>';
+    rb+=ah(gx2,yv+50,90,'#2E7D32',renW>2)+ah(244,yv+200,90,'#2E7D32',renW>2)+ah(176,yy+16,163,'#2E7D32',renW>2);
+    rv+='<path d="M394 '+yy+' L394 '+(yv+13)+' L362 '+(yv+13)+'" stroke="'+g2+'" stroke-width="'+angW+'" stroke-dasharray="'+(angW>2?'8 4':'5 4')+'" fill="none"/>';
+    rb+=ah(358,yv+13,180,g2,angW>2)+ah(394,yv+200,-90,g2,angW>2)+ah(394,yy-40,-90,g2,angW>2);
     var ac=ace?'#9AA5AE':'#9A5512';
-    rv+='<path d="M604 '+yy+' L604 '+(Y0+262)+' L566 '+(Y0+262)+'" stroke="'+ac+'" stroke-width="2"'+(ace?' stroke-dasharray="4 3"':'')+' fill="none"/>';
-    rb+=ah(560,Y0+262,180,ac)+ah(604,(yy+Y0+262)/2,-90,ac)+tx(610,(yy+Y0+262)/2+20,A.aldArrow,'start',{s:9.5,w:700,c:ac}).replace('<text','<text transform="rotate(-90 610 '+((yy+Y0+262)/2+20)+')"');
+    rv+='<path d="M604 '+yy+' L604 '+(Y0+262)+' L566 '+(Y0+262)+'" stroke="'+ac+'" stroke-width="'+angW+'"'+(ace?' stroke-dasharray="4 3"':'')+' fill="none"/>';
+    rb+=ah(560,Y0+262,180,ac,angW>2)+ah(604,(yy+Y0+262)/2,-90,ac,angW>2)+tx(610,(yy+Y0+262)/2+20,A.aldArrow,'start',{s:9.5,w:700,c:ac}).replace('<text','<text transform="rotate(-90 610 '+((yy+Y0+262)/2+20)+')"');
     rb+='<rect x="'+(375-17)+'" y="'+(yv-24)+'" width="34" height="15" rx="7.5" fill="'+(ace?'#B03A3A':'#2E7D32')+'"/>'+tx(375,yv-13,A.at1,'middle',{s:10,w:700,c:'#FFFFFF'});}
   var H=Y0+468+(S.rs?80:0);
   return '<svg viewBox="0 0 640 '+H+'" role="img" aria-label="'+U.ariaD+'">'+rv+'<g transform="translate(0 '+Y0+')">'+o+'</g>'+nv+rb+'</svg>';}
