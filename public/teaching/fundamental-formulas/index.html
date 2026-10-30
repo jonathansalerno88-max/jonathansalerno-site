@@ -7,7 +7,7 @@
 <link rel="alternate" hreflang="it" href="/didattica/formule-fondamentali/">
 <link rel="alternate" hreflang="en" href="/teaching/fundamental-formulas/">
 <link rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
-<meta name="description" content="The fundamental formulas of physiology, explained variable by variable, with units and dimensional analysis. First formula: the Starling equation of capillary exchange.">
+<meta name="description" content="The fundamental formulas of physiology, explained variable by variable, with units and dimensional analysis. The Starling equation of capillary exchange, Fick's law with diffusion in the lung, and the Nernst potential.">
 <meta name="author" content="Jonathan Salerno">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
@@ -281,6 +281,8 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <h2>Contents</h2>
   <ol>
     <li><a href="#starling">The Starling equation</a></li>
+    <li><a href="#fick">Fick's law: diffusion</a></li>
+    <li><a href="#nernst">The Nernst potential</a></li>
   </ol>
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#sources">Sources</a></p>
 </nav>
@@ -322,6 +324,116 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <p class="caveat">Indicative values, for teaching. We now know that in many tissues venous reabsorption is modest and that
   the endothelial glycocalyx shapes the oncotic forces: the logic of the equation stays the same.</p>
 </section>
+
+<section id="fick">
+  <h2>2 · Fick's law: diffusion</h2>
+  <p style="text-align:center;font-size:1.3rem;margin:1.1rem 0 1.2rem">J = D · A · ΔC / Δx</p>
+  <p>Diffusion is the net movement of molecules from where they are more concentrated to where they are less, by
+  thermal agitation alone: it is the first of the three routes on the <a href="../transporters/">transporters</a> page,
+  the one through the lipids. Fick's law (1855) says how much: the flux is proportional to the area and to the
+  concentration difference, and inversely proportional to the thickness to cross. In differential form it reads
+  J = −D · A · dC/dx: the minus sign only says that the flux goes towards the lower concentration.</p>
+  <h3>The variables</h3>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Symbol</th><th>What it is</th><th>Unit</th><th>Dimensions</th></tr></thead>
+    <tbody>
+    <tr><td>J</td><td>net flux of substance (the result)</td><td>mol·s⁻¹</td><td>[N T⁻¹]</td></tr>
+    <tr><td>D</td><td>diffusion coefficient: depends on the molecule, the medium and the temperature</td><td>cm²·s⁻¹</td><td>[L² T⁻¹]</td></tr>
+    <tr><td>A</td><td>area across which diffusion occurs</td><td>cm²</td><td>[L²]</td></tr>
+    <tr><td>ΔC</td><td>concentration difference between the two sides</td><td>mol·cm⁻³</td><td>[N L⁻³]</td></tr>
+    <tr><td>Δx</td><td>thickness to cross</td><td>cm</td><td>[L]</td></tr>
+    </tbody></table></div>
+  <p class="caveat">[N] amount of substance, [L] length, [T] time. Check: [L² T⁻¹] × [L²] × [N L⁻³] / [L] = [N T⁻¹] = J ✓.</p>
+  <h3>Example: diffusion in the lung</h3>
+  <p>For a gas, partial pressure replaces concentration and the law becomes
+  V̇<sub>gas</sub> = D · A · (P<sub>1</sub> − P<sub>2</sub>) / Δx. Respiratory textbooks often call the thickness T: here I call it
+  Δx so it is not confused with time. The alveolar-capillary barrier is built for Fick: a huge area, 50–100 m², and a
+  minimal thickness, 0.2–0.5 µm over most of it.</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Symbol</th><th>What it is</th><th>Unit</th><th>Dimensions</th></tr></thead>
+    <tbody>
+    <tr><td>V̇<sub>gas</sub></td><td>volume of gas crossing the barrier each minute</td><td>mL·min⁻¹</td><td>[L³ T⁻¹]</td></tr>
+    <tr><td>A</td><td>alveolar surface area</td><td>m²</td><td>[L²]</td></tr>
+    <tr><td>Δx</td><td>thickness of the alveolar-capillary barrier</td><td>µm</td><td>[L]</td></tr>
+    <tr><td>P<sub>1</sub> − P<sub>2</sub></td><td>partial pressure difference between alveolus and blood</td><td>mmHg</td><td>[M L⁻¹ T⁻²]</td></tr>
+    <tr><td>D</td><td>diffusion constant of the gas: proportional to solubility / √molecular weight</td><td>cm²·min⁻¹·mmHg⁻¹</td><td>[M⁻¹ L³ T]</td></tr>
+    <tr><td>D<sub>L</sub></td><td>diffusing capacity of the lung: D · A / Δx = V̇ / (P<sub>1</sub> − P<sub>2</sub>)</td><td>mL·min⁻¹·mmHg⁻¹</td><td>[M⁻¹ L⁴ T]</td></tr>
+    </tbody></table></div>
+  <p class="caveat">[M] mass. Check: D<sub>L</sub> × ΔP = [M⁻¹ L⁴ T] × [M L⁻¹ T⁻²] = [L³ T⁻¹] = V̇ ✓.
+  D<sub>L</sub> has the same dimensions as Starling's K<sub>f</sub>: both say how much passes per mmHg of driving force.
+  1 mmHg ≈ 133.3 Pa (Pa = N/m²).</p>
+  <figure class="w">
+    <iframe src="w/01-fick.html" title="Fick: O₂ diffusion along the pulmonary capillary" loading="lazy" class="ph"></iframe>
+    <figcaption>Move area, thickness, P<sub>A</sub>O₂ and transit time, or pick a scenario: the red curve is the blood PO₂ along the capillary. <a href="w/01-fick.html">Open full screen</a></figcaption>
+  </figure>
+  <p><b>Oxygen.</b> Mixed venous blood arrives with about 40 mmHg of O₂ against 100 in the alveolus: at the start of the
+  capillary the gradient is 60 mmHg. At rest the red cell spends about 0.75 s in the capillary, but PO₂ reaches the
+  alveolar value in about 0.25 s: two thirds of the time is spare.</p>
+  <p><b>Carbon dioxide.</b> The gradient is small, from about 46 to 40 mmHg, but CO₂ is about 24 times more soluble than
+  O₂ and only slightly heavier (44 against 32). D<sub>CO₂</sub> / D<sub>O₂</sub> ≈ 24 / √(44/32) ≈ 24 / 1.17 ≈ 20: CO₂ diffuses
+  about 20 times more easily, and the small gradient is enough.</p>
+  <p><b>Clinically.</b> Fibrosis and pulmonary oedema increase Δx (oedema is Starling moving into the lung), emphysema
+  reduces A. At rest the spare time compensates; on exercise transit falls to 0.25 s and O₂ no longer has time to
+  equilibrate: this is why exertional desaturation is an early sign of fibrosis. D<sub>L</sub> is measured with carbon
+  monoxide (DLCO): haemoglobin binds it so avidly that its pressure in the blood stays near zero, so
+  D<sub>L</sub> = V̇<sub>CO</sub> / P<sub>A</sub>CO. The normal value is about 25 mL·min⁻¹·mmHg⁻¹.</p>
+</section>
+
+<section id="nernst">
+  <h2>3 · The Nernst potential</h2>
+  <p style="text-align:center;font-size:1.3rem;margin:1.1rem 0 1.2rem">E<sub>X</sub> = (RT / zF) · ln([X]<sub>out</sub> / [X]<sub>in</sub>)</p>
+  <p>Picture a membrane that lets through a single ion, K⁺, more concentrated inside than outside. K⁺ leaves down its
+  concentration gradient and takes its positive charge with it: the inside becomes negative. That negativity pulls it
+  back. When the chemical push outwards and the electrical pull inwards balance, net flux stops: K⁺ keeps crossing in both
+  directions, but on average it no longer moves. That voltage is the ion's Nernst <b>equilibrium</b> (or reversal)
+  <b>potential</b>. Only the <b>ratio</b> of the concentrations matters, not their absolute values nor the permeability of the
+  membrane.</p>
+  <h3>The variables</h3>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Symbol</th><th>What it is</th><th>Unit</th><th>Dimensions</th></tr></thead>
+    <tbody>
+    <tr><td>E<sub>X</sub></td><td>equilibrium potential of ion X (inside relative to outside)</td><td>mV (V = J/C)</td><td>[M L² T⁻³ I⁻¹]</td></tr>
+    <tr><td>R</td><td>gas constant, 8.314</td><td>J·mol⁻¹·K⁻¹</td><td>[M L² T⁻² Θ⁻¹ N⁻¹]</td></tr>
+    <tr><td>T</td><td>absolute temperature (37 °C = 310 K)</td><td>K</td><td>[Θ]</td></tr>
+    <tr><td>z</td><td>valency of the ion: K⁺ and Na⁺ +1, Ca²⁺ +2, Cl⁻ −1</td><td>none (pure number)</td><td>[1]</td></tr>
+    <tr><td>F</td><td>Faraday constant, 96,485: the charge of one mole of elementary charges</td><td>C·mol⁻¹ (C = A·s)</td><td>[I T N⁻¹]</td></tr>
+    <tr><td>[X]<sub>out</sub>, [X]<sub>in</sub></td><td>ion concentration outside and inside the cell</td><td>mM</td><td>[N L⁻³]; the ratio is a pure number</td></tr>
+    </tbody></table></div>
+  <p class="caveat">[I] electric current, [Θ] temperature, [N] amount of substance. Check:
+  RT/F = [M L² T⁻² Θ⁻¹ N⁻¹] × [Θ] / [I T N⁻¹] = [M L² T⁻³ I⁻¹], that is volts ✓ (J/C = V; J = N·m).</p>
+  <p><b>The handy form.</b> At 37 °C RT/F = 8.314 × 310.15 / 96,485 ≈ 26.7 mV. To switch from natural to base-10 logs
+  multiply by ln 10 ≈ 2.303, giving E<sub>X</sub> = (61.5 mV / z) · log<sub>10</sub>([X]<sub>out</sub>/[X]<sub>in</sub>). At 21 °C, the
+  temperature of the classic experiments and of the St Andrews tutorial, the factor is 58 mV. In practice: each tenfold
+  ratio is worth about 60 mV, divided by the valency.</p>
+  <figure class="w">
+    <iframe src="w/02-nernst.html" title="The Nernst potential, worked out step by step" loading="lazy" class="ph"></iframe>
+    <figcaption>Pick an ion and an example, or move the two concentrations: the calculation is worked out step by step. <a href="w/02-nernst.html">Open full screen</a></figcaption>
+  </figure>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Preparation</th><th>Ion</th><th>Inside (mM)</th><th>Outside (mM)</th><th>E (mV)</th><th>Resting potential</th></tr></thead>
+    <tbody>
+    <tr><td>Squid giant axon, 21 °C</td><td>K⁺</td><td>400</td><td>20</td><td>−75</td><td rowspan="2">about −60 mV</td></tr>
+    <tr><td>Squid giant axon, 21 °C</td><td>Cl⁻</td><td>108</td><td>560</td><td>−41</td></tr>
+    <tr><td>Frog muscle, 21 °C</td><td>K⁺</td><td>124</td><td>2.25</td><td>−101</td><td rowspan="2">−90 to −100 mV</td></tr>
+    <tr><td>Frog muscle, 21 °C</td><td>Cl⁻</td><td>1.5</td><td>77.5</td><td>−99</td></tr>
+    <tr><td>Mammalian cell, 37 °C</td><td>K⁺</td><td>140</td><td>4</td><td>−95</td><td rowspan="4">about −70 mV</td></tr>
+    <tr><td>Mammalian cell, 37 °C</td><td>Na⁺</td><td>12</td><td>145</td><td>+67</td></tr>
+    <tr><td>Mammalian cell, 37 °C</td><td>Cl⁻</td><td>7</td><td>110</td><td>−74</td></tr>
+    <tr><td>Mammalian cell, 37 °C</td><td>Ca²⁺</td><td>0.0001</td><td>1.2</td><td>+125</td></tr>
+    </tbody></table></div>
+  <p class="caveat">Squid and frog: Aidley (1989) data as given in the St Andrews tutorial. Mammal: typical, indicative
+  values. Differences of 1 mV between the table and the figure come from rounding (58 against 58.4 mV).</p>
+  <p><b>Very few ions are needed.</b> A spherical cell 50 µm across has a membrane capacitance of about 78.5 pF
+  (1 µF per cm²). Charging it to −70 mV takes 5.5 × 10⁻¹² C, about 34 million K⁺ ions, out of about 5.5 × 10¹² K⁺ ions in
+  the cell: the concentration changes by 0.0006 %. The potential arises without any measurable change in concentration.</p>
+  <p><b>From Nernst to the resting potential.</b> Nernst holds for one ion. The real membrane is permeable to several
+  ions, and the resting potential settles near the equilibrium potential of the ion it is most permeable to: at rest K⁺,
+  through leak channels. Weighing all ions together by their permeability takes the Goldman-Hodgkin-Katz equation. The
+  difference V<sub>m</sub> − E<sub>X</sub> is the <b>driving force</b> on the ion: it says which way it goes and how strongly.</p>
+  <p><b>Clinically.</b> In hyperkalaemia outside K⁺ rises, for example from 4 to 7 mM: E<sub>K</sub> moves from −95 to about
+  −80 mV, cells depolarise and heart and muscle become unstable (arrhythmias). Try it in the figure with the
+  “K⁺ · hyperkalaemia” example.</p>
+</section>
 <section id="sources">
   <h2>Sources</h2>
   <ol class="refs">
@@ -331,6 +443,12 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <a href="https://doi.org/10.1093/cvr/cvq062">doi:10.1093/cvr/cvq062</a></li>
     <li>Boron WF, Boulpaep EL. <i>Medical Physiology</i>. 3rd ed. Philadelphia: Elsevier; 2017.</li>
     <li>Hall JE, Hall ME. <i>Guyton and Hall Textbook of Medical Physiology</i>. 14th ed. Philadelphia: Elsevier; 2021.</li>
+    <li>Fick A. Ueber Diffusion. <i>Ann Phys</i> 1855;170:59–86.
+    <a href="https://doi.org/10.1002/andp.18551700105">doi:10.1002/andp.18551700105</a></li>
+    <li>West JB, Luks AM. <i>West's Respiratory Physiology: The Essentials</i>. 11th ed. Philadelphia: Wolters Kluwer; 2020.</li>
+    <li>Heitler WJ. The resting potential. Neurotut, University of St Andrews.
+    <a href="https://www.st-andrews.ac.uk/~wjh/neurotut/RestingPotential.html">st-andrews.ac.uk/~wjh/neurotut</a></li>
+    <li>Aidley DJ. <i>The Physiology of Excitable Cells</i>. 3rd ed. Cambridge: Cambridge University Press; 1989.</li>
   </ol>
   <p class="caveat">Indicative values, rounded for teaching.</p>
 </section>

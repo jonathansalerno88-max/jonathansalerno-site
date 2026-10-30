@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fick: la diffusione dell’O₂ nel polmone</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+svg[viewBox]{min-width:0!important;max-width:100%!important;width:100%}
+.pre{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 10px;font-size:13px}
+.pre .vl{font-weight:700;color:#55697A}
+.pre button{font:inherit;font-size:13px;padding:4px 10px;border-radius:999px;border:1px solid var(--border-strong);background:#FFFFFF;color:var(--text-primary);cursor:pointer}
+.pre button.on{border:1.5px solid #1456A8;background:#EEF4FC;color:#1456A8;font-weight:700}
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px 16px;margin:0 0 10px}
+.ctl label{display:block;font-size:13px;font-weight:700}
+.ctl label span{float:right;font-weight:700;color:#1456A8}
+.ctl input{width:100%}
+.ctl small{display:block;color:#55697A;font-size:12px;line-height:1.35}
+.pnl{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:6px;margin:0 0 8px}
+.res{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:9px 12px;font-size:14px;line-height:1.55}
+.res .eq{font-size:15px;margin:0 0 6px}
+.ok{color:#27500A;font-weight:700}.no{color:#A32D2D;font-weight:700}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Legge di Fick applicata alla barriera alveolo-capillare: superficie, spessore, gradiente di pressione e tempo di transito</h2>
+<div class="pre" id="pre"></div>
+<div class="ctl" id="ctl"></div>
+<div class="pnl" id="ch"></div>
+<div class="res" id="res"></div>
+<script>
+var D={"ui": {"loc": "it-IT", "preT": "Scenari:", "lab": {"A": "Superficie A", "dx": "Spessore Δx", "PA": "P<sub>A</sub>O₂ alveolare", "tt": "Tempo di transito"}, "hint": {"A": "normale 50–100 m²; si riduce nell’enfisema", "dx": "normale meno di 0,5 µm; aumenta nella fibrosi e nell’edema", "PA": "circa 100 mmHg a livello del mare", "tt": "0,75 s a riposo; si accorcia fino a 0,25 s sotto sforzo"}, "alv": "alveolo", "ven": "sangue venoso misto", "exit": "fine del capillare", "yT": "PO₂ nel sangue lungo il capillare (mmHg)", "rel": "flusso iniziale di O₂:", "ofN": "del normale", "dlN": "normale circa 25", "end1": "Alla fine del capillare la PO₂ è", "end2": "contro un alveolo a", "eqOK": "equilibrio raggiunto", "eqNO": "equilibrio non raggiunto", "note": "Modello semplificato: la PO₂ del capillare si avvicina a quella alveolare con una curva esponenziale, tanto più lenta quanto più la barriera è spessa o piccola. Nella realtà conta anche il legame dell’O₂ con l’emoglobina. I tempi seguono West: a riposo l’equilibrio arriva in circa un terzo del tempo di transito."}, "pre": [{"n": "normale, a riposo", "A": 70, "dx": 0.5, "PA": 100, "tt": 0.75}, {"n": "normale, sotto sforzo", "A": 70, "dx": 0.5, "PA": 100, "tt": 0.25}, {"n": "fibrosi, a riposo", "A": 70, "dx": 1.5, "PA": 100, "tt": 0.75}, {"n": "fibrosi, sotto sforzo", "A": 70, "dx": 1.5, "PA": 100, "tt": 0.25}, {"n": "enfisema, sotto sforzo", "A": 25, "dx": 0.5, "PA": 100, "tt": 0.25}]},U=D.ui,P=D.pre;
+var S={A:70,dx:0.5,PA:100,tt:0.75},N={A:70,dx:0.5,PA:100},PV=40,TAU0=0.06,CUR=0;
+function $(q){return document.querySelector(q);}
+function f1(x){return (Math.round(x*10)/10).toLocaleString(U.loc);}
+function f0(x){return Math.round(x).toLocaleString(U.loc);}
+function tx(x,y,t,a,o){o=o||{};return '<text x="'+x+'" y="'+y+'" font-size="'+(o.s||12)+'" text-anchor="'+(a||'start')+'" fill="'+(o.c||'#16222E')+'"'+(o.w?' font-weight="'+o.w+'"':'')+'>'+t+'</text>';}
+var SL=[['A',10,100,1,'m²'],['dx',0.3,3,0.1,'µm'],['PA',40,150,1,'mmHg'],['tt',0.25,0.75,0.05,'s']];
+function ctl(){$('#ctl').innerHTML=SL.map(function(s){return '<div><label for="s_'+s[0]+'">'+U.lab[s[0]]+' <span id="v_'+s[0]+'"></span></label><input type="range" id="s_'+s[0]+'" min="'+s[1]+'" max="'+s[2]+'" step="'+s[3]+'" value="'+S[s[0]]+'"><small>'+U.hint[s[0]]+'</small></div>';}).join('');
+  SL.forEach(function(s){$('#s_'+s[0]).addEventListener('input',function(e){S[s[0]]=+e.target.value;CUR=-1;draw();});});}
+function pre(){$('#pre').innerHTML='<span class="vl">'+U.preT+'</span>'+P.map(function(p,i){return '<button type="button" data-p="'+i+'"'+(i===CUR?' class="on"':'')+'>'+p.n+'</button>';}).join('');}
+$('#pre').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;CUR=+b.getAttribute('data-p');var p=P[CUR];
+  ['A','dx','PA','tt'].forEach(function(k){S[k]=p[k];$('#s_'+k).value=p[k];});draw();});
+function draw(){pre();
+  SL.forEach(function(s){$('#v_'+s[0]).textContent=(s[0]==='dx'||s[0]==='tt'?f1(S[s[0]]).replace(/^(\d)$/,'$1'):f0(S[s[0]]))+' '+s[4];});
+  $('#v_dx').textContent=(Math.round(S.dx*100)/100).toLocaleString(U.loc)+' µm';$('#v_tt').textContent=(Math.round(S.tt*100)/100).toLocaleString(U.loc)+' s';
+  var tau=TAU0*(S.dx/N.dx)*(N.A/S.A),dP=S.PA-PV,dP0=N.PA-PV,rel=(S.A/S.dx)/(N.A/N.dx)*Math.max(dP,0)/dP0*100,DL=25*(S.A/S.dx)/(N.A/N.dx);
+  // chart: capillary PO2 along transit, 0..0.75 s
+  var x0=56,x1=620,y0=230,y1=24,tm=0.75,pm=160;function X(t){return x0+(t/tm)*(x1-x0);}function Y(p){return y0-(p/pm)*(y0-y1);}
+  var o='';[0,40,80,120,160].forEach(function(v){o+='<line x1="'+x0+'" y1="'+Y(v)+'" x2="'+x1+'" y2="'+Y(v)+'" stroke="#EEF2F5"/>'+tx(x0-6,Y(v)+4,v,'end',{s:11,c:'#55697A'});});
+  [0,0.25,0.5,0.75].forEach(function(t){o+=tx(X(t),y0+16,(t).toLocaleString(U.loc)+' s','middle',{s:11,c:'#55697A'});});
+  o+='<line x1="'+x0+'" y1="'+y0+'" x2="'+x1+'" y2="'+y0+'" stroke="#8696A4"/>';
+  o+='<line x1="'+x0+'" y1="'+Y(S.PA)+'" x2="'+x1+'" y2="'+Y(S.PA)+'" stroke="#1456A8" stroke-width="2" stroke-dasharray="6 4"/>';
+  o+='<rect x="'+X(S.tt)+'" y="'+y1+'" width="'+(x1-X(S.tt))+'" height="'+(y0-y1)+'" fill="#EEF2F5" opacity=".7"/>';
+  o+='<line x1="'+X(S.tt)+'" y1="'+y1+'" x2="'+X(S.tt)+'" y2="'+y0+'" stroke="#16222E" stroke-width="1.5"/>'+tx(X(S.tt)+(S.tt>0.6?-6:6),y1+14,U.exit,S.tt>0.6?'end':'start',{s:11.5,w:700});
+  o+=tx(x1-4,Y(S.PA)-6,U.alv+' '+f0(S.PA)+' mmHg','end',{s:11.5,w:700,c:'#1456A8'});
+  var pts=[],pe;for(var i=0;i<=150;i++){var t=i/150*tm,p=S.PA-(S.PA-PV)*Math.exp(-t/tau);pts.push(X(t).toFixed(1)+','+Y(p).toFixed(1));if(t<=S.tt+1e-9)pe=p;}
+  var pend=S.PA-(S.PA-PV)*Math.exp(-S.tt/tau);
+  o+='<polyline points="'+pts.join(' ')+'" fill="none" stroke="#B03A3A" stroke-width="2.8"/>';
+  o+='<circle cx="'+X(S.tt)+'" cy="'+Y(pend)+'" r="5" fill="#B03A3A"/>'+tx(X(S.tt)-8,Y(pend)+18,f0(pend)+' mmHg','end',{s:12,w:700,c:'#B03A3A'});
+  o+=tx(x0+4,Y(PV)+16,U.ven+' '+PV+' mmHg','start',{s:11,c:'#55697A'});
+  o+=tx(x0,14,U.yT,'start',{s:11.5,w:700,c:'#B03A3A'});
+  $('#ch').innerHTML='<svg viewBox="0 0 640 252" role="img" aria-label="'+U.yT+'">'+o+'</svg>';
+  var eq=S.PA-pend<2;
+  $('#res').innerHTML='<p class="eq">V̇ = D · A · ΔP / Δx  →  '+U.rel+' <b>'+f0(rel)+' %</b> '+U.ofN+' · D<sub>L</sub> ≈ <b>'+f0(DL)+'</b> mL·min⁻¹·mmHg⁻¹ <span style="color:#55697A">('+U.dlN+')</span></p>'+
+    '<p>'+U.end1+' <b>'+f0(pend)+' mmHg</b> '+U.end2+' '+f0(S.PA)+': '+(eq?'<span class="ok">'+U.eqOK+'</span>':'<span class="no">'+U.eqNO+' ('+f0(S.PA-pend)+' mmHg)</span>')+'</p>'+
+    '<p style="color:#55697A;font-size:13px">'+U.note+'</p>';}
+ctl();draw();
+</script>
+</body>
+</html>

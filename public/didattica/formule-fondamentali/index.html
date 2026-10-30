@@ -7,7 +7,7 @@
 <link rel="alternate" hreflang="it" href="/didattica/formule-fondamentali/">
 <link rel="alternate" hreflang="en" href="/teaching/fundamental-formulas/">
 <link rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
-<meta name="description" content="Le formule fondamentali della fisiologia, spiegate variabile per variabile, con unità di misura e analisi dimensionale. Prima formula: l'equazione di Starling degli scambi capillari.">
+<meta name="description" content="Le formule fondamentali della fisiologia, spiegate variabile per variabile, con unità di misura e analisi dimensionale. L'equazione di Starling degli scambi capillari, la legge di Fick con la diffusione nel polmone e il potenziale di Nernst.">
 <meta name="author" content="Jonathan Salerno">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
@@ -281,6 +281,8 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <h2>Sommario</h2>
   <ol>
     <li><a href="#starling">L'equazione di Starling</a></li>
+    <li><a href="#fick">La legge di Fick: la diffusione</a></li>
+    <li><a href="#nernst">Il potenziale di Nernst</a></li>
   </ol>
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#fonti">Fonti</a></p>
 </nav>
@@ -324,6 +326,118 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <p class="caveat">Valori indicativi, a scopo didattico. Oggi si sa che in molti tessuti il riassorbimento venoso è
   modesto e che il glicocalice dell'endotelio pesa sulle forze oncotiche: la logica dell'equazione però resta quella.</p>
 </section>
+
+<section id="fick">
+  <h2>2 · La legge di Fick: la diffusione</h2>
+  <p style="text-align:center;font-size:1.3rem;margin:1.1rem 0 1.2rem">J = D · A · ΔC / Δx</p>
+  <p>La diffusione è il movimento netto di molecole da dove sono più concentrate a dove lo sono meno, per semplice
+  agitazione termica: è la prima delle tre vie della pagina sui <a href="../trasportatori/">trasportatori</a>, quella
+  attraverso i lipidi. La legge di Fick (1855) dice quanto: il flusso è proporzionale alla superficie e alla differenza di
+  concentrazione, inversamente proporzionale allo spessore da attraversare. Nella forma differenziale si scrive
+  J = −D · A · dC/dx: il segno meno dice solo che il flusso va verso la concentrazione più bassa.</p>
+  <h3>Le variabili</h3>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Simbolo</th><th>Che cos'è</th><th>Unità</th><th>Dimensioni</th></tr></thead>
+    <tbody>
+    <tr><td>J</td><td>flusso netto di sostanza (il risultato)</td><td>mol·s⁻¹</td><td>[N T⁻¹]</td></tr>
+    <tr><td>D</td><td>coefficiente di diffusione: dipende dalla molecola, dal mezzo e dalla temperatura</td><td>cm²·s⁻¹</td><td>[L² T⁻¹]</td></tr>
+    <tr><td>A</td><td>superficie attraverso cui si diffonde</td><td>cm²</td><td>[L²]</td></tr>
+    <tr><td>ΔC</td><td>differenza di concentrazione fra i due lati</td><td>mol·cm⁻³</td><td>[N L⁻³]</td></tr>
+    <tr><td>Δx</td><td>spessore da attraversare</td><td>cm</td><td>[L]</td></tr>
+    </tbody></table></div>
+  <p class="caveat">[N] quantità di sostanza, [L] lunghezza, [T] tempo. Controprova: [L² T⁻¹] × [L²] × [N L⁻³] / [L] = [N T⁻¹] = J ✓.</p>
+  <h3>Esempio: la diffusione nel polmone</h3>
+  <p>Per un gas al posto della concentrazione si usa la pressione parziale, e la legge diventa
+  V̇<sub>gas</sub> = D · A · (P<sub>1</sub> − P<sub>2</sub>) / Δx. Nei libri di respiratoria lo spessore si chiama spesso T: qui
+  lo chiamo Δx per non confonderlo con il tempo. La barriera alveolo-capillare è fatta apposta per Fick: una superficie
+  enorme, 50–100 m², e uno spessore minimo, 0,2–0,5 µm nella maggior parte della sua area.</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Simbolo</th><th>Che cos'è</th><th>Unità</th><th>Dimensioni</th></tr></thead>
+    <tbody>
+    <tr><td>V̇<sub>gas</sub></td><td>volume di gas che attraversa la barriera ogni minuto</td><td>mL·min⁻¹</td><td>[L³ T⁻¹]</td></tr>
+    <tr><td>A</td><td>superficie alveolare</td><td>m²</td><td>[L²]</td></tr>
+    <tr><td>Δx</td><td>spessore della barriera alveolo-capillare</td><td>µm</td><td>[L]</td></tr>
+    <tr><td>P<sub>1</sub> − P<sub>2</sub></td><td>differenza di pressione parziale fra alveolo e sangue</td><td>mmHg</td><td>[M L⁻¹ T⁻²]</td></tr>
+    <tr><td>D</td><td>costante di diffusione del gas: proporzionale a solubilità / √peso molecolare</td><td>cm²·min⁻¹·mmHg⁻¹</td><td>[M⁻¹ L³ T]</td></tr>
+    <tr><td>D<sub>L</sub></td><td>capacità di diffusione del polmone: D · A / Δx = V̇ / (P<sub>1</sub> − P<sub>2</sub>)</td><td>mL·min⁻¹·mmHg⁻¹</td><td>[M⁻¹ L⁴ T]</td></tr>
+    </tbody></table></div>
+  <p class="caveat">[M] massa. Controprova: D<sub>L</sub> × ΔP = [M⁻¹ L⁴ T] × [M L⁻¹ T⁻²] = [L³ T⁻¹] = V̇ ✓.
+  D<sub>L</sub> ha le stesse dimensioni del K<sub>f</sub> di Starling: tutti e due dicono quanto passa per ogni mmHg di spinta.
+  1 mmHg ≈ 133,3 Pa (Pa = N/m²).</p>
+  <figure class="w">
+    <iframe src="w/01-fick.html" title="Fick: la diffusione dell'O₂ lungo il capillare polmonare" loading="lazy" class="ph"></iframe>
+    <figcaption>Muovi superficie, spessore, P<sub>A</sub>O₂ e tempo di transito, oppure scegli uno scenario: la curva rossa è la PO₂ del sangue lungo il capillare. <a href="w/01-fick.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <p><b>Ossigeno.</b> Il sangue venoso misto arriva con circa 40 mmHg di O₂ contro i 100 dell'alveolo: all'ingresso del
+  capillare il gradiente è di 60 mmHg. A riposo il globulo rosso resta nel capillare circa 0,75 s, ma la PO₂ raggiunge
+  quella alveolare già in circa 0,25 s: c'è una riserva di due terzi del tempo.</p>
+  <p><b>Anidride carbonica.</b> Il gradiente è piccolo, da circa 46 a 40 mmHg, ma la CO₂ è circa 24 volte più solubile
+  dell'O₂ e pesa poco di più (44 contro 32). D<sub>CO₂</sub> / D<sub>O₂</sub> ≈ 24 / √(44/32) ≈ 24 / 1,17 ≈ 20: la CO₂ diffonde
+  circa 20 volte più facilmente, e il piccolo gradiente basta.</p>
+  <p><b>Clinica.</b> La fibrosi e l'edema polmonare aumentano Δx (l'edema è Starling che si sposta nel polmone),
+  l'enfisema riduce A. A riposo la riserva di tempo compensa; sotto sforzo il transito scende fino a 0,25 s e l'O₂ non fa
+  più in tempo ad equilibrarsi: per questo la desaturazione da sforzo è un segno precoce della fibrosi. D<sub>L</sub> si misura
+  con il monossido di carbonio (DLCO): l'emoglobina lo lega così avidamente che la sua pressione nel sangue resta quasi
+  zero, quindi D<sub>L</sub> = V̇<sub>CO</sub> / P<sub>A</sub>CO. Il valore normale è circa 25 mL·min⁻¹·mmHg⁻¹.</p>
+</section>
+
+<section id="nernst">
+  <h2>3 · Il potenziale di Nernst</h2>
+  <p style="text-align:center;font-size:1.3rem;margin:1.1rem 0 1.2rem">E<sub>X</sub> = (RT / zF) · ln([X]<sub>out</sub> / [X]<sub>in</sub>)</p>
+  <p>Immagina una membrana che lascia passare un solo ione, il K⁺, più concentrato dentro che fuori. Il K⁺ esce lungo il
+  suo gradiente di concentrazione e si porta via la sua carica positiva: l'interno diventa negativo. Quella negatività lo
+  richiama indietro. Quando la spinta chimica verso fuori e quella elettrica verso dentro si equivalgono, il flusso netto
+  si ferma: il K⁺ continua a passare in tutte e due le direzioni, ma in media non si sposta più. Quel voltaggio è il
+  <b>potenziale di equilibrio</b> (o di inversione) di Nernst dello ione. Conta solo il <b>rapporto</b> fra le concentrazioni,
+  non i loro valori assoluti né la permeabilità della membrana.</p>
+  <h3>Le variabili</h3>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Simbolo</th><th>Che cos'è</th><th>Unità</th><th>Dimensioni</th></tr></thead>
+    <tbody>
+    <tr><td>E<sub>X</sub></td><td>potenziale di equilibrio dello ione X (interno rispetto all'esterno)</td><td>mV (V = J/C)</td><td>[M L² T⁻³ I⁻¹]</td></tr>
+    <tr><td>R</td><td>costante dei gas, 8,314</td><td>J·mol⁻¹·K⁻¹</td><td>[M L² T⁻² Θ⁻¹ N⁻¹]</td></tr>
+    <tr><td>T</td><td>temperatura assoluta (37 °C = 310 K)</td><td>K</td><td>[Θ]</td></tr>
+    <tr><td>z</td><td>valenza dello ione: K⁺ e Na⁺ +1, Ca²⁺ +2, Cl⁻ −1</td><td>nessuna (numero puro)</td><td>[1]</td></tr>
+    <tr><td>F</td><td>costante di Faraday, 96 485: la carica di una mole di cariche elementari</td><td>C·mol⁻¹ (C = A·s)</td><td>[I T N⁻¹]</td></tr>
+    <tr><td>[X]<sub>out</sub>, [X]<sub>in</sub></td><td>concentrazione dello ione fuori e dentro la cellula</td><td>mM</td><td>[N L⁻³]; il rapporto è un numero puro</td></tr>
+    </tbody></table></div>
+  <p class="caveat">[I] corrente elettrica, [Θ] temperatura, [N] quantità di sostanza. Controprova:
+  RT/F = [M L² T⁻² Θ⁻¹ N⁻¹] × [Θ] / [I T N⁻¹] = [M L² T⁻³ I⁻¹], cioè volt ✓ (J/C = V; J = N·m).</p>
+  <p><b>La forma comoda.</b> A 37 °C RT/F = 8,314 × 310,15 / 96 485 ≈ 26,7 mV. Per passare dal logaritmo naturale a quello
+  in base 10 si moltiplica per ln 10 ≈ 2,303, e si ottiene E<sub>X</sub> = (61,5 mV / z) · log<sub>10</sub>([X]<sub>out</sub>/[X]<sub>in</sub>).
+  A 21 °C, la temperatura degli esperimenti classici e del tutorial di St Andrews, il fattore è 58 mV. In pratica: ogni
+  fattore 10 di rapporto vale circa 60 mV, diviso per la valenza.</p>
+  <figure class="w">
+    <iframe src="w/02-nernst.html" title="Il potenziale di Nernst, calcolato passo per passo" loading="lazy" class="ph"></iframe>
+    <figcaption>Scegli lo ione e un esempio, oppure muovi le due concentrazioni: il calcolo è svolto passo per passo. <a href="w/02-nernst.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Preparazione</th><th>Ione</th><th>Dentro (mM)</th><th>Fuori (mM)</th><th>E (mV)</th><th>Potenziale di riposo</th></tr></thead>
+    <tbody>
+    <tr><td>Assone gigante di calamaro, 21 °C</td><td>K⁺</td><td>400</td><td>20</td><td>−75</td><td rowspan="2">circa −60 mV</td></tr>
+    <tr><td>Assone gigante di calamaro, 21 °C</td><td>Cl⁻</td><td>108</td><td>560</td><td>−41</td></tr>
+    <tr><td>Muscolo di rana, 21 °C</td><td>K⁺</td><td>124</td><td>2,25</td><td>−101</td><td rowspan="2">da −90 a −100 mV</td></tr>
+    <tr><td>Muscolo di rana, 21 °C</td><td>Cl⁻</td><td>1,5</td><td>77,5</td><td>−99</td></tr>
+    <tr><td>Cellula di mammifero, 37 °C</td><td>K⁺</td><td>140</td><td>4</td><td>−95</td><td rowspan="4">circa −70 mV</td></tr>
+    <tr><td>Cellula di mammifero, 37 °C</td><td>Na⁺</td><td>12</td><td>145</td><td>+67</td></tr>
+    <tr><td>Cellula di mammifero, 37 °C</td><td>Cl⁻</td><td>7</td><td>110</td><td>−74</td></tr>
+    <tr><td>Cellula di mammifero, 37 °C</td><td>Ca²⁺</td><td>0,0001</td><td>1,2</td><td>+125</td></tr>
+    </tbody></table></div>
+  <p class="caveat">Calamaro e rana: dati di Aidley (1989) riportati nel tutorial di St Andrews. Mammifero: valori
+  tipici, indicativi. Le differenze di 1 mV fra la tabella e il widget vengono dall'arrotondamento (58 contro 58,4 mV).</p>
+  <p><b>Bastano pochissimi ioni.</b> Una cellula sferica di 50 µm di diametro ha una capacità di membrana di circa
+  78,5 pF (1 µF per cm²). Per caricarla a −70 mV servono 5,5 × 10⁻¹² C, cioè circa 34 milioni di ioni K⁺, su circa
+  5,5 × 10¹² ioni K⁺ presenti nella cellula: la concentrazione cambia dello 0,0006 %. Il potenziale nasce quindi senza
+  cambiare le concentrazioni in modo misurabile.</p>
+  <p><b>Dal Nernst al potenziale di riposo.</b> Nernst vale per un solo ione. La membrana reale è permeabile a più ioni,
+  e il potenziale di riposo si sistema vicino al potenziale di equilibrio dello ione a cui è più permeabile: a riposo il
+  K⁺, per i canali di fuga. Per pesare tutti gli ioni insieme secondo la loro permeabilità serve l'equazione di
+  Goldman-Hodgkin-Katz. La differenza V<sub>m</sub> − E<sub>X</sub> è la <b>forza spingente</b> sullo ione: dice da che parte va e
+  quanto forte.</p>
+  <p><b>Clinica.</b> Nell'ipercaliemia il K⁺ fuori sale, per esempio da 4 a 7 mM: E<sub>K</sub> passa da −95 a circa −80 mV,
+  le cellule si depolarizzano e cuore e muscoli diventano instabili (aritmie). Lo puoi provare nel widget con l'esempio
+  “K⁺ · ipercaliemia”.</p>
+</section>
 <section id="fonti">
   <h2>Fonti</h2>
   <ol class="refs">
@@ -333,6 +447,12 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <a href="https://doi.org/10.1093/cvr/cvq062">doi:10.1093/cvr/cvq062</a></li>
     <li>Boron WF, Boulpaep EL. <i>Medical Physiology</i>. 3rd ed. Philadelphia: Elsevier; 2017.</li>
     <li>Hall JE, Hall ME. <i>Guyton and Hall Textbook of Medical Physiology</i>. 14th ed. Philadelphia: Elsevier; 2021.</li>
+    <li>Fick A. Ueber Diffusion. <i>Ann Phys</i> 1855;170:59–86.
+    <a href="https://doi.org/10.1002/andp.18551700105">doi:10.1002/andp.18551700105</a></li>
+    <li>West JB, Luks AM. <i>West's Respiratory Physiology: The Essentials</i>. 11th ed. Philadelphia: Wolters Kluwer; 2020.</li>
+    <li>Heitler WJ. The resting potential. Neurotut, University of St Andrews.
+    <a href="https://www.st-andrews.ac.uk/~wjh/neurotut/RestingPotential.html">st-andrews.ac.uk/~wjh/neurotut</a></li>
+    <li>Aidley DJ. <i>The Physiology of Excitable Cells</i>. 3rd ed. Cambridge: Cambridge University Press; 1989.</li>
   </ol>
   <p class="caveat">Valori indicativi, arrotondati a scopo didattico.</p>
 </section>
