@@ -303,10 +303,13 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <tr><td>Simple diffusion</td><td>none</td><td>passive</td><td>no</td><td>CO₂ in intercalated cells</td></tr>
     <tr><td>Channel</td><td>pore</td><td>passive (facilitated diffusion)</td><td>hardly ever</td><td>ENaC, ROMK, aquaporins, ClC-Kb</td></tr>
     <tr><td>Uniport</td><td>carrier</td><td>passive (facilitated diffusion)</td><td>yes</td><td>GLUT2</td></tr>
-    <tr><td>Symport</td><td>carrier</td><td>secondary active</td><td>yes</td><td>SGLT2, NKCC2, NCC</td></tr>
-    <tr><td>Antiport</td><td>carrier</td><td>secondary active if it uses the Na⁺ gradient</td><td>yes</td><td>NHE3 (AE1 and pendrin: Cl⁻/HCO₃⁻ exchange)</td></tr>
+    <tr><td>Symport</td><td>carrier</td><td>secondary active if one of the two goes up; passive if both go down</td><td>yes</td><td>SGLT2, NKCC2, NCC; NBCe1 (here Na⁺ is the one going up)</td></tr>
+    <tr><td>Antiport</td><td>carrier</td><td>secondary active if one of the two goes up; passive if both go down</td><td>yes</td><td>NHE3, NCX (secondary active); red cell AE1 (passive)</td></tr>
     <tr><td>Pump</td><td>ATPase</td><td>primary active</td><td>yes</td><td>Na⁺/K⁺-ATPase, H⁺-ATPase, H⁺/K⁺-ATPase</td></tr>
     </tbody></table></div>
+  <p>Careful: symport and antiport describe only the direction of the two substances, not the energy. They are
+  secondary active when one of the two goes up; if both go down they are passive. The converse always holds: every
+  secondary active transport is a symport or an antiport.</p>
 </section>
 
 <section id="kidney">
