@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fick in a fish: when does it suffocate?</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+svg[viewBox]{min-width:0!important;max-width:100%!important;width:100%}
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 8px;font-size:13px}
+.row .vl{font-weight:700;color:#55697A}
+.row button{font:inherit;font-size:13px;padding:4px 10px;border-radius:999px;border:1px solid var(--border-strong);background:#FFFFFF;color:var(--text-primary);cursor:pointer}
+.row button.on{border:1.5px solid #1456A8;background:#EEF4FC;color:#1456A8;font-weight:700}
+.row .sp{flex:1 1 auto}
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 16px;margin:0 0 10px}
+.ctl label{display:block;font-size:13px;font-weight:700}
+.ctl label span{float:right;color:#1456A8}
+.ctl input[type=range]{width:100%}
+.ctl small{display:block;color:#55697A;font-size:12px;line-height:1.35}
+.ctl .ck{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-top:4px}
+.pnl{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:0;margin:0 0 8px;overflow:hidden;position:relative}
+.res{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:9px 12px;font-size:14px;line-height:1.55}
+.res p{margin:0 0 6px}.res p:last-child{margin:0}
+.eq{font-size:15px}
+.bar{height:12px;border-radius:6px;background:#EEF2F5;overflow:hidden;margin:3px 0 8px}
+.bar i{display:block;height:100%;border-radius:6px}
+.lab{display:flex;justify-content:space-between;font-size:13px;font-weight:700}
+.dead{position:absolute;inset:0;display:none;align-items:flex-start;justify-content:center;padding-top:8px;background:rgba(251,252,253,.25)}
+.dead div{background:#FFFFFF;border:1.5px solid #A32D2D;border-radius:10px;padding:6px 12px;text-align:center;max-width:80%;font-size:14px}
+.dead b{color:#A32D2D;font-size:16px}
+.dead button{margin-top:8px;font:inherit;font-size:13px;padding:5px 12px;border-radius:8px;border:1px solid #1456A8;background:#EEF4FC;color:#1456A8;font-weight:700;cursor:pointer}
+#pz.on{border-color:#B5520C;background:#FCEEDD;color:#7A3E0B}
+</style>
+</head>
+<body>
+<h2 class="sr-only">A swimming fish: speed, gill area, barrier thickness and oxygen in the water decide whether oxygen is enough</h2>
+<div class="row" id="pre"></div>
+<div class="ctl" id="ctl"></div>
+<div class="pnl"><svg id="sv" viewBox="0 0 640 230" role="img" aria-label="A swimming fish: speed, gill area, barrier thickness and oxygen in the water decide whether oxygen is enough"></svg><div class="dead" id="dead"><div><b id="dT"></b><br><span id="dM"></span><br><button type="button" id="again"></button></div></div></div>
+<div class="res" id="res"></div>
+<script>
+var D={"ui": {"loc": "en-GB", "preT": "Fish:", "pause": "❚❚ Pause", "play": "▶ Resume", "uV": "lengths/s", "lab": {"v": "Swimming speed", "A": "Gill area A", "T": "Barrier thickness T", "P1": "Water PO₂ (P₁)"}, "hint": {"v": "faster = more water over the gills, but also more oxygen used", "A": "per gram of body mass: tuna about 1000, sluggish fish 100–300", "T": "tuna 0.5 µm, sluggish fish up to 5–10 µm", "P1": "well-oxygenated water about 150 mmHg; stagnant or warm water much less"}, "pump": "Buccal-opercular pump", "pumpH": "pushes water even when still; with very dense gills (large A) resistance is high and it pushes little", "store": "O₂ in the body", "gradBar": "gradient across the barrier ≈", "up": "O₂ taken up by the gills", "need": "O₂ used", "ok": "Oxygen is enough.", "short": "Oxygen is not enough: reserves are falling.", "deadS": "The fish has suffocated.", "deadT": "Suffocated!", "again": "Start again", "wNoFlow": "The water over the gills is still: P₁ − P₂ drops to zero and exchange stops.", "wHyp": "There is little oxygen in the water: P₁ is too low.", "wVent": "The limit is the water flowing past: swim faster or switch the pump on.", "wDiff": "The limit is the barrier: too little area or too much thickness.", "note": "Toy model: two conductances in series, ventilation (water flowing past) and diffusion (D · A / T). Relative units; the numbers are not those of a real fish."}, "pre": [{"n": "Tuna", "v": 1.5, "A": 1000, "T": 0.5, "P1": 150, "pump": false, "base": 100, "cost": 15}, {"n": "Trout", "v": 0.5, "A": 300, "T": 2, "P1": 150, "pump": true, "base": 30, "cost": 10}, {"n": "Sluggish fish", "v": 0.2, "A": 150, "T": 5, "P1": 150, "pump": true, "base": 6, "cost": 8}]},U=D.ui,P=D.pre;
+var S={sp:0,v:1.5,A:1000,T:0.5,P1:150,pump:false},O2=100,DEAD=false,PZ=false,t0=null,ph=0,tilt=0,sink=0;
+var PV=15,KD=0.0021,KV=2.2;
+function $(q){return document.querySelector(q);}
+function f(x,d){return x.toLocaleString(U.loc,{maximumFractionDigits:d,minimumFractionDigits:d});}
+var SL=[['v',0,4,0.1,U.uV],['A',100,2000,10,'mm²/g'],['T',0.3,10,0.1,'µm'],['P1',20,160,1,'mmHg']];
+function ctl(){$('#ctl').innerHTML=SL.map(function(s){return '<div><label for="s_'+s[0]+'">'+U.lab[s[0]]+' <span id="v_'+s[0]+'"></span></label><input type="range" id="s_'+s[0]+'" min="'+s[1]+'" max="'+s[2]+'" step="'+s[3]+'"><small>'+U.hint[s[0]]+'</small></div>';}).join('')+
+  '<div><label class="ck"><input type="checkbox" id="s_pump"> '+U.pump+'</label><small>'+U.pumpH+'</small></div>';
+  SL.forEach(function(s){$('#s_'+s[0]).addEventListener('input',function(e){S[s[0]]=+e.target.value;S.sp=-1;sync();});});
+  $('#s_pump').addEventListener('change',function(e){S.pump=e.target.checked;S.sp=-1;sync();});}
+function setPre(i){var p=P[i];S.sp=i;['v','A','T','P1'].forEach(function(k){S[k]=p[k];});S.pump=p.pump;S.base=p.base;S.cost=p.cost;revive();sync();}
+function sync(){SL.forEach(function(s){$('#s_'+s[0]).value=S[s[0]];$('#v_'+s[0]).textContent=f(S[s[0]],s[3]<1?1:0)+' '+s[4];});$('#s_pump').checked=S.pump;
+  $('#pre').innerHTML='<span class="vl">'+U.preT+'</span>'+P.map(function(p,i){return '<button type="button" data-p="'+i+'"'+(i===S.sp?' class="on"':'')+'>'+p.n+'</button>';}).join('')+'<span class="sp"></span><button type="button" id="pz"'+(PZ?' class="on"':'')+'>'+(PZ?U.play:U.pause)+'</button>';}
+$('#pre').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.id==='pz'){PZ=!PZ;sync();return;}setPre(+b.getAttribute('data-p'));});
+$('#again').addEventListener('click',function(){revive();});
+function revive(){O2=100;DEAD=false;tilt=0;sink=0;$('#dead').style.display='none';}
+// model: two conductances in series (ventilation, then diffusion through the barrier)
+function model(){var Q=S.v+(S.pump?0.6*Math.min(1,300/S.A):0),Gv=KV*Q,Gd=KD*S.A/S.T,dP=Math.max(S.P1-PV,0);
+  var up=(Gv>0&&Gd>0)?dP/(1/Gv+1/Gd):0,need=S.base+S.cost*S.v*S.v,bar=Gd>0?up/Gd:0;
+  return {Q:Q,up:up,need:need,bar:bar,Pw:PV+bar};}
+var BG=[];for(var i=0;i<26;i++)BG.push({x:Math.random()*640,y:14+Math.random()*200,r:1+Math.random()*2});
+function fish(o2,lim){var red=Math.round(150+105*o2/100),gc='rgb('+red+','+Math.round(60*o2/100+40)+','+Math.round(60*o2/100+40)+')';
+  var body=o2>15?'#3E6E9E':'#8A9BAA',belly=o2>15?'#DCE7F2':'#E8ECEF';
+  var tail=Math.sin(ph)*14*(S.v>0&&!DEAD?Math.min(1,0.25+S.v/2):0);
+  return '<g transform="translate(330,'+(112+sink)+') rotate('+tilt+')">'+
+   '<path d="M70 0 L105 '+(-26+tail)+' L98 0 L105 '+(26+tail)+' Z" fill="'+body+'"/>'+
+   '<path d="M-95 0 C-70 -38 30 -42 75 -6 L75 6 C30 42 -70 38 -95 0Z" fill="'+body+'"/>'+
+   '<path d="M-88 6 C-60 30 20 32 72 6 L72 6 C30 18 -50 18 -88 6Z" fill="'+belly+'"/>'+
+   '<path d="M-20 -34 L10 -62 L25 -36Z" fill="'+body+'"/><path d="M0 30 L20 50 L30 30Z" fill="'+body+'"/>'+
+   '<path d="M-48 -18 C-36 -6 -36 10 -48 22" fill="none" stroke="#2A4D70" stroke-width="2.5"/>'+
+   '<rect x="-60" y="-12" width="11" height="26" rx="5" fill="'+gc+'" stroke="#7A1F1F" stroke-width="1"/>'+
+   (o2>15?'<circle cx="-74" cy="-8" r="5" fill="#FFFFFF"/><circle cx="-75" cy="-8" r="2.6" fill="#16222E"/>':'<path d="M-79 -12 l9 8 M-79 -4 l9 -8" stroke="#16222E" stroke-width="2"/>')+
+   '<path d="M-95 0 l-7 -3 M-95 2 l-7 3" stroke="#2A4D70" stroke-width="1.5"/></g>';}
+function draw(m){var o='<rect width="640" height="230" fill="#E6F1F9"/>';
+  BG.forEach(function(b){o+='<circle cx="'+b.x.toFixed(1)+'" cy="'+b.y.toFixed(1)+'" r="'+b.r+'" fill="#FFFFFF" opacity=".8"/>';});
+  // water through the gills: streaks from the mouth to the gill slit, opacity with flow
+  var a=Math.min(1,m.Q/2.5);if(!DEAD&&a>0.02){for(var k=0;k<4;k++){var x=-110+((ph*14*m.Q+k*20)%60);o+='<g transform="translate(330,'+(112+sink)+')"><line x1="'+x+'" y1="'+(-6+k*4)+'" x2="'+(x+12)+'" y2="'+(-6+k*4)+'" stroke="#1F6FB2" stroke-width="2" opacity="'+a.toFixed(2)+'"/></g>';}}
+  o+=fish(O2);
+  // O2 gauge
+  var gw=150,gx=20,gy=200,col=O2>50?'#2E7D4F':O2>20?'#C2871A':'#A32D2D';
+  o+='<text x="'+gx+'" y="'+(gy-6)+'" font-size="12" font-weight="700" fill="#16222E">'+U.store+' '+Math.round(O2)+'%</text><rect x="'+gx+'" y="'+gy+'" width="'+gw+'" height="10" rx="5" fill="#FFFFFF" stroke="#B9C5CF"/><rect x="'+gx+'" y="'+gy+'" width="'+(gw*O2/100).toFixed(1)+'" height="10" rx="5" fill="'+col+'"/>';
+  $('#sv').innerHTML=o;
+  var mx=Math.max(m.up,m.need)*1.15||1,ok=m.up>=m.need;
+  $('#res').innerHTML='<p class="eq">V̇O₂ = D · A · (P₁ − P₂) / T · '+U.gradBar+' <b>'+f(m.bar,0)+' mmHg</b></p>'+
+   '<div class="lab"><span>'+U.up+'</span><span>'+f(m.up,1)+'</span></div><div class="bar"><i style="width:'+(m.up/mx*100).toFixed(1)+'%;background:#1F6FB2"></i></div>'+
+   '<div class="lab"><span>'+U.need+'</span><span>'+f(m.need,1)+'</span></div><div class="bar"><i style="width:'+(m.need/mx*100).toFixed(1)+'%;background:#B5520C"></i></div>'+
+   '<p>'+(DEAD?'<b style="color:#A32D2D">'+U.deadS+'</b>':ok?'<b style="color:#27500A">'+U.ok+'</b>':'<b style="color:#A32D2D">'+U.short+'</b>')+' '+why(m)+'</p>'+
+   '<p style="color:#55697A;font-size:12.5px">'+U.note+'</p>';}
+function why(m){if(m.Q<0.05)return U.wNoFlow;var Gv=KV*m.Q,Gd=KD*S.A/S.T;if(m.up>=m.need)return '';
+  if(S.P1<60)return U.wHyp;return Gv<Gd?U.wVent:U.wDiff;}
+function tick(ts){if(t0===null)t0=ts;var dt=Math.min(0.05,(ts-t0)/1000);t0=ts;var m=model();
+  if(!PZ){ph+=dt*(4+S.v*4);
+    BG.forEach(function(b){b.x+=dt*(DEAD?0:S.v*90);if(b.x>645){b.x=-5;b.y=14+Math.random()*200;}});
+    if(!DEAD){O2+=dt*(m.up-m.need)/m.need*25;if(O2>100)O2=100;if(O2<=0){O2=0;DEAD=true;$('#dT').textContent=U.deadT;$('#dM').textContent=why(m)||U.wDiff;$('#again').textContent=U.again;$('#dead').style.display='flex';}}
+    else{tilt=Math.min(180,tilt+dt*70);sink=Math.min(55,sink+dt*20);}}
+  draw(m);requestAnimationFrame(tick);}
+ctl();setPre(0);requestAnimationFrame(tick);
+</script>
+</body>
+</html>
