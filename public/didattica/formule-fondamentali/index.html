@@ -243,6 +243,20 @@ dialog.fx .fxbar .fxz{padding:.35rem .6rem; min-width:2.4rem}
 dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align:center}
 @media (orientation:landscape){dialog.fx .fxhint{display:none} dialog.fx .fxw{height:calc(100dvh - 3rem)}}
 </style>
+<style>
+.fkx{border:1px solid var(--rule);border-radius:10px;background:var(--card);padding:1rem 1rem 1.1rem;margin:1.2rem 0}
+.fkx .eqi{display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;gap:.15em .3em;font-size:clamp(1.05rem,5vw,1.5rem);margin:.3rem 0 .9rem}
+.fkx .op{color:var(--mut)}
+.fkx button.ft{font:inherit;color:var(--ink);background:transparent;border:0;border-bottom:2px dotted var(--link);border-radius:4px;padding:0 .15em;cursor:help;line-height:1.3}
+.fkx button.ft:hover,.fkx button.ft:focus-visible,.fkx button.ft.on{background:var(--paper);border-bottom-style:solid;outline:none}
+.fkx .tip{border-top:1px solid var(--rule);padding-top:.7rem;font-size:.9375rem;line-height:1.55;min-height:7.5rem}
+.fkx .tip h4{margin:0 0 .3rem;font-size:1rem}
+.fkx .tip p{margin:0 0 .4rem}
+.fkx .tip ul{margin:.2rem 0 0;padding-left:0;list-style:none}
+.fkx .tip li{margin:0 0 .3rem;padding-left:1.7em;text-indent:-1.7em}
+.fkx .up,.fkx .dn{display:inline-block;width:1.3em;text-align:center;font-weight:700;border-radius:4px;margin-right:.4em;text-indent:0}
+.fkx .up,.fkx .dn{color:var(--ink);background:var(--paper);border:1px solid var(--rule)}
+</style>
 </head>
 <body>
 <div class="page">
@@ -402,21 +416,17 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <p>La legge è la stessa: cambiano solo le grandezze che si misurano, pressione invece di concentrazione e volume invece
   di moli. Per questo il D dei gas non è più una semplice diffusività: dipende anche dalla solubilità, ed è per questo che
   la CO₂ diffonde circa 20 volte meglio dell'O₂.</p>
-  <figure class="w">
-    <iframe src="w/01-fick.html" title="Fick: la diffusione dell'O₂ lungo il capillare polmonare" loading="lazy" class="ph"></iframe>
-    <figcaption>Muovi superficie, spessore, P<sub>A</sub>O₂ e tempo di transito, oppure scegli uno scenario: la curva rossa è la PO₂ del sangue lungo il capillare. <a href="w/01-fick.html">Apri a schermo intero</a></figcaption>
-  </figure>
-  <p><b>Ossigeno.</b> Il sangue venoso misto arriva con circa 40 mmHg di O₂ contro i 100 dell'alveolo: all'ingresso del
-  capillare il gradiente è di 60 mmHg. A riposo il globulo rosso resta nel capillare circa 0,75 s, ma la PO₂ raggiunge
-  quella alveolare già in circa 0,25 s: c'è una riserva di due terzi del tempo.</p>
-  <p><b>Anidride carbonica.</b> Il gradiente è piccolo, da circa 46 a 40 mmHg, ma la CO₂ è circa 24 volte più solubile
-  dell'O₂ e pesa poco di più (44 contro 32). D<sub>CO₂</sub> / D<sub>O₂</sub> ≈ 24 / √(44/32) ≈ 24 / 1,17 ≈ 20: la CO₂ diffonde
-  circa 20 volte più facilmente, e il piccolo gradiente basta.</p>
-  <p><b>Clinica.</b> La fibrosi e l'edema polmonare aumentano lo spessore T (l'edema è Starling che si sposta nel polmone),
-  l'enfisema riduce A. A riposo la riserva di tempo compensa; sotto sforzo il transito scende fino a 0,25 s e l'O₂ non fa
-  più in tempo ad equilibrarsi: per questo la desaturazione da sforzo è un segno precoce della fibrosi. D<sub>L</sub> si misura
-  con il monossido di carbonio (DLCO): l'emoglobina lo lega così avidamente che la sua pressione nel sangue resta quasi
-  zero, quindi D<sub>L</sub> = V̇<sub>CO</sub> / P<sub>A</sub>CO. Il valore normale è circa 25 mL·min⁻¹·mmHg⁻¹.</p>
+  <h3>Lo scambio polmonare, termine per termine</h3>
+  <div class="fkx" id="fkx">
+  <div class="eqi"><button type="button" class="ft" data-k="V">V̇<sub>gas</sub></button><span class="op">=</span><button type="button" class="ft" data-k="D">D</button><span class="op">·</span><button type="button" class="ft" data-k="A">A</button><span class="op">·</span><button type="button" class="ft" data-k="P">(P<sub>1</sub> − P<sub>2</sub>)</button><span class="op">/</span><button type="button" class="ft" data-k="T">T</button></div>
+  <div class="tip" id="fkxt" aria-live="polite"><p style="color:var(--mut)">Passa con il mouse su un termine della formula (o toccalo): ti dico che cos'è, quanto vale e che cosa lo fa salire o scendere.</p></div>
+  <template data-k="V"><h4>V̇<sub>gas</sub> · il risultato</h4><p>Il volume di gas che attraversa la barriera ogni minuto. A riposo il polmone assorbe circa 250 mL/min di O₂ ed elimina circa 200 mL/min di CO₂.</p><ul><li><span class="up">↑</span><b>sforzo</b>: può crescere più di dieci volte, perché crescono insieme A e il gradiente.</li><li><span class="dn">↓</span>cala ogni volta che uno degli altri termini va nel verso sbagliato: è quello che vedi negli altri quattro.</li></ul></template><template data-k="D"><h4>D · coefficiente di diffusione del gas</h4><p>È una proprietà del gas, non del polmone: D ∝ solubilità / √peso molecolare. La CO₂ è circa 24 volte più solubile dell'O₂ e pesa poco di più (44 contro 32): diffonde circa 20 volte meglio, per questo le basta un gradiente di 6 mmHg.</p><p style="margin-top:.4rem">Non cambia con le malattie. Quello che si misura in clinica è D<sub>L</sub> = D · A / T, con il monossido di carbonio (<b>DLCO</b>, normale circa 25 mL·min⁻¹·mmHg⁻¹): cala nell'enfisema e nella fibrosi, perché cala A o cresce T.</p></template><template data-k="A"><h4>A · superficie di scambio</h4><p>Normale 50–100 m², circa un campo da tennis, in centinaia di milioni di alveoli.</p><ul><li><span class="dn">↓</span><b>enfisema</b>: i setti fra gli alveoli si distruggono e la superficie si perde.</li><li><span class="dn">↓</span><b>resezione polmonare</b>, <b>atelettasia</b>, <b>polmonite</b> (alveoli pieni).</li><li><span class="dn">↓</span><b>embolia polmonare</b>: gli alveoli ci sono, ma i loro capillari non sono perfusi.</li><li><span class="up">↑</span><b>sforzo</b>: si aprono i capillari degli apici, a riposo poco perfusi (reclutamento).</li></ul></template><template data-k="P"><h4>(P<sub>1</sub> − P<sub>2</sub>) · gradiente di pressione parziale</h4><p>Fra alveolo e sangue. Per l'O₂ all'ingresso del capillare: 100 − 40 = 60 mmHg. Per la CO₂: 46 − 40 = 6 mmHg, verso l'alveolo. Lungo il capillare il gradiente si consuma: a riposo l'O₂ si equilibra in circa 0,25 s su 0,75 s di transito.</p><ul><li><span class="dn">↓</span><b>alta quota</b>: la P<sub>A</sub>O₂ scende con la pressione atmosferica.</li><li><span class="dn">↓</span><b>ipoventilazione</b> (oppioidi, malattie neuromuscolari): l'O₂ alveolare cala e la CO₂ sale.</li><li><span class="up">↑</span><b>ossigenoterapia</b>: alzare la frazione inspirata di O₂ alza P<sub>1</sub>, ed è il modo più semplice per compensare un A piccolo o un T grande.</li></ul></template><template data-k="T"><h4>T · spessore della barriera</h4><p>Non è il tempo: è lo spessore fra aria e sangue (epitelio alveolare, membrane basali, endotelio), 0,2–0,5 µm nella maggior parte della superficie.</p><ul><li><span class="up">↑</span><b>fibrosi polmonare</b>: l'interstizio si ispessisce di collagene.</li><li><span class="up">↑</span><b>edema polmonare</b>: il liquido si accumula nell'interstizio e negli alveoli (è Starling che si sposta nel polmone).</li><li><span class="up">↑</span><b>polmoniti interstiziali</b>.</li></ul><p style="margin-top:.4rem">A riposo la riserva di tempo compensa; sotto sforzo il transito scende a circa 0,25 s e l'O₂ non fa più in tempo: la <b>desaturazione da sforzo</b> è un segno precoce della fibrosi.</p></template>
+  </div>
+<script>(function(){var b=document.getElementById('fkx'),t=document.getElementById('fkxt');
+function show(k){b.querySelectorAll('button.ft').forEach(function(x){x.classList.toggle('on',x.getAttribute('data-k')===k);});
+t.innerHTML=b.querySelector('template[data-k="'+k+'"]').innerHTML;}
+b.querySelectorAll('button.ft').forEach(function(x){var k=x.getAttribute('data-k');
+x.addEventListener('mouseenter',function(){show(k);});x.addEventListener('focus',function(){show(k);});x.addEventListener('click',function(){show(k);});});})();</script>
 </section>
 
 <section id="nernst">

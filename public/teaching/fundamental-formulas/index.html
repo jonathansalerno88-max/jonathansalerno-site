@@ -243,6 +243,20 @@ dialog.fx .fxbar .fxz{padding:.35rem .6rem; min-width:2.4rem}
 dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align:center}
 @media (orientation:landscape){dialog.fx .fxhint{display:none} dialog.fx .fxw{height:calc(100dvh - 3rem)}}
 </style>
+<style>
+.fkx{border:1px solid var(--rule);border-radius:10px;background:var(--card);padding:1rem 1rem 1.1rem;margin:1.2rem 0}
+.fkx .eqi{display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;gap:.15em .3em;font-size:clamp(1.05rem,5vw,1.5rem);margin:.3rem 0 .9rem}
+.fkx .op{color:var(--mut)}
+.fkx button.ft{font:inherit;color:var(--ink);background:transparent;border:0;border-bottom:2px dotted var(--link);border-radius:4px;padding:0 .15em;cursor:help;line-height:1.3}
+.fkx button.ft:hover,.fkx button.ft:focus-visible,.fkx button.ft.on{background:var(--paper);border-bottom-style:solid;outline:none}
+.fkx .tip{border-top:1px solid var(--rule);padding-top:.7rem;font-size:.9375rem;line-height:1.55;min-height:7.5rem}
+.fkx .tip h4{margin:0 0 .3rem;font-size:1rem}
+.fkx .tip p{margin:0 0 .4rem}
+.fkx .tip ul{margin:.2rem 0 0;padding-left:0;list-style:none}
+.fkx .tip li{margin:0 0 .3rem;padding-left:1.7em;text-indent:-1.7em}
+.fkx .up,.fkx .dn{display:inline-block;width:1.3em;text-align:center;font-weight:700;border-radius:4px;margin-right:.4em;text-indent:0}
+.fkx .up,.fkx .dn{color:var(--ink);background:var(--paper);border:1px solid var(--rule)}
+</style>
 </head>
 <body>
 <div class="page">
@@ -399,21 +413,17 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <p>The law is the same: only the quantities measured change, pressure instead of concentration and volume instead of
   moles. That is why the gas D is no longer a plain diffusivity: it also depends on solubility, which is why CO₂ diffuses
   about 20 times better than O₂.</p>
-  <figure class="w">
-    <iframe src="w/01-fick.html" title="Fick: O₂ diffusion along the pulmonary capillary" loading="lazy" class="ph"></iframe>
-    <figcaption>Move area, thickness, P<sub>A</sub>O₂ and transit time, or pick a scenario: the red curve is the blood PO₂ along the capillary. <a href="w/01-fick.html">Open full screen</a></figcaption>
-  </figure>
-  <p><b>Oxygen.</b> Mixed venous blood arrives with about 40 mmHg of O₂ against 100 in the alveolus: at the start of the
-  capillary the gradient is 60 mmHg. At rest the red cell spends about 0.75 s in the capillary, but PO₂ reaches the
-  alveolar value in about 0.25 s: two thirds of the time is spare.</p>
-  <p><b>Carbon dioxide.</b> The gradient is small, from about 46 to 40 mmHg, but CO₂ is about 24 times more soluble than
-  O₂ and only slightly heavier (44 against 32). D<sub>CO₂</sub> / D<sub>O₂</sub> ≈ 24 / √(44/32) ≈ 24 / 1.17 ≈ 20: CO₂ diffuses
-  about 20 times more easily, and the small gradient is enough.</p>
-  <p><b>Clinically.</b> Fibrosis and pulmonary oedema increase the thickness T (oedema is Starling moving into the lung), emphysema
-  reduces A. At rest the spare time compensates; on exercise transit falls to 0.25 s and O₂ no longer has time to
-  equilibrate: this is why exertional desaturation is an early sign of fibrosis. D<sub>L</sub> is measured with carbon
-  monoxide (DLCO): haemoglobin binds it so avidly that its pressure in the blood stays near zero, so
-  D<sub>L</sub> = V̇<sub>CO</sub> / P<sub>A</sub>CO. The normal value is about 25 mL·min⁻¹·mmHg⁻¹.</p>
+  <h3>Pulmonary exchange, term by term</h3>
+  <div class="fkx" id="fkx">
+  <div class="eqi"><button type="button" class="ft" data-k="V">V̇<sub>gas</sub></button><span class="op">=</span><button type="button" class="ft" data-k="D">D</button><span class="op">·</span><button type="button" class="ft" data-k="A">A</button><span class="op">·</span><button type="button" class="ft" data-k="P">(P<sub>1</sub> − P<sub>2</sub>)</button><span class="op">/</span><button type="button" class="ft" data-k="T">T</button></div>
+  <div class="tip" id="fkxt" aria-live="polite"><p style="color:var(--mut)">Hover over a term of the formula (or tap it): you get what it is, its value and what makes it go up or down.</p></div>
+  <template data-k="V"><h4>V̇<sub>gas</sub> · the result</h4><p>The volume of gas crossing the barrier each minute. At rest the lung takes up about 250 mL/min of O₂ and removes about 200 mL/min of CO₂.</p><ul><li><span class="up">↑</span><b>exercise</b>: it can rise more than tenfold, because A and the gradient rise together.</li><li><span class="dn">↓</span>it falls whenever another term goes the wrong way: that is what the other four show.</li></ul></template><template data-k="D"><h4>D · diffusion coefficient of the gas</h4><p>A property of the gas, not of the lung: D ∝ solubility / √molecular weight. CO₂ is about 24 times more soluble than O₂ and only slightly heavier (44 against 32): it diffuses about 20 times better, which is why a 6 mmHg gradient is enough.</p><p style="margin-top:.4rem">It does not change with disease. What is measured clinically is D<sub>L</sub> = D · A / T, with carbon monoxide (<b>DLCO</b>, normal about 25 mL·min⁻¹·mmHg⁻¹): it falls in emphysema and fibrosis, because A falls or T rises.</p></template><template data-k="A"><h4>A · exchange area</h4><p>Normal 50–100 m², about a tennis court, spread over hundreds of millions of alveoli.</p><ul><li><span class="dn">↓</span><b>emphysema</b>: the septa between alveoli are destroyed and area is lost.</li><li><span class="dn">↓</span><b>lung resection</b>, <b>atelectasis</b>, <b>pneumonia</b> (alveoli filled).</li><li><span class="dn">↓</span><b>pulmonary embolism</b>: the alveoli are there, but their capillaries are not perfused.</li><li><span class="up">↑</span><b>exercise</b>: apical capillaries, poorly perfused at rest, open up (recruitment).</li></ul></template><template data-k="P"><h4>(P<sub>1</sub> − P<sub>2</sub>) · partial pressure gradient</h4><p>Between alveolus and blood. For O₂ at the start of the capillary: 100 − 40 = 60 mmHg. For CO₂: 46 − 40 = 6 mmHg, towards the alveolus. The gradient is used up along the capillary: at rest O₂ equilibrates in about 0.25 s out of 0.75 s of transit.</p><ul><li><span class="dn">↓</span><b>high altitude</b>: P<sub>A</sub>O₂ falls with atmospheric pressure.</li><li><span class="dn">↓</span><b>hypoventilation</b> (opioids, neuromuscular disease): alveolar O₂ falls and CO₂ rises.</li><li><span class="up">↑</span><b>oxygen therapy</b>: raising the inspired O₂ fraction raises P<sub>1</sub>, the simplest way to make up for a small A or a large T.</li></ul></template><template data-k="T"><h4>T · barrier thickness</h4><p>Not time: the thickness between air and blood (alveolar epithelium, basement membranes, endothelium), 0.2–0.5 µm over most of the surface.</p><ul><li><span class="up">↑</span><b>pulmonary fibrosis</b>: the interstitium thickens with collagen.</li><li><span class="up">↑</span><b>pulmonary oedema</b>: fluid collects in the interstitium and alveoli (Starling moving into the lung).</li><li><span class="up">↑</span><b>interstitial pneumonias</b>.</li></ul><p style="margin-top:.4rem">At rest the spare time compensates; on exercise transit falls to about 0.25 s and O₂ no longer has time: <b>exertional desaturation</b> is an early sign of fibrosis.</p></template>
+  </div>
+<script>(function(){var b=document.getElementById('fkx'),t=document.getElementById('fkxt');
+function show(k){b.querySelectorAll('button.ft').forEach(function(x){x.classList.toggle('on',x.getAttribute('data-k')===k);});
+t.innerHTML=b.querySelector('template[data-k="'+k+'"]').innerHTML;}
+b.querySelectorAll('button.ft').forEach(function(x){var k=x.getAttribute('data-k');
+x.addEventListener('mouseenter',function(){show(k);});x.addEventListener('focus',function(){show(k);});x.addEventListener('click',function(){show(k);});});})();</script>
 </section>
 
 <section id="nernst">
