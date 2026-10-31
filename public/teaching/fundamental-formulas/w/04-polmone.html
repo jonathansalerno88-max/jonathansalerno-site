@@ -46,7 +46,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important;width:100%}
 <div class="pnl"><svg id="sv" viewBox="0 0 640 250" role="img" aria-label="A breathing lung: exercise, ventilation, area, thickness, oxygen and altitude decide the saturation"></svg><div class="dead" id="dead"><div><b id="dT"></b><br><span id="dM"></span><br><button type="button" id="again"></button></div></div></div>
 <div class="res" id="res"></div>
 <script>
-var D={"ui": {"loc": "en-GB", "preT": "Situation:", "pause": "❚❚ Pause", "play": "▶ Resume", "lab": {"w": "Exercise", "ve": "Ventilation", "A": "Area A", "T": "Thickness T", "Fi": "Inspired oxygen (FiO₂)", "h": "Altitude"}, "hint": {"w": "more exercise = more blood through the lungs and less time in the capillary", "ve": "100% = right for the exercise; less = hypoventilation, 0 = apnoea", "A": "normal 50–100 m²; reduced in emphysema", "T": "normal 0.2–0.5 µm; increased in fibrosis and oedema", "Fi": "air 21%; more with oxygen therapy", "h": "higher up, lower pressure and less oxygen in the air"}, "alv": "alveolus", "dConst": "constant", "dLab": "of O₂", "aLab": "area", "p1Lab": "alveolus", "p2Lab": "arriving blood", "tLab": "thickness", "inC": "in", "outC": "out", "transit": "time in the capillary", "grad": "gradient at the start of the capillary", "sOk": "Normal saturation.", "sLow": "Low saturation.", "sHyp": "Hypoxaemia.", "sCya": "Severe hypoxaemia: cyanosis.", "deadS": "Has lost consciousness.", "deadT": "Loses consciousness!", "again": "Start again", "wApnea": "Not breathing: alveolar air is not renewed and P₁ collapses.", "wHypo": "Breathing too little: CO₂ rises and alveolar O₂ falls.", "wAlt": "There is little oxygen in the air: P₁ is low.", "wDiff": "The limit is the barrier: blood leaves the capillary before it has loaded.", "note": "Toy model: alveolar gas equation for alveolar PO₂, then O₂ rising along the capillary by Fick (normal D<sub>L</sub> 25 mL·min⁻¹·mmHg⁻¹), and the haemoglobin curve. Times sped up, numbers indicative."}, "pre": [{"n": "Healthy at rest", "w": 0, "ve": 100, "A": 70, "T": 0.5, "Fi": 21, "h": 0}, {"n": "Healthy on exercise", "w": 100, "ve": 100, "A": 70, "T": 0.5, "Fi": 21, "h": 0}, {"n": "Fibrosis at rest", "w": 0, "ve": 100, "A": 70, "T": 2.5, "Fi": 21, "h": 0}, {"n": "Fibrosis on exercise", "w": 100, "ve": 100, "A": 70, "T": 2.5, "Fi": 21, "h": 0}, {"n": "Fibrosis on exercise + oxygen", "w": 100, "ve": 100, "A": 70, "T": 2.5, "Fi": 40, "h": 0}, {"n": "Emphysema on exercise", "w": 70, "ve": 100, "A": 25, "T": 0.5, "Fi": 21, "h": 0}, {"n": "Opioids (hypoventilation)", "w": 0, "ve": 50, "A": 70, "T": 0.5, "Fi": 21, "h": 0}, {"n": "Apnoea", "w": 0, "ve": 0, "A": 70, "T": 0.5, "Fi": 21, "h": 0}, {"n": "Capanna Margherita, 4559 m", "w": 0, "ve": 150, "A": 70, "T": 0.5, "Fi": 21, "h": 4559}]},U=D.ui,P=D.pre;
+var D={"ui": {"loc": "en-GB", "preT": "Situation:", "pause": "❚❚ Pause", "play": "▶ Resume", "lab": {"w": "Exercise", "ve": "Ventilation", "A": "Area A", "T": "Thickness T", "Fi": "Inspired oxygen (FiO₂)", "h": "Altitude"}, "hint": {"w": "more exercise = more blood through the lungs and less time in the capillary", "ve": "100% = right for the exercise; less = hypoventilation, 0 = apnoea", "A": "normal 50–100 m²; reduced in emphysema", "T": "normal 0.2–0.5 µm; increased in fibrosis and oedema", "Fi": "air 21%; more with oxygen therapy", "h": "higher up, lower pressure and less oxygen in the air"}, "alv": "alveolus", "dConst": "constant", "dLab": "of O₂", "aLab": "area", "p1Lab": "alveolus", "p2Lab": "arriving venous blood", "tLab": "thickness", "inC": "in", "outC": "out", "transit": "time in the capillary", "grad": "gradient at the start of the capillary", "sOk": "Normal saturation.", "sLow": "Low saturation.", "sHyp": "Hypoxaemia.", "sCya": "Severe hypoxaemia: cyanosis.", "deadS": "Has lost consciousness.", "deadT": "Loses consciousness!", "again": "Start again", "wApnea": "Not breathing: alveolar air is not renewed and P₁ collapses.", "wHypo": "Breathing too little: CO₂ rises and alveolar O₂ falls.", "wAlt": "There is little oxygen in the air: P₁ is low.", "wShort": "Blood already arrives nearly empty: the tissues cannot take all the O₂ they use.", "wDiff": "The limit is the barrier: blood leaves the capillary before it has loaded.", "note": "Toy model: alveolar gas equation for alveolar PO₂, then O₂ rising along the capillary by Fick (normal D<sub>L</sub> 25 mL·min⁻¹·mmHg⁻¹), and the haemoglobin curve. Times sped up, numbers indicative."}, "pre": [{"n": "Healthy at rest", "w": 0, "ve": 100, "A": 70, "T": 0.5, "Fi": 21, "h": 0}, {"n": "Healthy on exercise", "w": 100, "ve": 100, "A": 70, "T": 0.5, "Fi": 21, "h": 0}, {"n": "Fibrosis at rest", "w": 0, "ve": 100, "A": 70, "T": 2.5, "Fi": 21, "h": 0}, {"n": "Fibrosis on exercise", "w": 50, "ve": 100, "A": 70, "T": 2.5, "Fi": 21, "h": 0}, {"n": "Fibrosis on exercise + oxygen", "w": 50, "ve": 100, "A": 70, "T": 2.5, "Fi": 40, "h": 0}, {"n": "Emphysema on exercise", "w": 70, "ve": 100, "A": 25, "T": 0.5, "Fi": 21, "h": 0}, {"n": "Opioids (hypoventilation)", "w": 0, "ve": 50, "A": 70, "T": 0.5, "Fi": 21, "h": 0}, {"n": "Apnoea", "w": 0, "ve": 0, "A": 70, "T": 0.5, "Fi": 21, "h": 0}, {"n": "Capanna Margherita, 4559 m", "w": 0, "ve": 150, "A": 70, "T": 0.5, "Fi": 21, "h": 4559}]},U=D.ui,P=D.pre;
 var S={sp:0,w:0,ve:100,A:70,T:0.5,Fi:21,h:0},PA=100,SAT=97,DEAD=false,PZ=false,t0=null,ph=0,flow=0,lowT=0;
 function $(q){return document.querySelector(q);}
 function f(x,d){return x.toLocaleString(U.loc,{maximumFractionDigits:d,minimumFractionDigits:d});}
@@ -63,9 +63,16 @@ function sat(p){p=Math.max(p,0.1);return 100/(1+Math.pow(26.8/p,2.7));}
 // steady state of the alveolus: alveolar gas equation with the ventilation chosen
 function ss(){var w=S.w/100,Pb=760*Math.exp(-S.h/7990),PI=S.Fi/100*(Pb-47),va=S.ve/100,co2=40/Math.max(va,0.01);
   var PAss=Math.max(15,PI-co2/0.8);if(va<0.01)PAss=15;return {PI:PI,PAss:Math.min(PAss,PI),PaCO2:Math.min(co2,120),Pb:Pb};}
-function model(){var w=S.w/100,tt=0.75/(1+2*w),DL=25*(S.A/70)/(S.T/0.5),tau=0.1*25/DL,Pv=Math.min(40-20*w,0.6*PA);
-  var Pend=PA-(PA-Pv)*Math.exp(-tt/tau);return {tt:tt,DL:DL,tau:tau,Pv:Pv,Pend:Pend};}
-function why(m,s){if(S.ve<10)return U.wApnea;if(s.PaCO2>50)return U.wHypo;if(s.PI<100)return U.wAlt;if(PA-m.Pend>8)return U.wDiff;return '';}
+// P2 (mixed venous PO2) from the Fick principle: CvO2 = CaO2 - VO2/Q, then back to PO2 on the haemoglobin curve
+var HB=15,CVMIN=2;
+function cont(p){return 1.34*HB*sat(p)/100+0.003*p;}
+function pOf(c){var lo=0.5,hi=700;for(var k=0;k<40;k++){var mid=(lo+hi)/2;if(cont(mid)<c)lo=mid;else hi=mid;}return (lo+hi)/2;}
+function model(){var w=S.w/100,tt=0.75/(1+2*w),DL=25*(S.A/70)/(S.T/0.5),tau=0.1*25/DL,need=250+2750*w,Q=5+15*w;
+  var Pv=Math.min(40,PA),Pend=PA,Ca=0,Cv=0,up=need;
+  for(var k=0;k<40;k++){Pend=PA-(PA-Pv)*Math.exp(-tt/tau);Ca=cont(Pend);Cv=Ca-need/(Q*10);if(Cv<CVMIN)Cv=Math.min(CVMIN,Ca);var nv=pOf(Cv);Pv=Pv+0.5*(nv-Pv);}
+  Pend=PA-(PA-Pv)*Math.exp(-tt/tau);Ca=cont(Pend);up=Q*10*(Ca-Cv);
+  return {tt:tt,DL:DL,tau:tau,Pv:Pv,Pend:Pend,need:need,Q:Q,Ca:Ca,Cv:Cv,up:up,short:up<need*0.97};}
+function why(m,s){if(S.ve<10)return U.wApnea;if(m.short&&SAT>=60)return U.wShort;if(s.PaCO2>50)return U.wHypo;if(s.PI<100)return U.wAlt;if(PA-m.Pend>8)return U.wDiff;return '';}
 function draw(m,s){var o='<rect width="640" height="250" fill="#FFFFFF"/>';
   // person: head and trunk with two lungs that inflate with the breath
   var br=S.ve<1||DEAD?0:(Math.sin(ph)+1)/2,amp=Math.min(1.5,S.ve/100)*(0.6+0.6*S.w/100),sc=1+0.06*br*amp;
@@ -90,17 +97,17 @@ function draw(m,s){var o='<rect width="640" height="250" fill="#FFFFFF"/>';
   o+='<text x="'+((x0+x1)/2)+'" y="'+(128+Tpx+66)+'" font-size="11" fill="#55697A" text-anchor="middle">'+U.transit+' '+f(m.tt,2)+' s</text>';
   $('#sv').innerHTML=o;
   var st=SAT>=94?['#27500A',U.sOk]:SAT>=90?['#8A4A0B',U.sLow]:SAT>=80?['#A32D2D',U.sHyp]:['#A32D2D',U.sCya];
-  var mg=Math.max(PA-m.Pv,0)*m.tau/m.tt*(1-Math.exp(-m.tt/m.tau)),VO=m.DL*mg;
+  var VO=m.up;
   function ar(v,n,tol){return Math.abs(v-n)<=tol?'':(v>n?' ↑':' ↓');}
   function tile(sym,val,lab,chg){return '<div class="tm'+(chg?' ch':'')+'"><span class="sy">'+sym+'</span><b>'+val+'</b><small>'+lab+'</small></div>';}
-  var aV=ar(VO,200,15),aA=ar(S.A,70,2),aT=ar(S.T,0.5,0.05),aP1=ar(PA,100,3),aP2=ar(m.Pv,40,2);
+  var aV=ar(VO,250,15),aA=ar(S.A,70,2),aT=ar(S.T,0.5,0.05),aP1=ar(PA,100,3),aP2=ar(m.Pv,40,2);
   $('#res').innerHTML='<div class="eqr">'+tile('V̇O₂',f(VO,0)+aV,'mL/min',aV)+'<span class="op">=</span>'+tile('D',U.dConst,U.dLab,'')+'<span class="op">·</span>'+tile('A',f(S.A,0)+' m²'+aA,U.aLab,aA)+
    '<span class="op">·</span><span class="op">(</span>'+tile('P₁',f(PA,0)+' mmHg'+aP1,U.p1Lab,aP1)+'<span class="op">−</span>'+tile('P₂',f(m.Pv,0)+' mmHg'+aP2,U.p2Lab,aP2)+'<span class="op">)</span><span class="op">/</span>'+tile('T',f(S.T,1)+' µm'+aT,U.tLab,aT)+'</div>'+
    '<p><b style="color:'+st[0]+'">SpO₂ '+f(SAT,0)+' % · '+(DEAD?U.deadS:st[1])+'</b> '+(SAT<94||DEAD?why(m,s):'')+'</p>';}
 function tick(ts){if(t0===null)t0=ts;var dt=Math.min(0.05,(ts-t0)/1000);t0=ts;var s=ss(),m=model();
   if(!PZ){var rate=(12+28*S.w/100)*(S.ve<1?0:Math.min(1.6,0.5+S.ve/200));ph+=dt*rate/60*2*Math.PI*1.5;flow=(flow+dt/(m.tt*4))%1;
     if(!DEAD){PA+=(s.PAss-PA)*Math.min(1,dt/1.5);var tg=sat(m.Pend);SAT+=(tg-SAT)*Math.min(1,dt/0.8);
-      if(SAT<60){lowT+=dt;if(lowT>1.5){DEAD=true;$('#dT').textContent=U.deadT;$('#dM').textContent=why(m,s)||U.wDiff;$('#again').textContent=U.again;$('#dead').style.display='flex';}}else lowT=0;}}
+      if(SAT<60||m.short){lowT+=dt;if(lowT>1.5){DEAD=true;$('#dT').textContent=U.deadT;$('#dM').textContent=why(m,s)||U.wDiff;$('#again').textContent=U.again;$('#dead').style.display='flex';}}else lowT=0;}}
   draw(m,s);requestAnimationFrame(tick);}
 ctl();setPre(0);requestAnimationFrame(tick);
 </script>
