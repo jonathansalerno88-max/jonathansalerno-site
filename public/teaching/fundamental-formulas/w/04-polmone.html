@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fick in the lung: try it</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+svg[viewBox]{min-width:0!important;max-width:100%!important;width:100%}
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 8px;font-size:13px}
+.row .vl{font-weight:700;color:#55697A}
+.row button{font:inherit;font-size:13px;padding:4px 10px;border-radius:999px;border:1px solid var(--border-strong);background:#FFFFFF;color:var(--text-primary);cursor:pointer}
+.row button.on{border:1.5px solid #1456A8;background:#EEF4FC;color:#1456A8;font-weight:700}
+.row .sp{flex:1 1 auto}
+#pz.on{border-color:#B5520C;background:#FCEEDD;color:#7A3E0B}
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 16px;margin:0 0 10px}
+.ctl label{display:block;font-size:13px;font-weight:700}
+.ctl label span{float:right;color:#1456A8}
+.ctl input{width:100%}
+.ctl small{display:block;color:#55697A;font-size:12px;line-height:1.35}
+.pnl{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;margin:0 0 8px;overflow:hidden;position:relative}
+.res{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:9px 12px;font-size:14px;line-height:1.55}
+.res p{margin:0 0 6px}.res p:last-child{margin:0}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px;margin:0 0 8px}
+.kv div{background:#F7FAFC;border:1px solid var(--border);border-radius:8px;padding:5px 8px;font-size:12px;color:#55697A}
+.kv b{display:block;font-size:17px;color:#16222E}
+.dead{position:absolute;inset:0;display:none;align-items:flex-start;justify-content:center;padding-top:8px;background:rgba(251,252,253,.25)}
+.dead div{background:#FFFFFF;border:1.5px solid #A32D2D;border-radius:10px;padding:6px 12px;text-align:center;max-width:85%;font-size:14px}
+.dead b{color:#A32D2D;font-size:16px}
+@media (max-width:500px){.dead div{font-size:11.5px;padding:4px 8px}.dead b{font-size:13px}.dead button{font-size:12px;padding:3px 9px;margin-top:3px}}
+.dead button{margin-top:6px;font:inherit;font-size:13px;padding:5px 12px;border-radius:8px;border:1px solid #1456A8;background:#EEF4FC;color:#1456A8;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<h2 class="sr-only">A breathing lung: exercise, ventilation, area, thickness, oxygen and altitude decide the saturation</h2>
+<div class="row" id="pre"></div>
+<div class="ctl" id="ctl"></div>
+<div class="pnl"><svg id="sv" viewBox="0 0 640 250" role="img" aria-label="A breathing lung: exercise, ventilation, area, thickness, oxygen and altitude decide the saturation"></svg><div class="dead" id="dead"><div><b id="dT"></b><br><span id="dM"></span><br><button type="button" id="again"></button></div></div></div>
+<div class="res" id="res"></div>
+<script>
+var D={"ui": {"loc": "en-GB", "preT": "Situation:", "pause": "❚❚ Pause", "play": "▶ Resume", "lab": {"w": "Exercise", "ve": "Ventilation", "A": "Area A", "T": "Thickness T", "Fi": "Inspired oxygen (FiO₂)", "h": "Altitude"}, "hint": {"w": "more exercise = more blood through the lungs and less time in the capillary", "ve": "100% = right for the exercise; less = hypoventilation, 0 = apnoea", "A": "normal 50–100 m²; reduced in emphysema", "T": "normal 0.2–0.5 µm; increased in fibrosis and oedema", "Fi": "air 21%; more with oxygen therapy", "h": "higher up, lower pressure and less oxygen in the air"}, "alv": "alveolus", "inC": "in", "outC": "out", "transit": "time in the capillary", "grad": "gradient at the start of the capillary", "sOk": "Normal saturation.", "sLow": "Low saturation.", "sHyp": "Hypoxaemia.", "sCya": "Severe hypoxaemia: cyanosis.", "deadS": "Has lost consciousness.", "deadT": "Loses consciousness!", "again": "Start again", "wApnea": "Not breathing: alveolar air is not renewed and P₁ collapses.", "wHypo": "Breathing too little: CO₂ rises and alveolar O₂ falls.", "wAlt": "There is little oxygen in the air: P₁ is low.", "wDiff": "The limit is the barrier: blood leaves the capillary before it has loaded.", "note": "Toy model: alveolar gas equation for alveolar PO₂, then O₂ rising along the capillary by Fick (normal D<sub>L</sub> 25 mL·min⁻¹·mmHg⁻¹), and the haemoglobin curve. Times sped up, numbers indicative."}, "pre": [{"n": "Healthy at rest", "w": 0, "ve": 100, "A": 70, "T": 0.5, "Fi": 21, "h": 0}, {"n": "Healthy on exercise", "w": 100, "ve": 100, "A": 70, "T": 0.5, "Fi": 21, "h": 0}, {"n": "Fibrosis at rest", "w": 0, "ve": 100, "A": 70, "T": 2.5, "Fi": 21, "h": 0}, {"n": "Fibrosis on exercise", "w": 100, "ve": 100, "A": 70, "T": 2.5, "Fi": 21, "h": 0}, {"n": "Fibrosis on exercise + oxygen", "w": 100, "ve": 100, "A": 70, "T": 2.5, "Fi": 40, "h": 0}, {"n": "Emphysema on exercise", "w": 70, "ve": 100, "A": 25, "T": 0.5, "Fi": 21, "h": 0}, {"n": "Opioids (hypoventilation)", "w": 0, "ve": 50, "A": 70, "T": 0.5, "Fi": 21, "h": 0}, {"n": "Apnoea", "w": 0, "ve": 0, "A": 70, "T": 0.5, "Fi": 21, "h": 0}, {"n": "Capanna Margherita, 4559 m", "w": 0, "ve": 150, "A": 70, "T": 0.5, "Fi": 21, "h": 4559}]},U=D.ui,P=D.pre;
+var S={sp:0,w:0,ve:100,A:70,T:0.5,Fi:21,h:0},PA=100,SAT=97,DEAD=false,PZ=false,t0=null,ph=0,flow=0,lowT=0;
+function $(q){return document.querySelector(q);}
+function f(x,d){return x.toLocaleString(U.loc,{maximumFractionDigits:d,minimumFractionDigits:d});}
+var SL=[['w',0,100,1,'%'],['ve',0,300,5,'%'],['A',10,100,1,'m²'],['T',0.3,5,0.1,'µm'],['Fi',21,100,1,'%'],['h',0,8800,100,'m']];
+function ctl(){$('#ctl').innerHTML=SL.map(function(s){return '<div><label for="s_'+s[0]+'">'+U.lab[s[0]]+' <span id="v_'+s[0]+'"></span></label><input type="range" id="s_'+s[0]+'" min="'+s[1]+'" max="'+s[2]+'" step="'+s[3]+'"><small>'+U.hint[s[0]]+'</small></div>';}).join('');
+  SL.forEach(function(s){$('#s_'+s[0]).addEventListener('input',function(e){S[s[0]]=+e.target.value;S.sp=-1;sync();});});}
+function sync(){SL.forEach(function(s){$('#s_'+s[0]).value=S[s[0]];$('#v_'+s[0]).textContent=f(S[s[0]],s[3]<1?1:0)+' '+s[4];});
+  $('#pre').innerHTML='<span class="vl">'+U.preT+'</span>'+P.map(function(p,i){return '<button type="button" data-p="'+i+'"'+(i===S.sp?' class="on"':'')+'>'+p.n+'</button>';}).join('')+'<span class="sp"></span><button type="button" id="pz"'+(PZ?' class="on"':'')+'>'+(PZ?U.play:U.pause)+'</button>';}
+function setPre(i){var p=P[i];S.sp=i;['w','ve','A','T','Fi','h'].forEach(function(k){S[k]=p[k];});revive();sync();}
+$('#pre').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.id==='pz'){PZ=!PZ;sync();return;}setPre(+b.getAttribute('data-p'));});
+$('#again').addEventListener('click',function(){revive();});
+function revive(){DEAD=false;lowT=0;PA=ss().PAss;SAT=sat(model().Pend);$('#dead').style.display='none';}
+function sat(p){p=Math.max(p,0.1);return 100/(1+Math.pow(26.8/p,2.7));}
+// steady state of the alveolus: alveolar gas equation with the ventilation chosen
+function ss(){var w=S.w/100,Pb=760*Math.exp(-S.h/7990),PI=S.Fi/100*(Pb-47),va=S.ve/100,co2=40/Math.max(va,0.01);
+  var PAss=Math.max(15,PI-co2/0.8);if(va<0.01)PAss=15;return {PI:PI,PAss:Math.min(PAss,PI),PaCO2:Math.min(co2,120),Pb:Pb};}
+function model(){var w=S.w/100,tt=0.75/(1+2*w),DL=25*(S.A/70)/(S.T/0.5),tau=0.1*25/DL,Pv=Math.min(40-20*w,0.6*PA);
+  var Pend=PA-(PA-Pv)*Math.exp(-tt/tau);return {tt:tt,DL:DL,tau:tau,Pv:Pv,Pend:Pend};}
+function why(m,s){if(S.ve<10)return U.wApnea;if(s.PaCO2>50)return U.wHypo;if(s.PI<100)return U.wAlt;if(PA-m.Pend>8)return U.wDiff;return '';}
+function draw(m,s){var o='<rect width="640" height="250" fill="#FFFFFF"/>';
+  // person: head and trunk with two lungs that inflate with the breath
+  var br=S.ve<1||DEAD?0:(Math.sin(ph)+1)/2,amp=Math.min(1.5,S.ve/100)*(0.6+0.6*S.w/100),sc=1+0.06*br*amp;
+  var lip=SAT>=90?'#C0504D':SAT>=80?'#8E6FA8':'#4F6DB0',skin=SAT>=85?'#F2D6C4':'#D9D6E6';
+  o+='<g transform="translate(130,0)"><circle cx="0" cy="44" r="28" fill="'+skin+'" stroke="#9A8478"/>'+(DEAD?'<path d="M-12 38 l7 6 M-12 44 l7 -6 M5 38 l7 6 M5 44 l7 -6" stroke="#16222E" stroke-width="2"/>':'<circle cx="-9" cy="40" r="2.6" fill="#16222E"/><circle cx="9" cy="40" r="2.6" fill="#16222E"/>')+
+    '<path d="M-9 56 Q0 '+(60+4*br)+' 9 56" stroke="'+lip+'" stroke-width="3.5" fill="none" stroke-linecap="round"/>'+
+    '<path d="M-70 92 Q-72 76 -40 74 L40 74 Q72 76 70 92 L62 240 L-62 240Z" fill="#EEF2F5" stroke="#B9C5CF"/>'+
+    '<path d="M0 70 L0 108 M0 108 L-18 124 M0 108 L18 124" stroke="#8696A4" stroke-width="5" fill="none" stroke-linecap="round"/>'+
+    '<g transform="translate(-30,160) scale('+sc+') translate(30,-160)"><path d="M-14 112 C-46 104 -58 150 -54 196 C-52 220 -20 222 -12 206 Z" fill="#F4B7B4" stroke="#C0504D" stroke-width="1.5"/></g>'+
+    '<g transform="translate(30,160) scale('+sc+') translate(-30,-160)"><path d="M14 112 C46 104 58 150 54 196 C52 220 20 222 12 206 Z" fill="#F4B7B4" stroke="#C0504D" stroke-width="1.5"/></g>'+
+    '<path d="M-58 212 Q0 '+(232+8*br*amp)+' 58 212" stroke="#B5520C" stroke-width="2.5" fill="none"/>';
+  o+='</g>';
+  // zoom on one alveolus and its capillary: red cells change colour along the capillary
+  var x0=300,x1=620,yc=150;o+='<line x1="230" y1="150" x2="'+x0+'" y2="120" stroke="#B9C5CF" stroke-dasharray="4 3"/>';
+  o+='<path d="M'+x0+' 128 Q460 '+(30-10*br*Math.min(1,S.ve/100))+' '+x1+' 128 Z" fill="#E6F1F9" stroke="#1F6FB2" stroke-width="1.5"/>';
+  o+='<text x="460" y="96" font-size="12" font-weight="700" text-anchor="middle" fill="#1F6FB2">'+U.alv+' P<tspan font-size="9" dy="3">A</tspan><tspan dy="-3">O₂ '+f(PA,0)+' mmHg</tspan></text>';
+  var Tpx=Math.min(14,4+S.T*2);o+='<rect x="'+x0+'" y="128" width="'+(x1-x0)+'" height="'+Tpx+'" fill="#F2DE96" opacity=".7"/>';
+  o+='<rect x="'+x0+'" y="'+(128+Tpx)+'" width="'+(x1-x0)+'" height="34" rx="6" fill="#FBEDEC" stroke="#C0504D"/>';
+  for(var i=0;i<9;i++){var u=((flow+i/9)%1),x=x0+8+u*(x1-x0-16),t=u*m.tt,p=PA-(PA-m.Pv)*Math.exp(-t/m.tau),sv=sat(p)/100;
+    var r=Math.round(90+150*sv),g=Math.round(70-30*sv),b=Math.round(160-120*sv);o+='<ellipse cx="'+x.toFixed(1)+'" cy="'+(128+Tpx+17)+'" rx="11" ry="7" fill="rgb('+r+','+g+','+b+')"/>';}
+  o+='<text x="'+x0+'" y="'+(128+Tpx+50)+'" font-size="11" fill="#55697A">'+U.inC+' '+f(m.Pv,0)+' mmHg</text><text x="'+x1+'" y="'+(128+Tpx+50)+'" font-size="11" fill="#55697A" text-anchor="end">'+U.outC+' '+f(m.Pend,0)+' mmHg</text>';
+  o+='<text x="'+((x0+x1)/2)+'" y="'+(128+Tpx+66)+'" font-size="11" fill="#55697A" text-anchor="middle">'+U.transit+' '+f(m.tt,2)+' s</text>';
+  $('#sv').innerHTML=o;
+  var st=SAT>=94?['#27500A',U.sOk]:SAT>=90?['#8A4A0B',U.sLow]:SAT>=80?['#A32D2D',U.sHyp]:['#A32D2D',U.sCya];
+  $('#res').innerHTML='<div class="kv"><div>SpO₂<b style="color:'+st[0]+'">'+f(SAT,0)+' %</b></div><div>P<sub>A</sub>O₂<b>'+f(PA,0)+' mmHg</b></div><div>P<sub>a</sub>O₂<b>'+f(m.Pend,0)+' mmHg</b></div><div>P<sub>a</sub>CO₂<b>'+f(s.PaCO2,0)+' mmHg</b></div><div>D<sub>L</sub><b>'+f(m.DL,0)+'</b>mL·min⁻¹·mmHg⁻¹</div></div>'+
+   '<p class="eq">V̇O₂ = D · A · (P₁ − P₂) / T · '+U.grad+' <b>'+f(Math.max(PA-m.Pv,0),0)+' mmHg</b></p>'+
+   '<p><b style="color:'+st[0]+'">'+(DEAD?U.deadS:st[1])+'</b> '+(SAT<94||DEAD?why(m,s):'')+'</p><p style="color:#55697A;font-size:12.5px">'+U.note+'</p>';}
+function tick(ts){if(t0===null)t0=ts;var dt=Math.min(0.05,(ts-t0)/1000);t0=ts;var s=ss(),m=model();
+  if(!PZ){var rate=(12+28*S.w/100)*(S.ve<1?0:Math.min(1.6,0.5+S.ve/200));ph+=dt*rate/60*2*Math.PI*1.5;flow=(flow+dt/(m.tt*4))%1;
+    if(!DEAD){PA+=(s.PAss-PA)*Math.min(1,dt/1.5);var tg=sat(m.Pend);SAT+=(tg-SAT)*Math.min(1,dt/0.8);
+      if(SAT<60){lowT+=dt;if(lowT>1.5){DEAD=true;$('#dT').textContent=U.deadT;$('#dM').textContent=why(m,s)||U.wDiff;$('#again').textContent=U.again;$('#dead').style.display='flex';}}else lowT=0;}}
+  draw(m,s);requestAnimationFrame(tick);}
+ctl();setPre(0);requestAnimationFrame(tick);
+</script>
+</body>
+</html>
