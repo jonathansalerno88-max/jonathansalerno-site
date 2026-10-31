@@ -327,41 +327,63 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 
 <section id="fick">
   <h2>2 · Fick's law: diffusion</h2>
-  <p style="text-align:center;font-size:1.3rem;margin:1.1rem 0 1.2rem">J = D · A · ΔC / Δx</p>
   <p>Diffusion is the net movement of molecules from where they are more concentrated to where they are less, by
   thermal agitation alone: it is the first of the three routes on the <a href="../transporters/">transporters</a> page,
-  the one through the lipids. Fick's law (1855) says how much: the flux is proportional to the area and to the
-  concentration difference, and inversely proportional to the thickness to cross. In differential form it reads
-  J = −D · A · dC/dx: the minus sign only says that the flux goes towards the lower concentration.</p>
-  <h3>The variables</h3>
+  the one through the lipids. Fick's law (1855) comes in two forms: the <b>general</b> one, valid for any dissolved
+  substance, and the one <b>modified for gases</b>, which is the one of pulmonary gas exchange.</p>
+
+  <div style="border:1px solid var(--rule);border-left:5px solid #1456A8;border-radius:8px;padding:.6rem 1rem .8rem;margin:1.2rem 0">
+  <h3 style="margin-top:.4rem">A · The general form</h3>
+  <p style="text-align:center;font-size:1.3rem;margin:.8rem 0">J = −D · ∂C / ∂x</p>
+  <p>The flux is proportional to how steeply concentration changes across space (the gradient ∂C/∂x). The minus sign
+  only says that the flux goes towards the lower concentration. Here J is a flux <b>per unit area</b>.</p>
   <div class="tscroll tw"><table>
     <thead><tr><th>Symbol</th><th>What it is</th><th>Unit</th><th>Dimensions</th></tr></thead>
     <tbody>
-    <tr><td>J</td><td>net flux of substance (the result)</td><td>mol·s⁻¹</td><td>[N T⁻¹]</td></tr>
-    <tr><td>D</td><td>diffusion coefficient: depends on the molecule, the medium and the temperature</td><td>cm²·s⁻¹</td><td>[L² T⁻¹]</td></tr>
-    <tr><td>A</td><td>area across which diffusion occurs</td><td>cm²</td><td>[L²]</td></tr>
-    <tr><td>ΔC</td><td>concentration difference between the two sides</td><td>mol·cm⁻³</td><td>[N L⁻³]</td></tr>
-    <tr><td>Δx</td><td>thickness to cross</td><td>cm</td><td>[L]</td></tr>
+    <tr><td>J</td><td>rate of transfer per unit area (the result)</td><td>mol·cm⁻²·s⁻¹</td><td>[N L⁻² T⁻¹]</td></tr>
+    <tr><td>D</td><td>diffusivity (diffusion coefficient): depends on the molecule, the medium and the temperature</td><td>cm²·s⁻¹</td><td>[L² T⁻¹]</td></tr>
+    <tr><td>C</td><td>concentration of the diffusing substance</td><td>mol·cm⁻³</td><td>[N L⁻³]</td></tr>
+    <tr><td>x</td><td>space coordinate, measured normal to the surface</td><td>cm</td><td>[L]</td></tr>
     </tbody></table></div>
-  <p class="caveat">[N] amount of substance, [L] length, [T] time. Check: [L² T⁻¹] × [L²] × [N L⁻³] / [L] = [N T⁻¹] = J ✓.</p>
-  <h3>Example: diffusion in the lung</h3>
-  <p>For a gas, partial pressure replaces concentration and the law becomes
-  V̇<sub>gas</sub> = D · A · (P<sub>1</sub> − P<sub>2</sub>) / Δx. Respiratory textbooks often call the thickness T: here I call it
-  Δx so it is not confused with time. The alveolar-capillary barrier is built for Fick: a huge area, 50–100 m², and a
-  minimal thickness, 0.2–0.5 µm over most of it.</p>
+  <p class="caveat">[N] amount of substance, [L] length, [T] time. Check:
+  [L² T⁻¹] × [N L⁻³] / [L] = [N L⁻² T⁻¹] = J ✓.</p>
+  <p><b>Across a membrane.</b> If the membrane has thickness Δx and area A, the gradient becomes ΔC/Δx and, multiplying
+  by the area, you get the total flux: <b>J · A = D · A · ΔC / Δx</b>, in mol·s⁻¹ [N T⁻¹]. This is the form to remember:
+  more area and more concentration difference raise the flux, more thickness lowers it.</p>
+  </div>
+
+  <div style="border:1px solid var(--rule);border-left:5px solid #B5520C;border-radius:8px;padding:.6rem 1rem .8rem;margin:1.2rem 0">
+  <h3 style="margin-top:.4rem">B · The form for gases: pulmonary exchange</h3>
+  <p style="text-align:center;font-size:1.3rem;margin:.8rem 0">V̇<sub>gas</sub> = D · A · (P<sub>1</sub> − P<sub>2</sub>) / T</p>
+  <p>For a gas you measure <b>partial pressure</b> instead of concentration, and the result is a <b>volume of gas per
+  minute</b> instead of moles per second. Mind the symbol: here <b>T is the thickness</b> of the barrier, not time nor
+  temperature. The alveolar-capillary barrier is built for Fick: a huge area, 50–100 m², and a minimal thickness,
+  0.2–0.5 µm over most of it.</p>
   <div class="tscroll tw"><table>
     <thead><tr><th>Symbol</th><th>What it is</th><th>Unit</th><th>Dimensions</th></tr></thead>
     <tbody>
-    <tr><td>V̇<sub>gas</sub></td><td>volume of gas crossing the barrier each minute</td><td>mL·min⁻¹</td><td>[L³ T⁻¹]</td></tr>
+    <tr><td>V̇<sub>gas</sub></td><td>volume of gas crossing the barrier each minute (the result)</td><td>mL·min⁻¹</td><td>[L³ T⁻¹]</td></tr>
+    <tr><td>D</td><td>diffusion coefficient of the gas: proportional to solubility / √molecular weight</td><td>cm²·min⁻¹·mmHg⁻¹</td><td>[M⁻¹ L³ T]</td></tr>
     <tr><td>A</td><td>alveolar surface area</td><td>m²</td><td>[L²]</td></tr>
-    <tr><td>Δx</td><td>thickness of the alveolar-capillary barrier</td><td>µm</td><td>[L]</td></tr>
-    <tr><td>P<sub>1</sub> − P<sub>2</sub></td><td>partial pressure difference between alveolus and blood</td><td>mmHg</td><td>[M L⁻¹ T⁻²]</td></tr>
-    <tr><td>D</td><td>diffusion constant of the gas: proportional to solubility / √molecular weight</td><td>cm²·min⁻¹·mmHg⁻¹</td><td>[M⁻¹ L³ T]</td></tr>
-    <tr><td>D<sub>L</sub></td><td>diffusing capacity of the lung: D · A / Δx = V̇ / (P<sub>1</sub> − P<sub>2</sub>)</td><td>mL·min⁻¹·mmHg⁻¹</td><td>[M⁻¹ L⁴ T]</td></tr>
+    <tr><td>P<sub>1</sub> − P<sub>2</sub></td><td>partial pressure gradient between alveolus and blood</td><td>mmHg</td><td>[M L⁻¹ T⁻²]</td></tr>
+    <tr><td>T</td><td>thickness of the alveolar-capillary barrier</td><td>µm</td><td>[L]</td></tr>
     </tbody></table></div>
-  <p class="caveat">[M] mass. Check: D<sub>L</sub> × ΔP = [M⁻¹ L⁴ T] × [M L⁻¹ T⁻²] = [L³ T⁻¹] = V̇ ✓.
-  D<sub>L</sub> has the same dimensions as Starling's K<sub>f</sub>: both say how much passes per mmHg of driving force.
+  <p class="caveat">[M] mass. Check: [M⁻¹ L³ T] × [L²] × [M L⁻¹ T⁻²] / [L] = [L³ T⁻¹] = V̇ ✓.
   1 mmHg ≈ 133.3 Pa (Pa = N/m²).</p>
+  <p><b>Diffusing capacity.</b> D, A and T together are a property of the lung: D<sub>L</sub> = D · A / T, in
+  mL·min⁻¹·mmHg⁻¹ [M⁻¹ L⁴ T], so that V̇<sub>gas</sub> = D<sub>L</sub> · (P<sub>1</sub> − P<sub>2</sub>). It has the same dimensions as
+  Starling's K<sub>f</sub>: both say how much passes per mmHg of driving force.</p>
+  </div>
+
+  <h3>What changes from A to B</h3>
+  <div class="tscroll tw"><table>
+    <thead><tr><th></th><th>A · general form</th><th>B · form for gases</th><th>Why</th></tr></thead>
+    <tbody>
+    <tr><td>Driving force</td><td>ΔC, mol·cm⁻³</td><td>P<sub>1</sub> − P<sub>2</sub>, mmHg</td><td>Henry's law: a dissolved gas has concentration C = α · P (α = solubility)</td></tr>
+    <tr><td>Coefficient</td><td>D, cm²·s⁻¹</td><td>D, cm²·min⁻¹·mmHg⁻¹</td><td>the gas D also contains solubility α; D ∝ α / √MW (Graham's law)</td></tr>
+    <tr><td>Thickness</td><td>Δx</td><td>T</td><td>the same thing, a different name in respiratory textbooks</td></tr>
+    <tr><td>Result</td><td>J · A, mol·s⁻¹</td><td>V̇<sub>gas</sub>, mL·min⁻¹</td><td>for gases volumes are counted: 1 mol ≈ 22.4 L (STPD)</td></tr>
+    </tbody></table></div>
   <figure class="w">
     <iframe src="w/01-fick.html" title="Fick: O₂ diffusion along the pulmonary capillary" loading="lazy" class="ph"></iframe>
     <figcaption>Move area, thickness, P<sub>A</sub>O₂ and transit time, or pick a scenario: the red curve is the blood PO₂ along the capillary. <a href="w/01-fick.html">Open full screen</a></figcaption>
@@ -372,7 +394,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <p><b>Carbon dioxide.</b> The gradient is small, from about 46 to 40 mmHg, but CO₂ is about 24 times more soluble than
   O₂ and only slightly heavier (44 against 32). D<sub>CO₂</sub> / D<sub>O₂</sub> ≈ 24 / √(44/32) ≈ 24 / 1.17 ≈ 20: CO₂ diffuses
   about 20 times more easily, and the small gradient is enough.</p>
-  <p><b>Clinically.</b> Fibrosis and pulmonary oedema increase Δx (oedema is Starling moving into the lung), emphysema
+  <p><b>Clinically.</b> Fibrosis and pulmonary oedema increase the thickness T (oedema is Starling moving into the lung), emphysema
   reduces A. At rest the spare time compensates; on exercise transit falls to 0.25 s and O₂ no longer has time to
   equilibrate: this is why exertional desaturation is an early sign of fibrosis. D<sub>L</sub> is measured with carbon
   monoxide (DLCO): haemoglobin binds it so avidly that its pressure in the blood stays near zero, so

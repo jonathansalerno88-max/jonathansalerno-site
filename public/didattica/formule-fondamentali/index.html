@@ -329,41 +329,63 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 
 <section id="fick">
   <h2>2 · La legge di Fick: la diffusione</h2>
-  <p style="text-align:center;font-size:1.3rem;margin:1.1rem 0 1.2rem">J = D · A · ΔC / Δx</p>
   <p>La diffusione è il movimento netto di molecole da dove sono più concentrate a dove lo sono meno, per semplice
   agitazione termica: è la prima delle tre vie della pagina sui <a href="../trasportatori/">trasportatori</a>, quella
-  attraverso i lipidi. La legge di Fick (1855) dice quanto: il flusso è proporzionale alla superficie e alla differenza di
-  concentrazione, inversamente proporzionale allo spessore da attraversare. Nella forma differenziale si scrive
-  J = −D · A · dC/dx: il segno meno dice solo che il flusso va verso la concentrazione più bassa.</p>
-  <h3>Le variabili</h3>
+  attraverso i lipidi. La legge di Fick (1855) si usa in due forme: quella <b>generale</b>, valida per qualunque sostanza
+  sciolta, e quella <b>modificata per i gas</b>, che è quella dello scambio polmonare.</p>
+
+  <div style="border:1px solid var(--rule);border-left:5px solid #1456A8;border-radius:8px;padding:.6rem 1rem .8rem;margin:1.2rem 0">
+  <h3 style="margin-top:.4rem">A · La forma generale</h3>
+  <p style="text-align:center;font-size:1.3rem;margin:.8rem 0">J = −D · ∂C / ∂x</p>
+  <p>Il flusso è proporzionale a quanto ripidamente cambia la concentrazione lungo lo spazio (il gradiente ∂C/∂x).
+  Il segno meno dice solo che il flusso va verso la concentrazione più bassa. J qui è un flusso <b>per unità di superficie</b>.</p>
   <div class="tscroll tw"><table>
     <thead><tr><th>Simbolo</th><th>Che cos'è</th><th>Unità</th><th>Dimensioni</th></tr></thead>
     <tbody>
-    <tr><td>J</td><td>flusso netto di sostanza (il risultato)</td><td>mol·s⁻¹</td><td>[N T⁻¹]</td></tr>
-    <tr><td>D</td><td>coefficiente di diffusione: dipende dalla molecola, dal mezzo e dalla temperatura</td><td>cm²·s⁻¹</td><td>[L² T⁻¹]</td></tr>
-    <tr><td>A</td><td>superficie attraverso cui si diffonde</td><td>cm²</td><td>[L²]</td></tr>
-    <tr><td>ΔC</td><td>differenza di concentrazione fra i due lati</td><td>mol·cm⁻³</td><td>[N L⁻³]</td></tr>
-    <tr><td>Δx</td><td>spessore da attraversare</td><td>cm</td><td>[L]</td></tr>
+    <tr><td>J</td><td>flusso di sostanza per unità di superficie (il risultato)</td><td>mol·cm⁻²·s⁻¹</td><td>[N L⁻² T⁻¹]</td></tr>
+    <tr><td>D</td><td>diffusività (coefficiente di diffusione): dipende dalla molecola, dal mezzo e dalla temperatura</td><td>cm²·s⁻¹</td><td>[L² T⁻¹]</td></tr>
+    <tr><td>C</td><td>concentrazione della sostanza che diffonde</td><td>mol·cm⁻³</td><td>[N L⁻³]</td></tr>
+    <tr><td>x</td><td>coordinata nello spazio, misurata perpendicolare alla superficie</td><td>cm</td><td>[L]</td></tr>
     </tbody></table></div>
-  <p class="caveat">[N] quantità di sostanza, [L] lunghezza, [T] tempo. Controprova: [L² T⁻¹] × [L²] × [N L⁻³] / [L] = [N T⁻¹] = J ✓.</p>
-  <h3>Esempio: la diffusione nel polmone</h3>
-  <p>Per un gas al posto della concentrazione si usa la pressione parziale, e la legge diventa
-  V̇<sub>gas</sub> = D · A · (P<sub>1</sub> − P<sub>2</sub>) / Δx. Nei libri di respiratoria lo spessore si chiama spesso T: qui
-  lo chiamo Δx per non confonderlo con il tempo. La barriera alveolo-capillare è fatta apposta per Fick: una superficie
-  enorme, 50–100 m², e uno spessore minimo, 0,2–0,5 µm nella maggior parte della sua area.</p>
+  <p class="caveat">[N] quantità di sostanza, [L] lunghezza, [T] tempo. Controprova:
+  [L² T⁻¹] × [N L⁻³] / [L] = [N L⁻² T⁻¹] = J ✓.</p>
+  <p><b>Attraverso una membrana.</b> Se la membrana ha spessore Δx e superficie A, il gradiente diventa ΔC/Δx e,
+  moltiplicando per la superficie, si ottiene il flusso totale: <b>J · A = D · A · ΔC / Δx</b>, in mol·s⁻¹ [N T⁻¹].
+  È la forma da ricordare: più superficie e più differenza di concentrazione aumentano il flusso, più spessore lo riduce.</p>
+  </div>
+
+  <div style="border:1px solid var(--rule);border-left:5px solid #B5520C;border-radius:8px;padding:.6rem 1rem .8rem;margin:1.2rem 0">
+  <h3 style="margin-top:.4rem">B · La forma per i gas: lo scambio polmonare</h3>
+  <p style="text-align:center;font-size:1.3rem;margin:.8rem 0">V̇<sub>gas</sub> = D · A · (P<sub>1</sub> − P<sub>2</sub>) / T</p>
+  <p>Per un gas si misura la <b>pressione parziale</b> invece della concentrazione, e il risultato è un <b>volume di gas al
+  minuto</b> invece che moli al secondo. Attenzione al simbolo: qui <b>T è lo spessore</b> della barriera, non il tempo né la
+  temperatura. La barriera alveolo-capillare è fatta apposta per Fick: una superficie enorme, 50–100 m², e uno spessore
+  minimo, 0,2–0,5 µm nella maggior parte della sua area.</p>
   <div class="tscroll tw"><table>
     <thead><tr><th>Simbolo</th><th>Che cos'è</th><th>Unità</th><th>Dimensioni</th></tr></thead>
     <tbody>
-    <tr><td>V̇<sub>gas</sub></td><td>volume di gas che attraversa la barriera ogni minuto</td><td>mL·min⁻¹</td><td>[L³ T⁻¹]</td></tr>
+    <tr><td>V̇<sub>gas</sub></td><td>volume di gas che attraversa la barriera ogni minuto (il risultato)</td><td>mL·min⁻¹</td><td>[L³ T⁻¹]</td></tr>
+    <tr><td>D</td><td>coefficiente di diffusione del gas: proporzionale a solubilità / √peso molecolare</td><td>cm²·min⁻¹·mmHg⁻¹</td><td>[M⁻¹ L³ T]</td></tr>
     <tr><td>A</td><td>superficie alveolare</td><td>m²</td><td>[L²]</td></tr>
-    <tr><td>Δx</td><td>spessore della barriera alveolo-capillare</td><td>µm</td><td>[L]</td></tr>
-    <tr><td>P<sub>1</sub> − P<sub>2</sub></td><td>differenza di pressione parziale fra alveolo e sangue</td><td>mmHg</td><td>[M L⁻¹ T⁻²]</td></tr>
-    <tr><td>D</td><td>costante di diffusione del gas: proporzionale a solubilità / √peso molecolare</td><td>cm²·min⁻¹·mmHg⁻¹</td><td>[M⁻¹ L³ T]</td></tr>
-    <tr><td>D<sub>L</sub></td><td>capacità di diffusione del polmone: D · A / Δx = V̇ / (P<sub>1</sub> − P<sub>2</sub>)</td><td>mL·min⁻¹·mmHg⁻¹</td><td>[M⁻¹ L⁴ T]</td></tr>
+    <tr><td>P<sub>1</sub> − P<sub>2</sub></td><td>gradiente di pressione parziale fra alveolo e sangue</td><td>mmHg</td><td>[M L⁻¹ T⁻²]</td></tr>
+    <tr><td>T</td><td>spessore della barriera alveolo-capillare</td><td>µm</td><td>[L]</td></tr>
     </tbody></table></div>
-  <p class="caveat">[M] massa. Controprova: D<sub>L</sub> × ΔP = [M⁻¹ L⁴ T] × [M L⁻¹ T⁻²] = [L³ T⁻¹] = V̇ ✓.
-  D<sub>L</sub> ha le stesse dimensioni del K<sub>f</sub> di Starling: tutti e due dicono quanto passa per ogni mmHg di spinta.
+  <p class="caveat">[M] massa. Controprova: [M⁻¹ L³ T] × [L²] × [M L⁻¹ T⁻²] / [L] = [L³ T⁻¹] = V̇ ✓.
   1 mmHg ≈ 133,3 Pa (Pa = N/m²).</p>
+  <p><b>Capacità di diffusione.</b> D, A e T insieme sono una proprietà del polmone: D<sub>L</sub> = D · A / T, in
+  mL·min⁻¹·mmHg⁻¹ [M⁻¹ L⁴ T], così che V̇<sub>gas</sub> = D<sub>L</sub> · (P<sub>1</sub> − P<sub>2</sub>). Ha le stesse dimensioni del
+  K<sub>f</sub> di Starling: tutti e due dicono quanto passa per ogni mmHg di spinta.</p>
+  </div>
+
+  <h3>Che cosa cambia da A a B</h3>
+  <div class="tscroll tw"><table>
+    <thead><tr><th></th><th>A · forma generale</th><th>B · forma per i gas</th><th>Perché</th></tr></thead>
+    <tbody>
+    <tr><td>Spinta</td><td>ΔC, mol·cm⁻³</td><td>P<sub>1</sub> − P<sub>2</sub>, mmHg</td><td>legge di Henry: un gas sciolto ha concentrazione C = α · P (α = solubilità)</td></tr>
+    <tr><td>Coefficiente</td><td>D, cm²·s⁻¹</td><td>D, cm²·min⁻¹·mmHg⁻¹</td><td>il D del gas contiene anche la solubilità α; D ∝ α / √PM (legge di Graham)</td></tr>
+    <tr><td>Spessore</td><td>Δx</td><td>T</td><td>stessa cosa, nome diverso nei libri di respiratoria</td></tr>
+    <tr><td>Risultato</td><td>J · A, mol·s⁻¹</td><td>V̇<sub>gas</sub>, mL·min⁻¹</td><td>per i gas si contano i volumi: 1 mol ≈ 22,4 L (STPD)</td></tr>
+    </tbody></table></div>
   <figure class="w">
     <iframe src="w/01-fick.html" title="Fick: la diffusione dell'O₂ lungo il capillare polmonare" loading="lazy" class="ph"></iframe>
     <figcaption>Muovi superficie, spessore, P<sub>A</sub>O₂ e tempo di transito, oppure scegli uno scenario: la curva rossa è la PO₂ del sangue lungo il capillare. <a href="w/01-fick.html">Apri a schermo intero</a></figcaption>
@@ -374,7 +396,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <p><b>Anidride carbonica.</b> Il gradiente è piccolo, da circa 46 a 40 mmHg, ma la CO₂ è circa 24 volte più solubile
   dell'O₂ e pesa poco di più (44 contro 32). D<sub>CO₂</sub> / D<sub>O₂</sub> ≈ 24 / √(44/32) ≈ 24 / 1,17 ≈ 20: la CO₂ diffonde
   circa 20 volte più facilmente, e il piccolo gradiente basta.</p>
-  <p><b>Clinica.</b> La fibrosi e l'edema polmonare aumentano Δx (l'edema è Starling che si sposta nel polmone),
+  <p><b>Clinica.</b> La fibrosi e l'edema polmonare aumentano lo spessore T (l'edema è Starling che si sposta nel polmone),
   l'enfisema riduce A. A riposo la riserva di tempo compensa; sotto sforzo il transito scende fino a 0,25 s e l'O₂ non fa
   più in tempo ad equilibrarsi: per questo la desaturazione da sforzo è un segno precoce della fibrosi. D<sub>L</sub> si misura
   con il monossido di carbonio (DLCO): l'emoglobina lo lega così avidamente che la sua pressione nel sangue resta quasi
