@@ -221,7 +221,7 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
     // in the mesangium most ATP becomes adenosine (light, to A1); some ATP goes on as it is (dark, to P2X1)
     for(q=0;q<3;q++)o+='<circle r="3" fill="'+(q===1?'#1F5FA8':'#8FDDFB')+'" stroke="'+(q===1?'#FFFFFF':'#1784B8')+'" stroke-width=".9"><animateMotion dur="1.2s" repeatCount="indefinite" begin="-'+(q*0.4)+'s" path="'+pB+'"/></circle>';
     var P=U.dg.purS;
-    purTop+=pb(432,207,'1')+pb(440,150,'2')+pb(f1(jx0-16),126,'3')+pb(171,112,'4');
+    purTop+=pb(432,S.dr.diu?194:207,'1')+pb(440,150,'2')+pb(f1(jx0-16),126,'3')+pb(171,112,'4');
     purTop+=tx(446,129,P[0],'start',{s:9.5,w:700,c:'#1784B8'});
     [[139,1,'#1784B8'],[149,2,'#1F5FA8'],[159,3,'#1784B8'],[169,0,'#1784B8'],[179,4,'#1784B8']].forEach(function(c,k){purTop+=(c[1]?pb(455,c[0]-3.1,String(c[1]),4.6):'')+tx(463,c[0],P[k+1],'start',{s:8.6,w:600,c:c[2]});});}
   if(loP&&S.tgf){var qA='M436 206 C440 196 440 182 440 168 L440 124 L300 124 Q255 152 '+f1(jx0-8)+' 116 L171 112',OR='#E07B00',LS=U.dg.lowS,nf2=S.dr.fans;
@@ -229,10 +229,10 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
     // PGE2 (dark orange) and NO (light); NSAIDs block COX-2, so only NO travels
     for(var q=0;q<8;q++){var no=nf2||q%2===1;o+='<circle r="3" fill="'+(no?'#FFD08A':OR)+'" stroke="'+(no?'#C26A00':'#FFFFFF')+'" stroke-width=".9"><animateMotion dur="4.8s" repeatCount="indefinite" begin="-'+(q*0.6)+'s" path="'+qA+'"/></circle>';}
     purTop+='<ellipse class="mdg" cx="'+f1(jx0-23)+'" cy="'+(y+hw-2)+'" rx="22" ry="11" fill="none" stroke="'+OR+'" stroke-width="2.6"/>';
-    purTop+=pb(432,207,'1',0,OR)+pb(440,150,'2',0,OR)+pb(171,112,'3',0,OR)+(S.dr.diu?'':pb(f1(jx0-23),75,'4',0,OR));
+    purTop+=pb(432,S.dr.diu?194:207,'1',0,OR)+pb(440,150,'2',0,OR)+pb(171,112,'3',0,OR)+(S.dr.diu?'':pb(f1(jx0-23),75,'4',0,OR));
     purTop+=tx(446,129,LS[0],'start',{s:9.5,w:700,c:'#B85C00'});
     [[139,LS[1]],[149,nf2?LS[3]:LS[2]],[159,nf2?LS[6]:LS[4]],[169,nf2?LS[7]:LS[5]],[179,S.dr.ace?LS[9]:LS[8]]].forEach(function(c,k){purTop+=pb(455,c[0]-3.1,String(k+1),4.6,OR)+tx(463,c[0],c[1],'start',{s:8.6,w:600,c:((k&&k<4&&nf2)||(k===4&&S.dr.ace))?'#8E1F1F':'#B85C00'});});
-    if(!S.dr.diu)purTop+='<ellipse class="mdg" cx="346" cy="'+(y-3)+'" rx="32" ry="14" fill="none" stroke="'+(S.dr.ace?'#B03A3A':OR)+'" stroke-width="2.6"'+(S.dr.ace?' stroke-dasharray="5 4"':'')+'/>'+pb(372,y-22,'5',0,S.dr.ace?'#B03A3A':OR)+tx(384,y-18,S.dr.ace?U.ch.angNo:U.ch.ang,'start',{s:10.5,w:700,c:S.dr.ace?'#8E1F1F':'#B85C00'});}
+    if(!S.dr.diu)purTop+='<ellipse class="mdg" cx="346" cy="'+(y-3)+'" rx="32" ry="14" fill="none" stroke="'+(S.dr.ace?'#B03A3A':OR)+'" stroke-width="2.6"'+(S.dr.ace?' stroke-dasharray="5 4"':'')+'/>'+(S.rs?pb(318,y-22,'5',0,S.dr.ace?'#B03A3A':OR):pb(372,y-22,'5',0,S.dr.ace?'#B03A3A':OR)+tx(384,y-18,S.dr.ace?U.ch.angNo:U.ch.ang,'start',{s:10.5,w:700,c:S.dr.ace?'#8E1F1F':'#B85C00'}));}
   o+='<circle cx="250" cy="'+y+'" r="'+f1(gr+9)+'" fill="#FFEFA6" stroke="#B9A47A" stroke-width="2.4"/>';
   o+='<path d="M'+(250-10)+' '+(y+gr+8)+' L240 168 M'+(250+10)+' '+(y+gr+8)+' L260 168" stroke="#B9A47A" stroke-width="2.4" fill="none"/>';
   o+=tx(266,160,G.bow,'start',{s:10.5,c:'#8A6D00',w:600});
@@ -317,7 +317,7 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
     o+='<g class="k3"><ellipse cx="'+f1(gx)+'" cy="'+(y+hw-2)+'" rx="21" ry="11" fill="none" stroke="#2E9D57" stroke-width="3"/>'+nb(gx,y-22,'3','#2E9D57')+tx(gx,y-36,C.ren,'middle',{s:10.5,w:700,c:'#2E7D32'})+'</g>';
     var dots='';for(var q=0;q<5;q++)dots+='<circle cx="'+f1(gx+6-q*8)+'" cy="'+(y+2-(q%2)*5)+'" r="3" fill="'+(ace?'#9AA5AE':'#2E9D57')+'" stroke="#FFFFFF" stroke-width=".8"/>';
     o+='<g class="rn">'+dots+'</g>';
-    o+='<g class="k4"><ellipse cx="346" cy="'+(y-3)+'" rx="32" ry="14" fill="none" stroke="'+(ace?'#B03A3A':'#2E9D57')+'" stroke-width="3"'+(ace?' stroke-dasharray="5 4"':'')+'/>'+nb(372,y-22,'4',ace?'#B03A3A':'#2E9D57')+tx(384,y-18,ace?C.angNo:C.ang,'start',{s:10.5,w:700,c:ace?'#8E1F1F':'#2E7D32'})+'</g>';}
+    o+='<g class="k4"><ellipse cx="346" cy="'+(y-3)+'" rx="32" ry="14" fill="none" stroke="'+(ace?'#B03A3A':'#2E9D57')+'" stroke-width="3"'+(ace?' stroke-dasharray="5 4"':'')+'/>'+nb(372,y-22,'4',ace?'#B03A3A':'#2E9D57')+(S.rs?'':tx(384,y-18,ace?C.angNo:C.ang,'start',{s:10.5,w:700,c:ace?'#8E1F1F':'#2E7D32'}))+'</g>';}
   var Y0=0,nv='',rv='',rb='';if(S.dr.sym){
   // sympathetic reflex arc on top: baroreceptors -> medulla -> spinal cord -> ganglia -> renal nerve; the drawing moves down
   Y0=100;var yp=y+Y0,N=U.sy,col='#D9822B',TY=88;
@@ -340,11 +340,11 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
   }
   // RAAS: the conversion chain in a band at the bottom, with its links to the arterioles
   if(S.rs){var A=U.ra,B0=Y0+512,ace=S.dr.ace,yv=Y0+y,
-    lev=S.re*(S.dr.diu&&!ace?1.6:1)*(S.dr.sym&&!ace?1.3:1),E3=drugs(),renW=(E3.map<90||S.dr.diu||S.dr.sym||lev>1.2)?4:2,angW=ace?1:lev>1.2?4:lev<0.9?1:2,lv=ace?A.lvBlk:lev>1.2?A.lvHi:lev<0.9?A.lvLo:A.lvN,
+    lev=S.re*Math.max(S.dr.diu&&!ace?1.6:1,angLow())*(S.dr.sym&&!ace?1.3:1),E3=drugs(),renW=(E3.map<90||S.dr.diu||S.dr.sym||lev>1.2)?4:2,angW=ace?1:lev>1.2?4:lev<0.9?1:2,lv=ace?A.lvBlk:lev>1.2?A.lvHi:lev<0.9?A.lvLo:A.lvN,
     bx=function(x,yy,w,t1,t2,fill,c,dash){return '<rect x="'+x+'" y="'+yy+'" width="'+w+'" height="40" rx="7" fill="'+fill+'" stroke="'+c+'" stroke-width="1.5"'+(dash?' stroke-dasharray="4 3"':'')+'/>'+tx(x+w/2,yy+17,t1,'middle',{s:10.5,w:700,c:c})+tx(x+w/2,yy+31,t2,'middle',{s:10,c:c});},
     arw=function(x1,x2,yy,c,t,blk,wd){wd=wd||2;return '<line x1="'+x1+'" y1="'+yy+'" x2="'+(x2-7)+'" y2="'+yy+'" stroke="'+c+'" stroke-width="'+wd+'"/><path d="M'+x2+' '+yy+' l-8 -4.5 v9Z" fill="'+c+'"/>'+tx((x1+x2)/2,yy-7,t,'middle',{s:10,w:700,c:blk?'#B03A3A':c})+(blk?'<rect x="'+((x1+x2)/2-14)+'" y="'+(yy+5)+'" width="28" height="13" rx="6.5" fill="#B03A3A"/>'+tx((x1+x2)/2,yy+15,A.stop,'middle',{s:9.5,w:700,c:'#FFFFFF'}):'');};
     var g2=ace?'#9AA5AE':'#2E7D32',yy=B0+30;
-    rb+='<line x1="4" x2="636" y1="'+(B0+6)+'" y2="'+(B0+6)+'" stroke="#DDE4EA"/>'+tx(4,B0+20,A.title,'start',{s:11,w:700,c:'#16222E'});
+    rb+='<line x1="4" x2="636" y1="'+(B0+6)+'" y2="'+(B0+6)+'" stroke="#DDE4EA"/>'+tx(12,B0+20,A.title,'start',{s:11,w:700,c:'#16222E'});
     rb+=bx(4,yy,120,A.agt,A.agt2,'#FFF8EC','#8A6D00')+arw(124,204,yy+20,'#2E7D32',A.ren,false,renW);
     rb+=bx(204,yy,110,A.a1,A.a1b,'#F3F6F8','#55697A')+arw(314,384,yy+20,'#2E7D32',A.ace,ace,ace?1:renW);
     rb+=bx(384,yy,112,A.a2,lv,ace?'#F3F6F8':'#E3F3E8',g2,ace)+arw(496,524,yy+20,g2,'',false,angW);
@@ -352,14 +352,12 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
     // links: renin comes from the juxtaglomerular cells, angiotensin II goes back to the efferent (AT1)
     var ah=function(x,yy2,ang,c,big){return '<path d="M'+x+' '+yy2+' '+(big?'l-12 -7 v14Z':'l-9 -5 v10Z')+'" fill="'+c+'" transform="rotate('+ang+' '+x+' '+yy2+')"/>';};
     var gx2=f1(250-gr-9-23);
-    rv+='<path d="M'+gx2+' '+(yv+hw+3)+' L'+gx2+' '+(yv+64)+' L244 '+(yv+64)+' L244 '+(yy-4)+' L176 '+(yy+16)+'" stroke="#2E7D32" stroke-width="'+renW+'" stroke-dasharray="'+(renW>2?'7 4':'4 4')+'" fill="none"/>';
-    rb+=ah(gx2,yv+50,90,'#2E7D32',renW>2)+ah(244,yv+200,90,'#2E7D32',renW>2)+ah(176,yy+16,163,'#2E7D32',renW>2);
-    rv+='<path d="M394 '+yy+' L394 '+(yv+13)+' L362 '+(yv+13)+'" stroke="'+g2+'" stroke-width="'+angW+'" stroke-dasharray="'+(angW>2?'8 4':'5 4')+'" fill="none"/>';
-    rb+=ah(358,yv+13,180,g2,angW>2)+ah(394,yv+200,-90,g2,angW>2)+ah(394,yy-40,-90,g2,angW>2);
+    rv+='<path d="M'+gx2+' '+(yv+hw+3)+' L'+gx2+' '+(Y0+133)+' L4 '+(Y0+133)+' L4 '+(yy+46)+' L164 '+(yy+46)+' L164 '+(yy+30)+'" stroke="#2E7D32" stroke-width="'+renW+'" stroke-dasharray="'+(renW>2?'7 4':'4 4')+'" fill="none"/>';
+    rb+=ah(4,Y0+308,90,'#2E7D32',false)+ah(164,yy+27,-90,'#2E7D32',renW>2);
     var ac=ace?'#9AA5AE':'#9A5512';
     rv+='<path d="M632 '+yy+' L632 '+(Y0+268)+' L612 '+(Y0+268)+'" stroke="'+ac+'" stroke-width="'+angW+'"'+(ace?' stroke-dasharray="4 3"':'')+' fill="none"/>';
     rb+=ah(606,Y0+268,180,ac,angW>2)+ah(632,Y0+500,-90,ac,angW>2)+tx(624,Y0+470,A.ald.split(': ')[1]||A.ald,'middle',{s:9.5,w:700,c:ac}).replace('<text','<text transform="rotate(-90 624 '+(Y0+470)+')"');
-    rb+='<rect x="'+(375-17)+'" y="'+(yv-24)+'" width="34" height="15" rx="7.5" fill="'+(ace?'#B03A3A':'#2E7D32')+'"/>'+tx(375,yv-13,A.at1,'middle',{s:10,w:700,c:'#FFFFFF'});}
+    var atT=ace?U.ch.angNo:U.ch.ang,atW=atT.length*5.9+16;rb+='<rect x="384" y="'+(yv-24)+'" width="'+f1(atW)+'" height="16" rx="8" fill="'+(ace?'#B03A3A':'#2E7D32')+'"/>'+tx(f1(384+atW/2),yv-12.5,atT,'middle',{s:10,w:700,c:'#FFFFFF'});}
   var H=Y0+512+(S.rs?80:0);
   return '<svg viewBox="0 0 640 '+H+'" role="img" aria-label="'+U.ariaD+'">'+rv+'<g transform="translate(0 '+Y0+')">'+o+'</g>'+nv+rb+'</svg>';}
 
@@ -421,7 +419,8 @@ function gfrBar(m){var G=U.gf,MX=180,P=function(v){return f1(100*cl(v,0,MX)/MX)+
   o+='<div class="gs">'+[0,15,30,60,90,130,180].map(function(t){return '<span style="left:'+P(t)+'"'+(t===90||t===130?' class="g"':'')+'>'+t+'</span>';}).join('')+
      '<span class="g gl" style="left:'+P(110)+'">'+G.opt+'</span></div>';
   return o;}
-function render(){syLab();rsLab();var ra=S.ra,lim='',E=drugs();
+var LOPREV=false,AUTORS=false;
+function render(){var lp=drugs().map<=85;if(lp&&!LOPREV&&!S.rs){S.rs=true;AUTORS=true;}if(!lp&&LOPREV&&AUTORS){S.rs=false;AUTORS=false;}LOPREV=lp;syLab();rsLab();var ra=S.ra,lim='',E=drugs();
   S.au=S.myo||S.tgf;if(S.au){var a=autoRa(E.map,E.re,S.alb,S.re,E.floor),wA=(S.myo?0.55:0)+(S.tgf?0.45:0);ra=Math.pow(a.ra,wA);lim=wA>0.99?a.lim:'';S.ra=ra;}else{ra=S.ra;}
   if(S.dr.fans)ra*=1+vcTone(E);
   ra*=E.symA;
@@ -440,7 +439,7 @@ var OPEN={ne:false,ra:true};
 $('#dg').addEventListener('toggle',function(e){var d=e.target;if(d&&d.getAttribute&&d.getAttribute('data-k'))OPEN[d.getAttribute('data-k')]=d.open;},true);
 var PZ=false;function pzLab(){$('#pz').innerHTML=(PZ?'<svg width="10" height="10" viewBox="0 0 10 10" style="display:inline;vertical-align:-1px;min-width:0"><path d="M1 0 L10 5 L1 10Z" fill="currentColor"/></svg> '+U.play:'<svg width="10" height="10" viewBox="0 0 10 10" style="display:inline;vertical-align:-1px;min-width:0"><rect x="1" y="0" width="3" height="10" fill="currentColor"/><rect x="6" y="0" width="3" height="10" fill="currentColor"/></svg> '+U.pause);$('#pz').classList.toggle('on',PZ);$('#pz').setAttribute('aria-pressed',PZ);}
 function rsLab(){$('#rs').textContent=S.rs?U.rsOff:U.rsOn;$('#rs').classList.toggle('on',S.rs);$('#rs').setAttribute('aria-pressed',S.rs);}
-$('#rs').addEventListener('click',function(){S.rs=!S.rs;render();});
+$('#rs').addEventListener('click',function(){S.rs=!S.rs;AUTORS=false;render();});
 function syLab(){$('#sy').textContent=S.dr.sym?U.syOff:U.syOn;$('#sy').classList.toggle('on',S.dr.sym);$('#sy').setAttribute('aria-pressed',S.dr.sym);}
 $('#sy').addEventListener('click',function(){S.dr.sym=!S.dr.sym;PRE=-1;render();});
 $('#pz').addEventListener('click',function(){PZ=!PZ;document.body.classList.toggle('paused',PZ);pzLab();});pzLab();
