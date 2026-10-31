@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The homeostatic homunculus</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 8px;font-size:13px}
+.row button{font:inherit;font-size:13px;padding:4px 11px;border-radius:999px;border:1px solid var(--border-strong);background:#FFFFFF;color:var(--text-primary);cursor:pointer}
+.row button.on{border:1.5px solid #1456A8;background:#EEF4FC;color:#1456A8;font-weight:700}
+.row .sp{flex:1 1 auto}
+#pz.on{border-color:#B5520C;background:#FCEEDD;color:#7A3E0B}
+.lay{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:10px}
+@media (max-width:760px){.lay{grid-template-columns:1fr}}
+.pnl{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;overflow:hidden}
+.txt{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:10px 12px;font-size:13.5px;line-height:1.5}
+.txt h3{font-size:16px;margin:0 0 6px}
+.txt .k{display:block;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#55697A;margin:8px 0 2px}
+.txt p{margin:0 0 4px}
+.txt ul{margin:2px 0 0;padding-left:18px}.txt li{margin:0 0 3px}
+.leg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:#55697A;margin:6px 2px 0}
+.leg i{display:inline-block;width:22px;height:0;border-top:3px solid;vertical-align:middle;margin-right:5px}
+@keyframes fl{to{stroke-dashoffset:-24}}
+.fl{animation:fl 1.1s linear infinite}
+.fb{animation:fl 1.1s linear infinite reverse}
+body.paused *{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+svg text{paint-order:stroke;stroke:#FFFFFF;stroke-width:3.5px;stroke-linejoin:round}
+</style>
+</head>
+<body>
+<h2 class="sr-only">The main hormonal axes drawn on the body: chain, feedback and what happens when they break</h2>
+<div class="row" id="ax"></div>
+<div class="lay">
+  <div><div class="pnl"><svg id="sv" viewBox="0 0 640 560" role="img" aria-label="The main hormonal axes drawn on the body: chain, feedback and what happens when they break"></svg></div>
+    <div class="leg"><span><i style="border-color:#2E7D4F"></i>chain (stimulates)</span><span><i style="border-color:#C0392B"></i>brake</span><span><i style="border-color:#C0392B;border-top-style:dashed"></i>feedback (brakes)</span></div></div>
+  <div class="txt" id="tx"></div>
+</div>
+<script>
+var D={"ui": {"pause": "❚❚ Pause", "play": "▶ Resume", "right": "chain →", "left": "← feedback", "org": {"hyp": ["Hypothalamus", 52], "pit": ["Pituitary", 92], "thy": ["Thyroid", 140], "par": ["Parathyroids", 160], "brs": ["Breast", 210], "skin": ["Skin", 232], "liv": ["Liver", 256], "adr": ["Adrenal", 292], "kid": ["Kidney", 326], "gut": ["Gut", 366], "ut": ["Uterus", 404], "gon": ["Gonads", 434], "bone": ["Bone", 494]}}, "axes": [{"b": "Adrenal (HPA)", "n": "Adrenal axis", "hi": ["hyp", "pit", "adr"], "e": [["hyp", "pit", "+", "CRH", 16, "R", 0, 0], ["pit", "adr", "+", "ACTH", 70, "R", 0, 0], ["adr", "pit", "fb", "cortisol", 70, "L", 0, 0], ["adr", "hyp", "fb", "", 115, "L", 0, 0]], "t": [["Chain", "CRH (hypothalamus, paraventricular nucleus) → ACTH (anterior pituitary) → <b>cortisol</b> (adrenal cortex, zona fasciculata)."], ["What it does", "Raises glucose (gluconeogenesis), sustains the stress response and blood pressure, damps inflammation. Circadian rhythm: peak on waking."], ["Feedback", "Cortisol brakes CRH and ACTH."], ["When it breaks", ["<b>Addison’s</b> (adrenal, primary): cortisol ↓, ACTH ↑ (dark skin), aldosterone ↓ too.", "<b>Secondary</b> (pituitary): cortisol ↓, ACTH ↓, aldosterone preserved.", "<b>Cushing’s</b>: pituitary ACTH ↑ and cortisol ↑; adrenal adenoma cortisol ↑ and ACTH ↓.", "<b>Long-term steroids</b>: ACTH ↓ and the adrenal idles: do not stop them abruptly."]]]}, {"b": "Thyroid (HPT)", "n": "Thyroid axis", "hi": ["hyp", "pit", "thy"], "e": [["hyp", "pit", "+", "TRH", 16, "R", 0, 0], ["pit", "thy", "+", "TSH", 26, "R", 0, 0], ["thy", "pit", "fb", "T4, T3", 26, "L", 0, 0], ["thy", "hyp", "fb", "", 52, "L", 0, 0]], "t": [["Chain", "TRH → TSH → thyroid: mostly <b>T4</b> (prohormone), little T3. In the tissues deiodinases turn T4 into <b>T3</b>, the active form."], ["What it does", "Basal metabolism, heat, heart rate, nervous system development in children."], ["Feedback", "T4 and T3 brake TRH and TSH. TSH is the most sensitive sensor: it moves before T4."], ["When it breaks", ["<b>Primary hypothyroidism</b> (Hashimoto’s): TSH ↑, fT4 ↓.", "<b>Hyperthyroidism</b> (Graves’): TSH ↓, fT4 and fT3 ↑, TSH-receptor antibodies.", "<b>Secondary</b> (pituitary): TSH low or normal, fT4 ↓: here TSH alone misleads.", "<b>Subclinical</b>: TSH abnormal, fT4 normal."]]]}, {"b": "Gonads (HPG)", "n": "Gonadal axis", "hi": ["hyp", "pit", "gon"], "e": [["hyp", "pit", "+", "GnRH", 16, "R", 0, 0], ["pit", "gon", "+", "LH, FSH", 80, "R", 0, 0], ["gon", "pit", "fb", "testosterone,|oestradiol, inhibin", 85, "L", 0, 0], ["gon", "hyp", "fb", "", 125, "L", 0, 0]], "t": [["Chain", "Pulsatile GnRH → LH and FSH → gonads."], ["What it does", ["<b>Men</b>: LH → Leydig cells: testosterone; FSH → Sertoli cells: spermatogenesis and inhibin B.", "<b>Women</b>: FSH → follicle: oestradiol; LH → ovulation and corpus luteum: progesterone."]], ["Feedback", "Sex steroids brake GnRH and LH, inhibin brakes FSH. Exception: mid-cycle, high sustained oestradiol becomes <b>positive</b> feedback → LH surge → ovulation. Continuous GnRH (depot analogues) instead shuts the axis down."], ["When it breaks", ["<b>Primary</b> (gonads: menopause, Klinefelter): LH and FSH ↑.", "<b>Secondary</b> (hypothalamus or pituitary: energy deficit, anorexia, extreme sport, Kallmann, hyperprolactinaemia): LH and FSH ↓ or inappropriately normal.", "<b>Anabolic steroids</b>: LH and FSH ↓, small testes."]]]}, {"b": "Growth (GH)", "n": "GH axis", "hi": ["hyp", "pit", "liv", "bone"], "e": [["hyp", "pit", "+", "GHRH (+)|somatostatin (−)", 16, "R", 0, 0], ["pit", "liv", "+", "GH", 30, "R", 0, 0], ["liv", "bone", "+", "IGF-1", 40, "R", 0, 0], ["liv", "pit", "fb", "IGF-1", 60, "L", 0, 0], ["liv", "hyp", "fb", "", 95, "L", 0, 0]], "t": [["Chain", "GHRH (+), somatostatin (−) and ghrelin (+) → <b>GH</b>, pulsatile, mostly in sleep → liver: <b>IGF-1</b>."], ["What it does", "Growth of cartilage and bone, protein synthesis. GH on its own raises glucose and mobilises fat."], ["Feedback", "IGF-1 brakes GH and stimulates somatostatin."], ["When it breaks", ["<b>Acromegaly</b> (gigantism in children): IGF-1 ↑, GH does not fall after a glucose load.", "<b>GH deficiency</b>: IGF-1 ↓; short stature in children.", "IGF-1 is measured because GH swings too much."]]]}, {"b": "Prolactin", "n": "Prolactin", "hi": ["hyp", "pit", "brs"], "e": [["hyp", "pit", "-", "dopamine (brake)", 16, "R", 0, 0], ["pit", "brs", "+", "prolactin", 24, "R", 0, 0], ["brs", "hyp", "+", "suckling|(via nerves)", 70, "L", 0, 0]], "t": [["Chain", "The only axis with a <b>brake</b> instead of an accelerator: hypothalamic <b>dopamine</b>, through the portal vessels, keeps prolactin low. Suckling, TRH and oestrogens stimulate it."], ["What it does", "Milk production. It brakes GnRH: the amenorrhoea of breastfeeding."], ["Feedback", "High prolactin makes more dopamine (short loop)."], ["When it breaks", ["<b>Prolactinoma</b>: prolactin ↑ → galactorrhoea, amenorrhoea, infertility, low libido.", "<b>Antidopaminergic drugs</b> (antipsychotics, metoclopramide): prolactin ↑.", "<b>Compressed stalk</b>: dopamine no longer arrives → prolactin ↑ (the only hormone that rises).", "<b>Primary hypothyroidism</b>: TRH ↑ → prolactin ↑."]]]}, {"b": "ADH and oxytocin", "n": "Posterior pituitary", "hi": ["hyp", "pit", "kid", "ut"], "e": [["hyp", "pit", "+", "axons from supraoptic|and paraventricular n.", 16, "R", 0, 0], ["pit", "kid", "+", "ADH", 45, "R", 0, 0], ["pit", "ut", "+", "oxytocin", 100, "R", 0, 0], ["kid", "hyp", "fb", "osmolality ↓|(water retained)", 120, "L", 0, 0]], "t": [["Chain", "Hypothalamic osmoreceptors (osmolality above about 285 mOsm/kg) and baroreceptors (volume) → supraoptic and paraventricular nuclei → ADH travels down the axons and is released from the <b>posterior pituitary</b>. No portal vessels here."], ["What it does", "Kidney (V2 receptors): inserts AQP2 aquaporins in the collecting duct and retains free water: concentrated urine. Vessels (V1): vasoconstriction."], ["Feedback", "The water retained lowers osmolality → less ADH, and less thirst."], ["When it breaks", ["<b>SIADH</b>: inappropriately high ADH → hyponatraemia with concentrated urine.", "<b>Central diabetes insipidus</b>: ADH ↓ → polyuria with dilute urine; responds to desmopressin.", "<b>Nephrogenic</b> (lithium, hypercalcaemia): normal ADH, the kidney does not respond.", "<b>Oxytocin</b>, from the same posterior pituitary: uterine contraction and milk ejection. One of the few <b>positive</b> feedbacks."]]]}, {"b": "Calcium and vitamin D", "n": "Calcium and vitamin D", "hi": ["par", "kid", "bone", "skin", "liv", "gut"], "e": [["par", "kid", "+", "PTH", 40, "R", 0, -34], ["par", "bone", "+", "PTH", 130, "R", 0, 30], ["skin", "liv", "+", "vit. D₃ (UVB)", 14, "R", -70, -34], ["liv", "kid", "+", "25(OH)D", 18, "R", 4, -4], ["kid", "gut", "+", "1,25(OH)₂D", 22, "R", 10, 6], ["bone", "kid", "fb", "FGF23", 40, "R", 6, 14], ["gut", "par", "fb", "Ca²⁺ ↑|(sensed by CaSR)", 150, "L", 0, 70]], "t": [["Chain", "Falling ionised calcium is sensed by the calcium-sensing receptor (<b>CaSR</b>) of the parathyroids → <b>PTH</b>."], ["What it does", ["<b>PTH on bone</b>: releases calcium and phosphate (via RANKL).", "<b>PTH on the kidney</b>: reabsorbs calcium in the distal tubule, dumps phosphate in the proximal one, switches on 1α-hydroxylase.", "<b>Vitamin D</b>: skin (UVB) → D₃ → liver: <b>25(OH)D</b>, the storage form, the one measured → kidney: <b>1,25(OH)₂D</b> (calcitriol), the active form → gut: absorbs calcium and phosphate."]], ["Feedback", "High calcium and calcitriol brake PTH. Bone FGF23 makes the kidney lose phosphate and brakes calcitriol. Calcitonin matters little in humans."], ["When it breaks", ["<b>Primary hyperparathyroidism</b> (adenoma): Ca ↑, PTH ↑ or inappropriately normal, P ↓.", "<b>Secondary</b> (vitamin D deficiency, kidney failure): Ca normal or ↓, PTH ↑.", "<b>Hypoparathyroidism</b> (after thyroidectomy): Ca ↓, PTH ↓, P ↑.", "<b>Cancer</b> (PTHrP): Ca ↑, PTH ↓."]]]}]},U=D.ui,A=D.axes,CUR=0,PZ=false;
+function $(q){return document.querySelector(q);}
+// organ anchors on the body (front view)
+var N={hyp:[320,58],pit:[320,92],thy:[320,150],par:[320,150],liv:[294,252],adr:[300,298],kid:[340,320],gut:[320,365],gon:[320,428],bone:[292,492],skin:[226,262],brs:[342,210],ut:[320,410]};
+function body(hi){var o='',c='#EEF2F5',s='#B9C5CF';
+  o+='<path d="M232 136 Q320 112 408 136 L432 300 L414 304 L392 182 L386 404 L372 540 L332 540 L322 432 L318 432 L308 540 L268 540 L254 404 L248 182 L226 304 L208 300Z" fill="'+c+'" stroke="'+s+'" stroke-width="1.5"/>';
+  o+='<rect x="306" y="108" width="28" height="30" fill="'+c+'" stroke="'+s+'" stroke-width="1.5"/><circle cx="320" cy="68" r="46" fill="'+c+'" stroke="'+s+'" stroke-width="1.5"/>';
+  function on(k){return hi.indexOf(k)>=0;}
+  function col(k,c1){return on(k)?c1:'#D5DCE3';}
+  o+='<ellipse cx="320" cy="58" rx="16" ry="9" fill="'+col('hyp','#7A4BA6')+'"/>';
+  o+='<circle cx="320" cy="90" r="7" fill="'+col('pit','#7A4BA6')+'"/>';
+  o+='<path d="M320 152 C306 136 296 142 300 156 C304 166 316 162 320 156 C324 162 336 166 340 156 C344 142 334 136 320 152Z" fill="'+col('thy','#C2571A')+'"/>';
+  if(on('par'))[[305,146],[335,146],[307,160],[333,160]].forEach(function(p){o+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3.6" fill="#B5520C" stroke="#FFFFFF" stroke-width="1"/>';});
+  o+='<path d="M268 240 Q300 226 322 240 Q318 266 290 270 Q270 266 268 240Z" fill="'+col('liv','#8A5A2B')+'"/>';
+  [[300,320],[340,320]].forEach(function(p){o+='<ellipse cx="'+p[0]+'" cy="'+p[1]+'" rx="9" ry="14" fill="'+col('kid','#B03A3A')+'"/>';});
+  [[300,300],[340,300]].forEach(function(p){o+='<path d="M'+(p[0]-8)+' '+(p[1]+4)+' L'+p[0]+' '+(p[1]-8)+' L'+(p[0]+8)+' '+(p[1]+4)+'Z" fill="'+col('adr','#D4A017')+'"/>';});
+  o+='<path d="M298 350 q22 -12 44 0 q-22 12 -44 0 q22 18 44 12" fill="none" stroke="'+col('gut','#C27A9A')+'" stroke-width="7" stroke-linecap="round"/>';
+  if(on('ut'))o+='<path d="M310 398 Q320 392 330 398 L326 420 L314 420Z" fill="#E08AA6"/>';
+  [[306,430],[334,430]].forEach(function(p){o+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="7" fill="'+col('gon','#3E6E9E')+'"/>';});
+  o+='<path d="M296 440 L290 528" stroke="'+col('bone','#8696A4')+'" stroke-width="9" stroke-linecap="round"/>';
+  o+='<path d="M240 196 L222 300" stroke="'+col('skin','#E3B25A')+'" stroke-width="12" stroke-linecap="round" opacity=".8"/>';
+  [[300,212],[340,212]].forEach(function(p){o+='<path d="M'+(p[0]-11)+' '+(p[1]-4)+' Q'+p[0]+' '+(p[1]+12)+' '+(p[0]+11)+' '+(p[1]-4)+'" fill="none" stroke="'+col('brs','#E08AA6')+'" stroke-width="3"/>';});
+  return o;}
+function arrow(a,b,kind,lab,mag,side,lx,ly){var p=N[a],q=N[b],mx=(p[0]+q[0])/2,my=(p[1]+q[1])/2,dx=q[0]-p[0],dy=q[1]-p[1],L=Math.sqrt(dx*dx+dy*dy)||1,nx=-dy/L,ny=dx/L;
+  if((side==='R'&&nx<0)||(side==='L'&&nx>0)){nx=-nx;ny=-ny;}
+  var cx=mx+nx*mag,cy=my+ny*mag,col=kind==='+'?'#2E7D4F':'#C0392B',dash=kind==='fb'?' stroke-dasharray="7 5"':' stroke-dasharray="10 4"',cls=kind==='fb'?'fb':'fl';
+  function pt(t){var u=1-t;return [u*u*p[0]+2*u*t*cx+t*t*q[0],u*u*p[1]+2*u*t*cy+t*t*q[1]];}
+  var s=pt(0.1),e=pt(0.9),m=pt(0.5);
+  var o='<path class="'+cls+'" d="M'+s[0].toFixed(1)+' '+s[1].toFixed(1)+' Q'+cx.toFixed(1)+' '+cy.toFixed(1)+' '+e[0].toFixed(1)+' '+e[1].toFixed(1)+'" fill="none" stroke="'+col+'" stroke-width="2.6"'+dash+' marker-end="url(#m'+(kind==='+'?'g':'r')+')"/>';
+  if(lab){var tx=m[0]+(side==='L'?-6:6)+(lx||0),ty=m[1]+(ly||0);lab.split('|').forEach(function(l,i){o+='<text x="'+tx.toFixed(1)+'" y="'+(ty+4+i*15).toFixed(1)+'" font-size="14" font-weight="700" text-anchor="'+(side==='L'?'end':'start')+'" fill="'+col+'">'+l+'</text>';});}
+  return o;}
+function names(hi){var o='',L=U.org;Object.keys(L).forEach(function(k){if(hi.indexOf(k)<0||!N[k])return;var y=L[k][1],p=N[k];
+  o+='<line x1="118" y1="'+(y-4)+'" x2="'+(p[0]-14)+'" y2="'+p[1]+'" stroke="#DDE4EA" stroke-width="1"/><text x="114" y="'+y+'" font-size="14" font-weight="700" text-anchor="end" fill="#16222E">'+L[k][0]+'</text>';});return o;}
+function draw(){var a=A[CUR],o='<defs><marker id="mg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2E7D4F"/></marker><marker id="mr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#C0392B"/></marker></defs>';
+  o+='<rect width="640" height="560" fill="#FFFFFF"/>'+body(a.hi)+names(a.hi);
+  a.e.forEach(function(e){o+=arrow(e[0],e[1],e[2],e[3],e[4],e[5],e[6],e[7]);});
+  o+='<text x="620" y="22" font-size="13" fill="#2E7D4F" font-weight="700" text-anchor="end">'+U.right+'</text><text x="132" y="22" font-size="13" fill="#C0392B" font-weight="700">'+U.left+'</text>';
+  $('#sv').innerHTML=o;
+  $('#tx').innerHTML='<h3>'+a.n+'</h3>'+a.t.map(function(s){return '<span class="k">'+s[0]+'</span>'+(Array.isArray(s[1])?'<ul>'+s[1].map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>':'<p>'+s[1]+'</p>');}).join('');
+  $('#ax').innerHTML=A.map(function(x,i){return '<button type="button" data-i="'+i+'"'+(i===CUR?' class="on"':'')+'>'+x.b+'</button>';}).join('')+'<span class="sp"></span><button type="button" id="pz"'+(PZ?' class="on"':'')+'>'+(PZ?U.play:U.pause)+'</button>';}
+$('#ax').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.id==='pz'){PZ=!PZ;document.body.classList.toggle('paused',PZ);}else CUR=+b.getAttribute('data-i');draw();});
+draw();
+</script>
+</body>
+</html>

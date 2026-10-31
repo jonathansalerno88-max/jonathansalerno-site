@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L’homunculus omeostatico</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 8px;font-size:13px}
+.row button{font:inherit;font-size:13px;padding:4px 11px;border-radius:999px;border:1px solid var(--border-strong);background:#FFFFFF;color:var(--text-primary);cursor:pointer}
+.row button.on{border:1.5px solid #1456A8;background:#EEF4FC;color:#1456A8;font-weight:700}
+.row .sp{flex:1 1 auto}
+#pz.on{border-color:#B5520C;background:#FCEEDD;color:#7A3E0B}
+.lay{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:10px}
+@media (max-width:760px){.lay{grid-template-columns:1fr}}
+.pnl{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;overflow:hidden}
+.txt{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:10px 12px;font-size:13.5px;line-height:1.5}
+.txt h3{font-size:16px;margin:0 0 6px}
+.txt .k{display:block;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#55697A;margin:8px 0 2px}
+.txt p{margin:0 0 4px}
+.txt ul{margin:2px 0 0;padding-left:18px}.txt li{margin:0 0 3px}
+.leg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:#55697A;margin:6px 2px 0}
+.leg i{display:inline-block;width:22px;height:0;border-top:3px solid;vertical-align:middle;margin-right:5px}
+@keyframes fl{to{stroke-dashoffset:-24}}
+.fl{animation:fl 1.1s linear infinite}
+.fb{animation:fl 1.1s linear infinite reverse}
+body.paused *{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+svg text{paint-order:stroke;stroke:#FFFFFF;stroke-width:3.5px;stroke-linejoin:round}
+</style>
+</head>
+<body>
+<h2 class="sr-only">I principali assi ormonali disegnati sul corpo: catena, feedback e che cosa succede quando si rompono</h2>
+<div class="row" id="ax"></div>
+<div class="lay">
+  <div><div class="pnl"><svg id="sv" viewBox="0 0 640 560" role="img" aria-label="I principali assi ormonali disegnati sul corpo: catena, feedback e che cosa succede quando si rompono"></svg></div>
+    <div class="leg"><span><i style="border-color:#2E7D4F"></i>catena (stimola)</span><span><i style="border-color:#C0392B"></i>freno</span><span><i style="border-color:#C0392B;border-top-style:dashed"></i>feedback (frena)</span></div></div>
+  <div class="txt" id="tx"></div>
+</div>
+<script>
+var D={"ui": {"pause": "❚❚ Pausa", "play": "▶ Riprendi", "right": "catena →", "left": "← feedback", "org": {"hyp": ["Ipotalamo", 52], "pit": ["Ipofisi", 92], "thy": ["Tiroide", 140], "par": ["Paratiroidi", 160], "brs": ["Mammella", 210], "skin": ["Pelle", 232], "liv": ["Fegato", 256], "adr": ["Surrene", 292], "kid": ["Rene", 326], "gut": ["Intestino", 366], "ut": ["Utero", 404], "gon": ["Gonadi", 434], "bone": ["Osso", 494]}}, "axes": [{"b": "Surrene (HPA)", "n": "Asse surrene", "hi": ["hyp", "pit", "adr"], "e": [["hyp", "pit", "+", "CRH", 16, "R", 0, 0], ["pit", "adr", "+", "ACTH", 70, "R", 0, 0], ["adr", "pit", "fb", "cortisolo", 70, "L", 0, 0], ["adr", "hyp", "fb", "", 115, "L", 0, 0]], "t": [["Catena", "CRH (ipotalamo, nucleo paraventricolare) → ACTH (ipofisi anteriore) → <b>cortisolo</b> (corticale del surrene, zona fascicolata)."], ["Che cosa fa", "Alza la glicemia (gluconeogenesi), regge la risposta allo stress e la pressione, spegne l’infiammazione. Ritmo circadiano: picco al risveglio."], ["Feedback", "Il cortisolo frena CRH e ACTH."], ["Se si rompe", ["<b>Addison</b> (surrene, primaria): cortisolo ↓, ACTH ↑ (pelle scura), anche aldosterone ↓.", "<b>Secondaria</b> (ipofisi): cortisolo ↓, ACTH ↓, aldosterone conservato.", "<b>Cushing</b>: ipofisario ACTH ↑ e cortisolo ↑; adenoma surrenalico cortisolo ↑ e ACTH ↓.", "<b>Cortisonici</b> a lungo: ACTH ↓ e surrene a riposo: non sospenderli di colpo."]]]}, {"b": "Tiroide (HPT)", "n": "Asse tiroide", "hi": ["hyp", "pit", "thy"], "e": [["hyp", "pit", "+", "TRH", 16, "R", 0, 0], ["pit", "thy", "+", "TSH", 26, "R", 0, 0], ["thy", "pit", "fb", "T4, T3", 26, "L", 0, 0], ["thy", "hyp", "fb", "", 52, "L", 0, 0]], "t": [["Catena", "TRH → TSH → tiroide: soprattutto <b>T4</b> (pro-ormone), poca T3. Nei tessuti le deiodinasi trasformano la T4 in <b>T3</b>, la forma attiva."], ["Che cosa fa", "Metabolismo basale, calore, frequenza cardiaca, sviluppo del sistema nervoso nel bambino."], ["Feedback", "T4 e T3 frenano TRH e TSH. Il TSH è il sensore più fine: si muove prima della T4."], ["Se si rompe", ["<b>Ipotiroidismo primario</b> (Hashimoto): TSH ↑, fT4 ↓.", "<b>Ipertiroidismo</b> (Graves): TSH ↓, fT4 e fT3 ↑, anticorpi contro il recettore del TSH.", "<b>Secondario</b> (ipofisi): TSH basso o normale, fT4 ↓: qui il TSH da solo inganna.", "<b>Subclinico</b>: TSH alterato, fT4 normale."]]]}, {"b": "Gonadi (HPG)", "n": "Asse gonadi", "hi": ["hyp", "pit", "gon"], "e": [["hyp", "pit", "+", "GnRH", 16, "R", 0, 0], ["pit", "gon", "+", "LH, FSH", 80, "R", 0, 0], ["gon", "pit", "fb", "testosterone,|estradiolo, inibina", 85, "L", 0, 0], ["gon", "hyp", "fb", "", 125, "L", 0, 0]], "t": [["Catena", "GnRH a impulsi → LH e FSH → gonadi."], ["Che cosa fa", ["<b>Uomo</b>: LH → cellule di Leydig: testosterone; FSH → cellule di Sertoli: spermatogenesi e inibina B.", "<b>Donna</b>: FSH → follicolo: estradiolo; LH → ovulazione e corpo luteo: progesterone."]], ["Feedback", "Gli steroidi sessuali frenano GnRH e LH, l’inibina frena l’FSH. Eccezione: a metà ciclo l’estradiolo alto e prolungato diventa feedback <b>positivo</b> → picco di LH → ovulazione. Il GnRH dato in modo continuo (analoghi depot) invece spegne l’asse."], ["Se si rompe", ["<b>Primario</b> (gonadi: menopausa, Klinefelter): LH e FSH ↑.", "<b>Secondario</b> (ipotalamo o ipofisi: deficit energetico, anoressia, sport estremo, Kallmann, iperprolattinemia): LH e FSH ↓ o inappropriatamente normali.", "<b>Anabolizzanti</b>: LH e FSH ↓, testicoli piccoli."]]]}, {"b": "Crescita (GH)", "n": "Asse GH", "hi": ["hyp", "pit", "liv", "bone"], "e": [["hyp", "pit", "+", "GHRH (+)|somatostatina (−)", 16, "R", 0, 0], ["pit", "liv", "+", "GH", 30, "R", 0, 0], ["liv", "bone", "+", "IGF-1", 40, "R", 0, 0], ["liv", "pit", "fb", "IGF-1", 60, "L", 0, 0], ["liv", "hyp", "fb", "", 95, "L", 0, 0]], "t": [["Catena", "GHRH (+), somatostatina (−) e grelina (+) → <b>GH</b>, a impulsi, soprattutto nel sonno → fegato: <b>IGF-1</b>."], ["Che cosa fa", "Crescita di cartilagine e osso, sintesi proteica. Il GH da solo alza la glicemia e libera grassi."], ["Feedback", "L’IGF-1 frena il GH e stimola la somatostatina."], ["Se si rompe", ["<b>Acromegalia</b> (gigantismo nel bambino): IGF-1 ↑, il GH non si abbassa dopo un carico di glucosio.", "<b>Deficit di GH</b>: IGF-1 ↓; nel bambino bassa statura.", "Si misura l’IGF-1 perché il GH oscilla troppo."]]]}, {"b": "Prolattina", "n": "Prolattina", "hi": ["hyp", "pit", "brs"], "e": [["hyp", "pit", "-", "dopamina (freno)", 16, "R", 0, 0], ["pit", "brs", "+", "prolattina", 24, "R", 0, 0], ["brs", "hyp", "+", "suzione|(via nervi)", 70, "L", 0, 0]], "t": [["Catena", "È l’unico asse con un <b>freno</b> invece che un acceleratore: la <b>dopamina</b> dell’ipotalamo, attraverso i vasi portali, tiene bassa la prolattina. La stimolano la suzione, il TRH e gli estrogeni."], ["Che cosa fa", "Produzione di latte. Frena il GnRH: è l’amenorrea dell’allattamento."], ["Feedback", "La prolattina alta fa produrre più dopamina (anello corto)."], ["Se si rompe", ["<b>Prolattinoma</b>: prolattina ↑ → galattorrea, amenorrea, infertilità, calo della libido.", "<b>Farmaci antidopaminergici</b> (antipsicotici, metoclopramide): prolattina ↑.", "<b>Peduncolo compresso</b>: la dopamina non arriva più → prolattina ↑ (l’unico ormone che sale).", "<b>Ipotiroidismo primario</b>: TRH ↑ → prolattina ↑."]]]}, {"b": "ADH e ossitocina", "n": "Neuroipofisi", "hi": ["hyp", "pit", "kid", "ut"], "e": [["hyp", "pit", "+", "assoni dei nuclei|sopraottico e paraventr.", 16, "R", 0, 0], ["pit", "kid", "+", "ADH", 45, "R", 0, 0], ["pit", "ut", "+", "ossitocina", 100, "R", 0, 0], ["kid", "hyp", "fb", "osmolalità ↓|(acqua trattenuta)", 120, "L", 0, 0]], "t": [["Catena", "Osmocettori dell’ipotalamo (osmolalità sopra circa 285 mOsm/kg) e barocettori (volume) → nuclei sopraottico e paraventricolare → l’ADH scende lungo gli assoni e viene liberato dalla <b>neuroipofisi</b>. Niente vasi portali qui."], ["Che cosa fa", "Rene (recettori V2): inserisce acquaporine AQP2 nel dotto collettore e trattiene acqua libera: urine concentrate. Vasi (V1): vasocostrizione."], ["Feedback", "L’acqua trattenuta abbassa l’osmolalità → meno ADH, e meno sete."], ["Se si rompe", ["<b>SIADH</b>: ADH ↑ inappropriato → iponatremia con urine concentrate.", "<b>Diabete insipido centrale</b>: ADH ↓ → poliuria con urine diluite; risponde alla desmopressina.", "<b>Nefrogenico</b> (litio, ipercalcemia): ADH normale, il rene non risponde.", "<b>Ossitocina</b>, dalla stessa neuroipofisi: contrazione dell’utero ed eiezione del latte. È uno dei pochi feedback <b>positivi</b>."]]]}, {"b": "Calcio e vitamina D", "n": "Calcio e vitamina D", "hi": ["par", "kid", "bone", "skin", "liv", "gut"], "e": [["par", "kid", "+", "PTH", 40, "R", 0, -34], ["par", "bone", "+", "PTH", 130, "R", 0, 30], ["skin", "liv", "+", "vit. D₃ (UVB)", 14, "R", -70, -34], ["liv", "kid", "+", "25(OH)D", 18, "R", 4, -4], ["kid", "gut", "+", "1,25(OH)₂D", 22, "R", 10, 6], ["bone", "kid", "fb", "FGF23", 40, "R", 6, 14], ["gut", "par", "fb", "Ca²⁺ ↑|(letto dal CaSR)", 150, "L", 0, 70]], "t": [["Catena", "Il calcio ionizzato che scende è letto dal recettore del calcio (<b>CaSR</b>) delle paratiroidi → <b>PTH</b>."], ["Che cosa fa", ["<b>PTH sull’osso</b>: libera calcio e fosfato (tramite RANKL).", "<b>PTH sul rene</b>: riassorbe calcio nel tubulo distale, butta fosfato nel prossimale, accende la 1α-idrossilasi.", "<b>Vitamina D</b>: pelle (UVB) → D₃ → fegato: <b>25(OH)D</b>, la forma di deposito, quella che si misura → rene: <b>1,25(OH)₂D</b> (calcitriolo), la forma attiva → intestino: assorbe calcio e fosfato."]], ["Feedback", "Calcio alto e calcitriolo frenano il PTH. L’FGF23 dell’osso fa perdere fosfato e frena il calcitriolo. La calcitonina conta poco nell’uomo."], ["Se si rompe", ["<b>Iperparatiroidismo primario</b> (adenoma): Ca ↑, PTH ↑ o inappropriatamente normale, P ↓.", "<b>Secondario</b> (carenza di vitamina D, insufficienza renale): Ca normale o ↓, PTH ↑.", "<b>Ipoparatiroidismo</b> (dopo tiroidectomia): Ca ↓, PTH ↓, P ↑.", "<b>Tumori</b> (PTHrP): Ca ↑, PTH ↓."]]]}]},U=D.ui,A=D.axes,CUR=0,PZ=false;
+function $(q){return document.querySelector(q);}
+// organ anchors on the body (front view)
+var N={hyp:[320,58],pit:[320,92],thy:[320,150],par:[320,150],liv:[294,252],adr:[300,298],kid:[340,320],gut:[320,365],gon:[320,428],bone:[292,492],skin:[226,262],brs:[342,210],ut:[320,410]};
+function body(hi){var o='',c='#EEF2F5',s='#B9C5CF';
+  o+='<path d="M232 136 Q320 112 408 136 L432 300 L414 304 L392 182 L386 404 L372 540 L332 540 L322 432 L318 432 L308 540 L268 540 L254 404 L248 182 L226 304 L208 300Z" fill="'+c+'" stroke="'+s+'" stroke-width="1.5"/>';
+  o+='<rect x="306" y="108" width="28" height="30" fill="'+c+'" stroke="'+s+'" stroke-width="1.5"/><circle cx="320" cy="68" r="46" fill="'+c+'" stroke="'+s+'" stroke-width="1.5"/>';
+  function on(k){return hi.indexOf(k)>=0;}
+  function col(k,c1){return on(k)?c1:'#D5DCE3';}
+  o+='<ellipse cx="320" cy="58" rx="16" ry="9" fill="'+col('hyp','#7A4BA6')+'"/>';
+  o+='<circle cx="320" cy="90" r="7" fill="'+col('pit','#7A4BA6')+'"/>';
+  o+='<path d="M320 152 C306 136 296 142 300 156 C304 166 316 162 320 156 C324 162 336 166 340 156 C344 142 334 136 320 152Z" fill="'+col('thy','#C2571A')+'"/>';
+  if(on('par'))[[305,146],[335,146],[307,160],[333,160]].forEach(function(p){o+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3.6" fill="#B5520C" stroke="#FFFFFF" stroke-width="1"/>';});
+  o+='<path d="M268 240 Q300 226 322 240 Q318 266 290 270 Q270 266 268 240Z" fill="'+col('liv','#8A5A2B')+'"/>';
+  [[300,320],[340,320]].forEach(function(p){o+='<ellipse cx="'+p[0]+'" cy="'+p[1]+'" rx="9" ry="14" fill="'+col('kid','#B03A3A')+'"/>';});
+  [[300,300],[340,300]].forEach(function(p){o+='<path d="M'+(p[0]-8)+' '+(p[1]+4)+' L'+p[0]+' '+(p[1]-8)+' L'+(p[0]+8)+' '+(p[1]+4)+'Z" fill="'+col('adr','#D4A017')+'"/>';});
+  o+='<path d="M298 350 q22 -12 44 0 q-22 12 -44 0 q22 18 44 12" fill="none" stroke="'+col('gut','#C27A9A')+'" stroke-width="7" stroke-linecap="round"/>';
+  if(on('ut'))o+='<path d="M310 398 Q320 392 330 398 L326 420 L314 420Z" fill="#E08AA6"/>';
+  [[306,430],[334,430]].forEach(function(p){o+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="7" fill="'+col('gon','#3E6E9E')+'"/>';});
+  o+='<path d="M296 440 L290 528" stroke="'+col('bone','#8696A4')+'" stroke-width="9" stroke-linecap="round"/>';
+  o+='<path d="M240 196 L222 300" stroke="'+col('skin','#E3B25A')+'" stroke-width="12" stroke-linecap="round" opacity=".8"/>';
+  [[300,212],[340,212]].forEach(function(p){o+='<path d="M'+(p[0]-11)+' '+(p[1]-4)+' Q'+p[0]+' '+(p[1]+12)+' '+(p[0]+11)+' '+(p[1]-4)+'" fill="none" stroke="'+col('brs','#E08AA6')+'" stroke-width="3"/>';});
+  return o;}
+function arrow(a,b,kind,lab,mag,side,lx,ly){var p=N[a],q=N[b],mx=(p[0]+q[0])/2,my=(p[1]+q[1])/2,dx=q[0]-p[0],dy=q[1]-p[1],L=Math.sqrt(dx*dx+dy*dy)||1,nx=-dy/L,ny=dx/L;
+  if((side==='R'&&nx<0)||(side==='L'&&nx>0)){nx=-nx;ny=-ny;}
+  var cx=mx+nx*mag,cy=my+ny*mag,col=kind==='+'?'#2E7D4F':'#C0392B',dash=kind==='fb'?' stroke-dasharray="7 5"':' stroke-dasharray="10 4"',cls=kind==='fb'?'fb':'fl';
+  function pt(t){var u=1-t;return [u*u*p[0]+2*u*t*cx+t*t*q[0],u*u*p[1]+2*u*t*cy+t*t*q[1]];}
+  var s=pt(0.1),e=pt(0.9),m=pt(0.5);
+  var o='<path class="'+cls+'" d="M'+s[0].toFixed(1)+' '+s[1].toFixed(1)+' Q'+cx.toFixed(1)+' '+cy.toFixed(1)+' '+e[0].toFixed(1)+' '+e[1].toFixed(1)+'" fill="none" stroke="'+col+'" stroke-width="2.6"'+dash+' marker-end="url(#m'+(kind==='+'?'g':'r')+')"/>';
+  if(lab){var tx=m[0]+(side==='L'?-6:6)+(lx||0),ty=m[1]+(ly||0);lab.split('|').forEach(function(l,i){o+='<text x="'+tx.toFixed(1)+'" y="'+(ty+4+i*15).toFixed(1)+'" font-size="14" font-weight="700" text-anchor="'+(side==='L'?'end':'start')+'" fill="'+col+'">'+l+'</text>';});}
+  return o;}
+function names(hi){var o='',L=U.org;Object.keys(L).forEach(function(k){if(hi.indexOf(k)<0||!N[k])return;var y=L[k][1],p=N[k];
+  o+='<line x1="118" y1="'+(y-4)+'" x2="'+(p[0]-14)+'" y2="'+p[1]+'" stroke="#DDE4EA" stroke-width="1"/><text x="114" y="'+y+'" font-size="14" font-weight="700" text-anchor="end" fill="#16222E">'+L[k][0]+'</text>';});return o;}
+function draw(){var a=A[CUR],o='<defs><marker id="mg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2E7D4F"/></marker><marker id="mr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#C0392B"/></marker></defs>';
+  o+='<rect width="640" height="560" fill="#FFFFFF"/>'+body(a.hi)+names(a.hi);
+  a.e.forEach(function(e){o+=arrow(e[0],e[1],e[2],e[3],e[4],e[5],e[6],e[7]);});
+  o+='<text x="620" y="22" font-size="13" fill="#2E7D4F" font-weight="700" text-anchor="end">'+U.right+'</text><text x="132" y="22" font-size="13" fill="#C0392B" font-weight="700">'+U.left+'</text>';
+  $('#sv').innerHTML=o;
+  $('#tx').innerHTML='<h3>'+a.n+'</h3>'+a.t.map(function(s){return '<span class="k">'+s[0]+'</span>'+(Array.isArray(s[1])?'<ul>'+s[1].map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>':'<p>'+s[1]+'</p>');}).join('');
+  $('#ax').innerHTML=A.map(function(x,i){return '<button type="button" data-i="'+i+'"'+(i===CUR?' class="on"':'')+'>'+x.b+'</button>';}).join('')+'<span class="sp"></span><button type="button" id="pz"'+(PZ?' class="on"':'')+'>'+(PZ?U.play:U.pause)+'</button>';}
+$('#ax').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.id==='pz'){PZ=!PZ;document.body.classList.toggle('paused',PZ);}else CUR=+b.getAttribute('data-i');draw();});
+draw();
+</script>
+</body>
+</html>
