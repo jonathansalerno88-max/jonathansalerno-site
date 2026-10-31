@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The truck with a sliding wall</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+svg[viewBox]{min-width:0!important;max-width:100%!important;width:100%}
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 8px;font-size:13px}
+.row .vl{font-weight:700;color:#55697A}
+.row button{font:inherit;font-size:13px;padding:4px 11px;border-radius:999px;border:1px solid var(--border-strong);background:#FFFFFF;color:var(--text-primary);cursor:pointer}
+.row button.on{border:1.5px solid #1456A8;background:#EEF4FC;color:#1456A8;font-weight:700}
+.row .sp{flex:1 1 auto}
+#pz.on{border-color:#B5520C;background:#FCEEDD;color:#7A3E0B}
+.pnl{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;overflow:hidden;margin:0 0 8px}
+.txt{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:9px 12px;font-size:14px;line-height:1.55;min-height:5.5em}
+.txt p{margin:0 0 5px}.txt p:last-child{margin:0}
+.cnt{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;margin-top:6px;color:#55697A}
+.cnt b{color:#16222E}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Metaphor: the red cell as a truck whose container is split by a sliding wall between O₂ and CO₂</h2>
+<div class="row" id="md"></div>
+<div class="pnl"><svg id="sv" viewBox="0 0 640 300" role="img" aria-label="Metaphor: the red cell as a truck whose container is split by a sliding wall between O₂ and CO₂"></svg></div>
+<div class="txt" id="tx"></div>
+<script>
+var D={"ui": {"wall": "The wall:", "mob": "sliding (real haemoglobin)", "fix": "locked (no Bohr, no Haldane)", "pause": "❚❚ Pause", "play": "▶ Resume", "tis": "TISSUES", "tisS": "working muscle", "lung": "LUNG", "lungS": "alveolus", "stR": "R state · relaxed: likes O₂", "stT": "T state · tense: likes CO₂ and H⁺", "stFix": "wall locked", "ph": {"drive": "<b>Driving to the tissues.</b> The container is full of O₂: four crates, one per haem group. The wall is pushed towards CO₂: this is the R state.", "tis": "<b>In the tissues.</b> Outside there is plenty of CO₂ and H⁺: they come in, fill their compartment and push the wall. The wall squeezes O₂ out (<b>Bohr</b>), and the O₂ leaving makes room for CO₂ (<b>Haldane</b>). Haemoglobin switches to the T state.", "back": "<b>Driving to the lung.</b> Now the container carries more CO₂ and less O₂. The wall is pushed towards O₂: T state.", "lung": "<b>In the lung.</b> Outside there is plenty of O₂: it comes in, fills its compartment and pushes the wall the other way. The wall squeezes CO₂ out (<b>Haldane</b>), and the CO₂ leaving makes room for O₂ (<b>Bohr</b>). Haemoglobin returns to the R state."}, "mobN": "Sliding wall: each cargo coming in helps the other one out. It is one mechanism, seen from the two cargos.", "fixN": "Locked wall: each cargo must get in and out on its own, by pressure alone. Less is exchanged on each trip.", "cO2": "O₂ delivered to the tissues:", "cCO2": "CO₂ taken away:"}},U=D.ui,MOB=true,PZ=false,T=0,t0=null,CY=16;
+function $(q){return document.querySelector(q);}
+function tx(x,y,t,a,o){o=o||{};return '<text x="'+x+'" y="'+y+'" font-size="'+(o.s||12)+'" text-anchor="'+(a||'start')+'" fill="'+(o.c||'#16222E')+'"'+(o.w?' font-weight="'+o.w+'"':'')+'>'+t+'</text>';}
+function ui(){$('#md').innerHTML='<span class="vl">'+U.wall+'</span><button type="button" data-m="1"'+(MOB?' class="on"':'')+'>'+U.mob+'</button><button type="button" data-m="0"'+(!MOB?' class="on"':'')+'>'+U.fix+'</button><span class="sp"></span><button type="button" id="pz"'+(PZ?' class="on"':'')+'>'+(PZ?U.play:U.pause)+'</button>';}
+$('#md').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.id==='pz')PZ=!PZ;else{MOB=b.getAttribute('data-m')==='1';T=0;}ui();});
+function ease(u){u=Math.max(0,Math.min(1,u));return u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;}
+// cycle: 0-4 drive lung->tissue, 4-8 exchange in tissue, 8-12 drive back, 12-16 exchange in lung
+var XL=470,XT=170;
+function state(t){var o2a=4,o2v=MOB?2:3,c2a=1,c2v=MOB?3:2,wA=MOB?0.62:0.5,wV=MOB?0.38:0.5;
+  if(t<4)return {ph:0,x:XL+(XT-XL)*ease(t/4),o2:o2a,c2:c2a,w:wA,u:0};
+  if(t<8){var u=ease((t-4)/3.2);return {ph:1,x:XT,o2:o2a-(o2a-o2v)*u,c2:c2a+(c2v-c2a)*u,w:wA+(wV-wA)*u,u:u};}
+  if(t<12)return {ph:2,x:XT+(XL-XT)*ease((t-8)/4),o2:o2v,c2:c2v,w:wV,u:0};
+  var u2=ease((t-12)/3.2);return {ph:3,x:XL,o2:o2v+(o2a-o2v)*u2,c2:c2v-(c2v-c2a)*u2,w:wV+(wA-wV)*u2,u:u2};}
+function crate(x,y,lab,c,op){return '<g opacity="'+op.toFixed(2)+'"><rect x="'+(x-14)+'" y="'+(y-11)+'" width="28" height="22" rx="4" fill="'+c+'" stroke="#FFFFFF" stroke-width="1.5"/>'+tx(x,y+4,lab,'middle',{s:lab.length>2?9:10,w:700,c:'#FFFFFF'})+'</g>';}
+function draw(){var s=state(T),o='';
+  // zones
+  o+='<rect x="0" y="0" width="150" height="300" fill="#FCEEDD"/><rect x="490" y="0" width="150" height="300" fill="#E6F1F9"/>';
+  o+=tx(75,22,U.tis,'middle',{s:13,w:700,c:'#8A4A0B'})+tx(75,38,U.tisS,'middle',{s:10.5,c:'#8A4A0B'});
+  o+=tx(565,22,U.lung,'middle',{s:13,w:700,c:'#1F5FA8'})+tx(565,38,U.lungS,'middle',{s:10.5,c:'#1F5FA8'});
+  for(var i=0;i<9;i++){o+='<circle cx="'+(18+(i*41)%120)+'" cy="'+(70+(i*29)%90)+'" r="9" fill="#5B7BA6" opacity=".25"/>';o+='<circle cx="'+(508+(i*37)%115)+'" cy="'+(70+(i*31)%90)+'" r="9" fill="#C0392B" opacity=".2"/>';}
+  o+=tx(75,182,'CO₂ · H⁺','middle',{s:11,w:700,c:'#2E4F7A'})+tx(565,182,'O₂','middle',{s:11,w:700,c:'#A32D2D'});
+  // road
+  o+='<rect x="0" y="246" width="640" height="26" fill="#DDE4EA"/>';for(var r=0;r<640;r+=40)o+='<rect x="'+r+'" y="258" width="20" height="3" fill="#FFFFFF"/>';
+  // truck: container 170x80, cab on the side it drives towards
+  var cx=s.x,cw=180,ch=86,cy=150,left=cx-cw/2,dirL=(s.ph<=1);
+  var cabX=dirL?left-46:left+cw+4;
+  o+='<rect x="'+cabX+'" y="'+(cy+20)+'" width="42" height="'+(ch-20)+'" rx="8" fill="#55697A"/><rect x="'+(cabX+(dirL?5:16))+'" y="'+(cy+28)+'" width="20" height="18" rx="3" fill="#E6F1F9"/>';
+  o+='<circle cx="'+(left+30)+'" cy="'+(cy+ch+8)+'" r="11" fill="#16222E"/><circle cx="'+(left+cw-30)+'" cy="'+(cy+ch+8)+'" r="11" fill="#16222E"/><circle cx="'+(cabX+21)+'" cy="'+(cy+ch+8)+'" r="11" fill="#16222E"/>';
+  o+='<rect x="'+left+'" y="'+cy+'" width="'+cw+'" height="'+ch+'" rx="6" fill="#FFFFFF" stroke="#16222E" stroke-width="2"/>';
+  var wx=left+cw*s.w;
+  o+='<rect x="'+(left+2)+'" y="'+(cy+2)+'" width="'+(wx-left-4)+'" height="'+(ch-4)+'" fill="#FBE3E0"/><rect x="'+(wx+2)+'" y="'+(cy+2)+'" width="'+(left+cw-wx-4)+'" height="'+(ch-4)+'" fill="#E3EAF4"/>';
+  o+='<rect x="'+(wx-4)+'" y="'+(cy-6)+'" width="8" height="'+(ch+12)+'" rx="3" fill="'+(MOB?'#7A4BA6':'#8696A4')+'"/>';
+  if(!MOB)o+='<g>'+[0,1].map(function(k){return '<rect x="'+(wx-9)+'" y="'+(cy+12+k*48)+'" width="18" height="12" rx="2" fill="#16222E"/>';}).join('')+'</g>';
+  // crates: 4 haem slots for O2 on the left, CO2 on the right
+  var no=s.o2,nc=s.c2;
+  var oc=(left+wx)/2,ccx=(wx+left+cw)/2,sp=Math.min(34,(wx-left-10)/2),spc=Math.min(34,(left+cw-wx-10)/2);
+  for(var k=0;k<4;k++){var ox=oc+((k%2)?sp/2:-sp/2),oy=cy+24+Math.floor(k/2)*36;var op=Math.max(0,Math.min(1,no-k));
+    if(op<1&&s.ph===1){var fx=ox-(ox-75)*(1-op),fy=oy+(110-oy)*(1-op);o+=crate(fx,fy,'O₂','#C0392B',Math.max(op,0.25));}else o+=crate(ox,oy,'O₂','#C0392B',op);}
+  for(var k2=0;k2<4;k2++){var px=ccx+((k2%2)?-spc/2:spc/2),py=cy+24+Math.floor(k2/2)*36,opc=Math.max(0,Math.min(1,nc-k2));
+    if(s.ph===3&&opc<1){var gx=px+(565-px)*(1-opc),gy=py+(110-py)*(1-opc);o+=crate(gx,gy,'CO₂','#2E4F7A',Math.max(opc,0.25));}else o+=crate(px,py,'CO₂','#2E4F7A',opc);}
+  // state badge
+  var R=s.w>0.5,lab=MOB?(R?U.stR:U.stT):U.stFix,bc=MOB?(R?'#C0392B':'#2E4F7A'):'#8696A4';
+  o+='<rect x="'+(cx-110)+'" y="'+(cy-40)+'" width="220" height="24" rx="12" fill="'+bc+'"/>'+tx(cx,cy-24,lab,'middle',{s:11.5,w:700,c:'#FFFFFF'});
+  $('#sv').innerHTML=o;
+  var ph=['drive','tis','back','lung'][s.ph],o2d=4-(MOB?2:3),c2d=(MOB?3:2)-1;
+  $('#tx').innerHTML='<p>'+U.ph[ph]+'</p><p style="color:#55697A;font-size:13px">'+(MOB?U.mobN:U.fixN)+'</p><div class="cnt"><span>'+U.cO2+' <b>'+o2d+' / 4</b></span><span>'+U.cCO2+' <b>'+c2d+'</b></span></div>';}
+function tick(ts){if(t0===null)t0=ts;var dt=Math.min(0.05,(ts-t0)/1000);t0=ts;if(!PZ)T=(T+dt)%CY;draw();requestAnimationFrame(tick);}
+ui();requestAnimationFrame(tick);
+</script>
+</body>
+</html>

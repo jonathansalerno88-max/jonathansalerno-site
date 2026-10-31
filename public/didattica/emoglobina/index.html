@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L'emoglobina — Jonathan Salerno</title>
+<link rel="alternate" hreflang="it" href="/didattica/emoglobina/">
+<link rel="alternate" hreflang="en" href="/teaching/haemoglobin/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
+<meta name="description" content="L'emoglobina spiegata dagli stati T e R: cooperatività, i residui che contano (istidina prossimale e distale, His146β, Val1, la tasca del 2,3-BPG, HbF, HbS), gli effettori che spostano la curva, gli effetti Bohr e Haldane come un solo meccanismo, e la metafora animata del TIR con la parete mobile.">
+<meta name="author" content="Jonathan Salerno">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
+<meta property="og:type" content="article">
+<meta property="og:title" content="L'emoglobina">
+<meta property="og:description" content="Stati T e R, i residui che contano, Bohr e Haldane come un solo meccanismo, e il TIR con la parete mobile.">
+<style>
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-ext-600-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-greek-400-normal.woff2) format('woff2');unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-500-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/ibm-plex-serif-latin-ext-500-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+:root{
+  --paper:#FBFCFD; --ink:#16222E; --mut:#55697A; --faint:#8696A4;
+  --rule:#DDE4EA; --link:#1456A8; --mark:#B5520C; --axis:#9DACB9; --card:#F1F4F7;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0E151B; --ink:#E2E9EF; --mut:#9BAAB7; --faint:#6C7D8C;
+  --rule:#27343F; --link:#6FA8EA; --mark:#F08A3C; --axis:#50616F; --card:#16212A;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#0E151B; --ink:#E2E9EF; --mut:#9BAAB7; --faint:#6C7D8C;
+  --rule:#27343F; --link:#6FA8EA; --mark:#F08A3C; --axis:#50616F; --card:#16212A;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans);
+  font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased}
+.page{max-width:47rem; margin:0 auto; padding:clamp(2rem,6vw,4.5rem) 16px clamp(3rem,8vw,6rem)}
+a{color:var(--link); font-weight:600; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:.2em}
+a:hover{text-decoration-thickness:2px}
+a:focus-visible{outline:2px solid var(--link); outline-offset:3px; border-radius:2px}
+
+.back{font-size:.875rem; margin:0 0 1.6rem}
+.kicker{font-family:var(--mono); font-size:.75rem; color:var(--faint); letter-spacing:.04em; margin:0 0 .4rem}
+h1{font-family:var(--serif); font-weight:500; font-size:clamp(2.2rem,6vw,3rem); line-height:1.08;
+  letter-spacing:-.02em; margin:0 0 .9rem}
+.lede{max-width:38rem; color:var(--ink); font-size:1.0625rem}
+.lede p{margin:0 0 .8rem}
+
+nav.toc{margin:2rem 0 0; padding:1rem 1.2rem; background:var(--card); border-radius:10px}
+nav.toc h2{margin:0 0 .5rem; padding:0; border:0; font-family:var(--sans); font-weight:600; font-size:.8125rem; color:var(--mut); letter-spacing:.005em}
+nav.toc ol{margin:0; padding-left:1.4rem; font-size:.9375rem; columns:2 17rem; column-gap:2rem}
+nav.toc li{margin:.15rem 0; break-inside:avoid}
+nav.toc a{font-weight:500}
+.part{margin:clamp(3.4rem,8vw,5rem) 0 -1rem; padding-top:1rem; border-top:2px solid var(--ink)}
+.part .pn{display:block; font-family:var(--mono); font-size:.75rem; letter-spacing:.06em; color:var(--faint); text-transform:uppercase}
+.part .pt{display:block; font-family:var(--serif); font-size:clamp(1.5rem,4vw,1.9rem); line-height:1.15; margin-top:.2rem}
+.xref{font-size:.9rem; color:var(--mut); background:var(--card); border-left:3px solid var(--link); border-radius:0 6px 6px 0; padding:.5rem .8rem; margin:0 0 1rem; max-width:38rem}
+.xref b{color:var(--ink)}
+h3[id],h2[id]{scroll-margin-top:1rem}
+nav.toc .tg{display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:.6rem 2rem}
+nav.toc .tp{font-size:.75rem; font-family:var(--mono); color:var(--faint); letter-spacing:.04em; margin:0 0 .25rem; text-transform:uppercase}
+nav.toc .tg ol{columns:auto}
+nav.toc li ul{margin:.1rem 0 .25rem; padding-left:1.1rem; font-size:.875rem; list-style:disc}
+nav.toc li ul li{margin:.05rem 0}
+nav.toc li ul a{font-weight:400}
+
+section{margin-top:clamp(2.8rem,7vw,4rem); scroll-margin-top:1rem}
+h2{font-family:var(--serif); font-weight:500; font-size:clamp(1.6rem,4.5vw,2rem); line-height:1.15; color:var(--ink);
+  margin:0 0 1rem; padding-bottom:.5rem; border-bottom:1px solid var(--rule); letter-spacing:-.015em}
+h3{font-family:var(--serif); font-weight:500; font-size:1.3rem; line-height:1.25; margin:0 0 .8rem; letter-spacing:-.01em}
+section p, section ul, section ol{max-width:38rem}
+section p{margin:0 0 .85rem}
+section ul{padding-left:1.2rem; margin:0 0 .9rem}
+section li{margin:.25rem 0}
+.formula{font-family:var(--mono); font-size:.9rem; background:var(--card); border-radius:6px;
+  padding:.55rem .8rem; display:inline-block; margin:.1rem 0 .9rem}
+.try{font-size:.9375rem; color:var(--mut); border-left:3px solid var(--axis); padding:.1rem 0 .1rem .9rem; margin:1rem 0}
+.try ul,.try ol{margin:.35rem 0 0; padding-left:1.3rem}
+.try li{margin:.15rem 0}
+.try b{color:var(--ink); font-weight:600}
+
+figure.w{margin:1.4rem 0 1.2rem}
+figure.w iframe{display:block; width:100%; height:560px; border:1px solid var(--rule);
+  border-radius:10px; background:#FBFCFD}
+figure.w iframe.h-simple{height:600px}
+figure.w iframe.h-game{height:1240px}
+figure.w iframe.h-sfida{height:1475px}
+figure.w iframe.h-film{height:1300px}
+figure.w iframe.h-micro{height:1075px}
+figure.w iframe.h-em{height:760px}
+figure.w iframe.h-lz{height:895px}
+figure.w iframe.h-pers{height:1505px}
+@media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1720px} figure.w iframe.h-em{height:1300px} figure.w iframe.h-lz{height:1600px}}
+figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
+figure.w figcaption a{font-weight:500}
+
+table{border-collapse:collapse; font-size:.9rem; margin:.4rem 0 1rem; width:100%; max-width:38rem}
+.tscroll{overflow-x:auto; max-width:100%}
+.tscroll table{max-width:none; min-width:34rem}
+.tscroll td{white-space:nowrap}
+.tscroll.tw table{min-width:40rem}
+.tscroll.tw td{white-space:normal;vertical-align:top}
+.tscroll.tw td:first-child{font-weight:600}
+.tscroll.tw td{white-space:normal}
+th,td{text-align:left; padding:.45rem .6rem; border-bottom:1px solid var(--rule); vertical-align:top}
+th{font-weight:600; color:var(--mut); font-size:.8125rem}
+
+ul.qty{list-style:none; padding:0; margin:0 0 1.1rem; max-width:38rem}
+ul.qty>li{display:grid; grid-template-columns:9.5rem 1fr; gap:.4rem 1rem; align-items:start; margin:0 0 1.1rem}
+ul.qty figure{margin:.2rem 0 0}
+ul.qty .qsvg{display:block; width:100%; height:auto; background:var(--card); border-radius:8px}
+ul.qty figcaption{font-size:.75rem; line-height:1.35; color:var(--faint); margin-top:.3rem}
+ul.qty figure{position:relative; container-type:inline-size}
+ul.qty .qsvg{cursor:pointer}
+ul.qty .qsvg:focus-visible{outline:2px solid var(--link); outline-offset:2px}
+ul.qty figure.paused .qsvg *{animation-play-state:paused!important}
+ul.qty figure::after{content:""; position:absolute; top:calc(75cqw - 1.45rem); right:.35rem; width:1.1rem; height:1.1rem; border-radius:50%; background-color:var(--paper); opacity:0; transition:opacity .2s;
+  background-image:linear-gradient(var(--mut),var(--mut)),linear-gradient(var(--mut),var(--mut)); background-size:2px 8px,2px 8px; background-position:6px 50%,10px 50%; background-repeat:no-repeat; pointer-events:none}
+ul.qty figure.paused::after{opacity:.9}
+.qnote{font-size:.9375rem; background:var(--card); border-radius:8px; padding:.6rem .85rem; margin:.7rem 0 0}
+.qnote ul{margin:.3rem 0 .45rem; padding-left:1.2rem}
+.qnote li{margin:.1rem 0}
+.qtake{max-width:38rem; border:1.5px solid var(--link); border-radius:10px; padding:.8rem 1rem .4rem; margin:0 0 1.4rem; font-size:.9375rem}
+.qtake .qtt{font-family:var(--serif); font-size:1.15rem; margin:0 0 .5rem}
+.qtake p{margin:0 0 .4rem}
+.qtake ul{margin:0 0 .6rem; padding-left:1.2rem}
+.qtake li{margin:.15rem 0}
+.qtake .formula{display:block; margin:.2rem 0 .5rem; white-space:normal}
+#proiettore,#movimento{margin-top:2.6rem; scroll-margin-top:1rem}
+.qsub{list-style:disc; padding-left:1.2rem; margin:.35rem 0 0}
+.qsub li{margin:.2rem 0}
+.dim{font-size:.875rem; color:var(--mut); border-left:3px solid var(--q-int); background:var(--card); border-radius:0 6px 6px 0; padding:.35rem .7rem .3rem; margin:.5rem 0 .2rem; max-width:38rem}
+.dim b{color:var(--ink); font-weight:600}
+details.dim summary{cursor:pointer; color:var(--ink); font-weight:600; padding:.1rem 0}
+details.dim summary:focus-visible{outline:2px solid var(--link); outline-offset:2px; border-radius:2px}
+details.dim:not([open]){padding-bottom:.35rem}
+.dim ul{margin:.15rem 0 0; padding-left:1.1rem; list-style:disc}
+.dim li{margin:.15rem 0}
+figure.w.qcalc{margin:.9rem 0 .2rem; max-width:none!important}
+ul.qty figure.w::after{display:none}
+.qci{margin:.9rem 0 0; font-size:.95rem}
+.qhint{font-size:.8125rem; color:var(--faint); margin:-.4rem 0 1rem}
+@media (max-width:30rem){ul.qty>li{grid-template-columns:1fr} ul.qty figure{max-width:15rem}}
+:root{--q-flux:#534AB7; --q-int:#185FA5; --q-ill:#B5520C; --q-lum:#0F6E56}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--q-flux:#A39BF0; --q-int:#6FA8EA; --q-ill:#F08A3C; --q-lum:#4FC9A6}}
+:root[data-theme="dark"]{--q-flux:#A39BF0; --q-int:#6FA8EA; --q-ill:#F08A3C; --q-lum:#4FC9A6}
+.qsvg .q-t{font:600 10px var(--mono)}
+.qsvg .q-body{fill:var(--paper); stroke:var(--mut); stroke-width:1.2}
+.qsvg .q-wave{fill:none; stroke:var(--q-flux); stroke-width:2; transform-box:fill-box; transform-origin:center; animation:qwave 2.6s ease-out infinite}
+@keyframes qwave{from{transform:scale(.25); opacity:.9} to{transform:scale(1); opacity:0}}
+.qsvg .q-rays line{stroke-dasharray:4 4; animation:qflow 1s linear infinite}
+.qsvg .q-rays2 line{animation:qflow 1s linear infinite}
+@keyframes qflow{to{stroke-dashoffset:-8}}
+.qsvg .q-fl{transform-box:fill-box; transform-origin:50% 100%; animation:qfl 1.3s ease-in-out infinite alternate}
+@keyframes qfl{from{transform:scale(1,1)} 50%{transform:scale(.94,1.08)} to{transform:scale(1.03,.95)}}
+.u{font-family:var(--mono); font-size:.8em; color:var(--mut); white-space:nowrap; font-weight:400}
+ol.refs{font-size:.875rem; color:var(--mut); padding-left:1.2rem}
+ol.refs li{margin:.45rem 0}
+.caveat{font-size:.875rem; color:var(--mut)}
+footer{margin-top:clamp(3rem,8vw,4.5rem); padding-top:1.1rem; border-top:1px solid var(--rule);
+  color:var(--faint); font-size:.8125rem}
+footer p{margin:0}
+footer p.lic{margin-top:.5rem; font-size:.8125rem; line-height:1.5}
+.topbar{display:flex; justify-content:space-between; align-items:center; gap:1rem; font-size:.875rem; margin:0 0 1.6rem}
+.lang{position:relative}
+.lang summary{list-style:none; cursor:pointer; display:flex; align-items:center; gap:.4rem; padding:.35rem .7rem;
+  border:1px solid var(--rule); border-radius:8px; background:var(--card,transparent); color:var(--ink); font-weight:600; font-size:.875rem}
+.lang summary::-webkit-details-marker{display:none}
+.lang summary::after{content:"▾"; font-size:.75rem; color:var(--mut)}
+.lang[open] summary::after{content:"▴"}
+.lang ul{position:absolute; right:0; top:calc(100% + 4px); margin:0; padding:.3rem; list-style:none; background:var(--paper);
+  border:1px solid var(--rule); border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,.14); min-width:9.5rem; z-index:10}
+.lang li a{display:block; padding:.4rem .6rem; border-radius:6px; text-decoration:none; color:var(--ink); font-weight:500}
+.lang li a:hover,.lang li a:focus-visible{background:var(--card,rgba(127,127,127,.12))}
+.lang li a[aria-current]{color:var(--link); font-weight:600}
+.lang li a[aria-current]::after{content:" ✓"}
+.tright{display:flex; align-items:center; gap:.5rem}
+.sup ul{min-width:15rem; max-width:calc(100vw - 2rem)}
+@media (max-width:600px){.tright{position:relative} details.sup{position:static} .sup li a{white-space:normal!important}}
+.sup li a{white-space:nowrap}
+.sup li a{display:flex; align-items:center; gap:.5rem}
+.sup li a svg{flex:none}
+.sup li a[aria-current]::after{content:none}
+@media (max-width:480px){.sup .sl{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}}
+
+/* Contact form (dialog opened from the Contact menu) */
+dialog.cf{width:min(32rem,calc(100vw - 2rem)); border:1px solid var(--rule); border-radius:12px; padding:1.1rem 1.2rem 1rem;
+  background:var(--paper); color:var(--ink); box-shadow:0 12px 40px rgba(0,0,0,.25)}
+dialog.cf::backdrop{background:rgba(14,21,27,.45)}
+dialog.cf h2{margin:0 0 .2rem; padding:0; border:0; font-size:1.15rem; color:var(--ink); text-transform:none; letter-spacing:0; font-family:var(--sans)}
+dialog.cf p.cf-sub{margin:0 0 .8rem; color:var(--mut); font-size:.875rem}
+dialog.cf label{display:block; font-size:.875rem; font-weight:600; margin:.6rem 0 .25rem}
+dialog.cf label span{font-weight:400; color:var(--faint)}
+dialog.cf input,dialog.cf textarea{width:100%; box-sizing:border-box; font:inherit; font-size:.9375rem; color:var(--ink); background:var(--card);
+  border:1px solid var(--rule); border-radius:8px; padding:.5rem .6rem}
+dialog.cf textarea{min-height:8rem; resize:vertical}
+dialog.cf input:focus-visible,dialog.cf textarea:focus-visible{outline:2px solid var(--link); outline-offset:1px}
+dialog.cf .cf-hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+dialog.cf .cf-priv{font-size:.8125rem; color:var(--mut); margin:.7rem 0 0}
+dialog.cf .cf-row{display:flex; gap:.6rem; justify-content:flex-end; align-items:center; margin-top:.9rem; flex-wrap:wrap}
+dialog.cf button{font:inherit; font-size:.9375rem; border-radius:8px; padding:.45rem .9rem; cursor:pointer; border:1px solid var(--rule); background:var(--card); color:var(--ink)}
+dialog.cf button.cf-send{background:var(--link); border-color:var(--link); color:#fff; font-weight:600}
+dialog.cf button:disabled{opacity:.6; cursor:default}
+dialog.cf .cf-msg{margin:.7rem 0 0; font-size:.9rem}
+dialog.cf .cf-msg.ok{color:#3B8A1E}dialog.cf .cf-msg.no{color:#C0392B}
+
+/* Phones: figures that fit a phone (.ph: narrow, or stacked into panels by w/stack.js) stay in the page; each other figure becomes a card that opens it full screen */
+.fcard{display:none}
+@media (max-width:600px){
+  figure.w iframe:not(.ph){display:none!important}
+  .fcard{display:flex; align-items:center; gap:.8rem; width:100%; text-align:left; font:inherit; color:var(--ink);
+    background:var(--card); border:1px solid var(--rule); border-left:4px solid var(--link); border-radius:10px; padding:.8rem .9rem; cursor:pointer}
+  .fcard .fi{flex:none; width:2.4rem; height:2.4rem; border-radius:50%; background:var(--link); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1rem}
+  .fcard .ft{display:block; font-weight:600; font-size:.95rem; line-height:1.35}
+  .fcard .fo{display:block; color:var(--link); font-size:.85rem; font-weight:600; margin-top:.2rem}
+}
+dialog.fx{width:100vw; height:100dvh; max-width:none; max-height:none; margin:0; padding:0; border:0; background:var(--paper); color:var(--ink)}
+dialog.fx::backdrop{background:rgba(14,21,27,.6)}
+dialog.fx .fxbar{display:flex; align-items:center; gap:.6rem; padding:.5rem .8rem; border-bottom:1px solid var(--rule); height:3rem; box-sizing:border-box}
+dialog.fx .fxbar b{flex:1; min-width:0; font-size:.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+dialog.fx .fxbar button{font:inherit; font-size:.9rem; font-weight:600; border:1px solid var(--rule); background:var(--card); color:var(--ink); border-radius:8px; padding:.35rem .8rem; cursor:pointer}
+dialog.fx .fxhint{font-size:.78rem; color:var(--mut); padding:.3rem .8rem; margin:0}
+/* the figure keeps its wide layout (at least 720 px) and is scaled to fit; + and − zoom it, one finger pans */
+dialog.fx .fxw{height:calc(100dvh - 5.2rem); overflow:auto; -webkit-overflow-scrolling:touch; background:#FBFCFD}
+dialog.fx .fxs{position:relative}
+dialog.fx iframe{display:block; position:absolute; left:0; top:0; width:720px; border:0; background:#FBFCFD; transform-origin:0 0}
+dialog.fx .fxbar .fxz{padding:.35rem .6rem; min-width:2.4rem}
+dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align:center}
+@media (orientation:landscape){dialog.fx .fxhint{display:none} dialog.fx .fxw{height:calc(100dvh - 3rem)}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="topbar">
+  <a href="/">Jonathan Salerno</a>
+  <div class="tright">
+  <details class="lang sup">
+    <summary aria-label="Contatti e sostegno"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg> <span class="sl">Contatti</span></summary>
+    <ul>
+      <li><a href="/bio/"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg> Chi sono</a></li>
+      <li><a data-contact href="mailto:info@eraofprevention.com?subject=L%27emoglobina"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> Segnala errori o mandami le tue idee</a></li>
+      <li><a href="https://buy.stripe.com/7sYfZh0rzgJTb9a7TG3Nm01" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg> Sostieni la cultura senza pubblicità né tracciamento</a></li>
+    </ul>
+  </details>
+  <details class="lang">
+    <summary aria-label="Lingua / Language"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg> Italiano</summary>
+    <ul>
+      <li><a href="/didattica/emoglobina/" lang="it" hreflang="it" aria-current="page">Italiano</a></li>
+      <li><a href="/teaching/haemoglobin/" lang="en" hreflang="en">English</a></li>
+    </ul>
+  </details>
+  </div>
+</div>
+
+<header>
+  <p class="kicker">SUPPORTO ALLO STUDIO</p>
+  <h1>L'emoglobina</h1>
+  <div class="lede">
+    <p>Una proteina che cambia forma. Quasi tutto quello che l'emoglobina fa, dalla curva a S agli effetti Bohr e Haldane,
+    si capisce da un'idea sola: oscilla fra due stati, uno che ama l'ossigeno e uno che lo lascia andare.</p>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sommario">
+  <h2>Sommario</h2>
+  <ol>
+    <li><a href="#struttura">Com'è fatta</a></li>
+    <li><a href="#stati">I due stati: T e R</a></li>
+    <li><a href="#residui">I residui che contano</a></li>
+    <li><a href="#effettori">Che cosa sposta la curva</a></li>
+    <li><a href="#bohr-haldane">Bohr e Haldane: un solo meccanismo</a></li>
+    <li><a href="#tir">La metafora del TIR</a></li>
+  </ol>
+  <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#fonti">Fonti</a></p>
+</nav>
+
+<section id="struttura">
+  <h2>1 · Com'è fatta</h2>
+  <p>L'emoglobina dell'adulto (HbA) è un <b>tetramero</b>: due catene α (141 aminoacidi) e due catene β (146), cioè α₂β₂.
+  Ogni catena ha una tasca con un <b>gruppo eme</b>: un anello di porfirina con al centro un atomo di ferro allo stato
+  ferroso (Fe²⁺). Ogni ferro lega una molecola di O₂, quindi un'emoglobina ne porta <b>quattro</b>. Un grammo di
+  emoglobina piena lega circa 1,34 mL di O₂: con 15 g/dL fanno circa 20 mL di O₂ per decilitro di sangue.</p>
+  <p>Il ferro deve restare Fe²⁺. Se si ossida a Fe³⁺ l'emoglobina diventa <b>metaemoglobina</b> e non lega più l'O₂.
+  La mioglobina del muscolo ha lo stesso tipo di eme ma una catena sola: non coopera, ha una curva iperbolica e
+  un'affinità molto più alta (P50 di pochi mmHg). È un magazzino, non un trasportatore.</p>
+</section>
+
+<section id="stati">
+  <h2>2 · I due stati: T e R</h2>
+  <p>L'emoglobina esiste in due forme, che differiscono per come le quattro catene sono incastrate fra loro.</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th></th><th>Stato T (teso)</th><th>Stato R (rilassato)</th></tr></thead>
+    <tbody>
+    <tr><td>Quando prevale</td><td>deossiemoglobina: nei tessuti</td><td>ossiemoglobina: nel polmone</td></tr>
+    <tr><td>Affinità per l'O₂</td><td>bassa: lo lascia andare</td><td>alta: lo trattiene</td></tr>
+    <tr><td>Fra le catene</td><td>molti ponti salini che tengono la struttura "tesa"</td><td>i ponti salini si rompono</td></tr>
+    <tr><td>Il ferro</td><td>un po' fuori dal piano della porfirina</td><td>dentro il piano</td></tr>
+    <tr><td>Cavità centrale</td><td>larga: ci entra il 2,3-BPG</td><td>stretta: il 2,3-BPG esce</td></tr>
+    <tr><td>Ama</td><td>H⁺, CO₂, 2,3-BPG, Cl⁻</td><td>O₂</td></tr>
+    </tbody></table></div>
+  <p><b>Come l'O₂ fa scattare il cambio</b> (il meccanismo di Perutz). Nello stato T il ferro sporge un po' dal piano della
+  porfirina, tirato dall'istidina prossimale a cui è legato. Quando arriva l'O₂, il ferro rientra nel piano e si porta dietro
+  l'istidina, e con lei l'elica F di cui fa parte. Quello spostamento tira i contatti fra le catene e rompe i ponti salini:
+  un dimero αβ ruota di circa 15° rispetto all'altro e la molecola scatta nello stato R.</p>
+  <p><b>Perché la curva è a S.</b> Il primo O₂ entra a fatica, perché la molecola è in T. Ma ogni O₂ legato rende più facile
+  il passaggio a R, e in R gli altri entrano facilmente. È la <b>cooperatività</b>: il coefficiente di Hill è circa 2,7–3.
+  Il modello di Monod, Wyman e Changeux (1965) lo descrive come un cambio concertato di tutta la molecola; quello di
+  Koshland (sequenziale) come un cambio una subunità alla volta. La realtà sta in mezzo, ma il modello a due stati basta
+  per capire quasi tutto.</p>
+</section>
+
+<section id="residui">
+  <h2>3 · I residui che contano</h2>
+  <p>La numerazione è quella della catena (α o β); fra parentesi la posizione nell'elica, come la usava Perutz.</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Residuo</th><th>Dove sta</th><th>Che cosa fa</th><th>Con che cosa c'entra</th></tr></thead>
+    <tbody>
+    <tr><td>His prossimale (F8): α87, β92</td><td>sotto il ferro, legata a lui</td><td>trasmette il movimento del ferro all'elica F e da lì alle altre catene</td><td>cooperatività, passaggio T → R</td></tr>
+    <tr><td>His distale (E7): α58, β63</td><td>sopra il ferro, dal lato dove arriva l'O₂</td><td>stabilizza l'O₂ legato con un legame a idrogeno; costringe il CO a legarsi storto, riducendone l'affinità</td><td>legame dell'O₂, intossicazione da CO</td></tr>
+    <tr><td>His146β (l'ultimo aminoacido di β)</td><td>coda C-terminale</td><td>nello stato T forma un ponte salino con Asp94β e per farlo deve essere protonata: prende un H⁺; in R lo rilascia</td><td><b>effetto Bohr</b>: circa metà della componente alcalina, in presenza di cloruro</td></tr>
+    <tr><td>Val1α (il primo aminoacido di α)</td><td>gruppo amminico N-terminale</td><td>lega Cl⁻ e CO₂ (forma carbammino) preferibilmente nello stato T</td><td>parte del Bohr legata al cloruro; <b>effetto Haldane</b> (carbammino)</td></tr>
+    <tr><td>Val1β, His2β, Lys82β, His143β</td><td>cavità centrale, fra le due β</td><td>formano una tasca carica positivamente che accoglie il 2,3-BPG, carico negativamente, solo nello stato T</td><td>2,3-BPG, spostamento a destra; Val1β lega anche CO₂</td></tr>
+    <tr><td>Ser143γ nell'HbF (al posto di His143β)</td><td>catene γ dell'emoglobina fetale (α₂γ₂)</td><td>una carica positiva in meno nella tasca: il 2,3-BPG lega peggio</td><td>HbF ha più affinità per l'O₂: il feto lo prende dalla madre</td></tr>
+    <tr><td>Glu6β → Val nell'HbS</td><td>superficie della catena β</td><td>crea una zona idrofobica che, nello stato T, si incastra con le molecole vicine: l'emoglobina polimerizza in fibre</td><td>anemia falciforme: falcizzazione con ipossia, acidosi, disidratazione</td></tr>
+    </tbody></table></div>
+  <p class="caveat">La quota di effetto Bohr attribuita a His146β viene da esperimenti di mutagenesi (sostituendola con
+  glutammina il Bohr alcalino si dimezza, in presenza di cloruro); il resto è distribuito su altri gruppi, compresa la Val1α.</p>
+</section>
+
+<section id="effettori">
+  <h2>4 · Che cosa sposta la curva</h2>
+  <p>Tutto quello che stabilizza lo stato T sposta la curva a <b>destra</b>: per la stessa saturazione serve più pressione,
+  quindi la P50 sale (normale 26,8 mmHg) e l'O₂ si cede più facilmente. Tutto quello che favorisce lo stato R la sposta a
+  <b>sinistra</b>.</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Fattore</th><th>Verso</th><th>Perché</th><th>Dove conta</th></tr></thead>
+    <tbody>
+    <tr><td>H⁺ (pH basso)</td><td>destra</td><td>protona le istidine che stabilizzano T (His146β)</td><td>muscolo che lavora: effetto Bohr</td></tr>
+    <tr><td>CO₂</td><td>destra</td><td>forma carbammino sugli N-terminali e libera H⁺</td><td>tessuti</td></tr>
+    <tr><td>2,3-BPG</td><td>destra</td><td>entra nella cavità centrale di T e la blocca</td><td>sale in quota e nell'anemia: adattamento</td></tr>
+    <tr><td>Temperatura alta</td><td>destra</td><td>il legame dell'O₂ libera calore: il caldo lo sfavorisce</td><td>muscolo in esercizio, febbre</td></tr>
+    <tr><td>Alcalosi, freddo, poco 2,3-BPG</td><td>sinistra</td><td>il contrario dei precedenti</td><td>iperventilazione; sangue conservato a lungo (2,3-BPG basso)</td></tr>
+    <tr><td>HbF</td><td>sinistra</td><td>lega poco il 2,3-BPG (Ser143γ)</td><td>feto</td></tr>
+    <tr><td>CO, metaemoglobina</td><td>sinistra, e meno O₂ trasportato</td><td>occupano siti e bloccano le altre subunità in R: l'O₂ rimasto non si stacca</td><td>intossicazione da CO, farmaci ossidanti</td></tr>
+    </tbody></table></div>
+  <p>Questi spostamenti si possono provare nel polmone interattivo della pagina
+  <a href="../formule-fondamentali/#fick">formule fondamentali</a>, con l'interruttore dell'effetto Bohr.</p>
+</section>
+
+<section id="bohr-haldane">
+  <h2>5 · Bohr e Haldane: un solo meccanismo</h2>
+  <p>Lo stato T ama H⁺ e CO₂, lo stato R ama l'O₂. Da questa frase sola escono due effetti:</p>
+  <ul>
+    <li><b>Effetto Bohr</b>: dove ci sono tanti H⁺ e tanta CO₂ (nei tessuti), l'emoglobina è spinta verso T e <b>cede l'O₂</b>.
+    Nel polmone la CO₂ se ne va, l'emoglobina torna verso R e carica l'O₂.</li>
+    <li><b>Effetto Haldane</b>: dove l'emoglobina ha appena ceduto O₂ (nei tessuti), è in T e <b>carica più CO₂ e H⁺</b>.
+    Nel polmone si ricarica di O₂, torna in R e libera la CO₂.</li>
+  </ul>
+  <p>Non sono due fenomeni: sono la stessa cosa vista dalle due merci. Se gli H⁺ spingono via l'O₂, allora l'O₂ deve
+  spingere via gli H⁺, per forza: è una conseguenza termodinamica (il "linkage" di Wyman). In tutti e due i casi
+  <b>non cambia quanta</b> merce c'è nel sangue, cambia <b>a quale pressione</b> corrisponde: Bohr alza la PO₂ venosa,
+  Haldane abbassa la PCO₂ venosa.</p>
+</section>
+
+<section id="tir">
+  <h2>6 · La metafora del TIR</h2>
+  <p>Il globulo rosso è un TIR con <b>un container solo, diviso da una parete mobile</b>. Da un lato lo scompartimento
+  dell'O₂, con quattro posti come i quattro gruppi eme; dall'altro quello della CO₂ e degli H⁺. Le due merci si contendono
+  lo spazio. La parete è il cambio di forma dell'emoglobina: spostata verso la CO₂ è lo stato R, spostata verso l'O₂ è lo
+  stato T.</p>
+  <figure class="w">
+    <iframe src="w/01-tir.html" title="Il TIR con la parete mobile: O₂ e CO₂ nel globulo rosso" loading="lazy" class="ph"></iframe>
+    <figcaption>Il camion fa il giro tessuti–polmone. Confronta la parete mobile con quella bloccata, che è come
+    un'emoglobina senza Bohr e senza Haldane. <a href="w/01-tir.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <p class="caveat">È una metafora: le casse non sono quantità reali. Rende l'idea giusta (ogni merce che entra aiuta
+  l'altra a uscire, nei due sensi), ma esagera le differenze per renderle visibili. Nella realtà l'effetto Haldane
+  raddoppia circa lo scambio di CO₂, mentre il Bohr pesa poco a riposo e molto sotto sforzo.</p>
+</section>
+
+<section id="fonti">
+  <h2>Fonti</h2>
+  <ol class="refs">
+    <li>Perutz MF. Stereochemistry of cooperative effects in haemoglobin. <i>Nature</i> 1970;228:726–39.
+    <a href="https://doi.org/10.1038/228726a0">doi:10.1038/228726a0</a></li>
+    <li>Monod J, Wyman J, Changeux JP. On the nature of allosteric transitions: a plausible model. <i>J Mol Biol</i> 1965;12:88–118.
+    <a href="https://doi.org/10.1016/S0022-2836(65)80285-6">doi:10.1016/S0022-2836(65)80285-6</a></li>
+    <li>Shih DT, Luisi BF, Miyazaki G, Perutz MF, Nagai K. A mutagenic study of the allosteric linkage of His(HC3)146β in haemoglobin. <i>J Mol Biol</i> 1993;230:1291–6.
+    <a href="https://pubmed.ncbi.nlm.nih.gov/8487305/">PubMed 8487305</a></li>
+    <li>Benesch R, Benesch RE. The effect of organic phosphates from the human erythrocyte on the allosteric properties of hemoglobin. <i>Biochem Biophys Res Commun</i> 1967;26:162–7.</li>
+    <li>Berg JM, Tymoczko JL, Gatto GJ, Stryer L. <i>Biochemistry</i>. 9th ed. New York: W.H. Freeman; 2019.</li>
+    <li>Boron WF, Boulpaep EL. <i>Medical Physiology</i>. 3rd ed. Philadelphia: Elsevier; 2017.</li>
+  </ol>
+</section>
+
+<footer>
+  <p>Jonathan Salerno · Firenze · <a href="/">jonathansalerno.org</a></p>
+  <p class="lic">© 2026 Jonathan Salerno. Testi e disegni interattivi sono distribuiti con licenza
+  <a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/deed.it">Creative Commons
+  Attribuzione – Non commerciale 4.0 Internazionale (CC BY-NC 4.0)</a>: puoi condividerli e adattarli
+  citando l'autore, non a scopo commerciale. I dati e le opere di terzi restano dei rispettivi autori
+  (vedi Fonti).</p>
+</footer>
+
+</div>
+<script>
+/* Each figure is a page of its own in an iframe from this site, so the frame
+   can be sized to its content and kept in step as the figure changes. */
+(function(){
+  var frames = document.querySelectorAll('figure.w iframe');
+  Array.prototype.forEach.call(frames, function(f){
+    function fit(){
+      try{
+        var d = f.contentDocument;
+        if (d && d.documentElement) f.style.height = Math.ceil(d.documentElement.offsetHeight) + 2 + 'px';
+      }catch(e){}
+    }
+    f.addEventListener('load', function(){
+      fit();
+      try{
+        if ('ResizeObserver' in window) new ResizeObserver(fit).observe(f.contentDocument.body);
+      }catch(e){}
+    });
+  });
+})();
+</script>
+<script>document.addEventListener('click',function(e){document.querySelectorAll('details.lang[open]').forEach(function(d){if(!d.contains(e.target))d.removeAttribute('open');});});</script>
+<script>
+/* In-page links: the interactive figures load lazily and grow while they load,
+   pushing the target down after the jump. Jump instantly, then keep the target
+   in place for a few seconds while the layout settles, unless the reader scrolls. */
+(function(){
+  var stop=true;
+  function pin(id){
+    var t=document.getElementById(id); if(!t) return;
+    stop=false; var t0=performance.now();
+    t.scrollIntoView({behavior:'instant',block:'start'});
+    (function step(){
+      if(stop) return;
+      var top=t.getBoundingClientRect().top, want=parseFloat(getComputedStyle(t).scrollMarginTop)||0;
+      if(Math.abs(top-want)>3) t.scrollIntoView({behavior:'instant',block:'start'});
+      if(performance.now()-t0<4000) requestAnimationFrame(step); else stop=true;
+    })();
+  }
+  ['wheel','touchstart','keydown'].forEach(function(ev){addEventListener(ev,function(){stop=true},{passive:true})});
+  document.addEventListener('click',function(e){
+    var a=e.target.closest && e.target.closest('a[href^="#"]'); if(!a) return;
+    var id=decodeURIComponent(a.getAttribute('href').slice(1)); if(!id||!document.getElementById(id)) return;
+    e.preventDefault();
+    var d=a.closest('details'); if(d) d.removeAttribute('open');
+    history.pushState(null,'','#'+id); pin(id);
+  });
+  if(location.hash) addEventListener('load',function(){pin(decodeURIComponent(location.hash.slice(1)))});
+})();
+</script>
+<dialog class="cf" id="cf" aria-labelledby="cf-t">
+<form id="cf-f" novalidate>
+  <h2 id="cf-t">Segnala errori o mandami le tue idee</h2>
+  <p class="cf-sub">Ti rispondo all’indirizzo che scrivi qui sotto.</p>
+  <label for="cf-n">Nome <span>(facoltativo)</span></label><input id="cf-n" name="name" maxlength="100" autocomplete="name">
+  <label for="cf-e">La tua email</label><input id="cf-e" name="email" type="email" maxlength="200" autocomplete="email" required>
+  <label for="cf-m">Messaggio</label><textarea id="cf-m" name="message" maxlength="5000" required></textarea>
+  <div class="cf-hp" aria-hidden="true"><label for="cf-w">Website</label><input id="cf-w" name="website" tabindex="-1" autocomplete="off"></div>
+  <p class="cf-priv">Uso nome ed email solo per risponderti: il messaggio arriva nella mia casella e non viene salvato da nessun’altra parte.</p>
+  <p class="cf-msg" id="cf-s" role="status" aria-live="polite"></p>
+  <div class="cf-row"><button type="button" id="cf-x">Annulla</button><button type="submit" class="cf-send" id="cf-b">Invia</button></div>
+</form>
+</dialog>
+<script>(function(){
+var T={"cancel": "Annulla", "send": "Invia", "sending": "Invio…", "ok": "Grazie! Il messaggio è arrivato. Ti rispondo appena posso.", "err": "Non sono riuscito a inviarlo. Riprova, oppure scrivimi a", "errmail": "Controlla l’indirizzo email.", "errmsg": "Scrivi un messaggio un po’ più lungo.", "close": "Chiudi"},d=document.getElementById('cf'),f=document.getElementById('cf-f'),s=document.getElementById('cf-s'),b=document.getElementById('cf-b'),x=document.getElementById('cf-x'),t0=0;
+if(!d||typeof d.showModal!=='function')return; // old browsers keep the plain mailto link
+document.querySelectorAll('a[data-contact]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();
+ var m=a.closest('details');if(m)m.removeAttribute('open');
+ if(d.dataset.done){f.reset();s.textContent='';s.className='cf-msg';b.hidden=false;b.disabled=false;x.textContent=T.cancel;delete d.dataset.done;}
+ t0=Date.now();d.showModal();document.getElementById('cf-e').focus();});});
+x.addEventListener('click',function(){d.close();});
+f.addEventListener('submit',function(e){e.preventDefault();
+ var em=f.email.value.trim(),ms=f.message.value.trim();
+ if(!/^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(em)){s.className='cf-msg no';s.textContent=T.errmail;f.email.focus();return;}
+ if(ms.length<5){s.className='cf-msg no';s.textContent=T.errmsg;f.message.focus();return;}
+ b.disabled=true;b.textContent=T.sending;s.className='cf-msg';s.textContent='';
+ fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:f.name.value,email:em,message:ms,website:f.website.value,elapsed:Date.now()-t0,page:location.pathname})})
+ .then(function(r){return r.json().catch(function(){return{ok:false}}).then(function(j){if(!r.ok||!j.ok)throw j;return j;})})
+ .then(function(){s.className='cf-msg ok';s.textContent=T.ok;b.hidden=true;x.textContent=T.close;d.dataset.done='1';})
+ .catch(function(j){s.className='cf-msg no';s.innerHTML='';
+   if(j&&j.error==='email'){s.textContent=T.errmail;}else if(j&&j.error==='message'){s.textContent=T.errmsg;}
+   else{s.appendChild(document.createTextNode(T.err+' '));var a=document.createElement('a');a.href='mailto:info@eraofprevention.com';a.textContent='info@eraofprevention.com';s.appendChild(a);s.appendChild(document.createTextNode('.'));}
+   b.disabled=false;b.textContent=T.send;});});
+})();</script>
+<dialog class="fx" id="fx" aria-labelledby="fxt"><div class="fxbar"><b id="fxt"></b><button type="button" class="fxz" id="fxm" aria-label="Rimpicciolisci">−</button><span id="fxzv"></span><button type="button" class="fxz" id="fxp" aria-label="Ingrandisci">+</button><button type="button" id="fxc">✕ Chiudi</button></div><p class="fxhint">Ingrandisci con + e −, spostati con un dito. In orizzontale la vedi più grande.</p><div class="fxw" id="fxw"><div class="fxs" id="fxs"><iframe id="fxf" title=""></iframe></div></div></dialog>
+<script>
+/* Phones: replace each wide interactive figure (not .ph) with a card; the figure opens full screen in a dialog,
+   so the page stays short and nothing scrolls sideways. The hidden frames never load. */
+(function(){
+  var T={"open": "Apri l'esperimento"},d=document.getElementById('fx'),fr=document.getElementById('fxf');
+  if(!d||typeof d.showModal!=='function')return;
+  document.querySelectorAll('figure.w iframe:not(.ph)').forEach(function(f){
+    var b=document.createElement('button');b.type='button';b.className='fcard';
+    b.innerHTML='<span class="fi" aria-hidden="true">▶</span><span><span class="ft"></span><span class="fo"></span></span>';
+    b.querySelector('.ft').textContent=f.title;b.querySelector('.fo').textContent=T.open+' →';
+    b.addEventListener('click',function(){document.getElementById('fxt').textContent=f.title;fr.title=f.title;FIT=true;fr.src=f.getAttribute('src');d.showModal();lay();w.scrollTop=0;w.scrollLeft=0;});
+    f.parentNode.insertBefore(b,f);
+  });
+  document.getElementById('fxc').addEventListener('click',function(){d.close();});
+  // zoom: the frame is laid out at least 720 px wide (the figure's wide layout) and scaled
+  var w=document.getElementById('fxw'),sz=document.getElementById('fxs'),Z=1,FIT=true,ro=null;
+  function base(){return Math.max(720,w.clientWidth)}
+  function fitZ(){return w.clientWidth/base()}
+  function lay(){var W=base(),H=w.clientHeight;if(FIT)Z=fitZ();
+    try{H=Math.max(H/Z,fr.contentDocument.documentElement.offsetHeight+2)}catch(e){}
+    fr.style.width=W+'px';fr.style.height=H+'px';fr.style.transform='scale('+Z+')';
+    sz.style.width=Math.ceil(W*Z)+'px';sz.style.height=Math.ceil(H*Z)+'px';
+    document.getElementById('fxzv').textContent=Math.round(Z*100)+'%';}
+  function zoom(k){var cx=(w.scrollLeft+w.clientWidth/2)/Z,cy=(w.scrollTop+w.clientHeight/2)/Z;
+    Z=Math.max(fitZ(),Math.min(2,Z*k));FIT=Z<=fitZ()+1e-3;lay();
+    w.scrollLeft=cx*Z-w.clientWidth/2;w.scrollTop=cy*Z-w.clientHeight/2;}
+  document.getElementById('fxp').addEventListener('click',function(){zoom(1.25)});
+  document.getElementById('fxm').addEventListener('click',function(){zoom(0.8)});
+  fr.addEventListener('load',function(){lay();try{if(ro)ro.disconnect();if('ResizeObserver' in window){ro=new ResizeObserver(lay);ro.observe(fr.contentDocument.body);}}catch(e){}});
+  addEventListener('resize',function(){if(d.open)lay();});
+  d.addEventListener('close',function(){fr.src='about:blank';FIT=true;if(ro)ro.disconnect();});
+})();
+</script>
+</body>
+</html>
