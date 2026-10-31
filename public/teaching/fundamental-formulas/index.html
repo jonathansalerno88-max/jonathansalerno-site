@@ -424,6 +424,44 @@ function show(k){b.querySelectorAll('button.ft').forEach(function(x){x.classList
 t.innerHTML=b.querySelector('template[data-k="'+k+'"]').innerHTML;}
 b.querySelectorAll('button.ft').forEach(function(x){var k=x.getAttribute('data-k');
 x.addEventListener('mouseenter',function(){show(k);});x.addEventListener('focus',function(){show(k);});x.addEventListener('click',function(){show(k);});});})();</script>
+  <h3>In fish: same formula, another strategy</h3>
+  <p>Fish follow the same Fick's law, but with a much harder medium: water. On the terms of the formula most fish do
+  <b>worse</b> than us: less area per kilo and a thicker barrier. Only the most active ones, such as tunas, reach our
+  values. What saves them is how they move the water.</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th></th><th>Human (lung)</th><th>Tuna</th><th>Sluggish fish (e.g. toadfish)</th></tr></thead>
+    <tbody>
+    <tr><td>Medium</td><td>air</td><td>sea water</td><td>sea water</td></tr>
+    <tr><td>A per kilo</td><td>about 1 m²/kg (≈ 1000 mm²/g)</td><td>up to about 10 times that of other fish: the same order as ours</td><td>about 100 mm²/g: ten times less than us</td></tr>
+    <tr><td>T</td><td>0.2–0.5 µm</td><td>about 0.5 µm</td><td>about 5 µm</td></tr>
+    <tr><td>Flow</td><td>in and out: a dead space remains</td><td>one-way, countercurrent, driven by swimming</td><td>one-way, countercurrent, driven by the mouth and opercular pump</td></tr>
+    <tr><td>O₂ extracted from the medium</td><td>less than 25%</td><td colspan="2">up to 90% and more, thanks to countercurrent flow</td></tr>
+    </tbody></table></div>
+  <p class="caveat">Indicative values. A sluggish fish, with little area and a 5–6 µm barrier, has a diffusing capacity about
+  140 times lower than a tuna of the same size (Wegner).</p>
+  <p><b>Why water is hard.</b> Compared with air it holds about 30 times less O₂, so about 30 times more must be moved to
+  get the same oxygen; O₂ diffuses in it about 10,000 times more slowly; and it is about 800 times denser and 50 times more
+  viscous, so moving it costs a lot of energy.</p>
+  <p><b>The solution: countercurrent flow.</b> In the lamellae water and blood flow in opposite directions. Blood about to
+  leave, already nearly saturated, meets the water that has just come in, the richest in O₂; blood that has just arrived,
+  poor in O₂, meets the water about to leave, already depleted but still richer than it. So P<sub>1</sub> − P<sub>2</sub> stays positive
+  along the whole lamella and exchange does not stop halfway. In our lung, by contrast, air goes in and out by the same
+  route and mixes with the old air: that is why we extract much less.</p>
+  <h4>Why tuna suffocate if they stop swimming</h4>
+  <ol>
+    <li><b>Most fish pump water themselves.</b> They open and close the mouth and opercula and push water over the gills even
+    when still: the buccal-opercular pump.</li>
+    <li><b>Tuna have lost this pump.</b> Their gills are packed with lamellae, partly fused together to withstand the strong
+    flow of fast swimming: they offer a lot of resistance to water. The pump could not push enough for their very high O₂
+    consumption. So the tuna swims with its mouth open and lets speed drive the water through: <b>ram ventilation</b>. The cost
+    of breathing moves to the swimming muscles, which it uses anyway.</li>
+    <li><b>If it stops, P<sub>1</sub> − P<sub>2</sub> drops to zero.</b> The water between the lamellae is no longer renewed. Blood keeps
+    taking O₂ from that thin film until its PO₂ falls to that of the blood: the gradient vanishes, and with it V̇O₂, while
+    the oxygen demand stays very high. The tuna becomes hypoxic and suffocates.</li>
+  </ol>
+  <p>It is the same term that falls in us with <b>hypoventilation</b>: if the medium next to the barrier is not renewed,
+  perfect area and thickness are no use. Some sharks too, such as the mako and the great white, breathe only by swimming;
+  others, such as the tiger shark, can switch between pumping and swimming depending on speed.</p>
 </section>
 
 <section id="nernst">
@@ -496,6 +534,11 @@ x.addEventListener('mouseenter',function(){show(k);});x.addEventListener('focus'
     <li>Heitler WJ. The resting potential. Neurotut, University of St Andrews.
     <a href="https://www.st-andrews.ac.uk/~wjh/neurotut/RestingPotential.html">st-andrews.ac.uk/~wjh/neurotut</a></li>
     <li>Aidley DJ. <i>The Physiology of Excitable Cells</i>. 3rd ed. Cambridge: Cambridge University Press; 1989.</li>
+    <li>Hughes GM. The dimensions of fish gills in relation to their function. <i>J Exp Biol</i> 1966;45:177–95.
+    <a href="https://doi.org/10.1242/jeb.45.1.177">doi:10.1242/jeb.45.1.177</a></li>
+    <li>Muir BS, Hughes GM. Gill dimensions for three species of tunny. <i>J Exp Biol</i> 1969;51:271–85.</li>
+    <li>Wegner NC. Gill respiratory morphometrics. In: Farrell AP, ed. <i>Encyclopedia of Fish Physiology</i>. San Diego: Academic Press; 2011.
+    <a href="https://doi.org/10.1016/B978-0-12-374553-8.00166-0">doi:10.1016/B978-0-12-374553-8.00166-0</a></li>
   </ol>
   <p class="caveat">Indicative values, rounded for teaching.</p>
 </section>

@@ -427,6 +427,45 @@ function show(k){b.querySelectorAll('button.ft').forEach(function(x){x.classList
 t.innerHTML=b.querySelector('template[data-k="'+k+'"]').innerHTML;}
 b.querySelectorAll('button.ft').forEach(function(x){var k=x.getAttribute('data-k');
 x.addEventListener('mouseenter',function(){show(k);});x.addEventListener('focus',function(){show(k);});x.addEventListener('click',function(){show(k);});});})();</script>
+  <h3>Nei pesci: stessa formula, un'altra strategia</h3>
+  <p>I pesci usano la stessa legge di Fick, ma con un mezzo molto più difficile: l'acqua. Sui termini della formula,
+  la maggior parte dei pesci sta <b>peggio</b> di noi: meno superficie per chilo e una barriera più spessa. Solo i più
+  attivi, come i tonni, arrivano ai nostri valori. Quello che li salva è come muovono l'acqua.</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th></th><th>Uomo (polmone)</th><th>Tonno</th><th>Pesce lento (es. pesce rospo)</th></tr></thead>
+    <tbody>
+    <tr><td>Mezzo</td><td>aria</td><td>acqua di mare</td><td>acqua di mare</td></tr>
+    <tr><td>A per chilo</td><td>circa 1 m²/kg (≈ 1000 mm²/g)</td><td>fino a circa 10 volte quella degli altri pesci: dello stesso ordine della nostra</td><td>circa 100 mm²/g: dieci volte meno di noi</td></tr>
+    <tr><td>T</td><td>0,2–0,5 µm</td><td>circa 0,5 µm</td><td>circa 5 µm</td></tr>
+    <tr><td>Flusso</td><td>avanti e indietro: resta uno spazio morto</td><td>a senso unico, controcorrente, spinto dal nuoto</td><td>a senso unico, controcorrente, spinto dalla pompa di bocca e opercoli</td></tr>
+    <tr><td>O₂ estratto dal mezzo</td><td>meno del 25%</td><td colspan="2">fino al 90% e oltre, grazie alla controcorrente</td></tr>
+    </tbody></table></div>
+  <p class="caveat">Valori indicativi. Un pesce lento, con poca superficie e una barriera di 5–6 µm, ha una capacità di diffusione
+  circa 140 volte minore di un tonno della stessa taglia (Wegner).</p>
+  <p><b>Perché l'acqua è difficile.</b> Rispetto all'aria contiene circa 30 volte meno O₂, quindi per avere lo stesso
+  ossigeno bisogna muoverne circa 30 volte di più; l'O₂ ci diffonde circa 10 000 volte più lentamente; ed è circa 800 volte
+  più densa e 50 volte più viscosa, quindi muoverla costa molta energia.</p>
+  <p><b>La soluzione: la controcorrente.</b> Nelle lamelle l'acqua e il sangue scorrono in versi opposti. Il sangue che
+  sta per uscire, già quasi saturo, incontra l'acqua appena entrata, la più ricca di O₂; il sangue appena arrivato, povero di
+  O₂, incontra l'acqua che sta uscendo, già impoverita ma comunque più ricca di lui. Così P<sub>1</sub> − P<sub>2</sub> resta positivo
+  per tutta la lamella e lo scambio non si ferma a metà. Nel nostro polmone invece l'aria entra ed esce dalla stessa via e
+  si mescola con quella vecchia: per questo estraiamo molto meno.</p>
+  <h4>Perché il tonno soffoca se smette di nuotare</h4>
+  <ol>
+    <li><b>La maggior parte dei pesci pompa l'acqua da sola.</b> Apre e chiude la bocca e gli opercoli e spinge l'acqua sulle
+    branchie anche da ferma: è la pompa bucco-opercolare.</li>
+    <li><b>Il tonno ha perso questa pompa.</b> Le sue branchie sono fittissime di lamelle, in parte saldate fra loro per
+    reggere la corrente forte del nuoto veloce: oppongono molta resistenza al passaggio dell'acqua. La pompa non
+    riuscirebbe a spingerne abbastanza per il suo consumo di O₂, molto alto. Il tonno nuota quindi a bocca aperta e lascia
+    che sia la velocità a far passare l'acqua: è la <b>ventilazione dinamica</b> (<i>ram ventilation</i>). Il costo del respiro
+    passa ai muscoli del nuoto, che usa comunque.</li>
+    <li><b>Se si ferma, si azzera P<sub>1</sub> − P<sub>2</sub>.</b> L'acqua fra le lamelle smette di rinnovarsi. Il sangue continua a
+    prendere O₂ da quel velo d'acqua finché la sua PO₂ non scende fino a quella del sangue: il gradiente sparisce, e con lui
+    V̇O₂, mentre il bisogno di ossigeno resta altissimo. Il tonno va in ipossia e soffoca.</li>
+  </ol>
+  <p>È lo stesso termine che per noi cala con l'<b>ipoventilazione</b>: se non rinnovi il mezzo vicino alla barriera,
+  superficie e spessore perfetti non servono più. Anche alcuni squali, come lo squalo mako e lo squalo bianco, respirano
+  solo nuotando; altri, come lo squalo tigre, possono passare dalla pompa al nuoto a seconda della velocità.</p>
 </section>
 
 <section id="nernst">
@@ -501,6 +540,11 @@ x.addEventListener('mouseenter',function(){show(k);});x.addEventListener('focus'
     <li>Heitler WJ. The resting potential. Neurotut, University of St Andrews.
     <a href="https://www.st-andrews.ac.uk/~wjh/neurotut/RestingPotential.html">st-andrews.ac.uk/~wjh/neurotut</a></li>
     <li>Aidley DJ. <i>The Physiology of Excitable Cells</i>. 3rd ed. Cambridge: Cambridge University Press; 1989.</li>
+    <li>Hughes GM. The dimensions of fish gills in relation to their function. <i>J Exp Biol</i> 1966;45:177–95.
+    <a href="https://doi.org/10.1242/jeb.45.1.177">doi:10.1242/jeb.45.1.177</a></li>
+    <li>Muir BS, Hughes GM. Gill dimensions for three species of tunny. <i>J Exp Biol</i> 1969;51:271–85.</li>
+    <li>Wegner NC. Gill respiratory morphometrics. In: Farrell AP, ed. <i>Encyclopedia of Fish Physiology</i>. San Diego: Academic Press; 2011.
+    <a href="https://doi.org/10.1016/B978-0-12-374553-8.00166-0">doi:10.1016/B978-0-12-374553-8.00166-0</a></li>
   </ol>
   <p class="caveat">Valori indicativi, arrotondati a scopo didattico.</p>
 </section>
