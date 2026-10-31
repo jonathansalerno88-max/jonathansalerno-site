@@ -376,14 +376,29 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   </div>
 
   <h3>What changes from A to B</h3>
+  <p>Only thickness has the same dimensions in the two forms: the other quantities change, but each formula is
+  consistent on its own.</p>
   <div class="tscroll tw"><table>
-    <thead><tr><th></th><th>A · general form</th><th>B · form for gases</th><th>Why</th></tr></thead>
+    <thead><tr><th></th><th>A · general form</th><th>B · form for gases</th><th>Bridge</th></tr></thead>
     <tbody>
-    <tr><td>Driving force</td><td>ΔC, mol·cm⁻³</td><td>P<sub>1</sub> − P<sub>2</sub>, mmHg</td><td>Henry's law: a dissolved gas has concentration C = α · P (α = solubility)</td></tr>
-    <tr><td>Coefficient</td><td>D, cm²·s⁻¹</td><td>D, cm²·min⁻¹·mmHg⁻¹</td><td>the gas D also contains solubility α; D ∝ α / √MW (Graham's law)</td></tr>
-    <tr><td>Thickness</td><td>Δx</td><td>T</td><td>the same thing, a different name in respiratory textbooks</td></tr>
-    <tr><td>Result</td><td>J · A, mol·s⁻¹</td><td>V̇<sub>gas</sub>, mL·min⁻¹</td><td>for gases volumes are counted: 1 mol ≈ 22.4 L (STPD)</td></tr>
+    <tr><td>Driving force</td><td>ΔC, mol·cm⁻³ <span style="white-space:nowrap">[N L⁻³]</span></td><td>P<sub>1</sub> − P<sub>2</sub>, mmHg <span style="white-space:nowrap">[M L⁻¹ T⁻²]</span></td><td>α, solubility (Henry's law) <span style="white-space:nowrap">[N M⁻¹ L⁻² T²]</span></td></tr>
+    <tr><td>Coefficient</td><td>D, cm²·s⁻¹ <span style="white-space:nowrap">[L² T⁻¹]</span></td><td>D<sub>gas</sub>, cm²·min⁻¹·mmHg⁻¹ <span style="white-space:nowrap">[M⁻¹ L³ T]</span></td><td>D<sub>gas</sub> = D · α · V<sub>m</sub></td></tr>
+    <tr><td>Thickness</td><td>Δx, cm <span style="white-space:nowrap">[L]</span></td><td>T, µm <span style="white-space:nowrap">[L]</span></td><td>the same: one thing, two names</td></tr>
+    <tr><td>Result</td><td>J · A, mol·s⁻¹ <span style="white-space:nowrap">[N T⁻¹]</span></td><td>V̇<sub>gas</sub>, mL·min⁻¹ <span style="white-space:nowrap">[L³ T⁻¹]</span></td><td>V<sub>m</sub>, molar volume <span style="white-space:nowrap">[L³ N⁻¹]</span></td></tr>
     </tbody></table></div>
+  <p>Two constants bridge the two forms:</p>
+  <ol>
+    <li><b>Henry: from pressure to concentration.</b> For a dissolved gas C = α · P, so ΔC = α · ΔP. Solubility α has
+    dimensions <span style="white-space:nowrap">[N L⁻³]</span> / <span style="white-space:nowrap">[M L⁻¹ T⁻²]</span> = <span style="white-space:nowrap">[N M⁻¹ L⁻² T²]</span>.</li>
+    <li><b>Molar volume: from moles to volume.</b> V̇ = (J · A) · V<sub>m</sub>, with V<sub>m</sub> ≈ 22.4 L·mol⁻¹ at STPD
+    (0 °C, 1 atm, dry gas), dimensions <span style="white-space:nowrap">[L³ N⁻¹]</span>.</li>
+  </ol>
+  <p>Substituting into form A: V̇ = V<sub>m</sub> · D · A · α · ΔP / T = <b>(D · α · V<sub>m</sub>)</b> · A · ΔP / T. The D of the
+  gas form is the D of the general form multiplied by α and by V<sub>m</sub>: that is where the extra dimensions go.</p>
+  <p class="caveat">Check: <span style="white-space:nowrap">[L² T⁻¹]</span> × <span style="white-space:nowrap">[N M⁻¹ L⁻² T²]</span> × <span style="white-space:nowrap">[L³ N⁻¹]</span> = <span style="white-space:nowrap">[M⁻¹ L³ T]</span> = D<sub>gas</sub> ✓.</p>
+  <p>The law is the same: only the quantities measured change, pressure instead of concentration and volume instead of
+  moles. That is why the gas D is no longer a plain diffusivity: it also depends on solubility, which is why CO₂ diffuses
+  about 20 times better than O₂.</p>
   <figure class="w">
     <iframe src="w/01-fick.html" title="Fick: O₂ diffusion along the pulmonary capillary" loading="lazy" class="ph"></iframe>
     <figcaption>Move area, thickness, P<sub>A</sub>O₂ and transit time, or pick a scenario: the red curve is the blood PO₂ along the capillary. <a href="w/01-fick.html">Open full screen</a></figcaption>

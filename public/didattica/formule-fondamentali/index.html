@@ -378,14 +378,30 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   </div>
 
   <h3>Che cosa cambia da A a B</h3>
+  <p>Solo lo spessore ha le stesse dimensioni nelle due forme: le altre grandezze cambiano, ma ciascuna formula resta
+  coerente per conto suo.</p>
   <div class="tscroll tw"><table>
-    <thead><tr><th></th><th>A · forma generale</th><th>B · forma per i gas</th><th>Perché</th></tr></thead>
+    <thead><tr><th></th><th>A · forma generale</th><th>B · forma per i gas</th><th>Ponte</th></tr></thead>
     <tbody>
-    <tr><td>Spinta</td><td>ΔC, mol·cm⁻³</td><td>P<sub>1</sub> − P<sub>2</sub>, mmHg</td><td>legge di Henry: un gas sciolto ha concentrazione C = α · P (α = solubilità)</td></tr>
-    <tr><td>Coefficiente</td><td>D, cm²·s⁻¹</td><td>D, cm²·min⁻¹·mmHg⁻¹</td><td>il D del gas contiene anche la solubilità α; D ∝ α / √PM (legge di Graham)</td></tr>
-    <tr><td>Spessore</td><td>Δx</td><td>T</td><td>stessa cosa, nome diverso nei libri di respiratoria</td></tr>
-    <tr><td>Risultato</td><td>J · A, mol·s⁻¹</td><td>V̇<sub>gas</sub>, mL·min⁻¹</td><td>per i gas si contano i volumi: 1 mol ≈ 22,4 L (STPD)</td></tr>
+    <tr><td>Spinta</td><td>ΔC, mol·cm⁻³ <span style="white-space:nowrap">[N L⁻³]</span></td><td>P<sub>1</sub> − P<sub>2</sub>, mmHg <span style="white-space:nowrap">[M L⁻¹ T⁻²]</span></td><td>α, solubilità (legge di Henry) <span style="white-space:nowrap">[N M⁻¹ L⁻² T²]</span></td></tr>
+    <tr><td>Coefficiente</td><td>D, cm²·s⁻¹ <span style="white-space:nowrap">[L² T⁻¹]</span></td><td>D<sub>gas</sub>, cm²·min⁻¹·mmHg⁻¹ <span style="white-space:nowrap">[M⁻¹ L³ T]</span></td><td>D<sub>gas</sub> = D · α · V<sub>m</sub></td></tr>
+    <tr><td>Spessore</td><td>Δx, cm <span style="white-space:nowrap">[L]</span></td><td>T, µm <span style="white-space:nowrap">[L]</span></td><td>uguale: stessa cosa, nome diverso</td></tr>
+    <tr><td>Risultato</td><td>J · A, mol·s⁻¹ <span style="white-space:nowrap">[N T⁻¹]</span></td><td>V̇<sub>gas</sub>, mL·min⁻¹ <span style="white-space:nowrap">[L³ T⁻¹]</span></td><td>V<sub>m</sub>, volume molare <span style="white-space:nowrap">[L³ N⁻¹]</span></td></tr>
     </tbody></table></div>
+  <p>Fra le due forme fanno da ponte due costanti:</p>
+  <ol>
+    <li><b>Henry: da pressione a concentrazione.</b> Per un gas sciolto vale C = α · P, quindi ΔC = α · ΔP. La solubilità
+    α ha dimensioni <span style="white-space:nowrap">[N L⁻³]</span> / <span style="white-space:nowrap">[M L⁻¹ T⁻²]</span> = <span style="white-space:nowrap">[N M⁻¹ L⁻² T²]</span>.</li>
+    <li><b>Volume molare: da moli a volume.</b> V̇ = (J · A) · V<sub>m</sub>, con V<sub>m</sub> ≈ 22,4 L·mol⁻¹ in condizioni STPD
+    (0 °C, 1 atm, gas secco), dimensioni <span style="white-space:nowrap">[L³ N⁻¹]</span>.</li>
+  </ol>
+  <p>Sostituendo nella forma A: V̇ = V<sub>m</sub> · D · A · α · ΔP / T = <b>(D · α · V<sub>m</sub>)</b> · A · ΔP / T. Il D della forma
+  per i gas è quindi il D della forma generale moltiplicato per α e per V<sub>m</sub>: è lì dentro che finiscono le dimensioni
+  in più.</p>
+  <p class="caveat">Controprova: <span style="white-space:nowrap">[L² T⁻¹]</span> × <span style="white-space:nowrap">[N M⁻¹ L⁻² T²]</span> × <span style="white-space:nowrap">[L³ N⁻¹]</span> = <span style="white-space:nowrap">[M⁻¹ L³ T]</span> = D<sub>gas</sub> ✓.</p>
+  <p>La legge è la stessa: cambiano solo le grandezze che si misurano, pressione invece di concentrazione e volume invece
+  di moli. Per questo il D dei gas non è più una semplice diffusività: dipende anche dalla solubilità, ed è per questo che
+  la CO₂ diffonde circa 20 volte meglio dell'O₂.</p>
   <figure class="w">
     <iframe src="w/01-fick.html" title="Fick: la diffusione dell'O₂ lungo il capillare polmonare" loading="lazy" class="ph"></iframe>
     <figcaption>Muovi superficie, spessore, P<sub>A</sub>O₂ e tempo di transito, oppure scegli uno scenario: la curva rossa è la PO₂ del sangue lungo il capillare. <a href="w/01-fick.html">Apri a schermo intero</a></figcaption>
