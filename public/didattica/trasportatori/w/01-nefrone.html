@@ -246,6 +246,7 @@ function setMode(m){MODE=m;$('#ex').hidden=m!=='ex';$('#qz').hidden=m!=='qz';$('
 $('#t1').addEventListener('click',function(){setMode('ex');});$('#t2').addEventListener('click',function(){setMode('qz');});
 $('#ttl').textContent=U.title;$('#story').innerHTML=U.story;$('#rp').innerHTML=U.rp;$('#rr').innerHTML=U.rr;$('#rs').innerHTML=U.rs;$('#rq').innerHTML=U.rq;
 $('#t1').textContent=U.t1;$('#t2').textContent=U.t2;
+(function(){var m=/[?&]t=([a-z0-9]+)/.exec(location.search);if(m&&T.some(function(x){return x.id===m[1];}))SEL=m[1];})();
 setMode('ex');
 </script>
 </body>
