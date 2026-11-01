@@ -64,7 +64,7 @@ svg[viewBox]{min-width:0!important;max-width:100%!important;width:100%}
 .tb .ddm button.act{background:#EEF4FC;color:var(--text-accent);font-weight:700}
 .tb #rs.on{border-color:#2E7D32;background:#2E7D32;color:#FFFFFF}
 .tb #sy.on{border-color:#D9822B;background:#D9822B;color:#FFFFFF}
-.nlb{display:flex;justify-content:flex-end;margin:4px 0 0}.nlb button{font:inherit;font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:var(--radius);border:1px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}#dg.nolab svg .pl{display:none}#dg .nlb{margin:2px 0 6px}
+.nlb{display:flex;justify-content:flex-end;margin:4px 0 0}.nlb button{font:inherit;font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:var(--radius);border:1px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}#dg.nolab svg .cap{display:none}#dg .nlb{margin:2px 0 6px}
 .tb button{font:inherit;font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:var(--radius);border:1px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
 #pz svg{width:10px!important;height:10px!important;min-width:0!important;max-width:none!important;display:inline-block!important;margin-right:3px}
 .tb button.on{border-color:#B5520C;background:#FCEEDD;color:#7A3E0B}
@@ -203,17 +203,17 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg,urChips='';
   o+='<path d="M461 208 q8 -7 16 0 q8 7 16 0 q8 -7 16 0 q8 7 16 0 q8 -7 16 0" stroke="url(#naD)" stroke-width="4" fill="none" stroke-linecap="round"/>';
   var tp=function(x,yy,t,c){var w=t.length*6.1+10;return '<rect x="'+f1(x-w/2)+'" y="'+(yy-7.5)+'" width="'+f1(w)+'" height="15" rx="7.5" fill="'+c+'" stroke="#FFFFFF" stroke-width="1"/>'+tx(x,yy+4,t,'middle',{s:9.5,w:700,c:'#FFFFFF',k:1});};
   o+=tp(290,174.5,'SGLT2','#6B7F8F')+tp(338,174.5,'NHE3','#6B7F8F')+tp(461,240,'NKCC2','#9A5512')+tp(505,208,'NCC','#9A5512');
-  o+=tx(330,207,T.pct,'middle',{s:10.5,w:700,c:'#8A6D00'})+tx(330,219,T.pct2,'middle',{s:9.5,c:'#8A6D00'});
+  o+='<g class="cap">'+tx(330,207,T.pct,'middle',{s:10.5,w:700,c:'#8A6D00'})+tx(330,219,T.pct2,'middle',{s:9.5,c:'#8A6D00'})+'</g>';
   // peritubular capillaries: the efferent splits again into a net wrapped around the proximal tubule
   var pc='#9B4F7E';
   o+='<path d="M412 164 L248 164 Q240 164 240 174.5 Q240 185 248 185 L412 185 Q416 185 416 180" stroke="'+pc+'" stroke-width="2.2" fill="none" stroke-linecap="round"/>';
   [362,388].forEach(function(x){o+='<path d="M'+x+' 164 C'+(x-7)+' 171 '+(x+7)+' 178 '+x+' 185" stroke="'+pc+'" stroke-width="2" fill="none" opacity=".9"/>';});
   [316,262].forEach(function(x){o+='<path d="M'+x+' 164 c3 -3 6 -3 9 0 M'+x+' 185 c3 3 6 3 9 0" stroke="'+pc+'" stroke-width="1.6" fill="none"/>';});
-  o+=tx(244,196,U.dg.ptcN,'start',{s:8.6,w:600,c:pc});
+  o+='<g class="cap">'+tx(244,196,U.dg.ptcN,'start',{s:8.6,w:600,c:pc})+'</g>';
   o+='<path d="M433 290 L433 333" stroke="#C24B4B" stroke-width="2.4" fill="none"/><path d="M447 333 L447 290" stroke="#3E6FB0" stroke-width="2.4" fill="none"/><path d="M433 333 Q440 344 447 333" stroke="'+pc+'" stroke-width="2.4" fill="none"/>';
   o+=tx(440,376,U.dg.vrN,'middle',{s:8.6,w:600,c:pc});
-  o+=tx(410,270,T.dl,'end',{s:10,w:700,c:'#8A6D00'})+tx(410,282,T.dl2,'end',{s:9.5,c:'#8A6D00'});
-  o+=tx(410,304,T.tal,'end',{s:10,w:700,c:'#8A5A14'})+tx(410,316,T.tal2,'end',{s:9.5,c:'#8A5A14'});
+  o+='<g class="cap">'+tx(410,270,T.dl,'end',{s:10,w:700,c:'#8A6D00'})+tx(410,282,T.dl2,'end',{s:9.5,c:'#8A6D00'})+'</g>';
+  o+='<g class="cap">'+tx(410,304,T.tal,'end',{s:10,w:700,c:'#8A5A14'})+tx(410,316,T.tal2,'end',{s:9.5,c:'#8A5A14'})+'</g>';
   o+=tx(505,192,T.dct,'middle',{s:10,w:700,c:'#8A5A14'});
   o+=tx(562,216,T.cd,'start',{s:10,w:700,c:'#5B2F8A'})+tx(562,228,T.cd2,'start',{s:10,w:700,c:'#5B2F8A'});
   // collecting duct cells and, beside it, its peritubular capillary
@@ -222,7 +222,7 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg,urChips='';
   o+='<defs><linearGradient id="pgv" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#C24B4B"/><stop offset="1" stop-color="#3E6FB0"/></linearGradient></defs>';
   o+='<rect x="542" y="244" width="14" height="76" fill="#CDB8E6"/><rect x="542" y="332" width="14" height="40" fill="#F2B48A"/><rect x="542" y="384" width="14" height="40" fill="#9DD3A6"/>';
   o+='<rect x="547.2" y="204" width="3.6" height="234" rx="1.8" fill="url(#naK)"/>';
-  o+=tx(252,463,U.dg.naL[0],'start',{s:9,w:700,c:'#B5520C'})+'<rect class="pl" x="252" y="468" width="96" height="6" rx="3" fill="url(#naB)"/>'+tx(252,484,U.dg.naL[1],'start',{s:8,c:'#8A5A14'})+tx(348,484,U.dg.naL[2],'end',{s:8,c:'#8A5A14'});
+  o+='<g class="cap">'+tx(252,463,U.dg.naL[0],'start',{s:9,w:700,c:'#B5520C'})+'<rect x="252" y="468" width="96" height="6" rx="3" fill="url(#naB)"/>'+tx(252,484,U.dg.naL[1],'start',{s:8,c:'#8A5A14'})+tx(348,484,U.dg.naL[2],'end',{s:8,c:'#8A5A14'})+'</g>';
   o+='<rect x="592" y="246" width="12" height="190" rx="6" fill="url(#pgv)"/>'+T.ptcV.split(' ').map(function(w,k){var xx=625-k*11;return tx(xx,310,w,'middle',{s:9,w:700,c:'#55697A'}).replace('<text','<text transform="rotate(90 '+xx+' 310)"');}).join('');
   var ha=function(yy,dir,t,c,w){var x1=dir>0?559:589,x2=dir>0?589:559,hx=x2-dir*6;return '<line x1="'+x1+'" y1="'+yy+'" x2="'+hx+'" y2="'+yy+'" stroke="'+c+'" stroke-width="'+w+'"/><path d="M'+x2+' '+yy+' l'+(-dir*(6+w))+' -'+(2.5+w)+' v'+(5+2*w)+'Z" fill="'+c+'"/>'+tx(574,yy-4-w/2,t,'middle',{s:9,w:700,c:c,k:1});};
   o+=tp(549,252,'ENaC','#7A4BA6')+tp(549,276,'ROMK','#7A4BA6')+tp(549,306,'AQP2','#1F5FA8')+tp(549,352,'α','#B5520C')+tp(549,404,'β','#2E7D32');
@@ -236,8 +236,8 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg,urChips='';
   // electrical charge of the lumen: thick ascending limb positive (NKCC2 + K+ back through ROMK), it drives Mg2+ and Ca2+ between the cells;
   // collecting duct negative (Na+ in through ENaC), it drives K+ out through ROMK and H+ out of the alpha cells
   var lb=function(x,yy,t,c,op,r){return '<circle cx="'+x+'" cy="'+yy+'" r="'+(r||5.2)+'" fill="'+c+'" stroke="#FFFFFF" stroke-width="1.1" opacity="'+(op||1)+'"/>'+tx(x,yy+(r&&r<5?2.8:3.4),t,'middle',{s:r&&r<5?7.5:9.5,w:800,c:'#FFFFFF'});},LU=U.dg.lum;
-  if(S.dr.diu){o+=lb(461,300,'0','#A3AFBA')+lb(461,322,'0','#A3AFBA')+lb(449,262,'0','#A3AFBA',1,4.2)+lb(473,331,'0','#A3AFBA',1,4.2)+tx(410,328,LU.tx,'end',{s:8.6,w:700,c:'#B03A3A'});}
-  else o+=lb(461,300,'+','#C0392B')+lb(461,322,'+','#C0392B')+lb(449,262,'−','#1F5FA8',1,4.2)+lb(473,331,'−','#1F5FA8',1,4.2)+tx(410,328,LU.tp,'end',{s:8.6,w:700,c:'#C0392B'});
+  if(S.dr.diu){o+=lb(461,300,'0','#A3AFBA')+lb(461,322,'0','#A3AFBA')+lb(449,262,'0','#A3AFBA',1,4.2)+lb(473,331,'0','#A3AFBA',1,4.2)+'<g class="cap">'+tx(410,328,LU.tx,'end',{s:8.6,w:700,c:'#B03A3A'})+'</g>';}
+  else o+=lb(461,300,'+','#C0392B')+lb(461,322,'+','#C0392B')+lb(449,262,'−','#1F5FA8',1,4.2)+lb(473,331,'−','#1F5FA8',1,4.2)+'<g class="cap">'+tx(410,328,LU.tp,'end',{s:8.6,w:700,c:'#C0392B'})+'</g>';
   // proximal tubule: early lumen slightly negative (Na+ enters with glucose through SGLT2), late slightly positive (Cl- diffuses out);
   // thin descending limb: no active transport, about 0
   o+=lb(252,174.5,'−','#1F5FA8',.85)+lb(250,157,'+','#C0392B',.85,4.2)+lb(404,174.5,'+','#C0392B',.85)+lb(404,192,'−','#1F5FA8',.85,4.2);
@@ -290,10 +290,10 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg,urChips='';
     var nR=aff?4:3,nE=aff?5:4;
     purTop+=pb(478,219,'1',0,FC)+pb(434,160,'2',0,FC)+(aff?pb(171,112,'3',0,FC):'')+pb(f1(jx0-23),75,String(nR),0,FC);
     purTop+='<ellipse class="mdg" cx="346" cy="'+(y-3)+'" rx="32" ry="14" fill="none" stroke="'+acE+'" stroke-width="2.6"'+(S.dr.ace?' stroke-dasharray="5 4"':'')+'/>'+(S.rs?pb(318,y-22,String(nE),0,acE):pb(372,y-22,String(nE),0,acE)+tx(384,y-18,S.dr.ace?U.ch.angNo:U.ch.ang,'start',{s:10.5,w:700,c:S.dr.ace?RD:FT}));
-    purTop+=lg(252,340,F.t,FT,rows.map(function(r){return [r[0],r[1]===FC?FC:r[1]];}));}
+    purTop+='<g class="cap">'+lg(252,340,F.t,FT,rows.map(function(r){return [r[0],r[1]===FC?FC:r[1]];}))+'</g>';}
   else{
     o+='<path d="'+qA+qB+'" stroke="'+GY+'" stroke-width="1.6" stroke-dasharray="3 5" fill="none" opacity=".8"/>';
-    purTop+=lg(252,340,nf2?U.dg.fuF:U.dg.fuI,nf2?RD:GT,[[F.m1,GY],[nf2?F.m2f:F.m2,nf2?'#B03A3A':GY],[F.m4,GY],[S.dr.ace?F.m5a:F.m5,S.dr.ace?'#B03A3A':GY]]);}
+    purTop+='<g class="cap">'+lg(252,340,nf2?U.dg.fuF:U.dg.fuI,nf2?RD:GT,[[F.m1,GY],[nf2?F.m2f:F.m2,nf2?'#B03A3A':GY],[F.m4,GY],[S.dr.ace?F.m5a:F.m5,S.dr.ace?'#B03A3A':GY]])+'</g>';}
   o+='<circle cx="250" cy="'+y+'" r="'+f1(gr+9)+'" fill="#FFEFA6" stroke="#B9A47A" stroke-width="2.4"/>';
   o+='<path d="M'+(250-10)+' '+(y+gr+8)+' L240 168 M'+(250+10)+' '+(y+gr+8)+' L260 168" stroke="#B9A47A" stroke-width="2.4" fill="none"/>';
   o+=tx(266,160,G.bow,'start',{s:10.5,c:'#8A6D00',w:600});
@@ -321,7 +321,7 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg,urChips='';
   var jx=250-gr-9;
   [[jx-24,y+hw+6],[jx-14,y+hw+5],[jx-4,y+hw+6],[jx-19,y+hw+12.5],[jx-9,y+hw+12]].forEach(function(c){o+='<circle cx="'+f1(c[0])+'" cy="'+f1(c[1])+'" r="4.6" fill="#C9A6E4" stroke="#7A4BA6" stroke-width=".9"/><circle cx="'+f1(c[0])+'" cy="'+f1(c[1])+'" r="1.3" fill="#7A4BA6"/>';});
   [[jx-34,y+hw-2],[jx-23,y+hw-2],[jx-12,y+hw-2]].forEach(function(c){o+='<ellipse cx="'+f1(c[0])+'" cy="'+f1(c[1])+'" rx="5.4" ry="3.6" fill="#7CCB7C" stroke="#2E7D32" stroke-width=".9"/><circle cx="'+f1(c[0]-1.6)+'" cy="'+f1(c[1])+'" r="1" fill="#1F5C33"/><circle cx="'+f1(c[0]+1.6)+'" cy="'+f1(c[1])+'" r="1" fill="#1F5C33"/>';});
-  o+='<g class="pl"><circle cx="12" cy="230" r="4.5" fill="#E86A8C"/>'+tx(20,234,G.jgMd,'start',{s:9.5,w:700,c:'#8E1F44'})+'<circle cx="94" cy="230" r="4.5" fill="#7CCB7C" stroke="#2E7D32"/>'+tx(102,234,G.jgGr,'start',{s:9.5,w:700,c:'#1F5C33'})+'<circle cx="196" cy="230" r="4.5" fill="#C9A6E4" stroke="#7A4BA6"/>'+tx(204,234,G.jgMe,'start',{s:9.5,w:700,c:'#5B2F8A'})+'</g>';
+  o+='<g class="pl cap"><circle cx="12" cy="230" r="4.5" fill="#E86A8C"/>'+tx(20,234,G.jgMd,'start',{s:9.5,w:700,c:'#8E1F44'})+'<circle cx="94" cy="230" r="4.5" fill="#7CCB7C" stroke="#2E7D32"/>'+tx(102,234,G.jgGr,'start',{s:9.5,w:700,c:'#1F5C33'})+'<circle cx="196" cy="230" r="4.5" fill="#C9A6E4" stroke="#7A4BA6"/>'+tx(204,234,G.jgMe,'start',{s:9.5,w:700,c:'#5B2F8A'})+'</g>';
   o+=purTop;
   if(CST==='on'&&!hiP)o+='<circle class="mdg" cx="461" cy="207" r="13" fill="none" stroke="#D63384" stroke-width="3"/>';
   if(hiP){o+='<circle class="mdg" cx="461" cy="207" r="13" fill="none" stroke="#FFC21A" stroke-width="3"/>';
@@ -503,7 +503,6 @@ function render(){var lp=drugs().map<=85||S.dr.diu;if(lp&&!LOPREV&&!S.rs){S.rs=t
   [].forEach.call($('#pre').querySelectorAll('button'),function(b,i){b.classList.toggle('act',i===PRE);});
   // labels hidden: keep the flags, the transporter and ion names, and the one- or two-character marks (numbers, charges, Mg, Ca)
   $('#dg').classList.toggle('nolab',NOLAB);
-  if(NOLAB)[].forEach.call($('#dg').querySelectorAll('svg text'),function(t){if(!(t.closest('[data-t]')||t.classList.contains('keep')||t.textContent.trim().length<=2))t.style.display='none';});
 }
 
 var OPEN={ne:false,ra:true};
