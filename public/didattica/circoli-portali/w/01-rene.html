@@ -233,11 +233,11 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
   o+=tx(530,321,alT,'end',{s:8.6,w:alL==='hi'?700:600,c:alC})+tx(532,367,alT,'end',{s:8.6,w:alL==='hi'?700:600,c:alC});
   // electrical charge of the lumen: thick ascending limb positive (NKCC2 + K+ back through ROMK), it drives Mg2+ and Ca2+ between the cells;
   // collecting duct negative (Na+ in through ENaC), it drives K+ out through ROMK and H+ out of the alpha cells
-  var lb=function(x,yy,t,c,op,r){return '<circle cx="'+x+'" cy="'+yy+'" r="'+(r||5.2)+'" fill="'+c+'" stroke="#FFFFFF" stroke-width="1.1" opacity="'+(op||1)+'"/>'+tx(x,yy+3.4,t,'middle',{s:9.5,w:800,c:'#FFFFFF'});},LU=U.dg.lum;
-  if(S.dr.diu){o+=lb(461,294,'0','#A3AFBA')+lb(461,316,'0','#A3AFBA')+tx(410,328,LU.tx,'end',{s:8.6,w:700,c:'#B03A3A'});}
-  else o+=lb(461,294,'+','#C0392B')+lb(461,316,'+','#C0392B')+tx(410,328,LU.tp,'end',{s:8.6,w:700,c:'#C0392B'});
+  var lb=function(x,yy,t,c,op,r){return '<circle cx="'+x+'" cy="'+yy+'" r="'+(r||5.2)+'" fill="'+c+'" stroke="#FFFFFF" stroke-width="1.1" opacity="'+(op||1)+'"/>'+tx(x,yy+(r&&r<5?2.8:3.4),t,'middle',{s:r&&r<5?7.5:9.5,w:800,c:'#FFFFFF'});},LU=U.dg.lum;
+  if(S.dr.diu){o+=lb(461,300,'0','#A3AFBA')+lb(461,322,'0','#A3AFBA')+lb(449,262,'0','#A3AFBA',1,4.2)+lb(473,331,'0','#A3AFBA',1,4.2)+tx(410,328,LU.tx,'end',{s:8.6,w:700,c:'#B03A3A'});}
+  else o+=lb(461,300,'+','#C0392B')+lb(461,322,'+','#C0392B')+lb(449,262,'−','#1F5FA8',1,4.2)+lb(473,331,'−','#1F5FA8',1,4.2)+tx(410,328,LU.tp,'end',{s:8.6,w:700,c:'#C0392B'});
   var ng=(S.dr.diu?1:0)+(alL==='hi'?1:alL==='lo'?-1:0),nOp=ng<0?0.45:1,nT='−',nR=ng>0?6.6:5.2;
-  o+=lb(549,232,nT,'#1F5FA8',nOp,nR)+lb(549,378,nT,'#1F5FA8',nOp,nR)+tx(530,332,LU.cn+(ng>0?' −':''),'end',{s:8.6,w:700,c:ng<0?'#8696A4':'#1F5FA8'});
+  o+=lb(549,232,nT,'#1F5FA8',nOp,nR)+lb(549,378,nT,'#1F5FA8',nOp,nR)+lb(535,232,'+','#C0392B',nOp,4.2)+lb(563,378,'+','#C0392B',nOp,4.2)+tx(530,332,LU.cn+(ng>0?' −':''),'end',{s:8.6,w:700,c:ng<0?'#8696A4':'#1F5FA8'});
   o+=tx(532,396,T.ibN,'end',{s:9.5,w:700,c:'#2E7D32'})+tx(532,408,T.ibD,'end',{s:9,c:'#2E7D32'});
   o+=tx(440,363,T.loop,'middle',{s:10,w:700,c:'#8A6D00'});
   var gr=cl(30+(m.Pgc-55)*0.35,22,42),hiP=S.map>=115,jx0=250-gr-9;
