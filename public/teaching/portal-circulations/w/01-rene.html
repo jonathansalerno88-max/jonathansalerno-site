@@ -497,7 +497,7 @@ function gfrBar(m){var G=U.gf,MX=180,P=function(v){return f1(100*cl(v,0,MX)/MX)+
   o+='<div class="gs">'+[0,15,30,60,90,130,180].map(function(t){return '<span style="left:'+P(t)+'"'+(t===90||t===130?' class="g"':'')+'>'+t+'</span>';}).join('')+
      '<span class="g gl" style="left:'+P(110)+'">'+G.opt+'</span></div>';
   return o;}
-var LOPREV=false,AUTORS=false,FBIND=false,NOLAB=false;
+var LOPREV=false,AUTORS=false,FBIND=false,NOLAB=true;
 function render(){var lp=drugs().map<=85||S.dr.diu;if(lp&&!LOPREV&&!S.rs){S.rs=true;AUTORS=true;}if(!lp&&LOPREV&&AUTORS){S.rs=false;AUTORS=false;}LOPREV=lp;syLab();rsLab();var ra=S.ra,lim='',E=drugs();
   var fFl=S.dr.fans?K.RAmin*(1+vcTone(E)):0;FBIND=false;
   S.au=S.myo||S.tgf;if(S.au){var a=autoRa(E.map,E.re,S.alb,S.re,E.floor),wA=S.dr.diu&&S.tgf?(S.myo?1:0):(S.myo?0.55:0)+(S.tgf?0.45:0);ra=Math.pow(a.ra,wA);if(S.dr.fans&&ra<fFl){ra=fFl;FBIND=true;}lim=wA>0.99?a.lim:'';S.ra=ra;}else{ra=S.ra;if(S.dr.fans){ra*=1+vcTone(E);FBIND=vcTone(E)>0.1;}}
