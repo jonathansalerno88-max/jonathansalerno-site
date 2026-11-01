@@ -232,10 +232,12 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg,urChips='';
   var ha=function(yy,dir,t,c,w){var x1=dir>0?559:589,x2=dir>0?589:559,hx=x2-dir*6;return '<line x1="'+x1+'" y1="'+yy+'" x2="'+hx+'" y2="'+yy+'" stroke="'+c+'" stroke-width="'+w+'"/><path d="M'+x2+' '+yy+' l'+(-dir*(6+w))+' -'+(2.5+w)+' v'+(5+2*w)+'Z" fill="'+c+'"/>'+tx(574,yy-4-w/2,t,'middle',{s:9,w:700,c:c,k:1});};
   o+=tp(549,252,'ENaC','#7A4BA6')+tp(549,276,'ROMK','#7A4BA6')+tp(549,306,'AQP2','#1F5FA8')+tp(549,352,'α','#B5520C')+tp(549,404,'β','#2E7D32');
   o+=ha(252,1,'Na⁺','#7A4BA6',aw)+ha(276,-1,'K⁺','#7A4BA6',aw)+ha(306,1,'H₂O','#1F5FA8',ww)+ha(358,1,'HCO₃⁻','#B5520C',aw)+ha(398,1,'Cl⁻','#2E7D32',1.6)+ha(416,1,'H⁺','#2E7D32',1.6);
+  // beta cell: HCO3- secreted into the lumen (pendrin, in exchange for Cl-), out with the urine
+  o+='<path d="M549 413 L549 420" stroke="#2E7D32" stroke-width="1.8"/><path d="M549 426 l-3.2 -6 h6.4Z" fill="#2E7D32"/>'+tx(569,429,'HCO₃⁻','middle',{s:9,w:700,c:'#2E7D32',k:1});
   var kw=S.dr.diu?2.4:1.2,hw2=Math.min(aw,2.6);
   o+='<path d="M546 361 L546 '+f1(369-hw2*0.6)+'" stroke="#B5520C" stroke-width="'+hw2+'"/><path d="M546 '+f1(375-hw2*0.3)+' l-'+f1(2+hw2*0.6)+' -'+f1(5+hw2*0.6)+' h'+f1(4+1.2*hw2)+'Z" fill="#B5520C"/>'+tx(561,369,'H⁺','middle',{s:9,w:700,c:'#B5520C',k:1});
   o+='<path d="M553 375 L553 '+f1(367+kw*0.6)+'" stroke="#7A4BA6" stroke-width="'+kw+'"/><path d="M553 '+f1(361+kw*0.3)+' l-'+f1(2+kw*0.6)+' '+f1(5+kw*0.6)+' h'+f1(4+1.2*kw)+'Z" fill="#7A4BA6"/>'+tx(562,381,'K⁺','middle',{s:9,w:700,c:'#7A4BA6',k:1});
-  [261.5,330,428].forEach(function(yy){o+='<path d="M592 '+yy+' L558 '+yy+'" stroke="#9B4F7E" stroke-width="1.6"/><ellipse cx="549" cy="'+yy+'" rx="10" ry="'+(yy<300?2.4:3)+'" fill="none" stroke="#9B4F7E" stroke-width="1.8"/>';});
+  [261.5,330,434].forEach(function(yy){o+='<path d="M592 '+yy+' L558 '+yy+'" stroke="#9B4F7E" stroke-width="1.6"/><ellipse cx="549" cy="'+yy+'" rx="10" ry="'+(yy<300?2.4:3)+'" fill="none" stroke="#9B4F7E" stroke-width="1.8"/>';});
   o+='<g class="cap">'+tx(530,288,T.pcN,'end',{s:9.5,w:700,c:'#5B2F8A'})+T.pcD.split(', ').map(function(t,k){return tx(530,299+k*11,t,'end',{s:9,c:'#5B2F8A'});}).join('')+'</g>';
   o+='<g class="cap">'+tx(532,344,T.iaN,'end',{s:9.5,w:700,c:'#B5520C'})+tx(532,356,T.iaD,'end',{s:9,c:'#B5520C'})+'</g>';
   var alL=S.dr.ace?'lo':drugs().re>1.27?'hi':'n',alT=(alL==='hi'?'↑ ':alL==='lo'?'↓ ':'')+'aldosterone',alC=alL==='lo'?'#8696A4':'#B5520C';
