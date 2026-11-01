@@ -145,7 +145,7 @@ function model(map,ra,re,alb){var C0=(alb==null?S.alb:alb)+2.8;
 // tubule: the proximal tubule reabsorbs more when the peritubular pull is stronger (about 65 % normally);
 // downstream, angiotensin II and aldosterone (here tied to the efferent tap) take back most of the rest
 function tubule(m){var ptc=m.ptc,fp=cl(0.65+0.01*(-ptc-6.3)+(S.dr.sym&&m!==B?0.05:0),0.4,0.88),del=m.GFR*(1-fp),aldo=cl(Math.exp(-0.9*(m.re-1)),0.35,1.6);
-  var dd=(S.dr.diu?2.5:1)*(S.dr.fans?0.85:1);m.fp=fp;m.del=del;m.uri=del*K.dist*aldo*(m===B?1:dd);m.bal=(K.intake-m.uri)*1.44;
+  var dd=(S.dr.fans&&m!==B?0.85:1);m.fp=fp;m.del=del;m.uri=del*K.dist*aldo*dd+(S.dr.diu&&m!==B?1.5*m.GFR/B.GFR:0);m.bal=(K.intake-m.uri)*1.44;
   var fv=0.25*cl(S.alb/4.2,0.4,1.2);m.vVas=m.bal*fv;m.vInt=m.bal*(1-fv);return m;}
 // autoregulation (myogenic reflex + tubuloglomerular feedback) moves the afferent to keep filtration where it would be at normal pressure and albumin
 function autoRa(map,re,alb,tre,floor){var t=model(100,1,tre==null?re:tre,4.2).GFR,lo=0.2,hi=4;floor=floor||K.RAmin;
