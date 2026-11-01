@@ -145,7 +145,7 @@ function model(map,ra,re,alb){var C0=(alb==null?S.alb:alb)+2.8;
 // tubule: the proximal tubule reabsorbs more when the peritubular pull is stronger (about 65 % normally);
 // downstream, angiotensin II and aldosterone (here tied to the efferent tap) take back most of the rest
 function tubule(m){var ptc=m.ptc,fp=cl(0.65+0.01*(-ptc-6.3)+(S.dr.sym&&m!==B?0.05:0),0.4,0.88),del=m.GFR*(1-fp),aldo=cl(Math.exp(-0.9*(m.re-1)),0.35,1.6);
-  var dd=(S.dr.fans&&m!==B?0.85:1);m.fp=fp;m.del=del;m.uri=del*K.dist*aldo*dd+(S.dr.diu&&m!==B?1.5*m.GFR/B.GFR:0);m.bal=(K.intake-m.uri)*1.44;
+  var dd=(S.dr.fans&&m!==B?0.85:1);m.fp=fp;m.del=del;m.uri=del*K.dist*aldo*dd+(S.dr.diu&&m!==B?1.5*m.GFR/B.GFR*(S.dr.fans?0.7:1):0);m.bal=(K.intake-m.uri)*1.44;
   var fv=0.25*cl(S.alb/4.2,0.4,1.2);m.vVas=m.bal*fv;m.vInt=m.bal*(1-fv);return m;}
 // autoregulation (myogenic reflex + tubuloglomerular feedback) moves the afferent to keep filtration where it would be at normal pressure and albumin
 function autoRa(map,re,alb,tre,floor){var t=model(100,1,tre==null?re:tre,4.2).GFR,lo=0.2,hi=4;floor=floor||K.RAmin;
@@ -279,7 +279,7 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
   o+=tx(430,117,G.reab+' '+sgn(m.ptc)+' mmHg','start',{s:10.5,w:700,c:rb>0?'#1F5FA8':'#B5520C'});
   o+=tap(150,y,m.ra,'#C24B4B',G.aff,S.au,S.dr.fans,-24)+tap(346,y,m.re,'#C24B4B',G.eff,false);
   var pill=function(x,yy,t,c){var w=t.length*6.3+14;return '<rect x="'+f1(x-w/2)+'" y="'+(yy-11)+'" width="'+f1(w)+'" height="16" rx="8" fill="'+c+'"/>'+tx(x,yy+1,t,'middle',{s:10.5,w:700,c:'#FFFFFF'});};
-  if(S.dr.fans)o+=pill(140,148,vcTone(drugs())>0.1?U.dr.fansC:U.dr.fansB,'#8E1F1F');else if(m.ra<0.95)o+=pill(140,148,S.au?U.dr.pOpen+[S.myo?U.dr.pM:'',S.tgf?U.dr.pT:'',S.map<85?U.dr.pP:''].filter(Boolean).join(' + '):U.dr.pg,'#2E7D32');else if(S.au&&m.ra>1.05)o+=pill(140,148,U.dr.pClose+[S.myo?U.dr.pM:'',S.tgf?U.dr.pT:''].filter(Boolean).join(' + '),'#8E1F1F');if(S.dr.ace)o+=pill(346,143,U.dr.aceB,'#8E1F1F');if(S.dr.diu)o+=pill(461,262,U.dr.diuB,'#8E1F1F');
+  if(S.dr.fans)o+=pill(140,148,FBIND?U.dr.fansC:U.dr.fansB,'#8E1F1F');else if(m.ra<0.95)o+=pill(140,148,S.au?U.dr.pOpen+[S.myo?U.dr.pM:'',S.tgf?U.dr.pT:'',S.map<85?U.dr.pP:''].filter(Boolean).join(' + '):U.dr.pg,'#2E7D32');else if(S.au&&m.ra>1.05)o+=pill(140,148,U.dr.pClose+[S.myo?U.dr.pM:'',S.tgf?U.dr.pT:''].filter(Boolean).join(' + '),'#8E1F1F');if(S.dr.ace)o+=pill(346,143,U.dr.aceB,'#8E1F1F');if(S.dr.diu)o+=pill(461,262,U.dr.diuB,'#8E1F1F');
   o+=gauge(66,34,m.map,G.art,'#B03A3A')+gauge(250,34,m.Pgc,G.glom,'#7A4BA6')+gauge(472,34,m.Pptc,G.ptc,'#2F4F8F');
   o+=tx(66,y+hw+15,G.ra,'middle',{s:11.5,w:700,c:'#8E1F1F'})+tx(601,y-hw-6,G.rv,'middle',{s:11.5,w:700,c:'#2F4F8F'});
   // urine: what the tubule does not take back
@@ -420,10 +420,10 @@ function gfrBar(m){var G=U.gf,MX=180,P=function(v){return f1(100*cl(v,0,MX)/MX)+
   o+='<div class="gs">'+[0,15,30,60,90,130,180].map(function(t){return '<span style="left:'+P(t)+'"'+(t===90||t===130?' class="g"':'')+'>'+t+'</span>';}).join('')+
      '<span class="g gl" style="left:'+P(110)+'">'+G.opt+'</span></div>';
   return o;}
-var LOPREV=false,AUTORS=false;
+var LOPREV=false,AUTORS=false,FBIND=false;
 function render(){var lp=drugs().map<=85;if(lp&&!LOPREV&&!S.rs){S.rs=true;AUTORS=true;}if(!lp&&LOPREV&&AUTORS){S.rs=false;AUTORS=false;}LOPREV=lp;syLab();rsLab();var ra=S.ra,lim='',E=drugs();
-  S.au=S.myo||S.tgf;if(S.au){var a=autoRa(E.map,E.re,S.alb,S.re,E.floor),wA=(S.myo?0.55:0)+(S.tgf?0.45:0);ra=Math.pow(a.ra,wA);lim=wA>0.99?a.lim:'';S.ra=ra;}else{ra=S.ra;}
-  if(S.dr.fans)ra*=1+vcTone(E);
+  var fFl=S.dr.fans?K.RAmin*(1+vcTone(E)):0;FBIND=false;
+  S.au=S.myo||S.tgf;if(S.au){var a=autoRa(E.map,E.re,S.alb,S.re,E.floor),wA=(S.myo?0.55:0)+(S.tgf?0.45:0);ra=Math.pow(a.ra,wA);if(S.dr.fans&&ra<fFl){ra=fFl;FBIND=true;}lim=wA>0.99?a.lim:'';S.ra=ra;}else{ra=S.ra;if(S.dr.fans){ra*=1+vcTone(E);FBIND=vcTone(E)>0.1;}}
   ra*=E.symA;
   var m=tubule(model(E.map,ra,E.re));
   $('#map').value=S.map;$('#au').checked=S.au;
