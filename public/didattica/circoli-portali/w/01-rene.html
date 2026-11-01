@@ -300,6 +300,10 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
   o+='<path class="flow" style="animation-duration:'+dur+'s" d="M8 '+y+' L632 '+y+'" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="3" stroke-dasharray="3 9" fill="none"/>';
   var dots=function(x0,x1,C){var o2='',n=Math.round((x1-x0)/40*C*0.9);for(var j=0;j<n;j++){var xx=x0+(x1-x0)*((j*0.618)%1),yy=y+((j*37)%15)-7;o2+='<circle cx="'+f1(xx)+'" cy="'+yy+'" r="1.7"/>';}return o2;};
   o+='<g fill="#FFF3B8" opacity=".95">'+dots(10,136,m.C0)+dots(162,198,m.C0)+dots(302,334,m.Cout)+dots(358,568,m.Cout)+'</g>';
+  // a shield on the afferent: lit when autoregulation is closing it against high pressure, cracked when there is no autoregulation
+  var shX=112,shY=87,shP='M'+shX+' '+(shY-13)+' L'+(shX+11)+' '+(shY-8.5)+' L'+(shX+11)+' '+(shY+1)+' C'+(shX+11)+' '+(shY+8)+' '+(shX+5)+' '+(shY+12)+' '+shX+' '+(shY+14)+' C'+(shX-5)+' '+(shY+12)+' '+(shX-11)+' '+(shY+8)+' '+(shX-11)+' '+(shY+1)+' L'+(shX-11)+' '+(shY-8.5)+'Z';
+  if(S.au&&m.ra>1.08)o+='<circle class="mdg" cx="'+shX+'" cy="'+(shY+0.5)+'" r="15" fill="#7CCB7C" opacity=".35"/><path d="'+shP+'" fill="#2E7D32" stroke="#FFFFFF" stroke-width="1.6"/><path d="M'+(shX-5)+' '+(shY+0.5)+' l3.6 3.8 l6.6 -7.4" stroke="#FFFFFF" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
+  else if(!S.au&&S.map>=115)o+='<path d="'+shP+'" fill="#C9D1D8" stroke="#FFFFFF" stroke-width="1.6"/><path d="M'+(shX+1)+' '+(shY-12)+' l-4 7 l5 4 l-4 7 l3 7" stroke="#B03A3A" stroke-width="2" fill="none" stroke-linecap="round"/>';
   // reabsorption from tubule to peritubular capillaries
   var rb=-m.ptc,w=cl(1+rb/6,0.8,4);
   if(rb>0)for(i=0;i<2;i++){var ax=402+i*18;o+='<path d="M'+ax+' 164 L'+ax+' '+(y+hw+6)+' m-4.5 6 l4.5 -6 l4.5 6" stroke="#3E6FB0" stroke-width="'+f1(w)+'" fill="none" stroke-linecap="round"/>';}
