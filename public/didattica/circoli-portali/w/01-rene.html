@@ -155,7 +155,7 @@ function autoRa(map,re,alb,tre,floor){var t=model(100,1,tre==null?re:tre,4.2).GF
 // ACE inhibitors and ARBs take angiotensin II off the efferent; NSAIDs take the prostaglandins off the afferent, so it cannot open
 function angLow(){var mp=S.map-(S.dr.diu?15:0);return !S.dr.ace&&mp<=85?Math.min(1.6,1+(85-mp)*0.02):1;}
 function tgfOn(){return S.tgf&&!S.dr.diu;}
-function drugs(){var d=S.dr;return {map:S.map-(d.diu?15:0),re:S.re*(d.ace?0.8:1)*Math.max(d.diu&&!d.ace?1.6:1,angLow())*(d.sym?1.15*(d.ace?1:1.3):1),symA:d.sym?1.25:1,floor:K.RAmin,raMul:1};}
+function drugs(){var d=S.dr;return {map:S.map-(d.diu?15:0),re:S.re*(d.ace?0.8:1)*Math.max(d.diu&&!d.ace?(d.fans?1.25:1.6):1,angLow())*(d.sym?1.15*(d.ace?1:1.3):1),symA:d.sym?1.25:1,floor:K.RAmin,raMul:1};}
 // vasoconstrictor tone on the afferent (angiotensin II, sympathetic) that prostaglandins normally cancel out
 function vcTone(E){var d=S.dr;return Math.min(0.8,0.03+(d.diu?(d.ace?0.3:0.35):0)+(d.sym?0.3:0)+(E.map<90?(90-E.map)/90*1.2:0));}
 K.dist=1;K.intake=1;var B=model(100,1,1,4.2);K.dist=1/(B.GFR*(1-cl(0.65+0.01*(-B.ptc-6.3),0.4,0.88)));B=tubule(B);
@@ -209,7 +209,7 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
   o+=tx(505,192,T.dct,'middle',{s:10,w:700,c:'#8A5A14'});
   o+=tx(562,216,T.cd,'start',{s:10,w:700,c:'#5B2F8A'})+tx(562,228,T.cd2,'start',{s:10,w:700,c:'#5B2F8A'});
   // collecting duct cells and, beside it, its peritubular capillary
-  var aldoL=S.dr.ace?'lo':drugs().re>1.2?'hi':'n',aw=aldoL==='hi'?3.4:aldoL==='lo'?1:2,
+  var aldoL=S.dr.ace?'lo':drugs().re>1.27?'hi':'n',aw=aldoL==='hi'?3.4:aldoL==='lo'?1:2,
     adhH=drugs().map<88||S.dr.diu||S.dr.sym,ww=adhH?3.4:1.4;
   o+='<defs><linearGradient id="pgv" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#C24B4B"/><stop offset="1" stop-color="#3E6FB0"/></linearGradient></defs>';
   o+='<rect x="542" y="244" width="14" height="76" fill="#CDB8E6"/><rect x="542" y="332" width="14" height="40" fill="#F2B48A"/><rect x="542" y="384" width="14" height="40" fill="#9DD3A6"/>';
@@ -220,7 +220,7 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
   [261.5,330,428].forEach(function(yy){o+='<path d="M592 '+yy+' L558 '+yy+'" stroke="#9B4F7E" stroke-width="1.6"/><ellipse cx="549" cy="'+yy+'" rx="10" ry="'+(yy<300?2.4:3)+'" fill="none" stroke="#9B4F7E" stroke-width="1.8"/>';});
   o+=tx(530,288,T.pcN,'end',{s:9.5,w:700,c:'#5B2F8A'})+T.pcD.split(', ').map(function(t,k){return tx(530,299+k*11,t,'end',{s:9,c:'#5B2F8A'});}).join('');
   o+=tx(532,344,T.iaN,'end',{s:9.5,w:700,c:'#B5520C'})+tx(532,356,T.iaD,'end',{s:9,c:'#B5520C'});
-  var alL=S.dr.ace?'lo':drugs().re>1.2?'hi':'n',alT=(alL==='hi'?'↑ ':alL==='lo'?'↓ ':'')+'aldosterone',alC=alL==='lo'?'#8696A4':'#B5520C';
+  var alL=S.dr.ace?'lo':drugs().re>1.27?'hi':'n',alT=(alL==='hi'?'↑ ':alL==='lo'?'↓ ':'')+'aldosterone',alC=alL==='lo'?'#8696A4':'#B5520C';
   o+=tx(530,321,alT,'end',{s:8.6,w:alL==='hi'?700:600,c:alC})+tx(532,367,alT,'end',{s:8.6,w:alL==='hi'?700:600,c:alC});
   o+=tx(532,396,T.ibN,'end',{s:9.5,w:700,c:'#2E7D32'})+tx(532,408,T.ibD,'end',{s:9,c:'#2E7D32'});
   o+=tx(440,363,T.loop,'middle',{s:10,w:700,c:'#8A6D00'});
@@ -375,12 +375,12 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg;
   }
   // RAAS: the conversion chain in a band at the bottom, with its links to the arterioles
   if(S.rs){var A=U.ra,B0=Y0+512,ace=S.dr.ace,yv=Y0+y,
-    lev=S.re*Math.max(S.dr.diu&&!ace?1.6:1,angLow())*(S.dr.sym&&!ace?1.3:1),E3=drugs(),renW=(E3.map<90||S.dr.diu||S.dr.sym||lev>1.2)?4:2,angW=ace?1:lev>1.2?4:lev<0.9?1:2,lv=ace?A.lvBlk:lev>1.2?A.lvHi:lev<0.9?A.lvLo:A.lvN,
+    E3=drugs(),lev=ace?1:E3.re,renW=S.dr.fans?(E3.map<90?3:2):(E3.map<90||S.dr.diu||S.dr.sym||lev>1.27)?4:2,angW=ace?1:lev>1.27?4:lev<0.9?1:2,lv=ace?A.lvBlk:lev>1.27?A.lvHi:lev<0.9?A.lvLo:A.lvN,
     bx=function(x,yy,w,t1,t2,fill,c,dash){return '<rect x="'+x+'" y="'+yy+'" width="'+w+'" height="40" rx="7" fill="'+fill+'" stroke="'+c+'" stroke-width="1.5"'+(dash?' stroke-dasharray="4 3"':'')+'/>'+tx(x+w/2,yy+17,t1,'middle',{s:10.5,w:700,c:c})+tx(x+w/2,yy+31,t2,'middle',{s:10,c:c});},
     arw=function(x1,x2,yy,c,t,blk,wd){wd=wd||2;return '<line x1="'+x1+'" y1="'+yy+'" x2="'+(x2-7)+'" y2="'+yy+'" stroke="'+c+'" stroke-width="'+wd+'"/><path d="M'+x2+' '+yy+' l-8 -4.5 v9Z" fill="'+c+'"/>'+tx((x1+x2)/2,yy-7,t,'middle',{s:10,w:700,c:blk?'#B03A3A':c})+(blk?'<rect x="'+((x1+x2)/2-14)+'" y="'+(yy+5)+'" width="28" height="13" rx="6.5" fill="#B03A3A"/>'+tx((x1+x2)/2,yy+15,A.stop,'middle',{s:9.5,w:700,c:'#FFFFFF'}):'');};
     var g2=ace?'#9AA5AE':'#2E7D32',yy=B0+30;
     rb+='<line x1="4" x2="636" y1="'+(B0+6)+'" y2="'+(B0+6)+'" stroke="#DDE4EA"/>'+tx(12,B0+20,A.title,'start',{s:11,w:700,c:'#16222E'});
-    rb+=bx(4,yy,120,A.agt,A.agt2,'#FFF8EC','#8A6D00')+arw(124,204,yy+20,'#2E7D32',A.ren,false,renW);
+    rb+=bx(4,yy,120,A.agt,A.agt2,'#FFF8EC','#8A6D00')+arw(124,204,yy+20,'#2E7D32',S.dr.fans?'renina ↓ FANS':A.ren,false,renW).replace('fill="#2E7D32" font-weight="700">renina ↓ FANS','fill="#B03A3A" font-weight="700">renina ↓ FANS');
     rb+=bx(204,yy,110,A.a1,A.a1b,'#F3F6F8','#55697A')+arw(314,384,yy+20,'#2E7D32',A.ace,ace,ace?1:renW);
     rb+=bx(384,yy,112,A.a2,lv,ace?'#F3F6F8':'#E3F3E8',g2,ace)+arw(496,524,yy+20,g2,'',false,angW);
     rb+=bx(524,yy,112,A.ald,ace?A.aldLo:A.ald2,ace?'#F3F6F8':'#FCEEDD',ace?'#7A8792':'#9A5512',ace);
@@ -455,7 +455,7 @@ function gfrBar(m){var G=U.gf,MX=180,P=function(v){return f1(100*cl(v,0,MX)/MX)+
      '<span class="g gl" style="left:'+P(110)+'">'+G.opt+'</span></div>';
   return o;}
 var LOPREV=false,AUTORS=false,FBIND=false;
-function render(){var lp=drugs().map<=85;if(lp&&!LOPREV&&!S.rs){S.rs=true;AUTORS=true;}if(!lp&&LOPREV&&AUTORS){S.rs=false;AUTORS=false;}LOPREV=lp;syLab();rsLab();var ra=S.ra,lim='',E=drugs();
+function render(){var lp=drugs().map<=85||S.dr.diu;if(lp&&!LOPREV&&!S.rs){S.rs=true;AUTORS=true;}if(!lp&&LOPREV&&AUTORS){S.rs=false;AUTORS=false;}LOPREV=lp;syLab();rsLab();var ra=S.ra,lim='',E=drugs();
   var fFl=S.dr.fans?K.RAmin*(1+vcTone(E)):0;FBIND=false;
   S.au=S.myo||S.tgf;if(S.au){var a=autoRa(E.map,E.re,S.alb,S.re,E.floor),wA=S.dr.diu&&S.tgf?(S.myo?1:0):(S.myo?0.55:0)+(S.tgf?0.45:0);ra=Math.pow(a.ra,wA);if(S.dr.fans&&ra<fFl){ra=fFl;FBIND=true;}lim=wA>0.99?a.lim:'';S.ra=ra;}else{ra=S.ra;if(S.dr.fans){ra*=1+vcTone(E);FBIND=vcTone(E)>0.1;}}
   ra*=E.symA;
