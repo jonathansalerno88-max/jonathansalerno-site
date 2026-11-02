@@ -591,14 +591,7 @@ function fbRes(){var F=U.dg.fb,D=F.dz,R=fbR(),k=1/R,kf0=K.Kf,mm,g0;if(!LASTM)ret
   o+='<div class="dl"><span class="dlt">'+D.t3+'</span>'+c(CK,'K<sub>f0</sub>')+' = <span class="fr"><span>'+c(Ck,'k<sub>0</sub>')+' · '+c(CA,'A<sub>0</sub>')+'</span><span>'+c(Cm,'μ<sub>0</sub>')+' · '+c(CL,'L<sub>0</sub>')+'</span></span> = <span class="fr"><span>'+c(CQ,'GFR<sub>0</sub>')+'</span><span>'+c(CP,'ΔP<sub>0</sub>')+'</span></span> = <span class="fr"><span>'+cb(CQ,'125')+'</span><span>'+cb(CP,'10')+'</span></span> = <b>'+nf(kf0,1)+'</b>'+UK+' <small class="src">('+D.src+')</small>'+lg(D.l3)+'</div>';
   o+='<div class="dl"><span class="dlt">'+D.t4+'</span>'+c(CK,'K<sub>f</sub>')+' = '+c(CK,'K<sub>f0</sub>')+' × <span class="fr"><span>('+z(Ck,'k')+') · ('+z(CA,'A')+')</span><span>('+z(Cm,'μ')+') · ('+z(CL,'L')+')</span></span> = '+nf(kf0,1)+' × <span class="fr"><span>'+cb(Ck,nf(kr,2))+' · '+cb(CA,'1')+'</span><span>'+cb(Cm,'1')+' · '+cb(CL,nf(Lr,2))+'</span></span> = '+kfBox('<b>'+nf(kf,1)+'</b>')+UK+lg(D.l4)+'</div>';
   o+='<div class="dl"><span class="dlt">'+D.t5+'</span>'+c(CQ,'GFR')+' = '+c(CK,'K<sub>f</sub>')+' × '+c(CP,'ΔP')+' = '+kfBox(nf(kf,1))+' × '+cb(CP,nf(nfp,1))+' = '+cb(CQ,'<b>'+nf(g1,0)+' mL/min</b>')+lg(D.l5)+'</div></div>';
-  o+='<div class="dg">';
-  o+=tile('Q',D.Q,'<b>'+nf(g1,0)+'</b> mL/min',ar(g1,g0,0,''),D.Q[2],Math.abs(d)>=0.5);
-  o+=tile('k',D.k,'<b>×'+nf(kr,2)+'</b> <small>'+D.rel+'</small>',ar(kr,1,2,''),D.k[2],Math.abs(kr-1)>0.005);
-  o+=tile('A',D.A,'<b>×1,00</b> <small>'+D.fixed+'</small>','',D.A[2],false);
-  o+=tile('ΔP',D.dP,'<b>'+nf(nfp,1)+'</b> mmHg',ar(nfp,nfp0,1,''),fmt(D.dP[2],{pgc:nf(mm.Pgc,0),pi:nf(pibar,0),n:nf(nfp,1)}),Math.abs(nfp-nfp0)>0.05);
-  o+=tile('μ',D.mu,'<b>×1,00</b> <small>'+D.fixed+'</small>','',D.mu[2],false);
-  o+=tile('L',D.L,'<b>×'+nf(Lr,2)+'</b> <small>'+D.rel+'</small>',ar(Lr,1,2,'',true),fmt(D.L[2],{um:nf(Lum,2),g:FBX.nog?'0':nf(FBX.g,2)}),Math.abs(Lr-1)>0.005);
-  o+='</div></div>';
+  o+='</div>';
   if(U.dec==='.')o=o.replace(/×1,00/g,'×1.00');
   return o+(k>1.05?'<p class="fbn">'+F.up+'</p>':k<0.95?'<p class="fbn">'+F.dn+'</p>':'')+(FBX.nog?'<p class="fbn w">'+F.nogT+'</p>':'');}
 function v1(x,dg){return '<span class="fv">'+nf(x,dg)+'</span>';}
