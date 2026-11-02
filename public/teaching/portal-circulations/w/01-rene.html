@@ -79,6 +79,7 @@ body.paused *,body.paused *:before{animation-play-state:paused!important}
 body.paused .k1,body.paused .k2,body.paused .k3,body.paused .k4,body.paused .c1,body.paused .c2,body.paused .c3,body.paused .c4{animation:none!important;opacity:1}
 body.paused .rn{animation:none!important;transform:translateX(140px)}
 .drop{animation:dr 1.4s ease-in infinite}
+.wdr{opacity:0;animation:wdr 2.4s ease-in infinite}@keyframes wdr{0%{opacity:0;transform:translate(0,0) scale(.9)}12%{opacity:.95}82%{opacity:.9}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.45)}}
 .shk1{animation:sk1 .5s ease-in-out infinite}.shk2{animation:sk2 .18s linear infinite}
 @keyframes sk1{50%{transform:scale(1.04)}}
 @keyframes sk2{0%{transform:translate(0,0)}25%{transform:translate(1.4px,-.8px)}50%{transform:translate(-1.2px,1px)}75%{transform:translate(.8px,1.2px)}100%{transform:translate(0,0)}}
@@ -115,7 +116,7 @@ body.paused .rn{animation:none!important;transform:translateX(140px)}
 .chain li{border-radius:8px;padding:5px 7px;line-height:1.35;background:#FCEEDD;color:#6B3A0B;counter-increment:st}
 .chain li:before{content:counter(st)". ";font-weight:700}
 .chain .c3{background:#E3F3E8;color:#1F5C33}.chain .c4{background:#E3F3E8;color:#1F5C33}.chain .c4.no{background:#FCE3E3;color:#7A1F1F}
-@media (prefers-reduced-motion:reduce){.flow,.drop,.shk1,.shk2,.k1,.k2,.k3,.k4,.c1,.c2,.c3,.c4{animation:none}.rn{animation:none;transform:translateX(140px)}}
+@media (prefers-reduced-motion:reduce){.wdr{animation:none;opacity:.8}.flow,.drop,.shk1,.shk2,.k1,.k2,.k3,.k4,.c1,.c2,.c3,.c4{animation:none}.rn{animation:none;transform:translateX(140px)}}
 </style>
 </head>
 <body>
@@ -203,6 +204,9 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg,urChips='';
   o+='<rect x="404" y="200" width="186" height="245" rx="10" fill="url(#osm)"/>';
   var mgC=MG?'#C0392B':'#A3AFBA',mgC2=MG?'#1F5FA8':'#C9D1D8';
   o+='<path d="M428 398 L428 414 A13 13 0 0 0 454 414 L454 398" stroke="'+mgC+'" stroke-width="7" fill="none"/><path d="M428 398 L428 404 M454 398 L454 404" stroke="'+mgC2+'" stroke-width="7"/>';
+  // water drops pulled out of the thin descending limb and the collecting duct (AQP2) towards the medullary 'magnet'; none when the diuretic switches it off
+  if(MG){var wd=[[423,290,8,110,0],[423,318,10,84,0.8],[434,349,4,52,1.6],[544,416,-90,-6,0.4],[544,427,-90,-11,1.2],[544,436,-92,-14,2]];wd=wd.concat(wd.map(function(d){return [d[0],d[1],d[2],d[3],d[4]+1.2];}));
+    o+='<g pointer-events="none">'+wd.map(function(d){return '<g transform="translate('+d[0]+' '+d[1]+')"><path class="wdr" style="--dx:'+d[2]+'px;--dy:'+d[3]+'px;animation-delay:'+d[4]+'s" d="M0 -6 Q-4.5 -0.8 -3.9 1.8 A3.9 3.9 0 0 0 3.9 1.8 Q4.5 -0.8 0 -6Z" fill="#2AA7DF" stroke="#FFFFFF" stroke-width=".6"/></g>';}).join('')+'</g>';}
   if(!MG)o+='<path d="M430 400 l22 24 M452 400 l-22 24" stroke="#B03A3A" stroke-width="2.6" stroke-linecap="round"/>';
   o+='<g class="cap">'+tx(441,438,(MG?U.dg.mag.on:U.dg.mag.off)[0],'middle',{s:8.6,w:700,c:MG?'#1784B8':'#B03A3A'})+tx(441,447,(MG?U.dg.mag.on:U.dg.mag.off)[1],'middle',{s:8,c:MG?'#1784B8':'#B03A3A'})+'</g>';
   o+='<rect x="236" y="168" width="190" height="13" rx="6.5" fill="'+yel+'"/>';
