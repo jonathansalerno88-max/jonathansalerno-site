@@ -614,8 +614,8 @@ function fbCtl(x){var F=U.dg.fb;return '<div class="fbctl'+(x?' fbctl2':'')+'">'
     '<div class="fbck2"><label class="fbck"><input type="checkbox" class="fbn"'+(FBX.nog?' checked':'')+'> '+F.c.n+'</label>'+(x?'<button type="button" class="fbz0">'+F.rst+'</button>':'')+'</div></div>';}
 function fbar(){var F=U.dg.fb;
   return '<div class="fbz"><div class="fbt">'+F.t+'</div><div class="fbw"><div id="fbsvg">'+fbSvg()+'</div><ul>'+F.l.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul></div>'+
-    '<div class="fbc">'+fbCtl(0)+'<div id="fbur">'+fbUr()+'</div><div id="fbr">'+fbRes()+'</div>'+fbCtl(1)+'</div></div>';}
-function fbUpd(src){$('#fbsvg').innerHTML=fbSvg();$('#fbur').innerHTML=fbUr();$('#fbr').innerHTML=fbRes();if(BALNEXT)balStart(BALNEXT);var A=function(q,fn){[].forEach.call(document.querySelectorAll('#dg '+q),fn);};
+    '<div class="fbc">'+fbCtl(0)+'<div id="fbur">'+fbUr()+'</div><div id="fbr">'+fbRes()+'</div>'+fbCtl(1)+'<div id="fbur2">'+fbUr()+'</div></div></div>';}
+function fbUpd(src){$('#fbsvg').innerHTML=fbSvg();$('#fbur').innerHTML=fbUr();$('#fbur2').innerHTML=fbUr();$('#fbr').innerHTML=fbRes();if(BALNEXT)balStart(BALNEXT);var A=function(q,fn){[].forEach.call(document.querySelectorAll('#dg '+q),fn);};
   A('.fbgv',function(x){x.textContent=nf(FBX.g,2)+' µm';});A('.fbsv',function(x){x.textContent='×'+nf(FBX.s,2);});A('.fbfv',function(x){x.textContent=nf(FBX.f,2)+' µm';});A('.fbf',function(x){if(x!==src)x.value=FBX.f;});
   A('.fbg',function(x){x.disabled=FBX.nog;if(x!==src)x.value=FBX.g;});A('.fbs',function(x){if(x!==src)x.value=FBX.s;});A('.fbn',function(x){if(x!==src)x.checked=FBX.nog;});}
 
@@ -629,7 +629,7 @@ function balSvg(){var B2=U.dg.fb.dz.bal;
   '<path d="M268 124 L274 170 L312 170 L318 124" fill="#FFFBEA" stroke="#B9A47A" stroke-width="1.6"/><rect id="bgl" x="273" y="170" width="40" height="0" fill="#F2D35B" opacity=".9"/><path d="M268 124 L274 170 L312 170 L318 124" fill="none" stroke="#B9A47A" stroke-width="1.6"/>'+
   ' <line id="bgn" x1="264" x2="320" y1="0" y2="0" stroke="#16222E" stroke-width="1" stroke-dasharray="3 2"/><text id="bgnt" x="262" y="0" font-size="8" text-anchor="end" fill="#16222E">'+B2.norm+'</text>'+
   tx(293,118,B2.bs,'middle',{s:8.6,w:700,c:'#8A6D00'})+'<text id="bgt" x="326" y="152" font-size="9.5" font-weight="800" fill="#8A6D00"></text><text id="bgs" x="326" y="164" font-size="8.6" font-weight="700" fill="#55697A"></text>'+
-  '<g id="bpl"></g><g id="bpr"></g>'+
+  '<g id="bleak"></g><g id="bpl"></g><g id="bpr"></g>'+
   tx(220,90,B2.ful,'middle',{s:8.6,w:700,c:'#8E1F1F'})+'<text id="bnet" x="220" y="184" font-size="11" font-weight="800" text-anchor="middle" fill="#00838F"></text>'+
   '</svg><p class="balc">'+B2.cap+'</p></div>';}
 function balPan(x,y,side){var B2=U.dg.fb.dz.bal,o='<path d="M'+(x-34)+' '+y+' l34 -38 l34 38" stroke="#8696A4" stroke-width="1" fill="none"/><path d="M'+(x-40)+' '+y+' Q'+x+' '+(y+12)+' '+(x+40)+' '+y+'Z" fill="#DDE4EA" stroke="#8696A4"/>';
@@ -646,6 +646,9 @@ function balDraw(){var sv=document.getElementById('bbeam');if(!sv)return;var B2=
   var ln=document.getElementById('bgn');ln.setAttribute('y1',yn);ln.setAttribute('y2',yn);document.getElementById('bgnt').setAttribute('y',f1(+yn+3));
   var aw=f1(Math.max(1,BAL.gfr/116*3.2));document.getElementById('barr').setAttribute('stroke-width',aw);
   var dd=BAL.gfr-B.GFR,st=document.getElementById('bgs');document.getElementById('bgt').textContent=B2.fl.replace('{g}',nf(BAL.gfr,0));
+  var LK=fbLeak(),lk='',np=Math.min(10,Math.round(LK.p*3));for(var q=0;q<np;q++)lk+='<circle cx="'+f1(278+(q*13)%30)+'" cy="'+f1(166-((q*7)%Math.max(4,h-4)))+'" r="2" fill="#7A4BA6"/>';
+  if(LK.h)for(q=0;q<3;q++)lk+='<ellipse cx="'+(282+q*10)+'" cy="'+(162-q*5)+'" rx="4" ry="2" fill="#C0392B"/>';
+  document.getElementById('bleak').innerHTML=lk;
   st.textContent=Math.abs(dd)<1?B2.same:(dd>0?'↑ ':'↓ ')+(dd>0?B2.more:B2.less);st.setAttribute('fill',Math.abs(dd)<1?'#55697A':dd>0?'#2E7D32':'#B03A3A');}
 function balStart(mm){var g=mm.GFR,kfn=K.Kf/fbR();BAL={pgc:mm.Pgc,pbs:K.PBS,pi:mm.Pgc-K.PBS-g/kfn,gfr:g};balDraw();}
 
