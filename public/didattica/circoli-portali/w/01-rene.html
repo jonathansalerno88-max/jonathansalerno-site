@@ -423,8 +423,8 @@ function diagram(m){var y=92,hw=9,o='',G=U.dg,urChips='';
   o+='<g class="cap">'+tx(430,117,G.reab+' '+sgn(m.ptc)+' mmHg','start',{s:10.5,w:700,c:rb>0?'#1F5FA8':'#B5520C'})+'</g>';
   o+=tap(150,y,m.ra,'#C24B4B',G.aff,S.au,S.dr.fans,-24)+tap(346,y,m.re,'#C24B4B',G.eff,false);
   // adrenergic receptors of the kidney, always drawn: alpha1 on the afferent (strong), on the efferent (weak) and on the proximal tubule, beta1 on the granular cells;
-  // filled when the sympathetic is on, outlined at rest, grey and struck through when a beta-blocker sits on it
-  var rcp=function(x,yy,t,c,k,blk){var on=S.dr.sym&&!blk,fc=blk?'#E9EDF0':on?c:'#FFFFFF',sc=blk?'#9AA5AE':c,tc=blk?'#8696A4':on?'#FFFFFF':c;
+  // coloured when the sympathetic is on, grey at rest, grey and struck through when a beta-blocker sits on it
+  var rcp=function(x,yy,t,c,k,blk){var on=S.dr.sym&&!blk,fc=on?c:'#EEF1F3',sc=on?c:'#A3AFBA',tc=on?'#FFFFFF':'#8696A4';
     return '<g data-h="'+k+'" style="cursor:help"><rect x="'+(x-10)+'" y="'+(yy-6.5)+'" width="20" height="13" rx="6.5" fill="'+fc+'" stroke="'+sc+'" stroke-width="1.2"/>'+tx(x,yy+3,t,'middle',{s:8.6,w:800,c:tc,k:1})+(blk?'<path d="M'+(x-9)+' '+(yy+5)+' L'+(x+9)+' '+(yy-5)+'" stroke="#B03A3A" stroke-width="1.8" stroke-linecap="round"/>':'')+'</g>';};
   o+=rcp(172,y-2,'α1','#C0392B','ra1')+rcp(205,y-2,'β1','#2E7D32','rb1',S.dr.bb)+rcp(380,y-2,'α1','#D77A72','re1')+rcp(375,174.5,'α1','#C0392B','rp1');
   var pill=function(x,yy,t,c){var w=t.length*6.3+14;return '<rect class="pl" x="'+f1(x-w/2)+'" y="'+(yy-11)+'" width="'+f1(w)+'" height="16" rx="8" fill="'+c+'"/>'+tx(x,yy+1,t,'middle',{s:10.5,w:700,c:'#FFFFFF'});};
