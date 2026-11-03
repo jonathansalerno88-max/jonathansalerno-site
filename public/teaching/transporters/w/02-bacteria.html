@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Two bacterial transports: ABC and group translocation</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+svg[viewBox]{max-width:600px;width:100%;margin:0 auto}
+.pnl{overflow-x:auto}
+@media (max-width:600px){.pnl::before{content:attr(data-hint);display:block;font-size:11.5px;color:#55697A;margin:0 2px 4px}}
+.top{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 8px}
+.top button{font:inherit;font-size:13px;padding:5px 11px;border-radius:var(--radius);border:1px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+.top button.act{font-weight:700}
+.top button .dt{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.top .sp{flex:1 1 auto}
+.top #pz.on{border-color:#B5520C;background:#FCEEDD;color:#7A3E0B}
+.pnl{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:6px;margin:0 0 8px}
+.txt{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:9px 12px;font-size:14px;line-height:1.55}
+.txt h3{font-size:16px;margin:0 0 4px}
+.txt p{margin:0 0 6px}.txt p:last-child{margin:0}
+.rule{margin-top:8px;background:#F7FAFC}
+.rule table{border-collapse:collapse;width:100%;font-size:13px;margin:4px 0 6px}
+.rule th,.rule td{text-align:left;padding:4px 6px;border-bottom:1px solid #DDE4EA;vertical-align:top}
+.rule th{color:#55697A;font-weight:600;font-size:12px}
+.rscroll{overflow-x:auto}
+.badge{display:inline-block;font-weight:700;font-size:13px;padding:3px 10px;border-radius:999px;margin:0 6px 6px 0;color:#FFFFFF}
+.b-pas,.b-pri,.b-grp{background:#FFFFFF;border:1.5px solid}.b-pas{color:#1F5FA8}.b-pri{color:#B0420C}.b-grp{color:#0F6E56}
+.b-yes{background:#0F6E56}.b-no{background:#55697A}
+body.paused *{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<style id="kf"></style>
+</head>
+<body>
+<h2 class="sr-only">Facilitated diffusion, ABC system and group translocation (PTS) compared: who pays the energy and whether the substance enters modified</h2>
+<div class="top" id="tabs"></div>
+<div class="pnl" id="sc" data-hint="Scroll the drawing sideways to see all of it."></div>
+<div class="txt" id="tx"></div>
+<div class="txt rule" id="rl"></div>
+<script>
+var D={"ui": {"out": "OUTSIDE (periplasm in Gram−)", "inn": "CYTOPLASM", "pause": "❚❚ Pause", "play": "▶ Resume", "cfd": ["glucose: high", "glucose: low"], "cabc": ["maltose: very low", "maltose: high"], "cpts": ["glucose: low", "glucose-6-P: high"], "tmd": "membrane domain", "relay": "the phosphate is handed on", "bp": "binding protein", "pyr": "pyruvate", "modY": "the substance enters MODIFIED", "modN": "the substance enters unchanged", "rule": "<b>How not to mix them up</b><div class=\"rscroll\"><table><thead><tr><th>Mechanism</th><th>Energy</th><th>Does the substance change?</th><th>Example</th></tr></thead><tbody><tr><td>Facilitated diffusion</td><td>none (down the gradient)</td><td>no</td><td>GLUT</td></tr><tr><td>ABC system</td><td>ATP (2 per cycle)</td><td>no</td><td>maltose in <i>E. coli</i>; P-glycoprotein in humans</td></tr><tr><td>Group translocation</td><td>PEP (phosphoenolpyruvate), not ATP</td><td><b>yes</b>: it enters phosphorylated</td><td>glucose → glucose-6-P (PTS)</td></tr></tbody></table></div>If you are asked what defines group translocation: <b>the substance is chemically modified during transport</b>. And it is the only one of the three in which the energy comes from <b>PEP</b> instead of ATP."}, "modes": [{"k": "fd", "n": "Facilitated diffusion", "c": "#1F5FA8", "bg": "#E3EEF9", "cls": "Passive", "bc": "b-pas", "mod": false, "t": ["The substance goes <b>down</b> its gradient, helped by a carrier that binds it on one side and releases it on the other. No energy is needed, and the molecule that arrives inside is the same one that was outside. Example: the <b>GLUT</b> carriers of our cells.", "It is here only for comparison: it is the mechanism most often confused with group translocation. The difference comes down to two questions: who pays the energy, and whether the substance enters unchanged or modified."]}, {"k": "pts", "n": "Group translocation (PTS)", "c": "#0F6E56", "bg": "#E3F5EE", "cls": "Active: energy from PEP", "bc": "b-grp", "mod": true, "t": ["The <b>PTS</b> (PhosphoTransferase System) brings glucose in and, in the same step, attaches a phosphate to it: glucose enters as <b>glucose-6-phosphate</b>. That is what “group translocation” means: the substance is <b>chemically modified while it crosses the membrane</b>.", "The phosphate comes from <b>PEP</b> (phosphoenolpyruvate), which becomes pyruvate, and is handed along a chain of proteins: <b>EI</b> (Enzyme I) → <b>HPr</b> (Histidine-containing Phosphocarrier protein) → <b>EIIA</b> → <b>EIIB</b> → glucose. <b>EIIC</b>, in the membrane, is the actual passage. So the energy does not come from ATP but from another high-energy compound.", "Why it pays off: glucose-6-phosphate is charged and cannot leave again, and free glucose inside stays near zero because it is phosphorylated as soon as it enters. So the bacterium keeps taking up glucose even when there is little outside, and the first step of glycolysis is already done. The PTS exists in bacteria, for example <i>E. coli</i>, not in human cells."]}, {"k": "abc", "n": "ABC system", "c": "#C2571A", "bg": "#FCEEDD", "cls": "Active (primary): ATP", "bc": "b-pri", "mod": false, "t": ["An <b>ABC</b> transporter (ATP-Binding Cassette) has two membrane domains, which form the passage, and two domains in the cytoplasm, the <b>NBDs</b> (Nucleotide-Binding Domains), which bind and hydrolyse ATP. Each cycle costs 2 ATP.", "In Gram− bacteria a <b>binding protein</b> in the periplasm captures the substance, here maltose, and hands it to the transporter; in Gram+ bacteria, which have no periplasm, the same protein is anchored to the membrane. This is why ABC systems capture nutrients even when there are very few outside.", "The substance goes <b>up</b> its gradient but arrives inside <b>unchanged</b>: this is classic primary active transport, like the Na⁺/K⁺-ATPase. It exists in humans too: P-glycoprotein (<b>MDR1</b>, MultiDrug Resistance 1) uses the same scheme in reverse, to pump drugs out of the cell. Some bacterial efflux pumps that expel antibiotics are ABC transporters as well."]}]},U=D.ui,M=D.modes,CUR=1,PZ=false;
+function $(q){return document.querySelector(q);}
+function tx(x,y,t,a,o){o=o||{};return '<text x="'+x+'" y="'+y+'" font-size="'+(o.s||12)+'" text-anchor="'+(a||'start')+'" fill="'+(o.c||'#16222E')+'"'+(o.w?' font-weight="'+o.w+'"':'')+'>'+t+'</text>';}
+var COL={glu:'#B03A3A',mal:'#8A6A00',P:'#0F6E56',atp:'#C2571A',pep:'#7A4BA6'};
+var KF='';
+function kf(n,fr){KF+='@keyframes '+n+'{'+fr.map(function(f){return f[0]+'%{transform:translate('+f[1]+'px,'+f[2]+'px);opacity:'+(f[3]==null?1:f[3])+'}';}).join('')+'}';}
+function an(n,d){return 'style="animation:'+n+' '+d+'s linear infinite;opacity:0"';}
+function tok(n,d,lab,c,r){r=r||(lab.length>3?17:13);return '<g '+an(n,d)+'><circle r="'+r+'" fill="#FFFFFF" stroke="'+c+'" stroke-width="2.4"/>'+tx(0,4,lab,'middle',{s:lab.length>3?9.5:11,w:700,c:c})+'</g>';}
+function pill(n,d,lab,c,w){w=w||70;return '<g '+an(n,d)+'><rect x="'+(-w/2)+'" y="-10" width="'+w+'" height="20" rx="10" fill="'+c+'"/>'+tx(0,4,lab,'middle',{s:10,w:700,c:'#FFFFFF'})+'</g>';}
+function dots(c,n,x0,x1,seed,y0,y1){y0=y0||70;y1=y1||250;var o='';for(var i=0;i<n;i++){var x=x0+((i*37+seed*11)%100)/100*(x1-x0),y=y0+((i*53+seed*29)%100)/100*(y1-y0);o+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="4" fill="'+c+'" opacity=".4"/>';}return o;}
+var OPEN_OUT='M292 98 L348 98 L348 222 L292 222 L292 200 L334 160 L292 120 Z',OPEN_IN='M292 98 L348 98 L348 120 L306 160 L348 200 L348 222 L292 222 Z';
+function carrier(d,flips,col,fill){var o1=flips.map(function(f){return f[0]+'%{opacity:'+(f[1]==='out'?1:0)+'}';}).join(''),o2=flips.map(function(f){return f[0]+'%{opacity:'+(f[1]==='in'?1:0)+'}';}).join('');
+  KF+='@keyframes cOut{'+o1+'}@keyframes cIn{'+o2+'}';
+  return '<path d="'+OPEN_OUT+'" fill="'+fill+'" stroke="'+col+'" stroke-width="2.4" style="animation:cOut '+d+'s steps(1,end) infinite"/><path d="'+OPEN_IN+'" fill="'+fill+'" stroke="'+col+'" stroke-width="2.4" style="animation:cIn '+d+'s steps(1,end) infinite"/>';}
+function box(x,y,lab,c,f){return '<rect x="'+(x-24)+'" y="'+(y-13)+'" width="48" height="26" rx="8" fill="'+f+'" stroke="'+c+'" stroke-width="1.8"/>'+tx(x,y+4,lab,'middle',{s:11,w:700,c:c});}
+function scene(k){KF='';var H=290,o='';
+  o+='<rect x="0" y="0" width="300" height="'+H+'" fill="#F7FAFC"/><rect x="340" y="0" width="300" height="'+H+'" fill="#F3ECFA"/>';
+  for(var y=4;y<H;y+=12){o+='<circle cx="304" cy="'+y+'" r="4.6" fill="#E8C76A"/><circle cx="336" cy="'+y+'" r="4.6" fill="#E8C76A"/>';}
+  o+='<rect x="309" y="0" width="22" height="'+H+'" fill="#FBF3D6"/>';
+  o+=tx(150,H-10,U.out,'middle',{s:12,w:700,c:'#55697A'})+tx(490,H-10,U.inn,'middle',{s:12,w:700,c:'#55697A'});
+  if(k==='fd'){var d=4;o+=tx(150,22,U.cfd[0],'middle',{s:11.5,w:700,c:COL.glu})+tx(490,22,U.cfd[1],'middle',{s:11.5,w:700,c:COL.glu});
+    o+=dots(COL.glu,14,20,280,1)+dots(COL.glu,3,360,620,2);
+    o+=carrier(d,[[0,'out'],[45,'in'],[95,'out'],[100,'out']],'#2E7D4F','#CDE8D5');
+    kf('g0',[[0,120,160,0],[8,160,160],[40,316,160],[50,324,160],[90,500,160],[100,540,160,0]]);o+=tok('g0',d,'glu',COL.glu);}
+  if(k==='abc'){var d=8,C='#C2571A';o+=tx(150,22,U.cabc[0],'middle',{s:11.5,w:700,c:COL.mal})+tx(490,22,U.cabc[1],'middle',{s:11.5,w:700,c:COL.mal});
+    o+=dots(COL.mal,3,20,280,3)+dots(COL.mal,14,400,620,4);
+    o+=carrier(d,[[0,'out'],[46,'in'],[74,'out'],[100,'out']],C,'#F6C7A8');
+    o+='<rect x="352" y="112" width="40" height="30" rx="9" fill="#FCEEDD" stroke="'+C+'" stroke-width="1.8"/><rect x="352" y="178" width="40" height="30" rx="9" fill="#FCEEDD" stroke="'+C+'" stroke-width="1.8"/>';
+    o+=tx(372,131,'NBD','middle',{s:9.5,w:700,c:C})+tx(372,197,'NBD','middle',{s:9.5,w:700,c:C});
+    o+=tx(320,90,U.tmd,'middle',{s:10,w:700,c:C});
+    kf('bp',[[0,170,160,1],[20,170,160,1],[32,256,160,1],[60,256,160,1],[78,170,160,1],[100,170,160,1]]);
+    o+='<g style="animation:bp '+d+'s linear infinite"><path d="M-30 -26 A34 34 0 1 0 -30 26 L4 0 Z" transform="translate(4,0)" fill="#E3F1E7" stroke="#2E7D4F" stroke-width="2"/>'+tx(-12,-32,U.bp,'middle',{s:10,w:700,c:'#2E7D4F'})+'</g>';
+    kf('m0',[[0,40,160,0],[4,60,160],[18,186,160],[20,186,160],[32,272,160],[44,286,160],[50,330,160],[70,470,160],[78,520,160,0],[100,520,160,0]]);o+=tok('m0',d,'mal',COL.mal);
+    [['a1',127],['a2',193]].forEach(function(a){
+      kf(a[0],[[0,560,a[1],0],[18,560,a[1],0],[22,540,a[1],1],[36,420,a[1],1],[46,420,a[1],1],[47,420,a[1],0],[100,420,a[1],0]]);o+=pill(a[0],d,'ATP',COL.atp,44);
+      kf(a[0]+'d',[[0,430,a[1],0],[46,430,a[1],0],[47,430,a[1],1],[62,560,a[1],1],[68,580,a[1],0],[100,580,a[1],0]]);o+=pill(a[0]+'d',d,'ADP + Pi','#8696A4',66);});
+  }
+  if(k==='pts'){var d=8,C='#0F6E56';o+=tx(150,22,U.cpts[0],'middle',{s:11.5,w:700,c:COL.glu})+tx(490,254,U.cpts[1],'middle',{s:11.5,w:700,c:C});
+    o+=dots(COL.glu,8,20,280,5)+dots(C,12,400,620,6,125,235);
+    o+=carrier(d,[[0,'out'],[50,'in'],[74,'out'],[100,'out']],C,'#CDEDE2');
+    o+=tx(276,90,'EIIC','end',{s:10.5,w:700,c:C});
+    o+=box(392,72,'EIIB',C,'#E3F5EE')+box(452,50,'EIIA',C,'#E3F5EE')+box(512,50,'HPr',C,'#E3F5EE')+box(572,72,'EI',C,'#E3F5EE')+tx(482,82,U.relay,'middle',{s:9.5,c:C});
+    kf('pe',[[0,595,118,1],[10,595,118,1],[11,595,118,0],[100,595,118,0]]);o+=pill('pe',d,'PEP',COL.pep,44);
+    kf('py',[[0,595,118,0],[10,595,118,0],[11,595,118,1],[30,595,130,1],[36,595,136,0],[100,595,136,0]]);o+=pill('py',d,U.pyr,'#8696A4',66);
+    kf('ph',[[0,595,118,0],[4,595,118,1],[12,572,46],[20,572,46],[24,512,24],[30,512,24],[34,452,24],[38,452,24],[42,392,46],[46,392,46],[52,346,150],[54,346,150,0],[100,346,150,0]]);o+=tok('ph',d,'P',C,11);
+    kf('g1',[[0,40,160,0],[4,60,160],[40,292,160],[50,318,160],[53,336,160,0],[100,336,160,0]]);o+=tok('g1',d,'glu',COL.glu);
+    kf('g6',[[0,346,160,0],[53,346,160,0],[54,350,160,1],[80,500,200,1],[88,540,210,0],[100,540,210,0]]);o+=tok('g6',d,'G6P',C,17);
+  }
+  $('#kf').textContent=KF;
+  return '<svg viewBox="0 0 640 '+H+'" role="img" aria-label="'+M[CUR].n+'">'+o+'</svg>';}
+function render(){var m=M[CUR];
+  $('#tabs').innerHTML=M.map(function(x,i){return '<button type="button" data-i="'+i+'"'+(i===CUR?' class="act" style="border:1.5px solid '+x.c+';background:'+x.bg+'"':' style="border-color:'+x.c+'66"')+'><span class="dt" style="background:'+x.c+'"></span>'+x.n+'</button>';}).join('')+'<span class="sp"></span><button type="button" id="pz"'+(PZ?' class="on"':'')+'>'+(PZ?U.play:U.pause)+'</button>';
+  $('#sc').innerHTML=scene(m.k);
+  $('#tx').innerHTML='<h3>'+m.n+'</h3><p><span class="badge '+m.bc+'">'+m.cls+'</span><span class="badge '+(m.mod?'b-yes':'b-no')+'">'+(m.mod?U.modY:U.modN)+'</span></p>'+m.t.map(function(p){return '<p>'+p+'</p>';}).join('');}
+$('#tabs').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+  if(b.id==='pz'){PZ=!PZ;document.body.classList.toggle('paused',PZ);b.textContent=PZ?U.play:U.pause;b.classList.toggle('on',PZ);return;}
+  CUR=+b.getAttribute('data-i');render();});
+$('#rl').innerHTML=U.rule;
+render();
+</script>
+</body>
+</html>
