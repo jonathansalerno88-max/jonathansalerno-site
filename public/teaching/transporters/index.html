@@ -285,7 +285,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <ol>
     <li><a href="#what">How to cross a membrane</a></li>
     <li><a href="#kidney">The transporters of the kidney</a></li>
-    <li><a href="#bacteria">Two bacterial transports: ABC and group translocation</a></li>
+    <li><a href="#bacteria">Two bacterial transports: ABC and group translocation</a><ul><li><a href="#humans">And in humans?</a></li></ul></li>
   </ol>
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#sources">Sources</a></p>
 </nav>
@@ -338,6 +338,26 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <iframe src="w/02-bacteria.html" title="Facilitated diffusion, ABC system and group translocation compared" loading="lazy" class="ph h-bat"></iframe>
     <figcaption>Pick one of the three mechanisms and follow the substance from outside to the cytoplasm; the Pause button stops the animation. <a href="w/02-bacteria.html">Open full screen</a></figcaption>
   </figure>
+  <h3 id="humans">And in humans?</h3>
+  <p>Of the two systems, we have one and not the other.</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Mechanism</th><th>In bacteria</th><th>In humans</th></tr></thead>
+    <tbody>
+    <tr><td>Group translocation (PTS)</td><td>yes: glucose enters already phosphorylated, with energy from PEP</td><td><b>no</b>. We use the same trick in two separate steps: glucose enters unchanged through a <b>GLUT</b> (GLUcose Transporter, facilitated diffusion), then inside <b>hexokinase</b> phosphorylates it with ATP. Glucose-6-phosphate cannot leave, and free glucose inside stays low</td></tr>
+    <tr><td>ABC system</td><td>yes, mainly to bring nutrients <b>in</b>, with the binding protein</td><td><b>yes</b>, about 48 genes, but almost all of them pump things <b>out</b>: we lack the binding protein needed for import</td></tr>
+    </tbody></table></div>
+  <p>The human ABC transporters that matter most in medicine:</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Transporter</th><th>What it does</th><th>Why it matters</th></tr></thead>
+    <tbody>
+    <tr><td><b>P-gp</b> (P-glycoprotein), or <b>MDR1</b> (MultiDrug Resistance 1, gene ABCB1)</td><td>pumps drugs out: gut, blood-brain barrier, kidney, liver</td><td>resistance of tumours to chemotherapy; drug interactions: inhibit it (clarithromycin, verapamil, amiodarone) and digoxin rises, induce it (rifampicin, St John's wort) and it falls</td></tr>
+    <tr><td><b>CFTR</b> (Cystic Fibrosis Transmembrane conductance Regulator)</td><td>lets Cl⁻ out of epithelia</td><td>cystic fibrosis. It is an ABC protein that works as a <b>channel</b>: ATP opens it rather than pumping</td></tr>
+    <tr><td><b>ABCA1</b></td><td>hands cholesterol to <b>HDL</b> (High-Density Lipoproteins)</td><td>Tangier disease: HDL almost absent</td></tr>
+    <tr><td><b>MRP2</b> (Multidrug Resistance-associated Protein 2)</td><td>moves conjugated bilirubin into bile</td><td>Dubin-Johnson syndrome</td></tr>
+    <tr><td><b>BSEP</b> (Bile Salt Export Pump)</td><td>moves bile salts into bile</td><td>cholestasis</td></tr>
+    <tr><td><b>TAP</b> (Transporter associated with Antigen Processing)</td><td>moves peptides into the endoplasmic reticulum, to load them on <b>MHC I</b> (Major Histocompatibility Complex class I)</td><td>without TAP the cell cannot show antigens to T cells; some viruses block it to hide</td></tr>
+    <tr><td><b>ABCD1</b></td><td>moves very-long-chain fatty acids into peroxisomes</td><td>adrenoleukodystrophy</td></tr>
+    </tbody></table></div>
   <p>The whole bacterial cell, with the envelope of Gram+, Gram− and mycobacteria, is on the
   <a href="../microbiology/">microbiology</a> page.</p>
 </section>
