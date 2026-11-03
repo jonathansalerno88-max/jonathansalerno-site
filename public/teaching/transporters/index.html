@@ -7,7 +7,7 @@
 <link rel="alternate" hreflang="it" href="/didattica/trasportatori/">
 <link rel="alternate" hreflang="en" href="/teaching/transporters/">
 <link rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
-<meta name="description" content="The three routes across a membrane, animated: simple diffusion, channels (always open, voltage-gated, ligand-gated, mechanosensitive) and carriers (uniport, symport, antiport), passive, active or secondary active. Then the transporters of the nephron, segment by segment, with the intercalated cells; finally two bacterial transports, the ABC system and group translocation (PTS).">
+<meta name="description" content="The three routes across a membrane, animated: simple diffusion, channels (always open, voltage-gated, ligand-gated, mechanosensitive) and carriers (uniport, symport, antiport), passive, active or secondary active. Then the transporters of the nephron, segment by segment, with the intercalated cells; finally two bacterial transports, the ABC system and group translocation (PTS); and the difference between transport and secretion, with the secretion systems from Sec to T7SS.">
 <meta name="author" content="Jonathan Salerno">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
@@ -106,6 +106,8 @@ figure.w iframe.h-em{height:760px}
 figure.w iframe.h-lz{height:895px}
 figure.w iframe.h-pers{height:1505px}
 figure.w iframe.h-bat{height:1170px}
+figure.w iframe.h-sec{height:920px}
+@media (max-width:600px){figure.w iframe.h-sec{height:1300px}}
 @media (max-width:600px){figure.w iframe.h-bat{height:1640px}}
 @media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1720px} figure.w iframe.h-em{height:1300px} figure.w iframe.h-lz{height:1600px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
@@ -275,7 +277,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <h1>Transporters</h1>
   <div class="lede">
     <p>How a substance crosses a membrane, and whether transport is passive, active or secondary active. First the mechanisms in general, animated one
-    by one; then the transporters of the nephron, segment by segment; finally two transports typical of bacteria.</p>
+    by one; then the transporters of the nephron, segment by segment; then two transports typical of bacteria; finally the difference between transport and secretion, with the bacterial secretion systems.</p>
     <p class="caveat">Simplified animations for teaching: concentrations and speeds are indicative.</p>
   </div>
 </header>
@@ -286,6 +288,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <li><a href="#what">How to cross a membrane</a></li>
     <li><a href="#kidney">The transporters of the kidney</a></li>
     <li><a href="#bacteria">Two bacterial transports: ABC and group translocation</a><ul><li><a href="#humans">And in humans?</a></li></ul></li>
+    <li><a href="#secretion">Transport or secretion?</a><ul><li><a href="#secretion-systems">The secretion systems</a></li></ul></li>
   </ol>
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#sources">Sources</a></p>
 </nav>
@@ -361,6 +364,39 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <p>The whole bacterial cell, with the envelope of Gram+, Gram− and mycobacteria, is on the
   <a href="../microbiology/">microbiology</a> page.</p>
 </section>
+<section id="secretion">
+  <h2>4 · Transport or secretion?</h2>
+  <p>In bacteria the two words follow a precise rule, and it is a convention: <b>what</b> crosses decides, not the machine that carries it.</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th></th><th>Transport</th><th>Secretion</th></tr></thead>
+    <tbody>
+    <tr><td>What crosses</td><td>small molecules: sugars, ions, amino acids, drugs</td><td><b>proteins</b>: toxins, enzymes, parts of pili and flagella, effectors to inject</td></tr>
+    <tr><td>Direction</td><td>in and out</td><td>almost always out</td></tr>
+    <tr><td>How many membranes</td><td>the cytoplasmic membrane</td><td>one, two in Gram−, sometimes the host cell's too</td></tr>
+    <tr><td>What for</td><td>feeding, keeping ions, defence (efflux)</td><td>pathogenicity, building external structures, competing with other bacteria</td></tr>
+    </tbody></table></div>
+  <p>Proof that the machine does not decide: the same <b>ABC transporter</b> (ATP-Binding Cassette) that brings maltose in is a transporter; an ABC protein that exports a protein, haemolysin, is the core of the <b>T1SS</b> (Type 1 Secretion System) and that is secretion. Same mechanism, different cargo, different name.</p>
+  <p>The grey areas: <b>siderophores</b>, small iron-capturing molecules, are said to be “secreted” but leave through efflux pumps, that is transporters; proteins <b>inserted</b> into the membrane by the Sec system are translocated, not secreted; capsule and <b>LPS</b> (lipopolysaccharide) are said to be <b>exported</b>, by machines of their own. And mind the change of subject: in human physiology “secretion” means that a cell makes and releases something, whatever it is, insulin as well as stomach HCl.</p>
+  <h3 id="secretion-systems">The secretion systems</h3>
+  <p>A Gram+ protein has to cross one membrane; in Gram− bacteria it has to cross the inner membrane, the periplasm, full of enzymes that degrade it, and the outer membrane. This is why Gram− bacteria have many different systems, numbered 1 to 6; number 7 belongs to mycobacteria.</p>
+  <figure class="w">
+    <iframe src="w/03-secretion.html" title="Bacterial secretion systems, from Sec to T7SS" loading="lazy" class="ph h-sec"></iframe>
+    <figcaption>Pick a system and follow the protein: how many membranes it crosses, in how many steps, where it ends up. The Pause button stops the animation. <a href="w/03-secretion.html">Open full screen</a></figcaption>
+  </figure>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>System</th><th>How</th><th>Example</th></tr></thead>
+    <tbody>
+    <tr><td>Sec</td><td>inner membrane only, unfolded protein</td><td>periplasmic proteins; first step of T2SS and T5SS</td></tr>
+    <tr><td>Tat</td><td>inner membrane only, already folded protein</td><td>enzymes with a cofactor</td></tr>
+    <tr><td>T1SS</td><td>single tube in one step, built on an ABC protein</td><td><i>E. coli</i> haemolysin</td></tr>
+    <tr><td>T2SS</td><td>second step after Sec: from periplasm to outside</td><td>cholera toxin</td></tr>
+    <tr><td>T3SS</td><td>syringe: injects proteins into the host cell</td><td><i>Salmonella</i>, <i>Shigella</i>, <i>Yersinia</i></td></tr>
+    <tr><td>T4SS</td><td>carries proteins and DNA too</td><td>CagA of <i>H. pylori</i>; conjugation</td></tr>
+    <tr><td>T5SS</td><td>the protein makes its own passage through the outer membrane</td><td><i>Neisseria</i> IgA protease</td></tr>
+    <tr><td>T6SS</td><td>spring-loaded harpoon against other bacteria</td><td><i>Vibrio</i>, <i>Pseudomonas</i></td></tr>
+    <tr><td>T7SS (ESX)</td><td>mycobacterial envelope</td><td>ESAT-6 of <i>M. tuberculosis</i></td></tr>
+    </tbody></table></div>
+</section>
 <section id="sources">
   <h2>Sources</h2>
   <ol class="refs">
@@ -368,6 +404,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <li>Hall JE, Hall ME. <i>Guyton and Hall Textbook of Medical Physiology</i>. 14th ed. Philadelphia: Elsevier; 2021.</li>
     <li>Koeppen BM, Stanton BA. <i>Renal Physiology</i>. 6th ed. Philadelphia: Elsevier; 2019.</li>
     <li>Madigan MT, Bender KS, Buckley DH, Sattley WM, Stahl DA. <i>Brock Biology of Microorganisms</i>. 16th ed. Harlow: Pearson; 2021.</li>
+    <li>Green ER, Mecsas J. Bacterial secretion systems: an overview. <i>Microbiol Spectr</i>. 2016;4(1):VMBF-0012-2015.</li>
   </ol>
   <p class="caveat">Indicative values, rounded for teaching.</p>
 </section>

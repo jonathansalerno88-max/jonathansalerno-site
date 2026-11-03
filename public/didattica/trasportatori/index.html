@@ -7,7 +7,7 @@
 <link rel="alternate" hreflang="it" href="/didattica/trasportatori/">
 <link rel="alternate" hreflang="en" href="/teaching/transporters/">
 <link rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
-<meta name="description" content="Le tre vie per attraversare una membrana, animate: diffusione semplice, canali (sempre aperti, voltaggio-, ligando-dipendenti, meccanosensibili) e trasportatori (uniporto, simporto, antiporto), passivi, attivi o secondariamente attivi. Poi i trasportatori del nefrone, segmento per segmento, con le cellule intercalate; infine due trasporti dei batteri, il sistema ABC e la traslocazione di gruppo (PTS).">
+<meta name="description" content="Le tre vie per attraversare una membrana, animate: diffusione semplice, canali (sempre aperti, voltaggio-, ligando-dipendenti, meccanosensibili) e trasportatori (uniporto, simporto, antiporto), passivi, attivi o secondariamente attivi. Poi i trasportatori del nefrone, segmento per segmento, con le cellule intercalate; infine due trasporti dei batteri, il sistema ABC e la traslocazione di gruppo (PTS); e la differenza fra trasporto e secrezione, con i sistemi di secrezione da Sec al T7SS.">
 <meta name="author" content="Jonathan Salerno">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
@@ -106,6 +106,8 @@ figure.w iframe.h-em{height:760px}
 figure.w iframe.h-lz{height:895px}
 figure.w iframe.h-pers{height:1505px}
 figure.w iframe.h-bat{height:1170px}
+figure.w iframe.h-sec{height:920px}
+@media (max-width:600px){figure.w iframe.h-sec{height:1300px}}
 @media (max-width:600px){figure.w iframe.h-bat{height:1640px}}
 @media (max-width:600px){figure.w iframe.h-simple{height:900px} figure.w iframe.h-game{height:1900px} figure.w iframe.h-sfida{height:2615px} figure.w iframe.h-film{height:2300px} figure.w iframe.h-pers{height:1795px} figure.w iframe.h-micro{height:1720px} figure.w iframe.h-em{height:1300px} figure.w iframe.h-lz{height:1600px}}
 figure.w figcaption{font-size:.8125rem; color:var(--faint); margin-top:.45rem}
@@ -275,7 +277,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <h1>I trasportatori</h1>
   <div class="lede">
     <p>Come fa una sostanza ad attraversare una membrana, e se il trasporto è passivo, attivo o secondariamente attivo. Prima i meccanismi in generale,
-    animati uno per uno; poi i trasportatori del nefrone, segmento per segmento; infine due trasporti tipici dei batteri.</p>
+    animati uno per uno; poi i trasportatori del nefrone, segmento per segmento; poi due trasporti tipici dei batteri; infine la differenza fra trasporto e secrezione, con i sistemi di secrezione batterici.</p>
     <p class="caveat">Animazioni semplificate a scopo didattico: concentrazioni e velocità sono indicative.</p>
   </div>
 </header>
@@ -286,6 +288,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <li><a href="#cosa">Come si attraversa una membrana</a></li>
     <li><a href="#rene">I trasportatori del rene</a></li>
     <li><a href="#batteri">Due trasporti dei batteri: ABC e traslocazione di gruppo</a><ul><li><a href="#uomo">E nell'uomo?</a></li></ul></li>
+    <li><a href="#secrezione">Trasporto o secrezione?</a><ul><li><a href="#sistemi-secrezione">I sistemi di secrezione</a></li></ul></li>
   </ol>
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#fonti">Fonti</a></p>
 </nav>
@@ -363,6 +366,39 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <p>La cellula batterica intera, con l'involucro dei Gram+, dei Gram− e dei micobatteri, è nella pagina di
   <a href="../microbiologia/">microbiologia</a>.</p>
 </section>
+<section id="secrezione">
+  <h2>4 · Trasporto o secrezione?</h2>
+  <p>Nei batteri le due parole hanno un criterio preciso, ed è una convenzione: decide <b>che cosa</b> passa, non la macchina che lo fa passare.</p>
+  <div class="tscroll tw"><table>
+    <thead><tr><th></th><th>Trasporto</th><th>Secrezione</th></tr></thead>
+    <tbody>
+    <tr><td>Che cosa passa</td><td>piccole molecole: zuccheri, ioni, aminoacidi, farmaci</td><td><b>proteine</b>: tossine, enzimi, pezzi di pili e flagelli, effettori da iniettare</td></tr>
+    <tr><td>In che direzione</td><td>dentro e fuori</td><td>quasi sempre fuori</td></tr>
+    <tr><td>Quante membrane</td><td>la membrana citoplasmatica</td><td>una, due nei Gram−, a volte anche quella della cellula ospite</td></tr>
+    <tr><td>A che cosa serve</td><td>nutrirsi, tenere gli ioni, difendersi (efflusso)</td><td>patogenicità, costruire strutture esterne, competere con altri batteri</td></tr>
+    </tbody></table></div>
+  <p>La prova che la macchina non decide: lo stesso <b>trasportatore ABC</b> (ATP-Binding Cassette) che porta dentro il maltosio è un trasportatore; un ABC che fa uscire una proteina, l'emolisina, è il cuore del <b>T1SS</b> (Type 1 Secretion System) ed è secrezione. Stesso meccanismo, carico diverso, nome diverso.</p>
+  <p>Le zone grigie: dei <b>siderofori</b>, piccole molecole che catturano il ferro, si dice che vengono «secreti», ma escono con pompe di efflusso, cioè trasportatori; le proteine <b>inserite</b> nella membrana dal sistema Sec non sono secrete ma traslocate; capsula e <b>LPS</b> (lipopolisaccaride) si dicono <b>esportati</b>, con macchine proprie. E attenzione al cambio di materia: in fisiologia umana «secrezione» vuol dire che la cellula produce e rilascia qualcosa, qualunque cosa sia, l'insulina come l'HCl dello stomaco.</p>
+  <h3 id="sistemi-secrezione">I sistemi di secrezione</h3>
+  <p>Una proteina dei Gram+ deve passare una membrana sola; nei Gram− deve passare la membrana interna, il periplasma, pieno di enzimi che la degradano, e la membrana esterna. Per questo i Gram− hanno tanti sistemi diversi, numerati da 1 a 6; il 7 è dei micobatteri.</p>
+  <figure class="w">
+    <iframe src="w/03-secrezione.html" title="I sistemi di secrezione dei batteri, da Sec al T7SS" loading="lazy" class="ph h-sec"></iframe>
+    <figcaption>Scegli un sistema e segui la proteina: quante membrane attraversa, in quanti passi, dove arriva. Il pulsante Pausa ferma l'animazione. <a href="w/03-secrezione.html">Apri a schermo intero</a></figcaption>
+  </figure>
+  <div class="tscroll tw"><table>
+    <thead><tr><th>Sistema</th><th>Come</th><th>Esempio</th></tr></thead>
+    <tbody>
+    <tr><td>Sec</td><td>solo la membrana interna, proteina srotolata</td><td>proteine del periplasma; primo passo di T2SS e T5SS</td></tr>
+    <tr><td>Tat</td><td>solo la membrana interna, proteina già ripiegata</td><td>enzimi con cofattore</td></tr>
+    <tr><td>T1SS</td><td>tubo unico in un passo, costruito su un ABC</td><td>emolisina di <i>E. coli</i></td></tr>
+    <tr><td>T2SS</td><td>secondo passo dopo Sec: dal periplasma all'esterno</td><td>tossina colerica</td></tr>
+    <tr><td>T3SS</td><td>siringa: inietta proteine dentro la cellula ospite</td><td><i>Salmonella</i>, <i>Shigella</i>, <i>Yersinia</i></td></tr>
+    <tr><td>T4SS</td><td>porta proteine e anche DNA</td><td>CagA di <i>H. pylori</i>; coniugazione</td></tr>
+    <tr><td>T5SS</td><td>la proteina si fa da sola il passaggio nella membrana esterna</td><td>IgA proteasi di <i>Neisseria</i></td></tr>
+    <tr><td>T6SS</td><td>arpione a molla contro altri batteri</td><td><i>Vibrio</i>, <i>Pseudomonas</i></td></tr>
+    <tr><td>T7SS (ESX)</td><td>involucro dei micobatteri</td><td>ESAT-6 di <i>M. tuberculosis</i></td></tr>
+    </tbody></table></div>
+</section>
 <section id="fonti">
   <h2>Fonti</h2>
   <ol class="refs">
@@ -370,6 +406,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <li>Hall JE, Hall ME. <i>Guyton and Hall Textbook of Medical Physiology</i>. 14th ed. Philadelphia: Elsevier; 2021.</li>
     <li>Koeppen BM, Stanton BA. <i>Renal Physiology</i>. 6th ed. Philadelphia: Elsevier; 2019.</li>
     <li>Madigan MT, Bender KS, Buckley DH, Sattley WM, Stahl DA. <i>Brock Biology of Microorganisms</i>. 16th ed. Harlow: Pearson; 2021.</li>
+    <li>Green ER, Mecsas J. Bacterial secretion systems: an overview. <i>Microbiol Spectr</i>. 2016;4(1):VMBF-0012-2015.</li>
   </ol>
   <p class="caveat">Valori indicativi, arrotondati a scopo didattico.</p>
 </section>
