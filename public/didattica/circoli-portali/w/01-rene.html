@@ -775,7 +775,7 @@ var PATO=false,LOPREV=false,AUTORS=false,FBIND=false,NOLAB=true,ZONES=false,HIST
 function render(){var lp=drugs().map<=85||S.dr.diu||S.dr.bb;if(lp&&!LOPREV&&!S.rs){S.rs=true;AUTORS=true;}if(!lp&&LOPREV&&AUTORS){S.rs=false;AUTORS=false;}LOPREV=lp;syLab();rsLab();var ra=S.ra,lim='',E=drugs();
   var fFl=S.dr.fans?K.RAmin*(1+vcTone(E)):0;FBIND=false;
   S.au=S.myo||S.tgf;if(S.au){var a=autoRa(E.map,E.re,S.alb,S.re,E.floor),myW=S.myo?(S.dr.dhp?0.3:S.ckd?0.6:1):0,tgW=S.tgf?(S.dr.dhp?0.7:1)*(S.ckd&&!S.dr.sg?0.4:1):0,wA=S.dr.diu&&S.tgf?myW:0.55*myW+0.45*tgW;ra=Math.pow(a.ra,wA);if(S.dr.fans&&ra<fFl){ra=fFl;FBIND=true;}lim=wA>0.99?a.lim:'';S.ra=ra;}else{ra=S.ra;if(S.dr.fans){ra*=1+vcTone(E);FBIND=vcTone(E)>0.1;}}
-  ra*=E.symA*(S.dr.dhp?0.85:1)*(S.ckd?0.85:1)*(S.dr.sg?1.15:1)*(!S.dr.sym&&symLv()>=3?1.05:1);
+  ra*=E.symA*(S.dr.dhp?0.85:1)*(S.ckd?0.85:1)*(S.dr.sg&&!S.dr.diu?1.15:1)*(!S.dr.sym&&symLv()>=3?1.05:1);
   var m=tubule(model(E.map,ra,E.re));LASTM={map:E.map,ra:ra,re:E.re,gfr:m.GFR};
   $('#map').value=S.map;$('#au').checked=S.au;
   [].forEach.call($('#dr').querySelectorAll('button'),function(b){b.classList.toggle('act',!!S.dr[b.getAttribute('data-d')]);});
