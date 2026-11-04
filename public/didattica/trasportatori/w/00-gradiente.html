@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="widget.css">
 <style>
 svg[viewBox]{min-width:0!important;max-width:620px!important;width:100%;margin:0 auto}
+#sv{width:66%!important;margin:0!important}@media (max-width:600px){#sv{width:100%!important}}
 .top{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 8px}
 .top button{font:inherit;font-size:13px;padding:5px 11px;border-radius:var(--radius);border:1px solid var(--border-strong);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
 .top button.act{font-weight:700;border:1.5px solid #16222E;background:#FFFFFF}
@@ -91,7 +92,7 @@ svg[viewBox]{min-width:0!important;max-width:620px!important;width:100%;margin:0
   <label><span>Concentrazione fuori</span><span class="row"><input type="range" id="co" min="-4" max="2.5" step="0.05"><output id="coo"></output></span></label>
 </div>
 <div class="flg" id="flg"></div>
-<div class="pnl"><svg id="sv" viewBox="0 -34 534 594" role="img" aria-label="Il gradiente elettrochimico: un voltmetro misura il potenziale di membrana; gli ioni passano la membrana nel verso della somma fra gradiente chimico ed elettrico (passivo) oppure contro (attivo, con energia)"></svg></div>
+<div class="pnl"><svg id="sv" viewBox="-34 -34 494 594" role="img" aria-label="Il gradiente elettrochimico: un voltmetro misura il potenziale di membrana; gli ioni passano la membrana nel verso della somma fra gradiente chimico ed elettrico (passivo) oppure contro (attivo, con energia)"></svg></div>
 <div class="pnl cpn" id="cpn" hidden><svg id="cv" viewBox="0 0 460 244" role="img"></svg><div class="cl" id="cl"></div></div>
 <div class="txt" id="tx"></div>
 <div class="txt rule" id="rl"></div>
@@ -159,9 +160,9 @@ function scene(){var I=ION[S.ion],c=calc(),o='';
     q+='<rect x="'+x+'" y="'+y+'" width="106" height="33" rx="8" fill="'+(on?'#16222E':'#FFFFFF')+'" stroke="#16222E" stroke-width="1.6"/>';
     q+=tx(x+9,y+21,on?'☑':'☐','middle',{s:12,w:700,c:on?'#FFFFFF':'#16222E'});lines.forEach(function(t,i){q+=tx(x+61,y+14+i*12,t,'middle',{s:9.8,w:700,c:on?'#FFFFFF':'#16222E'});});return q+'</g>';}
   var bOff=S.free&&S.mode==='pas';
-  // reset, right of the bath: membrane back, physiological concentrations, battery unplugged
-  o+='<g id="brs" role="button" tabindex="0" aria-label="'+L.rsT.join(' ')+'" style="cursor:pointer" onclick="doReset()" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();doReset();}">';
-  o+='<rect x="448" y="140" width="80" height="78" rx="10" fill="#FFFFFF" stroke="#16222E" stroke-width="1.6"/>'+tx(488,166,'↺','middle',{s:20,w:700})+L.rsT.map(function(t,i){return tx(488,182+i*12,t,'middle',{s:10,w:700});}).join('')+'</g>';
+  // reset: a vertical button just left of the bath
+  o+='<g id="brs" role="button" tabindex="0" aria-label="Reset" style="cursor:pointer" onclick="doReset()" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();doReset();}">';
+  o+='<rect x="-30" y="150" width="34" height="120" rx="9" fill="#FFFFFF" stroke="#16222E" stroke-width="1.6"/>'+'<text x="-13" y="210" font-size="13" font-weight="700" text-anchor="middle" dominant-baseline="central" fill="#16222E" transform="rotate(-90 -13 210)" letter-spacing="1.5">RESET</text></g>';
   // the ions, stacked in the free corner left of the voltmeter
   Object.keys(ION).forEach(function(k,i){var on=S.ion===k,y=-30+i*27,c=ION[k].c;
     o+='<g id="ion-'+k+'" role="button" tabindex="0" aria-pressed="'+on+'" aria-label="'+L.btn[k]+'" style="cursor:pointer" onclick="selIon(\''+k+'\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();selIon(\''+k+'\');}">';
