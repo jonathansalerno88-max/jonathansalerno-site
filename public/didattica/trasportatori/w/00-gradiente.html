@@ -43,6 +43,10 @@ svg[viewBox]{min-width:0!important;max-width:540px!important;width:100%;margin:0
 .lv .res{font-weight:600;margin:9px 0 2px}
 .lv .lg{font-size:11.5px;color:#55697A;margin:7px 0 0;line-height:1.5}
 .lv .big{font-size:14.5px}
+.nf{display:flex;flex-wrap:wrap;align-items:center;gap:4px;font-family:"IBM Plex Serif",Georgia,serif;font-size:18px;margin:6px 0}
+.nf .u2{font-size:13px;color:#55697A}
+.fq{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.25;margin:0 2px}
+.fq>span:first-child{border-bottom:1.5px solid #16222E;padding:0 4px 1px}.fq>span:last-child{padding:1px 4px 0}
 .lv .tb{float:right;display:inline-flex;gap:4px}.lv .tb button{font:inherit;font-size:12px;font-weight:600;padding:1px 9px;border-radius:999px;border:1px solid #B9C5CF;background:#FFFFFF;color:#55697A;cursor:pointer}.lv .tb button.on{border-color:#6A3A96;background:#6A3A96;color:#FFFFFF}
 .fk{font-weight:700;color:#9A3412}
 .k58{border:1px dashed #9A3412;border-radius:10px;padding:8px 11px;margin:8px 0 0;background:#FFF8F1;font-size:13.5px}
@@ -238,9 +242,9 @@ function text(){var I=ION[S.ion],c=calc(),up=upDir(c),pm=pump(up),n=L.names[S.io
   o+='<div class="lv"><p class="lvt">'+L.lvT+tb+'</p>';
   var XI=C('fci','['+I.g+']<sub>in</sub>'),XO=C('fco','['+I.g+']<sub>out</sub>');
   if(z){var lg=Math.log10(S.ci/S.co),dv=S.vm-c.E;
-    o+='<p class="eq big">'+C('fE','E<sub>'+l+'</sub>')+' = '+C('fk','−'+ks)+' / '+C('fz','z')+' · log₁₀('+XI+' / '+XO+')</p>';
-    o+='<p class="eq">= ('+C('fk','−'+ks)+' / '+C('fz',par(z,0))+') · log₁₀('+C('fci',nc(S.ci))+' / '+C('fco',nc(S.co))+')</p>';
-    o+='<p class="eq">= '+par(-k/z,1)+' mV × '+par(lg,2)+' = <b>'+C('fE',num(c.E,0,true)+' mV')+'</b></p>';
+    var FQ=function(t,d){return '<span class="fq"><span>'+t+'</span><span>'+d+'</span></span>';};
+    o+='<div class="nf">'+C('fE','E<sub>'+l+'</sub>')+' <span class="u2">(mV)</span> = '+FQ(C('fk','−'+ks),C('fz','z'))+' <span>log<sub>10</sub></span> '+FQ(XI,XO)+'</div>';
+    o+='<div class="nf">= '+FQ(C('fk','−'+ks),C('fz',num(z,0,true)))+' <span>log<sub>10</sub></span> '+FQ(C('fci',nc(S.ci)),C('fco',nc(S.co)))+' = <b>'+C('fE',num(c.E,0,true)+' mV')+'</b></div>';
     if(!measured())o+='<p class="res">'+L.cmpNo+'</p>';else o+='<p class="res">'+fill(L.cmp,{vm:C('fV',num(S.vm,0)+' mV'),dv:num(dv,0,true),r:c.eq?fill(L.cmpEq,{g:I.g}):fill(L.cmpD,{d:dn})})+'</p>';
     o+='<p class="lg">'+fill(L.lvL,{k:ks,t:S.T===310?'37':'20'})+'</p>';
   }else{
