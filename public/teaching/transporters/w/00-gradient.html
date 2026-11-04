@@ -14,7 +14,7 @@ svg[viewBox]{min-width:0!important;max-width:540px!important;width:100%;margin:0
 .top .sp{flex:1 1 auto}
 .top #pz.on{border-color:#B5520C;background:#FCEEDD;color:#7A3E0B}
 .top button.m-pas.act{border-color:#1F5FA8;color:#1F5FA8}.top button.m-act.act{border-color:#B0420C;color:#B0420C}
-.ctl{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:8px 12px;margin:0 0 8px;font-size:13px}
+.ctl[hidden]{display:none!important}.ctl{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:8px 12px;margin:0 0 8px;font-size:13px}
 .ctl label{display:flex;flex-direction:column;gap:2px;color:#55697A;font-weight:600}
 .ctl .row{display:flex;align-items:center;gap:8px}
 .ctl input[type=range]{flex:1;min-width:0}
@@ -84,7 +84,7 @@ svg[viewBox]{min-width:0!important;max-width:540px!important;width:100%;margin:0
 <body>
 <h2 class="sr-only">The electrochemical gradient: a voltmeter reads the membrane potential; ions cross the membrane along the sum of the chemical and electrical gradients (passive) or against it (active, with energy)</h2>
 <div class="top" id="modes"></div>
-<div class="ctl">
+<div class="ctl" hidden>
   <label class="vmr"><span>Battery voltage (sets V<sub>m</sub> while plugged in)</span><span class="row"><input type="range" id="vm" min="-120" max="140" step="1"><output id="vmo"></output></span></label>
   <div class="bt"><button id="eqb"></button><button id="rs"></button></div>
   <label><span>Concentration inside</span><span class="row"><input type="range" id="ci" min="-4" max="2.5" step="0.05"><output id="cio"></output></span></label>
