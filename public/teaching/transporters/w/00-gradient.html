@@ -141,7 +141,7 @@ function build(){P=[];FL=[];$('#pin').innerHTML='';$('#pout').innerHTML='';
 function draw(){P.forEach(function(p){p.n.setAttribute('x',p.x.toFixed(1));p.n.setAttribute('y',p.y.toFixed(1));});}
 function rates(){var c=calc();
   if(S.mode==='act'){var u=upDir(c);return {o:u==='out'?1.6:0,i:u==='in'?1.6:0};}
-  if(gfree()){var a=0,b=0;P.forEach(function(p){if(p.s)b++;else a++;});return {o:.14*a,i:.14*b};}
+  if(gfree()){var a=0,b=0;P.forEach(function(p){if(p.s)b++;else a++;});return {o:.3*a,i:.3*b};}
   var ph=F*S.vm/1000/RT,m=Math.max(S.ci,S.co),jo=S.ci/m*Math.exp(c.z*ph/2),ji=S.co/m*Math.exp(-c.z*ph/2),k=2.4/Math.max(jo,ji);return {o:k*jo,i:k*ji};}
 function spawn(dir){var I=ION[S.ion],out=dir==='o',y0=176+Math.random()*112,y2=176+Math.random()*112,a=[out?196:264,y0];
   if(gfree()){var src=P.filter(function(p){return p.s===(out?0:1);});if(!src.length)return;
@@ -150,7 +150,6 @@ function spawn(dir){var I=ION[S.ion],out=dir==='o',y0=176+Math.random()*112,y2=1
   var n=document.createElementNS('http://www.w3.org/2000/svg','text');n.setAttribute('font-size','13');n.setAttribute('font-weight','700');n.setAttribute('text-anchor','middle');n.setAttribute('fill',I.c);n.setAttribute('stroke','#FFFFFF');n.setAttribute('stroke-width','3');n.setAttribute('paint-order','stroke');n.textContent=I.g;
   $('#fly').appendChild(n);f.n=n;FL.push(f);EV.push([S.t,dir]);
   // let go: each ion that crosses carries its charge, and V_m moves; each glucose that crosses changes the concentrations
-  if(S.free&&S.mode==='pas'&&I.z){S.vm=Math.max(-120,Math.min(140,S.vm+(out?-1:1)*(I.z>0?1:-1)*DV));S.dirty=true;}
   if(S.mode==='act')ENT=1;}
 // at equilibrium one and the same particle goes out and comes back in: net movement zero
 function shuttle(dt){var I=ION[S.ion];
@@ -171,6 +170,8 @@ function step(ts){var dt=Math.min(.05,(ts-(last||ts))/1000);last=ts;
     P.forEach(function(p){p.vx+=(Math.random()-.5)*160*dt;p.vy+=(Math.random()-.5)*160*dt;p.vx*=.96;p.vy*=.96;var sp=Math.hypot(p.vx,p.vy);if(sp>26){p.vx*=26/sp;p.vy*=26/sp;}
       p.x+=p.vx*dt;p.y+=p.vy*dt;var x0=p.s?252:34,x1=p.s?426:208;if(p.x<x0){p.x=x0;p.vx=Math.abs(p.vx);}if(p.x>x1){p.x=x1;p.vx=-Math.abs(p.vx);}if(p.y<182){p.y=182;p.vy=Math.abs(p.vy);}if(p.y>294){p.y=294;p.vy=-Math.abs(p.vy);}});
     draw();
+    // let go, ions: the charge carried by the net movement moves V_m towards E, fast at first and then slower
+    if(S.free&&S.mode==='pas'&&ION[S.ion].z){var cE=calc().E;if(cE>=-120&&cE<=140&&S.vm!==cE){S.vm+=(cE-S.vm)*Math.min(1,dt/2.2);if(Math.abs(S.vm-cE)<0.8)S.vm=cE;S.dirty=true;}}
     if(S.mode==='pas'&&calc().eq)shuttle(dt);
     else{if(SH){SH.el.remove();SH=null;}var R=rates();AC.o+=R.o*dt;AC.i+=R.i*dt;while(AC.o>=1){AC.o-=1;spawn('o');}while(AC.i>=1){AC.i-=1;spawn('i');}}
     FL=FL.filter(function(f){f.t+=dt/1.3;var t=f.t,x,y;if(t<.45){var u=t/.45;x=f.a[0]+(f.b[0]-f.a[0])*u;y=f.a[1]+(f.b[1]-f.a[1])*u;}else{var w=Math.min(1,(t-.45)/.55);x=f.b[0]+(f.c[0]-f.b[0])*w;y=f.b[1]+(f.c[1]-f.b[1])*w;}
