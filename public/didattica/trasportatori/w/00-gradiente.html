@@ -23,6 +23,8 @@ svg[viewBox]{min-width:0!important;max-width:540px!important;width:100%;margin:0
 .ctl .bt{display:flex;gap:6px;align-items:end;flex-wrap:wrap}
 .ctl .bt button{font:inherit;font-size:12.5px;padding:4px 10px;border-radius:999px;border:1px solid var(--border-strong);background:#FFFFFF;color:#16222E;cursor:pointer}
 .ctl .bt button:disabled{opacity:.5;cursor:default}
+.ctl .bt button.fr{border:1.5px solid #6A3A96;color:#6A3A96;font-weight:700}.ctl .bt button.fr.on{background:#6A3A96;color:#FFFFFF}
+.txt .fr{background:#F4F0FA;border-radius:8px;padding:6px 9px}
 .pnl{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:6px;margin:0 0 8px}
 .cnt{font-size:12.5px;color:#55697A;margin:-2px 4px 8px;text-align:center}
 .txt{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:9px 12px;font-size:14px;line-height:1.55}
@@ -44,29 +46,29 @@ svg[viewBox]{min-width:0!important;max-width:540px!important;width:100%;margin:0
 <div class="top" id="modes"></div>
 <div class="ctl">
   <label class="vmr"><span>Potenziale di membrana V<sub>m</sub></span><span class="row"><input type="range" id="vm" min="-120" max="140" step="1"><output id="vmo"></output></span></label>
-  <div class="bt"><button id="eqb"></button><button id="rs"></button></div>
+  <div class="bt"><button id="eqb"></button><button id="rs"></button><button id="frb" class="fr"></button></div>
   <label><span>Concentrazione dentro</span><span class="row"><input type="range" id="ci" min="-4" max="2.5" step="0.05"><output id="cio"></output></span></label>
   <label><span>Concentrazione fuori</span><span class="row"><input type="range" id="co" min="-4" max="2.5" step="0.05"><output id="coo"></output></span></label>
 </div>
-<div class="pnl"><svg id="sv" viewBox="0 0 460 478" role="img" aria-label="Il gradiente elettrochimico: un voltmetro misura il potenziale di membrana; gli ioni passano la membrana nel verso della somma fra gradiente chimico ed elettrico (passivo) oppure contro (attivo, con energia)"></svg></div>
-<div class="cnt" id="ct"></div>
+<div class="pnl"><svg id="sv" viewBox="0 0 460 528" role="img" aria-label="Il gradiente elettrochimico: un voltmetro misura il potenziale di membrana; gli ioni passano la membrana nel verso della somma fra gradiente chimico ed elettrico (passivo) oppure contro (attivo, con energia)"></svg></div>
 <div class="txt" id="tx"></div>
 <div class="txt rule" id="rl"></div>
 <p class="fn" id="fn"></p>
 <script>
-var L={"lang": "it", "title": "Il gradiente elettrochimico: passivo o attivo", "sr": "Il gradiente elettrochimico: un voltmetro misura il potenziale di membrana; gli ioni passano la membrana nel verso della somma fra gradiente chimico ed elettrico (passivo) oppure contro (attivo, con energia)", "dec": ",", "inside": "DENTRO", "outside": "FUORI", "cyto": "cellula", "ecf": "liquido extracellulare", "toIn": "← verso dentro", "toOut": "verso fuori →", "chemT": "gradiente chimico", "elecT": "gradiente elettrico", "netT": "elettrochimico = somma", "pas": "Trasporto passivo", "act": "Trasporto attivo", "pause": "❚❚ Pausa", "play": "▶ Riprendi", "vm": "Potenziale di membrana V<sub>m</sub>", "ci": "Concentrazione dentro", "co": "Concentrazione fuori", "eqb": "Porta V<sub>m</sub> = E", "rs": "Valori fisiologici", "eqNA": "senza carica non c'è E", "cnt": "Passati: <b>{o}</b> verso fuori · <b>{i}</b> verso dentro", "names": {"K": "il K⁺", "Na": "il Na⁺", "Cl": "il Cl⁻", "Ca": "il Ca²⁺", "glu": "il glucosio"}, "Names": {"K": "K⁺", "Na": "Na⁺", "Cl": "Cl⁻", "Ca": "Ca²⁺", "glu": "Glucosio"}, "btn": {"K": "K⁺", "Na": "Na⁺", "Cl": "Cl⁻", "Ca": "Ca²⁺", "glu": "glucosio"}, "dirOut": "verso fuori", "dirIn": "verso dentro", "wIn": "dentro", "wOut": "fuori", "neg": "negativo", "posi": "positivo", "hPas": "{N}: passivo, {d}", "hEq": "{N}: all'equilibrio", "hAct": "{N}: attivo, {d}", "chem0": "<b>① Chimico</b>: la concentrazione è uguale dentro e fuori, quindi nessuna spinta chimica (0 kJ/mol).", "chem": "<b>① Chimico</b>: dentro {ci}, fuori {co}. È più concentrato {w}, quindi il gradiente chimico lo spinge <b>{d}</b> ({v} kJ/mol).", "el0": "<b>② Elettrico</b>: {n} non ha carica, il voltaggio non lo sposta (0 kJ/mol). Il gradiente elettrochimico coincide con quello chimico.", "elV0": "<b>② Elettrico</b>: V<sub>m</sub> = 0 mV, nessuna spinta elettrica (0 kJ/mol).", "el": "<b>② Elettrico</b>: dentro la cellula è {s} ({vm} mV) e {n} è {c}. Il voltaggio lo spinge <b>{d}</b> ({v} kJ/mol).", "sum": "<b>③ Somma</b>: Δ<span class=\"mt\">μ</span> = {a} {b} = <b>{v} kJ/mol</b>. La freccia viola va <b>{d}</b>.", "sumEq": "<b>③ Somma</b>: Δ<span class=\"mt\">μ</span> ≈ 0, le due frecce si annullano. È l'<b>equilibrio</b>: {n} passa avanti e indietro a caso e il flusso netto è zero.", "vPas": "<b>Passivo</b>: {n} va {d}, nel verso della freccia viola. <b>Scende</b> lungo il gradiente elettrochimico, senza spendere energia.", "vNote": "Attenzione: va {d} anche se è più concentrato {w}. Sale il gradiente di concentrazione ma scende quello elettrochimico, quindi resta passivo. Decide la somma, non la concentrazione da sola.", "vAct": "<b>Attivo</b>: {p} porta {n} <b>{d}</b>, contro la freccia viola. <b>Sale</b> lungo il gradiente elettrochimico, quindi serve energia: {s}.", "vActEq": "<b>Attivo?</b> All'equilibrio non c'è nessuna salita: spostare {n} costa quasi zero. Allontana V<sub>m</sub> da E per vedere quanto lavora la pompa.", "nern": "<b>Potenziale di equilibrio</b> (Nernst): E<sub>{l}</sub> = <b>{E} mV</b>. Con «Porta V<sub>m</sub> = E» le frecce rossa e blu si annullano. Con V<sub>m</sub> sopra E {n} {up}, sotto {dn}: il flusso si inverte, per questo E si chiama anche <b>potenziale di inversione</b>.", "nern0": "<b>Nessun potenziale di equilibrio</b>: senza carica l'equilibrio arriva solo quando le concentrazioni dentro e fuori sono uguali.", "exits": "esce", "enters": "entra", "pChan": "canale", "pGlut": "GLUT", "pPump": "pompa", "src": {"atp": "la pompa idrolizza ATP (<b>attivo primario</b>)", "na": "lo stesso trasportatore sfrutta il Na⁺ che entra scendendo (<b>attivo secondario</b>)", "k": "lo stesso trasportatore sfrutta il K⁺ che esce scendendo (<b>attivo secondario</b>)", "gen": "ATP (attivo primario) oppure un altro ione che scende (attivo secondario)"}, "pn": {"nka": "la Na⁺/K⁺-ATPasi", "pmca": "la PMCA (Ca²⁺-ATPasi)", "nkcc": "NKCC1", "kcc": "KCC2", "sglt": "SGLT1", "gen": "un trasportatore attivo"}, "eGen": "energia", "rule": "<b>La regola</b><ul><li><span class=\"badge b-pas\">Passivo</span> la sostanza va nel verso della freccia viola: <b>scende</b> lungo il gradiente elettrochimico. Non serve energia. Sono passivi la diffusione semplice, i canali e i trasportatori passivi (come GLUT).</li><li><span class=\"badge b-pri\">Attivo</span> la sostanza va contro la freccia viola: <b>sale</b>. Serve energia, che viene dall'ATP (<b>attivo primario</b>, le pompe) oppure da un altro ione che scende nello stesso trasportatore (<b>attivo secondario</b>).</li><li>La freccia viola è la somma della blu (concentrazione) e della rossa (voltaggio). Per una molecola senza carica la rossa non c'è.</li></ul>", "note": "Concentrazioni tenute costanti; temperatura 37 °C (310 K). Le velocità dell'animazione sono indicative."};
+var L={"lang": "it", "title": "Il gradiente elettrochimico: passivo o attivo", "sr": "Il gradiente elettrochimico: un voltmetro misura il potenziale di membrana; gli ioni passano la membrana nel verso della somma fra gradiente chimico ed elettrico (passivo) oppure contro (attivo, con energia)", "dec": ",", "inside": "DENTRO", "outside": "FUORI", "cyto": "cellula", "ecf": "liquido extracellulare", "toIn": "← verso dentro", "toOut": "verso fuori →", "chemT": "gradiente chimico", "elecT": "gradiente elettrico", "netT": "somma = verso del movimento NETTO", "who": ["gli ioni", "le molecole"], "cntA": "ultimi {s} s: ne escono {o}, ne entrano {i}", "cntN": "movimento netto: {n} {d}", "cntZ": "uno esce, uno entra: movimento netto zero", "frOn": "▶ Lascia andare all'equilibrio", "frOff": "■ Tieni fissi i valori", "freeIon": "<b>Lasciato andare</b>: ogni {g} che passa porta con sé la sua carica, quindi V<sub>m</sub> si sposta verso E (guarda il voltmetro). La freccia rossa cresce finché pareggia la blu: lì il movimento netto si ferma e da quel momento uno esce e uno entra. Bastano pochissimi ioni, quindi le concentrazioni restano praticamente uguali. È così che nasce il potenziale di membrana, se la membrana lascia passare solo questo ione.", "freeGlu": "<b>Lasciato andare</b>: ogni molecola che passa cambia le concentrazioni. Il movimento netto continua finché dentro e fuori sono uguali: poi una esce e una entra, e il netto è zero.", "hintFree": "Qui concentrazioni e voltaggio sono tenuti fissi, quindi il movimento netto non si ferma mai. Premi <b>«Lascia andare all'equilibrio»</b> per vedere {w} passare finché il netto arriva a zero.", "pas": "Trasporto passivo", "act": "Trasporto attivo", "pause": "❚❚ Pausa", "play": "▶ Riprendi", "vm": "Potenziale di membrana V<sub>m</sub>", "ci": "Concentrazione dentro", "co": "Concentrazione fuori", "eqb": "Porta V<sub>m</sub> = E", "rs": "Valori fisiologici", "eqNA": "senza carica non c'è E", "cnt": "Passati: <b>{o}</b> verso fuori · <b>{i}</b> verso dentro", "names": {"K": "il K⁺", "Na": "il Na⁺", "Cl": "il Cl⁻", "Ca": "il Ca²⁺", "glu": "il glucosio"}, "Names": {"K": "K⁺", "Na": "Na⁺", "Cl": "Cl⁻", "Ca": "Ca²⁺", "glu": "Glucosio"}, "btn": {"K": "K⁺", "Na": "Na⁺", "Cl": "Cl⁻", "Ca": "Ca²⁺", "glu": "glucosio"}, "dirOut": "verso fuori", "dirIn": "verso dentro", "wIn": "dentro", "wOut": "fuori", "neg": "negativo", "posi": "positivo", "hPas": "{N}: passivo, {d}", "hEq": "{N}: all'equilibrio", "hAct": "{N}: attivo, {d}", "chem0": "<b>① Chimico</b>: la concentrazione è uguale dentro e fuori, quindi nessuna spinta chimica (0 kJ/mol).", "chem": "<b>① Chimico</b>: dentro {ci}, fuori {co}. È più concentrato {w}, quindi il gradiente chimico lo spinge <b>{d}</b> ({v} kJ/mol).", "el0": "<b>② Elettrico</b>: {n} non ha carica, il voltaggio non lo sposta (0 kJ/mol). Il gradiente elettrochimico coincide con quello chimico.", "elV0": "<b>② Elettrico</b>: V<sub>m</sub> = 0 mV, nessuna spinta elettrica (0 kJ/mol).", "el": "<b>② Elettrico</b>: dentro la cellula è {s} ({vm} mV) e {n} è {c}. Il voltaggio lo spinge <b>{d}</b> ({v} kJ/mol).", "sum": "<b>③ Somma</b>: Δ<span class=\"mt\">μ</span> = {a} {b} = <b>{v} kJ/mol</b>. La freccia viola è il verso del <b>movimento netto</b>: {w} passano in tutte e due le direzioni, ma più <b>{d}</b> che al contrario (guarda il conteggio sotto le frecce).", "sumEq": "<b>③ Somma</b>: Δ<span class=\"mt\">μ</span> ≈ 0, le due frecce si annullano. È l'<b>equilibrio</b>: {n} passa avanti e indietro a caso: uno esce, uno entra, movimento netto zero.", "vPas": "<b>Passivo</b>: {n} va {d}, nel verso della freccia viola. <b>Scende</b> lungo il gradiente elettrochimico, senza spendere energia.", "vNote": "Attenzione: va {d} anche se è più concentrato {w}. Sale il gradiente di concentrazione ma scende quello elettrochimico, quindi resta passivo. Decide la somma, non la concentrazione da sola.", "vAct": "<b>Attivo</b>: {p} porta {n} <b>{d}</b>, contro la freccia viola. <b>Sale</b> lungo il gradiente elettrochimico, quindi serve energia: {s}.", "vActEq": "<b>Attivo?</b> All'equilibrio non c'è nessuna salita: spostare {n} costa quasi zero. Allontana V<sub>m</sub> da E per vedere quanto lavora la pompa.", "nern": "<b>Potenziale di equilibrio</b> (Nernst): E<sub>{l}</sub> = <b>{E} mV</b>. Con «Porta V<sub>m</sub> = E» le frecce rossa e blu si annullano. Con V<sub>m</sub> sopra E {n} {up}, sotto {dn}: il flusso si inverte, per questo E si chiama anche <b>potenziale di inversione</b>.", "nern0": "<b>Nessun potenziale di equilibrio</b>: senza carica l'equilibrio arriva solo quando le concentrazioni dentro e fuori sono uguali.", "exits": "esce", "enters": "entra", "pChan": "canale", "pGlut": "GLUT", "pPump": "pompa", "src": {"atp": "la pompa idrolizza ATP (<b>attivo primario</b>)", "na": "lo stesso trasportatore sfrutta il Na⁺ che entra scendendo (<b>attivo secondario</b>)", "k": "lo stesso trasportatore sfrutta il K⁺ che esce scendendo (<b>attivo secondario</b>)", "gen": "ATP (attivo primario) oppure un altro ione che scende (attivo secondario)"}, "pn": {"nka": "la Na⁺/K⁺-ATPasi", "pmca": "la PMCA (Ca²⁺-ATPasi)", "nkcc": "NKCC1", "kcc": "KCC2", "sglt": "SGLT1", "gen": "un trasportatore attivo"}, "eGen": "energia", "rule": "<b>La regola</b><ul><li><span class=\"badge b-pas\">Passivo</span> la sostanza va nel verso della freccia viola: <b>scende</b> lungo il gradiente elettrochimico. Non serve energia. Sono passivi la diffusione semplice, i canali e i trasportatori passivi (come GLUT).</li><li><span class=\"badge b-pri\">Attivo</span> la sostanza va contro la freccia viola: <b>sale</b>. Serve energia, che viene dall'ATP (<b>attivo primario</b>, le pompe) oppure da un altro ione che scende nello stesso trasportatore (<b>attivo secondario</b>).</li><li>La freccia viola è la somma della blu (concentrazione) e della rossa (voltaggio). Per una molecola senza carica la rossa non c'è.</li></ul>", "note": "Con i valori fissi, concentrazioni e voltaggio restano costanti; con «Lascia andare all'equilibrio» cambiano a ogni passaggio. Temperatura 37 °C (310 K); le velocità dell'animazione sono indicative."};
 var ION={K:{z:1,ci:140,co:5,c:'#C2571A',g:'K⁺'},Na:{z:1,ci:12,co:145,c:'#7A4BA6',g:'Na⁺'},Cl:{z:-1,ci:7,co:110,c:'#2E7D4F',g:'Cl⁻'},Ca:{z:2,ci:0.0001,co:1.2,c:'#0E7C86',g:'Ca²⁺'},glu:{z:0,ci:1,co:5,c:'#B03A3A',g:'Glc'}};
-var RT=8.314*310,F=96485,CB='#1F5FA8',CR='#C0392B',CP='#6A3A96';
-var S={ion:'K',mode:'pas',vm:-70,ci:140,co:5,pz:false,nO:0,nI:0};
+var RT=8.314*310,F=96485,CB='#1F5FA8',CR='#C0392B',CP='#6A3A96',WIN=6,DV=2;
+var S={ion:'K',mode:'pas',vm:-70,ci:140,co:5,pz:false,free:false,t:0,u:1,dirty:false};
 var RM=matchMedia('(prefers-reduced-motion: reduce)').matches;if(RM)S.pz=true;
+var P=[],FL=[],EV=[],AC={o:0,i:0},ENT=0;
 function $(q){return document.querySelector(q);}
 function num(v,d,sg){var s=Math.abs(v).toFixed(d);if(L.dec===',')s=s.replace('.',',');if(Math.abs(v)<Math.pow(10,-d)/2)return s;return (v<0?'−':(sg?'+':''))+s;}
 function fc(c){var s;if(c>=10)s=c.toFixed(0);else s=String(Number(c.toPrecision(2)));if(L.dec===',')s=s.replace('.',',');s+=' mM';if(c<0.01){var n=c*1e6;s+=' ('+(n>=10?n.toFixed(0):String(Number(n.toPrecision(2)))).replace('.',L.dec)+' nM)';}return s;}
 function fill(t,o){return t.replace(/\{(\w+)\}/g,function(m,k){return o[k]!=null?o[k]:m;});}
-function tx(x,y,t,a,o){o=o||{};return '<text x="'+x+'" y="'+y+'" font-size="'+(o.s||12)+'" text-anchor="'+(a||'start')+'" fill="'+(o.c||'#16222E')+'"'+(o.w?' font-weight="'+o.w+'"':'')+(o.f?' font-family="'+o.f+'"':'')+(o.h?' stroke="#FFFFFF" stroke-width="3.5" paint-order="stroke"':'')+(o.id?' id="'+o.id+'"':'')+'>'+t+'</text>';}
+function tx(x,y,t,a,o){o=o||{};return '<text x="'+x+'" y="'+y+'" font-size="'+(o.s||12)+'" text-anchor="'+(a||'start')+'" fill="'+(o.c||'#16222E')+'"'+(o.w?' font-weight="'+o.w+'"':'')+(o.f?' font-family="'+o.f+'"':'')+(o.h?' stroke="#FFFFFF" stroke-width="3.5" paint-order="stroke"':'')+'>'+t+'</text>';}
+function gfree(){return S.free&&S.ion==='glu'&&S.mode==='pas';}
 function calc(){var I=ION[S.ion],z=I.z,ch=RT*Math.log(S.ci/S.co)/1000,el=z*F*S.vm/1e6,net=ch+el;
-  var E=z?RT/(z*F)*Math.log(S.co/S.ci)*1000:null;return {z:z,ch:ch,el:el,net:net,E:E,eq:Math.abs(net)<0.05};}
-// which protein does the uphill job, for the physiological cases
+  var E=z?RT/(z*F)*Math.log(S.co/S.ci)*1000:null;return {z:z,ch:ch,el:el,net:net,E:E,eq:Math.abs(net)<(S.free?0.45:0.05)};}
 function pump(dir){var k=S.ion;
   if(k==='K'&&dir==='in'||k==='Na'&&dir==='out')return ['nka','atp','Na⁺/K⁺-ATPasi','ATP → ADP + Pᵢ'];
   if(k==='Ca'&&dir==='out')return ['pmca','atp','PMCA','ATP → ADP + Pᵢ'];
@@ -75,39 +77,30 @@ function pump(dir){var k=S.ion;
   if(k==='glu'&&dir==='in')return ['sglt','na','SGLT1','Na⁺ ↓'];
   return ['gen','gen',L.pPump,L.eGen];}
 function upDir(c){if(!c.eq)return c.net>0?'in':'out';return c.ch>0?'in':'out';}
-var XV=function(v){return 138+(v+150)/300*184;};
+function XV(v){return 138+(Math.max(-150,Math.min(150,v))+150)/300*184;}
 function arrow(y,v,col){var len=Math.min(205,Math.abs(v)*20),o='';
   if(len<4)return '<circle cx="230" cy="'+y+'" r="5" fill="'+col+'"/>';
   var d=v>0?1:-1,x1=230+d*len,xs=x1-d*Math.min(16,len*.6);
   o+='<polygon points="230,'+(y-6)+' '+xs+','+(y-6)+' '+xs+','+(y-12)+' '+x1+','+y+' '+xs+','+(y+12)+' '+xs+','+(y+6)+' 230,'+(y+6)+'" fill="'+col+'" opacity=".88"/>';
   if(Math.abs(v)*20>205){var xm=230+d*120;o+='<path d="M'+(xm-4)+' '+(y+9)+' L'+(xm+2)+' '+(y-9)+' M'+(xm+3)+' '+(y+9)+' L'+(xm+9)+' '+(y-9)+'" stroke="#FFFFFF" stroke-width="2.4"/>';}
   return o;}
+// the static part of the drawing; dyn() draws what moves with V_m and the concentrations
 function scene(){var I=ION[S.ion],c=calc(),o='';
-  // voltmeter
   o+='<rect x="114" y="4" width="232" height="98" rx="12" fill="#E9ECEF" stroke="#4D5B66" stroke-width="1.5"/>';
   o+='<rect x="128" y="12" width="204" height="44" rx="6" fill="#FFFFFF" stroke="#8696A4"/>';
   o+='<line x1="'+XV(-150)+'" y1="42" x2="'+XV(150)+'" y2="42" stroke="#16222E" stroke-width="1"/>';
   for(var v=-150;v<=150;v+=25){var mj=v%50===0;o+='<line x1="'+XV(v)+'" y1="'+(mj?32:37)+'" x2="'+XV(v)+'" y2="47" stroke="#16222E" stroke-width="1"/>';}
   [-100,0,100].forEach(function(v){o+=tx(XV(v),27,(v>0?'+':v<0?'−':'')+Math.abs(v),'middle',{s:10});});
-  o+='<rect id="ndl" x="'+(XV(S.vm)-2)+'" y="30" width="4" height="22" fill="'+CR+'"/>';
   o+='<rect x="178" y="62" width="104" height="30" rx="15" fill="#FFFFFF" stroke="#4D5B66"/>';
-  o+=tx(230,82,num(S.vm,0)+' mV','middle',{s:16,c:CR,w:600,f:'IBM Plex Mono,monospace',id:'rd'});
-  // wires and electrodes
   o+='<path d="M150 102 L150 184 M310 102 L310 184" stroke="#16222E" stroke-width="2" fill="none"/>';
   o+='<rect x="145" y="178" width="10" height="28" rx="5" fill="#16222E"/><rect x="305" y="178" width="10" height="28" rx="5" fill="#16222E"/>';
-  // beaker, two compartments
   o+='<rect x="22" y="132" width="204" height="186" fill="#E6F4EA"/><rect x="234" y="132" width="204" height="186" fill="#E2EEF8"/>';
   o+='<path d="M20 118 L20 320 L440 320 L440 118" stroke="#16222E" stroke-width="2.5" fill="none"/>';
   o+=tx(66,150,L.inside,'middle',{s:13,w:700,c:'#2E5E3E'})+tx(66,163,L.cyto,'middle',{s:10,c:'#55697A'});
   o+=tx(394,150,L.outside,'middle',{s:13,w:700,c:'#1F4E79'})+tx(394,163,L.ecf,'middle',{s:10,c:'#55697A'});
-  o+=tx(124,311,'['+I.g+'] '+fc(S.ci),'middle',{s:12.5,w:600,c:I.c,h:1})+tx(336,311,'['+I.g+'] '+fc(S.co),'middle',{s:12.5,w:600,c:I.c,h:1});
-  // membrane: a bilayer, with a protein in the middle
   o+='<rect x="225" y="124" width="10" height="196" fill="#F2DE96" stroke="#9A7400" stroke-width="1"/>';
   o+='<line x1="230" y1="124" x2="230" y2="320" stroke="#9A7400" stroke-width=".8" stroke-dasharray="3 3"/>';
-  // charges along the membrane
-  var nq=Math.min(6,Math.round(Math.abs(S.vm)/22)),ys=[142,158,174,272,288,300];
-  for(var i=0;i<nq;i++){var l=S.vm<0?'−':'+',r=S.vm<0?'+':'−';o+=tx(214,ys[i]+4,l,'middle',{s:14,w:700,c:l==='−'?'#1F5FA8':'#C0392B'})+tx(246,ys[i]+4,r,'middle',{s:14,w:700,c:r==='−'?'#1F5FA8':'#C0392B'});}
-  var up=upDir(c),pm=pump(up);
+  var pm=pump(upDir(c));
   if(S.mode==='pas'){
     if(S.ion==='glu'){o+='<rect x="216" y="196" width="28" height="56" rx="9" fill="#CDE8D5" stroke="#2E7D4F" stroke-width="1.6"/><rect x="227" y="204" width="6" height="40" rx="3" fill="#FFFFFF"/>';o+=tx(230,190,L.pGlut,'middle',{s:12,w:700,c:'#2E7D4F',h:1});}
     else{o+='<rect x="217" y="196" width="10" height="56" rx="4" fill="#BBD5EE" stroke="#1F6FB2" stroke-width="1.4"/><rect x="233" y="196" width="10" height="56" rx="4" fill="#BBD5EE" stroke="#1F6FB2" stroke-width="1.4"/>';o+=tx(230,190,L.pChan+' '+I.g,'middle',{s:12,w:700,c:'#1F6FB2',h:1});}
@@ -115,46 +108,67 @@ function scene(){var I=ION[S.ion],c=calc(),o='';
     o+='<rect x="212" y="194" width="36" height="60" rx="11" fill="#F6C7A8" stroke="#C2571A" stroke-width="1.6"/><rect x="227" y="202" width="6" height="44" rx="3" fill="#FFFFFF"/>';
     o+=tx(230,188,pm[2],'middle',{s:12,w:700,c:'#B0420C',h:1});
   }
-  o+='<g id="pin"></g><g id="pout"></g><g id="fly"></g>';
-  o+='<g id="en" opacity="0">'+tx(pm[1]==='k'?318:142,268,pm[3],'middle',{s:12,w:700,c:'#B0420C',h:1})+'</g>';
-  // arrows
-  o+='<line x1="230" y1="340" x2="230" y2="474" stroke="#8696A4" stroke-width="1.2" stroke-dasharray="3 3"/>';
+  o+='<line x1="230" y1="340" x2="230" y2="470" stroke="#8696A4" stroke-width="1.2" stroke-dasharray="3 3"/>';
   o+=tx(24,342,L.toIn,'start',{s:12,c:'#55697A',w:600})+tx(436,342,L.toOut,'end',{s:12,c:'#55697A',w:600});
+  o+='<g id="dyn"></g><g id="pin"></g><g id="pout"></g><g id="fly"></g>';
+  o+='<g id="en" opacity="0">'+tx(pm[1]==='k'?318:142,268,pm[3],'middle',{s:12,w:700,c:'#B0420C',h:1})+'</g>';
+  $('#sv').innerHTML=o;
+  build();dyn();text();ctlSync();}
+function dyn(){var I=ION[S.ion],c=calc(),o='';
+  o+='<rect x="'+(XV(S.vm)-2)+'" y="30" width="4" height="22" fill="'+CR+'"/>';
+  o+=tx(230,82,num(S.vm,0)+' mV','middle',{s:16,c:CR,w:600,f:'IBM Plex Mono,monospace'});
+  var nq=Math.min(6,Math.round(Math.abs(S.vm)/22)),ys=[142,158,174,272,288,300];
+  for(var i=0;i<nq;i++){var l=S.vm<0?'−':'+',r=S.vm<0?'+':'−';o+=tx(214,ys[i]+4,l,'middle',{s:14,w:700,c:l==='−'?CB:CR})+tx(246,ys[i]+4,r,'middle',{s:14,w:700,c:r==='−'?CB:CR});}
+  o+=tx(124,311,'['+I.g+'] '+fc(S.ci),'middle',{s:12.5,w:600,c:I.c,h:1})+tx(336,311,'['+I.g+'] '+fc(S.co),'middle',{s:12.5,w:600,c:I.c,h:1});
   var rows=[[372,c.ch,CB,L.chemT],[414,c.el,CR,L.elecT],[456,c.net,CP,L.netT]];
   rows.forEach(function(r){o+=tx(230,r[0]-15,r[3]+'  '+num(r[1],2,true)+' kJ/mol','middle',{s:13,w:700,c:r[2],h:1});o+=arrow(r[0],r[1],r[2]);});
-  $('#sv').innerHTML=o;
-  build(c);text(c,pm,up);ctlSync(c);}
-// particles: random walk in each compartment; crossings fly through the protein
-var P=[],FL=[],RATE={o:0,i:0},AC={o:0,i:0},ENT=0;
+  // the net movement, counted: crossings in the last few seconds, both ways
+  var no=0,ni=0;EV.forEach(function(e){if(e[1]==='o')no++;else ni++;});var nn=no-ni;
+  o+='<rect x="24" y="478" width="412" height="44" rx="8" fill="#F4F0FA" stroke="'+CP+'" stroke-width="1"/>';
+  o+=tx(230,496,fill(L.cntA,{s:WIN,o:no,i:ni}),'middle',{s:12.5,w:600,c:'#16222E'});
+  var nt=nn===0?L.cntZ:fill(L.cntN,{n:Math.abs(nn),d:nn>0?L.dirOut:L.dirIn});
+  o+=tx(230,513,nt,'middle',{s:12.5,w:700,c:CP});
+  $('#dyn').innerHTML=o;}
 function nOf(cv){var m=Math.max(S.ci,S.co);return Math.max(1,Math.round(22*cv/m));}
-function mk(side){var x0=side?252:34,x1=side?426:208;return {s:side,x:x0+Math.random()*(x1-x0),y:182+Math.random()*110,vx:0,vy:0};}
-function build(c){P=[];FL=[];var I=ION[S.ion],gi=$('#pin'),go=$('#pout'),h='',k='';
-  var ni=nOf(S.ci),no=nOf(S.co);for(var i=0;i<ni;i++)P.push(mk(0));for(var j=0;j<no;j++)P.push(mk(1));
-  P.forEach(function(p,ix){var t='<text id="p'+ix+'" font-size="13" font-weight="700" text-anchor="middle" fill="'+I.c+'">'+I.g+'</text>';if(p.s)k+=t;else h+=t;});
-  gi.innerHTML=h;go.innerHTML=k;P.forEach(function(p,ix){p.n=document.getElementById('p'+ix);});
-  if(S.mode==='pas'){var ph=F*S.vm/1000/RT,m=Math.max(S.ci,S.co),jo=S.ci/m*Math.exp(c.z*ph/2),ji=S.co/m*Math.exp(-c.z*ph/2),k2=2.4/Math.max(jo,ji);RATE={o:k2*jo,i:k2*ji};}
-  else{var u=upDir(c);RATE={o:u==='out'?1.6:0,i:u==='in'?1.6:0};}
+function addP(side,x,y){var I=ION[S.ion],x0=side?252:34,x1=side?426:208;
+  var p={s:side,x:x==null?x0+Math.random()*(x1-x0):x,y:y==null?182+Math.random()*110:y,vx:0,vy:0};
+  var n=document.createElementNS('http://www.w3.org/2000/svg','text');n.setAttribute('font-size','13');n.setAttribute('font-weight','700');n.setAttribute('text-anchor','middle');n.setAttribute('fill',I.c);n.textContent=I.g;
+  $(side?'#pout':'#pin').appendChild(n);p.n=n;P.push(p);return p;}
+function build(){P=[];FL=[];$('#pin').innerHTML='';$('#pout').innerHTML='';
+  var ni,no;if(gfree()){ni=Math.round(S.ci/S.u);no=Math.round(S.co/S.u);}else{ni=nOf(S.ci);no=nOf(S.co);}
+  for(var i=0;i<ni;i++)addP(0);for(var j=0;j<no;j++)addP(1);
   AC={o:Math.random(),i:Math.random()};draw();}
 function draw(){P.forEach(function(p){p.n.setAttribute('x',p.x.toFixed(1));p.n.setAttribute('y',p.y.toFixed(1));});}
-function spawn(dir){var I=ION[S.ion],out=dir==='o',y0=176+Math.random()*112,y2=176+Math.random()*112;
-  var f={t:0,a:[out?196:264,y0],b:[230,224],c:[out?262+Math.random()*50:198-Math.random()*50,y2]};
+function rates(){var c=calc();
+  if(S.mode==='act'){var u=upDir(c);return {o:u==='out'?1.6:0,i:u==='in'?1.6:0};}
+  if(gfree()){var a=0,b=0;P.forEach(function(p){if(p.s)b++;else a++;});return {o:.14*a,i:.14*b};}
+  var ph=F*S.vm/1000/RT,m=Math.max(S.ci,S.co),jo=S.ci/m*Math.exp(c.z*ph/2),ji=S.co/m*Math.exp(-c.z*ph/2),k=2.4/Math.max(jo,ji);return {o:k*jo,i:k*ji};}
+function spawn(dir){var I=ION[S.ion],out=dir==='o',y0=176+Math.random()*112,y2=176+Math.random()*112,a=[out?196:264,y0];
+  if(gfree()){var src=P.filter(function(p){return p.s===(out?0:1);});if(!src.length)return;
+    var q=src[Math.floor(Math.random()*src.length)];a=[q.x,q.y];q.n.remove();P.splice(P.indexOf(q),1);}
+  var f={t:0,a:a,b:[230,224],c:[out?262+Math.random()*(gfree()?150:50):198-Math.random()*(gfree()?150:50),y2],to:out?1:0};
   var n=document.createElementNS('http://www.w3.org/2000/svg','text');n.setAttribute('font-size','13');n.setAttribute('font-weight','700');n.setAttribute('text-anchor','middle');n.setAttribute('fill',I.c);n.setAttribute('stroke','#FFFFFF');n.setAttribute('stroke-width','3');n.setAttribute('paint-order','stroke');n.textContent=I.g;
-  $('#fly').appendChild(n);f.n=n;FL.push(f);if(out)S.nO++;else S.nI++;
-  if(S.mode==='act'){ENT=1;}cnt();}
-function cnt(){$('#ct').innerHTML=fill(L.cnt,{o:S.nO,i:S.nI});}
-var last=0;
+  $('#fly').appendChild(n);f.n=n;FL.push(f);EV.push([S.t,dir]);
+  // let go: each ion that crosses carries its charge, and V_m moves; each glucose that crosses changes the concentrations
+  if(S.free&&S.mode==='pas'&&I.z){S.vm=Math.max(-120,Math.min(140,S.vm+(out?-1:1)*I.z*DV));S.dirty=true;}
+  if(S.mode==='act')ENT=1;}
+var last=0,acc=0;
 function step(ts){var dt=Math.min(.05,(ts-(last||ts))/1000);last=ts;
-  if(!S.pz&&dt>0){
+  if(!S.pz&&dt>0){S.t+=dt;
     P.forEach(function(p){p.vx+=(Math.random()-.5)*160*dt;p.vy+=(Math.random()-.5)*160*dt;p.vx*=.96;p.vy*=.96;var sp=Math.hypot(p.vx,p.vy);if(sp>26){p.vx*=26/sp;p.vy*=26/sp;}
       p.x+=p.vx*dt;p.y+=p.vy*dt;var x0=p.s?252:34,x1=p.s?426:208;if(p.x<x0){p.x=x0;p.vx=Math.abs(p.vx);}if(p.x>x1){p.x=x1;p.vx=-Math.abs(p.vx);}if(p.y<182){p.y=182;p.vy=Math.abs(p.vy);}if(p.y>294){p.y=294;p.vy=-Math.abs(p.vy);}});
     draw();
-    AC.o+=RATE.o*dt;AC.i+=RATE.i*dt;while(AC.o>=1){AC.o-=1;spawn('o');}while(AC.i>=1){AC.i-=1;spawn('i');}
+    var R=rates();AC.o+=R.o*dt;AC.i+=R.i*dt;while(AC.o>=1){AC.o-=1;spawn('o');}while(AC.i>=1){AC.i-=1;spawn('i');}
     FL=FL.filter(function(f){f.t+=dt/1.3;var t=f.t,x,y;if(t<.45){var u=t/.45;x=f.a[0]+(f.b[0]-f.a[0])*u;y=f.a[1]+(f.b[1]-f.a[1])*u;}else{var w=Math.min(1,(t-.45)/.55);x=f.b[0]+(f.c[0]-f.b[0])*w;y=f.b[1]+(f.c[1]-f.b[1])*w;}
-      f.n.setAttribute('x',x.toFixed(1));f.n.setAttribute('y',y.toFixed(1));f.n.setAttribute('opacity',t>.8?Math.max(0,(1-t)/.2).toFixed(2):'1');if(t>=1){f.n.remove();return false;}return true;});
+      f.n.setAttribute('x',x.toFixed(1));f.n.setAttribute('y',y.toFixed(1));
+      if(gfree()){if(t>=1){f.n.remove();addP(f.to,x,y);var a=0,b=0;P.forEach(function(p){if(p.s)b++;else a++;});S.ci=a*S.u;S.co=b*S.u;S.dirty=true;return false;}return true;}
+      f.n.setAttribute('opacity',t>.8?Math.max(0,(1-t)/.2).toFixed(2):'1');if(t>=1){f.n.remove();return false;}return true;});
+    EV=EV.filter(function(e){return S.t-e[0]<WIN;});
     var en=$('#en');if(en){ENT=Math.max(0,ENT-dt*1.6);en.setAttribute('opacity',ENT.toFixed(2));}
+    acc+=dt;if(acc>.25){acc=0;dyn();if(S.dirty){S.dirty=false;text();ctlSync();}}
   }
   requestAnimationFrame(step);}
-function text(c,pm,up){var I=ION[S.ion],n=L.names[S.ion],N=L.Names[S.ion],z=c.z,o='';
+function text(){var I=ION[S.ion],c=calc(),up=upDir(c),pm=pump(up),n=L.names[S.ion],N=L.Names[S.ion],z=c.z,o='',who=L.who[S.ion==='glu'?1:0];
   var dOut=L.dirOut,dIn=L.dirIn,dn=c.net>0?dOut:dIn;
   var h=S.mode==='pas'?(c.eq?fill(L.hEq,{N:N}):fill(L.hPas,{N:N,d:dn})):(fill(L.hAct,{N:N,d:up==='in'?dIn:dOut}));
   o+='<h3>'+h+'</h3>';
@@ -162,29 +176,33 @@ function text(c,pm,up){var I=ION[S.ion],n=L.names[S.ion],N=L.Names[S.ion],z=c.z,
   if(!z)o+='<p>'+fill(L.el0,{n:n})+'</p>';
   else if(Math.abs(S.vm)<0.5)o+='<p>'+L.elV0+'</p>';
   else o+='<p>'+fill(L.el,{s:S.vm<0?L.neg:L.posi,vm:num(S.vm,0),n:n,c:z>0?L.posi:L.neg,d:c.el>0?dOut:dIn,v:num(c.el,2,true)})+'</p>';
-  o+='<p>'+(c.eq?fill(L.sumEq,{n:n}):fill(L.sum,{a:num(c.ch,2,true),b:(c.el<0?'− ':'+ ')+num(Math.abs(c.el),2),v:num(c.net,2,true),d:dn}))+'</p>';
-  if(S.mode==='pas'){if(!c.eq){o+='<p class="vd">'+fill(L.vPas,{n:n,d:dn})+'</p>';if(Math.abs(c.ch)>=0.005&&(c.ch>0)!==(c.net>0))o+='<p class="vd nt">'+fill(L.vNote,{d:dn,w:c.ch>0?L.wIn:L.wOut})+'</p>';}}
+  o+='<p>'+(c.eq?fill(L.sumEq,{n:n}):fill(L.sum,{a:num(c.ch,2,true),b:(c.el<0?'− ':'+ ')+num(Math.abs(c.el),2),v:num(c.net,2,true),d:dn,w:who}))+'</p>';
+  if(S.mode==='pas'){if(!c.eq){o+='<p class="vd">'+fill(L.vPas,{n:n,d:dn})+'</p>';if(Math.abs(c.ch)>=0.005&&(c.ch>0)!==(c.net>0))o+='<p class="vd nt">'+fill(L.vNote,{d:dn,w:c.ch>0?L.wIn:L.wOut})+'</p>';}
+    if(S.free)o+='<p class="fr">'+(z?fill(L.freeIon,{g:I.g}):L.freeGlu)+'</p>';
+    else if(!c.eq)o+='<p class="fr">'+fill(L.hintFree,{w:who})+'</p>';}
   else o+='<p class="vd">'+(c.eq?fill(L.vActEq,{n:n}):fill(L.vAct,{p:L.pn[pm[0]],n:n,d:up==='in'?dIn:dOut,s:L.src[pm[1]]}))+'</p>';
   if(z){var l=I.g.replace(/[⁺⁻²]/g,'');o+='<p class="nt">'+fill(L.nern,{l:l,E:num(c.E,0,true),n:n,up:z>0?L.exits:L.enters,dn:z>0?L.enters:L.exits})+'</p>';}
   else o+='<p class="nt">'+L.nern0+'</p>';
   $('#tx').innerHTML=o;}
-function lg(c){return Math.log10(c);}
-function ctlSync(c){$('#vm').value=Math.round(S.vm);$('#vmo').textContent=num(S.vm,0)+' mV';
-  $('#ci').value=lg(S.ci);$('#co').value=lg(S.co);$('#cio').textContent=fc(S.ci);$('#coo').textContent=fc(S.co);
+function ctlSync(){var c=calc();$('#vm').value=Math.round(S.vm);$('#vmo').textContent=num(S.vm,0)+' mV';
+  $('#ci').value=Math.log10(S.ci);$('#co').value=Math.log10(S.co);$('#cio').textContent=fc(S.ci);$('#coo').textContent=fc(S.co);
   var b=$('#eqb');b.disabled=!c.z||c.E<-120||c.E>140;b.innerHTML=c.z?L.eqb+' ('+num(c.E,0,true)+' mV)':L.eqNA;
+  var fr=$('#frb');fr.innerHTML=S.free?L.frOff:L.frOn;fr.classList.toggle('on',S.free);fr.disabled=S.mode!=='pas';
   document.querySelectorAll('#ions button').forEach(function(x){x.classList.toggle('act',x.dataset.k===S.ion);});
   document.querySelectorAll('#modes button[data-m]').forEach(function(x){x.classList.toggle('act',x.dataset.m===S.mode);});}
-function reset(){S.nO=0;S.nI=0;cnt();FL.forEach(function(f){f.n.remove();});}
-function setIon(k){S.ion=k;S.ci=ION[k].ci;S.co=ION[k].co;reset();scene();}
+function reset(){EV=[];}
+function gInit(){if(gfree()){S.u=(S.ci+S.co)/24;}}
+function setIon(k){S.ion=k;S.ci=ION[k].ci;S.co=ION[k].co;gInit();reset();scene();}
 (function(){var h='';Object.keys(ION).forEach(function(k){h+='<button data-k="'+k+'"><span class="dt" style="background:'+ION[k].c+'"></span>'+L.btn[k]+'</button>';});$('#ions').innerHTML=h;
   $('#modes').innerHTML='<button data-m="pas" class="m-pas">'+L.pas+'</button><button data-m="act" class="m-act">'+L.act+'</button><span class="sp"></span><button id="pz"></button>';
   document.querySelectorAll('#ions button').forEach(function(b){b.onclick=function(){setIon(b.dataset.k);};});
-  document.querySelectorAll('#modes button[data-m]').forEach(function(b){b.onclick=function(){S.mode=b.dataset.m;reset();scene();};});
+  document.querySelectorAll('#modes button[data-m]').forEach(function(b){b.onclick=function(){S.mode=b.dataset.m;if(S.mode==='act')S.free=false;reset();scene();};});
   var pz=$('#pz');function pzs(){pz.textContent=S.pz?L.play:L.pause;pz.classList.toggle('on',S.pz);}pz.onclick=function(){S.pz=!S.pz;pzs();};pzs();
   $('#vm').oninput=function(){S.vm=+this.value;reset();scene();};
-  $('#ci').oninput=function(){S.ci=Number(Math.pow(10,+this.value).toPrecision(2));reset();scene();};
-  $('#co').oninput=function(){S.co=Number(Math.pow(10,+this.value).toPrecision(2));reset();scene();};
+  $('#ci').oninput=function(){S.ci=Number(Math.pow(10,+this.value).toPrecision(2));gInit();reset();scene();};
+  $('#co').oninput=function(){S.co=Number(Math.pow(10,+this.value).toPrecision(2));gInit();reset();scene();};
   $('#eqb').onclick=function(){var c=calc();if(c.z){S.vm=c.E;reset();scene();}};
+  $('#frb').onclick=function(){S.free=!S.free;if(S.free&&S.pz){S.pz=false;pzs();}gInit();reset();scene();};
   $('#rs').innerHTML=L.rs;$('#rs').onclick=function(){S.vm=-70;setIon(S.ion);};
   $('#rl').innerHTML=L.rule;$('#fn').textContent=L.note;
   setIon('K');requestAnimationFrame(step);})();
