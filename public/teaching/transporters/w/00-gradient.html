@@ -191,7 +191,7 @@ function scene(){var I=ION[S.ion],c=calc(),o='';
 function dyn(){var I=ION[S.ion],c=calc(),o='';
   var rd=reading(),ok=measured();
   o+='<g transform="translate(0,-34)"><rect x="'+(XV(rd==null?0:rd)-2)+'" y="30" width="4" height="22" fill="'+(rd==null?'#B9C5CF':CR)+'"/>';
-  o+=tx(230,82,(rd==null?'— —':num(rd,0))+' mV','middle',{s:16,c:rd==null?'#8696A4':CR,w:600,f:'IBM Plex Mono,monospace'})+'</g>';
+  o+=tx(230,82,(rd==null?'— —':num(rd,0,true))+' mV','middle',{s:16,c:rd==null?'#8696A4':CR,w:600,f:'IBM Plex Mono,monospace'})+'</g>';
   o+=battery()+elec('ref',S.ref)+elec('rec',S.rec);
   // the charge layer ("velo") on the two faces of the membrane: the more |V_m|, the denser and darker
   var av=Math.abs(S.vm),inS=S.vm<0?'−':'+',ouS=S.vm<0?'+':'−',op=Math.min(.85,av/110);
@@ -363,8 +363,10 @@ function step(ts){var dt=Math.min(.05,(ts-(last||ts))/1000);last=ts;
     // let go, ions: the charge carried by the net movement moves V_m towards E, fast at first and then slower
     if(!S.ins){if(S.vm!==0){S.vm*=Math.max(0,1-dt*12);if(Math.abs(S.vm)<0.4)S.vm=0;S.dirty=true;}var dC=(S.ci-S.co)*Math.min(1,dt*1.05);if(S.ci!==S.co){S.ci-=dC/2;S.co+=dC/2;if(Math.abs(S.ci-S.co)<0.01*(S.ci+S.co)){S.ci=S.co=(S.ci+S.co)/2;}S.dirty=true;}}
     else if(S.free&&S.mode==='pas'&&ION[S.ion].z){var cE=calc().E;if(cE>=-120&&cE<=140&&S.vm!==cE){S.vm+=(cE-S.vm)*Math.min(1,dt/0.75);if(Math.abs(S.vm-cE)<0.8)S.vm=cE;S.dirty=true;}}
-    if(S.ins&&S.mode==='pas'&&(!S.free||!ION[S.ion].z)&&!calc().eq){var z=ION[S.ion].z,ph=F*S.vm/1000/RT,ea=Math.exp(z*ph/2),eb=Math.exp(-z*ph/2),J=0.6/(ea+eb)*(S.ci*ea-S.co*eb)*dt;
-      J=Math.max(-S.co*.5,Math.min(S.ci*.5,J));S.ci-=J;S.co+=J;S.dirty=true;}
+    if(S.ins&&S.mode==='pas'&&(!S.free||!ION[S.ion].z)&&(ION[S.ion].z?Math.abs(S.vm-calc().E)>0.01:!calc().eq)){var z=ION[S.ion].z,ph=F*S.vm/1000/RT,ea=Math.exp(z*ph/2),eb=Math.exp(-z*ph/2),J=1.2/(ea+eb)*(S.ci*ea-S.co*eb)*dt;
+      J=Math.max(-S.co*.5,Math.min(S.ci*.5,J));S.ci-=J;S.co+=J;S.dirty=true;
+      // last step: put the concentrations exactly where E equals the battery voltage
+      if(z&&Math.abs(S.vm-calc().E)<0.6){var tot=S.ci+S.co,r=Math.exp(z*F*S.vm/1000/RT);S.ci=tot/(1+r);S.co=tot*r/(1+r);}}
     if(S.mode==='pas'&&calc().eq)shuttle(dt);
     else{if(SH){SH.el.remove();SH=null;}var R=rates();AC.o+=R.o*dt;AC.i+=R.i*dt;while(AC.o>=1){AC.o-=1;spawn('o');}while(AC.i>=1){AC.i-=1;spawn('i');}}
     FL=FL.filter(function(f){f.t+=dt/0.45;var t=f.t,x,y;if(t<.45){var u=t/.45;x=f.a[0]+(f.b[0]-f.a[0])*u;y=f.a[1]+(f.b[1]-f.a[1])*u;}else{var w=Math.min(1,(t-.45)/.55);x=f.b[0]+(f.c[0]-f.b[0])*w;y=f.b[1]+(f.c[1]-f.b[1])*w;}
