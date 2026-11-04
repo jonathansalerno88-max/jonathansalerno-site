@@ -83,7 +83,6 @@ svg[viewBox]{min-width:0!important;max-width:540px!important;width:100%;margin:0
 </head>
 <body>
 <h2 class="sr-only">The electrochemical gradient: a voltmeter reads the membrane potential; ions cross the membrane along the sum of the chemical and electrical gradients (passive) or against it (active, with energy)</h2>
-<div class="top" id="ions"></div>
 <div class="top" id="modes"></div>
 <div class="ctl">
   <label class="vmr"><span>Battery voltage (sets V<sub>m</sub> while plugged in)</span><span class="row"><input type="range" id="vm" min="-120" max="140" step="1"><output id="vmo"></output></span></label>
@@ -160,6 +159,11 @@ function scene(){var I=ION[S.ion],c=calc(),o='';
     q+='<rect x="'+x+'" y="'+y+'" width="106" height="33" rx="8" fill="'+(on?'#16222E':'#FFFFFF')+'" stroke="#16222E" stroke-width="1.6"/>';
     q+=tx(x+9,y+21,on?'☑':'☐','middle',{s:12,w:700,c:on?'#FFFFFF':'#16222E'});lines.forEach(function(t,i){q+=tx(x+61,y+14+i*12,t,'middle',{s:9.8,w:700,c:on?'#FFFFFF':'#16222E'});});return q+'</g>';}
   var bOff=S.free&&S.mode==='pas';
+  // the ions, stacked in the free corner left of the voltmeter
+  Object.keys(ION).forEach(function(k,i){var on=S.ion===k,y=-30+i*27,c=ION[k].c;
+    o+='<g id="ion-'+k+'" role="button" tabindex="0" aria-pressed="'+on+'" aria-label="'+L.btn[k]+'" style="cursor:pointer" onclick="selIon(\''+k+'\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();selIon(\''+k+'\');}">';
+    o+='<rect x="6" y="'+y+'" width="100" height="24" rx="7" fill="'+(on?'#16222E':'#FFFFFF')+'" stroke="#16222E" stroke-width="'+(on?1.6:1)+'"/>';
+    o+='<rect x="14" y="'+(y+7)+'" width="10" height="10" rx="3" fill="'+c+'"/>'+tx(32,y+16.5,L.btn[k],'start',{s:12,w:700,c:on?'#FFFFFF':'#16222E'})+'</g>';});
   // the four steps, stacked in the free corner right of the voltmeter
   o+=sbtn('bref',L.sRef,352,-30,'tRef',S.ref!=='up',false);
   o+=sbtn('brec',L.sRec,352,7,'tRec',S.rec!=='up',false);
@@ -378,15 +382,15 @@ function ctlSync(){var c=calc();$('#vm').value=Math.round(S.vb);$('#vmo').textCo
 function reset(){EV=[];}
 function gInit(){if(gfree()){S.u=(S.ci+S.co)/24;}}
 function setIon(k){S.ion=k;S.ci=ION[k].ci;S.co=ION[k].co;if(S.free&&S.mode==='pas'){var c=calc();if(c.z)S.vm=Math.max(-120,Math.min(140,c.E));}reset();scene();}
-(function(){var h='';Object.keys(ION).forEach(function(k){h+='<button data-k="'+k+'"><span class="dt" style="background:'+ION[k].c+'"></span>'+L.btn[k]+'</button>';});$('#ions').innerHTML=h;
+(function(){
   $('#modes').innerHTML='<button data-m="pas" class="m-pas">'+L.pas+'</button><button data-m="act" class="m-act">'+L.act+'</button><span class="sp"></span><button id="pz"></button>';
-  document.querySelectorAll('#ions button').forEach(function(b){b.onclick=function(){setIon(b.dataset.k);};});
   document.querySelectorAll('#modes button[data-m]').forEach(function(b){b.onclick=function(){S.mode=b.dataset.m;if(S.mode==='act'&&S.free){S.free=false;S.vm=S.vb;}reset();scene();};});
   var pz=$('#pz');function pzs(){pz.textContent=S.pz?L.play:L.pause;pz.classList.toggle('on',S.pz);}pz.onclick=function(){S.pz=!S.pz;pzs();};pzs();
   $('#vm').oninput=function(){S.vb=+this.value;if(!(S.free&&S.mode==='pas'))S.vm=S.vb;reset();scene();};
   $('#ci').oninput=function(){S.ci=Number(Math.pow(10,+this.value).toPrecision(2));gInit();reset();scene();};
   $('#co').oninput=function(){S.co=Number(Math.pow(10,+this.value).toPrecision(2));gInit();reset();scene();};
   $('#eqb').onclick=function(){var c=calc();if(c.z){S.vb=c.E;S.free=false;S.vm=c.E;reset();scene();}};
+  window.selIon=function(k){setIon(k);};
   window.togglePlug=function(){window.toggleFree();};
   window.tRef=function(){S.ref=S.ref==='up'?'out':'up';reset();scene();};
   window.tRec=function(){S.rec=S.rec==='up'?'in':'up';reset();scene();};
