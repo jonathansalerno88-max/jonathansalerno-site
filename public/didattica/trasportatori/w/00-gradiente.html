@@ -59,7 +59,8 @@ svg[viewBox]{min-width:0!important;max-width:620px!important;width:100%;margin:0
 .lv .big{font-size:14.5px}
 #sv g[role=button]:focus{outline:none}#sv g[role=button]:focus-visible rect{stroke-width:3.5}
 .nf{display:flex;flex-wrap:wrap;align-items:center;gap:4px;font-family:"IBM Plex Serif",Georgia,serif;font-size:18px;margin:6px 0}
-.lv .nv{margin:2px 0 4px;padding-left:18px;font-size:13px}.lv .nv li{margin:2px 0}
+.nv{margin:2px 0 4px;padding-left:18px;font-size:12.5px}.nv li{margin:2px 0}
+.ngen{margin:4px 8px 2px}.ngen .lh{font-size:12.5px;font-weight:700;color:#55697A;margin:6px 0 2px}
 .nf.sm{font-size:15px}
 .der{border:1px dashed #6A3A96;border-radius:8px;padding:6px 10px;margin:6px 0;background:#FFFFFF}.der .dt{font-size:12.5px;font-weight:700;color:#55697A;margin:0 0 2px}
 .der .tg{font-family:"IBM Plex Sans",sans-serif;font-size:12px;font-weight:700;color:#55697A;margin-left:8px}.da{color:#1F5FA8}.db{color:#C0392B}
@@ -102,7 +103,7 @@ svg[viewBox]{min-width:0!important;max-width:620px!important;width:100%;margin:0
   <label><span>Concentrazione fuori</span><span class="row"><input type="range" id="co" min="-4" max="2.5" step="0.05"><output id="coo"></output></span></label>
 </div>
 <div class="flg" id="flg"></div>
-<div class="pnl prow"><div class="lc"><svg id="sv" viewBox="-34 -34 494 594" role="img" aria-label="Il gradiente elettrochimico: un voltmetro misura il potenziale di membrana; gli ioni passano la membrana nel verso della somma fra gradiente chimico ed elettrico (passivo) oppure contro (attivo, con energia)"></svg><p class="refs" id="refs"></p></div><aside class="eqp" id="eqp"></aside></div>
+<div class="pnl prow"><div class="lc"><svg id="sv" viewBox="-34 -34 494 594" role="img" aria-label="Il gradiente elettrochimico: un voltmetro misura il potenziale di membrana; gli ioni passano la membrana nel verso della somma fra gradiente chimico ed elettrico (passivo) oppure contro (attivo, con energia)"></svg><p class="refs" id="refs"></p><div class="ngen" id="ngen"></div></div><aside class="eqp" id="eqp"></aside></div>
 <div class="pnl cpn" id="cpn" hidden><svg id="cv" viewBox="0 0 460 244" role="img"></svg><div class="cl" id="cl"></div></div>
 <div class="txt" id="tx"></div>
 <div class="txt rule" id="rl"></div>
@@ -390,11 +391,11 @@ function text(){var I=ION[S.ion],c=calc(),up=upDir(c),pm=pump(up),n=L.names[S.io
   var XI=C('fci','['+I.g+']<sub>in</sub>'),XO=C('fco','['+I.g+']<sub>out</sub>');
   if(z){var lg=Math.log10(S.ci/S.co),dv=S.vm-c.E;
     var FQ=function(t,d){return '<span class="fq"><span>'+t+'</span><span>'+d+'</span></span>';};
-    o+='<p class="lh">'+L.nG+'</p>';
-    o+='<div class="nf">'+C('fE','E')+' = '+FQ(C('fR','R')+' '+C('fT','T'),C('fz','z')+' '+C('fF','F'))+' <span>ln</span> '+FQ(C('fco','[X]<sub>out</sub>'),C('fci','[X]<sub>in</sub>'))+'</div>';
+    var gen='<p class="lh">'+L.nG+'</p><div class="nf">'+C('fE','E')+' = '+FQ(C('fR','R')+' '+C('fT','T'),C('fz','z')+' '+C('fF','F'))+' <span>ln</span> '+FQ(C('fco','[X]<sub>out</sub>'),C('fci','[X]<sub>in</sub>'))+'</div>';
     var tc=S.T===310?'37':'20';
     o+='<p class="lh">'+fill(L.nS,{t:tc,g:I.g})+'</p>';
-    o+='<ul class="nv"><li>'+C('fR','R = '+L.Rv)+' J/(mol·K): '+L.nR+'</li><li>'+C('fT','T = '+S.T)+' K: '+fill(L.nT,{t:tc,k:S.T})+'</li><li>'+C('fF','F = '+L.Fv)+' C/mol: '+L.nF+'</li></ul>';
+    gen+='<ul class="nv"><li>'+C('fR','R = '+L.Rv)+' J/(mol·K): '+L.nR+'</li><li>'+C('fT','T = '+S.T)+' K: '+fill(L.nT,{t:tc,k:S.T})+'</li><li>'+C('fF','F = '+L.Fv)+' C/mol: '+L.nF+'</li></ul>';
+    $('#ngen').innerHTML=gen;
     var Rq=C('fR','R')+' '+C('fT','T'),Zq=C('fz','z')+' '+C('fF','F'),XOq=C('fco','[X]<sub>out</sub>'),XIq=C('fci','[X]<sub>in</sub>'),rr=S.ci/S.co,D=L.dec;
     function n3(v,d){return num(v,d,false);}
     o+='<div class="der"><p class="dt">'+L.dT+'</p>';
