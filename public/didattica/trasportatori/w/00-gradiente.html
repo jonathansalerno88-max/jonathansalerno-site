@@ -60,7 +60,7 @@ svg[viewBox]{min-width:0!important;max-width:620px!important;width:100%;margin:0
 #sv g[role=button]:focus{outline:none}#sv g[role=button]:focus-visible rect{stroke-width:3.5}
 .nf{display:flex;flex-wrap:wrap;align-items:center;gap:4px;font-family:"IBM Plex Serif",Georgia,serif;font-size:18px;margin:6px 0}
 .nv{margin:2px 0 4px;padding-left:18px;font-size:12.5px}.nv li{margin:2px 0}
-.ngen{margin:4px 8px 2px}.ngen .lh{font-size:12.5px;font-weight:700;color:#55697A;margin:6px 0 2px}
+.ngen{margin:4px 8px 2px}.ngen .tr{margin:0 6px;font-size:15px;color:#55697A}.ngen .nf{font-size:14px;gap:3px;flex-wrap:nowrap;overflow-x:auto}.ngen .lh{font-size:12.5px;font-weight:700;color:#55697A;margin:6px 0 2px}
 .nf.sm{font-size:15px}
 .der{border:1px dashed #6A3A96;border-radius:8px;padding:6px 10px;margin:6px 0;background:#FFFFFF}.der .dt{font-size:12.5px;font-weight:700;color:#55697A;margin:0 0 2px}
 .der .tg{font-family:"IBM Plex Sans",sans-serif;font-size:12px;font-weight:700;color:#55697A;margin-left:8px}.da{color:#1F5FA8}.db{color:#C0392B}
@@ -391,7 +391,8 @@ function text(){var I=ION[S.ion],c=calc(),up=upDir(c),pm=pump(up),n=L.names[S.io
   var XI=C('fci','['+I.g+']<sub>in</sub>'),XO=C('fco','['+I.g+']<sub>out</sub>');
   if(z){var lg=Math.log10(S.ci/S.co),dv=S.vm-c.E;
     var FQ=function(t,d){return '<span class="fq"><span>'+t+'</span><span>'+d+'</span></span>';};
-    var gen='<p class="lh">'+L.nG+'</p><div class="nf">'+C('fE','E')+' = '+FQ(C('fR','R')+' '+C('fT','T'),C('fz','z')+' '+C('fF','F'))+' <span>ln</span> '+FQ(C('fco','[X]<sub>out</sub>'),C('fci','[X]<sub>in</sub>'))+'</div>';
+    var gen='<p class="lh">'+L.nG+'</p><div class="nf">'+C('fE','E')+' = '+FQ(C('fR','R')+' '+C('fT','T'),C('fz','z')+' '+C('fF','F'))+' <span>ln</span> '+FQ(C('fco','[X]<sub>out</sub>'),C('fci','[X]<sub>in</sub>'))
+      +'<span class="tr">→</span>'+C('fE','E<sub>'+l+'</sub>')+' = '+FQ('<b class="db">−</b> <b class="da">2'+L.dec+'303</b> · '+C('fR','R')+' '+C('fT','T'),C('fz','z')+' '+C('fF','F'))+' · <span>log<sub>10</sub></span> '+FQ(C('fci','['+I.g+']<sub>in</sub>'),C('fco','['+I.g+']<sub>out</sub>'))+'</div>';
     var tc=S.T===310?'37':'20';
     o+='<p class="lh">'+fill(L.nS,{t:tc,g:I.g})+'</p>';
     gen+='<ul class="nv"><li>'+C('fR','R = '+L.Rv)+' J/(mol·K): '+L.nR+'</li><li>'+C('fT','T = '+S.T)+' K: '+fill(L.nT,{t:tc,k:S.T})+'</li><li>'+C('fF','F = '+L.Fv)+' C/mol: '+L.nF+'</li></ul>';
