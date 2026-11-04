@@ -7,7 +7,7 @@
 <link rel="alternate" hreflang="it" href="/didattica/trasportatori/">
 <link rel="alternate" hreflang="en" href="/teaching/transporters/">
 <link rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
-<meta name="description" content="The three routes across a membrane, animated: simple diffusion, channels (always open, voltage-gated, ligand-gated, mechanosensitive) and carriers (uniport, symport, antiport), passive, active or secondary active. Then the transporters of the nephron, segment by segment, with the intercalated cells; finally two bacterial transports, the ABC system and group translocation (PTS); and the difference between transport and secretion, with the secretion systems from Sec to T7SS.">
+<meta name="description" content="What a transporter is and when it is passive or active: the electrochemical gradient, with a voltmeter, arrows and the Nernst equation. Then the three routes across a membrane, animated: simple diffusion, channels (always open, voltage-gated, ligand-gated, mechanosensitive) and carriers (uniport, symport, antiport), passive, active or secondary active. Then the transporters of the nephron, segment by segment, with the intercalated cells; finally two bacterial transports, the ABC system and group translocation (PTS); and the difference between transport and secretion, with the secretion systems from Sec to T7SS.">
 <meta name="author" content="Jonathan Salerno">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
@@ -246,6 +246,26 @@ dialog.fx iframe{display:block; position:absolute; left:0; top:0; width:720px; b
 dialog.fx .fxbar .fxz{padding:.35rem .6rem; min-width:2.4rem}
 dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align:center}
 @media (orientation:landscape){dialog.fx .fxhint{display:none} dialog.fx .fxw{height:calc(100dvh - 3rem)}}
+
+:root{--f-mu:#6A3A96;--f-R:#8A5A00;--f-T:#C2571A;--f-ci:#2E7D4F;--f-co:#1F4E79;--f-z:#B0307A;--f-F:#4D5B66;--f-V:#C0392B;--f-E:#0E7C86}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--f-mu:#B79BE0;--f-R:#D9A94A;--f-T:#F08A3C;--f-ci:#5CC489;--f-co:#7FB2E5;--f-z:#E57AB8;--f-F:#A9B6C1;--f-V:#F07B6E;--f-E:#4FC9C9}}
+:root[data-theme="dark"]{--f-mu:#B79BE0;--f-R:#D9A94A;--f-T:#F08A3C;--f-ci:#5CC489;--f-co:#7FB2E5;--f-z:#E57AB8;--f-F:#A9B6C1;--f-V:#F07B6E;--f-E:#4FC9C9}
+.f-mu,.f-R,.f-T,.f-ci,.f-co,.f-z,.f-F,.f-V,.f-E{font-weight:600}
+.f-mu{color:var(--f-mu)}.f-R{color:var(--f-R)}.f-T{color:var(--f-T)}.f-ci{color:var(--f-ci)}.f-co{color:var(--f-co)}.f-z{color:var(--f-z)}.f-F{color:var(--f-F)}.f-V{color:var(--f-V)}.f-E{color:var(--f-E)}
+.mt{display:inline-block;position:relative;text-indent:0}.mt::after{content:"~";position:absolute;left:0;right:0;top:-.62em;text-align:center;font-size:.85em;font-weight:400}
+.def{max-width:38rem;font-size:1.0625rem;border-left:4px solid var(--ink);padding:.2rem 0 .2rem 1rem;margin:0 0 1.4rem}
+.eqb{max-width:38rem;border:1.5px solid var(--rule);border-radius:10px;padding:.8rem 1rem .6rem;margin:1.2rem 0 1.4rem;background:var(--card)}
+.eqb .eqt{font-family:var(--serif);font-size:1.15rem;margin:0 0 .4rem}
+.eqb .eqf{font-family:var(--mono);font-size:1.05rem;text-align:center;margin:.4rem 0 .2rem}
+.eqb .eqs{font-size:.8125rem;color:var(--mut);text-align:center;margin:0 0 .8rem}
+.eqb ul.lg{list-style:none;padding:0;margin:0 0 .9rem;font-size:.875rem}
+.eqb ul.lg li{margin:.25rem 0}
+.eqb ol.st{font-size:.9375rem;padding-left:1.3rem;margin:0}
+.eqb ol.st li{margin:.45rem 0}
+.eqb .cl{display:block;font-family:var(--mono);font-size:.82rem;margin:.2rem 0;padding-left:1.2em;text-indent:-1.2em}
+.eqb .ml{font-size:.8125rem;color:var(--mut);display:block;margin-top:.2rem}
+figure.w iframe.h-grad{height:1400px}
+@media (max-width:600px){figure.w iframe.h-grad{height:1900px}}
 </style>
 </head>
 <body>
@@ -276,7 +296,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <p class="kicker">STUDY SUPPORT</p>
   <h1>Transporters</h1>
   <div class="lede">
-    <p>How a substance crosses a membrane, and whether transport is passive, active or secondary active. First the mechanisms in general, animated one
+    <p>How a substance crosses a membrane, and whether transport is passive, active or secondary active. First what a transporter is, and with respect to what it is called passive or active: the electrochemical gradient. Then the mechanisms in general, animated one
     by one; then the transporters of the nephron, segment by segment; then two transports typical of bacteria; finally the difference between transport and secretion, with the bacterial secretion systems.</p>
     <p class="caveat">Simplified animations for teaching: concentrations and speeds are indicative.</p>
   </div>
@@ -285,6 +305,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 <nav class="toc" aria-label="Contents">
   <h2>Contents</h2>
   <ol>
+    <li><a href="#definition">What a transporter is</a><ul><li><a href="#gradient">Passive or active: the electrochemical gradient</a></li></ul></li>
     <li><a href="#what">How to cross a membrane</a></li>
     <li><a href="#kidney">The transporters of the kidney</a></li>
     <li><a href="#bacteria">Two bacterial transports: ABC and group translocation</a><ul><li><a href="#humans">And in humans?</a></li></ul></li>
@@ -293,8 +314,67 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#sources">Sources</a></p>
 </nav>
 
+<section id="definition">
+  <h2>1 · What a transporter is</h2>
+  <p class="def">A <b>transporter</b> is a membrane protein that binds a substance on one side, changes shape and releases
+  it on the other. It is either <b>passive</b> or <b>active</b>.</p>
+
+  <h3 id="gradient">Passive or active with respect to what? The electrochemical gradient</h3>
+  <p>Two pushes act on a substance crossing the membrane. The <b>chemical</b> push (blue arrow) comes from concentration:
+  the substance tends to move from where it is more concentrated to where it is less. The <b>electrical</b> push (red
+  arrow) comes from the membrane potential and acts only on ions: the inside of the cell is negative, so it attracts
+  cations and repels anions. The sum of the two is the <b>electrochemical gradient</b> (purple arrow).</p>
+  <ul>
+    <li><b>Passive</b>: the substance moves the way the purple arrow points, that is <b>down</b> its electrochemical gradient. No energy is needed.</li>
+    <li><b>Active</b>: the substance moves against the purple arrow, that is <b>up</b>. It needs energy: ATP (<b>primary active</b>, the pumps) or another ion going down in the same transporter (<b>secondary active</b>).</li>
+  </ul>
+  <p>Concentration alone does not decide. An ion can move against its concentration and still be passive, if the electrical
+  push is stronger. For an uncharged molecule, like glucose, there is no red arrow and the electrochemical gradient is just
+  the chemical one.</p>
+  <figure class="w">
+    <iframe src="w/00-gradient.html" title="The electrochemical gradient: voltmeter, membrane and three arrows, passive or active transport" loading="lazy" class="ph h-grad"></iframe>
+    <figcaption>Pick an ion, move the membrane potential or the concentrations, and switch between passive and active transport. <a href="w/00-gradient.html">Open full screen</a></figcaption>
+  </figure>
+  <div class="try"><b>Try:</b><ul>
+    <li><b>K⁺ at −70 mV</b>: the purple arrow points outward and K⁺ leaves through the channels on its own. Switch to “Active transport”: the Na⁺/K⁺-ATPase brings it back in, uphill, with ATP.</li>
+    <li><b>K⁺ at −100 mV</b>: now the purple arrow points inward and K⁺ comes in on its own, even though it is 28 times more concentrated inside.</li>
+    <li><b>“Set V<sub>m</sub> = E”</b>: the red and blue arrows cancel and the net flux is zero (equilibrium, or reversal, potential).</li>
+    <li><b>Glucose</b>: move the voltage and the red arrow stays at zero.</li>
+  </ul></div>
+
+  <div class="eqb">
+    <p class="eqt">The formula</p>
+    <p class="eqf"><span class="f-mu">Δ<span class="mt">μ</span></span> = <span class="f-R">R</span><span class="f-T">T</span> ln(<span class="f-ci">C<sub>in</sub></span> / <span class="f-co">C<sub>out</sub></span>) + <span class="f-z">z</span><span class="f-F">F</span><span class="f-V">V<sub>m</sub></span></p>
+    <p class="eqs">first term = blue arrow (chemical) · second term = red arrow (electrical) · sum = purple arrow</p>
+    <ul class="lg">
+      <li><span class="f-mu">Δ<span class="mt">μ</span></span> = electrochemical potential difference between inside and outside, that is the energy to bring 1 mol of substance from outside to inside [M L² T⁻² N⁻¹] <span class="u">J/mol (J = kg·m²/s²)</span></li>
+      <li><span class="f-R">R</span> = gas constant, 8.314 [M L² T⁻² Θ⁻¹ N⁻¹] <span class="u">J/(mol·K)</span></li>
+      <li><span class="f-T">T</span> = absolute temperature [Θ] <span class="u">K (37 °C = 310 K)</span></li>
+      <li><span class="f-ci">C<sub>in</sub></span> = concentration inside the cell [N L⁻³] <span class="u">mol/m³ (1 mM = 1 mol/m³)</span></li>
+      <li><span class="f-co">C<sub>out</sub></span> = concentration outside the cell [N L⁻³] <span class="u">mol/m³</span></li>
+      <li><span class="f-z">z</span> = charge of the ion (valence): K⁺ +1, Cl⁻ −1, Ca²⁺ +2, glucose 0 [1] <span class="u">pure number</span></li>
+      <li><span class="f-F">F</span> = Faraday constant, 96,485: the charge of 1 mol of elementary charges [T I N⁻¹] <span class="u">C/mol (C = A·s)</span></li>
+      <li><span class="f-V">V<sub>m</sub></span> = membrane potential, inside minus outside [M L² T⁻³ I⁻¹] <span class="u">V (V = J/C = kg·m²/(s³·A))</span></li>
+    </ul>
+    <ol class="st">
+      <li><b>Read the sign.</b> <span class="f-mu">Δ<span class="mt">μ</span></span> &lt; 0: coming in releases energy, so the substance enters on its own (passive). <span class="f-mu">Δ<span class="mt">μ</span></span> &gt; 0: it leaves on its own, and bringing it in needs energy (active). <span class="f-mu">Δ<span class="mt">μ</span></span> = 0: equilibrium.</li>
+      <li><b>No charge.</b> With <span class="f-z">z</span> = 0 the electrical term vanishes: <span class="f-mu">Δ<span class="mt">μ</span></span> = <span class="f-R">R</span><span class="f-T">T</span> ln(<span class="f-ci">C<sub>in</sub></span> / <span class="f-co">C<sub>out</sub></span>).</li>
+      <li><b>At equilibrium</b> <span class="f-mu">Δ<span class="mt">μ</span></span> = 0, so <span class="f-R">R</span><span class="f-T">T</span> ln(<span class="f-ci">C<sub>in</sub></span> / <span class="f-co">C<sub>out</sub></span>) = −<span class="f-z">z</span><span class="f-F">F</span><span class="f-V">V<sub>m</sub></span>, that is
+        <span class="cl"><span class="f-V">V<sub>m</sub></span> = <span class="f-E">E</span> = (<span class="f-R">R</span><span class="f-T">T</span> / <span class="f-z">z</span><span class="f-F">F</span>) · ln(<span class="f-co">C<sub>out</sub></span> / <span class="f-ci">C<sub>in</sub></span>)</span> (Nernst equation)
+        <span class="ml"><span class="f-E">E</span> = equilibrium potential of the ion [M L² T⁻³ I⁻¹], <span class="u">V</span>. Units: (J/mol) / (C/mol) = J/C = V ✓; the ratio <span class="f-co">C<sub>out</sub></span> / <span class="f-ci">C<sub>in</sub></span> is a pure number.</span></li>
+      <li><b>With numbers</b>: K⁺, <span class="f-ci">C<sub>in</sub></span> = 140 mM, <span class="f-co">C<sub>out</sub></span> = 5 mM, <span class="f-T">T</span> = 310 K, <span class="f-V">V<sub>m</sub></span> = −70 mV = −0.070 V
+        <span class="cl"><span class="f-R">R</span><span class="f-T">T</span> ln(<span class="f-ci">C<sub>in</sub></span> / <span class="f-co">C<sub>out</sub></span>) = <span class="f-R">8.314</span> × <span class="f-T">310</span> × ln(<span class="f-ci">140</span> / <span class="f-co">5</span>) = 2577 × 3.33 = +8.59 kJ/mol</span>
+        <span class="cl"><span class="f-z">z</span><span class="f-F">F</span><span class="f-V">V<sub>m</sub></span> = (<span class="f-z">+1</span>) × <span class="f-F">96,485</span> × (<span class="f-V">−0.070</span>) = −6.75 kJ/mol</span>
+        <span class="cl"><span class="f-mu">Δ<span class="mt">μ</span></span> = +8.59 − 6.75 = <b>+1.83 kJ/mol</b> &gt; 0</span>
+        K⁺ leaves through the channels on its own (passive); bringing it back in takes the Na⁺/K⁺-ATPase (active).
+        <span class="cl"><span class="f-E">E</span><sub>K</sub> = (<span class="f-R">8.314</span> × <span class="f-T">310</span>) / (<span class="f-z">1</span> × <span class="f-F">96,485</span>) × ln(<span class="f-co">5</span> / <span class="f-ci">140</span>) = 0.0267 V × (−3.33) = <b>−89 mV</b></span>
+        At −70 mV the membrane sits above <span class="f-E">E</span><sub>K</sub>, so K⁺ leaves: the same way the purple arrow points in the figure.</li>
+    </ol>
+  </div>
+</section>
+
 <section id="what">
-  <h2>1 · How to cross a membrane</h2>
+  <h2>2 · How to cross a membrane</h2>
   <p>The membrane is a lipid bilayer. There are <b>three routes</b> across it: straight through the lipids (simple
   diffusion, only for small uncharged molecules), through a <b>channel</b>, or carried by a <b>carrier</b>. Then you look
   inside each route: channels differ in what opens them, carriers in how many substances they carry and in which
@@ -314,7 +394,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 </section>
 
 <section id="kidney">
-  <h2>2 · The transporters of the kidney</h2>
+  <h2>3 · The transporters of the kidney</h2>
   <p>Every transporter of the nephron is classified with one question: does the substance go down or up its
   electrochemical gradient? If it goes down, transport is <b>passive</b>, across the membrane (simple diffusion) or through a
   channel or a carrier (facilitated diffusion). If it goes up, energy is needed: the pump spends ATP directly (<b>primary
@@ -328,7 +408,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 </section>
 
 <section id="bacteria">
-  <h2>3 · Two bacterial transports: ABC and group translocation</h2>
+  <h2>4 · Two bacterial transports: ABC and group translocation</h2>
   <p>Bacteria have two ways of taking up nutrients that are worth knowing, because they are easily confused with
   facilitated diffusion. Two questions are enough to tell them apart: <b>who pays the energy</b>, and whether the
   substance <b>enters unchanged or modified</b>.</p>
@@ -365,7 +445,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <a href="../microbiology/">microbiology</a> page.</p>
 </section>
 <section id="secretion">
-  <h2>4 · Transport or secretion?</h2>
+  <h2>5 · Transport or secretion?</h2>
   <p>In bacteria the two words follow a precise rule, and it is a convention: <b>what</b> crosses decides, not the machine that carries it.</p>
   <div class="tscroll tw"><table>
     <thead><tr><th></th><th>Transport</th><th>Secretion</th></tr></thead>
