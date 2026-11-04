@@ -259,7 +259,6 @@ function text(){var I=ION[S.ion],c=calc(),up=upDir(c),pm=pump(up),n=L.names[S.io
     o+='<p class="res">'+fill(L.lvG,{ci:C('fci',fc(S.ci)),co:C('fco',fc(S.co)),r:c.eq?fill(L.cmpEq,{g:I.g}):fill(L.cmpD,{d:dn})})+'</p>';
   }
   o+='</div>';
-  o+='<div class="k58"><p class="lvt">'+fill(L.k58T,{})+'</p>'+L.k58+'</div>';
   $('#tx').innerHTML=o;
   document.querySelectorAll('.tb button').forEach(function(b){b.onclick=function(){S.T=+b.dataset.t;RT=8.314*S.T;reset();scene();};});}
 function ctlSync(){var c=calc();$('#vm').value=Math.round(S.vm);$('#vmo').textContent=num(S.vm,0)+' mV';
