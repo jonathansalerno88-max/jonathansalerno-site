@@ -410,7 +410,7 @@ function eqPanelM(){var G={v:vM(),k:2.302585*RT/F*1000},h='<h4>'+L.mT+'</h4><p c
   var srt=items.slice().sort(function(a,b){return a.y-b.y;});for(var q=1;q<srt.length;q++){if(srt[q].ly-srt[q-1].ly<13)srt[q].ly=srt[q-1].ly+13;}
   items.forEach(function(it){o+='<line x1="42" y1="'+it.y+'" x2="205" y2="'+it.y+'" stroke="'+it.c+'" stroke-width="'+(it.k==='g'?4:1.8)+'"'+(it.k==='g'?'':' stroke-dasharray="6 3"')+'/><path d="M205 '+it.y+' L211 '+it.ly+'" stroke="'+it.c+'" fill="none"/>'+tx(213,it.ly+4,it.t,'start',{s:it.k==='g'?11:10.5,w:700,c:it.c});});
   var ch='<p class="apb"><span>'+L.apBg+'</span>';['neuron','cardio','sa','none'].forEach(function(k){ch+='<button data-a="'+k+'" class="'+(S.ap===k?'on':'')+'">'+L['ap_'+k]+'</button>';});
-  h+=ch+'</p><div class="gch"><svg viewBox="0 0 '+W+' '+(H+14)+'" role="img" aria-label="'+L.mT+'">'+o+'</svg></div>'+(S.ap==='sa'?'<p class="sanote">'+L.saNote+'</p>':'');
+  h+=ch+'</p><div class="gch"><svg viewBox="0 0 '+W+' '+(H+14)+'" role="img" aria-label="'+L.mT+'">'+o+'</svg></div>';
   var FQ=function(t,d){return '<span class="fq"><span>'+t+'</span><span>'+d+'</span></span>';},PK='P<sub>K</sub>',PN='P<sub>Na</sub>',PC='P<sub>Cl</sub>';
   if(pT('Ca')>0){h+='<p class="lh">'+L.gF+'</p><p class="cc">'+fill(L.mCaEq,{v:num(G.v,0,true)})+'</p>';}
   else{h+='<p class="lh">'+L.gF+'</p><div class="nf gk">V<sub>m</sub> = '+C('fk',num(G.k,1))+' · <span>log<sub>10</sub></span> '+FQ(PK+'[K⁺]<sub>out</sub> + '+PN+'[Na⁺]<sub>out</sub> + '+PC+'[Cl⁻]<sub>in</sub>',PK+'[K⁺]<sub>in</sub> + '+PN+'[Na⁺]<sub>in</sub> + '+PC+'[Cl⁻]<sub>out</sub>')+'</div>';
@@ -420,7 +420,7 @@ function eqPanelM(){var G={v:vM(),k:2.302585*RT/F*1000},h='<h4>'+L.mT+'</h4><p c
   $('#goback').onclick=function(){tMulti();};
   document.querySelectorAll('#eqp .apb button').forEach(function(b){b.onclick=function(){S.ap=b.dataset.a;S.apT=null;setCellM();S.vm=S.vR;reset();scene();S.dirty=true;eqPanel();};});
   // depolarise: open the Na⁺ channels (P_Na from 0.05 to 20, as at the peak of an action potential)
-  var run=S.apT!=null,mk=run+'|'+S.apP+'|'+S.ap;if(S.mbk===mk&&$('#depb'))return;S.mbk=mk;var m='<div class="dps"><button class="dep'+(run?' on':'')+'" id="depb"'+(run?' disabled':'')+'>'+(run?L.mRun:L.mDep)+'</button>'+(run?'<button class="dep" id="apz">'+(S.apP?L.play:L.pause)+'</button>':'')+'</div><p class="dx2">'+fill(L.mX_ap,{c:L['ap_'+(S.ap==='none'?'neuron':S.ap)]})+'</p>';$('#mbtn').innerHTML=m;
+  var run=S.apT!=null,mk=run+'|'+S.apP+'|'+S.ap;if(S.mbk===mk&&$('#depb'))return;S.mbk=mk;var m='<div class="dps"><button class="dep'+(run?' on':'')+'" id="depb"'+(run?' disabled':'')+'>'+(run?L.mRun:L.mDep)+'</button>'+(run?'<button class="dep" id="apz">'+(S.apP?L.play:L.pause)+'</button>':'')+'</div>';$('#mbtn').innerHTML=m;
   var z=$('#apz');if(z)z.onclick=function(){S.apP=!S.apP;eqPanel();};
   $('#depb').onclick=function(){S.apP=false;if(S.ap==='none')S.ap='neuron';S.apK=S.ap;S.dep='rest';S.apT=0;reset();S.dirty=true;eqPanel();};}
 function nOfS(cv,x){var I=ION[x],m=Math.max(I.ci,I.co);return Math.min(14,Math.round(1+11*Math.sqrt(cv/m)));}
