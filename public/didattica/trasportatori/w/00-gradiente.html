@@ -95,6 +95,7 @@ svg[viewBox]{min-width:0!important;max-width:620px!important;width:100%;margin:0
 .elc button{font:inherit;font-size:12.5px;padding:3px 10px;border-radius:999px;border:1px solid #B9C5CF;background:#FFFFFF;color:#16222E;cursor:pointer}
 .elc button.on{border:1.5px solid #16222E;background:#EEF2F5;font-weight:700}
 .elc .em{margin:6px 0 0;padding:5px 9px;border-radius:7px;background:#FCEEDD;color:#7A3E0B}.elc .em.ok{background:#E3F1D6;color:#27500A}
+.flg .mexp{font-size:13.5px;line-height:1.5;border:1.5px solid #6A3A96;background:#FBF9FD;border-radius:10px;padding:8px 12px}.flg .mexp b{color:#6A3A96;margin-right:4px}
 .flg{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
 .flg button{font:inherit;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;padding:5px 12px 5px 8px;border-radius:999px;border:1.5px solid #B9C5CF;background:#FFFFFF;color:#16222E;cursor:pointer}
 .flg button .ck{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:4px;border:1.5px solid #8696A4;font-size:12px;color:#FFFFFF}
@@ -375,7 +376,8 @@ function adjV(v,p){var r0=p[0][1],pk=-1e9;p.forEach(function(q){if(q[1]>pk)pk=q[
 function mC(x){return CELLS[apCell()].ion[x];}
 function mE(x){return 2.302585*RT/F*1000/ION[x].z*Math.log10(mC(x)[1]/mC(x)[0]);}
 function ghkM(){var k=2.302585*RT/F*1000,num=pT('K')*mC('K')[1]+pT('Na')*mC('Na')[1]+pT('Cl')*mC('Cl')[0],den=pT('K')*mC('K')[0]+pT('Na')*mC('Na')[0]+pT('Cl')*mC('Cl')[1];return {v:k*Math.log10(num/den),k:k};}
-function eqPanelM(){var G={v:vM(),k:2.302585*RT/F*1000},h='<h4>'+L.mT+'</h4><p class="q1">'+L.mQ+'</p><p><button class="fi" id="goback">'+L.mBack.join(' ')+'</button></p>';
+function eqPanelM(){var G={v:vM(),k:2.302585*RT/F*1000},h='<p><button class="fi" id="goback">'+L.mBack.join(' ')+'</button></p>';
+  if(!$('#flg .mexp'))$('#flg').innerHTML='<div class="mexp"><b>'+L.mT+'</b> '+L.mQ+'</div>';
   var W=310,H=470,y0=24,y1=450,vmax=150,vmin=-110,ym=y0+0.17*(y1-y0);function Y(v){return v>=50?y0+(vmax-v)/(vmax-50)*(ym-y0):ym+(50-v)/(50-vmin)*(y1-ym);}
   var o='<line x1="40" y1="'+y0+'" x2="40" y2="'+y1+'" stroke="#16222E" stroke-width="1.4"/>';
   for(var v=-100;v<=150;v+=50){o+='<line x1="36" y1="'+Y(v)+'" x2="40" y2="'+Y(v)+'" stroke="#16222E"/>'+tx(32,Y(v)+4,(v>0?'+':v<0?'−':'')+Math.abs(v),'end',{s:10,c:'#55697A'});}
@@ -579,7 +581,7 @@ function setIon(k){S.ion=k;var CE=CELLS[S.cell];S.T=CE.T;RT=8.314*S.T;if(CE.ion[
   $('#co').oninput=function(){S.co=Number(Math.pow(10,+this.value).toPrecision(2));gInit();reset();scene();};
   $('#eqb').onclick=function(){var c=calc();if(c.z){S.vb=c.E;S.free=false;S.vm=c.E;reset();scene();}};
   window.selIon=function(k){setIon(k);};
-  window.tMulti=function(){S.dep='rest';S.apT=null;S.pov=null;S.multi=!S.multi;S.mode='pas';S.free=true;S.ins=true;S.circ=false;$('#cpn').hidden=true;flags();reset();$('#flg').hidden=S.multi;
+  window.tMulti=function(){S.dep='rest';S.apT=null;S.pov=null;S.multi=!S.multi;S.mode='pas';S.free=true;S.ins=true;S.circ=false;$('#cpn').hidden=true;flags();reset();
     if(S.multi){setCellM();S.vm=S.vR;scene();eqPanel();}else setIon('K');};
   window.tPump=function(){S.mode=S.mode==='act'?'pas':'act';reset();scene();};
   window.doReset=function(){S.vb=-120;S.free=true;S.mode='pas';S.ins=true;flags();setIon(S.ion);};
