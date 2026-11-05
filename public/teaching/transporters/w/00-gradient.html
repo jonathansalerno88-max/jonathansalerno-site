@@ -350,7 +350,7 @@ function eqPanel(){if(S.multi)return eqPanelM();$('#mbtn').innerHTML='';var CE=C
 var MI=['K','Na','Cl','Ca'],MP={K:1,Na:0.05,Cl:0.45,Ca:0},MPOS={K:150,Na:196,Cl:242,Ca:288};
 // how the cell is depolarised: rest, Na⁺ channels, Ca²⁺ channels, a ligand-gated cation channel (nAChR), a stretch-gated one (Piezo)
 var DEP={rest:{own:{}},na:{own:{Na:20}},ca:{own:{Ca:300}},lig:{own:{},x:{K:10,Na:10}},mech:{own:{},x:{K:10,Na:10,Ca:2}}};
-var AP=null,APD=6;
+var AP=null,APD=10;
 // which ion carries the depolarisation in each stretch of the curve (the rest is K⁺ bringing it down)
 var APX={neuron:[[0,1,'Na']],cardio:[[0,.13,'Na'],[.13,1,'Ca']],sa:[[0,.28,'Na'],[.28,.5,'Ca'],[.5,.74,'Na'],[.74,1,'Ca']]};
 function pOwn(x){if(S.pov&&S.pov[x]!=null)return S.pov[x];var o=DEP[S.dep].own;return o[x]!=null?o[x]:MP[x];}
@@ -410,8 +410,9 @@ function eqPanelM(){var G={v:vM(),k:2.302585*RT/F*1000},h='<h4>'+L.mT+'</h4><p c
   $('#goback').onclick=function(){tMulti();};
   document.querySelectorAll('#eqp .apb button').forEach(function(b){b.onclick=function(){S.ap=b.dataset.a;eqPanel();};});
   // depolarise: open the Na⁺ channels (P_Na from 0.05 to 20, as at the peak of an action potential)
-  var run=S.apT!=null,m='<div class="dps"><button class="dep'+(run?' on':'')+'" id="depb"'+(run?' disabled':'')+'>'+(run?L.mRun:L.mDep)+'</button></div><p class="dx2">'+fill(L.mX_ap,{c:L['ap_'+(S.ap==='none'?'neuron':S.ap)]})+'</p>';$('#mbtn').innerHTML=m;
-  $('#depb').onclick=function(){if(S.ap==='none')S.ap='neuron';S.apK=S.ap;S.dep='rest';S.apT=0;reset();S.dirty=true;eqPanel();};}
+  var run=S.apT!=null,m='<div class="dps"><button class="dep'+(run?' on':'')+'" id="depb"'+(run?' disabled':'')+'>'+(run?L.mRun:L.mDep)+'</button>'+(run?'<button class="dep" id="apz">'+(S.apP?L.play:L.pause)+'</button>':'')+'</div><p class="dx2">'+fill(L.mX_ap,{c:L['ap_'+(S.ap==='none'?'neuron':S.ap)]})+'</p>';$('#mbtn').innerHTML=m;
+  var z=$('#apz');if(z)z.onclick=function(){S.apP=!S.apP;eqPanel();};
+  $('#depb').onclick=function(){S.apP=false;if(S.ap==='none')S.ap='neuron';S.apK=S.ap;S.dep='rest';S.apT=0;reset();S.dirty=true;eqPanel();};}
 function nOfS(cv,x){var I=ION[x],m=Math.max(I.ci,I.co);return Math.min(14,Math.round(1+11*Math.sqrt(cv/m)));}
 function nOf(cv){var I=ION[S.ion],m=Math.max(I.ci,I.co);return Math.min(26,Math.round(2+20*Math.sqrt(cv/m)));}
 function cnt(sd){var n=0;P.forEach(function(p){if(p.s===sd)n++;});return n;}
@@ -452,7 +453,7 @@ function dynM(){var o='',sb='<tspan baseline-shift="sub" font-size="9">',ys=[366
   return o;}
 function stepM(dt){var ph=F*S.vm/1000/RT,J={},mx=0;
   // playing an action potential: V_m follows the curve, and the permeabilities follow V_m
-  if(S.apT!=null){S.apT+=dt;var u=S.apT/APD;if(u>=1){S.apT=null;S.pov=null;S.dirty=true;eqPanel();}
+  if(S.apT!=null){if(!S.apP)S.apT+=dt;var u=S.apT/APD;if(u>=1){S.apT=null;S.pov=null;S.dirty=true;eqPanel();}
     else{var tg=apAt(u);fitP(tg,apIon(u));S.vm=tg;S.dirty=true;ph=F*S.vm/1000/RT;}}
   if(S.apT!=null){}else if(S.ins){var g=vM();if(S.vm!==g){S.vm+=(g-S.vm)*Math.min(1,dt/0.75);if(Math.abs(S.vm-g)<0.3)S.vm=g;S.dirty=true;}}
   else if(S.vm!==0){S.vm*=Math.max(0,1-dt*12);if(Math.abs(S.vm)<0.4)S.vm=0;S.dirty=true;}
