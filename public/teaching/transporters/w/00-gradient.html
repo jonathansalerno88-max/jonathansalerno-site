@@ -26,6 +26,7 @@ svg[viewBox]{min-width:0!important;max-width:620px!important;width:100%;margin:0
 .eqp .apb{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin:4px 0 2px;font-size:11.5px}.eqp .apb span{font-weight:700;color:#55697A;margin-right:2px}.eqp .apb button{font:inherit;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #C9A6A0;background:#FFFFFF;color:#7A3E30;cursor:pointer}.eqp .apb button.on{background:#A0645A;border-color:#A0645A;color:#FFFFFF}
 .eqp .aplg{font-size:11px;line-height:1.5;color:#5A3A33;background:#FBF4F2;border-radius:6px;padding:5px 8px;margin:2px 0 6px}.eqp .aplg b{color:#7A3E30}
 .eqp .sanote{font-size:11.5px;line-height:1.5;background:#F4F6F8;border-left:3px solid #8696A4;border-radius:0 6px 6px 0;padding:5px 8px;margin:2px 0 6px}
+.eqp.mg{margin:10px 8px 4px;max-width:440px}
 .eqp .cc{color:#55697A;font-size:11px;line-height:1.45;margin:4px 0 0}
 @media (max-width:600px){.gtip{left:0!important}.prow{flex-direction:column}.lc{flex:none;width:100%}.eqp{width:100%}}
 .top{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 8px}
@@ -113,7 +114,7 @@ svg[viewBox]{min-width:0!important;max-width:620px!important;width:100%;margin:0
   <label><span>Concentration outside</span><span class="row"><input type="range" id="co" min="-4" max="2.5" step="0.05"><output id="coo"></output></span></label>
 </div>
 <div class="flg" id="flg"></div>
-<div class="pnl prow"><div class="lc"><svg id="sv" viewBox="-34 -34 494 612" role="img" aria-label="The electrochemical gradient: a voltmeter reads the membrane potential; ions cross the membrane along the sum of the chemical and electrical gradients (passive) or against it (active, with energy)"></svg><p class="refs" id="refs"></p><div class="mbtn" id="mbtn"></div><div class="ngen" id="ngen"></div></div><aside class="eqp" id="eqp"></aside></div>
+<div class="pnl prow"><div class="lc"><svg id="sv" viewBox="-34 -34 494 612" role="img" aria-label="The electrochemical gradient: a voltmeter reads the membrane potential; ions cross the membrane along the sum of the chemical and electrical gradients (passive) or against it (active, with energy)"></svg><p class="refs" id="refs"></p><div class="mbtn" id="mbtn"></div><div class="eqp mg" id="mgeq"></div><div class="ngen" id="ngen"></div></div><aside class="eqp" id="eqp"></aside></div>
 <div class="pnl cpn" id="cpn" hidden><svg id="cv" viewBox="0 0 460 244" role="img"></svg><div class="cl" id="cl"></div></div>
 <div class="txt" id="tx" hidden></div>
 <div class="txt rule" id="rl"></div>
@@ -325,7 +326,7 @@ var CELLS={
 function curIons(C){var i={};['K','Na','Cl','Ca'].forEach(function(x){i[x]=(x===S.ion)?[S.ci,S.co]:C.ion[x].slice();});return i;}
 function vGHK(){return ghk(CELLS[S.cell]).v;}
 function ghk(C){var k=2.302585*RT/96485*1000,i=curIons(C),p=C.p,num=p[0]*i.K[1]+p[1]*i.Na[1]+p[2]*i.Cl[0],den=p[0]*i.K[0]+p[1]*i.Na[0]+p[2]*i.Cl[1];return {v:k*Math.log10(num/den),k:k,num:num,den:den};}
-function eqPanel(){if(S.multi)return eqPanelM();$('#mbtn').innerHTML='';var CE=CELLS[S.cell],G=ghk(CE),h='<h4>'+L.gT+'</h4><p class="q1">'+L.q1+'</p><p class="q2">'+L.q2+'</p><p><button class="fi" id="findit">'+L.findIt+'</button></p>';
+function eqPanel(){if(S.multi)return eqPanelM();$('#mbtn').innerHTML='';$('#mgeq').innerHTML='';var CE=CELLS[S.cell],G=ghk(CE),h='<h4>'+L.gT+'</h4><p class="q1">'+L.q1+'</p><p class="q2">'+L.q2+'</p><p><button class="fi" id="findit">'+L.findIt+'</button></p>';
   var W=250,H=400,y0=24,y1=380,vmax=150,vmin=-110;function Y(v){return y0+(vmax-v)/(vmax-vmin)*(y1-y0);}
   var o='<line x1="40" y1="'+y0+'" x2="40" y2="'+y1+'" stroke="#16222E" stroke-width="1.4"/>';
   for(var v=-100;v<=150;v+=50){o+='<line x1="36" y1="'+Y(v)+'" x2="40" y2="'+Y(v)+'" stroke="#16222E"/>'+tx(32,Y(v)+4,(v>0?'+':v<0?'−':'')+Math.abs(v),'end',{s:10,c:'#55697A'});}
@@ -412,11 +413,11 @@ function eqPanelM(){var G={v:vM(),k:2.302585*RT/F*1000},h='<h4>'+L.mT+'</h4><p c
   var ch='<p class="apb"><span>'+L.apBg+'</span>';['neuron','cardio','sa','none'].forEach(function(k){ch+='<button data-a="'+k+'" class="'+(S.ap===k?'on':'')+'">'+L['ap_'+k]+'</button>';});
   h+=ch+'</p><div class="gch"><svg viewBox="0 0 '+W+' '+(H+14)+'" role="img" aria-label="'+L.mT+'">'+o+'</svg></div>';
   var FQ=function(t,d){return '<span class="fq"><span>'+t+'</span><span>'+d+'</span></span>';},PK='P<sub>K</sub>',PN='P<sub>Na</sub>',PC='P<sub>Cl</sub>';
-  if(pT('Ca')>0){h+='<p class="lh">'+L.gF+'</p><p class="cc">'+fill(L.mCaEq,{v:num(G.v,0,true)})+'</p>';}
-  else{h+='<p class="lh">'+L.gF+'</p><div class="nf gk">V<sub>m</sub> = '+C('fk',num(G.k,1))+' · <span>log<sub>10</sub></span> '+FQ(PK+'[K⁺]<sub>out</sub> + '+PN+'[Na⁺]<sub>out</sub> + '+PC+'[Cl⁻]<sub>in</sub>',PK+'[K⁺]<sub>in</sub> + '+PN+'[Na⁺]<sub>in</sub> + '+PC+'[Cl⁻]<sub>out</sub>')+'</div>';
-  h+='<div class="nf gk">= '+C('fk',num(G.k,1))+' · <span>log<sub>10</sub></span> '+FQ(nc(pT('K'))+'·'+nc(mC('K')[1])+' + '+nc(pT('Na'))+'·'+nc(mC('Na')[1])+' + '+nc(pT('Cl'))+'·'+nc(mC('Cl')[0]),nc(pT('K'))+'·'+nc(mC('K')[0])+' + '+nc(pT('Na'))+'·'+nc(mC('Na')[0])+' + '+nc(pT('Cl'))+'·'+nc(mC('Cl')[1]))+' = <b>'+num(G.v,0,true)+'&nbsp;mV</b></div>';}
-  h+='<p class="cc">'+fill(L.mCap,{pk:nc(pT('K')),pn:nc(pT('Na')),pc:nc(pT('Cl')),pa:nc(pT('Ca'))})+'</p>';
-  $('#eqp').innerHTML=h;$('#refs').innerHTML='<b>'+L.refT+'</b> '+L.refs[apCell()]+' '+L.gRef;
+  var g='';  if(pT('Ca')>0){g+='<p class="lh">'+L.gF+'</p><p class="cc">'+fill(L.mCaEq,{v:num(G.v,0,true)})+'</p>';}
+  else{g+='<p class="lh">'+L.gF+'</p><div class="nf gk">V<sub>m</sub> = '+C('fk',num(G.k,1))+' · <span>log<sub>10</sub></span> '+FQ(PK+'[K⁺]<sub>out</sub> + '+PN+'[Na⁺]<sub>out</sub> + '+PC+'[Cl⁻]<sub>in</sub>',PK+'[K⁺]<sub>in</sub> + '+PN+'[Na⁺]<sub>in</sub> + '+PC+'[Cl⁻]<sub>out</sub>')+'</div>';
+  g+='<div class="nf gk">= '+C('fk',num(G.k,1))+' · <span>log<sub>10</sub></span> '+FQ(nc(pT('K'))+'·'+nc(mC('K')[1])+' + '+nc(pT('Na'))+'·'+nc(mC('Na')[1])+' + '+nc(pT('Cl'))+'·'+nc(mC('Cl')[0]),nc(pT('K'))+'·'+nc(mC('K')[0])+' + '+nc(pT('Na'))+'·'+nc(mC('Na')[0])+' + '+nc(pT('Cl'))+'·'+nc(mC('Cl')[1]))+' = <b>'+num(G.v,0,true)+'&nbsp;mV</b></div>';}
+  g+='<p class="cc">'+fill(L.mCap,{pk:nc(pT('K')),pn:nc(pT('Na')),pc:nc(pT('Cl')),pa:nc(pT('Ca'))})+'</p>';
+  $('#eqp').innerHTML=h;$('#mgeq').innerHTML=g;$('#refs').innerHTML='<b>'+L.refT+'</b> '+L.refs[apCell()]+' '+L.gRef;
   $('#goback').onclick=function(){tMulti();};
   document.querySelectorAll('#eqp .apb button').forEach(function(b){b.onclick=function(){S.ap=b.dataset.a;S.apT=null;setCellM();S.vm=S.vR;reset();scene();S.dirty=true;eqPanel();};});
   // depolarise: open the Na⁺ channels (P_Na from 0.05 to 20, as at the peak of an action potential)
