@@ -410,7 +410,7 @@ function eqPanelM(){var G={v:vM(),k:2.302585*RT/F*1000},h='<h4>'+L.mT+'</h4><p c
   $('#goback').onclick=function(){tMulti();};
   document.querySelectorAll('#eqp .apb button').forEach(function(b){b.onclick=function(){S.ap=b.dataset.a;eqPanel();};});
   // depolarise: open the Na⁺ channels (P_Na from 0.05 to 20, as at the peak of an action potential)
-  var run=S.apT!=null,m='<div class="dps"><button class="dep'+(run?' on':'')+'" id="depb"'+(run?' disabled':'')+'>'+(run?L.mRun:L.mDep)+'</button>'+(run?'<button class="dep" id="apz">'+(S.apP?L.play:L.pause)+'</button>':'')+'</div><p class="dx2">'+fill(L.mX_ap,{c:L['ap_'+(S.ap==='none'?'neuron':S.ap)]})+'</p>';$('#mbtn').innerHTML=m;
+  var run=S.apT!=null,mk=run+'|'+S.apP+'|'+S.ap;if(S.mbk===mk&&$('#depb'))return;S.mbk=mk;var m='<div class="dps"><button class="dep'+(run?' on':'')+'" id="depb"'+(run?' disabled':'')+'>'+(run?L.mRun:L.mDep)+'</button>'+(run?'<button class="dep" id="apz">'+(S.apP?L.play:L.pause)+'</button>':'')+'</div><p class="dx2">'+fill(L.mX_ap,{c:L['ap_'+(S.ap==='none'?'neuron':S.ap)]})+'</p>';$('#mbtn').innerHTML=m;
   var z=$('#apz');if(z)z.onclick=function(){S.apP=!S.apP;eqPanel();};
   $('#depb').onclick=function(){S.apP=false;if(S.ap==='none')S.ap='neuron';S.apK=S.ap;S.dep='rest';S.apT=0;reset();S.dirty=true;eqPanel();};}
 function nOfS(cv,x){var I=ION[x],m=Math.max(I.ci,I.co);return Math.min(14,Math.round(1+11*Math.sqrt(cv/m)));}
