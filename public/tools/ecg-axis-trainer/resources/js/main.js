@@ -8,7 +8,7 @@
 import { drawEcg } from './ecgDrawing.js'
 import { mouseAngle } from './circleCalculations.js';
 import { calculateEcg, lagetyp } from './ecgCalculations.js';
-import { langDe, langEn, langEs } from './languages.js';
+import { langDe, langEn, langEs, langIt } from './languages.js';
 
 // Variables
 let international = true;
@@ -65,6 +65,14 @@ const buttonAbout = document.getElementById('button_about');
 const buttonLangEn = document.getElementById('button_en');
 const buttonLangDe = document.getElementById('button_de');
 const buttonLangEs = document.getElementById('button_es');
+const buttonLangIt = document.getElementById('button_it_lang');
+buttonLangIt.addEventListener('click', (element) => {
+    international = true;
+    currentLanguage = langIt;
+    switchLanguage(international, currentLanguage);
+    styleLanguageButtons(element.target.id);
+    update(angle);
+})
 
 buttonQuiz.addEventListener('click', switchToQuiz);
 buttonCabrera.addEventListener('click', switchToCabrera);
@@ -181,7 +189,14 @@ window.addEventListener('resize', resizeEcg);
 window.onload = function () {
     resizeDivs();
     resizeEcg();
-    if (navigator.language == 'de-DE' || navigator.language == 'de') {
+    const wanted = new URLSearchParams(location.search).get('lang') || navigator.language;
+    if (wanted == 'it' || wanted == 'it-IT') {
+        international = true;
+        currentLanguage = langIt;
+        styleLanguageButtons('button_it_lang');
+    } else if (wanted == 'en') {
+        styleLanguageButtons('button_en');
+    } else if (navigator.language == 'de-DE' || navigator.language == 'de') {
         international = false;
         currentLanguage = langDe;
         styleLanguageButtons('button_de');
@@ -194,6 +209,7 @@ window.onload = function () {
     }
     switchLanguage(international, currentLanguage);
     buttonCabrera.style.color = 'var(--activeButton)';
+    update(angle);
 }
 
 
@@ -533,6 +549,7 @@ function styleLanguageButtons(element) {
     buttonLangDe.classList.remove('langButtonActive');
     buttonLangEn.classList.remove('langButtonActive');
     buttonLangEs.classList.remove('langButtonActive');
+    buttonLangIt.classList.remove('langButtonActive');
     document.getElementById(element).classList.add('langButtonActive');
 }
 

@@ -44,3 +44,19 @@ export const langEs = {
     typeNormal: 'Normal',
     typeNw: 'Extremo'
 }
+
+// Italian translation added for jonathansalerno.org (same MIT licence).
+export const langIt = {
+    title: 'Asse elettrico del cuore',
+    navCabrera: 'Asse',
+    navQuiz: 'Quiz',
+    navAbout: 'Info',
+    quizCorrect: 'Giuste',
+    quizWrong: 'Sbagliate',
+    aboutGeneral: '<p>Sono un cardiologo e mi occupo in particolare di elettrofisiologia invasiva in Germania; in più frequento un master in informatica medica. Ho sviluppato questa applicazione per studenti e docenti e spero che possa aiutare a imparare e soprattutto a capire come si determina l\'asse elettrico del cuore.</p><p>Il codice sorgente è disponibile su GitHub. È scritto in JavaScript senza librerie.</p><p>Traduzione italiana a cura di <a href="https://jonathansalerno.org" target="_blank">jonathansalerno.org</a>.</p>',
+    aboutSources: '<h2>Fonti</h2><p>Libri e risorse online sull\'asse elettrico nell\'ECG sono moltissimi. Per esempio il blog (in generale ottimo) <a href="https://litfl.com/" target="_blank">Life in the Fastlane</a> ha un buon <a href="https://litfl.com/ecg-axis-interpretation/" target="_blank">articolo</a> sull\'argomento.</p><p>Il disegno del cerchio è mio, ma i colori si ispirano a questa grafica:<br><a href="https://commons.wikimedia.org/wiki/File:Cabrera_circle_-_german.svg" target="_blank">Illustrazione del cerchio di Cabrera con le derivazioni di Einthoven e Goldberger e i tipi di asse.</a><br>Wikipedia.org, 19.11.2007. Autore: Sylvère Störmann. <em>GNU Free Documentation License</em></p>',
+    typeRad: 'Deviazione assiale destra',
+    typeLad: 'Deviazione assiale sinistra',
+    typeNormal: 'Asse QRS normale',
+    typeNw: 'Asse estremo (nord-ovest)'
+}
