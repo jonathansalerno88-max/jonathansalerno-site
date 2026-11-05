@@ -374,9 +374,10 @@ function mC(x){return CELLS[apCell()].ion[x];}
 function mE(x){return 2.302585*RT/F*1000/ION[x].z*Math.log10(mC(x)[1]/mC(x)[0]);}
 function ghkM(){var k=2.302585*RT/F*1000,num=pT('K')*mC('K')[1]+pT('Na')*mC('Na')[1]+pT('Cl')*mC('Cl')[0],den=pT('K')*mC('K')[0]+pT('Na')*mC('Na')[0]+pT('Cl')*mC('Cl')[1];return {v:k*Math.log10(num/den),k:k};}
 function eqPanelM(){var G={v:vM(),k:2.302585*RT/F*1000},h='<h4>'+L.mT+'</h4><p class="q1">'+L.mQ+'</p><p><button class="fi" id="goback">'+L.mBack.join(' ')+'</button></p>';
-  var W=310,H=470,y0=24,y1=450,vmax=150,vmin=-110;function Y(v){return y0+(vmax-v)/(vmax-vmin)*(y1-y0);}
+  var W=310,H=470,y0=24,y1=450,vmax=150,vmin=-110,ym=y0+0.17*(y1-y0);function Y(v){return v>=50?y0+(vmax-v)/(vmax-50)*(ym-y0):ym+(50-v)/(50-vmin)*(y1-ym);}
   var o='<line x1="40" y1="'+y0+'" x2="40" y2="'+y1+'" stroke="#16222E" stroke-width="1.4"/>';
   for(var v=-100;v<=150;v+=50){o+='<line x1="36" y1="'+Y(v)+'" x2="40" y2="'+Y(v)+'" stroke="#16222E"/>'+tx(32,Y(v)+4,(v>0?'+':v<0?'−':'')+Math.abs(v),'end',{s:10,c:'#55697A'});}
+  o+='<path d="M34 '+(ym-14)+' l12 -4 M34 '+(ym-8)+' l12 -4" stroke="#FFFFFF" stroke-width="4"/><path d="M34 '+(ym-14)+' l12 -4 M34 '+(ym-8)+' l12 -4" stroke="#16222E" stroke-width="1.2"/>';
   o+=tx(6,14,'mV','start',{s:10,w:700,c:'#55697A'})+'<line x1="40" y1="'+Y(0)+'" x2="205" y2="'+Y(0)+'" stroke="#8696A4" stroke-width="1" stroke-dasharray="2 3"/>';
   // in the background: the typical shape of the action potential of a neuron, a ventricular myocyte or an SA node cell
   AP={neuron:{p:[[0,-70],[.28,-70],[.31,-55],[.34,40],[.40,0],[.45,-72],[.50,-80],[.70,-73],[1,-70]],ph:[[.31,-62,L.apThr]],ch:[[.36,22,'Na<tspan baseline-shift="sub" font-size="7">v</tspan> ↓Na⁺','start'],[.45,-22,'K<tspan baseline-shift="sub" font-size="7">v</tspan> ↑K⁺','start'],[.74,-56,'K2P','middle']],tm:'~2 ms',lg:L.apLgN},
