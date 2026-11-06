@@ -585,5 +585,9 @@ f.addEventListener('submit',function(e){e.preventDefault();
   d.addEventListener('close',function(){fr.src='about:blank';FIT=true;if(ro)ro.disconnect();});
 })();
 </script>
+<script>
+// the gradient widget sends its height: the frame follows it
+window.addEventListener('message',function(e){if(!e.data||typeof e.data.gradH!=='number')return;document.querySelectorAll('iframe.h-grad').forEach(function(f){if(f.contentWindow===e.source)f.style.height=(e.data.gradH+6)+'px';});});
+</script>
 </body>
 </html>
