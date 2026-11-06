@@ -342,15 +342,16 @@ function hrtBuild(){var H=[],SA=[-25,-45],i;
   function inE(x,y,c,r){return Math.pow((x-c[0])/r[0],2)+Math.pow((y-c[1])/r[1],2);}
   var OUT=[[1,10],[37,46]],RVc=[[-17,10],[13,25]],LVc=[[17,10],[10,25]],RAe=[[-16,-33],[15,16]],LAe=[[16,-31],[13,13]];
   [RAe,LAe].forEach(function(q){for(var y=-52;y<=-17;y+=2.5)for(var x=-34;x<=34;x+=2.5){var r=Math.sqrt(inE(x,y,q[0],q[1]));if(r>1.04||r<.66)continue;
-    var dd=Math.sqrt(Math.pow(x-SA[0],2)+Math.pow(y-SA[1],2)),ta=.07+.13*Math.min(1,dd/50);H.push({x:x,y:y,ta:ta,tr:ta+.26,k:'a'});}});
+    var dd=(x-SA[0])*.2+(y-SA[1])*.98,ta=.07+.13*Math.max(0,Math.min(1,dd/34));H.push({x:x,y:y,ta:ta,tr:ta+.26,k:'a'});}});
   for(var y=-15;y<=55;y+=3)for(var x=-37;x<=39;x+=3){var ro=inE(x,y,OUT[0],OUT[1]),rr=inE(x,y,RVc[0],RVc[1]),rl=inE(x,y,LVc[0],LVc[1]);if(ro>=1||rr<=1||rl<=1)continue;
     ro=Math.sqrt(ro);rr=Math.sqrt(rr);rl=Math.sqrt(rl);var hb=Math.max(0,Math.min(1,(56-y)/72)),ta,tr,k;
-    if(x>-5&&x<8&&y<30){k='s';ta=.342+.116*(.02+.25*(7-x)/11+.2*hb);tr=.62+.12*((7-x)/12);}
-    else{var lv=rl<rr,rc=lv?rl:rr,d=(rc-1)/((rc-1)+(1-ro));k=lv?'l':'r';ta=.342+.116*(lv?.22+.45*hb+.33*d:.22+.30*hb+.25*d);tr=.58+.24*(1-d);}
+    if(x>-5&&x<8&&y<30){k='s';ta=.342+.116*(.24*(7-x)/11+.12*hb);tr=.62+.12*((7-x)/12);}
+    else{var lv=rl<rr,rc=lv?rl:rr,d=(rc-1)/((rc-1)+(1-ro));k=lv?'l':'r';ta=.342+.116*(lv?.28+.42*hb+.30*d:.28+.28*hb+.24*d);tr=.58+.24*(1-d);}
     H.push({x:x,y:y,ta:ta,tr:tr,k:k});}
   // dipole direction: towards the tissue still at rest (depolarisation), towards the tissue already repolarised (repolarisation)
   H.forEach(function(p){var ga=[0,0],gr=[0,0];H.forEach(function(q){if(q===p||(q.k==='a')!==(p.k==='a'))return;var dx=q.x-p.x,dy=q.y-p.y,d2=dx*dx+dy*dy;if(d2>30)return;ga[0]+=(q.ta-p.ta)*dx/d2;ga[1]+=(q.ta-p.ta)*dy/d2;gr[0]+=(q.tr-p.tr)*dx/d2;gr[1]+=(q.tr-p.tr)*dy/d2;});
-    var na=Math.sqrt(ga[0]*ga[0]+ga[1]*ga[1])||1,nr=Math.sqrt(gr[0]*gr[0]+gr[1]*gr[1])||1;p.ga=[ga[0]/na,ga[1]/na];p.gr=[-gr[0]/nr,-gr[1]/nr];});
+    var na=Math.sqrt(ga[0]*ga[0]+ga[1]*ga[1])||1,nr=Math.sqrt(gr[0]*gr[0]+gr[1]*gr[1])||1;p.ga=[ga[0]/na,ga[1]/na];p.gr=[-gr[0]/nr,-gr[1]/nr];
+    if(p.k==='s')p.ga=[-1,0];if(p.k==='a')p.ga=[.2,.98];});   // septum: from left to right; atria: along the plane front
   HRT=H;return H;}
 function hrtSvg(){var H=HRT||hrtBuild(),G='translate(80,80) rotate(-28) scale(1.1)';
   function el(c,r){return 'M'+(c[0]-r[0])+' '+c[1]+' a'+r[0]+' '+r[1]+' 0 1 0 '+(2*r[0])+' 0 a'+r[0]+' '+r[1]+' 0 1 0 '+(-2*r[0])+' 0 Z';}
@@ -362,7 +363,7 @@ function hrtSvg(){var H=HRT||hrtBuild(),G='translate(80,80) rotate(-28) scale(1.
   o+='<g fill="none" stroke="#16222E" stroke-width="1"><path d="'+VEN+'"/><path d="'+RVC+'"/><path d="'+LVC+'"/><path d="'+RAo+'"/><path d="'+RAi+'"/><path d="'+LAo+'"/><path d="'+LAi+'"/></g>';
   o+='<path id="hcs" d="M-3 -19 L0 -15 L1 -6 M1 -6 L6 2 L8 36 M1 -6 L-4 2 L-6 34" fill="none" stroke="#D5B04A" stroke-width="1.1" stroke-dasharray="2 1.5"/>';
   o+='<circle id="hsa" cx="-25" cy="-45" r="2.8" fill="#D5B04A"/><circle id="hav" cx="-3" cy="-19" r="2.4" fill="#D5B04A"/>';
-  o+='<path id="hdA" fill="none" stroke="#D32F2F" stroke-width=".8" stroke-linecap="round"/><path id="hdR" fill="none" stroke="#2B5BA8" stroke-width=".8" stroke-linecap="round"/></g>';
+  o+='<path id="hdA" fill="none" stroke="#B71C1C" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><path id="hdR" fill="none" stroke="#2B5BA8" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></g>';
   ['RA','LA','RV','LV'].forEach(function(t,i){var P=[[-16,-33],[16,-31],[-17,12],[17,12]][i],a=-28*Math.PI/180,X=80+1.1*(P[0]*Math.cos(a)-P[1]*Math.sin(a)),Y=80+1.1*(P[0]*Math.sin(a)+P[1]*Math.cos(a));o+=tx(X.toFixed(1),(Y+3).toFixed(1),L['h'+t],'middle',{s:7.5,w:700,c:'#55697A'});});
   // the net dipole: the sum of all the little arrows, in black
   o+='<circle cx="24" cy="128" r="17" fill="#F7F9FA" stroke="#DDE4EA"/><line id="hnet" x1="24" y1="128" x2="24" y2="128" stroke="#16222E" stroke-width="2.6" marker-end="url(#hnH)"/>'+tx(24,153,L.hNet,'middle',{s:7.5,w:700,c:'#16222E'});
@@ -370,14 +371,14 @@ function hrtSvg(){var H=HRT||hrtBuild(),G='translate(80,80) rotate(-28) scale(1.
   o+=L.hLeg.map(function(l,i){return tx(158,118+i*10,l,'start',{s:7.8,c:i?['','#D32F2F','#2B5BA8'][i]:'#55697A',w:i?600:400});}).join('');
   return '<p class="lh">'+L.hT+'</p><svg id="hrS" viewBox="0 4 300 156" style="width:100%;height:auto">'+o+'</svg>';}
 function hrt(t){var H=HRT;if(!H||!$('#hrS'))return;var dA='',dR='',nx=0,ny=0;
-  function arr(p,v){var x0=p.x-v[0]*1.2,y0=p.y-v[1]*1.2,x1=p.x+v[0]*3.4,y1=p.y+v[1]*3.4,h=1.4,ax=-v[1],ay=v[0];return 'M'+x0.toFixed(1)+' '+y0.toFixed(1)+' L'+x1.toFixed(1)+' '+y1.toFixed(1)+' M'+(x1-v[0]*h+ax*h*.7).toFixed(1)+' '+(y1-v[1]*h+ay*h*.7).toFixed(1)+' L'+x1.toFixed(1)+' '+y1.toFixed(1)+' L'+(x1-v[0]*h-ax*h*.7).toFixed(1)+' '+(y1-v[1]*h-ay*h*.7).toFixed(1);}
+  function arr(p,v){var x0=p.x-v[0]*1.5,y0=p.y-v[1]*1.5,x1=p.x+v[0]*5,y1=p.y+v[1]*5,h=2,ax=-v[1],ay=v[0];return 'M'+x0.toFixed(1)+' '+y0.toFixed(1)+' L'+x1.toFixed(1)+' '+y1.toFixed(1)+' M'+(x1-v[0]*h+ax*h*.7).toFixed(1)+' '+(y1-v[1]*h+ay*h*.7).toFixed(1)+' L'+x1.toFixed(1)+' '+y1.toFixed(1)+' L'+(x1-v[0]*h-ax*h*.7).toFixed(1)+' '+(y1-v[1]*h-ay*h*.7).toFixed(1);}
   H.forEach(function(p,i){var st=t!=null&&t>=p.ta&&t<p.tr,c=st?'#E53935':'#FFFFFF',el=$('#hp'+i);if(el.__c!==c){el.setAttribute('fill',c);el.__c=c;}
-    if(t==null)return;var fa=t>=p.ta&&t-p.ta<(p.k==='a'?.016:.011),fr=p.k!=='a'&&t>=p.tr&&t-p.tr<.024;if(fa){nx+=p.ga[0];ny+=p.ga[1];if(i%3===0)dA+=arr(p,p.ga);}if(fr){nx+=p.gr[0];ny+=p.gr[1];if(i%3===0)dR+=arr(p,p.gr);}});
+    if(t==null)return;var fa=t>=p.ta&&t-p.ta<(p.k==='a'?.016:(p.k==='s'?.014:.011)),fr=p.k!=='a'&&t>=p.tr&&t-p.tr<.024;if(fa){nx+=p.ga[0];ny+=p.ga[1];if(i%(p.k==='a'?3:(p.k==='s'?2:4))===0)dA+=arr(p,p.ga);}if(fr){nx+=p.gr[0];ny+=p.gr[1];if(i%4===0)dR+=arr(p,p.gr);}});
   $('#hdA').setAttribute('d',dA);$('#hdR').setAttribute('d',dR);
   // rotate the sum into the page and scale it: about 25 arrows fill the little circle
-  var an=-28*Math.PI/180,X=nx*Math.cos(an)-ny*Math.sin(an),Y=nx*Math.sin(an)+ny*Math.cos(an),m=Math.sqrt(X*X+Y*Y),k=m>1?Math.min(15,4+m*.45)/m:0;$('#hnet').setAttribute('x2',24+X*k);$('#hnet').setAttribute('y2',128+Y*k);$('#hnet').setAttribute('visibility',k?'visible':'hidden');
+  var an=-28*Math.PI/180,X=nx*Math.cos(an)-ny*Math.sin(an),Y=nx*Math.sin(an)+ny*Math.cos(an),m=Math.sqrt(X*X+Y*Y),k=m>1?Math.min(15,7+m*.4)/m:0;$('#hnet').setAttribute('x2',24+X*k);$('#hnet').setAttribute('y2',128+Y*k);$('#hnet').setAttribute('visibility',k?'visible':'hidden');
   function on(id,b){$('#'+id).setAttribute('fill',b?'#E53935':'#D5B04A');}on('hsa',t!=null&&t<.09);on('hav',t!=null&&t>=.19&&t<.31);$('#hcs').setAttribute('stroke',t!=null&&t>=.29&&t<.36?'#E53935':'#D5B04A');
-  var ph=t==null?'Idle':(t<.07?'SA':(t<.20?'P':(t<.342?'PR':(t<.365?'q':(t<.425?'R':(t<.458?'S':(t<.56?'ST':(t<.84?'T':'D')))))))),q=L['hP'+ph];
+  var ph=t==null?'Idle':(t<.07?'SA':(t<.20?'P':(t<.342?'PR':(t<.374?'q':(t<.425?'R':(t<.458?'S':(t<.56?'ST':(t<.84?'T':'D')))))))),q=L['hP'+ph];
   $('#hph').textContent=q[0];$('#hx').innerHTML=q.slice(1).map(function(l,i){return '<tspan x="158" dy="'+(i?11:0)+'">'+l+'</tspan>';}).join('');}
 // a small axis trainer of our own: the hexaxial circle with a vector to drag, and lead II only; while the cell fires, the vector moves beat by beat
 function axTrainer(){var on=S.multi&&(S.ap==='cardio'||S.ap==='sa'),el=$('#axt');if(!el)return;
@@ -580,7 +581,7 @@ function dynM(){var o='',sb='<tspan baseline-shift="sub" font-size="9">',ys=[366
   return o;}
 function stepM(dt){var ph=F*S.vm/1000/RT,J={},mx=0;
   // playing an action potential: V_m follows the curve, and the permeabilities follow V_m
-  if(S.apT!=null){if(!S.apP){var u0=S.apT/APD,qc={cardio:.115,sa:.58}[S.apK];S.apT+=dt*(qc!=null?1/3:1)*(qc!=null&&Math.abs(u0-qc)<.025?.25:1);}var u=S.apT/APD;if(u>=1){S.apT=null;S.pov=null;S.dirty=true;eqPanel();}
+  if(S.apT!=null){if(!S.apP){var u0=S.apT/APD,EE={cardio:{P:.045,Q:.115},sa:{P:.38,Q:.58}}[S.apK],f=1;if(EE){f=1/3;if(Math.abs(u0-EE.Q)<.025)f*=.25;if(u0>EE.Q-.023&&u0<EE.Q-.007)f*=.22;if(Math.abs(u0-EE.P-.003)<.033)f*=.2;}S.apT+=dt*f;}var u=S.apT/APD;if(u>=1){S.apT=null;S.pov=null;S.dirty=true;eqPanel();}
     else{var tg=apAt(u);fitP(tg,apIon(u));S.vm=tg;S.dirty=true;ph=F*S.vm/1000/RT;}}
   if(S.apT!=null){}else if(S.ins){var g=vM();if(S.vm!==g){S.vm+=(g-S.vm)*Math.min(1,dt/0.75);if(Math.abs(S.vm-g)<0.3)S.vm=g;S.dirty=true;}}
   else if(S.vm!==0){S.vm*=Math.max(0,1-dt*12);if(Math.abs(S.vm)<0.4)S.vm=0;S.dirty=true;}
