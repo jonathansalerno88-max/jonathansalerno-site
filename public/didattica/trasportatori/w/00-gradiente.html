@@ -345,7 +345,7 @@ function hrtBuild(){var H=[],SA=[-25,-45],i;
     var dd=Math.sqrt(Math.pow(x-SA[0],2)+Math.pow(y-SA[1],2)),ta=.07+.13*Math.min(1,dd/50);H.push({x:x,y:y,ta:ta,tr:ta+.26,k:'a'});}});
   for(var y=-15;y<=55;y+=3)for(var x=-37;x<=39;x+=3){var ro=inE(x,y,OUT[0],OUT[1]),rr=inE(x,y,RVc[0],RVc[1]),rl=inE(x,y,LVc[0],LVc[1]);if(ro>=1||rr<=1||rl<=1)continue;
     ro=Math.sqrt(ro);rr=Math.sqrt(rr);rl=Math.sqrt(rl);var hb=Math.max(0,Math.min(1,(56-y)/72)),ta,tr,k;
-    if(x>-5&&x<8&&y<30){k='s';ta=.342+.116*(.02+.25*(7-x)/11+.2*hb);tr=.66+.12*((x+5)/13);}
+    if(x>-5&&x<8&&y<30){k='s';ta=.342+.116*(.02+.25*(7-x)/11+.2*hb);tr=.62+.12*((7-x)/12);}
     else{var lv=rl<rr,rc=lv?rl:rr,d=(rc-1)/((rc-1)+(1-ro));k=lv?'l':'r';ta=.342+.116*(lv?.22+.45*hb+.33*d:.22+.30*hb+.25*d);tr=.58+.24*(1-d);}
     H.push({x:x,y:y,ta:ta,tr:tr,k:k});}
   // dipole direction: towards the tissue still at rest (depolarisation), towards the tissue already repolarised (repolarisation)
