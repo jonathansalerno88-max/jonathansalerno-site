@@ -330,10 +330,12 @@ function curIons(C){var i={};['K','Na','Cl','Ca'].forEach(function(x){i[x]=(x===
 function vGHK(){return ghk(CELLS[S.cell]).v;}
 function ghk(C){var k=2.302585*RT/96485*1000,i=curIons(C),p=C.p,num=p[0]*i.K[1]+p[1]*i.Na[1]+p[2]*i.Cl[0],den=p[0]*i.K[0]+p[1]*i.Na[0]+p[2]*i.Cl[1];return {v:k*Math.log10(num/den),k:k,num:num,den:den};}
 // a small axis trainer of our own: the hexaxial circle with a vector to drag, and lead II only
-// the instantaneous cardiac vector: P (atria), then QRS as septum (q), main mass (R) and base (s), then T.
-// Each wave is a bump with its own direction; the QRS and T turn with the chosen mean axis a.
-function cVec(u,E,w,a){function g(c,s){return Math.exp(-Math.pow((u-c)/s,2));}var W=[[.16*g(E.P,w.P),55],[.12*g(E.Q-w.o,w.q),a+150],[1*g(E.Q,w.r),a],[.28*g(E.Q+w.o,w.s),a-150],[.32*g(E.T,w.T),a-10]],x=0,y=0,ph=null,mx=.02;
-  W.forEach(function(q,i){var t=q[1]*Math.PI/180;x+=q[0]*Math.cos(t);y+=q[0]*Math.sin(t);if(q[0]>mx){mx=q[0];ph=i===0?'P':(i===4?'T':'QRS');}});return {x:x,y:y,ph:ph};}
+// the instantaneous cardiac vector: P (atria), QRS (ventricles), T (repolarisation); QRS and T turn with the chosen mean axis a
+function cVec(u,E,w,a){function g(c,s){return Math.exp(-Math.pow((u-c)/s,2));}
+  // P and T: a bump each, with a fixed direction. QRS: the vector sweeps from the septum (a+140°) through the mean axis a to the base (a−140°), growing then shrinking
+  var x=0,y=0,ph=null,mx=.02,W=[[.16*g(E.P,w.P),55,'P'],[.32*g(E.T,w.T),a-10,'T']],h=1.6*w.o,f=(u-E.Q+h)/(2*h);
+  if(f>0&&f<1)W.push([Math.pow(Math.sin(Math.PI*f),1.5),a+140*(1-2*f),'QRS']);
+  W.forEach(function(q){var t=q[1]*Math.PI/180;x+=q[0]*Math.cos(t);y+=q[0]*Math.sin(t);if(q[0]>mx){mx=q[0];ph=q[2];}});return {x:x,y:y,ph:ph};}
 // a small axis trainer of our own: the hexaxial circle with a vector to drag, and lead II only; while the cell fires, the vector moves beat by beat
 function axTrainer(){var on=S.multi&&(S.ap==='cardio'||S.ap==='sa'),el=$('#axt');if(!el)return;
   if(!on){if(el.firstChild)el.innerHTML='';S.axLive=null;return;}if(el.firstChild){if(S.axLive)S.axLive();return;}
@@ -369,7 +371,7 @@ function axTrainer(){var on=S.multi&&(S.ap==='cardio'||S.ap==='sa'),el=$('#axt')
     var v=cVec(u,E,LW,S.axA),m=Math.sqrt(v.x*v.x+v.y*v.y),a=Math.atan2(v.y,v.x)*180/Math.PI,len=Math.min(R-4,(R-8)*m);
     setV(a,len,S.axA);trail.push((cx+(R-8)*v.x).toFixed(1)+','+(cy+(R-8)*v.y).toFixed(1));if(trail.length>400)trail.shift();$('#axTr').setAttribute('points',trail.join(' '));
     // the cursor on the lead II strip, mapped onto the template beat
-    var K=[[0,0]],t=0;[['P',.03],['Q',.025,'r'],['T',.08]].forEach(function(q){var k=TW[q[2]||q[0]]/LW[q[2]||q[0]];K.push([E[q[0]]-q[1],TE[q[0]]-q[1]*k],[E[q[0]]+q[1],TE[q[0]]+q[1]*k]);});K.push([1,1]);for(var i=1;i<K.length;i++)if(u<=K[i][0]){t=K[i-1][1]+(u-K[i-1][0])/(K[i][0]-K[i-1][0])*(K[i][1]-K[i-1][1]);break;}
+    var K=[[0,0]],t=0;[['P',.03],['Q',.025,'o'],['T',.08]].forEach(function(q){var k=TW[q[2]||q[0]]/LW[q[2]||q[0]];K.push([E[q[0]]-q[1],TE[q[0]]-q[1]*k],[E[q[0]]+q[1],TE[q[0]]+q[1]*k]);});K.push([1,1]);for(var i=1;i<K.length;i++)if(u<=K[i][0]){t=K[i-1][1]+(u-K[i-1][0])/(K[i][0]-K[i-1][0])*(K[i][1]-K[i-1][1]);break;}
     var xx=BX+t*BW,yy=base-amp*l2(cVec(t,TE,TW,S.axA));$('#axCl').setAttribute('x1',xx);$('#axCl').setAttribute('x2',xx);$('#axCd').setAttribute('cx',xx);$('#axCd').setAttribute('cy',yy);['axCl','axCd'].forEach(function(i){$('#'+i).setAttribute('visibility','visible');});
     $('#axL').textContent=v.ph?L['axPh'+v.ph]:L.axPhIso;$('#axD').textContent=v.ph?L.axInst+' '+Math.round(a)+'°':L.axInst0;$('#axN').textContent=L.axRun;};
   function ang(ev){var r=sv.getBoundingClientRect(),k=300/r.width,x=(ev.clientX-r.left)*k-cx,y=(ev.clientY-r.top)*k-cy;return Math.atan2(y,x)*180/Math.PI;}
