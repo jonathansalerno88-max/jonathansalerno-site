@@ -225,6 +225,9 @@ function dyn(){var I=ION[S.ion],c=calc(),o='';
     for(var j=0;j<nq;j++){var yy=nq===1?150:132+j*(184/(nq-1));if(S.multi||(yy>188&&yy<260))continue;ysl.push(yy);}
     ysl.forEach(function(yy){o+=tx(219,yy+4,inS,'middle',{s:13,w:700,c:cI})+tx(241,yy+4,ouS,'middle',{s:13,w:700,c:cO});});
     o+=tx(230,334,fill(L.velo,{i:inS,o:ouS}),'middle',{s:10.5,w:700,c:'#55697A',h:1});}
+  if(S.multi){var vv=S.vm,si=vv<0?'−':'+',so=vv<0?'+':'−',fs=function(v){return (24+78*Math.pow(Math.min(1,Math.abs(v)/90),.6)).toFixed(0);};
+    o+='<text x="120" y="'+(250+fs(vv)*.32).toFixed(0)+'" text-anchor="middle" font-size="'+fs(vv)+'" font-weight="700" fill="'+(vv<0?CB:CR)+'" opacity=".9">'+si+'</text>';
+    o+='<text x="340" y="'+(250+fs(vv)*.32).toFixed(0)+'" text-anchor="middle" font-size="'+fs(vv)+'" font-weight="700" fill="'+(vv<0?CR:CB)+'" opacity=".9">'+so+'</text>';}
   if(S.multi){var li=MI.map(function(x){return ION[x].g+' '+nc(mC(x)[0]);}).join(' · '),lo=MI.map(function(x){return ION[x].g+' '+nc(mC(x)[1]);}).join(' · ');o+=tx(124,311,li+' mM','middle',{s:10,w:600,c:'#16222E',h:1})+tx(336,311,lo+' mM','middle',{s:10,w:600,c:'#16222E',h:1});}
   else o+=tx(124,311,'['+I.g+'] '+fc(S.ci),'middle',{s:12.5,w:600,c:I.c,h:1})+tx(336,311,'['+I.g+'] '+fc(S.co),'middle',{s:12.5,w:600,c:I.c,h:1});
   o+='<g transform="translate(0,14)">';
@@ -243,7 +246,7 @@ function dyn(){var I=ION[S.ion],c=calc(),o='';
   if(nern){var lb=I.g.replace(/[⁺⁻²]/g,'');o+=tx(230,532,fill(L.nernV,{l:lb,v:num(c.E,0,true)}),'middle',{s:12.5,w:700,c:'#0E7C86'});}
   }
   o+='</g>';
-  $('#dyn').innerHTML=o;if(S.multi){$('#big').innerHTML='';}else{bigArrow(c);if(S.circ)circuit(c);}}
+  $('#dyn').innerHTML=o;$('#pin').style.display=$('#pout').style.display=S.multi?'none':'';if(S.multi){$('#big').innerHTML='';}else{bigArrow(c);if(S.circ)circuit(c);}}
 // the two electrodes: the voltmeter reads recording minus reference, so V_m = inside − outside needs the reference outside
 function vAt(p){return p==='in'?S.vm:0;}
 function reading(){return (S.ref==='up'||S.rec==='up')?null:vAt(S.rec)-vAt(S.ref);}
@@ -380,40 +383,65 @@ function hrt(t){var H=HRT;if(!H||!$('#hrS'))return;var dA='',dR='',nx=0,ny=0;
   function on(id,b){$('#'+id).setAttribute('fill',b?'#E53935':'#D5B04A');}on('hsa',t!=null&&t<.09);on('hav',t!=null&&t>=.19&&t<.31);$('#hcs').setAttribute('stroke',t!=null&&t>=.29&&t<.36?'#E53935':'#D5B04A');
   var ph=t==null?'Idle':(t<.07?'SA':(t<.20?'P':(t<.342?'PR':(t<.374?'q':(t<.425?'R':(t<.458?'S':(t<.56?'ST':(t<.84?'T':'D')))))))),q=L['hP'+ph];
   $('#hph').textContent=q[0];$('#hx').innerHTML=q.slice(1).map(function(l,i){return '<tspan x="158" dy="'+(i?11:0)+'">'+l+'</tspan>';}).join('');}
+// the "dipolar heart": the heart as bricks of muscle; each brick shows the sign OUTSIDE it (+ at rest, − depolarised) on its free face.
+// Outer bricks = epicardium (green), inner bricks = endocardium (purple). Same times as the heart section below.
+var BRK=null;
+function brkBuild(){var B=[],SA=[-25,-45];function cl(v){return Math.max(0,Math.min(1,v));}
+  function wall(x,y,d){var hb=cl((56-y)/72),lv=x>1;return [.342+.116*(lv?.28+.42*hb+.30*d:.28+.28*hb+.24*d),.58+.24*(1-d)];}
+  // the two layers of the ventricular wall, along the outer ellipse (centre 1,10; 37×46)
+  [[.95,24,'epi',.85,1],[.8,20,'endo',.15,-1]].forEach(function(L){var a0=-28,a1=208;for(var i=0;i<L[1];i++){var th=(a0+(a1-a0)*(i+.5)/L[1])*Math.PI/180,x=1+37*L[0]*Math.cos(th),y=10+46*L[0]*Math.sin(th);
+    var nx=Math.cos(th)/37,ny=Math.sin(th)/46,nn=Math.sqrt(nx*nx+ny*ny);nx/=nn;ny/=nn;var tm=wall(x,y,L[3]);
+    B.push({x:x,y:y,r:Math.atan2(ny,nx)*180/Math.PI+90,w:L[0]>.9?7:6,h:4.4,k:L[2],nx:nx*L[4],ny:ny*L[4],ta:tm[0],tr:tm[1]});}});
+  // the septum: endocardium on both faces, from the left side to the right side
+  [[3.6,1],[-2.6,-1]].forEach(function(c){for(var y=-11;y<=33;y+=6.3){var hb=cl((56-y)/72),x=c[0];B.push({x:x,y:y,r:0,w:4.6,h:5.6,k:'endo',nx:c[1],ny:0,ta:.342+.116*(.24*(7-x)/11+.12*hb),tr:.62+.12*((7-x)/12)});}});
+  // the atria: a ring each
+  [[[-16,-33],[15,16]],[[16,-31],[13,13]]].forEach(function(A){for(var i=0;i<11;i++){var th=(-200+220*(i+.5)/11)*Math.PI/180,x=A[0][0]+A[1][0]*.9*Math.cos(th),y=A[0][1]+A[1][1]*.9*Math.sin(th);if(y>-18)continue;
+    var dd=(x-SA[0])*.2+(y-SA[1])*.98,ta=.07+.13*cl(dd/34),nx=Math.cos(th)/A[1][0],ny=Math.sin(th)/A[1][1],nn=Math.sqrt(nx*nx+ny*ny);B.push({x:x,y:y,r:Math.atan2(ny,nx)*180/Math.PI+90,w:5.4,h:3.8,k:'atr',nx:nx/nn,ny:ny/nn,ta:ta,tr:ta+.26});}});
+  BRK=B;return B;}
+function bricksSvg(cx,cy){var B=BRK||brkBuild(),sc=1.22,an=-28*Math.PI/180,o='<g transform="translate('+cx+','+cy+') rotate(-28) scale('+sc+') translate(0,-4)">';
+  B.forEach(function(b,i){o+='<rect id="bk'+i+'" x="'+(b.x-b.w/2).toFixed(2)+'" y="'+(b.y-b.h/2).toFixed(2)+'" width="'+b.w+'" height="'+b.h+'" rx="1.4" stroke="#16222E" stroke-width=".35" transform="rotate('+b.r.toFixed(1)+' '+b.x.toFixed(2)+' '+b.y.toFixed(2)+')"/>';});o+='</g>';
+  // the signs stay upright: place them in page coordinates
+  B.forEach(function(b,i){var lx=b.x+b.nx*5.2,ly=b.y+b.ny*5.2-4,X=cx+sc*(lx*Math.cos(an)-ly*Math.sin(an)),Y=cy+sc*(lx*Math.sin(an)+ly*Math.cos(an));b.X=X;b.Y=Y;
+    o+='<text id="bs'+i+'" x="'+X.toFixed(1)+'" y="'+(Y+2.6).toFixed(1)+'" text-anchor="middle" font-size="7.5" font-weight="700"></text>';});
+  return o;}
+function brk(t){var B=BRK;if(!B||!$('#bk0'))return;var C={epi:'#BFE8D6',endo:'#D9CCF0',atr:'#E6EEF5'};
+  B.forEach(function(b,i){var dep=t!=null&&t>=b.ta&&t<b.tr,el=$('#bk'+i),s=$('#bs'+i),k=dep?'d':'r';if(el.__k===k)return;el.__k=k;
+    el.setAttribute('fill',dep?'#E53935':C[b.k]);s.textContent=dep?'−':'+';s.setAttribute('fill',dep?'#1F5FBF':'#C62828');});}
 // a small axis trainer of our own: the hexaxial circle with a vector to drag, and lead II only; while the cell fires, the vector moves beat by beat
 function axTrainer(){var on=S.multi&&(S.ap==='cardio'||S.ap==='sa'),el=$('#axt');if(!el)return;
   if(!on){if(el.firstChild)el.innerHTML='';S.axLive=null;return;}if(el.firstChild){if(S.axLive)S.axLive();return;}
   // the hexaxial circle laid over Einthoven's figure: electrodes R (right arm), L (left arm), F (left foot)
-  var cx=72,cy=84,R=44,o='',SEC=[[-30,90,'#BFE8B8'],[-90,-30,'#C9D4F2'],[90,180,'#F5E7A6'],[-180,-90,'#F2C9BC']],RA=[8,40],LA=[136,40],FT=[72,150.9],BF='#EEF2F5',BS='#B8C4CE';
+  var cx=150,cy=130,R=88,VY=-28,VH=410,OFF=22,o='',SEC=[[-30,90,'#BFE8B8'],[-90,-30,'#C9D4F2'],[90,180,'#F5E7A6'],[-180,-90,'#F2C9BC']],RA=[22,42],LA=[278,42],FT=[150,263.8],BF='#EEF2F5',BS='#B8C4CE';
   function P(a,r){var t=a*Math.PI/180;return [cx+r*Math.cos(t),cy+r*Math.sin(t)];}
-  o+='<circle cx="72" cy="15" r="8.5" fill="'+BF+'" stroke="'+BS+'"/>';
+  o+='<g transform="translate(150,130) scale(2) translate(-72,-84)"><circle cx="72" cy="15" r="8.5" fill="'+BF+'" stroke="'+BS+'"/>';
   o+='<path d="M52 27 Q72 23 92 27 L134 35 L134 45 L94 41 L93 112 L51 112 L50 41 L10 45 L10 35 Z" fill="'+BF+'" stroke="'+BS+'" stroke-linejoin="round"/>';
-  o+='<path d="M52 111 L56 156 L66 156 L70 114 L74 114 L68 156 L78 156 L92 111 Z" fill="'+BF+'" stroke="'+BS+'" stroke-linejoin="round"/>';
+  o+='<path d="M52 111 L56 156 L66 156 L70 114 L74 114 L68 156 L78 156 L92 111 Z" fill="'+BF+'" stroke="'+BS+'" stroke-linejoin="round"/></g>';
   [[RA,LA,0],[RA,FT,1],[LA,FT,0]].forEach(function(q){o+='<line x1="'+q[0][0]+'" y1="'+q[0][1]+'" x2="'+q[1][0]+'" y2="'+q[1][1]+'" stroke="'+(q[2]?'#B0420C':'#8696A4')+'" stroke-width="1.2" stroke-opacity="'+(q[2]?.55:.6)+'"/>';});
-  SEC.forEach(function(q){var p1=P(q[0],R),p2=P(q[1],R);o+='<path d="M'+cx+' '+cy+' L'+p1[0].toFixed(1)+' '+p1[1].toFixed(1)+' A'+R+' '+R+' 0 0 1 '+p2[0].toFixed(1)+' '+p2[1].toFixed(1)+' Z" fill="'+q[2]+'" fill-opacity=".82"/>';});
+  SEC.forEach(function(q){var p1=P(q[0],R),p2=P(q[1],R);o+='<path d="M'+cx+' '+cy+' L'+p1[0].toFixed(1)+' '+p1[1].toFixed(1)+' A'+R+' '+R+' 0 0 1 '+p2[0].toFixed(1)+' '+p2[1].toFixed(1)+' Z" fill="'+q[2]+'" fill-opacity=".5"/>';});
   o+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="none" stroke="#8696A4"/>';
-  [['I',0],['II',60],['III',120],['aVF',90],['aVL',-30],['aVR',-150]].forEach(function(q){var p=P(q[1],R+2),m=P(q[1]+180,R),t=P(q[1],R+10);
-    o+='<line id="ld'+q[0]+'" x1="'+m[0].toFixed(1)+'" y1="'+m[1].toFixed(1)+'" x2="'+p[0].toFixed(1)+'" y2="'+p[1].toFixed(1)+'" stroke="'+(q[0]==='II'?'#B0420C':'#55697A')+'" stroke-width="'+(q[0]==='II'?2.2:.8)+'" stroke-dasharray="'+(q[0]==='II'?'':'3 3')+'"/>'+tx(t[0].toFixed(1),(t[1]+3.5).toFixed(1),q[0],'middle',{s:q[0]==='II'?10:8.5,w:700,c:q[0]==='II'?'#B0420C':'#55697A'});});
-  [['R',RA,'#C62828'],['L',LA,'#E0B000'],['F',FT,'#2E7D32']].forEach(function(q){o+='<circle cx="'+q[1][0]+'" cy="'+q[1][1]+'" r="5.5" fill="'+q[2]+'" stroke="#FFFFFF" stroke-width="1.2"/>'+tx(q[1][0],q[1][1]+2.5,q[0],'middle',{s:7,w:700,c:'#FFFFFF'});});
+  [['I',0],['II',60],['III',120],['aVF',90],['aVL',-30],['aVR',-150]].forEach(function(q){var p=P(q[1],R+2),m=P(q[1]+180,R),t=P(q[1],R+11);
+    o+='<line id="ld'+q[0]+'" x1="'+m[0].toFixed(1)+'" y1="'+m[1].toFixed(1)+'" x2="'+p[0].toFixed(1)+'" y2="'+p[1].toFixed(1)+'" stroke="'+(q[0]==='II'?'#B0420C':'#55697A')+'" stroke-width="'+(q[0]==='II'?2.2:.8)+'" stroke-dasharray="'+(q[0]==='II'?'':'3 3')+'"/>'+tx(t[0].toFixed(1),(t[1]+3.5).toFixed(1),q[0],'middle',{s:q[0]==='II'?11:9.5,w:700,c:q[0]==='II'?'#B0420C':'#55697A'});});
+  o+=bricksSvg(cx,cy);
+  [['R',RA,'#C62828'],['L',LA,'#E0B000'],['F',FT,'#2E7D32']].forEach(function(q){o+='<circle cx="'+q[1][0]+'" cy="'+q[1][1]+'" r="8" fill="'+q[2]+'" stroke="#FFFFFF" stroke-width="1.4"/>'+tx(q[1][0],q[1][1]+3.5,q[0],'middle',{s:10,w:700,c:'#FFFFFF'});});
   o+='<polyline id="axTr" fill="none" stroke="#6A3A96" stroke-width="1.3" stroke-opacity=".75" stroke-linejoin="round"/>';
   o+='<line id="axPr" stroke="#B0420C" stroke-width="1" stroke-dasharray="2 2"/><circle id="axPd" r="3.5" fill="#B0420C"/>';
   o+='<line id="axV" x1="'+cx+'" y1="'+cy+'" stroke="#16222E" stroke-width="3" marker-end="url(#axH)"/><circle id="axK" r="9" fill="#16222E" fill-opacity=".15" stroke="#16222E" style="cursor:grab"/>';
   o+='<defs><marker id="axH" viewBox="0 0 10 10" refX="7" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#16222E"/></marker></defs>';
-  o+='<text id="axL" x="150" y="16" font-size="11.5" font-weight="700" fill="#16222E"></text><text id="axD" x="150" y="29" font-size="10" fill="#55697A"></text>';
+  o+='<text id="axL" x="298" y="-14" text-anchor="end" font-size="11.5" font-weight="700" fill="#16222E"></text><text id="axD" x="298" y="0" text-anchor="end" font-size="10" fill="#55697A"></text>';
   // six limb leads, laid out like an ECG: I, II, III on the left, aVR, aVL, aVF on the right
-  var LD=[['I',0,150,60],['II',60,150,98],['III',120,150,136],['aVR',-150,226,60],['aVL',-30,226,98],['aVF',90,226,136]],BW=58,amp=13;
-  LD.forEach(function(q,i){var h=q[0]==='II';o+='<line x1="'+(q[2]+14)+'" y1="'+q[3]+'" x2="'+(q[2]+14+BW)+'" y2="'+q[3]+'" stroke="#F2C9BC"/><path id="axE'+i+'" fill="none" stroke="#16222E" stroke-width="1.3" stroke-linejoin="round"/>'+tx(q[2],q[3]+3,q[0],'start',{s:8.5,w:700,c:h?'#B0420C':'#55697A'})+'<circle id="axCd'+i+'" r="2.8" fill="#B0420C" stroke="#FFFFFF" stroke-width="1" visibility="hidden"/>';});
-  [150,226].forEach(function(x,i){o+='<line id="axCl'+i+'" y1="42" y2="152" stroke="#A0645A" stroke-width="1" stroke-dasharray="2 2" visibility="hidden"/>';});
-  el.innerHTML='<p class="lh">'+L.axT+'</p><svg id="axS" viewBox="0 6 300 150" style="width:100%;height:auto;touch-action:none">'+o+'</svg>'+hrtSvg();
+  var LD=[['I',0,4,300],['II',60,4,332],['III',120,4,364],['aVR',-150,154,300],['aVL',-30,154,332],['aVF',90,154,364]],BW=120,amp=11;
+  LD.forEach(function(q,i){var h=q[0]==='II';o+='<line x1="'+(q[2]+OFF)+'" y1="'+q[3]+'" x2="'+(q[2]+OFF+BW)+'" y2="'+q[3]+'" stroke="#F2C9BC"/><path id="axE'+i+'" fill="none" stroke="#16222E" stroke-width="1.3" stroke-linejoin="round"/>'+tx(q[2],q[3]+3,q[0],'start',{s:9.5,w:700,c:h?'#B0420C':'#55697A'})+'<circle id="axCd'+i+'" r="2.8" fill="#B0420C" stroke="#FFFFFF" stroke-width="1" visibility="hidden"/>';});
+  [4,154].forEach(function(x,i){o+='<line id="axCl'+i+'" y1="284" y2="378" stroke="#A0645A" stroke-width="1" stroke-dasharray="2 2" visibility="hidden"/>';});
+  el.innerHTML='<p class="lh">'+L.axT+'</p><svg id="axS" viewBox="0 '+VY+' 300 '+VH+'" style="width:100%;height:auto;touch-action:none">'+o+'</svg>'+hrtSvg();
   var sv=$('#axS'),
       TE={P:.13,Q:.40,T:.70},TW={P:.045,q:.016,r:.018,s:.02,o:.036,T:.085},   // template beat on the lead II strip
       EC={cardio:{P:.045,Q:.115,T:.64},sa:{P:.38,Q:.58,T:.80}},LW={P:.018,q:.005,r:.0055,s:.006,o:.011,T:.04};   // same timing as the ECG above
   function pj(v,th){th*=Math.PI/180;return v.x*Math.cos(th)+v.y*Math.sin(th);}
   function setV(a,len,kn){var p=P(a,len),q=P(kn==null?a:kn,R);$('#axV').setAttribute('x2',p[0]);$('#axV').setAttribute('y2',p[1]);$('#axV').setAttribute('visibility',len>5?'visible':'hidden');$('#axK').setAttribute('cx',q[0]);$('#axK').setAttribute('cy',q[1]);
     var c=Math.cos((a-60)*Math.PI/180),pr=P(60,len*c);$('#axPr').setAttribute('x1',p[0]);$('#axPr').setAttribute('y1',p[1]);$('#axPr').setAttribute('x2',pr[0]);$('#axPr').setAttribute('y2',pr[1]);$('#axPd').setAttribute('cx',pr[0]);$('#axPd').setAttribute('cy',pr[1]);return c;}
-  function trace(a){LD.forEach(function(q,j){var d='';for(var i=0;i<=BW;i+=.5){var v=cVec(i/BW,TE,TW,a);d+=(i?' L':'M')+(q[2]+14+i).toFixed(1)+' '+(q[3]-amp*pj(v,q[1])).toFixed(1);}$('#axE'+j).setAttribute('d',d);});}
+  function trace(a){LD.forEach(function(q,j){var d='';for(var i=0;i<=58;i+=.5){var v=cVec(i/58,TE,TW,a);d+=(i?' L':'M')+(q[2]+OFF+i*BW/58).toFixed(1)+' '+(q[3]-amp*pj(v,q[1])).toFixed(1);}$('#axE'+j).setAttribute('d',d);});}
   function cur(show){[0,1].forEach(function(i){$('#axCl'+i).setAttribute('visibility',show?'visible':'hidden');});LD.forEach(function(q,j){$('#axCd'+j).setAttribute('visibility',show?'visible':'hidden');});}
-  function still(){var a=S.axA;hrt(null);setV(a,R-8);$('#axTr').setAttribute('points','');cur(false);
+  function still(){var a=S.axA;hrt(null);brk(null);setV(a,R-8);$('#axTr').setAttribute('points','');cur(false);
     // the lead closest to perpendicular to the axis has the most equiphasic QRS
     var best=LD[0];LD.forEach(function(q){if(Math.abs(Math.cos((a-q[1])*Math.PI/180))<Math.abs(Math.cos((a-best[1])*Math.PI/180)))best=q;});
     $('#axL').textContent=a>=-30&&a<=90?L.axN:(a<-30&&a>=-90?L.axLAD:(a>90?L.axRAD:L.axEx));$('#axD').textContent=Math.round(a)+'° · '+fill(L.axIsoL,{l:best[0]});}
@@ -426,10 +454,10 @@ function axTrainer(){var on=S.multi&&(S.ap==='cardio'||S.ap==='sa'),el=$('#axt')
     setV(a,len,S.axA);trail.push((cx+(R-8)*v.x).toFixed(1)+','+(cy+(R-8)*v.y).toFixed(1));if(trail.length>400)trail.shift();$('#axTr').setAttribute('points',trail.join(' '));
     // the cursor on every strip, mapped onto the template beat
     var K=[[0,0]],t=0;[['P',.03],['Q',.025,'o'],['T',.08]].forEach(function(q){var k=TW[q[2]||q[0]]/LW[q[2]||q[0]];K.push([E[q[0]]-q[1],TE[q[0]]-q[1]*k],[E[q[0]]+q[1],TE[q[0]]+q[1]*k]);});K.push([1,1]);for(var i=1;i<K.length;i++)if(u<=K[i][0]){t=K[i-1][1]+(u-K[i-1][0])/(K[i][0]-K[i-1][0])*(K[i][1]-K[i-1][1]);break;}
-    hrt(t);var vt=cVec(t,TE,TW,S.axA);[150,226].forEach(function(x,i){$('#axCl'+i).setAttribute('x1',x+14+t*BW);$('#axCl'+i).setAttribute('x2',x+14+t*BW);});
-    LD.forEach(function(q,j){$('#axCd'+j).setAttribute('cx',q[2]+14+t*BW);$('#axCd'+j).setAttribute('cy',q[3]-amp*pj(vt,q[1]));});cur(true);
+    hrt(t);brk(t);var vt=cVec(t,TE,TW,S.axA);[4,154].forEach(function(x,i){$('#axCl'+i).setAttribute('x1',x+OFF+t*BW);$('#axCl'+i).setAttribute('x2',x+OFF+t*BW);});
+    LD.forEach(function(q,j){$('#axCd'+j).setAttribute('cx',q[2]+OFF+t*BW);$('#axCd'+j).setAttribute('cy',q[3]-amp*pj(vt,q[1]));});cur(true);
     $('#axL').textContent=v.ph?L['axPh'+v.ph]:L.axPhIso;$('#axD').textContent=v.ph?L.axInst+' '+Math.round(a)+'°':L.axInst0;};
-  function ang(ev){var r=sv.getBoundingClientRect(),k=300/r.width,x=(ev.clientX-r.left)*k-cx,y=(ev.clientY-r.top)*k-cy;return Math.atan2(y,x)*180/Math.PI;}
+  function ang(ev){var r=sv.getBoundingClientRect(),k=300/r.width,x=(ev.clientX-r.left)*k-cx,y=(ev.clientY-r.top)*k+VY-cy;return Math.atan2(y,x)*180/Math.PI;}
   var drag=false;sv.addEventListener('pointerdown',function(ev){drag=true;sv.setPointerCapture(ev.pointerId);upd(ang(ev));});
   sv.addEventListener('pointermove',function(ev){if(drag)upd(ang(ev));});sv.addEventListener('pointerup',function(){drag=false;});
   upd(S.axA==null?60:S.axA);}
