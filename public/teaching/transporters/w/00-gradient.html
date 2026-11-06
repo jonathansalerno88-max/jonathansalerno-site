@@ -488,8 +488,8 @@ function axTrainer(){var on=S.multi&&(S.ap==='cardio'||S.ap==='sa'),el=$('#axt')
     o+='<path id="mAo" fill="none" stroke="#E9AEB7" stroke-width="15" stroke-linecap="round"/><path id="mAo2" fill="none" stroke="#FBE7EA" stroke-width="8" stroke-linecap="round"/>';
     o+='<ellipse id="mLAw" fill="#F7D6DA" stroke="#D99AA3" stroke-width=".9"/><ellipse id="mLA" fill="#FBE7EA"/>';
     o+='<ellipse id="mLVw" fill="#F7D6DA" stroke="#D99AA3" stroke-width=".9"/><ellipse id="mLV" fill="#FBE7EA"/>';
-    o+='<path id="mFil" fill="none" stroke="#FF1A2E" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 4"/><path id="mJet" fill="none" stroke="#FF1A2E" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 4"/>';
-    o+='<path id="mMv" fill="none" stroke="#16222E" stroke-width="2.4" stroke-linecap="round"/><path id="mAv" fill="none" stroke="#16222E" stroke-width="2.4" stroke-linecap="round"/>';
+    o+='<path id="mFil" fill="none" stroke="#FF1A2E" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 4"/><path id="mJet" fill="none" stroke="#FF1A2E" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 4"/><path id="mMv" fill="none" stroke="#5A1A1A" stroke-width="2.6" stroke-linecap="round"/><path id="mAv" fill="none" stroke="#5A1A1A" stroke-width="2.6" stroke-linecap="round"/>';
+    
     o+='<line id="mF1" stroke="#16222E" stroke-width="2.4" marker-end="url(#mkH)"/><line id="mF2" stroke="#16222E" stroke-width="2.4" marker-end="url(#mkH)"/>';
     o+='<text id="mtLA" font-size="8.5" font-weight="700" fill="#A0505C" text-anchor="middle">'+L.mkLA+'</text><text id="mtLV" font-size="9" font-weight="700" fill="#A0505C" text-anchor="middle">'+L.mkLV+'</text>'+tx(121,21,L.mkAo,'start',{s:8.5,w:700,c:'#5A1A1A'});
     // Wiggers: pressures, volume, ECG
@@ -506,28 +506,33 @@ function axTrainer(){var on=S.multi&&(S.ap==='cardio'||S.ap==='sa'),el=$('#axt')
     $('#mech').innerHTML='<p class="lh">'+L.mkT+'</p><svg id="mkS" viewBox="0 0 300 288" style="width:100%;height:auto">'+o+'</svg>';
     var e='';for(var j=0;j<=200;j++){var t=j/200,v=cVec(t,TE,TW,S.axA==null?60:S.axA);e+=(j?'L':'M')+gx(t).toFixed(1)+' '+(204-10*pj(v,60)).toFixed(1);}$('#mEcg').setAttribute('d',e);
     window.__mkX=gx;})();
-  function mech(t){if(!$('#mkS'))return;var tt=t==null?.05:t,V=mv('V',tt),ph=mph(tt),k=(V-50)/70;
-    // the apex stays put, the base moves down when the ventricle empties
-    var rx=17+k*10,ry=30+k*14,th=8+(1-k)*7,apex=196,cy=apex-th-ry,base=cy-ry-th*.6;
+  // how open each valve is (0 shut, 1 wide open): the mitral drifts half shut in diastasis and opens again with the atrial kick
+  var VO={mi:[[0,.6],[.12,.5],[.17,1],[.33,.95],[.395,.9],[.405,0],[.875,0],[.895,1],[.95,.85],[1,.6]],ao:[[0,0],[.465,0],[.48,1],[.75,.8],[.785,.5],[.795,0],[1,0]]};
+  function vo(k,t){var a=VO[k];for(var i=1;i<a.length;i++)if(t<=a[i][0]){var f=(t-a[i-1][0])/(a[i][0]-a[i-1][0]);return a[i-1][1]+(a[i][1]-a[i-1][1])*f;}return a[a.length-1][1];}
+  // the atrium is a reservoir: it fills while the ventricle is shut or ejecting, empties when the mitral is open
+  MK.LAV=[[0,14],[.16,13.6],[.32,10.8],[.40,11.2],[.88,16.8],[.95,14.6],[1,14]];
+  function mech(t){if(!$('#mkS'))return;var tt=t==null?.05:t,V=mv('V',tt),ph=mph(tt),k=(V-50)/70,BL='#C02A38',JT='#FF2B3D';
+    // the apex stays put, the base moves down when the ventricle empties; the muscle thickens as the cavity shrinks
+    var rx=17+k*10,ry=30+k*14,th=8+(1-k)*7,apex=196,cy=apex-th-ry,base=cy-ry-th*.6,mb=base+2;
     $('#mLVw').setAttribute('cx',70);$('#mLVw').setAttribute('cy',cy);$('#mLVw').setAttribute('rx',rx+th);$('#mLVw').setAttribute('ry',ry+th);
-    $('#mLV').setAttribute('cx',70);$('#mLV').setAttribute('cy',cy);$('#mLV').setAttribute('rx',rx);$('#mLV').setAttribute('ry',ry);
-    var asys=tt>.16&&tt<.32?Math.sin(Math.PI*(tt-.16)/.16):0,lr=18-4*asys,lcy=base-16;
-    $('#mLAw').setAttribute('cx',48);$('#mLAw').setAttribute('cy',lcy);$('#mLAw').setAttribute('rx',lr+4);$('#mLAw').setAttribute('ry',lr*.75+4);$('#mLA').setAttribute('cx',48);$('#mLA').setAttribute('cy',lcy);$('#mLA').setAttribute('rx',lr);$('#mLA').setAttribute('ry',lr*.75);
-    $('#mtLA').setAttribute('x',36);$('#mtLA').setAttribute('y',lcy+3);$('#mtLV').setAttribute('x',58);$('#mtLV').setAttribute('y',cy+ry*.55+4);
-    $('#mAo').setAttribute('d','M88 '+(base+4)+' L88 34 Q88 18 106 18 L118 18');$('#mAo2').setAttribute('d','M88 '+(base+4)+' L88 34 Q88 18 106 18 L118 18');
-    var mo=tt<.40||tt>=.88,ao=tt>=.47&&tt<.79,mb=base+2;
-    $('#mMv').setAttribute('d',mo?'M44 '+mb+' l-3 13 M62 '+mb+' l3 13':'M44 '+mb+' l9 1 M62 '+mb+' l-9 1');
-    $('#mAv').setAttribute('d',ao?'M81 '+mb+' l-1 -12 M95 '+mb+' l1 -12':'M81 '+mb+' l7 -2 M95 '+mb+' l-7 -2');
-    var f1=$('#mF1'),f2=$('#mF2'),fl=mo&&(ph===6||ph===1||ph===0);f1.setAttribute('x1',53);f1.setAttribute('y1',lcy);f1.setAttribute('x2',57);f1.setAttribute('y2',mb+22);f1.setAttribute('visibility',fl?'visible':'hidden');f1.setAttribute('stroke-width',ph===0?1.4:2.6);
-    f2.setAttribute('visibility','hidden');f1.setAttribute('visibility','hidden');
-    // filling: a red stream from the atrium into the ventricle, as wide as the inflow (slow in diastasis, strong after the P and in rapid filling)
-    var fin=Math.max(0,mv('V',Math.min(1,tt+.01))-mv('V',tt)),fw=mo&&fin>.05?Math.min(8,1.5+fin*1.4):0,fi=$('#mFil');
-    fi.setAttribute('d','M46 '+(lcy-2).toFixed(1)+' L53 '+(mb+2).toFixed(1)+' Q58 '+(cy-ry*.3).toFixed(1)+' 66 '+(cy+ry*.35).toFixed(1));fi.setAttribute('stroke-width',fw.toFixed(1));fi.setAttribute('visibility',fw?'visible':'hidden');fi.setAttribute('stroke-dashoffset',(-tt*1200).toFixed(0));
-    if(fw)$('#mLV').setAttribute('fill','#FBD3D9');
-    var rate=Math.max(0,mv('V',tt)-mv('V',Math.min(1,tt+.01))),jw=ao?Math.min(9,2+rate*1.6):0,jt=$('#mJet');
-    jt.setAttribute('d','M70 '+(cy+ry*.35).toFixed(1)+' Q72 '+(mb+10).toFixed(1)+' 88 '+(mb-2).toFixed(1)+' L88 34 Q88 18 106 18 L124 18');jt.setAttribute('stroke-width',jw.toFixed(1));jt.setAttribute('visibility',ao?'visible':'hidden');jt.setAttribute('stroke-dashoffset',(-tt*1400).toFixed(0));
-    if(!fw)$('#mLV').setAttribute('fill',ao?'#FBC9D0':'#FBE7EA');$('#mAo2').setAttribute('stroke',ao?'#FF8A96':'#FBE7EA');
-    var ev=Math.round(120-mv('V',tt));$('#mSV').textContent=tt<.47||tt>=.88?fill(tt>=.16&&tt<.33?L.mkSVa:L.mkSV0,{v:Math.round(mv('V',tt))}):(tt<.79?fill(L.mkSV1,{n:Math.max(0,ev)}):L.mkSV2);
+    $('#mLV').setAttribute('cx',70);$('#mLV').setAttribute('cy',cy);$('#mLV').setAttribute('rx',rx);$('#mLV').setAttribute('ry',ry);$('#mLV').setAttribute('fill',BL);
+    var lr=mv('LAV',tt),lcy=base-lr*.75-3;
+    $('#mLAw').setAttribute('cx',50);$('#mLAw').setAttribute('cy',lcy);$('#mLAw').setAttribute('rx',lr+4);$('#mLAw').setAttribute('ry',lr*.75+4);$('#mLA').setAttribute('cx',50);$('#mLA').setAttribute('cy',lcy);$('#mLA').setAttribute('rx',lr);$('#mLA').setAttribute('ry',lr*.75);$('#mLA').setAttribute('fill',BL);
+    $('#mtLA').setAttribute('x',34);$('#mtLA').setAttribute('y',lcy-lr*.75-6);$('#mtLA').setAttribute('fill','#A0505C');$('#mtLV').setAttribute('x',70);$('#mtLV').setAttribute('y',cy+ry+th+11);$('#mtLV').setAttribute('fill','#A0505C');
+    var ap='M88 '+(base+4)+' L88 34 Q88 18 106 18 L118 18';$('#mAo').setAttribute('d',ap);$('#mAo2').setAttribute('d',ap);$('#mAo2').setAttribute('stroke',BL);
+    // valve leaflets: the mitral opens down into the ventricle, the aortic cusps open up against the aortic wall
+    var m=vo('mi',tt),a=vo('ao',tt),r=Math.PI/180;
+    function leaf(x,y,ang,L){return 'M'+x+' '+y.toFixed(1)+' l'+(L*Math.cos(ang*r)).toFixed(1)+' '+(L*Math.sin(ang*r)).toFixed(1);}
+    $('#mMv').setAttribute('d',leaf(41,mb,-8+86*m,12)+' '+leaf(64,mb,188-86*m,11));
+    $('#mAv').setAttribute('d',leaf(80,mb,8-96*a,8)+' '+leaf(96,mb,172+96*a,8));
+    $('#mF1').setAttribute('visibility','hidden');$('#mF2').setAttribute('visibility','hidden');
+    // filling stream: from the atrium through the open mitral into the blood of the ventricle, as wide as the inflow
+    var fin=Math.max(0,mv('V',Math.min(1,tt+.01))-mv('V',tt)),fw=m>.3&&fin>.05?Math.min(8,1.5+fin*1.4)*m:0,fi=$('#mFil');
+    fi.setAttribute('d','M50 '+lcy.toFixed(1)+' L52.5 '+(mb+2).toFixed(1)+' Q56 '+(cy-ry*.3).toFixed(1)+' 64 '+(cy+ry*.3).toFixed(1));fi.setAttribute('stroke',JT);fi.setAttribute('stroke-width',fw.toFixed(1));fi.setAttribute('visibility',fw?'visible':'hidden');fi.setAttribute('stroke-dashoffset',(-tt*1200).toFixed(0));
+    // ejection jet: from the ventricle through the open aortic valve into the aorta
+    var rate=Math.max(0,mv('V',tt)-mv('V',Math.min(1,tt+.01))),jw=a>.3?Math.min(9,2+rate*1.6)*a:0,jt=$('#mJet');
+    jt.setAttribute('d','M74 '+(cy+ry*.3).toFixed(1)+' Q76 '+(mb+12).toFixed(1)+' 88 '+(mb-2).toFixed(1)+' L88 34 Q88 18 106 18 L124 18');jt.setAttribute('stroke',JT);jt.setAttribute('stroke-width',jw.toFixed(1));jt.setAttribute('visibility',jw?'visible':'hidden');jt.setAttribute('stroke-dashoffset',(-tt*1400).toFixed(0));
+    var ev=Math.round(120-V);$('#mSV').textContent=tt<.47||tt>=.88?fill(tt>=.16&&tt<.33?L.mkSVa:L.mkSV0,{v:Math.round(V)}):(tt<.79?fill(L.mkSV1,{n:Math.max(0,ev)}):L.mkSV2);
     var x=__mkX(tt);$('#mCu').setAttribute('x1',x);$('#mCu').setAttribute('x2',x);$('#mCu').setAttribute('visibility',t==null?'hidden':'visible');
     var q=L.mkPh[ph];$('#mPh').textContent=q[0];$('#mPx').textContent=q[1];}
   // during the action potential: the same time as the cursor on the ECG above
