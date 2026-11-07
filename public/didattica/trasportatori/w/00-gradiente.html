@@ -607,7 +607,9 @@ function axTrainer(){var on=S.multi&&(S.ap==='cardio'||S.ap==='sa'),el=$('#axt')
   // during the action potential: the same time as the cursor on the ECG above
   var trail=[],lastU=null,scr=false;
   // time of the action potential (u) ↔ time of the template beat on the strips (t)
-  function KN(E){var K=[[0,0]];[['P',.03],['Q',.025,'o'],['T',.08]].forEach(function(q){var k=TW[q[2]||q[0]]/LW[q[2]||q[0]];K.push([E[q[0]]-q[1],TE[q[0]]-q[1]*k],[E[q[0]]+q[1],TE[q[0]]+q[1]*k]);});K.push([1,1]);return K;}
+  // knots: P on P, QRS on the upstroke (phase 0), the end of isovolumetric contraction at the start of the plateau,
+  // ejection on the plateau (phase 2, Ca²⁺ entering) and into phase 3, the closure of the aortic valve at the end of phase 3
+  function KN(E){var c=S.ap!=='sa';return [[0,0],[E.P-.03,.055],[E.P+.03,.205],[E.Q-(c?.015:.012),.337],[E.Q+(c?.009:.012),.422],[E.Q+(c?.045:.04),.47],[c?.55:E.T-.06,.62],[c?.72:E.T+.08,.80],[1,1]];}
   // the slider under the strips: drag the beat back and forth by hand (the cell pauses)
   var sl=$('#axSl');sl.addEventListener('pointerdown',function(){scr=true;});sl.addEventListener('pointerup',function(){scr=false;});
   sl.addEventListener('input',function(){var E=EC[S.ap];if(!E)return;var t=sl.value/1000,K=KN(E),u=1;for(var i=1;i<K.length;i++)if(t<=K[i][1]){u=K[i-1][0]+(t-K[i-1][1])/((K[i][1]-K[i-1][1])||1)*(K[i][0]-K[i-1][0]);break;}
