@@ -570,7 +570,7 @@ function axTrainer(){var on=S.multi&&(S.ap==='cardio'||S.ap==='sa'),el=$('#axt')
       '<text id="bkTV" x="38" y="212" font-size="9.5" font-weight="700" fill="#A0505C" text-anchor="middle">'+L.bkV+'</text>'+tx(430,166,L.bkA,'middle',{s:9.5,w:700,c:'#55697A'})+
       tx(304,134,L.bkG,'start',{s:8.5,w:700,c:'#7A2530'})+'<text id="bkCl" x="282" y="84" font-size="11" font-weight="700" fill="#7A2530" text-anchor="end" opacity="0">'+L.bkClang+'</text>'+
       '<g id="bk1"></g><g id="bk0"></g>';
-    $('#bike').innerHTML='<p class="lh">'+L.bkT+'</p><svg viewBox="0 62 462 158" style="width:100%;height:auto">'+o+'</svg><div class="mbtn" id="mbtn2"></div><p class="exc" id="bkC"></p><p class="exc">'+L.bkRd+'</p><p class="exc">'+L.bkAR+'</p>';})();
+    $('#bike').innerHTML='<p class="lh">'+L.bkT+'</p><svg viewBox="0 54 462 166" style="width:100%;height:auto">'+o+'</svg><div class="mbtn" id="mbtn2"></div><p class="exc" id="bkC"></p><p class="exc">'+L.bkRd+'</p><p class="exc">'+L.bkAR+'</p>';})();
   // how open each valve is (0 shut, 1 wide open): the mitral drifts half shut in diastasis and opens again with the atrial kick
   var VO={mi:[[0,.6],[.12,.5],[.17,1],[.33,.95],[.395,.9],[.405,0],[.875,0],[.895,1],[.95,.85],[1,.6]],ao:[[0,0],[.465,0],[.48,1],[.75,.8],[.785,.5],[.795,0],[1,0]]};
   function vo(k,t){var a=VO[k];for(var i=1;i<a.length;i++)if(t<=a[i][0]){var f=(t-a[i-1][0])/(a[i][0]-a[i-1][0]);return a[i-1][1]+(a[i][1]-a[i-1][1])*f;}return a[a.length-1][1];}
@@ -593,12 +593,15 @@ function axTrainer(){var on=S.multi&&(S.ap==='cardio'||S.ap==='sa'),el=$('#axt')
     var o='',sp=xr/R;
     [[xr,yr],[xf,yf]].forEach(function(w){o+='<circle cx="'+w[0].toFixed(1)+'" cy="'+w[1].toFixed(1)+'" r="'+R+'" fill="none" stroke="#16222E" stroke-width="1.6"/>';
       for(var j=0;j<2;j++){var q=sp+j*Math.PI/2;o+='<line x1="'+(w[0]-R*Math.cos(q)).toFixed(1)+'" y1="'+(w[1]-R*Math.sin(q)).toFixed(1)+'" x2="'+(w[0]+R*Math.cos(q)).toFixed(1)+'" y2="'+(w[1]+R*Math.sin(q)).toFixed(1)+'" stroke="#8696A4" stroke-width=".8"/>';}});
-    var c=cr*.32,B=[11,1.5],P1=[B[0]+4.5*Math.cos(c),B[1]+4.5*Math.sin(c)],P2=[B[0]-4.5*Math.cos(c),B[1]-4.5*Math.sin(c)],Hp=stand?[11,-17]:[8,-14],Sh=stand?[20,-26]:[17,-26];
+    var c=cr*.32,B=[11,1.5],P1=[B[0]+4.5*Math.cos(c),B[1]+4.5*Math.sin(c)],P2=[B[0]-4.5*Math.cos(c),B[1]-4.5*Math.sin(c)],Hp=stand?[13,-18]:[10,-15],C=stand?[15,-25]:[12,-22];
     function knee(P){var dx=P[0]-Hp[0],dy=P[1]-Hp[1],d=Math.min(19.8,Math.hypot(dx,dy)),f=Math.atan2(dy,dx),b=Math.acos(d/20),k1=[Hp[0]+10*Math.cos(f-b),Hp[1]+10*Math.sin(f-b)],k2=[Hp[0]+10*Math.cos(f+b),Hp[1]+10*Math.sin(f+b)];return k1[0]>k2[0]?k1:k2;}
     function pl(A,col,w){return '<polyline points="'+A.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' ')+'" fill="none" stroke="'+col+'" stroke-width="'+w+'" stroke-linecap="round" stroke-linejoin="round"/>';}
-    var g='<g transform="translate('+xr.toFixed(1)+' '+yr.toFixed(1)+') rotate('+(a*180/Math.PI).toFixed(1)+')">'+pl([Hp,knee(P2),P2],'#8696A4',2.2);
+    var g='<g transform="translate('+xr.toFixed(1)+' '+yr.toFixed(1)+') rotate('+(a*180/Math.PI).toFixed(1)+')">'+pl([Hp,knee(P2),P2],'#8696A4',1.8);
     g+=pl([[0,0],B,[8,-12],[0,0]],'#C62828',1.6)+pl([[8,-12],[22,-10],B],'#C62828',1.6)+pl([[22,-10],[26,0]],'#C62828',1.6)+pl([[22,-10],[24,-14]],'#16222E',1.6)+pl([[6,-12.5],[10,-12.5]],'#16222E',2);
-    g+=pl([P1,P2],'#16222E',1.4)+pl([Hp,Sh],'#16222E',2.4)+pl([Sh,[24,-14]],'#16222E',1.8)+'<circle cx="'+(Sh[0]+2.5)+'" cy="'+(Sh[1]-5.5)+'" r="3.4" fill="#16222E"/>'+pl([Hp,knee(P1),P1],'#16222E',2.4);
+    // the rider is a red blood cell: a disc with its pale centre, two eyes, thin arms and legs
+    g+=pl([P1,P2],'#16222E',1.4)+pl([Hp,knee(P1),P1],'#16222E',1.8)+pl([[C[0]+5,C[1]+3],[24,-14]],'#16222E',1.6);
+    g+='<circle cx="'+C[0]+'" cy="'+C[1]+'" r="8.5" fill="#E53935" stroke="#9E1F2C" stroke-width="1"/><ellipse cx="'+C[0]+'" cy="'+(C[1]+.6)+'" rx="4.2" ry="3.6" fill="#F4A3A3"/>';
+    g+='<circle cx="'+(C[0]+2.6)+'" cy="'+(C[1]-4.4)+'" r="1.6" fill="#FFFFFF"/><circle cx="'+(C[0]+6.2)+'" cy="'+(C[1]-3.4)+'" r="1.6" fill="#FFFFFF"/><circle cx="'+(C[0]+3.1)+'" cy="'+(C[1]-4.3)+'" r=".8" fill="#16222E"/><circle cx="'+(C[0]+6.7)+'" cy="'+(C[1]-3.3)+'" r=".8" fill="#16222E"/>';
     return o+g+'</g>';}
   // the ride, on the same beat as everything else: the bike comes in during diastole, waits while the push builds,
   // climbs as fast as the stroke volume leaves, stops at the top, rolls back a little and shuts the gate (S2)
