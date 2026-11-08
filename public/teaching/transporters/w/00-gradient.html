@@ -570,7 +570,7 @@ function axTrainer(){var on=S.multi&&(S.ap==='cardio'||S.ap==='sa'),el=$('#axt')
       '<text id="bkTV" x="38" y="212" font-size="9.5" font-weight="700" fill="#A0505C" text-anchor="middle">'+L.bkV+'</text>'+tx(430,166,L.bkA,'middle',{s:9.5,w:700,c:'#55697A'})+
       tx(304,134,L.bkG,'start',{s:8.5,w:700,c:'#7A2530'})+'<text id="bkCl" x="282" y="84" font-size="11" font-weight="700" fill="#7A2530" text-anchor="end" opacity="0">'+L.bkClang+'</text>'+
       '<g id="bk1"></g><g id="bk0"></g>';
-    $('#bike').innerHTML='<p class="lh">'+L.bkT+'</p><svg viewBox="0 62 462 158" style="width:100%;height:auto">'+o+'</svg><p class="exc" id="bkC"></p><p class="exc">'+L.bkRd+'</p><p class="exc">'+L.bkAR+'</p>';})();
+    $('#bike').innerHTML='<p class="lh">'+L.bkT+'</p><svg viewBox="0 62 462 158" style="width:100%;height:auto">'+o+'</svg><div class="mbtn" id="mbtn2"></div><p class="exc" id="bkC"></p><p class="exc">'+L.bkRd+'</p><p class="exc">'+L.bkAR+'</p>';})();
   // how open each valve is (0 shut, 1 wide open): the mitral drifts half shut in diastasis and opens again with the atrial kick
   var VO={mi:[[0,.6],[.12,.5],[.17,1],[.33,.95],[.395,.9],[.405,0],[.875,0],[.895,1],[.95,.85],[1,.6]],ao:[[0,0],[.465,0],[.48,1],[.75,.8],[.785,.5],[.795,0],[1,0]]};
   function vo(k,t){var a=VO[k];for(var i=1;i<a.length;i++)if(t<=a[i][0]){var f=(t-a[i-1][0])/(a[i][0]-a[i-1][0]);return a[i-1][1]+(a[i][1]-a[i-1][1])*f;}return a[a.length-1][1];}
@@ -792,9 +792,12 @@ function eqPanelM(){var G={v:vM(),k:2.302585*RT/F*1000},h='<p><button class="fi"
   $('#goback').onclick=function(){tMulti();};
   document.querySelectorAll('#eqp .apb button').forEach(function(b){b.onclick=function(){S.ap=b.dataset.a;S.apT=null;setCellM();S.vm=S.vR;reset();scene();S.dirty=true;eqPanel();};});
   // depolarise: open the Na⁺ channels (P_Na from 0.05 to 20, as at the peak of an action potential)
-  var run=S.apT!=null,mk=run+'|'+S.apP+'|'+S.ap+'|'+(S.spd||1);if(S.mbk===mk&&$('#depb'))return;S.mbk=mk;var m='<div class="dps"><button class="dep'+(run?' on':'')+'" id="depb"'+(run?' disabled':'')+'>'+(run?L.mRun:L.mDep)+'</button>'+(run?'<button class="dep" id="apz">'+(S.apP?L.play:L.pause)+'</button><button class="dep" id="apr">'+L.apReset+'</button>':'')+'</div><div class="spd">'+L.spd+' '+[[2,'×2'],[1,'×1'],[.5,'½'],[.25,'¼']].map(function(q){return '<button class="sp'+((S.spd||1)===q[0]?' on':'')+'" data-s="'+q[0]+'">'+q[1]+'</button>';}).join('')+'</div>';$('#mbtn').innerHTML=m;
-  var z=$('#apz');if(z)z.onclick=function(){S.apP=!S.apP;eqPanel();};document.querySelectorAll('#mbtn .sp').forEach(function(b){b.onclick=function(){S.spd=+b.getAttribute('data-s');eqPanel();};});var zr=$('#apr');if(zr)zr.onclick=function(){S.apT=null;S.apP=false;S.pov=null;S.dirty=true;eqPanel();};
-  $('#depb').onclick=function(){S.apP=false;if(S.ap==='none')S.ap='neuron';S.apK=S.ap;S.dep='rest';S.apT=0;reset();S.dirty=true;eqPanel();};}
+  // the buttons, twice: under the equation and under the bike (same state, same actions)
+  var run=S.apT!=null,mk=run+'|'+S.apP+'|'+S.ap+'|'+(S.spd||1);if(S.mbk===mk&&$('#depb')&&(!$('#mbtn2')||$('#depb2')))return;S.mbk=mk;
+  [['#mbtn',''],['#mbtn2','2']].forEach(function(q){var box=$(q[0]),x=q[1];if(!box)return;
+    box.innerHTML='<div class="dps"><button class="dep'+(run?' on':'')+'" id="depb'+x+'"'+(run?' disabled':'')+'>'+(run?L.mRun:L.mDep)+'</button>'+(run?'<button class="dep" id="apz'+x+'">'+(S.apP?L.play:L.pause)+'</button><button class="dep" id="apr'+x+'">'+L.apReset+'</button>':'')+'</div><div class="spd">'+L.spd+' '+[[2,'×2'],[1,'×1'],[.5,'½'],[.25,'¼']].map(function(w){return '<button class="sp'+((S.spd||1)===w[0]?' on':'')+'" data-s="'+w[0]+'">'+w[1]+'</button>';}).join('')+'</div>';
+    var z=$('#apz'+x);if(z)z.onclick=function(){S.apP=!S.apP;eqPanel();};box.querySelectorAll('.sp').forEach(function(b){b.onclick=function(){S.spd=+b.getAttribute('data-s');eqPanel();};});var zr=$('#apr'+x);if(zr)zr.onclick=function(){S.apT=null;S.apP=false;S.pov=null;S.dirty=true;eqPanel();};
+    $('#depb'+x).onclick=function(){S.apP=false;if(S.ap==='none')S.ap='neuron';S.apK=S.ap;S.dep='rest';S.apT=0;reset();S.dirty=true;eqPanel();};});}
 function nOfS(cv,x){var I=ION[x],m=Math.max(I.ci,I.co);return Math.min(14,Math.round(1+11*Math.sqrt(cv/m)));}
 function nOf(cv){var I=ION[S.ion],m=Math.max(I.ci,I.co);return Math.min(26,Math.round(2+20*Math.sqrt(cv/m)));}
 function cnt(sd){var n=0;P.forEach(function(p){if(p.s===sd)n++;});return n;}
