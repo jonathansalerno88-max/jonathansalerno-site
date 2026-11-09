@@ -117,8 +117,8 @@ svg[viewBox]{min-width:0!important;max-width:620px!important;width:100%;margin:0
   <label><span>Concentration outside</span><span class="row"><input type="range" id="co" min="-4" max="2.5" step="0.05"><output id="coo"></output></span></label>
 </div>
 <div class="flg" id="flg"></div>
-<div class="pnl prow"><div class="lc"><svg id="sv" viewBox="-34 -34 494 612" role="img" aria-label="The electrochemical gradient: a voltmeter reads the membrane potential; ions cross the membrane along the sum of the chemical and electrical gradients (passive) or against it (active, with energy)"></svg><p class="refs" id="refs"></p><div class="eqp mg" id="mgeq"></div><div class="mbtn" id="mbtn"></div><div class="epx" id="epx"></div><div class="epx" id="wig"></div><div class="epx" id="bike"></div><div class="ngen" id="ngen"></div></div><div class="rc"><aside class="eqp" id="eqp"></aside><div class="axt" id="axt"></div><div class="epx bpz" id="bpz"></div></div></div>
-<div class="pnl cpn" id="cpn" hidden><svg id="cv" viewBox="0 0 460 244" role="img"></svg><div class="cl" id="cl"></div></div>
+<div class="pnl prow"><div class="lc"><svg id="sv" viewBox="-34 -34 494 612" role="img" aria-label="The electrochemical gradient: a voltmeter reads the membrane potential; ions cross the membrane along the sum of the chemical and electrical gradients (passive) or against it (active, with energy)"></svg><div class="cpn" id="cpn" hidden></div><p class="refs" id="refs"></p><div class="eqp mg" id="mgeq"></div><div class="mbtn" id="mbtn"></div><div class="epx" id="epx"></div><div class="epx" id="wig"></div><div class="epx" id="bike"></div><div class="ngen" id="ngen"></div></div><div class="rc"><aside class="eqp" id="eqp"></aside><div class="axt" id="axt"></div><div class="epx bpz" id="bpz"></div></div></div>
+
 <div class="txt" id="tx" hidden></div>
 <div class="txt rule" id="rl"></div>
 <p class="fn" id="fn"></p>
@@ -375,7 +375,7 @@ function circuit(c){var I=ION[S.ion],z=c.z,l=I.g.replace(/[⁺⁻²]/g,''),o='',
   $('#cl').innerHTML=L.cLeg+(z?'<p class="ci">'+fill(L.cI,{l:l,vm:num(S.vm,0),E:par(c.E,0),d:num(S.vm-c.E,0,true),r:Math.abs(S.vm-c.E)<1.5?L.cI0:(S.vm-c.E>0?(z>0?L.cIoT:L.cIiT):(z>0?L.cIiT:L.cIoT))})+'</p>':'');}
 function flags(){function b(k,t,on){return '<button data-f="'+k+'" class="'+(on?'on':'')+'" aria-pressed="'+on+'"><span class="ck">'+(on?'✓':'')+'</span>'+t+'</button>';}
   $('#flg').innerHTML=b('ins',L.fIns,!S.ins)+b('circ',L.fCirc,S.circ);
-  document.querySelectorAll('#flg button').forEach(function(x){x.onclick=function(){if(x.dataset.f==='ins'){S.ins=!S.ins;reset();scene();}else{S.circ=!S.circ;$('#cpn').hidden=!S.circ;if(S.circ)circQ();else circStop();dyn();}flags();};});}
+  document.querySelectorAll('#flg button').forEach(function(x){x.onclick=function(){if(x.dataset.f==='ins'){S.ins=!S.ins;reset();scene();}else{S.circ=!S.circ;$('#cpn').hidden=!S.circ;$('#sv').style.display=S.circ?'none':'';if(S.circ)circQ();else circStop();dyn();}flags();};});}
 // real cells: the resting potential from the Goldman–Hodgkin–Katz equation (concentrations in mM, inside / outside; Hille, Boron)
 // p = relative permeabilities P_K : P_Na : P_Cl (squid: Hodgkin & Katz 1949; the others indicative, chosen to give the measured resting potentials)
 var CELLS={
@@ -1045,7 +1045,7 @@ function setIon(k){S.ion=k;var CE=CELLS[S.cell];S.T=CE.T;RT=8.314*S.T;if(CE.ion[
   $('#co').oninput=function(){S.co=Number(Math.pow(10,+this.value).toPrecision(2));gInit();reset();scene();};
   $('#eqb').onclick=function(){var c=calc();if(c.z){S.vb=c.E;S.free=false;S.vm=c.E;reset();scene();}};
   window.selIon=function(k){setIon(k);};
-  window.tMulti=function(){S.dep='rest';S.apT=null;S.pov=null;S.multi=!S.multi;S.mode='pas';S.free=true;S.ins=true;S.circ=false;$('#cpn').hidden=true;circStop();flags();reset();
+  window.tMulti=function(){S.dep='rest';S.apT=null;S.pov=null;S.multi=!S.multi;S.mode='pas';S.free=true;S.ins=true;S.circ=false;$('#cpn').hidden=true;$('#sv').style.display='';circStop();flags();reset();
     if(S.multi){setCellM();S.vm=S.vR;scene();eqPanel();}else setIon('K');};
   window.tPump=function(){S.mode=S.mode==='act'?'pas':'act';reset();scene();};
   window.doReset=function(){S.vb=-120;S.free=true;S.mode='pas';S.ins=true;flags();setIon(S.ion);};
