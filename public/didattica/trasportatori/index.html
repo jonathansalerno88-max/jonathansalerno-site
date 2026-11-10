@@ -1,18 +1,19 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="it">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>I trasportatori — Jonathan Salerno</title>
-<link rel="alternate" hreflang="it" href="/didattica/trasportatori/">
-<link rel="alternate" hreflang="en" href="/teaching/transporters/">
-<link rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
-<meta name="description" content="Che cos'è un trasportatore e quando è passivo o attivo: il gradiente elettrochimico, con voltmetro, frecce ed equazione di Nernst. Poi le tre vie per attraversare una membrana, animate: diffusione semplice, canali (sempre aperti, voltaggio-, ligando-dipendenti, meccanosensibili) e trasportatori (uniporto, simporto, antiporto), passivi, attivi o secondariamente attivi. Poi i trasportatori del nefrone, segmento per segmento, con le cellule intercalate; infine due trasporti dei batteri, il sistema ABC e la traslocazione di gruppo (PTS); e la differenza fra trasporto e secrezione, con i sistemi di secrezione da Sec al T7SS.">
-<meta name="author" content="Jonathan Salerno">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
-<meta property="og:type" content="article">
-<meta property="og:title" content="I trasportatori">
-<meta property="og:description" content="Diffusione, canali, trasportatori e pompe, animati; poi i trasportatori del nefrone e due trasporti dei batteri.">
+<link href="/didattica/trasportatori/" hreflang="it" rel="alternate"/>
+<link href="/teaching/transporters/" hreflang="en" rel="alternate"/>
+<link href="https://creativecommons.org/licenses/by-nc/4.0/" rel="license"/>
+<meta content="Che cos'è un trasportatore e quando è passivo o attivo: il gradiente elettrochimico, con voltmetro, frecce ed equazione di Nernst. Poi le tre vie per attraversare una membrana, animate: diffusione semplice, canali (sempre aperti, voltaggio-, ligando-dipendenti, meccanosensibili) e trasportatori (uniporto, simporto, antiporto), passivi, attivi o secondariamente attivi. Poi i trasportatori del nefrone, segmento per segmento, con le cellule intercalate; infine due trasporti dei batteri, il sistema ABC e la traslocazione di gruppo (PTS); e la differenza fra trasporto e secrezione, con i sistemi di secrezione da Sec al T7SS." name="description"/>
+<meta content="Jonathan Salerno" name="author"/>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E" rel="icon"/>
+<meta content="article" property="og:type"/>
+<meta content="I trasportatori" property="og:title"/>
+<meta content="Diffusione, canali, trasportatori e pompe, animati; poi i trasportatori del nefrone e due trasporti dei batteri." property="og:description"/>
 <style>
 @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 @font-face{font-family:'IBM Plex Sans';font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/ibm-plex-sans-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
@@ -270,204 +271,124 @@ figure.w iframe.h-grad{height:1460px}
 </head>
 <body>
 <div class="page">
-
 <div class="topbar">
-  <a href="/">Jonathan Salerno</a>
-  <div class="tright">
-  <details class="lang sup">
-    <summary aria-label="Contatti e sostegno"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg> <span class="sl">Contatti</span></summary>
-    <ul>
-      <li><a href="/bio/"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg> Chi sono</a></li>
-      <li><a data-contact href="mailto:info@eraofprevention.com?subject=I%20trasportatori"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> Segnala errori o mandami le tue idee</a></li>
-      <li><a href="https://buy.stripe.com/7sYfZh0rzgJTb9a7TG3Nm01" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg> Sostieni la cultura senza pubblicità né tracciamento</a></li>
-    </ul>
-  </details>
-  <details class="lang">
-    <summary aria-label="Lingua / Language"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg> Italiano</summary>
-    <ul>
-      <li><a href="/didattica/trasportatori/" lang="it" hreflang="it" aria-current="page">Italiano</a></li>
-      <li><a href="/teaching/transporters/" lang="en" hreflang="en">English</a></li>
-    </ul>
-  </details>
-  </div>
+<a href="/">Jonathan Salerno</a>
+<div class="tright">
+<details class="lang sup">
+<summary aria-label="Contatti e sostegno"><svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="16"><path d="m11 17 2 2a1 1 0 1 0 3-3"></path><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"></path><path d="m21 3 1 11h-2"></path><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"></path><path d="M3 4h8"></path></svg> <span class="sl">Contatti</span></summary>
+<ul>
+<li><a href="/bio/"><svg aria-hidden="true" fill="none" height="14" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="14"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg> Chi sono</a></li>
+<li><a data-contact="" href="mailto:info@eraofprevention.com?subject=I%20trasportatori"><svg aria-hidden="true" fill="none" height="14" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="14"><rect height="14" rx="2" width="18" x="3" y="5"></rect><path d="m3 7 9 6 9-6"></path></svg> Segnala errori o mandami le tue idee</a></li>
+<li><a href="https://buy.stripe.com/7sYfZh0rzgJTb9a7TG3Nm01" rel="noopener"><svg aria-hidden="true" fill="none" height="14" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="14"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg> Sostieni la cultura senza pubblicità né tracciamento</a></li>
+</ul>
+</details>
+<details class="lang">
+<summary aria-label="Lingua / Language"><svg aria-hidden="true" fill="none" height="15" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="15"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"></path></svg> Italiano</summary>
+<ul>
+<li><a aria-current="page" href="/didattica/trasportatori/" hreflang="it" lang="it">Italiano</a></li>
+<li><a href="/teaching/transporters/" hreflang="en" lang="en">English</a></li>
+</ul>
+</details>
 </div>
-
+</div>
 <header>
-  <p class="kicker">SUPPORTO ALLO STUDIO</p>
-  <h1>I trasportatori</h1>
-  <div class="lede">
-    <p>Come fa una sostanza ad attraversare una membrana, e se il trasporto è passivo, attivo o secondariamente attivo. Prima che cos'è un trasportatore e rispetto a che cosa si dice passivo o attivo: il gradiente elettrochimico. Poi i meccanismi in generale,
-    animati uno per uno; poi i trasportatori del nefrone, segmento per segmento; poi due trasporti tipici dei batteri; infine la differenza fra trasporto e secrezione, con i sistemi di secrezione batterici.</p>
-    <p class="caveat">Animazioni semplificate a scopo didattico: concentrazioni e velocità sono indicative.</p>
-  </div>
+<p class="kicker">SUPPORTO ALLO STUDIO</p>
+<h1>I trasportatori</h1>
+
 </header>
-
-<nav class="toc" aria-label="Sommario">
-  <h2>Sommario</h2>
-  <ol>
-    <li><a href="#definizione">Che cos'è un trasportatore</a><ul><li><a href="#gradiente">Passivo o attivo: il gradiente elettrochimico</a></li></ul></li>
-    <li><a href="#cosa">Come si attraversa una membrana</a></li>
-    <li><a href="#rene">I trasportatori del rene</a></li>
-    <li><a href="#batteri">Due trasporti dei batteri: ABC e traslocazione di gruppo</a><ul><li><a href="#uomo">E nell'uomo?</a></li></ul></li>
-    <li><a href="#secrezione">Trasporto o secrezione?</a><ul><li><a href="#sistemi-secrezione">I sistemi di secrezione</a></li></ul></li>
-  </ol>
-  <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#fonti">Fonti</a></p>
+<nav aria-label="Sommario" class="toc">
+<h2>Sommario</h2>
+<ol>
+<li><a href="#definizione">Che cos'è un trasportatore</a><ul><li><a href="#gradiente">Passivo o attivo: il gradiente elettrochimico</a></li></ul></li>
+<li><a href="#cosa">Come si attraversa una membrana</a></li>
+<li><a href="#rene">I trasportatori del rene</a></li>
+<li><a href="#batteri">Due trasporti dei batteri: ABC e traslocazione di gruppo</a><ul><li><a href="#uomo">E nell'uomo?</a></li></ul></li>
+<li><a href="#secrezione">Trasporto o secrezione?</a><ul><li><a href="#sistemi-secrezione">I sistemi di secrezione</a></li></ul></li>
+</ol>
+<p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#fonti">Fonti</a></p>
 </nav>
-
 <section id="definizione">
-  <h2>1 · Che cos'è un trasportatore</h2>
-  <p class="def">Un <b>trasportatore</b> è una proteina di membrana che lega una sostanza su un lato, cambia forma e la
-  rilascia sull'altro. Si distingue in <b>passivo</b> e <b>attivo</b>.</p>
+<h2>1 · Che cos'è un trasportatore</h2>
 
-  <h3 id="gradiente">Passivo o attivo rispetto a che cosa? Al gradiente elettrochimico</h3>
-  <p>Su una sostanza che attraversa la membrana agiscono due spinte. La spinta <b>chimica</b> (freccia blu) viene dalla
-  concentrazione: la sostanza tende ad andare da dove è più concentrata a dove lo è meno. La spinta <b>elettrica</b>
-  (freccia rossa) viene dal potenziale di membrana e vale solo per gli ioni: l'interno della cellula è negativo, quindi
-  attira i cationi e respinge gli anioni. La somma delle due è il <b>gradiente elettrochimico</b> (freccia viola).</p>
-  <p><b>La freccia viola è il verso del movimento netto.</b> Le molecole attraversano la membrana in tutte e due le direzioni, ma più in un verso che nell'altro: il movimento netto è la differenza fra quante escono e quante entrano. Se nessuno tiene fissi concentrazioni e voltaggio, il movimento netto continua finché si arriva all'<b>equilibrio</b>: lì è come se la stessa molecola uscisse e rientrasse: per ogni uscita c'è un'entrata, e il netto è zero. Il gradiente elettrochimico è zero, ma il traffico non si ferma.</p>
-  <ul>
-    <li><b>Passivo</b>: la sostanza va nel verso della freccia viola, cioè <b>scende</b> lungo il gradiente elettrochimico. Non serve energia.</li>
-    <li><b>Attivo</b>: la sostanza va contro la freccia viola, cioè <b>sale</b>. Serve energia: l'ATP (<b>attivo primario</b>, le pompe) oppure un altro ione che scende nello stesso trasportatore (<b>attivo secondario</b>).</li>
-  </ul>
-  <p>La concentrazione da sola non basta per decidere. Uno ione può andare contro la sua concentrazione e restare passivo, se la
-  spinta elettrica è più forte. Per una molecola senza carica, come il glucosio, la freccia rossa non c'è e il gradiente
-  elettrochimico coincide con quello chimico.</p>
-  <figure class="w">
-    <iframe src="w/00-gradiente.html" title="Il gradiente elettrochimico: voltmetro, membrana e tre frecce, trasporto passivo o attivo" loading="lazy" class="ph h-grad"></iframe>
-    <figcaption><a href="w/00-gradiente.html">Apri a schermo intero</a></figcaption>
-  </figure>
+<h3 id="gradiente">Passivo o attivo rispetto a che cosa? Al gradiente elettrochimico</h3>
+
+
+
+
+<figure class="w">
+<iframe class="ph h-grad" loading="lazy" src="w/00-gradiente.html" title="Il gradiente elettrochimico: voltmetro, membrana e tre frecce, trasporto passivo o attivo"></iframe>
+<figcaption><a href="w/00-gradiente.html">Apri a schermo intero</a></figcaption>
+</figure>
 </section>
-
 <section id="cosa">
-  <h2>2 · Come si attraversa una membrana</h2>
-  <p>La membrana è un doppio strato di lipidi. Per attraversarla ci sono <b>tre vie</b>: passare direttamente
-  attraverso i lipidi (diffusione semplice, solo per molecole piccole e senza carica), passare per un <b>canale</b>
-  oppure farsi portare da un <b>trasportatore</b>. Poi si guarda dentro ciascuna via: i canali si distinguono per
-  che cosa li apre, i trasportatori per quante sostanze portano e in che direzione. Diffusione semplice e canali
-  sono sempre passivi; un trasportatore può essere passivo, attivo (la pompa, con ATP) o secondariamente attivo.</p>
-  <figure class="w">
-    <iframe src="w/00-intro.html" title="Come si attraversa una membrana: diffusione semplice, canale, trasportatore" loading="lazy" class="ph"></iframe>
-    <figcaption>Scegli una delle tre vie, poi il tipo di canale o di trasportatore; il pulsante Pausa ferma l'animazione. <a href="w/00-intro.html">Apri a schermo intero</a></figcaption>
-  </figure>
-  <div class="tscroll tw"><table>
-    <thead><tr><th>Via</th><th>Sottotipi</th><th>Energia</th><th>Si satura?</th><th>Esempi</th></tr></thead>
-    <tbody>
-    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#9A7400"></span>Diffusione semplice</td><td>nessuno: niente proteina</td><td>sempre passiva</td><td>no</td><td>O₂, CO₂, ormoni steroidei</td></tr>
-    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#1F6FB2"></span>Canale</td><td>sempre aperto, voltaggio-dipendente, ligando-dipendente, meccanosensibile</td><td>sempre passivo</td><td>quasi mai</td><td>K2P, Na<sub>v</sub>, recettore nicotinico, Piezo; nel rene ENaC, ROMK, acquaporine</td></tr>
-    <tr><td><span style="display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:.4em;background:#2E7D4F"></span>Trasportatore</td><td>uniporto, simporto, antiporto</td><td>passivo, attivo (pompa, con ATP) o secondariamente attivo</td><td>sì</td><td>GLUT2; SGLT2, NKCC2; NHE3, AE1; Na⁺/K⁺-ATPasi</td></tr>
-    </tbody></table></div>
-</section>
+<h2>2 · Come si attraversa una membrana</h2>
 
+<figure class="w">
+<iframe class="ph" loading="lazy" src="w/00-intro.html" title="Come si attraversa una membrana: diffusione semplice, canale, trasportatore"></iframe>
+<figcaption>Scegli una delle tre vie, poi il tipo di canale o di trasportatore; il pulsante Pausa ferma l'animazione. <a href="w/00-intro.html">Apri a schermo intero</a></figcaption>
+</figure>
+
+</section>
 <section id="rene">
-  <h2>3 · I trasportatori del rene</h2>
-  <p>Ogni trasportatore del nefrone si classifica con una sola domanda: la sostanza scende o sale lungo il suo gradiente
-  elettrochimico? Se scende il trasporto è <b>passivo</b>, attraverso la membrana (diffusione semplice) o attraverso un canale
-  o un trasportatore (diffusione facilitata). Se sale, serve energia: la pompa consuma ATP direttamente (<b>attivo
-  primario</b>), oppure lo stesso trasportatore sfrutta un altro ione che scende, di solito il Na⁺ (<b>attivo secondario</b>:
-  simporto se vanno nella stessa direzione, antiporto se opposta). I canali, come ENaC, ROMK e le acquaporine, sono
-  sempre passivi.</p>
-  <figure class="w">
-    <iframe src="w/01-nefrone.html" title="I trasporti di membrana nel nefrone: passivo, attivo primario, attivo secondario" loading="lazy" class="ph"></iframe>
-    <figcaption>Scegli un trasportatore per vedere le concentrazioni ai due lati e se è passivo, attivo o secondariamente attivo; AE1 e pendrina hanno l'animazione passo per passo. Poi mettiti alla prova con il quiz. <a href="w/01-nefrone.html">Apri a schermo intero</a></figcaption>
-  </figure>
-  <p>Il rene intero, con le arteriole, il RAAS e il simpatico, è nella pagina sui <a href="../circoli-portali/">circoli portali</a>.</p>
-</section>
+<h2>3 · I trasportatori del rene</h2>
 
+<figure class="w">
+<iframe class="ph" loading="lazy" src="w/01-nefrone.html" title="I trasporti di membrana nel nefrone: passivo, attivo primario, attivo secondario"></iframe>
+<figcaption>Scegli un trasportatore per vedere le concentrazioni ai due lati e se è passivo, attivo o secondariamente attivo; AE1 e pendrina hanno l'animazione passo per passo. Poi mettiti alla prova con il quiz. <a href="w/01-nefrone.html">Apri a schermo intero</a></figcaption>
+</figure>
+
+</section>
 <section id="batteri">
-  <h2>4 · Due trasporti dei batteri: ABC e traslocazione di gruppo</h2>
-  <p>Nei batteri ci sono due modi di portare dentro i nutrienti che conviene conoscere, perché si confondono facilmente
-  con la diffusione facilitata. Per distinguerli bastano due domande: <b>chi paga l'energia</b>, e se la sostanza
-  <b>entra uguale o modificata</b>.</p>
-  <ul>
-    <li><b>Sistema ABC</b> (ATP-Binding Cassette): una pompa che spende ATP. La sostanza sale contro gradiente ma entra uguale.</li>
-    <li><b>Traslocazione di gruppo</b>, il <b>PTS</b> (PhosphoTransferase System, sistema fosfotransferasico): la sostanza
-    viene <b>modificata mentre entra</b>. Il glucosio entra come glucosio-6-fosfato, e il fosfato viene dal <b>PEP</b>
-    (fosfoenolpiruvato), non dall'ATP.</li>
-  </ul>
-  <figure class="w">
-    <iframe src="w/02-batteri.html" title="Diffusione facilitata, sistema ABC e traslocazione di gruppo a confronto" loading="lazy" class="ph h-bat"></iframe>
-    <figcaption>Scegli uno dei tre meccanismi e segui la sostanza dall'esterno al citoplasma; il pulsante Pausa ferma l'animazione. <a href="w/02-batteri.html">Apri a schermo intero</a></figcaption>
-  </figure>
-  <h3 id="uomo">E nell'uomo?</h3>
-  <p>Dei due sistemi, uno lo abbiamo anche noi e uno no.</p>
-  <div class="tscroll tw"><table>
-    <thead><tr><th>Meccanismo</th><th>Nei batteri</th><th>Nell'uomo</th></tr></thead>
-    <tbody>
-    <tr><td>Traslocazione di gruppo (PTS)</td><td>sì: il glucosio entra già fosforilato, con l'energia del PEP</td><td><b>no</b>. Usiamo lo stesso trucco in due passaggi separati: il glucosio entra uguale con un <b>GLUT</b> (GLUcose Transporter, diffusione facilitata), poi dentro l'<b>esochinasi</b> lo fosforila con l'ATP. Il glucosio-6-fosfato non esce, e il glucosio libero dentro resta basso</td></tr>
-    <tr><td>Sistema ABC</td><td>sì, soprattutto per portare <b>dentro</b> i nutrienti, con la proteina di legame</td><td><b>sì</b>, circa 48 geni, ma quasi tutti per buttare <b>fuori</b>: la proteina di legame per importare da noi non c'è</td></tr>
-    </tbody></table></div>
-  <p>I trasportatori ABC umani che contano di più in medicina:</p>
-  <div class="tscroll tw"><table>
-    <thead><tr><th>Trasportatore</th><th>Che cosa fa</th><th>Perché conta</th></tr></thead>
-    <tbody>
-    <tr><td><b>P-gp</b> (P-glicoproteina), o <b>MDR1</b> (MultiDrug Resistance 1, gene ABCB1)</td><td>butta fuori i farmaci: intestino, barriera emato-encefalica, rene, fegato</td><td>resistenza dei tumori alla chemioterapia; interazioni fra farmaci: se la inibisci (claritromicina, verapamil, amiodarone) la digossina sale, se la induci (rifampicina, iperico) scende</td></tr>
-    <tr><td><b>CFTR</b> (Cystic Fibrosis Transmembrane conductance Regulator)</td><td>fa uscire Cl⁻ dagli epiteli</td><td>fibrosi cistica. È un ABC che funziona da <b>canale</b>: l'ATP serve ad aprirlo, non a pompare</td></tr>
-    <tr><td><b>ABCA1</b></td><td>passa il colesterolo alle <b>HDL</b> (High-Density Lipoproteins)</td><td>malattia di Tangier: HDL quasi assenti</td></tr>
-    <tr><td><b>MRP2</b> (Multidrug Resistance-associated Protein 2)</td><td>porta la bilirubina coniugata nella bile</td><td>sindrome di Dubin-Johnson</td></tr>
-    <tr><td><b>BSEP</b> (Bile Salt Export Pump)</td><td>porta i sali biliari nella bile</td><td>colestasi</td></tr>
-    <tr><td><b>TAP</b> (Transporter associated with Antigen Processing)</td><td>porta i peptidi nel reticolo endoplasmatico, per caricarli sull'<b>MHC I</b> (Major Histocompatibility Complex di classe I)</td><td>senza TAP la cellula non mostra gli antigeni ai linfociti T; alcuni virus lo bloccano per nascondersi</td></tr>
-    <tr><td><b>ABCD1</b></td><td>porta gli acidi grassi a catena molto lunga nei perossisomi</td><td>adrenoleucodistrofia</td></tr>
-    </tbody></table></div>
-  <p>La cellula batterica intera, con l'involucro dei Gram+, dei Gram− e dei micobatteri, è nella pagina di
-  <a href="../microbiologia/">microbiologia</a>.</p>
+<h2>4 · Due trasporti dei batteri: ABC e traslocazione di gruppo</h2>
+
+
+<figure class="w">
+<iframe class="ph h-bat" loading="lazy" src="w/02-batteri.html" title="Diffusione facilitata, sistema ABC e traslocazione di gruppo a confronto"></iframe>
+<figcaption>Scegli uno dei tre meccanismi e segui la sostanza dall'esterno al citoplasma; il pulsante Pausa ferma l'animazione. <a href="w/02-batteri.html">Apri a schermo intero</a></figcaption>
+</figure>
+<h3 id="uomo">E nell'uomo?</h3>
+
+
+
+
+
 </section>
 <section id="secrezione">
-  <h2>5 · Trasporto o secrezione?</h2>
-  <p>Nei batteri le due parole hanno un criterio preciso, ed è una convenzione: decide <b>che cosa</b> passa, non la macchina che lo fa passare.</p>
-  <div class="tscroll tw"><table>
-    <thead><tr><th></th><th>Trasporto</th><th>Secrezione</th></tr></thead>
-    <tbody>
-    <tr><td>Che cosa passa</td><td>piccole molecole: zuccheri, ioni, aminoacidi, farmaci</td><td><b>proteine</b>: tossine, enzimi, pezzi di pili e flagelli, effettori da iniettare</td></tr>
-    <tr><td>In che direzione</td><td>dentro e fuori</td><td>quasi sempre fuori</td></tr>
-    <tr><td>Quante membrane</td><td>la membrana citoplasmatica</td><td>una, due nei Gram−, a volte anche quella della cellula ospite</td></tr>
-    <tr><td>A che cosa serve</td><td>nutrirsi, tenere gli ioni, difendersi (efflusso)</td><td>patogenicità, costruire strutture esterne, competere con altri batteri</td></tr>
-    </tbody></table></div>
-  <p>La prova che la macchina non decide: lo stesso <b>trasportatore ABC</b> (ATP-Binding Cassette) che porta dentro il maltosio è un trasportatore; un ABC che fa uscire una proteina, l'emolisina, è il cuore del <b>T1SS</b> (Type 1 Secretion System) ed è secrezione. Stesso meccanismo, carico diverso, nome diverso.</p>
-  <p>Le zone grigie: dei <b>siderofori</b>, piccole molecole che catturano il ferro, si dice che vengono «secreti», ma escono con pompe di efflusso, cioè trasportatori; le proteine <b>inserite</b> nella membrana dal sistema Sec non sono secrete ma traslocate; capsula e <b>LPS</b> (lipopolisaccaride) si dicono <b>esportati</b>, con macchine proprie. E attenzione al cambio di materia: in fisiologia umana «secrezione» vuol dire che la cellula produce e rilascia qualcosa, qualunque cosa sia, l'insulina come l'HCl dello stomaco.</p>
-  <h3 id="sistemi-secrezione">I sistemi di secrezione</h3>
-  <p>Una proteina dei Gram+ deve passare una membrana sola; nei Gram− deve passare la membrana interna, il periplasma, pieno di enzimi che la degradano, e la membrana esterna. Per questo i Gram− hanno tanti sistemi diversi, numerati da 1 a 6; il 7 è dei micobatteri.</p>
-  <figure class="w">
-    <iframe src="w/03-secrezione.html" title="I sistemi di secrezione dei batteri, da Sec al T7SS" loading="lazy" class="ph h-sec"></iframe>
-    <figcaption>Scegli un sistema e segui la proteina: quante membrane attraversa, in quanti passi, dove arriva. Il pulsante Pausa ferma l'animazione. <a href="w/03-secrezione.html">Apri a schermo intero</a></figcaption>
-  </figure>
-  <div class="tscroll tw"><table>
-    <thead><tr><th>Sistema</th><th>Come</th><th>Esempio</th></tr></thead>
-    <tbody>
-    <tr><td>Sec</td><td>solo la membrana interna, proteina srotolata</td><td>proteine del periplasma; primo passo di T2SS e T5SS</td></tr>
-    <tr><td>Tat</td><td>solo la membrana interna, proteina già ripiegata</td><td>enzimi con cofattore</td></tr>
-    <tr><td>T1SS</td><td>tubo unico in un passo, costruito su un ABC</td><td>emolisina di <i>E. coli</i></td></tr>
-    <tr><td>T2SS</td><td>secondo passo dopo Sec: dal periplasma all'esterno</td><td>tossina colerica</td></tr>
-    <tr><td>T3SS</td><td>siringa: inietta proteine dentro la cellula ospite</td><td><i>Salmonella</i>, <i>Shigella</i>, <i>Yersinia</i></td></tr>
-    <tr><td>T4SS</td><td>porta proteine e anche DNA</td><td>CagA di <i>H. pylori</i>; coniugazione</td></tr>
-    <tr><td>T5SS</td><td>la proteina si fa da sola il passaggio nella membrana esterna</td><td>IgA proteasi di <i>Neisseria</i></td></tr>
-    <tr><td>T6SS</td><td>arpione a molla contro altri batteri</td><td><i>Vibrio</i>, <i>Pseudomonas</i></td></tr>
-    <tr><td>T7SS (ESX)</td><td>involucro dei micobatteri</td><td>ESAT-6 di <i>M. tuberculosis</i></td></tr>
-    </tbody></table></div>
+<h2>5 · Trasporto o secrezione?</h2>
+
+
+
+
+<h3 id="sistemi-secrezione">I sistemi di secrezione</h3>
+
+<figure class="w">
+<iframe class="ph h-sec" loading="lazy" src="w/03-secrezione.html" title="I sistemi di secrezione dei batteri, da Sec al T7SS"></iframe>
+<figcaption>Scegli un sistema e segui la proteina: quante membrane attraversa, in quanti passi, dove arriva. Il pulsante Pausa ferma l'animazione. <a href="w/03-secrezione.html">Apri a schermo intero</a></figcaption>
+</figure>
+
 </section>
 <section id="fonti">
-  <h2>Fonti</h2>
-  <ol class="refs">
-    <li>Boron WF, Boulpaep EL. <i>Medical Physiology</i>. 3rd ed. Philadelphia: Elsevier; 2017.</li>
-    <li>Hille B. <i>Ion Channels of Excitable Membranes</i>. 3rd ed. Sunderland (MA): Sinauer; 2001.</li>
-    <li>Hall JE, Hall ME. <i>Guyton and Hall Textbook of Medical Physiology</i>. 14th ed. Philadelphia: Elsevier; 2021.</li>
-    <li>ten Tusscher KHWJ, Noble D, Noble PJ, Panfilov AV. A model for human ventricular tissue. <i>Am J Physiol Heart Circ Physiol</i>. 2004;286(4):H1573–89.</li>
-    <li>Hodgkin AL, Katz B. The effect of sodium ions on the electrical activity of the giant axon of the squid. <i>J Physiol</i>. 1949;108(1):37–77.</li>
-    <li>Koeppen BM, Stanton BA. <i>Renal Physiology</i>. 6th ed. Philadelphia: Elsevier; 2019.</li>
-    <li>Madigan MT, Bender KS, Buckley DH, Sattley WM, Stahl DA. <i>Brock Biology of Microorganisms</i>. 16th ed. Harlow: Pearson; 2021.</li>
-    <li>Green ER, Mecsas J. Bacterial secretion systems: an overview. <i>Microbiol Spectr</i>. 2016;4(1):VMBF-0012-2015.</li>
-  </ol>
-  <p class="caveat">Valori indicativi, arrotondati a scopo didattico.</p>
+<h2>Fonti</h2>
+<ol class="refs">
+<li>Boron WF, Boulpaep EL. <i>Medical Physiology</i>. 3rd ed. Philadelphia: Elsevier; 2017.</li>
+<li>Hille B. <i>Ion Channels of Excitable Membranes</i>. 3rd ed. Sunderland (MA): Sinauer; 2001.</li>
+<li>Hall JE, Hall ME. <i>Guyton and Hall Textbook of Medical Physiology</i>. 14th ed. Philadelphia: Elsevier; 2021.</li>
+<li>ten Tusscher KHWJ, Noble D, Noble PJ, Panfilov AV. A model for human ventricular tissue. <i>Am J Physiol Heart Circ Physiol</i>. 2004;286(4):H1573–89.</li>
+<li>Hodgkin AL, Katz B. The effect of sodium ions on the electrical activity of the giant axon of the squid. <i>J Physiol</i>. 1949;108(1):37–77.</li>
+<li>Koeppen BM, Stanton BA. <i>Renal Physiology</i>. 6th ed. Philadelphia: Elsevier; 2019.</li>
+<li>Madigan MT, Bender KS, Buckley DH, Sattley WM, Stahl DA. <i>Brock Biology of Microorganisms</i>. 16th ed. Harlow: Pearson; 2021.</li>
+<li>Green ER, Mecsas J. Bacterial secretion systems: an overview. <i>Microbiol Spectr</i>. 2016;4(1):VMBF-0012-2015.</li>
+</ol>
+<p class="caveat">Valori indicativi, arrotondati a scopo didattico.</p>
 </section>
-
 <footer>
-  <p>Jonathan Salerno · Firenze · <a href="/">jonathansalerno.org</a></p>
-  <p class="lic">© 2026 Jonathan Salerno. Testi e disegni interattivi sono distribuiti con licenza
-  <a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/deed.it">Creative Commons
+<p>Jonathan Salerno · Firenze · <a href="/">jonathansalerno.org</a></p>
+<p class="lic">© 2026 Jonathan Salerno. Testi e disegni interattivi sono distribuiti con licenza
+  <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.it" rel="license">Creative Commons
   Attribuzione – Non commerciale 4.0 Internazionale (CC BY-NC 4.0)</a>: puoi condividerli e adattarli
   citando l'autore, non a scopo commerciale. I dati e le opere di terzi restano dei rispettivi autori
   (vedi Fonti).</p>
 </footer>
-
 </div>
 <script>
 /* Each figure is a page of its own in an iframe from this site, so the frame
@@ -519,17 +440,17 @@ figure.w iframe.h-grad{height:1460px}
   if(location.hash) addEventListener('load',function(){pin(decodeURIComponent(location.hash.slice(1)))});
 })();
 </script>
-<dialog class="cf" id="cf" aria-labelledby="cf-t">
-<form id="cf-f" novalidate>
-  <h2 id="cf-t">Segnala errori o mandami le tue idee</h2>
-  <p class="cf-sub">Ti rispondo all’indirizzo che scrivi qui sotto.</p>
-  <label for="cf-n">Nome <span>(facoltativo)</span></label><input id="cf-n" name="name" maxlength="100" autocomplete="name">
-  <label for="cf-e">La tua email</label><input id="cf-e" name="email" type="email" maxlength="200" autocomplete="email" required>
-  <label for="cf-m">Messaggio</label><textarea id="cf-m" name="message" maxlength="5000" required></textarea>
-  <div class="cf-hp" aria-hidden="true"><label for="cf-w">Website</label><input id="cf-w" name="website" tabindex="-1" autocomplete="off"></div>
-  <p class="cf-priv">Uso nome ed email solo per risponderti: il messaggio arriva nella mia casella e non viene salvato da nessun’altra parte.</p>
-  <p class="cf-msg" id="cf-s" role="status" aria-live="polite"></p>
-  <div class="cf-row"><button type="button" id="cf-x">Annulla</button><button type="submit" class="cf-send" id="cf-b">Invia</button></div>
+<dialog aria-labelledby="cf-t" class="cf" id="cf">
+<form id="cf-f" novalidate="">
+<h2 id="cf-t">Segnala errori o mandami le tue idee</h2>
+<p class="cf-sub">Ti rispondo all’indirizzo che scrivi qui sotto.</p>
+<label for="cf-n">Nome <span>(facoltativo)</span></label><input autocomplete="name" id="cf-n" maxlength="100" name="name"/>
+<label for="cf-e">La tua email</label><input autocomplete="email" id="cf-e" maxlength="200" name="email" required="" type="email"/>
+<label for="cf-m">Messaggio</label><textarea id="cf-m" maxlength="5000" name="message" required=""></textarea>
+<div aria-hidden="true" class="cf-hp"><label for="cf-w">Website</label><input autocomplete="off" id="cf-w" name="website" tabindex="-1"/></div>
+<p class="cf-priv">Uso nome ed email solo per risponderti: il messaggio arriva nella mia casella e non viene salvato da nessun’altra parte.</p>
+<p aria-live="polite" class="cf-msg" id="cf-s" role="status"></p>
+<div class="cf-row"><button id="cf-x" type="button">Annulla</button><button class="cf-send" id="cf-b" type="submit">Invia</button></div>
 </form>
 </dialog>
 <script>(function(){
@@ -553,7 +474,7 @@ f.addEventListener('submit',function(e){e.preventDefault();
    else{s.appendChild(document.createTextNode(T.err+' '));var a=document.createElement('a');a.href='mailto:info@eraofprevention.com';a.textContent='info@eraofprevention.com';s.appendChild(a);s.appendChild(document.createTextNode('.'));}
    b.disabled=false;b.textContent=T.send;});});
 })();</script>
-<dialog class="fx" id="fx" aria-labelledby="fxt"><div class="fxbar"><b id="fxt"></b><button type="button" class="fxz" id="fxm" aria-label="Rimpicciolisci">−</button><span id="fxzv"></span><button type="button" class="fxz" id="fxp" aria-label="Ingrandisci">+</button><button type="button" id="fxc">✕ Chiudi</button></div><p class="fxhint">Ingrandisci con + e −, spostati con un dito. In orizzontale la vedi più grande.</p><div class="fxw" id="fxw"><div class="fxs" id="fxs"><iframe id="fxf" title=""></iframe></div></div></dialog>
+<dialog aria-labelledby="fxt" class="fx" id="fx"><div class="fxbar"><b id="fxt"></b><button aria-label="Rimpicciolisci" class="fxz" id="fxm" type="button">−</button><span id="fxzv"></span><button aria-label="Ingrandisci" class="fxz" id="fxp" type="button">+</button><button id="fxc" type="button">✕ Chiudi</button></div><p class="fxhint">Ingrandisci con + e −, spostati con un dito. In orizzontale la vedi più grande.</p><div class="fxw" id="fxw"><div class="fxs" id="fxs"><iframe id="fxf" title=""></iframe></div></div></dialog>
 <script>
 /* Phones: replace each wide interactive figure (not .ph) with a card; the figure opens full screen in a dialog,
    so the page stays short and nothing scrolls sideways. The hidden frames never load. */
