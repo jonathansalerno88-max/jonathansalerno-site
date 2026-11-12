@@ -14,13 +14,15 @@ svg{display:block;width:100%;height:auto}
 .sl li:before{content:counter(n);position:absolute;left:0;top:2px;width:21px;height:21px;border-radius:50%;background:#16222E;color:#FFFFFF;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .tr{color:#0E7C5B}.rc{color:#6A3A96}
 .ex{font-size:13px;color:#55697A;margin:8px 0 0}
+.rf{font-size:11.5px;line-height:1.5;color:#55697A;margin:8px 0 0;border-top:1px solid #DDE4EA;padding-top:6px}.rf a{color:#1456A8}
+.sl sup{font-size:10.5px;color:#55697A;margin-left:1px}
 .pz{font:inherit;font-size:13px;font-weight:700;padding:5px 12px;border-radius:999px;border:1.6px solid #16222E;background:#FFFFFF;color:#16222E;cursor:pointer;float:right;margin:0 0 6px 10px}.pz.on{background:#F7C948}
 </style>
 </head>
 <body>
 <h2 class="sr-only">Two environments A and B separated by a barrier: the transporter lets one substance through, the receptor lets only a signal through.</h2>
 <button class="pz" id="pz"></button>
-<ol class="sl"><li>Life requires environments to be kept apart.</li><li>But an environment that is completely sealed off cannot live: it has to exchange matter with what surrounds it.</li><li>A <b class="tr">transporter</b> is a biological structure that lets one specific substance pass from one environment to the other, without undoing the separation.</li><li>A <b class="rc">receptor</b>, instead, lets only information through: the molecule stays where it is, and a signal arrives on the other side.</li></ol>
+<ol class="sl"><li>There is no agreed definition of what life is.<sup>9,10</sup></li><li>But all the life we know has one thing in common: it is made of cells, that is, of environments kept apart from the outside by a boundary.<sup>11,12</sup></li><li>An environment that is completely sealed off, however, cannot live: it has to exchange matter with what surrounds it.</li><li>A <b class="tr">transporter</b> is a biological structure that lets one specific substance pass from one environment to the other, without undoing the separation.</li><li>A <b class="rc">receptor</b>, instead, lets only information through: the molecule stays where it is, and a signal arrives on the other side.</li></ol>
 <svg viewBox="0 0 680 320" role="img" aria-label="Two environments A and B separated by a barrier: the transporter lets one substance through, the receptor lets only a signal through.">
 <defs><clipPath id="cb"><rect x="352" y="30" width="318" height="270"/></clipPath></defs>
 <rect x="10" y="30" width="318" height="270" rx="8" fill="#E6F4EA"/>
@@ -39,6 +41,7 @@ svg{display:block;width:100%;height:auto}
 <g id="dyn"></g>
 </svg>
 <p class="ex">A and B are any two places: outside and inside the cell, the blood and a tissue, the cytosol and the mitochondrion.</p>
+<p class="rf"><b>9.</b> Trifonov EN. <i>J Biomol Struct Dyn</i>. 2011;29(2):259–66: an analysis of 123 definitions of life. <b>10.</b> NASA Astrobiology, <a target="_blank" rel="noopener" href="https://astrobiology.nasa.gov/news/forming-a-definition-for-life/">Forming a definition for life</a>: the working definition, 'a self-sustaining chemical system capable of Darwinian evolution'. <b>11.</b> Gánti T. <i>The Principles of Life</i>. Oxford University Press; 2003: the chemoton, that is, metabolism, replication and a membrane enclosing them. <b>12.</b> Varela FG, Maturana HR, Uribe R. <i>BioSystems</i>. 1974;5(4):187–96: autopoiesis, a system that produces its own boundary.</p>
 <script>
 (function(){var g=document.getElementById('dyn'),P=[],i,T=0,last=null,pz=document.getElementById('pz'),paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function lab(){pz.textContent=paused?'▶ Resume':'❚❚ Pause';pz.classList.toggle('on',paused);}pz.onclick=function(){paused=!paused;lab();};lab();
