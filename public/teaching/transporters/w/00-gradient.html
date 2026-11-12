@@ -263,7 +263,7 @@ function eflow(ts){var dt=EF.last===null?0:Math.min(0.05,(ts-EF.last)/1000);EF.l
   var I=ION[S.ion],on=batOn(),c=on?calc():null;
   if(!on){g.innerHTML='';requestAnimationFrame(eflow);return;}
   var dv=S.vm-S.vb,ch1=Math.abs(dv)>0.3,Ic=-Math.sign(c.net)*I.z*Math.min(1,Math.abs(c.net)/0.6)+(ch1?Math.sign(dv)*Math.min(1,Math.abs(dv)/8):0),q=Math.sign(Ic),mag=Math.min(1,Math.abs(Ic));
-  var qv=num(Math.abs(S.vm)*0.0323,1)+' µM',ph=ch1?fill(L.ph1,{q:qv}):fill(L.ph2,{q:qv,i:I.l||L.btn[S.ion]}),ph0=ch1?L.ph1t:L.ph2t,pc=ch1?CP:'#2E5E3E';
+  var qv=num(Math.abs(S.vm)*0.0311,1)+' µM',ph=ch1?fill(L.ph1,{q:qv}):fill(L.ph2,{q:qv,i:I.l||L.btn[S.ion]}),ph0=ch1?L.ph1t:L.ph2t,pc=ch1?CP:'#2E5E3E';
   var cap=tx(230,334,'<tspan font-weight="700" fill="'+pc+'">'+ph0+':</tspan> '+ph,'middle',{s:10.5,c:'#16222E',h:1});
   if(mag<0.03){g.innerHTML=cap;requestAnimationFrame(eflow);return;}
   if(!S.pz)EF.u=(EF.u+dt*(0.25+0.9*mag))%1;
