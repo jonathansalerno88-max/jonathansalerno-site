@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Which way? Free energy</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+body{margin:0;padding:12px 14px 14px;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#16222E;background:#FBFCFD}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+svg{display:block;width:100%;height:auto}
+.sl{margin:0 0 10px;padding:0;list-style:none;counter-reset:n}
+.sl li{counter-increment:n;font-size:16px;line-height:1.5;margin:0 0 6px;padding-left:30px;position:relative}
+.sl li:before{content:counter(n);position:absolute;left:0;top:2px;width:21px;height:21px;border-radius:50%;background:#16222E;color:#FFFFFF;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.tr{color:#0E7C5B}.rc{color:#6A3A96}
+.ex{font-size:13px;color:#55697A;margin:8px 0 0}
+.pz{font:inherit;font-size:13px;font-weight:700;padding:5px 12px;border-radius:999px;border:1.6px solid #16222E;background:#FFFFFF;color:#16222E;cursor:pointer;float:right;margin:0 0 6px 10px}.pz.on{background:#F7C948}
+.cG{color:#B03A6E}.cU{color:#6A3A96}.cq{color:#C0392B}.cw{color:#1F5FA8}.cS{color:#0E7C86}.cH{color:#B5520C}.cT{color:#2E7D4F}
+.md{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 6px}.md button{font:inherit;font-size:13.5px;font-weight:700;border:1.6px solid #16222E;background:#FFFFFF;color:#16222E;border-radius:999px;padding:5px 14px;cursor:pointer}.md button.on{background:#16222E;color:#FFFFFF}
+.mt{font-size:14.5px;line-height:1.5;margin:0 0 8px;min-height:2.9em}
+details{margin:14px 0 0;border:1.5px solid #B9C5CF;border-radius:12px;background:#FFFFFF;padding:0 14px}summary{cursor:pointer;font-weight:700;font-size:15px;padding:10px 0}
+details h3{font-size:15px;margin:14px 0 4px}details p{font-size:14.5px;line-height:1.55;margin:0 0 8px}details p.n{font-size:13px;color:#55697A}
+.fm{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:17px;font-weight:600;margin:8px 0 6px}.fm.sm{font-size:15px;margin:3px 0}.fm .k{display:inline-block;width:22px;height:22px;border-radius:50%;background:#16222E;color:#FFFFFF;font-size:12px;text-align:center;line-height:22px;margin-right:8px;font-family:'IBM Plex Sans',sans-serif}.fm .c{font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:400;color:#55697A;margin-left:10px}
+ul.lg2{list-style:none;margin:0 0 10px;padding:0;font-size:13.5px;line-height:1.55}ul.lg2 b{font-family:'IBM Plex Mono',ui-monospace,monospace}
+</style>
+</head>
+<body>
+<h2 class="sr-only">A substance runs downhill in free energy by itself; to make it go up something else must go down further: passive, primary active, secondary active.</h2>
+<button class="pz" id="pz"></button>
+<ol class="sl"><li>An environment has to exchange matter. But <b>which way</b> does a substance go?</li><li><b>Free energy</b>, G, decides. Think of G as a height: everything runs down by itself towards the lower level. The drop is <b class="cG">ΔG</b>: going down, it is negative.</li><li>The transporter does not change the drop: it only makes the passage fast enough. <i>Which way</i> is set by ΔG; <i>how fast</i> is set by the transporter.</li><li><b>Passive</b>: the substance goes down, ΔG &lt; 0. Nobody pays.</li><li><b>Active</b>: the substance goes up, ΔG &gt; 0. It would not go by itself: the transporter ties it to another process that goes down further, so the total stays negative.</li></ol>
+<div class="md" id="md"></div>
+<p class="mt" id="mt"></p>
+<svg viewBox="0 0 680 300" role="img" aria-label="A substance runs downhill in free energy by itself; to make it go up something else must go down further: passive, primary active, secondary active."><g id="en"></g></svg>
+<details><summary>Where G comes from: three steps</summary>
+<h3>1 · First law: energy is conserved</h3><p>Every physical system has an internal energy. It can exchange it with its surroundings in two ways: as <b>heat</b>, if there is a temperature difference, or as <b>work</b>, that is, a push times a displacement. The push can be a force, a pressure, a voltage or a concentration difference. The first law says the books always balance:</p>
+<p class="fm"><span class="cU">ΔU</span> = <span class="cq">q</span> − <span class="cw">w</span></p>
+<ul class="lg2"><li><b class="cU">ΔU</b> = change in the internal energy of the system [M L² T⁻²], J (J = kg·m²/s²)</li><li><b class="cq">q</b> = heat entering the system [M L² T⁻²], J</li><li><b class="cw">w</b> = work done by the system [M L² T⁻²], J</li></ul>
+<p class="n">It holds for a system that does not exchange matter. Some textbooks write ΔU = q + w: there w is the work done <i>on</i> the system.</p>
+<h3>2 · Second law: the direction</h3><p>The first law does not say which way things go: glucose coming in and glucose going out both obey it. The direction comes from the second law: what happens by itself is what raises the overall disorder, that is, the entropy of the system plus that of the surroundings.</p>
+<p class="fm"><span class="cS">ΔS</span><sub>system</sub> + <span class="cS">ΔS</span><sub>surroundings</sub> &gt; 0</p>
+<ul class="lg2"><li><b class="cS">S</b> = entropy: a measure of how many ways the system can arrange itself [M L² T⁻² Θ⁻¹], J/K</li></ul>
+<h3>3 · G: the second law looking at the system only</h3><p>In a cell, temperature and pressure are constant. Then the heat the system gives to the surroundings raises their entropy, and everything can be rewritten with quantities of the system alone:</p>
+<p class="fm sm"><span class="k">1</span><span class="cS">ΔS</span><sub>system</sub> + <span class="cS">ΔS</span><sub>surroundings</sub> &gt; 0<span class="c">the second law</span></p>
+<p class="fm sm"><span class="k">2</span><span class="cS">ΔS</span><sub>surroundings</sub> = −<span class="cH">ΔH</span> / <span class="cT">T</span><span class="c">at constant T and P the surroundings gain the entropy of the heat they receive</span></p>
+<p class="fm sm"><span class="k">3</span><span class="cS">ΔS</span> − <span class="cH">ΔH</span> / <span class="cT">T</span> &gt; 0<span class="c">substitute</span></p>
+<p class="fm sm"><span class="k">4</span><span class="cH">ΔH</span> − <span class="cT">T</span> <span class="cS">ΔS</span> &lt; 0<span class="c">multiply by −T: the inequality flips</span></p>
+<p class="fm sm"><span class="k">5</span><span class="cG">ΔG</span> = <span class="cH">ΔH</span> − <span class="cT">T</span> <span class="cS">ΔS</span> &lt; 0<span class="c">call this quantity ΔG</span></p>
+<ul class="lg2"><li><b class="cH">H</b> = enthalpy: the heat exchanged at constant pressure [M L² T⁻²], J</li><li><b class="cT">T</b> = absolute temperature [Θ], K</li><li><b class="cS">S</b> = entropy: a measure of how many ways the system can arrange itself [M L² T⁻² Θ⁻¹], J/K</li><li><b class="cG">G</b> = Gibbs free energy [M L² T⁻²], J</li></ul>
+<p>G holds two tendencies together: towards less energy (ΔH) and towards more disorder (TΔS). In the transport of an uncharged substance only the second is at work: the molecules do not 'release energy', they spread out because the spread-out state is far more probable. How to compute the ΔG of a substance crossing a membrane is the subject of the next stage.</p>
+</details>
+<script>
+(function(){var L={"modes": [["Passive", "Nobody pays: the substance runs down from A to B. Examples: channels, aquaporins, GLUT."], ["Primary active", "ATP pays: its hydrolysis goes down more than the substance goes up. Examples: the Na⁺/K⁺ pump, ABC transporters."], ["Secondary active", "Another substance running down its own gradient pays, usually Na⁺. Examples: SGLT, the Na⁺/Ca²⁺ exchanger."]], "gax": "G", "hi": "high level", "lo": "low level", "sub": "substance", "A": "A", "B": "B", "tr": "transporter", "dn": "goes down: ΔG < 0", "up": "goes up: ΔG > 0", "pay": ["", "ATP", "Na⁺"], "sum": ["ΔG < 0: it happens by itself", "ΔG substance (+) + ΔG ATP (−) = total < 0", "ΔG substance (+) + ΔG Na⁺ (−) = total < 0"], "play": "▶ Resume", "pause": "❚❚ Pause"},g=document.getElementById('en'),m=0,T=0,last=null,pz=document.getElementById('pz'),paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function lab(){pz.textContent=paused?L.play:L.pause;pz.classList.toggle('on',paused);}pz.onclick=function(){paused=!paused;lab();};lab();
+function bar(){var h='';L.modes.forEach(function(q,i){h+='<button data-m="'+i+'" class="'+(m===i?'on':'')+'" aria-pressed="'+(m===i)+'">'+q[0]+'</button>';});var el=document.getElementById('md');el.innerHTML=h;
+  el.querySelectorAll('button').forEach(function(b){b.onclick=function(){m=+b.dataset.m;T=0;bar();};});document.getElementById('mt').textContent=L.modes[m][1];}
+function tx(x,y,t,o){o=o||{};return '<text x="'+x+'" y="'+y+'" font-size="'+(o.s||13)+'" font-weight="'+(o.w||700)+'" text-anchor="'+(o.a||'middle')+'" fill="'+(o.c||'#16222E')+'">'+t+'</text>';}
+var HI=112,LO=214,CS='#C2571A',CPY='#6A3A96';
+function draw(){var o='',act=m>0,yA=act?LO:HI,yB=act?HI:LO,u=(T/5)%1;
+  o+='<path d="M22 268 V44 m-5 8 l5 -8 l5 8" fill="none" stroke="#55697A" stroke-width="1.6"/>'+tx(22,34,L.gax,{c:'#B03A6E',s:15});
+  o+=tx(676,HI-4,L.hi,{a:'end',s:11,w:400,c:'#55697A'})+tx(676,LO-4,L.lo,{a:'end',s:11,w:400,c:'#55697A'})+'<path d="M30 '+HI+' H676 M30 '+LO+' H676" stroke="#C9D1D9" stroke-dasharray="3 5"/>';
+  o+='<rect x="60" y="'+yA+'" width="230" height="'+(268-yA)+'" fill="#E6F4EA" stroke="#2E7D4F" stroke-width="1.6"/><rect x="390" y="'+yB+'" width="230" height="'+(268-yB)+'" fill="#E2EEF8" stroke="#1F5FA8" stroke-width="1.6"/>';
+  o+=tx(175,258,L.A,{c:'#1F4A2E',s:20})+tx(505,258,L.B,{c:'#173D61',s:20});
+  o+='<rect x="290" y="40" width="100" height="228" fill="#EEF1F4" stroke="#8696A4" stroke-width="1.6"/>'+tx(340,286,L.tr,{s:11.5,c:'#55697A'});
+  var bx,by,ph;
+  if(u<.3){bx=110+(280-110)*(u/.3);by=yA-11;ph=0;}else if(u<.62){ph=(u-.3)/.32;bx=act?315:(290+100*ph);by=(yA-11)+(yB-yA)*ph;}else{bx=(act?400:390)+(560-400)*Math.min(1,(u-.62)/.3);by=yB-11;ph=1;}
+  if(!act){o+='<path d="M290 '+HI+' L390 '+LO+'" stroke="#16222E" stroke-width="3"/>';}
+  else{var ly=(yA)+(yB-yA)*ph,py=70+(LO-HI)*ph;
+    o+='<path d="M315 '+(ly-24)+' V52 Q315 44 323 44 H357 Q365 44 365 52 V'+(py-16)+'" fill="none" stroke="#55697A" stroke-width="1.6"/><circle cx="340" cy="44" r="7" fill="#FFFFFF" stroke="#55697A" stroke-width="1.6"/>';
+    o+='<rect x="298" y="'+ly+'" width="34" height="6" rx="2" fill="#16222E"/>';
+    o+='<rect x="345" y="'+(py-16)+'" width="40" height="34" rx="8" fill="'+CPY+'"/>'+tx(365,py+6,L.pay[m],{c:'#FFFFFF',s:12.5});
+    o+=tx(398,py+4,'↓',{c:CPY,s:18,a:'start'});
+    if(u>=.3&&u<.62)bx=315;}
+  o+='<circle cx="'+bx.toFixed(1)+'" cy="'+by.toFixed(1)+'" r="11" fill="'+CS+'"/>';
+  o+=tx(175,yA-30,L.sub,{c:CS,s:12.5});
+  o+=tx(505,yB-34,act?L.up:L.dn,{c:act?'#C0392B':'#2E7D4F',s:13.5});
+  o+=tx(340,22,L.sum[m],{s:13.5,c:'#B03A6E'});
+  g.innerHTML=o;}
+function step(ts){var dt=last===null?0:Math.min(.05,(ts-last)/1000);last=ts;if(!paused)T+=dt;draw();requestAnimationFrame(step);}
+bar();requestAnimationFrame(step);})();
+</script>
+<script>
+(function(){var last=0;function send(){var h=document.documentElement.scrollHeight;if(h!==last){last=h;try{parent.postMessage({gradH:h},'*');}catch(e){}}}
+  if(window.ResizeObserver)new ResizeObserver(send).observe(document.body);window.addEventListener('load',send);setInterval(send,1000);})();
+</script>
+</body>
+</html>
