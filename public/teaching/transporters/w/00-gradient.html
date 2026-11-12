@@ -223,10 +223,14 @@ function dyn(){var I=ION[S.ion],c=calc(),o='';
   // the charge layer ("velo") on the two faces of the membrane: the more |V_m|, the denser and darker
   var av=Math.abs(S.vm),inS=S.vm<0?'−':'+',ouS=S.vm<0?'+':'−',op=Math.min(.85,av/110);
   if(av>=3){var cI=inS==='−'?CB:CR,cO=ouS==='−'?CB:CR,fI=inS==='−'?'#DCE8F6':'#FBE1DD',fO=ouS==='−'?'#DCE8F6':'#FBE1DD';
-    o+='<rect x="213" y="126" width="12" height="192" rx="3" fill="'+fI+'" opacity="'+(.35+op*.65).toFixed(2)+'"/><rect x="235" y="126" width="12" height="192" rx="3" fill="'+fO+'" opacity="'+(.35+op*.65).toFixed(2)+'"/>';
-    var nq=Math.max(1,Math.min(10,Math.round(av/12))),ysl=[];
-    for(var j=0;j<nq;j++){var yy=nq===1?150:132+j*(184/(nq-1));if(S.multi||(yy>188&&yy<260))continue;ysl.push(yy);}
-    ysl.forEach(function(yy){o+=tx(219,yy+4,inS,'middle',{s:13,w:700,c:cI})+tx(241,yy+4,ouS,'middle',{s:13,w:700,c:cO});});
+    // the layer thickens outwards from the membrane: columns fill one after the other, the nearest first (4 columns full at 120 mV)
+    var rows=[];for(var yy=133;yy<=314;yy+=10){if(yy>184&&yy<264)continue;rows.push(yy);}
+    var NC=3,DX=7.2,nM=S.multi?0:Math.round(Math.min(1,av/120)*NC*rows.length),nCol=Math.max(1,Math.ceil(nM/rows.length)),bw=nCol*DX+3;
+    o+='<rect x="'+(225-bw)+'" y="126" width="'+bw+'" height="192" rx="3" fill="'+fI+'" opacity="'+(.35+op*.65).toFixed(2)+'"/><rect x="235" y="126" width="'+bw+'" height="192" rx="3" fill="'+fO+'" opacity="'+(.35+op*.65).toFixed(2)+'"/>';
+    for(var k=0,left=nM;k<NC&&left>0;k++){var m=Math.min(rows.length,left);left-=m;
+      for(var j=0;j<m;j++){var ri=m===rows.length?j:Math.floor((j+0.5)*rows.length/m),y0=rows[ri]+3.5;
+        var xi=(225-4.6-k*DX).toFixed(1),xo=(235+4.6+k*DX).toFixed(1),yc=(y0-3.5).toFixed(1);
+        o+='<circle cx="'+xi+'" cy="'+yc+'" r="3.2" fill="'+cI+'"/><circle cx="'+xo+'" cy="'+yc+'" r="3.2" fill="'+cO+'"/>'+tx(xi,y0-0.6,inS,'middle',{s:8,w:700,c:'#FFFFFF'})+tx(xo,y0-0.6,ouS,'middle',{s:8,w:700,c:'#FFFFFF'});}}
     if(!batOn())o+=tx(230,334,fill(L.velo,{i:inS,o:ouS}),'middle',{s:10.5,w:700,c:'#55697A',h:1});}
   if(S.multi){var vv=S.vm,si=vv<0?'−':'+',so=vv<0?'+':'−',fs=function(v){return (24+78*Math.pow(Math.min(1,Math.abs(v)/90),.6)).toFixed(0);};
     o+='<text x="120" y="'+(250+fs(vv)*.32).toFixed(0)+'" text-anchor="middle" font-size="'+fs(vv)+'" font-weight="700" fill="'+(vv<0?CB:CR)+'" opacity=".9">'+si+'</text>';
