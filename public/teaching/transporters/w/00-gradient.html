@@ -198,10 +198,12 @@ function scene(){var I=ION[S.ion],c=calc(),o='';
   o+='<rect x="-30" y="150" width="34" height="120" rx="9" fill="#FFFFFF" stroke="#16222E" stroke-width="1.6"/>'+'<text x="-13" y="210" font-size="13" font-weight="700" text-anchor="middle" dominant-baseline="central" fill="#16222E" transform="rotate(-90 -13 210)" letter-spacing="1.5">RESET</text></g>';
   // the ions, stacked in the free corner left of the voltmeter (in the several-ions view: a way back)
   if(S.multi){o+='<g id="bback" role="button" tabindex="0" aria-label="'+L.mBack.join(' ')+'" style="cursor:pointer" onclick="tMulti()" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();tMulti();}"><rect x="6" y="-30" width="100" height="44" rx="8" fill="#FFFFFF" stroke="#6A3A96" stroke-width="1.8"/>'+L.mBack.map(function(t,i){return tx(56,-12+i*15,t,'middle',{s:11.5,w:700,c:CP});}).join('')+'</g>';}
-  else Object.keys(ION).forEach(function(k,i){var on=S.ion===k,y=-30+i*27,c=ION[k].c;
+  else Object.keys(ION).forEach(function(k,i){var on=S.ion===k,y=-30+i*24,c=ION[k].c;
     o+='<g id="ion-'+k+'" role="button" tabindex="0" aria-pressed="'+on+'" aria-label="'+L.btn[k]+'" style="cursor:pointer" onclick="selIon(\''+k+'\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();selIon(\''+k+'\');}">';
-    o+='<rect x="6" y="'+y+'" width="100" height="24" rx="7" fill="'+(on?'#16222E':'#FFFFFF')+'" stroke="#16222E" stroke-width="'+(on?1.6:1)+'"/>';
-    o+='<rect x="14" y="'+(y+7)+'" width="10" height="10" rx="3" fill="'+c+'"/>'+tx(32,y+16.5,L.btn[k],'start',{s:12,w:700,c:on?'#FFFFFF':'#16222E'})+'</g>';});
+    o+='<rect x="6" y="'+y+'" width="100" height="21" rx="7" fill="'+(on?'#16222E':'#FFFFFF')+'" stroke="#16222E" stroke-width="'+(on?1.6:1)+'"/>';
+    o+='<rect x="14" y="'+(y+5.5)+'" width="10" height="10" rx="3" fill="'+c+'"/>'+tx(32,y+15,L.btn[k],'start',{s:12,w:700,c:on?'#FFFFFF':'#16222E'})+'</g>';});
+  // pause, right under the ions
+  if(!S.multi){var py0=-30+Object.keys(ION).length*24+2;o+='<g id="bpause" role="button" tabindex="0" aria-pressed="'+!!S.pz+'" aria-label="'+(S.pz?L.play:L.pause)+'" style="cursor:pointer" onclick="tPause()" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();tPause();}"><rect x="6" y="'+py0+'" width="100" height="22" rx="7" fill="'+(S.pz?'#F7C948':'#FFFFFF')+'" stroke="#16222E" stroke-width="1.6"/>'+tx(56,py0+15.5,S.pz?L.play:L.pause,'middle',{s:12,w:700})+'</g>';}
   // the four steps, stacked in the free corner right of the voltmeter
   o+=sbtn('bref',L.sRef,352,-32,'tRef',S.ref!=='up',false);
   o+=sbtn('brec',L.sRec,352,-1,'tRec',S.rec!=='up',false);
@@ -257,9 +259,9 @@ function measured(){return S.rec==='in'&&S.ref==='out';}
 var EF={u:0,last:null};
 function eflow(ts){var dt=EF.last===null?0:Math.min(0.05,(ts-EF.last)/1000);EF.last=ts;var sv=$('#sv');if(!sv){requestAnimationFrame(eflow);return;}
   var g=document.getElementById('eflow');if(!g){g=document.createElementNS('http://www.w3.org/2000/svg','g');g.id='eflow';sv.appendChild(g);}
-  var I=ION[S.ion],on=!S.multi&&!(S.free&&I.z)&&S.ins&&I.z&&!S.circ&&!S.pz,c=on?calc():null,q=on?-Math.sign(c.net)*I.z:0,mag=on?Math.min(1,Math.abs(c.net)/0.6):0;
+  var I=ION[S.ion],on=!S.multi&&!(S.free&&I.z)&&S.ins&&I.z&&!S.circ,c=on?calc():null,q=on?-Math.sign(c.net)*I.z:0,mag=on?Math.min(1,Math.abs(c.net)/0.6):0;
   if(!on||mag<0.03){g.innerHTML='';requestAnimationFrame(eflow);return;}
-  EF.u=(EF.u+dt*(0.25+0.9*mag))%1;
+  if(!S.pz)EF.u=(EF.u+dt*(0.25+0.9*mag))%1;
   var A=[[222,98],[194,98],[194,146]],B=[[266,146],[266,98],[238,98]];   // A: − pole → inside electrode; B: outside electrode → + pole (for q>0)
   function along(P,u){var L=[],T=0;for(var i=1;i<P.length;i++){var d=Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]);L.push(d);T+=d;}var r=u*T,k=0;while(k<L.length-1&&r>L[k]){r-=L[k];k++;}var f=r/L[k];return [P[k][0]+(P[k+1][0]-P[k][0])*f,P[k][1]+(P[k+1][1]-P[k][1])*f];}
   var o='',inEl=194,outEl=266,toCell=q>0;   // electrons go into the cell where the − pole is wired, if positive charge is entering through the channel
@@ -1068,7 +1070,7 @@ function setIon(k){S.ion=k;setTimeout(flags,0);var CE=CELLS[S.cell];S.T=CE.T;RT=
 (function(){
   $('#modes').innerHTML='<span class="sp"></span><button id="pz"></button>';
   document.querySelectorAll('#modes button[data-m]').forEach(function(b){b.onclick=function(){S.mode=b.dataset.m;if(S.mode==='act'&&S.free){S.free=false;S.vm=S.vb;}reset();scene();};});
-  var pz=$('#pz');function pzs(){pz.textContent=S.pz?L.play:L.pause;pz.classList.toggle('on',S.pz);}pz.onclick=function(){S.pz=!S.pz;pzs();};pzs();
+  var pz=$('#pz');function pzs(){pz.textContent=S.pz?L.play:L.pause;pz.classList.toggle('on',S.pz);}pz.onclick=function(){tPause();};pzs();window.tPause=function(){S.pz=!S.pz;pzs();scene();};
   $('#vm').oninput=function(){S.vb=+this.value;if(!(S.free&&S.mode==='pas'))S.vm=S.vb;reset();scene();};
   $('#ci').oninput=function(){S.ci=Number(Math.pow(10,+this.value).toPrecision(2));gInit();reset();scene();};
   $('#co').oninput=function(){S.co=Number(Math.pow(10,+this.value).toPrecision(2));gInit();reset();scene();};
