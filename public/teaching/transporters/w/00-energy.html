@@ -49,21 +49,25 @@ ul.lg2{list-style:none;margin:0 0 10px;padding:0;font-size:13.5px;line-height:1.
 <p>G holds two tendencies together: towards less energy (ΔH) and towards more disorder (TΔS). In the transport of an uncharged substance only the second is at work: the molecules do not 'release energy', they spread out because the spread-out state is far more probable. How to compute the ΔG of a substance crossing a membrane is the subject of the next stage.</p>
 </details>
 <script>
-(function(){var L={"modes": [["Passive", "Nobody pays: the substance runs down from A to B. Examples: channels, aquaporins, GLUT."], ["Primary active", "ATP pays: its hydrolysis goes down more than the substance goes up. Examples: the Na⁺/K⁺ pump, ABC transporters."], ["Secondary active", "Another substance running down its own gradient pays, usually Na⁺. Examples: SGLT, the Na⁺/Ca²⁺ exchanger."]], "gax": "G", "hi": "high level", "lo": "low level", "sub": "substance", "A": "A", "B": "B", "tr": "transporter", "dn": "goes down: ΔG < 0", "up": "goes up: ΔG > 0", "pay": ["", "ATP", "Na⁺"], "sum": ["ΔG < 0: it happens by itself", "ΔG substance (+) + ΔG ATP (−) = total < 0", "ΔG substance (+) + ΔG Na⁺ (−) = total < 0"], "play": "▶ Resume", "pause": "❚❚ Pause"},g=document.getElementById('en'),m=0,T=0,last=null,pz=document.getElementById('pz'),paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
+(function(){var L={"modes": [["Passive", "Nobody pays: the substance runs down from A to B. Examples: channels, aquaporins, GLUT."], ["Primary active", "ATP pays: its hydrolysis goes down more than the substance goes up. Examples: the Na⁺/K⁺ pump, ABC transporters."], ["Secondary active", "Someone must have paid first: a pump uses ATP to take Na⁺ up. Then Na⁺ runs down and takes the substance up. If the pump stops, the Na⁺ gradient runs out and this transport stops too. Examples: SGLT, the Na⁺/Ca²⁺ exchanger."]], "gax": "G", "hi": "high level", "lo": "low level", "sub": "substance", "A": "A", "B": "B", "tr": "transporter", "dn": "goes down: ΔG < 0", "up": "goes up: ΔG > 0", "pay": ["", "ATP", "Na⁺"], "sum": ["ΔG < 0: it happens by itself", "ΔG substance (+) + ΔG ATP (−) = total < 0", "ΔG substance (+) + ΔG Na⁺ (−) = total < 0"], "play": "▶ Resume", "pause": "❚❚ Pause", "pump": "Na⁺/K⁺ pump", "ph": [["1 · First: a pump uses ATP", "and takes Na⁺ up"], ["2 · Then: Na⁺ runs down", "and takes the substance up"]], "sum2": ["ΔG Na⁺ (+) + ΔG ATP (−) = total < 0", "ΔG substance (+) + ΔG Na⁺ (−) = total < 0"]},g=document.getElementById('en'),m=0,T=0,last=null,pz=document.getElementById('pz'),paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function lab(){pz.textContent=paused?L.play:L.pause;pz.classList.toggle('on',paused);}pz.onclick=function(){paused=!paused;lab();};lab();
 function bar(){var h='';L.modes.forEach(function(q,i){h+='<button data-m="'+i+'" class="'+(m===i?'on':'')+'" aria-pressed="'+(m===i)+'">'+q[0]+'</button>';});var el=document.getElementById('md');el.innerHTML=h;
   el.querySelectorAll('button').forEach(function(b){b.onclick=function(){m=+b.dataset.m;T=0;bar();};});document.getElementById('mt').textContent=L.modes[m][1];}
 function tx(x,y,t,o){o=o||{};return '<text x="'+x+'" y="'+y+'" font-size="'+(o.s||13)+'" font-weight="'+(o.w||700)+'" text-anchor="'+(o.a||'middle')+'" fill="'+(o.c||'#16222E')+'">'+t+'</text>';}
 var HI=112,LO=214,CS='#C2571A',CPY='#6A3A96';
-function draw(){var o='',act=m>0,yA=act?LO:HI,yB=act?HI:LO,u=(T/5)%1;
+function draw(){var o='',act=m>0,yA=act?LO:HI,yB=act?HI:LO,u0=(T/(m===2?10:5))%1,P1=m===2&&u0<.4,u=m===2?(P1?0:(u0-.4)/.6):u0;
   o+='<path d="M22 268 V44 m-5 8 l5 -8 l5 8" fill="none" stroke="#55697A" stroke-width="1.6"/>'+tx(22,34,L.gax,{c:'#B03A6E',s:15});
-  o+=tx(676,HI-4,L.hi,{a:'end',s:11,w:400,c:'#55697A'})+tx(676,LO-4,L.lo,{a:'end',s:11,w:400,c:'#55697A'})+'<path d="M30 '+HI+' H676 M30 '+LO+' H676" stroke="#C9D1D9" stroke-dasharray="3 5"/>';
+  o+=tx(625,HI-4,L.hi,{a:'start',s:10.5,w:400,c:'#55697A'})+tx(625,LO-4,L.lo,{a:'start',s:10.5,w:400,c:'#55697A'})+'<path d="M30 '+HI+' H676 M30 '+LO+' H676" stroke="#C9D1D9" stroke-dasharray="3 5"/>';
   o+='<rect x="60" y="'+yA+'" width="230" height="'+(268-yA)+'" fill="#E6F4EA" stroke="#2E7D4F" stroke-width="1.6"/><rect x="390" y="'+yB+'" width="230" height="'+(268-yB)+'" fill="#E2EEF8" stroke="#1F5FA8" stroke-width="1.6"/>';
   o+=tx(175,258,L.A,{c:'#1F4A2E',s:20})+tx(505,258,L.B,{c:'#173D61',s:20});
-  o+='<rect x="290" y="40" width="100" height="228" fill="#EEF1F4" stroke="#8696A4" stroke-width="1.6"/>'+tx(340,286,L.tr,{s:11.5,c:'#55697A'});
+  o+='<rect x="290" y="40" width="100" height="228" fill="#EEF1F4" stroke="#8696A4" stroke-width="1.6"/>'+tx(340,286,P1?L.pump:L.tr,{s:11.5,c:'#55697A'});
   var bx,by,ph;
   if(u<.3){bx=110+(280-110)*(u/.3);by=yA-11;ph=0;}else if(u<.62){ph=(u-.3)/.32;bx=act?315:(290+100*ph);by=(yA-11)+(yB-yA)*ph;}else{bx=(act?400:390)+(560-400)*Math.min(1,(u-.62)/.3);by=yB-11;ph=1;}
   if(!act){o+='<path d="M290 '+HI+' L390 '+LO+'" stroke="#16222E" stroke-width="3"/>';}
+  else if(P1){var q=Math.min(1,u0/.33),ya=70+(LO-HI)*q,yn=70+(LO-HI)*(1-q);
+    o+='<path d="M315 '+(ya-16)+' V52 Q315 44 323 44 H357 Q365 44 365 52 V'+(yn-16)+'" fill="none" stroke="#55697A" stroke-width="1.6"/><circle cx="340" cy="44" r="7" fill="#FFFFFF" stroke="#55697A" stroke-width="1.6"/>';
+    o+='<rect x="295" y="'+(ya-16)+'" width="40" height="34" rx="8" fill="#B5520C"/>'+tx(315,ya+6,'ATP',{c:'#FFFFFF',s:12.5})+tx(282,ya+4,'↓',{c:'#B5520C',s:18,a:'end'});
+    o+='<rect x="345" y="'+(yn-16)+'" width="40" height="34" rx="8" fill="'+CPY+'"/>'+tx(365,yn+6,'Na⁺',{c:'#FFFFFF',s:12.5})+tx(398,yn+4,'↑',{c:CPY,s:18,a:'start'});}
   else{var ly=(yA)+(yB-yA)*ph,py=70+(LO-HI)*ph;
     o+='<path d="M315 '+(ly-24)+' V52 Q315 44 323 44 H357 Q365 44 365 52 V'+(py-16)+'" fill="none" stroke="#55697A" stroke-width="1.6"/><circle cx="340" cy="44" r="7" fill="#FFFFFF" stroke="#55697A" stroke-width="1.6"/>';
     o+='<rect x="298" y="'+ly+'" width="34" height="6" rx="2" fill="#16222E"/>';
@@ -72,8 +76,9 @@ function draw(){var o='',act=m>0,yA=act?LO:HI,yB=act?HI:LO,u=(T/5)%1;
     if(u>=.3&&u<.62)bx=315;}
   o+='<circle cx="'+bx.toFixed(1)+'" cy="'+by.toFixed(1)+'" r="11" fill="'+CS+'"/>';
   o+=tx(175,yA-30,L.sub,{c:CS,s:12.5});
-  o+=tx(505,yB-34,act?L.up:L.dn,{c:act?'#C0392B':'#2E7D4F',s:13.5});
-  o+=tx(340,22,L.sum[m],{s:13.5,c:'#B03A6E'});
+  if(!P1)o+=tx(505,yB-34,act?L.up:L.dn,{c:act?'#C0392B':'#2E7D4F',s:13.5});
+  o+=tx(340,22,m===2?L.sum2[P1?0:1]:L.sum[m],{s:13.5,c:'#B03A6E'});
+  if(m===2){var pp=L.ph[P1?0:1];o+=tx(62,76,pp[0],{a:'start',s:13,c:P1?'#B5520C':CPY})+tx(62,93,pp[1],{a:'start',s:13,c:P1?'#B5520C':CPY});}
   g.innerHTML=o;}
 function step(ts){var dt=last===null?0:Math.min(.05,(ts-last)/1000);last=ts;if(!paused)T+=dt;draw();requestAnimationFrame(step);}
 bar();requestAnimationFrame(step);})();
