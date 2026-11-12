@@ -525,6 +525,8 @@ f.addEventListener('submit',function(e){e.preventDefault();
 </script>
 <script>
 // the gradient widget sends its height: the frame follows it
+// a card opened inside a figure: bring it into view
+window.addEventListener('message',function(e){if(!e.data||typeof e.data.gradScroll!=='number')return;document.querySelectorAll('iframe.h-grad').forEach(function(f){if(f.contentWindow===e.source)setTimeout(function(){window.scrollTo({top:f.getBoundingClientRect().top+window.scrollY+e.data.gradScroll-16,behavior:'smooth'});},120);});});
 window.addEventListener('message',function(e){if(!e.data||typeof e.data.gradH!=='number')return;document.querySelectorAll('iframe.h-grad').forEach(function(f){if(f.contentWindow===e.source)f.style.height=(e.data.gradH+6)+'px';});});
 </script>
 </body>
