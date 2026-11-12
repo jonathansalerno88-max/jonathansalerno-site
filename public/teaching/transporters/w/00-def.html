@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>What a transporter is</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+body{margin:0;padding:12px 14px 14px;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#16222E;background:#FBFCFD}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+svg{display:block;width:100%;height:auto}
+.sl{margin:0 0 10px;padding:0;list-style:none;counter-reset:n}
+.sl li{counter-increment:n;font-size:16px;line-height:1.5;margin:0 0 6px;padding-left:30px;position:relative}
+.sl li:before{content:counter(n);position:absolute;left:0;top:2px;width:21px;height:21px;border-radius:50%;background:#16222E;color:#FFFFFF;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.tr{color:#0E7C5B}.rc{color:#6A3A96}
+.ex{font-size:13px;color:#55697A;margin:8px 0 0}
+.pz{font:inherit;font-size:13px;font-weight:700;padding:5px 12px;border-radius:999px;border:1.6px solid #16222E;background:#FFFFFF;color:#16222E;cursor:pointer;float:right;margin:0 0 6px 10px}.pz.on{background:#F7C948}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Two environments A and B separated by a barrier: the transporter lets one substance through, the receptor lets only a signal through.</h2>
+<button class="pz" id="pz"></button>
+<ol class="sl"><li>Life requires environments to be kept apart.</li><li>But an environment that is completely sealed off cannot live: it has to exchange matter with what surrounds it.</li><li>A <b class="tr">transporter</b> is a biological structure that lets one specific substance pass from one environment to the other, without undoing the separation.</li><li>A <b class="rc">receptor</b>, instead, lets only information through: the molecule stays where it is, and a signal arrives on the other side.</li></ol>
+<svg viewBox="0 0 680 320" role="img" aria-label="Two environments A and B separated by a barrier: the transporter lets one substance through, the receptor lets only a signal through.">
+<defs><clipPath id="cb"><rect x="352" y="30" width="318" height="270"/></clipPath></defs>
+<rect x="10" y="30" width="318" height="270" rx="8" fill="#E6F4EA"/>
+<rect x="352" y="30" width="318" height="270" rx="8" fill="#E2EEF8"/>
+<text x="24" y="52" font-size="15" font-weight="700" fill="#2E5E3E">Environment A</text>
+<text x="656" y="52" font-size="15" font-weight="700" text-anchor="end" fill="#1F4E79">Environment B</text>
+<rect x="328" y="30" width="24" height="54" fill="#8696A4"/>
+<rect x="328" y="126" width="24" height="174" fill="#8696A4"/>
+<rect x="324" y="84" width="6" height="42" rx="2" fill="#0E7C5B"/><rect x="350" y="84" width="6" height="42" rx="2" fill="#0E7C5B"/>
+<text x="340" y="22" font-size="12" font-weight="700" text-anchor="middle" fill="#55697A">barrier</text>
+<text x="24" y="80" font-size="13.5" font-weight="700" fill="#0E7C5B">Transporter</text>
+<text x="24" y="97" font-size="12" fill="#55697A">matter gets through, one substance only</text>
+<path d="M318 218 h10 v-16 h24 v32 h-24 v-16" fill="#6A3A96"/><path d="M318 204 q-12 14 0 28" fill="none" stroke="#6A3A96" stroke-width="5"/>
+<text x="24" y="256" font-size="13.5" font-weight="700" fill="#6A3A96">Receptor</text>
+<text x="24" y="273" font-size="12" fill="#55697A">information gets through, no matter</text>
+<g id="dyn"></g>
+</svg>
+<p class="ex">A and B are any two places: outside and inside the cell, the blood and a tissue, the cytosol and the mitochondrion.</p>
+<script>
+(function(){var g=document.getElementById('dyn'),P=[],i,T=0,last=null,pz=document.getElementById('pz'),paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function lab(){pz.textContent=paused?'▶ Resume':'❚❚ Pause';pz.classList.toggle('on',paused);}pz.onclick=function(){paused=!paused;lab();};lab();
+function rnd(a,b){return a+Math.random()*(b-a);}
+for(i=0;i<12;i++)P.push({k:0,x:rnd(30,300),y:rnd(110,190),vx:rnd(25,55)*(Math.random()<.7?1:-1),vy:rnd(-35,35)});
+for(i=0;i<7;i++)P.push({k:1,x:rnd(30,300),y:rnd(112,190),vx:rnd(25,50)*(Math.random()<.5?1:-1),vy:rnd(-35,35)});
+function step(ts){var dt=last===null?0:Math.min(.05,(ts-last)/1000);last=ts;if(paused)dt=0;T+=dt;var o='';
+P.forEach(function(p){var nx=p.x+p.vx*dt,ny=p.y+p.vy*dt;
+if(ny<108||ny>196){p.vy=-p.vy;ny=p.y;}
+if(nx<20||nx>660){p.vx=-p.vx;nx=p.x;}
+var inGate=p.k===0&&ny>106&&ny<124;
+if(!inGate&&((p.x<=320&&nx>320)||(p.x>=360&&nx<360))){p.vx=-p.vx;nx=p.x;}
+if(nx>320&&nx<360&&p.k===0){ny=Math.max(110,Math.min(120,ny));}
+p.x=nx;p.y=ny;
+o+=p.k===0?'<circle cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="6" fill="#0E7C5B"/>':'<rect x="'+(nx-5).toFixed(1)+'" y="'+(ny-5).toFixed(1)+'" width="10" height="10" fill="#C2571A"/>';});
+var u=T%5,lx,sig=0;
+if(u<1.5)lx=210+(302-210)*(u/1.5);else if(u<3.3){lx=302;sig=(u-1.5)/1.8;}else lx=302-(302-210)*Math.min(1,(u-3.3)/1.2);
+o+='<path d="M'+(lx-10)+' 208 h12 l8 10 l-8 10 h-12 z" fill="#B03A6E"/>';
+if(sig>0){o+='<g clip-path="url(#cb)">';for(i=0;i<3;i++){var q=(sig*1.6+i/3)%1;o+='<circle cx="352" cy="218" r="'+(8+q*46).toFixed(1)+'" fill="none" stroke="#6A3A96" stroke-width="2.5" opacity="'+(1-q).toFixed(2)+'"/>';}
+o+='</g><text x="440" y="223" font-size="13.5" font-weight="700" fill="#6A3A96" opacity="'+Math.min(1,sig*3).toFixed(2)+'">signal</text>';}
+g.innerHTML=o;requestAnimationFrame(step);}
+requestAnimationFrame(step);})();
+</script>
+<script>
+(function(){var last=0;function send(){var h=document.documentElement.scrollHeight;if(h!==last){last=h;try{parent.postMessage({gradH:h},'*');}catch(e){}}}
+  if(window.ResizeObserver)new ResizeObserver(send).observe(document.body);window.addEventListener('load',send);setInterval(send,1000);})();
+</script>
+</body>
+</html>
