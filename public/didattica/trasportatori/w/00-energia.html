@@ -156,7 +156,7 @@ function step(ts){var dt=last===null?0:Math.min(.05,(ts-last)/1000);last=ts;if(!
 bar();requestAnimationFrame(step);})();
 </script>
 <script>
-(function(){var last=0;function send(){var h=document.documentElement.scrollHeight;if(h!==last){last=h;try{parent.postMessage({gradH:h},'*');}catch(e){}}}
+(function(){var last=0;function send(){var h=Math.ceil(document.body.getBoundingClientRect().height)+2;if(h!==last){last=h;try{parent.postMessage({gradH:h},'*');}catch(e){}}}
   if(window.ResizeObserver)new ResizeObserver(send).observe(document.body);window.addEventListener('load',send);setInterval(send,1000);})();
 </script>
 </body>
