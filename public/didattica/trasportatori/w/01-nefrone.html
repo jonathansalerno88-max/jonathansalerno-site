@@ -78,7 +78,7 @@ body.paused *,body.paused *:before{animation-play-state:paused!important}
 @media (prefers-reduced-motion:reduce){.mv{animation:none;opacity:1}}
 .nsw-row{display:flex;gap:4px;justify-content:center;margin:0 0 4px}.nsw{font-size:11px;font-weight:700;border:1.3px solid #1F5FA8;color:#1F5FA8;border-radius:999px;padding:2px 9px;cursor:pointer;user-select:none}.nsw.on{background:#1F5FA8;color:#fff}
 .hbox{border:1.5px solid #E7C6CF;border-radius:10px;background:#FFF9FA;padding:8px 8px 6px;margin-top:4px;text-align:center}.hbox p{margin:3px 0 0;font-size:11.5px;line-height:1.35}.hbox p.hti{font-size:12.5px}.hbox p.hep{font-weight:700;color:#8A4458}.hbox p.hfe,.hbox p.hno{color:#55697A}.hdl{margin:6px 0 0;text-align:left;font-size:11.5px;line-height:1.35}.hdl dt{font-weight:700;color:#16222E;margin-top:4px}.hdl dd{margin:0;color:#55697A}.hdl dd.yes{color:#C2187A;font-weight:700}.hdl dd.no{font-weight:700;color:#55697A}
-.lowp{border:1.5px solid #E7C6CF;border-radius:10px;background:#FFF9FA;padding:8px 10px;margin-top:8px;max-width:460px}.lowp p{margin:0 0 4px;font-size:13px;line-height:1.4}.lowp p.lt{margin:6px 0 0;color:#16222E}
+.lowp{border:1.5px solid #E7C6CF;border-radius:10px;background:#FFF9FA;padding:8px 10px;margin-top:8px;max-width:460px}.lowp p{margin:0 0 4px;font-size:13px;line-height:1.4}.lowp p.lt{margin:6px 0 0;color:#16222E}.lowp p.lg2{display:flex;flex-wrap:wrap;gap:3px 12px;font-size:11.5px;color:#55697A;margin:4px 0 0}.lg2 span{display:inline-flex;align-items:center;gap:5px}.lg2 i{display:inline-block;width:12px;height:10px;border-radius:2px}
 .pk2{display:flex;gap:12px;align-items:flex-start}.pkl{flex:1 1 auto;min-width:0}.neph{flex:0 0 200px}@media(max-width:600px){.neph{display:none}}
 .trade{grid-column:1/-1;background:#FFF6E0;border:1.5px solid #E2C27A;color:#3D2E05;border-radius:8px;padding:7px 10px;font-size:14px;line-height:1.5}.trow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:6px 0}.tc{font-weight:700;border-radius:999px;padding:2px 11px;white-space:nowrap}.tc.g{background:#2E7D4F;color:#fff}.tc.r{background:#B03A3A;color:#fff}.tc.k{background:#fff;border:1.8px solid #16222E;color:#16222E}.ta{font-size:18px;font-weight:700}
 </style>
@@ -244,40 +244,44 @@ for(i=0;i<4;i++)o+='<dt>'+LB[i]+'</dt><dd'+(i===0?' class="'+(S.bb?'yes':'no')+'
 return o+'</dl>'+(S.x?'<p class="hfe">'+S.x+'</p>':'');}
 function lowp(g,id){var it=document.documentElement.lang==='it',k=g==='prox'?'prox':g==='dist'?'dist':(g==='cdp'||g==='cda'||g==='cdb')?'cd':g==='loop'?(id==='nkcc2'?'thick':'thin'):'';
 if(!k)return '';
-var P=[292,125],BL='#1F5FA8',i,j,o='';
-function E(th){return [400-380*Math.cos(th),125-118*Math.sin(th)];}
-function Q(pt,s){return [P[0]+(pt[0]-P[0])*s,P[1]+(pt[1]-P[1])*s];}
-function shape(s){var d='',a;for(i=0;i<=48;i++){a=Q(E(-Math.PI/2+Math.PI*i/48),s);d+=(i?'L':'M')+a[0].toFixed(1)+' '+a[1].toFixed(1);}
-var n1=Q([400,82],s),n2=Q([330,84],s),n3=Q([330,166],s),n4=Q([400,168],s);return d+'L'+n1[0].toFixed(1)+' '+n1[1].toFixed(1)+'Q'+n2[0].toFixed(1)+' '+n2[1].toFixed(1)+' '+P[0]+' '+P[1]+'Q'+n3[0].toFixed(1)+' '+n3[1].toFixed(1)+' '+n4[0].toFixed(1)+' '+n4[1].toFixed(1)+'Z';}
-var W={prox:['c'],dist:['c'],thick:['o','r'],thin:['i'],cd:['r','m','i']}[k];function on(x){return W.indexOf(x)>=0;}
-var T=it?{h:'A 4×: dove guardare sul vetrino',c:'corticale',o:'midollare esterna',i:'midollare interna',pa:'papilla',pe:'pelvi',gl:'glomeruli',ra:'raggi midollari',
- prox:'In <b>corticale</b>, nel labirinto: la zona scura e granulosa tra un raggio midollare e l’altro, attorno ai glomeruli. È il tubulo più frequente della corticale.',
+var D=Math.PI/180,i,j,o='';
+function pt(cx,cy,a,b,t){return [cx+a*Math.cos(t*D),cy-b*Math.sin(t*D)];}
+function B(t){return pt(195,150,110,101,t);}function A(t){return pt(207,150,50,44,t);}function K(t,f){var b=B(t),e=pt(195,150,143,131,t);return [b[0]+(e[0]-b[0])*f,b[1]+(e[1]-b[1])*f];}
+function M(t,f){var a=A(t),b=B(t);return [a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f];}
+function xy(p){return p[0].toFixed(1)+' '+p[1].toFixed(1);}
+var T=it?{h:'Dove guardare sul vetrino',lg:['corticale','piramide = midollare','calici, pelvi e uretere','glomeruli','raggi midollari'],pe:'pelvi',ur:'uretere',
+ prox:'In <b>corticale</b>, nel labirinto: la zona granulosa tra un raggio midollare e l’altro, attorno ai glomeruli. È il tubulo più frequente della corticale.',
  dist:'In <b>corticale</b>, nel labirinto, vicino ai glomeruli. Sono molto meno numerosi dei prossimali: cercali accanto a un glomerulo.',
- thick:'In <b>midollare esterna</b>, e in corticale dentro i <b>raggi midollari</b> (le strie chiare e dritte che risalgono dalla midollare).',
- thin:'In <b>midollare interna</b>, verso la papilla: la zona più chiara, fatta di tubuli sottili e paralleli.',
- cd:'Nei <b>raggi midollari</b> della corticale, poi giù per tutta la <b>midollare</b> fino alla <b>papilla</b>, dove sono più grossi e sboccano nella pelvi.'}
-:{h:'At 4×: where to look on the slide',c:'cortex',o:'outer medulla',i:'inner medulla',pa:'papilla',pe:'pelvis',gl:'glomeruli',ra:'medullary rays',
- prox:'In the <b>cortex</b>, in the labyrinth: the dark, grainy area between one medullary ray and the next, around the glomeruli. It is the most common tubule of the cortex.',
+ thick:'In <b>midollare esterna</b>, cioè alla base della piramide, e in corticale dentro i <b>raggi midollari</b> (le strie dritte che risalgono dalla piramide).',
+ thin:'In <b>midollare interna</b>: la parte della piramide verso la punta, fatta di tubuli sottili e paralleli.',
+ cd:'Nei <b>raggi midollari</b> della corticale, poi giù per tutta la piramide fino alla <b>papilla</b>, la punta che sporge nel calice: lì sono più grossi.'}
+:{h:'Where to look on the slide',lg:['cortex','pyramid = medulla','calyces, pelvis and ureter','glomeruli','medullary rays'],pe:'pelvis',ur:'ureter',
+ prox:'In the <b>cortex</b>, in the labyrinth: the grainy area between one medullary ray and the next, around the glomeruli. It is the most common tubule of the cortex.',
  dist:'In the <b>cortex</b>, in the labyrinth, close to the glomeruli. There are far fewer than proximal ones: look next to a glomerulus.',
- thick:'In the <b>outer medulla</b>, and in the cortex inside the <b>medullary rays</b> (the pale straight stripes coming up from the medulla).',
- thin:'In the <b>inner medulla</b>, towards the papilla: the palest area, made of thin parallel tubules.',
- cd:'In the <b>medullary rays</b> of the cortex, then down through the whole <b>medulla</b> to the <b>papilla</b>, where they are largest and open into the pelvis.'};
-o+='<svg viewBox="0 0 420 250" role="img" aria-label="'+T.h+'" style="display:block;width:100%;height:auto">';
-function layer(s,f,x){return '<path d="'+shape(s)+'" fill="'+f+'"/>';}
-o+=layer(1,'#DE5A8B','c')+layer(.72,'#EE9DB9','o')+layer(.46,'#F8D3DE','i');
-for(i=0;i<=20;i++){var th=-Math.PI/2+Math.PI*(i+.5)/21,e=E(th),a=Q(e,.72),b=Q(e,.94),c=Q(e,.14),m=Q(e,.70);
-o+='<line x1="'+c[0].toFixed(1)+'" y1="'+c[1].toFixed(1)+'" x2="'+m[0].toFixed(1)+'" y2="'+m[1].toFixed(1)+'" stroke="#E48BAA" stroke-width="1" opacity=".7"/>';
-o+='<line x1="'+a[0].toFixed(1)+'" y1="'+a[1].toFixed(1)+'" x2="'+b[0].toFixed(1)+'" y2="'+b[1].toFixed(1)+'" stroke="#F4AFC6" stroke-width="2.6" stroke-linecap="round"/>';}
-var sd=7;function rn(){sd=(sd*1103515245+12345)%2147483648;return sd/2147483648;}
-for(j=0;j<90;j++){var q=Q(E(-Math.PI/2+Math.PI*rn()),.76+.2*rn());o+='<circle cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="2.1" fill="#6F58A8" stroke="#FFFFFF" stroke-width=".6"/>';}
-o+='<path d="M420 78 L400 82 Q330 84 '+P[0]+' '+P[1]+' Q330 166 400 168 L420 172Z" fill="#FFFFFF"/><path d="M400 82 Q330 84 '+P[0]+' '+P[1]+' Q330 166 400 168" fill="none" stroke="#C97A93" stroke-width="2"/><path d="'+shape(1).split('L400')[0]+'" fill="none" stroke="#B5456E" stroke-width="2"/>';
-function lb(x,y,t,h,a){return '<text x="'+x+'" y="'+y+'" font-size="11" font-weight="700" text-anchor="'+(a||'middle')+'" fill="#5A1F38" stroke="#FFFFFF" stroke-width="3" paint-order="stroke">'+t+'</text>';}
-o+=lb(58,129,T.c)+lb(134,152,T.o)+lb(208,112,T.i)+lb(372,129,T.pe)+lb(296,160,T.pa,0,"end");
-var TH=-Math.PI/2+Math.PI*14.5/21,TL=-Math.PI/2+Math.PI*15/21,RG={prox:[[Q(E(TL),.85),15]],dist:[[Q(E(TL),.85),11,1]],thick:[[Q(E(TH),.59),16],[Q(E(TH),.83),11]],thin:[[Q(E(-Math.PI/2+Math.PI*.79),.33),16]],cd:[[[281,125],14],[Q(E(TH),.83),11]]}[k];
+ thick:'In the <b>outer medulla</b>, that is at the base of the pyramid, and in the cortex inside the <b>medullary rays</b> (the straight stripes coming up from the pyramid).',
+ thin:'In the <b>inner medulla</b>: the part of the pyramid towards its tip, made of thin parallel tubules.',
+ cd:'In the <b>medullary rays</b> of the cortex, then down through the whole pyramid to the <b>papilla</b>, the tip that sticks into the calyx: there they are largest.'};
+var CX='#F4B9C7',PY='#CF5F86',SN='#F3E6D3',SE='#C9AE8E',OUT='#8E3B55';
+o+='<svg viewBox="0 0 420 300" role="img" aria-label="'+T.h+'" style="display:block;width:100%;height:auto">';
+o+='<path d="M300 150 L322 150 Q352 152 356 196 L366 300" fill="none" stroke="'+SE+'" stroke-width="27" stroke-linecap="round"/><path d="M300 150 L322 150 Q352 152 356 196 L366 300" fill="none" stroke="'+SN+'" stroke-width="22" stroke-linecap="round"/>';
+o+='<path d="M230 18 C120 8 50 70 50 150 C50 230 120 292 230 282 C300 276 336 236 323 196 C315 172 292 170 292 150 C292 130 315 128 323 104 C336 64 300 24 230 18Z" fill="'+CX+'" stroke="'+OUT+'" stroke-width="3"/>';
+var PT=[92,135,180,225,268,38,322];
+o+='<path d="M236 108 C262 100 286 122 296 150 C286 178 262 200 236 192 C214 184 210 116 236 108Z" fill="'+SN+'" stroke="'+SE+'" stroke-width="2"/><path d="M270 150 H330" stroke="'+SN+'" stroke-width="22"/>';
+PT.forEach(function(t){var a=A(t);o+='<path d="M'+xy(a)+' L250 150" stroke="'+SE+'" stroke-width="17" stroke-linecap="round"/>';});
+PT.forEach(function(t){var a=A(t);o+='<path d="M'+xy(a)+' L250 150" stroke="'+SN+'" stroke-width="13" stroke-linecap="round"/><circle cx="'+a[0].toFixed(1)+'" cy="'+a[1].toFixed(1)+'" r="12" fill="'+SN+'" stroke="'+SE+'" stroke-width="2"/>';});
+o+='<path d="M236 108 C262 100 286 122 296 150 C286 178 262 200 236 192 C214 184 210 116 236 108Z" fill="'+SN+'"/>';
+PT.forEach(function(t){var w=t<60||t>300?13:17,d='M'+xy(A(t-5));for(j=-w;j<=w;j+=w/4)d+=' L'+xy(B(t+j));d+=' L'+xy(A(t+5))+'Z';o+='<path d="'+d+'" fill="'+PY+'" stroke="#A8456A" stroke-width="1.5" stroke-linejoin="round"/>';
+for(j=-w+3;j<=w-3;j+=3.4)o+='<line x1="'+B(t+j)[0].toFixed(1)+'" y1="'+B(t+j)[1].toFixed(1)+'" x2="'+A(t+j*.28)[0].toFixed(1)+'" y2="'+A(t+j*.28)[1].toFixed(1)+'" stroke="#E79AB5" stroke-width="1"/>';
+for(j=-w+4;j<=w-4;j+=8){var r0=K(t+j,0),r1=K(t+j,.62);o+='<line x1="'+r0[0].toFixed(1)+'" y1="'+r0[1].toFixed(1)+'" x2="'+r1[0].toFixed(1)+'" y2="'+r1[1].toFixed(1)+'" stroke="'+PY+'" stroke-width="2.4" stroke-linecap="round"/>';}});
+var sd=11;function rn(){sd=(sd*1103515245+12345)%2147483648;return sd/2147483648;}
+for(j=0;j<70;j++){var q=K(70+220*rn(),.2+.62*rn());o+='<circle cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="2" fill="#6F58A8" stroke="#FFFFFF" stroke-width=".6"/>';}
+o+='<text x="262" y="154" font-size="11" font-weight="700" text-anchor="middle" fill="#6B5330">'+T.pe+'</text><text x="338" y="264" font-size="11" font-weight="700" text-anchor="end" fill="#6B5330">'+T.ur+'</text>';
+var RG={prox:[[K(131,.5),13]],dist:[[K(131,.5),10,1]],thick:[[M(135,.8),14],[K(139,.4),10]],thin:[[M(135,.42),13]],cd:[[A(135),13],[K(139,.4),10]]}[k];
 RG.forEach(function(r){if(r[2])o+='<circle cx="'+r[0][0].toFixed(1)+'" cy="'+r[0][1].toFixed(1)+'" r="2.6" fill="#6F58A8" stroke="#FFFFFF" stroke-width=".6"/>';
 o+='<circle cx="'+r[0][0].toFixed(1)+'" cy="'+r[0][1].toFixed(1)+'" r="'+r[1]+'" fill="none" stroke="#FFFFFF" stroke-width="6"/><circle cx="'+r[0][0].toFixed(1)+'" cy="'+r[0][1].toFixed(1)+'" r="'+r[1]+'" fill="none" stroke="#16222E" stroke-width="2.8"/>';});
-o+='<text x="6" y="12" font-size="9.5" fill="#55697A">● '+T.gl+'   ▬ '+T.ra+'</text></svg>';
-return '<div class="lowp"><p class="lh"><b>'+T.h+'</b></p>'+o+'<p class="lt">'+T[k]+'</p></div>';}
+o+='</svg>';
+var lg='<p class="lg2"><span><i style="background:'+CX+'"></i>'+T.lg[0]+'</span><span><i style="background:'+PY+'"></i>'+T.lg[1]+'</span><span><i style="background:'+SN+';border:1px solid '+SE+'"></i>'+T.lg[2]+'</span><span><i style="background:#6F58A8;border-radius:50%;width:8px;height:8px"></i>'+T.lg[3]+'</span><span><i style="background:'+PY+';height:3px"></i>'+T.lg[4]+'</span></p>';
+return '<div class="lowp"><p class="lh"><b>'+T.h+'</b></p>'+o+lg+'<p class="lt">'+T[k]+'</p></div>';}
 var NT='jm';
 function neph(g,id){var it=document.documentElement.lang==='it',HI='#1F5FA8',LO='#C9D3DC',cd=g==='cdp'||g==='cda'||g==='cdb',all=g==='all'||g==='none';
 function on(k){return all||k===g||(k==='cd'&&cd)||(g==='loop'&&((k==='ld'&&id!=='nkcc2')||(k==='la'&&id!=='aqp1')||(k==='lt'&&id!=='aqp1'&&id!=='nkcc2')||(k==='loop')));}
