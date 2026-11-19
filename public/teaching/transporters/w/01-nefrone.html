@@ -76,6 +76,7 @@ body.paused *,body.paused *:before{animation-play-state:paused!important}
 @media (prefers-reduced-motion:reduce){.q1,.q2,.q3,.q4,.q5,.c1,.c2,.c3,.c4,.c5{animation:none}.m1a,.m1b,.m3,.m4{animation:none;opacity:0}}
 @keyframes mv{0%{transform:translateX(0);opacity:0}12%{opacity:1}88%{opacity:1}100%{transform:translateX(var(--d));opacity:0}}
 @media (prefers-reduced-motion:reduce){.mv{animation:none;opacity:1}}
+.pk2{display:flex;gap:12px;align-items:flex-start}.pkl{flex:1 1 auto;min-width:0}.neph{flex:0 0 200px}@media(max-width:600px){.neph{display:none}}
 </style>
 </head>
 <body>
@@ -211,8 +212,18 @@ function knobRes(t){var k=t.knob,c=knobbed(t),f=c._f,ph=(k.ph0+k.ph1*f).toFixed(
   return '<div class="kp2"><div><span>'+k.flux+'</span><b>'+Math.round(f*100)+'%</b></div><div><span>'+k.ph+'</span><b>'+ph+'</b></div><div><span>'+k.pl+'</span><b style="color:'+(nu?'#16222E':f<0.5?'#B03A3A':'#2E7D32')+'">'+(f<0.5?k.plHi:k.plDn)+'</b></div></div>'+
     '<div class="bl"><b>'+k.blT+'</b><ol><li class="'+(f<0.3?'off':'')+'">'+k.b1.replace('{p}',Math.round(f*100))+'</li><li class="'+(f<0.3?'off':'')+'">'+k.b2+'</li><li class="'+(nu?'':f<0.5?'bad':'good')+'">'+(f<0.5?k.b3hi:k.b3dn)+'</li></ol><p>'+k.co2+'</p></div>'+
     '<p class="kmsg k'+st+'">'+k.m[st]+'</p>';}
+function neph(g,id){var it=document.documentElement.lang==='it',HI='#1F5FA8',LO='#C9D3DC',cd=g==='cdp'||g==='cda'||g==='cdb',all=g==='all'||g==='none';
+function on(k){return all||k===g||(k==='cd'&&cd)||(g==='loop'&&((k==='ld'&&id!=='nkcc2')||(k==='la'&&id!=='aqp1')||(k==='loop')));}
+function seg(k,d){return '<path d="'+d+'" fill="none" stroke="'+(on(k)?HI:LO)+'" stroke-width="'+(on(k)?10:8)+'" stroke-linecap="round" stroke-linejoin="round"/>';}
+function lab(k,x,y,t,a){return '<text x="'+x+'" y="'+y+'" font-size="11" text-anchor="'+(a||'start')+'" font-weight="'+(on(k)?700:400)+'" fill="'+(on(k)?HI:'#55697A')+'">'+t+'</text>';}
+var o='<svg viewBox="0 0 230 262" role="img" aria-label="'+(it?'Schema del nefrone con il tratto interessato evidenziato':'Scheme of the nephron with the segment involved highlighted')+'" style="display:block;width:100%;height:auto">';
+o+='<path d="M4 118 H226" stroke="#DDE4EA" stroke-width="1.5" stroke-dasharray="4 4"/><text x="4" y="112" font-size="9.5" fill="#8696A4">'+(it?'corticale':'cortex')+'</text><text x="4" y="130" font-size="9.5" fill="#8696A4">'+(it?'midollare':'medulla')+'</text>';
+o+=seg('cd','M196 46 V250')+seg('dist','M140 84 C140 58 156 96 166 70 S184 40 196 46')+seg('ld','M112 118 V224 Q112 240 126 240')+seg('la','M126 240 Q140 240 140 224 V84')+seg('prox','M52 44 C62 22 74 66 86 44 S104 30 112 56 V118');
+o+='<circle cx="34" cy="44" r="17" fill="#FBEAE8" stroke="#B03A3A" stroke-width="2.5"/><path d="M24 40 q5 -9 10 0 t10 0 M24 50 q5 -9 10 0 t10 0" fill="none" stroke="#B03A3A" stroke-width="2"/>';
+o+=lab('x',34,76,it?'glomerulo':'glomerulus','middle')+lab('prox',70,14,it?'prossimale':'proximal','middle')+lab('loop',104,176,it?'ansa di Henle':'loop of Henle','end')+(g==='loop'&&id==='aqp1'?lab('loop',104,189,it?'discendente':'descending','end'):'')+(g==='loop'&&id==='nkcc2'?lab('loop',104,189,it?'ascendente spesso':'thick ascending','end'):'')+lab('dist',150,36,it?'distale':'distal','middle')+lab('cd',188,200,it?'dotto':'collecting','end')+lab('cd',188,213,it?'collettore':'duct','end');
+return o+'</svg>';}
 function renderEx(){var t=knobbed(byId(SEL));
-  $('#pick').innerHTML=D.groups.map(function(g){return '<div class="grp"><span class="lab">'+g.n+'</span><div class="chips">'+T.filter(function(x){return x.g===g.k;}).map(function(x){return '<button type="button" data-id="'+x.id+'"'+(x.id===SEL?' class="act"':'')+'>'+x.n+'</button>';}).join('')+'</div></div>';}).join('');
+  $('#pick').innerHTML='<div class="pk2"><div class="pkl">'+D.groups.map(function(g){return '<div class="grp"><span class="lab">'+g.n+'</span><div class="chips">'+T.filter(function(x){return x.g===g.k;}).map(function(x){return '<button type="button" data-id="'+x.id+'"'+(x.id===SEL?' class="act"':'')+'>'+x.n+'</button>';}).join('')+'</div></div>';}).join('')+'</div><div class="neph">'+neph(byId(SEL).g,SEL)+'</div></div>';
   var Q=t.seq==='b'?U.sqb:U.sq;$('#dg').innerHTML=(t.seq?'<div class="sqctl"><button type="button" id="sqp">'+(PZ?Q.play:Q.pause)+'</button><button type="button" id="sqr">'+Q.restart+'</button></div>':'')+draw(t,false)+(t.seq?'<div class="sqb"><span class="goal2"><b>'+Q.goalT+'</b> '+Q.goal+'</span><ol><li class="c1"><b>1</b>'+Q.s1+'</li><li class="c2"><b>2</b>'+Q.s2+'</li><li class="c3"><b>3</b>'+Q.s3+'</li><li class="c4"><b>4</b>'+Q.s4+'</li><li class="c5"><b>5</b>'+Q.s5+'</li></ol></div>':'');$('#kn').innerHTML=knobHtml(byId(SEL));$('#info').innerHTML=info(t);ruleOn(t.cls);}
 var PZ=false;
 $('#dg').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
