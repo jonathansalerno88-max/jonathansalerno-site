@@ -272,7 +272,7 @@ var sd=7;function rn(){sd=(sd*1103515245+12345)%2147483648;return sd/2147483648;
 for(j=0;j<90;j++){var q=Q(E(-Math.PI/2+Math.PI*rn()),.76+.2*rn());o+='<circle cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="2.1" fill="#6F58A8" stroke="#FFFFFF" stroke-width=".6"/>';}
 o+='<path d="M420 78 L400 82 Q330 84 '+P[0]+' '+P[1]+' Q330 166 400 168 L420 172Z" fill="#FFFFFF"/><path d="M400 82 Q330 84 '+P[0]+' '+P[1]+' Q330 166 400 168" fill="none" stroke="#C97A93" stroke-width="2"/><path d="'+shape(1).split('L400')[0]+'" fill="none" stroke="#B5456E" stroke-width="2"/>';
 function lb(x,y,t,h,a){return '<text x="'+x+'" y="'+y+'" font-size="11" font-weight="700" text-anchor="'+(a||'middle')+'" fill="#5A1F38" stroke="#FFFFFF" stroke-width="3" paint-order="stroke">'+t+'</text>';}
-o+=lb(58,129,T.c)+lb(134,152,T.o)+lb(226,129,T.i)+lb(372,129,T.pe)+lb(296,160,T.pa,0,"end");
+o+=lb(58,129,T.c)+lb(134,152,T.o)+lb(208,112,T.i)+lb(372,129,T.pe)+lb(296,160,T.pa,0,"end");
 var TH=-Math.PI/2+Math.PI*14.5/21,TL=-Math.PI/2+Math.PI*15/21,RG={prox:[[Q(E(TL),.85),15]],dist:[[Q(E(TL),.85),11,1]],thick:[[Q(E(TH),.59),16],[Q(E(TH),.83),11]],thin:[[Q(E(-Math.PI/2+Math.PI*.79),.33),16]],cd:[[[281,125],14],[Q(E(TH),.83),11]]}[k];
 RG.forEach(function(r){if(r[2])o+='<circle cx="'+r[0][0].toFixed(1)+'" cy="'+r[0][1].toFixed(1)+'" r="2.6" fill="#6F58A8" stroke="#FFFFFF" stroke-width=".6"/>';
 o+='<circle cx="'+r[0][0].toFixed(1)+'" cy="'+r[0][1].toFixed(1)+'" r="'+r[1]+'" fill="none" stroke="#FFFFFF" stroke-width="6"/><circle cx="'+r[0][0].toFixed(1)+'" cy="'+r[0][1].toFixed(1)+'" r="'+r[1]+'" fill="none" stroke="#16222E" stroke-width="2.8"/>';});
