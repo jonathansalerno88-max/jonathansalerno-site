@@ -21,12 +21,15 @@ svg{display:block;width:100%;height:auto}
 .sl li.cr{background:#F1ECF8;border-color:#6A3A96}
 .sl sup{font-size:10.5px;color:#55697A;margin-left:1px}
 .pz{font:inherit;font-size:13px;font-weight:700;padding:5px 12px;border-radius:999px;border:1.6px solid #16222E;background:#FFFFFF;color:#16222E;cursor:pointer;float:right;margin:0 0 6px 10px}.pz.on{background:#F7C948}
+.md{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:12px 0 6px;font-size:13px}.md b{margin-right:4px}
+.md button{font:inherit;font-size:12.5px;font-weight:700;border:1.5px solid #0E7C5B;background:#FFFFFF;color:#0E7C5B;border-radius:999px;padding:4px 12px;cursor:pointer}.md button.on{background:#0E7C5B;color:#FFFFFF}
 </style>
 </head>
 <body>
 <h2 class="sr-only">Due ambienti A e B separati da una barriera: il trasportatore fa passare una sola sostanza, il recettore fa passare solo un segnale.</h2>
 <button class="pz" id="pz" hidden></button>
 <ol class="sl"><li>Su che cosa sia la vita non esiste una definizione condivisa.<sup>9,10</sup></li><li>Ma tutta la vita che conosciamo ha una cosa in comune: è fatta di cellule, cioè di ambienti separati dall'esterno da un confine.<sup>11,12</sup></li><li><b>Una cellula del tutto isolata, però, non è mai stata osservata</b>: tutte quelle che conosciamo scambiano materia con ciò che le circonda, almeno in una fase della loro vita. Alcune sostanze il confine lo attraversano da sole, per <b>diffusione semplice</b> (ossigeno, anidride carbonica); a tutte le altre serve una struttura apposta.</li><li class="cap ct">Un <b class="tr">trasportatore</b> è una struttura biologica che fa passare una sostanza specifica da un ambiente all'altro, senza annullare la separazione. Ne esistono tre tipi:<svg viewBox="0 0 600 152" role="img" aria-label="Schema ad albero: un trasportatore può essere un canale, un trasportatore in senso stretto o una pompa" style="display:block;width:100%;max-width:640px;height:auto;margin:6px auto 0"><path d="M256.0 36 L109.7 73.5" stroke="#0E7C5B" stroke-width="2.4"/><path d="M100 76 L108.4 68.7 L110.9 78.4 Z" fill="#0E7C5B"/><path d="M300.0 36 L300.0 66.0" stroke="#0E7C5B" stroke-width="2.4"/><path d="M300 76 L295.0 66.0 L305.0 66.0 Z" fill="#0E7C5B"/><path d="M344.0 36 L490.3 73.5" stroke="#0E7C5B" stroke-width="2.4"/><path d="M500 76 L489.1 78.4 L491.6 68.7 Z" fill="#0E7C5B"/><rect x="222" y="4" width="156" height="32" rx="9" fill="#0E7C5B"/><text x="300" y="26" font-size="16" font-weight="700" text-anchor="middle" fill="#FFFFFF">trasportatore</text><text x="100" y="94" font-size="14.5" font-weight="700" text-anchor="middle" fill="#16222E">canale</text><text x="100" y="110" font-size="11.5" text-anchor="middle" fill="#55697A">un poro: aperto, lascia scorrere</text><text x="100" y="124" font-size="11.5" text-anchor="middle" fill="#55697A">gli ioni in discesa</text><text x="300" y="94" font-size="14.5" font-weight="700" text-anchor="middle" fill="#16222E">trasportatore in senso stretto</text><text x="300" y="110" font-size="11.5" text-anchor="middle" fill="#55697A">lega la sostanza e cambia forma</text><text x="300" y="124" font-size="11.5" text-anchor="middle" fill="#55697A">per portarla di là; non usa ATP</text><text x="500" y="94" font-size="14.5" font-weight="700" text-anchor="middle" fill="#16222E">pompa</text><text x="500" y="110" font-size="11.5" text-anchor="middle" fill="#55697A">fa lo stesso, ma</text><text x="500" y="124" font-size="11.5" text-anchor="middle" fill="#55697A">consumando direttamente ATP</text><text x="100" y="145" font-size="13" font-weight="700" text-anchor="middle"><tspan fill="#2E7D4F">passivo</tspan></text><text x="300" y="145" font-size="13" font-weight="700" text-anchor="middle"><tspan fill="#2E7D4F">passivo</tspan> <tspan fill="#55697A" font-weight="400">o</tspan> <tspan fill="#B03A3A">attivo secondario</tspan></text><text x="500" y="145" font-size="13" font-weight="700" text-anchor="middle"><tspan fill="#B03A3A">attivo primario</tspan></text></svg></li><li class="cap cr">Un <b class="rc">recettore</b>, invece, fa passare solo informazione: la molecola resta dov'è, dall'altra parte arriva un segnale.</li></ol>
+<div class="md" id="md"><b>Guarda come passa:</b></div>
 <svg viewBox="0 0 680 320" role="img" aria-label="Due ambienti A e B separati da una barriera: il trasportatore fa passare una sola sostanza, il recettore fa passare solo un segnale.">
 <defs><clipPath id="cb"><rect x="352" y="30" width="318" height="270"/></clipPath></defs>
 <rect x="10" y="30" width="318" height="270" rx="8" fill="#E6F4EA"/>
@@ -35,10 +38,9 @@ svg{display:block;width:100%;height:auto}
 <text x="656" y="52" font-size="15" font-weight="700" text-anchor="end" fill="#1F4E79">Ambiente B</text>
 <rect x="328" y="30" width="24" height="54" fill="#8696A4"/>
 <rect x="328" y="126" width="24" height="174" fill="#8696A4"/>
-<rect x="324" y="84" width="6" height="42" rx="2" fill="#0E7C5B"/><rect x="350" y="84" width="6" height="42" rx="2" fill="#0E7C5B"/>
 <text x="340" y="22" font-size="12" font-weight="700" text-anchor="middle" fill="#55697A">barriera</text>
-<text x="24" y="80" font-size="13.5" font-weight="700" fill="#0E7C5B">Trasportatore</text>
-<text x="24" y="97" font-size="12" fill="#55697A">passa materia, una sola sostanza</text>
+<text id="mt" x="24" y="80" font-size="13.5" font-weight="700" fill="#0E7C5B"></text>
+<text id="ms" x="24" y="97" font-size="12" fill="#55697A"></text>
 <path d="M318 218 h10 v-16 h24 v32 h-24 v-16" fill="#6A3A96"/><path d="M318 204 q-12 14 0 28" fill="none" stroke="#6A3A96" stroke-width="5"/>
 <text x="24" y="256" font-size="13.5" font-weight="700" fill="#6A3A96">Recettore</text>
 <text x="24" y="273" font-size="12" fill="#55697A">passa informazione, nessuna materia</text>
@@ -48,19 +50,40 @@ svg{display:block;width:100%;height:auto}
 <p class="rf"><b>9.</b> Trifonov EN. <i>J Biomol Struct Dyn</i>. 2011;29(2):259–66: un'analisi di 123 definizioni di vita. <b>10.</b> NASA Astrobiology, <a target="_blank" rel="noopener" href="https://astrobiology.nasa.gov/news/forming-a-definition-for-life/">Forming a definition for life</a>: la definizione di lavoro, «un sistema chimico che si autosostiene, capace di evoluzione darwiniana». <b>11.</b> Gánti T. <i>The Principles of Life</i>. Oxford University Press; 2003: il chemotone, cioè metabolismo, replicazione e una membrana che li racchiude. <b>12.</b> Varela FG, Maturana HR, Uribe R. <i>BioSystems</i>. 1974;5(4):187–96: l'autopoiesi, un sistema che produce il proprio confine.</p>
 <script>
 (function(){var g=document.getElementById('dyn'),P=[],i,T=0,last=null,pz=document.getElementById('pz'),paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var MD=[["Diffusione semplice", "la sostanza passa da sola attraverso la barriera, in discesa", "Diffusione semplice"], ["Canale", "un poro aperto: passa in discesa, veloce", "Canale"], ["Trasportatore in senso stretto", "ne lega una alla volta e cambia forma: in discesa", "Trasportatore"], ["Pompa", "una alla volta, anche in salita: paga l'ATP", "Pompa"]],mode=2,C={side:0,load:null,t:0,ph:'wait',atp:0},md=document.getElementById('md'),GR='#0E7C5B';
 function lab(){pz.textContent=paused?'▶ Riprendi':'❚❚ Pausa';pz.classList.toggle('on',paused);}pz.onclick=function(){paused=!paused;lab();};lab();
 function rnd(a,b){return a+Math.random()*(b-a);}
-for(i=0;i<12;i++)P.push({k:0,x:rnd(30,300),y:rnd(110,190),vx:rnd(25,55)*(Math.random()<.7?1:-1),vy:rnd(-35,35)});
-for(i=0;i<7;i++)P.push({k:1,x:rnd(30,300),y:rnd(112,190),vx:rnd(25,50)*(Math.random()<.5?1:-1),vy:rnd(-35,35)});
+function reset(){P=[];var nA=mode===3?5:12,nB=mode===3?9:0;
+for(i=0;i<nA;i++)P.push({k:0,x:rnd(30,300),y:rnd(110,190),vx:rnd(25,55)*(Math.random()<.7?1:-1),vy:rnd(-35,35)});
+for(i=0;i<nB;i++)P.push({k:0,x:rnd(380,650),y:rnd(110,190),vx:rnd(25,55)*(Math.random()<.5?1:-1),vy:rnd(-35,35)});
+for(i=0;i<6;i++)P.push({k:1,x:rnd(30,300),y:rnd(112,190),vx:rnd(25,50)*(Math.random()<.5?1:-1),vy:rnd(-35,35)});
+C={side:0,load:null,t:0,ph:'wait',atp:0};
+document.getElementById('mt').textContent=MD[mode][0];document.getElementById('ms').textContent=MD[mode][1];
+Array.prototype.forEach.call(md.querySelectorAll('button'),function(b,j){b.classList.toggle('on',j===mode);b.setAttribute('aria-pressed',j===mode);});}
+MD.forEach(function(m,j){var b=document.createElement('button');b.type='button';b.textContent=m[2];b.onclick=function(){mode=j;reset();};md.appendChild(b);});
+reset();
+function carrier(dt){C.t+=dt;if(C.atp>0)C.atp-=dt;
+if(C.ph==='wait'){if(mode===2&&C.t>1.3){C.side=1-C.side;C.t=0;}}
+else if(C.ph==='flip'){if(C.t>.65){var q=C.load,to=1-C.side;q.held=false;q.x=to===1?368:312;q.y=114;q.vx=(to===1?1:-1)*rnd(35,55);q.vy=rnd(5,30);C.load=null;C.side=to;C.t=0;C.ph=mode===3?'back':'wait';}}
+else if(C.ph==='back'){if(C.t>.55){C.side=0;C.t=0;C.ph='wait';}}}
 function step(ts){var dt=last===null?0:Math.min(.05,(ts-last)/1000);last=ts;if(paused)dt=0;T+=dt;var o='';
-P.forEach(function(p){var nx=p.x+p.vx*dt,ny=p.y+p.vy*dt;
+if(mode>=2)carrier(dt);
+if(mode===0)o+='<rect x="328" y="84" width="24" height="42" fill="#8696A4"/>';
+else if(mode===1)o+='<rect x="324" y="84" width="6" height="42" rx="2" fill="'+GR+'"/><rect x="350" y="84" width="6" height="42" rx="2" fill="'+GR+'"/>';
+else{var closed=C.ph!=='wait';o+='<rect x="328" y="84" width="24" height="42" fill="#FFFFFF"/>';
+o+=closed?'<rect x="328" y="85" width="24" height="40" rx="3" fill="#FFFFFF" stroke="'+GR+'" stroke-width="6"/>':(C.side===0?'<path d="M326 87 H352 V123 H326" fill="none" stroke="'+GR+'" stroke-width="6" stroke-linejoin="round"/>':'<path d="M354 87 H328 V123 H354" fill="none" stroke="'+GR+'" stroke-width="6" stroke-linejoin="round"/>');
+if(mode===3)o+='<text x="340" y="74" font-size="12.5" font-weight="700" text-anchor="middle" fill="#8A6A12" stroke="#FFFFFF" stroke-width="3" paint-order="stroke">'+(C.atp>0?'ATP → ADP + P':'ATP')+'</text>';}
+P.forEach(function(p){if(p.held){o+='<circle cx="340" cy="105" r="6" fill="'+GR+'"/>';return;}
+var nx=p.x+p.vx*dt,ny=p.y+p.vy*dt;
 if(ny<108||ny>196){p.vy=-p.vy;ny=p.y;}
 if(nx<20||nx>660){p.vx=-p.vx;nx=p.x;}
-var inGate=p.k===0&&ny>106&&ny<124;
-if(!inGate&&((p.x<=320&&nx>320)||(p.x>=360&&nx<360))){p.vx=-p.vx;nx=p.x;}
-if(nx>320&&nx<360&&p.k===0){ny=Math.max(110,Math.min(120,ny));}
+var free=p.k===0&&(mode===0||(mode===1&&ny<152));
+if(!free&&((p.x<=320&&nx>320)||(p.x>=360&&nx<360))){
+if(mode>=2&&p.k===0&&C.ph==='wait'&&ny<(mode===3?200:168)&&((C.side===0&&p.x<=320)||(C.side===1&&p.x>=360))){p.held=true;C.load=p;C.ph='flip';C.t=0;if(mode===3)C.atp=1.1;o+='<circle cx="340" cy="105" r="6" fill="'+GR+'"/>';return;}
+p.vx=-p.vx;nx=p.x;}
+if(mode===1&&nx>320&&nx<360&&p.k===0){ny=Math.max(110,Math.min(120,ny));}
 p.x=nx;p.y=ny;
-o+=p.k===0?'<circle cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="6" fill="#0E7C5B"/>':'<rect x="'+(nx-5).toFixed(1)+'" y="'+(ny-5).toFixed(1)+'" width="10" height="10" fill="#C2571A"/>';});
+o+=p.k===0?'<circle cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="6" fill="'+GR+'"'+(mode===0&&nx>322&&nx<358?' opacity=".55"':'')+'/>':'<rect x="'+(nx-5).toFixed(1)+'" y="'+(ny-5).toFixed(1)+'" width="10" height="10" fill="#C2571A"/>';});
 var u=T%5,lx,sig=0;
 if(u<1.5)lx=210+(302-210)*(u/1.5);else if(u<3.3){lx=302;sig=(u-1.5)/1.8;}else lx=302-(302-210)*Math.min(1,(u-3.3)/1.2);
 o+='<path d="M'+(lx-10)+' 208 h12 l8 10 l-8 10 h-12 z" fill="#B03A6E"/>';
