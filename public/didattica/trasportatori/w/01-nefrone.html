@@ -80,7 +80,8 @@ body.paused *,body.paused *:before{animation-play-state:paused!important}
 </head>
 <body>
 <h2 class="sr-only">Classificazione dei trasporti di membrana: passivo, attivo primario, attivo secondario. Per ogni trasportatore del nefrone il disegno mostra le concentrazioni ai due lati, la proteina (canale, trasportatore o pompa) e se ogni sostanza scende o sale lungo il suo gradiente. C'è anche un quiz.</h2>
-<div class="card"><h3 id="ttl"></h3><p class="story" id="story"></p>
+<!-- intro card (title, question, passive / primary / secondary boxes) hidden on 2026-11-19 -->
+<div class="card" hidden style="display:none"><h3 id="ttl"></h3><p class="story" id="story"></p>
   <div class="rule"><div class="r-pas" id="rp"></div><div class="r-pri" id="rr"></div><div class="r-sec" id="rs"></div></div>
   <p class="q" id="rq"></p></div>
 <div class="tabs"><button type="button" id="t1"></button><button type="button" id="t2"></button></div>
@@ -249,5 +250,6 @@ $('#t1').textContent=U.t1;$('#t2').textContent=U.t2;
 (function(){var m=/[?&]t=([a-z0-9]+)/.exec(location.search);if(m&&T.some(function(x){return x.id===m[1];}))SEL=m[1];})();
 setMode('ex');
 </script>
+<script>(function(){var last=0;function send(){var h=Math.ceil(document.body.getBoundingClientRect().height)+2;if(h!==last){last=h;try{parent.postMessage({gradH:h},'*');}catch(e){}}}if(window.ResizeObserver)new ResizeObserver(send).observe(document.body);window.addEventListener('load',send);setInterval(send,1000);})();</script>
 </body>
 </html>
