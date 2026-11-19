@@ -61,16 +61,15 @@ svg.an{margin-top:4px}.md{margin-top:10px}
 <p class="rf"><b>9.</b> Trifonov EN. <i>J Biomol Struct Dyn</i>. 2011;29(2):259–66: an analysis of 123 definitions of life. <b>10.</b> NASA Astrobiology, <a target="_blank" rel="noopener" href="https://astrobiology.nasa.gov/news/forming-a-definition-for-life/">Forming a definition for life</a>: the working definition, 'a self-sustaining chemical system capable of Darwinian evolution'. <b>11.</b> Gánti T. <i>The Principles of Life</i>. Oxford University Press; 2003: the chemoton, that is, metabolism, replication and a membrane enclosing them. <b>12.</b> Varela FG, Maturana HR, Uribe R. <i>BioSystems</i>. 1974;5(4):187–96: autopoiesis, a system that produces its own boundary.</p>
 <script>
 (function(){var g=document.getElementById('dyn'),g2=document.getElementById('dyn2'),P=[],i,T=0,last=null,pz=document.getElementById('pz'),paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
-var idle=0,MD=[["Simple diffusion", "the substance crosses the barrier by itself, downhill", "Simple diffusion"], ["Channel", "an open pore: it goes through downhill, fast", "Channel"], ["Transporter in the strict sense", "it binds one at a time and changes shape: downhill", "Transporter"], ["Pump", "one at a time, uphill too: ATP pays", "Pump"]],GT=[["always open", "it goes through downhill, fast", "Channel that is always open"], ["voltage", "it opens when the voltage changes", "Voltage-gated channel"], ["a ligand", "it opens when a ligand binds", "Ligand-gated channel"], ["stretch", "it opens when the membrane is stretched", "Mechanically gated channel"]],TK=[["passive", "it binds one at a time and changes shape: downhill", "Passive transporter"], ["secondary active", "● goes uphill, hooked to Na⁺ (◆) going down", "Secondary active transporter", "pump"]],gate=0,sec=0,gt=document.getElementById('gt'),tk=document.getElementById('tk'),P2={load:null,t:0,ph:'wait',atp:0},BL='#1E66D0',mode=2,C={side:0,load:null,t:0,ph:'wait',atp:0},md=document.getElementById('md'),GR='#0E7C5B';
+var idle=0,PH=1,PHt=0,MD=[["Simple diffusion", "the substance crosses the barrier by itself, downhill", "Simple diffusion"], ["Channel", "an open pore: it goes through downhill, fast", "Channel"], ["Transporter in the strict sense", "it binds one at a time and changes shape: downhill", "Transporter"], ["Pump", "one at a time, uphill too: ATP pays", "Pump"]],GT=[["always open", "it goes through downhill, fast", "Channel that is always open"], ["voltage", "it opens when the voltage changes", "Voltage-gated channel"], ["a ligand", "it opens when a ligand binds", "Ligand-gated channel"], ["stretch", "it opens when the membrane is stretched", "Mechanically gated channel"]],TK=[["passive", "it binds one at a time and changes shape: downhill", "Passive transporter"], ["secondary active", "", "Secondary active transporter", "pump", "1 · the pump spends ATP: it piles ■ up in A", "2 · ■ runs back downhill and takes ● with it", "● has gone up into B: no ATP spent here"]],gate=0,sec=0,gt=document.getElementById('gt'),tk=document.getElementById('tk'),P2={load:null,t:0,ph:'wait',atp:0},BL='#1E66D0',mode=2,C={side:0,load:null,t:0,ph:'wait',atp:0},md=document.getElementById('md'),GR='#0E7C5B';
 function lab(){pz.textContent=paused?'▶ Resume':'❚❚ Pause';pz.classList.toggle('on',paused);}pz.onclick=function(){paused=!paused;lab();};lab();
 function rnd(a,b){return a+Math.random()*(b-a);}
 function S(){return mode===2&&sec===1;}
-function reset(){P=[];var nA=mode===3?5:(S()?4:12),nB=mode===3?9:(S()?8:0);
-if(S()){for(i=0;i<8;i++)P.push({k:2,x:rnd(30,300),y:rnd(110,190),vx:rnd(30,60)*(Math.random()<.7?1:-1),vy:rnd(-35,35)});for(i=0;i<2;i++)P.push({k:2,x:rnd(380,650),y:rnd(110,190),vx:-rnd(30,60),vy:rnd(-35,35)});}
+function reset(){P=[];var nA=mode===3?5:(S()?8:12),nB=mode===3?9:(S()?6:0);PH=1;PHt=0;
 P2={load:null,t:0,ph:'wait',atp:0};
 for(i=0;i<nA;i++)P.push({k:0,x:rnd(30,300),y:rnd(110,190),vx:rnd(25,55)*(Math.random()<.7?1:-1),vy:rnd(-35,35)});
 for(i=0;i<nB;i++)P.push({k:0,x:rnd(380,650),y:rnd(110,190),vx:rnd(25,55)*(Math.random()<.5?1:-1),vy:rnd(-35,35)});
-for(i=0;i<(S()?3:6);i++)P.push({k:1,x:rnd(30,300),y:rnd(112,190),vx:rnd(25,50)*(Math.random()<.5?1:-1),vy:rnd(-35,35)});
+for(i=0;i<(S()?8:6);i++)P.push({k:1,x:S()?rnd(380,650):rnd(30,300),y:rnd(112,190),vx:rnd(25,50)*(Math.random()<.5?1:-1),vy:rnd(-35,35)});
 C={side:0,load:null,na:null,t:0,ph:'wait',atp:0};
 document.getElementById('mt').textContent=mode===1?GT[gate][2]:(mode===2?TK[sec][2]:MD[mode][0]);document.getElementById('ms').textContent=mode===1?GT[gate][1]:(mode===2?TK[sec][1]:MD[mode][1]);gt.hidden=mode!==1;tk.hidden=mode!==2;
 Array.prototype.forEach.call(tk.querySelectorAll('button'),function(b,j){b.classList.toggle('on',j===sec);b.setAttribute('aria-pressed',j===sec);});
@@ -82,10 +81,18 @@ TK.forEach(function(m,j){var b=document.createElement('button');b.type='button';
 Array.prototype.forEach.call(document.querySelectorAll('.go'),function(el){function act(){var a=el.getAttribute('data-go').split(',');mode=+a[0];if(a.length>1){if(mode===2)sec=+a[1];}T=0;reset();try{parent.postMessage({gradScroll:md.getBoundingClientRect().top},'*');}catch(e){}}
 el.addEventListener('click',act);el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();act();}});});
 reset();
-function secStep(dt){C.t+=dt;P2.t+=dt;if(P2.atp>0)P2.atp-=dt;
-if(C.ph==='flip'&&C.t>.55){[C.na,C.load].forEach(function(q,j){q.held=false;q.x=368;q.y=110+8*j;q.vx=rnd(35,55);q.vy=rnd(5,30);});C.na=null;C.load=null;C.t=0;C.ph='back';}
-else if(C.ph==='back'&&C.t>.35){C.t=0;C.ph='wait';}
-if(P2.ph==='flip'&&P2.t>.65){var q=P2.load;q.held=false;q.x=312;q.y=158;q.vx=-rnd(35,55);q.vy=rnd(-20,20);P2.load=null;P2.t=0;P2.ph='wait';}}
+function secStep(dt){C.t+=dt;P2.t+=dt;if(P2.atp>0)P2.atp-=dt;var sqB=0,gA=0;
+P.forEach(function(p){p.tx=null;if(p.held)return;if(p.k===1&&p.x>352)sqB++;if(p.k===0&&p.x<328)gA++;});
+if(PH===1){if(P2.ph==='flip'&&P2.t>.3){var q=P2.load;q.held=false;q.x=310;q.y=158;q.vx=-rnd(40,70);q.vy=rnd(-35,35);P2.load=null;P2.t=0;P2.ph='wait';}
+P.forEach(function(p){if(p.held||p.k!==1||p.x<352)return;p.tx=364;p.ty=158;
+if(P2.ph==='wait'&&Math.abs(p.x-364)<7&&Math.abs(p.y-158)<7){p.held=true;p.hx=340;p.hy=158;P2.load=p;P2.ph='flip';P2.t=0;P2.atp=.5;}});
+if(!sqB&&!P2.load){PHt+=dt;if(PHt>1){PH=2;PHt=0;C.t=0;C.ph='wait';}}}
+else if(PH===2){if(C.ph==='flip'&&C.t>.28){[C.na,C.load].forEach(function(q,j){q.held=false;q.x=368;q.y=112+12*j;q.vx=rnd(45,80);q.vy=rnd(5,40);});C.na=null;C.load=null;C.t=0;C.ph='back';}
+else if(C.ph==='back'&&C.t>.12){C.t=0;C.ph='wait';}
+P.forEach(function(p){if(p.held||p.x>328)return;if(p.k===1){p.tx=316;p.ty=101;if(C.ph==='wait'&&!C.na&&Math.abs(p.x-316)<7&&Math.abs(p.y-101)<7){p.held=true;p.hx=336;p.hy=99;C.na=p;}}
+else{p.tx=316;p.ty=112;if(C.ph==='wait'&&C.na&&!C.load&&Math.abs(p.x-316)<7&&Math.abs(p.y-112)<7){p.held=true;p.hx=344;p.hy=111;C.load=p;C.ph='flip';C.t=0;}}});
+if(!gA&&!C.load&&C.ph!=='flip'){PH=3;C.ph='wait';}}
+var cap=TK[1][3+PH],el=document.getElementById('ms');if(el.textContent!==cap)el.textContent=cap;}
 function isOpen(){if(gate===0)return true;var u=T%5;return u>1.5&&u<4;}
 function carrier(dt){C.t+=dt;if(C.atp>0)C.atp-=dt;
 if(C.ph==='wait'){if(mode===2&&C.t>1.3){C.side=1-C.side;C.t=0;}}
@@ -105,15 +112,15 @@ o+=closed?'<rect x="328" y="85" width="24" height="40" rx="3" fill="#FFFFFF" str
 if(mode===3)o+='<text x="340" y="74" font-size="12.5" font-weight="700" text-anchor="middle" fill="#8A6A12" stroke="#FFFFFF" stroke-width="3" paint-order="stroke">'+(C.atp>0?'ATP → ADP + P':'ATP')+'</text>';
 if(S())o+='<rect x="328" y="140" width="24" height="36" fill="#FFF6E0" stroke="#8A6A12" stroke-width="2" stroke-dasharray="4 3"/><text x="366" y="146" font-size="11.5" font-weight="700" fill="#8A6A12" stroke="#E2EEF8" stroke-width="3" paint-order="stroke">'+TK[1][3]+(P2.atp>0?': ATP → ADP + P':': ATP')+'</text>';}
 function dia(x,y){return '<path d="M'+x.toFixed(1)+' '+(y-6).toFixed(1)+' l6 6 l-6 6 l-6 -6 z" fill="'+BL+'"/>';}
-P.forEach(function(p){if(p.held){o+=p.k===2?dia(p.hx,p.hy):'<circle cx="'+p.hx+'" cy="'+p.hy+'" r="6" fill="'+GR+'"/>';return;}
+P.forEach(function(p){if(p.held){o+=p.k===1?'<rect x="'+(p.hx-5)+'" y="'+(p.hy-5)+'" width="10" height="10" fill="#C2571A"/>':'<circle cx="'+p.hx+'" cy="'+p.hy+'" r="6" fill="'+GR+'"/>';return;}
+if(p.tx!=null){var ddx=p.tx-p.x,ddy=p.ty-p.y,dd=Math.sqrt(ddx*ddx+ddy*ddy)||1,sp=Math.min(dd,(p.k===1?190:150)*dt);p.x+=ddx/dd*sp;p.y+=ddy/dd*sp;
+o+=p.k===0?'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="6" fill="'+GR+'"/>':'<rect x="'+(p.x-5).toFixed(1)+'" y="'+(p.y-5).toFixed(1)+'" width="10" height="10" fill="#C2571A"/>';return;}
 var nx=p.x+p.vx*dt,ny=p.y+p.vy*dt;
 if(ny<108||ny>196){p.vy=-p.vy;ny=p.y;}
 if(nx<20||nx>660){p.vx=-p.vx;nx=p.x;}
 var free=p.k===0&&(mode===0||(mode===1&&ny<152&&isOpen()));
 if(!free&&((p.x<=320&&nx>320)||(p.x>=360&&nx<360))){
-if(S()){if(p.x<=320&&C.ph==='wait'){if(p.k===2&&!C.na){p.held=true;p.hx=335;p.hy=99;C.na=p;o+=dia(335,99);return;}
-if(p.k===0&&C.na&&!C.load){p.held=true;p.hx=344;p.hy=111;C.load=p;C.ph='flip';C.t=0;o+='<circle cx="344" cy="111" r="6" fill="'+GR+'"/>';return;}}
-if(p.x>=360&&p.k===2&&P2.ph==='wait'){p.held=true;p.hx=340;p.hy=158;P2.load=p;P2.ph='flip';P2.t=0;P2.atp=1.1;o+=dia(340,158);return;}}
+if(S()){}
 else if(mode>=2&&p.k===0&&C.ph==='wait'&&ny<(mode===3?200:168)&&((C.side===0&&p.x<=320)||(C.side===1&&p.x>=360))){p.held=true;p.hx=340;p.hy=105;C.load=p;C.ph='flip';C.t=0;if(mode===3)C.atp=1.1;o+='<circle cx="340" cy="105" r="6" fill="'+GR+'"/>';return;}
 p.vx=-p.vx;nx=p.x;}
 if(mode===1&&nx>320&&nx<360&&p.k===0){ny=Math.max(110,Math.min(120,ny));}
