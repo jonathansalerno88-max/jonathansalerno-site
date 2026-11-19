@@ -284,7 +284,11 @@ gaps.forEach(function(t){var s0=A(t),b0=B(t),d='M'+xy(B(t-15));for(j=t-12;j<=t+1
 var dv='M'+xy(M(t-15,.93));for(j=t-12;j<=t+15;j+=3)dv+=' L'+xy(M(j,.93));
 o+='<path d="M'+CC[0]+' '+(CC[1]+8)+' L'+xy(A(t+4))+' L'+xy(M(t+4,.93))+'" fill="none" stroke="'+VE+'" stroke-width="2" stroke-linejoin="round" opacity=".9"/><path d="'+dv+'" fill="none" stroke="'+VE+'" stroke-width="1.8" opacity=".9"/>';
 o+='<path d="M'+CC[0]+' '+CC[1]+' L'+xy(s0)+' L'+xy(b0)+'" fill="none" stroke="'+AR+'" stroke-width="2.4" stroke-linejoin="round"/><path d="'+d+'" fill="none" stroke="'+AR+'" stroke-width="2.2"/>';
-[-12,-6,6,12].forEach(function(q){o+='<path d="M'+xy(B(t+q))+' L'+xy(K(t+q,.62))+'" stroke="'+AR+'" stroke-width="1.2"/>';});});}
+[-12,-6,6,12].forEach(function(q){o+='<path d="M'+xy(B(t+q))+' L'+xy(K(t+q,.62))+'" stroke="'+AR+'" stroke-width="1.2"/>';});});
+var VN=it?['a. renale','v. renale','a. interlobare','a. arcuata','a. interlobulare']:['renal a.','renal v.','interlobar a.','arcuate a.','interlobular a.'];
+function vl(x,y,t,c,a,px,py){return (px!=null?'<path d="M'+px[0]+' '+px[1]+' L'+xy(py)+'" stroke="'+c+'" stroke-width="1.3"/>':'')+'<text x="'+x+'" y="'+y+'" font-size="10.5" font-weight="700" text-anchor="'+(a||'start')+'" fill="'+c+'" stroke="#FFFFFF" stroke-width="3" paint-order="stroke">'+t+'</text>';}
+o+=vl(354,128,VN[0],AR)+vl(354,106,VN[1],VE)+vl(118,297,VN[2],AR,'start',[150,287],M(246.5,.45))+vl(4,14,VN[3],AR,'start',[52,17],B(124))+vl(196,11,VN[4],AR,'middle',[196,14],K(101.5,.4));}
+
 var NM=it?['lobo','lobulo','piramide','raggi midollari']:['lobe','lobule','pyramid','medullary rays'];
 function tl(x,y,t,c,a){return '<text x="'+x+'" y="'+y+'" font-size="11.5" font-weight="700" text-anchor="'+(a||'start')+'" fill="'+c+'" stroke="#FFFFFF" stroke-width="3" paint-order="stroke">'+t+'</text>';}
 var ld='M'+xy(A(225));for(j=203;j<=247;j+=4)ld+=' L'+xy(K(j,1));o+='<path d="'+ld+'Z" fill="none" stroke="#16222E" stroke-width="2.4" stroke-linejoin="round"/>';
