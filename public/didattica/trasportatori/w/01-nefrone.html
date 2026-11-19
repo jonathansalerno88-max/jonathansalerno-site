@@ -263,16 +263,19 @@ var T=it?{h:'A 4×: dove guardare sul vetrino',c:'corticale',o:'midollare estern
  thin:'In the <b>inner medulla</b>, towards the papilla: the palest area, made of thin parallel tubules.',
  cd:'In the <b>medullary rays</b> of the cortex, then down through the whole <b>medulla</b> to the <b>papilla</b>, where they are largest and open into the pelvis.'};
 o+='<svg viewBox="0 0 420 250" role="img" aria-label="'+T.h+'" style="display:block;width:100%;height:auto">';
-function layer(s,f,x){var d=shape(s);return '<path d="'+d+'" fill="'+f+'"/>'+(on(x)?'<path d="'+d+'" fill="'+BL+'" opacity=".5"/>':'');}
+function layer(s,f,x){return '<path d="'+shape(s)+'" fill="'+f+'"/>';}
 o+=layer(1,'#DE5A8B','c')+layer(.72,'#EE9DB9','o')+layer(.46,'#F8D3DE','i');
 for(i=0;i<=20;i++){var th=-Math.PI/2+Math.PI*(i+.5)/21,e=E(th),a=Q(e,.72),b=Q(e,.94),c=Q(e,.14),m=Q(e,.70);
-o+='<line x1="'+c[0].toFixed(1)+'" y1="'+c[1].toFixed(1)+'" x2="'+m[0].toFixed(1)+'" y2="'+m[1].toFixed(1)+'" stroke="'+(on('m')?BL:'#E48BAA')+'" stroke-width="'+(on('m')?2.2:1)+'" opacity="'+(on('m')?1:.7)+'"/>';
-o+='<line x1="'+a[0].toFixed(1)+'" y1="'+a[1].toFixed(1)+'" x2="'+b[0].toFixed(1)+'" y2="'+b[1].toFixed(1)+'" stroke="'+(on('r')?BL:'#F4AFC6')+'" stroke-width="'+(on('r')?3.4:2.6)+'" stroke-linecap="round"/>';}
+o+='<line x1="'+c[0].toFixed(1)+'" y1="'+c[1].toFixed(1)+'" x2="'+m[0].toFixed(1)+'" y2="'+m[1].toFixed(1)+'" stroke="#E48BAA" stroke-width="1" opacity=".7"/>';
+o+='<line x1="'+a[0].toFixed(1)+'" y1="'+a[1].toFixed(1)+'" x2="'+b[0].toFixed(1)+'" y2="'+b[1].toFixed(1)+'" stroke="#F4AFC6" stroke-width="2.6" stroke-linecap="round"/>';}
 var sd=7;function rn(){sd=(sd*1103515245+12345)%2147483648;return sd/2147483648;}
 for(j=0;j<90;j++){var q=Q(E(-Math.PI/2+Math.PI*rn()),.76+.2*rn());o+='<circle cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="2.1" fill="#6F58A8" stroke="#FFFFFF" stroke-width=".6"/>';}
 o+='<path d="M420 78 L400 82 Q330 84 '+P[0]+' '+P[1]+' Q330 166 400 168 L420 172Z" fill="#FFFFFF"/><path d="M400 82 Q330 84 '+P[0]+' '+P[1]+' Q330 166 400 168" fill="none" stroke="#C97A93" stroke-width="2"/><path d="'+shape(1).split('L400')[0]+'" fill="none" stroke="#B5456E" stroke-width="2"/>';
-function lb(x,y,t,h,a){return '<text x="'+x+'" y="'+y+'" font-size="11" font-weight="700" text-anchor="'+(a||'middle')+'" fill="'+(h?'#FFFFFF':'#5A1F38')+'" stroke="'+(h?BL:'#FFFFFF')+'" stroke-width="3" paint-order="stroke">'+t+'</text>';}
-o+=lb(64,129,T.c,on('c'))+lb(150,129,T.o,on('o'))+lb(232,129,T.i,on('i'))+lb(372,129,T.pe,0)+lb(296,112,T.pa,0,'end');
+function lb(x,y,t,h,a){return '<text x="'+x+'" y="'+y+'" font-size="11" font-weight="700" text-anchor="'+(a||'middle')+'" fill="#5A1F38" stroke="#FFFFFF" stroke-width="3" paint-order="stroke">'+t+'</text>';}
+o+=lb(58,129,T.c)+lb(134,152,T.o)+lb(226,129,T.i)+lb(372,129,T.pe)+lb(296,160,T.pa,0,"end");
+var TH=-Math.PI/2+Math.PI*14.5/21,TL=-Math.PI/2+Math.PI*15/21,RG={prox:[[Q(E(TL),.85),15]],dist:[[Q(E(TL),.85),11,1]],thick:[[Q(E(TH),.59),16],[Q(E(TH),.83),11]],thin:[[Q(E(-Math.PI/2+Math.PI*.79),.33),16]],cd:[[[281,125],14],[Q(E(TH),.83),11]]}[k];
+RG.forEach(function(r){if(r[2])o+='<circle cx="'+r[0][0].toFixed(1)+'" cy="'+r[0][1].toFixed(1)+'" r="2.6" fill="#6F58A8" stroke="#FFFFFF" stroke-width=".6"/>';
+o+='<circle cx="'+r[0][0].toFixed(1)+'" cy="'+r[0][1].toFixed(1)+'" r="'+r[1]+'" fill="none" stroke="#FFFFFF" stroke-width="6"/><circle cx="'+r[0][0].toFixed(1)+'" cy="'+r[0][1].toFixed(1)+'" r="'+r[1]+'" fill="none" stroke="#16222E" stroke-width="2.8"/>';});
 o+='<text x="6" y="12" font-size="9.5" fill="#55697A">● '+T.gl+'   ▬ '+T.ra+'</text></svg>';
 return '<div class="lowp"><p class="lh"><b>'+T.h+'</b></p>'+o+'<p class="lt">'+T[k]+'</p></div>';}
 var NT='jm';
