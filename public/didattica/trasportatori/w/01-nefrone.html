@@ -282,6 +282,26 @@ o+='<circle cx="'+r[0][0].toFixed(1)+'" cy="'+r[0][1].toFixed(1)+'" r="'+r[1]+'"
 o+='</svg>';
 var lg='<p class="lg2"><span><i style="background:'+CX+'"></i>'+T.lg[0]+'</span><span><i style="background:'+PY+'"></i>'+T.lg[1]+'</span><span><i style="background:'+SN+';border:1px solid '+SE+'"></i>'+T.lg[2]+'</span><span><i style="background:#6F58A8;border-radius:50%;width:8px;height:8px"></i>'+T.lg[3]+'</span><span><i style="background:'+PY+';height:3px"></i>'+T.lg[4]+'</span></p>';
 return '<div class="lowp"><p class="lh"><b>'+T.h+'</b></p>'+o+lg+'<p class="lt">'+T[k]+'</p></div>';}
+function lobo(){var it=document.documentElement.lang==='it',i,o='',CX='#F4B9C7',PY='#CF5F86',RD='#D4380D',VB='#2F6DB5',GL='#6F58A8';
+var T=it?{h:'Lobo e lobulo',lo:'LOBO',lu:'LOBULO',c:'corticale',m:'midollare',pa:'papilla',lg:['raggio midollare','arteria interlobulare, con i glomeruli','arteria e vena arcuata'],
+ t:'<b>Lobo</b> = una piramide con tutta la corticale che la ricopre, più metà delle colonne ai suoi lati. È grande: si vede a occhio nudo.<br><b>Lobulo</b> = un raggio midollare con i nefroni che vi scaricano. I suoi confini sono le due arterie interlobulari ai lati. È piccolo: un lobo contiene molti lobuli.'}
+:{h:'Lobe and lobule',lo:'LOBE',lu:'LOBULE',c:'cortex',m:'medulla',pa:'papilla',lg:['medullary ray','interlobular artery, with the glomeruli','arcuate artery and vein'],
+ t:'<b>Lobe</b> = one pyramid with all the cortex that covers it, plus half of the columns on either side. It is large: you can see it with the naked eye.<br><b>Lobule</b> = one medullary ray with the nephrons that drain into it. Its borders are the two interlobular arteries on either side. It is small: one lobe holds many lobules.'};
+o+='<svg viewBox="0 0 420 300" role="img" aria-label="'+T.h+'" style="display:block;width:100%;height:auto">';
+o+='<rect x="16" y="34" width="388" height="258" rx="6" fill="'+CX+'"/>';
+function pyr(a,b,ax){var d='<path d="M'+a+' 152 L'+b+' 152 L'+ax+' 282Z" fill="'+PY+'" stroke="#A8456A" stroke-width="1.5" stroke-linejoin="round"/>';for(var x=a+10;x<b;x+=12)d+='<line x1="'+x+'" y1="152" x2="'+(ax+(x-ax)*.08).toFixed(1)+'" y2="272" stroke="#E79AB5" stroke-width="1"/>';return d;}
+o+='<clipPath id="lbc"><rect x="16" y="34" width="388" height="258" rx="6"/></clipPath><g clip-path="url(#lbc)">'+pyr(-110,58,-26)+pyr(362,530,446)+pyr(96,324,210);
+var rays=[30,120,150,180,210,240,270,300,390];rays.forEach(function(x){o+='<rect x="'+(x-4)+'" y="64" width="8" height="90" rx="3" fill="'+PY+'"/>';});
+var art=[75,105,135,165,195,225,255,285,315,345];art.forEach(function(x){o+='<line x1="'+x+'" y1="150" x2="'+x+'" y2="50" stroke="'+RD+'" stroke-width="1.8"/>';for(i=0;i<4;i++){var y=62+i*22,s=i%2?1:-1;o+='<line x1="'+x+'" y1="'+y+'" x2="'+(x+s*6)+'" y2="'+(y-3)+'" stroke="'+RD+'" stroke-width="1"/><circle cx="'+(x+s*7)+'" cy="'+(y-4)+'" r="3.2" fill="'+GL+'" stroke="#FFFFFF" stroke-width=".7"/>';}});
+o+='<path d="M16 162 Q210 150 404 162" fill="none" stroke="'+VB+'" stroke-width="4"/><path d="M16 154 Q210 142 404 154" fill="none" stroke="'+RD+'" stroke-width="4"/></g>';
+o+='<path d="M186 292 Q210 270 234 292" fill="#F3E6D3" stroke="#C9AE8E" stroke-width="2"/>';
+o+='<path d="M66 34 H354 C354 150 268 236 210 290 C152 236 66 150 66 34Z" fill="none" stroke="#16222E" stroke-width="3.2" stroke-linejoin="round"/>';
+o+='<rect x="225" y="44" width="30" height="110" fill="none" stroke="#1F5FA8" stroke-width="3" stroke-dasharray="6 4"/>';
+function lb(x,y,t,c,a,s){return '<text x="'+x+'" y="'+y+'" font-size="'+(s||11)+'" font-weight="700" text-anchor="'+(a||'middle')+'" fill="'+c+'" stroke="#FFFFFF" stroke-width="3" paint-order="stroke">'+t+'</text>';}
+o+='<path d="M66 26 V18 H354 V26" fill="none" stroke="#16222E" stroke-width="1.8"/>'+lb(120,14,T.lo,'#16222E','middle',13)+'<path d="M240 44 V30 H292" fill="none" stroke="#1F5FA8" stroke-width="1.8"/>'+lb(296,34,T.lu,'#1F5FA8','start',13);
+o+=lb(398,100,T.c,'#5A1F38','end')+lb(398,200,T.m,'#5A1F38','end')+lb(210,262,T.pa,'#5A1F38');
+o+='</svg><p class="lg2"><span><i style="background:'+PY+';width:6px;height:12px"></i>'+T.lg[0]+'</span><span><i style="background:'+RD+';width:3px;height:12px"></i>'+T.lg[1]+'</span><span><i style="background:linear-gradient('+RD+' 50%,'+VB+' 50%);height:6px"></i>'+T.lg[2]+'</span></p>';
+return '<div class="lowp"><p class="lh"><b>'+T.h+'</b></p>'+o+'<p class="lt">'+T.t+'</p></div>';}
 var NT='jm';
 function neph(g,id){var it=document.documentElement.lang==='it',HI='#1F5FA8',LO='#C9D3DC',cd=g==='cdp'||g==='cda'||g==='cdb',all=g==='all'||g==='none';
 function on(k){return all||k===g||(k==='cd'&&cd)||(g==='loop'&&((k==='ld'&&id!=='nkcc2')||(k==='la'&&id!=='aqp1')||(k==='lt'&&id!=='aqp1'&&id!=='nkcc2')||(k==='loop')));}
@@ -298,7 +318,7 @@ o+=lab('x',34,76,it?'glomerulo':'glomerulus','middle')+lab('prox',70,14,it?'pros
 o+='<path d="M6 281 H30" stroke="#C9A6E8" stroke-width="9" stroke-linecap="round"/><text x="38" y="285" font-size="10.5" font-weight="700" fill="#6A3A96">'+(it?'impermeabile all’acqua':'impermeable to water')+'</text><text x="226" y="294" font-size="9" text-anchor="end" fill="#8696A4">'+(it?'dotto collettore: permeabile solo con ADH':'collecting duct: permeable only with ADH')+'</text>';
 return o+'</svg>'+(HISTO?'<div class="hbox">'+histo(g,id)+'</div>':'');}
 function renderEx(){var t=knobbed(byId(SEL));
-  $('#pick').innerHTML='<div class="pk2"><div class="pkl">'+D.groups.map(function(g){return '<div class="grp"><span class="lab">'+g.n+'</span><div class="chips">'+T.filter(function(x){return x.g===g.k;}).map(function(x){return '<button type="button" data-id="'+x.id+'"'+(x.id===SEL?' class="act"':'')+'>'+x.n+'</button>';}).join('')+'</div></div>';}).join('')+(HISTO?lowp(byId(SEL).g,SEL):'')+'</div><div class="neph">'+neph(byId(SEL).g,SEL)+'</div></div>';
+  $('#pick').innerHTML='<div class="pk2"><div class="pkl">'+D.groups.map(function(g){return '<div class="grp"><span class="lab">'+g.n+'</span><div class="chips">'+T.filter(function(x){return x.g===g.k;}).map(function(x){return '<button type="button" data-id="'+x.id+'"'+(x.id===SEL?' class="act"':'')+'>'+x.n+'</button>';}).join('')+'</div></div>';}).join('')+(HISTO?lowp(byId(SEL).g,SEL)+lobo():'')+'</div><div class="neph">'+neph(byId(SEL).g,SEL)+'</div></div>';
   var Q=t.seq==='b'?U.sqb:U.sq;$('#dg').innerHTML=(t.seq?'<div class="sqctl"><button type="button" id="sqp">'+(PZ?Q.play:Q.pause)+'</button><button type="button" id="sqr">'+Q.restart+'</button></div>':'')+draw(t,false)+(t.seq?'<div class="sqb"><span class="goal2"><b>'+Q.goalT+'</b> '+Q.goal+'</span><ol><li class="c1"><b>1</b>'+Q.s1+'</li><li class="c2"><b>2</b>'+Q.s2+'</li><li class="c3"><b>3</b>'+Q.s3+'</li><li class="c4"><b>4</b>'+Q.s4+'</li><li class="c5"><b>5</b>'+Q.s5+'</li></ol></div>':'');$('#kn').innerHTML=knobHtml(byId(SEL));$('#info').innerHTML=info(t);ruleOn(t.cls);}
 var PZ=false;
 $('#dg').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
