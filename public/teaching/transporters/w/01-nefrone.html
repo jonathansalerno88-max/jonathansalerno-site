@@ -277,6 +277,15 @@ for(j=-w+4;j<=w-4;j+=8){var r0=K(t+j,0),r1=K(t+j,.62);o+='<line x1="'+r0[0].toFi
 var sd=11;function rn(){sd=(sd*1103515245+12345)%2147483648;return sd/2147483648;}
 for(j=0;j<70;j++){var q=K(70+220*rn(),.2+.62*rn());o+='<circle cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="2" fill="#6F58A8" stroke="#FFFFFF" stroke-width=".6"/>';}
 o+='<text x="262" y="154" font-size="11" font-weight="700" text-anchor="middle" fill="#6B5330">'+T.pe+'</text><text x="338" y="264" font-size="11" font-weight="700" text-anchor="end" fill="#6B5330">'+T.ur+'</text>';
+var NM=it?['lobo','lobulo','piramide','raggi midollari']:['lobe','lobule','pyramid','medullary rays'];
+function tl(x,y,t,c,a){return '<text x="'+x+'" y="'+y+'" font-size="11.5" font-weight="700" text-anchor="'+(a||'start')+'" fill="'+c+'" stroke="#FFFFFF" stroke-width="3" paint-order="stroke">'+t+'</text>';}
+var ld='M'+xy(A(225));for(j=203;j<=247;j+=4)ld+=' L'+xy(K(j,1));o+='<path d="'+ld+'Z" fill="none" stroke="#16222E" stroke-width="2.4" stroke-linejoin="round"/>';
+o+='<path d="M'+xy(K(179,0))+' L'+xy(K(179,.95))+' L'+xy(K(187,.95))+' L'+xy(K(187,0))+'Z" fill="none" stroke="#1F5FA8" stroke-width="2.2" stroke-dasharray="4 3"/>';
+var p1=K(183,.95),p2=K(232,1),p3=K(33,.5),p4=M(268,.6);
+o+='<path d="M40 '+(p1[1]-2).toFixed(1)+' H'+(p1[0]-2).toFixed(1)+'" stroke="#1F5FA8" stroke-width="1.6"/>'+tl(4,(p1[1]-8).toFixed(1),NM[1],'#1F5FA8');
+o+='<path d="M34 262 L'+xy(p2)+'" stroke="#16222E" stroke-width="1.6"/>'+tl(4,266,NM[0],'#16222E');
+o+='<path d="M352 30 L'+xy(p3)+'" stroke="#5A1F38" stroke-width="1.6"/>'+tl(416,26,NM[3],'#5A1F38','end');
+o+=tl(p4[0].toFixed(1),(p4[1]+4).toFixed(1),NM[2],'#5A1F38','middle');
 var RG={prox:[[K(131,.5),13]],dist:[[K(131,.5),10,1]],thick:[[M(135,.8),14],[K(139,.4),10]],thin:[[M(135,.42),13]],cd:[[A(135),13],[K(139,.4),10]]}[k];
 (RG||[]).forEach(function(r){if(r[2])o+='<circle cx="'+r[0][0].toFixed(1)+'" cy="'+r[0][1].toFixed(1)+'" r="2.6" fill="#6F58A8" stroke="#FFFFFF" stroke-width=".6"/>';
 o+='<circle cx="'+r[0][0].toFixed(1)+'" cy="'+r[0][1].toFixed(1)+'" r="'+r[1]+'" fill="none" stroke="#FFFFFF" stroke-width="6"/><circle cx="'+r[0][0].toFixed(1)+'" cy="'+r[0][1].toFixed(1)+'" r="'+r[1]+'" fill="none" stroke="#16222E" stroke-width="2.8"/>';});
