@@ -29,6 +29,7 @@ canvas{display:block;width:100%;height:auto;border:1px solid var(--border);borde
 #fs{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;margin:6px 0;padding:6px 8px}#fs[hidden]{display:none}#fs svg{display:block;width:100%;height:auto}.kid{display:flex;gap:10px;align-items:center;margin:8px 2px 2px;padding:8px 10px;border:1.5px solid #C9D3DC;border-radius:10px;background:#FBFCFD;flex-wrap:wrap}#circ .kid svg{display:block;width:52px;height:56px;flex:0 0 auto;margin:0}.kt{display:flex;flex-direction:column;font-size:12.5px;line-height:1.35;flex:1 1 150px;min-width:0}.kt:first-of-type{flex:3 1 280px}.kt .kf{font-size:15px;margin:2px 0}.kt small{color:#55697A;font-size:11px}
 .fsc{margin:2px 4px 0;font-size:12px;line-height:1.35}.fsh{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:13.5px;margin:0 0 2px}.fsh b{margin-right:auto}.fsh button{font:inherit;font-size:13px;padding:3px 11px;border-radius:999px;border:1.5px solid #0E7C66;background:#FFFFFF;color:#0E7C66;font-weight:700;cursor:pointer}.fsh button.on{background:#0E7C66;color:#FFFFFF}.fsh button.bad{border-color:#B03A3A;color:#B03A3A}.fsh button.bad.on{background:#B03A3A;color:#FFFFFF}
 .pre{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}.pre button{font:inherit;font-size:13px;padding:4px 11px;border-radius:999px;border:1.5px solid #1456A8;background:#FFFFFF;color:#1456A8;font-weight:700;cursor:pointer}.pre button.on{background:#1456A8;color:#FFFFFF}
+.sld{margin:6px 0 0}.sld summary{cursor:pointer;font-size:13.5px;font-weight:700;color:#1456A8;padding:5px 0;list-style-position:inside}.sld.plain summary{display:none}
 .rs{font:inherit;font-size:13px;padding:4px 12px;border-radius:999px;border:1px solid var(--border-strong);background:#FFFFFF;cursor:pointer}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style>
@@ -44,8 +45,10 @@ canvas{display:block;width:100%;height:auto;border:1px solid var(--border);borde
 <div class="sgn" id="sgn" hidden></div>
 <div class="out"><span class="lab" id="ol"></span><div class="bar"><i id="bi"></i><u id="bu"></u></div><span class="val" id="ov"></span></div>
 <div class="pre" id="pre"></div>
+<details class="sld" id="sld"><summary id="sls"></summary>
 <div class="sl" id="sl"></div>
 <button type="button" class="rs" id="rs"></button>
+</details>
 <script>
 (function(){
 var it=document.documentElement.lang==='it',F=(new URLSearchParams(location.search).get('f'))||'darcy';
@@ -95,6 +98,7 @@ var base=D.f(DEF);
 var sl=document.getElementById('sl');
 sl.innerHTML=D.t.map(function(t){return '<label><b style="color:'+t.c+'">'+t.s+'</b> '+t.n+'<em id="e_'+t.k+'" style="color:'+t.c+'"></em><small class="'+(t.d>0?'up':t.d<0?'dn':'')+'">'+(t.d>0?'↑ '+(D.up||UP):t.d<0?'↓ '+(D.dn||DN):t.h||T('amplifica il flusso, in qualunque verso','amplifies flow, in either direction'))+'</small><input type="range" id="i_'+t.k+'" min="'+t.min+'" max="'+t.max+'" step="'+(t.st||(t.u==='mmHg'?1:.05))+'" value="'+t.v+'" aria-label="'+t.n+'"></label>';}).join('');
 document.getElementById('rs').textContent=T('↺ Valori normali','↺ Normal values');
+var sld=document.getElementById('sld');if(F==='starling')document.getElementById('sls').textContent=T('Le forze di Starling, una per una: muovile a mano','The Starling forces, one by one: move them by hand');else{sld.open=true;sld.classList.add('plain');}
 document.getElementById('ol').textContent=T('Flusso','Flow');
 function fmt(x,d){var s=x.toFixed(d==null?2:d);return it?s.replace('.',','):s;}
 function upd(){
