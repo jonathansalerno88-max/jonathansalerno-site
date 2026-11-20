@@ -24,6 +24,7 @@ canvas{display:block;width:100%;height:auto;border:1px solid var(--border);borde
 .sl label small{display:block;color:#55697A;font-size:12px}
 .sl input{width:100%;margin:2px 0 0}
 .up{color:#0E7C66;font-weight:700}.dn{color:#B03A3A;font-weight:700}
+.scn{display:flex;gap:8px;align-items:stretch}.scn canvas{flex:1 1 0;min-width:0}#man{flex:0 0 150px;border:1px solid var(--border);border-radius:10px;background:#FFFFFF;display:flex;align-items:flex-end;justify-content:center}#man[hidden]{display:none}#man svg{display:block;width:100%;height:auto}.mech{margin:6px 0 2px;padding:6px 10px;border-left:4px solid #1456A8;background:#EEF4FC;font-size:13.5px;line-height:1.4}.mech b{color:#1456A8}@media (max-width:520px){#man{flex-basis:96px}}
 .pre{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}.pre button{font:inherit;font-size:13px;padding:4px 11px;border-radius:999px;border:1.5px solid #1456A8;background:#FFFFFF;color:#1456A8;font-weight:700;cursor:pointer}.pre button.on{background:#1456A8;color:#FFFFFF}
 .rs{font:inherit;font-size:13px;padding:4px 12px;border-radius:999px;border:1px solid var(--border-strong);background:#FFFFFF;cursor:pointer}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -32,7 +33,8 @@ canvas{display:block;width:100%;height:auto;border:1px solid var(--border);borde
 <body>
 <h2 class="sr-only" id="sr"></h2>
 <div class="fm" id="fm" aria-hidden="true"></div>
-<canvas id="cv" width="680" height="250"></canvas>
+<div class="scn"><div id="man" hidden></div><canvas id="cv" width="680" height="250"></canvas></div>
+<p class="mech" id="mech" hidden></p>
 <div class="out"><span class="lab" id="ol"></span><div class="bar"><i id="bi"></i><u id="bu"></u></div><span class="val" id="ov"></span></div>
 <div class="pre" id="pre"></div>
 <div class="sl" id="sl"></div>
@@ -59,7 +61,13 @@ fick:{sr:T('Animazione della legge di Fick: muovi i quattro termini e guarda qua
  f:function(v){return v.D*v.A*v.dC/v.dx;},
  fm:function(B){return B('res')+'<span>=</span>'+B('D')+'<span>·</span>'+B('A')+'<span>·</span>'+B('dC')+'<span>/</span>'+B('dx');}},
 starling:{sr:T('Animazione dell’equazione di Starling: muovi le forze e guarda se il liquido esce o rientra','Animation of the Starling equation: move the forces and watch whether fluid leaves or returns'),res:'J<sub>v</sub>',rc:'#1456A8',abs:1,up:T('se sale, esce più liquido','if it rises, more fluid leaves'),dn:T('se sale, esce meno liquido','if it rises, less fluid leaves'),
- pre:[[T('normale','normal'),{}],[T('scompenso / vena chiusa','heart failure / blocked vein'),{Pc:50}],[T('poca albumina','low albumin'),{pc:12}],[T('infiammazione, ustione','inflammation, burn'),{sg:.4,Kf:2.5,pi:10}],[T('linfatici bloccati','blocked lymphatics'),{ly:.1,pi:8}],[T('emorragia, disidratazione','bleeding, dehydration'),{Pc:18}]],
+ pre:[[T('normale','normal'),{},'',T('Il filtrato è poco e la linfa lo porta via: nessun edema.','Little is filtered and lymph carries it away: no oedema.')],
+  [T('scompenso cardiaco','heart failure'),{Pc:50},'hf',T('<b>Problema di precarico.</b> Il cuore non smaltisce il sangue che gli arriva: il sangue ristagna a monte, sale la pressione nelle vene e quindi P<sub>c</sub>. Caviglie gonfie da tutti e due i lati. Un postcarico alto (ipertensione) può essere la causa dello scompenso, ma l’edema nasce dal ristagno a monte.','<b>A preload problem.</b> The heart cannot clear the blood reaching it: blood backs up upstream, venous pressure rises and so does P<sub>c</sub>. Swollen ankles on both sides. A high afterload (hypertension) may be what caused the failure, but the oedema comes from the back-up upstream.')],
+  [T('vena chiusa (trombosi)','blocked vein (thrombosis)'),{Pc:52},'dvt',T('<b>Né precarico né postcarico:</b> è un blocco locale. A monte del trombo sale P<sub>c</sub>, in una gamba sola.','<b>Neither preload nor afterload:</b> a local block. Upstream of the clot P<sub>c</sub> rises, in one leg only.')],
+  [T('poca albumina','low albumin'),{pc:12},'alb',T('<b>Né precarico né postcarico:</b> mancano proteine nel plasma, cala π<sub>c</sub> e il richiamo si indebolisce. Edema diffuso, anche al viso.','<b>Neither preload nor afterload:</b> plasma proteins are missing, π<sub>c</sub> falls and the pull weakens. Widespread oedema, the face too.')],
+  [T('infiammazione, ustione','inflammation, burn'),{sg:.4,Kf:2.5,pi:10},'infl',T('<b>Problema della parete:</b> lascia passare le proteine (σ scende) e ha più pori (K<sub>f</sub> sale). Edema locale, caldo e rosso.','<b>A wall problem:</b> it lets proteins through (σ falls) and has more pores (K<sub>f</sub> rises). Local oedema, warm and red.')],
+  [T('linfatici bloccati','blocked lymphatics'),{ly:.1,pi:8},'lymph',T('<b>Problema di drenaggio:</b> il filtrato è normale ma nessuno lo porta via. Di solito un arto solo.','<b>A drainage problem:</b> filtration is normal but nothing carries it away. Usually one limb.')],
+  [T('emorragia, disidratazione','bleeding, dehydration'),{Pc:18},'dehy',T('<b>Precarico basso:</b> c’è meno volume in circolo, P<sub>c</sub> scende e il liquido rientra dal tessuto nel sangue. È l’opposto dell’edema.','<b>Low preload:</b> there is less volume in the circulation, P<sub>c</sub> falls and fluid goes back from the tissue into the blood. The opposite of oedema.')]],
  t:[{k:'Pc',s:'P<sub>c</sub>',c:'#B03A3A',n:T('pressione nel capillare: spinge fuori','pressure in the capillary: pushes out'),d:1,min:5,max:60,v:35,u:'mmHg'},
     {k:'pc',s:'π<sub>c</sub>',c:'#6A3A96',n:T('proteine del plasma: richiamano dentro','plasma proteins: pull in'),d:-1,min:5,max:40,v:25,u:'mmHg'},
     {k:'Pi',s:'P<sub>i</sub>',c:'#C2571A',n:T('pressione nel tessuto: si oppone','pressure in the tissue: opposes'),d:-1,min:-5,max:20,v:0,u:'mmHg'},
@@ -94,9 +102,9 @@ function upd(){
  S.q=q;S.r=r;}
 var S={q:0,r:1},P=[],dots={l:[],r:[],c:[],o:[]},acc=0,pacc=[];
 D.t.forEach(function(t){document.getElementById('i_'+t.k).addEventListener('input',upd);});
-function setV(o,b){D.t.forEach(function(t){document.getElementById('i_'+t.k).value=o[t.k]!=null?o[t.k]:t.v;});upd();document.querySelectorAll('#pre button').forEach(function(q){q.classList.toggle('on',q===b);});}
-document.getElementById('rs').addEventListener('click',function(){setV({},document.querySelector('#pre button'));});
-if(D.pre){var pr=document.getElementById('pre');pr.innerHTML=D.pre.map(function(q,i){return '<button type="button" data-i="'+i+'"'+(i?'':' class="on"')+'>'+q[0]+'</button>';}).join('');pr.addEventListener('click',function(e){var b=e.target.closest('button');if(b)setV(D.pre[+b.getAttribute('data-i')][1],b);});
+var SITE='';function setV(o,b){D.t.forEach(function(t){document.getElementById('i_'+t.k).value=o[t.k]!=null?o[t.k]:t.v;});upd();document.querySelectorAll('#pre button').forEach(function(q){q.classList.toggle('on',q===b);});}
+document.getElementById('rs').addEventListener('click',function(){setV({},document.querySelector('#pre button'));SITE='';if(D.pre)mech(D.pre[0][3]);});
+if(D.pre){var pr=document.getElementById('pre');pr.innerHTML=D.pre.map(function(q,i){return '<button type="button" data-i="'+i+'"'+(i?'':' class="on"')+'>'+q[0]+'</button>';}).join('');pr.addEventListener('click',function(e){var b=e.target.closest('button');if(b){var q=D.pre[+b.getAttribute('data-i')];setV(q[1],b);SITE=q[2];mech(q[3]);}});
 D.t.forEach(function(t){document.getElementById('i_'+t.k).addEventListener('change',function(){document.querySelectorAll('#pre button').forEach(function(q){q.classList.remove('on');});});});}
 var cv=document.getElementById('cv'),x=cv.getContext('2d'),W=680,H=250,dpr=Math.min(2,window.devicePixelRatio||1);cv.width=W*dpr;cv.height=H*dpr;x.scale(dpr,dpr);
 function rr(a,b){return a+Math.random()*(b-a);}
@@ -151,9 +159,33 @@ function starling(dt){var yT=92,yB=158,net=(V.Pc-V.Pi)-V.sg*(V.pc-V.pi),q=V.Kf*n
  var st=E>.72?[T('EDEMA','OEDEMA'),'#1456A8',17]:E>.42?[T('il tessuto si gonfia','the tissue is swelling'),'#1456A8',14]:q<-.5?[T('tessuto asciutto: il liquido rientra nel sangue','dry tissue: fluid goes back into the blood'),'#6A3A96',13]:q>cap?[T('filtra più di quanto la linfa drena','filtering more than lymph drains'),'#1456A8',13]:[T('tessuto normale: la linfa porta via il filtrato','normal tissue: lymph carries the filtrate away'),'#0E7C66',13];
  txt(st[0],340,sB<H-22?H-8:sB-8,st[1],'center',st[2]);txt(T('tessuto','tissue'),12,Math.max(16,sT+16),'#7A5038','left',12);}
 var lacc=0,LP=[];
+function mech(t){var m=document.getElementById('mech');m.hidden=false;m.innerHTML=t;}
+if(F==='starling'){var mn=document.getElementById('man');mn.hidden=false;
+mn.innerHTML='<svg viewBox="0 0 150 250" role="img" aria-label="'+T('Un vecchietto: gli si gonfiano o gli si asciugano i tessuti','An old man: his tissues swell or dry out')+'">'
++'<path d="M120 118 L128 238" stroke="#7A5038" stroke-width="4" stroke-linecap="round"/><path d="M112 118 Q120 108 126 118" fill="none" stroke="#7A5038" stroke-width="4" stroke-linecap="round"/>'
++'<rect id="mLl" x="52" y="150" width="16" height="74" rx="7" fill="#5B6B7C"/><rect id="mLr" x="82" y="150" width="16" height="74" rx="7" fill="#5B6B7C"/>'
++'<ellipse id="mAl" cx="60" cy="224" rx="8" ry="8" fill="#F2CDB0"/><ellipse id="mAr" cx="90" cy="224" rx="8" ry="8" fill="#F2CDB0"/>'
++'<ellipse cx="55" cy="238" rx="16" ry="7" fill="#3A2C22"/><ellipse cx="95" cy="238" rx="16" ry="7" fill="#3A2C22"/>'
++'<path id="mArm" d="M46 96 L34 142" stroke="#8C4A3A" stroke-width="12" stroke-linecap="round"/><circle id="mHand" cx="34" cy="146" r="6.5" fill="#F2CDB0"/>'
++'<path d="M104 96 L118 122" stroke="#8C4A3A" stroke-width="12" stroke-linecap="round"/><circle cx="119" cy="121" r="6.5" fill="#F2CDB0"/>'
++'<rect id="mT" x="42" y="78" width="66" height="84" rx="24" fill="#A8553F"/><ellipse id="mB" cx="75" cy="132" rx="30" ry="26" fill="#A8553F"/><path d="M75 82 V160" stroke="#7E3D2C" stroke-width="2"/>'
++'<circle id="mH" cx="75" cy="52" r="23" fill="#F2CDB0"/><path d="M53 46 Q50 60 56 66 M97 46 Q100 60 94 66" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>'
++'<path d="M51 42 Q75 14 99 42 Z" fill="#4E5D6C"/><path d="M48 43 H106" stroke="#3B4754" stroke-width="5" stroke-linecap="round"/>'
++'<ellipse id="mEl" cx="66" cy="57" rx="6" ry="2" fill="#5C8FD0" opacity="0"/><ellipse id="mEr" cx="84" cy="57" rx="6" ry="2" fill="#5C8FD0" opacity="0"/>'
++'<circle cx="66" cy="51" r="5.5" fill="none" stroke="#16222E" stroke-width="1.5"/><circle cx="84" cy="51" r="5.5" fill="none" stroke="#16222E" stroke-width="1.5"/><path d="M71.5 51 H78.5" stroke="#16222E" stroke-width="1.5"/><circle cx="66" cy="51" r="1.6" fill="#16222E"/><circle cx="84" cy="51" r="1.6" fill="#16222E"/>'
++'<path id="mM" d="M66 65 Q75 61 84 65" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>'
++'<text id="mTx" x="75" y="12" font-size="11" font-weight="700" text-anchor="middle" fill="#1456A8"></text></svg>';
+mech(D.pre[0][3]);}
+function manUpd(){if(F!=='starling')return;var s=Math.max(0,Math.min(1,(E-.3)/.6)),dry=Math.max(0,Math.min(1,(.3-E)/.22)),st=SITE||'hf',g=function(i){return document.getElementById(i);};
+ var L=(st==='hf'||st==='alb'||st==='lymph')?s:st==='dehy'||dry>0?-dry*.3:0,Rr=(st==='hf'||st==='dvt'||st==='alb')?s:st==='dehy'||dry>0?-dry*.3:0,Fa=st==='alb'?s:0,Ar=st==='infl'?s:0,Be=st==='alb'?s*.6:st==='hf'?s*.35:0;
+ function leg(a,b,cx,v,col){var w=16+20*v;g(a).setAttribute('x',cx-w/2);g(a).setAttribute('width',w);g(a).setAttribute('rx',Math.min(9,w/2));g(b).setAttribute('rx',8+11*Math.max(0,v));g(b).setAttribute('ry',8+4*Math.max(0,v));g(b).setAttribute('fill',v>.15?col:'#F2CDB0');}
+ leg('mLl','mAl',60,L,st==='lymph'?'#EAD9C6':'#BFD3EE');leg('mLr','mAr',90,Rr,st==='dvt'?'#D9A6B8':'#BFD3EE');
+ g('mArm').setAttribute('stroke-width',12+8*Ar);g('mHand').setAttribute('r',6.5+7*Ar);g('mHand').setAttribute('fill',Ar>.15?'#E88A7A':'#F2CDB0');
+ g('mB').setAttribute('rx',30+9*Be);g('mH').setAttribute('r',23+3.5*Fa-1.5*dry);g('mEl').setAttribute('opacity',Fa);g('mEr').setAttribute('opacity',Fa);g('mEl').setAttribute('ry',2+3*Fa);g('mEr').setAttribute('ry',2+3*Fa);
+ g('mTx').textContent=E>.72?T('EDEMA','OEDEMA'):dry>.5?T('asciutto','dry'):'';g('mTx').setAttribute('fill',dry>.5?'#6A3A96':'#1456A8');}
 var draw={darcy:darcy,fick:fick,starling:starling}[F],last=0,vis=true;
 if('IntersectionObserver' in window)new IntersectionObserver(function(e){vis=e[0].isIntersecting;}).observe(cv);
-function loop(t){var dt=Math.min(.05,(t-last)/1000||0);last=t;if(vis){x.clearRect(0,0,W,H);draw(dt);}requestAnimationFrame(loop);}
+function loop(t){var dt=Math.min(.05,(t-last)/1000||0);last=t;if(vis){x.clearRect(0,0,W,H);draw(dt);manUpd();}requestAnimationFrame(loop);}
 upd();requestAnimationFrame(loop);
 })();
 </script>
