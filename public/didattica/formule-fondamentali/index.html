@@ -7,7 +7,7 @@
 <link rel="alternate" hreflang="it" href="/didattica/formule-fondamentali/">
 <link rel="alternate" hreflang="en" href="/teaching/fundamental-formulas/">
 <link rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
-<meta name="description" content="Le formule fondamentali della fisiologia, spiegate variabile per variabile, con unità di misura e analisi dimensionale. L'equazione di Starling degli scambi capillari, la legge di Fick con la diffusione nel polmone e il potenziale di Nernst.">
+<meta name="description" content="Le formule fondamentali della fisiologia, spiegate variabile per variabile, con unità di misura e analisi dimensionale. L'equazione di Starling degli scambi capillari, la legge di Fick della diffusione e la legge di Darcy, da cui viene il filtrato glomerulare.">
 <meta name="author" content="Jonathan Salerno">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316222E'/%3E%3Cpath d='M5 27 L27 5' stroke='%23476274' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%235B9BE5'/%3E%3Ccircle cx='14.6' cy='11.2' r='2.4' fill='%23F08A3C'/%3E%3C/svg%3E">
 <meta property="og:type" content="article">
@@ -296,7 +296,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <ol>
     <li><a href="#starling">L'equazione di Starling</a></li>
     <li><a href="#fick">La legge di Fick: la diffusione</a></li>
-    <li><a href="#nernst">Il potenziale di Nernst</a></li>
+    <li><a href="#darcy">La legge di Darcy</a></li>
   </ol>
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#fonti">Fonti</a></p>
 </nav>
@@ -391,147 +391,45 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   K<sub>f</sub> di Starling: tutti e due dicono quanto passa per ogni mmHg di spinta.</p>
   </div>
 
-  <h3>Che cosa cambia da A a B</h3>
-  <p>Solo lo spessore ha le stesse dimensioni nelle due forme: le altre grandezze cambiano, ma ciascuna formula resta
-  coerente per conto suo.</p>
-  <div class="tscroll tw"><table>
-    <thead><tr><th></th><th>A · forma generale</th><th>B · forma per i gas</th><th>Ponte</th></tr></thead>
-    <tbody>
-    <tr><td>Spinta</td><td>ΔC, mol·cm⁻³ <span style="white-space:nowrap">[N L⁻³]</span></td><td>P<sub>1</sub> − P<sub>2</sub>, mmHg <span style="white-space:nowrap">[M L⁻¹ T⁻²]</span></td><td>α, solubilità (legge di Henry) <span style="white-space:nowrap">[N M⁻¹ L⁻² T²]</span></td></tr>
-    <tr><td>Coefficiente</td><td>D, cm²·s⁻¹ <span style="white-space:nowrap">[L² T⁻¹]</span></td><td>D<sub>gas</sub>, cm²·min⁻¹·mmHg⁻¹ <span style="white-space:nowrap">[M⁻¹ L³ T]</span></td><td>D<sub>gas</sub> = D · α · V<sub>m</sub></td></tr>
-    <tr><td>Spessore</td><td>Δx, cm <span style="white-space:nowrap">[L]</span></td><td>T, µm <span style="white-space:nowrap">[L]</span></td><td>uguale: stessa cosa, nome diverso</td></tr>
-    <tr><td>Risultato</td><td>J · A, mol·s⁻¹ <span style="white-space:nowrap">[N T⁻¹]</span></td><td>V̇<sub>gas</sub>, mL·min⁻¹ <span style="white-space:nowrap">[L³ T⁻¹]</span></td><td>V<sub>m</sub>, volume molare <span style="white-space:nowrap">[L³ N⁻¹]</span></td></tr>
-    </tbody></table></div>
-  <p>Fra le due forme fanno da ponte due costanti:</p>
-  <ol>
-    <li><b>Henry: da pressione a concentrazione.</b> Per un gas sciolto vale C = α · P, quindi ΔC = α · ΔP. La solubilità
-    α ha dimensioni <span style="white-space:nowrap">[N L⁻³]</span> / <span style="white-space:nowrap">[M L⁻¹ T⁻²]</span> = <span style="white-space:nowrap">[N M⁻¹ L⁻² T²]</span>.</li>
-    <li><b>Volume molare: da moli a volume.</b> V̇ = (J · A) · V<sub>m</sub>, con V<sub>m</sub> ≈ 22,4 L·mol⁻¹ in condizioni STPD
-    (0 °C, 1 atm, gas secco), dimensioni <span style="white-space:nowrap">[L³ N⁻¹]</span>.</li>
-  </ol>
-  <p>Sostituendo nella forma A: V̇ = V<sub>m</sub> · D · A · α · ΔP / T = <b>(D · α · V<sub>m</sub>)</b> · A · ΔP / T. Il D della forma
-  per i gas è quindi il D della forma generale moltiplicato per α e per V<sub>m</sub>: è lì dentro che finiscono le dimensioni
-  in più.</p>
-  <p class="caveat">Controprova: <span style="white-space:nowrap">[L² T⁻¹]</span> × <span style="white-space:nowrap">[N M⁻¹ L⁻² T²]</span> × <span style="white-space:nowrap">[L³ N⁻¹]</span> = <span style="white-space:nowrap">[M⁻¹ L³ T]</span> = D<sub>gas</sub> ✓.</p>
-  <p>La legge è la stessa: cambiano solo le grandezze che si misurano, pressione invece di concentrazione e volume invece
-  di moli. Per questo il D dei gas non è più una semplice diffusività: dipende anche dalla solubilità, ed è per questo che
-  la CO₂ diffonde circa 20 volte meglio dell'O₂.</p>
-  <h3>Lo scambio polmonare, termine per termine</h3>
-  <div class="fkx" id="fkx">
-  <div class="eqi"><button type="button" class="ft" data-k="V">V̇<sub>gas</sub></button><span class="op">=</span><button type="button" class="ft" data-k="D">D</button><span class="op">·</span><button type="button" class="ft" data-k="A">A</button><span class="op">·</span><button type="button" class="ft" data-k="P">(P<sub>1</sub> − P<sub>2</sub>)</button><span class="op">/</span><button type="button" class="ft" data-k="T">T</button></div>
-  <div class="tip" id="fkxt" aria-live="polite"><p style="color:var(--mut)">Passa con il mouse su un termine della formula (o toccalo): ti dico che cos'è, quanto vale e che cosa lo fa salire o scendere.</p></div>
-  <template data-k="V"><h4>V̇<sub>gas</sub> · il risultato</h4><p>Il volume di gas che attraversa la barriera ogni minuto. A riposo il polmone assorbe circa 250 mL/min di O₂ ed elimina circa 200 mL/min di CO₂.</p><ul><li><span class="up">↑</span><b>sforzo</b>: può crescere più di dieci volte, perché crescono insieme A e il gradiente.</li><li><span class="dn">↓</span>cala ogni volta che uno degli altri termini va nel verso sbagliato: è quello che vedi negli altri quattro.</li></ul></template><template data-k="D"><h4>D · coefficiente di diffusione del gas</h4><p>È una proprietà del gas, non del polmone: D ∝ solubilità / √peso molecolare. La CO₂ è circa 24 volte più solubile dell'O₂ e pesa poco di più (44 contro 32): diffonde circa 20 volte meglio, per questo le basta un gradiente di 6 mmHg.</p><p style="margin-top:.4rem">Non cambia con le malattie. Quello che si misura in clinica è D<sub>L</sub> = D · A / T, con il monossido di carbonio (<b>DLCO</b>, normale circa 25 mL·min⁻¹·mmHg⁻¹): cala nell'enfisema e nella fibrosi, perché cala A o cresce T.</p></template><template data-k="A"><h4>A · superficie di scambio</h4><p>Normale 50–100 m², circa un campo da tennis, in centinaia di milioni di alveoli.</p><ul><li><span class="dn">↓</span><b>enfisema</b>: i setti fra gli alveoli si distruggono e la superficie si perde.</li><li><span class="dn">↓</span><b>resezione polmonare</b>, <b>atelettasia</b>, <b>polmonite</b> (alveoli pieni).</li><li><span class="dn">↓</span><b>embolia polmonare</b>: gli alveoli ci sono, ma i loro capillari non sono perfusi.</li><li><span class="up">↑</span><b>sforzo</b>: si aprono i capillari degli apici, a riposo poco perfusi (reclutamento).</li></ul></template><template data-k="P"><h4>(P<sub>1</sub> − P<sub>2</sub>) · gradiente di pressione parziale</h4><p>Fra alveolo e sangue. Per l'O₂ all'ingresso del capillare: 100 − 40 = 60 mmHg. Per la CO₂: 46 − 40 = 6 mmHg, verso l'alveolo. Lungo il capillare il gradiente si consuma: a riposo l'O₂ si equilibra in circa 0,25 s su 0,75 s di transito.</p><ul><li><span class="dn">↓</span><b>alta quota</b>: la P<sub>A</sub>O₂ scende con la pressione atmosferica.</li><li><span class="dn">↓</span><b>ipoventilazione</b> (oppioidi, malattie neuromuscolari): l'O₂ alveolare cala e la CO₂ sale.</li><li><span class="up">↑</span><b>ossigenoterapia</b>: alzare la frazione inspirata di O₂ alza P<sub>1</sub>, ed è il modo più semplice per compensare un A piccolo o un T grande.</li></ul></template><template data-k="T"><h4>T · spessore della barriera</h4><p>Non è il tempo: è lo spessore fra aria e sangue (epitelio alveolare, membrane basali, endotelio), 0,2–0,5 µm nella maggior parte della superficie.</p><ul><li><span class="up">↑</span><b>fibrosi polmonare</b>: l'interstizio si ispessisce di collagene.</li><li><span class="up">↑</span><b>edema polmonare</b>: il liquido si accumula nell'interstizio e negli alveoli (è Starling che si sposta nel polmone).</li><li><span class="up">↑</span><b>polmoniti interstiziali</b>.</li></ul><p style="margin-top:.4rem">A riposo la riserva di tempo compensa; sotto sforzo il transito scende a circa 0,25 s e l'O₂ non fa più in tempo: la <b>desaturazione da sforzo</b> è un segno precoce della fibrosi.</p></template>
-  </div>
-<script>(function(){var b=document.getElementById('fkx'),t=document.getElementById('fkxt');
-function show(k){b.querySelectorAll('button.ft').forEach(function(x){x.classList.toggle('on',x.getAttribute('data-k')===k);});
-t.innerHTML=b.querySelector('template[data-k="'+k+'"]').innerHTML;}
-b.querySelectorAll('button.ft').forEach(function(x){var k=x.getAttribute('data-k');
-x.addEventListener('mouseenter',function(){show(k);});x.addEventListener('focus',function(){show(k);});x.addEventListener('click',function(){show(k);});});})();</script>
-  <figure class="w">
-    <iframe src="w/04-polmone.html" title="Fick nel polmone: prova tu" loading="lazy" class="ph"></iframe>
-    <figcaption>Prova tu: aumenta lo sforzo, ispessisci la barriera, togli superficie, respira meno, sali in quota o dai ossigeno, e guarda i globuli rossi caricarsi (o no) lungo il capillare. <a href="w/04-polmone.html">Apri a schermo intero</a></figcaption>
-  </figure>
-  <h3>Nei pesci: stessa formula, un'altra strategia</h3>
-  <p>I pesci usano la stessa legge di Fick, ma con un mezzo molto più difficile: l'acqua. Sui termini della formula,
-  la maggior parte dei pesci sta <b>peggio</b> di noi: meno superficie per chilo e una barriera più spessa. Solo i più
-  attivi, come i tonni, arrivano ai nostri valori. Quello che li salva è come muovono l'acqua.</p>
-  <div class="tscroll tw"><table>
-    <thead><tr><th></th><th>Uomo (polmone)</th><th>Tonno</th><th>Pesce lento (es. pesce rospo)</th></tr></thead>
-    <tbody>
-    <tr><td>Mezzo</td><td>aria</td><td>acqua di mare</td><td>acqua di mare</td></tr>
-    <tr><td>A per chilo</td><td>circa 1 m²/kg (≈ 1000 mm²/g)</td><td>fino a circa 10 volte quella degli altri pesci: dello stesso ordine della nostra</td><td>circa 100 mm²/g: dieci volte meno di noi</td></tr>
-    <tr><td>T</td><td>0,2–0,5 µm</td><td>circa 0,5 µm</td><td>circa 5 µm</td></tr>
-    <tr><td>Flusso</td><td>avanti e indietro: resta uno spazio morto</td><td>a senso unico, controcorrente, spinto dal nuoto</td><td>a senso unico, controcorrente, spinto dalla pompa di bocca e opercoli</td></tr>
-    <tr><td>O₂ estratto dal mezzo</td><td>meno del 25%</td><td colspan="2">fino al 90% e oltre, grazie alla controcorrente</td></tr>
-    </tbody></table></div>
-  <p class="caveat">Valori indicativi. Un pesce lento, con poca superficie e una barriera di 5–6 µm, ha una capacità di diffusione
-  circa 140 volte minore di un tonno della stessa taglia (Wegner).</p>
-  <p><b>Perché l'acqua è difficile.</b> Rispetto all'aria contiene circa 30 volte meno O₂, quindi per avere lo stesso
-  ossigeno bisogna muoverne circa 30 volte di più; l'O₂ ci diffonde circa 10 000 volte più lentamente; ed è circa 800 volte
-  più densa e 50 volte più viscosa, quindi muoverla costa molta energia.</p>
-  <p><b>La soluzione: la controcorrente.</b> Nelle lamelle l'acqua e il sangue scorrono in versi opposti. Il sangue che
-  sta per uscire, già quasi saturo, incontra l'acqua appena entrata, la più ricca di O₂; il sangue appena arrivato, povero di
-  O₂, incontra l'acqua che sta uscendo, già impoverita ma comunque più ricca di lui. Così P<sub>1</sub> − P<sub>2</sub> resta positivo
-  per tutta la lamella e lo scambio non si ferma a metà. Nel nostro polmone invece l'aria entra ed esce dalla stessa via e
-  si mescola con quella vecchia: per questo estraiamo molto meno.</p>
-  <h4>Perché il tonno soffoca se smette di nuotare</h4>
-  <ol>
-    <li><b>La maggior parte dei pesci pompa l'acqua da sola.</b> Apre e chiude la bocca e gli opercoli e spinge l'acqua sulle
-    branchie anche da ferma: è la pompa bucco-opercolare.</li>
-    <li><b>Il tonno ha perso questa pompa.</b> Le sue branchie sono fittissime di lamelle, in parte saldate fra loro per
-    reggere la corrente forte del nuoto veloce: oppongono molta resistenza al passaggio dell'acqua. La pompa non
-    riuscirebbe a spingerne abbastanza per il suo consumo di O₂, molto alto. Il tonno nuota quindi a bocca aperta e lascia
-    che sia la velocità a far passare l'acqua: è la <b>ventilazione dinamica</b> (<i>ram ventilation</i>). Il costo del respiro
-    passa ai muscoli del nuoto, che usa comunque.</li>
-    <li><b>Se si ferma, si azzera P<sub>1</sub> − P<sub>2</sub>.</b> L'acqua fra le lamelle smette di rinnovarsi. Il sangue continua a
-    prendere O₂ da quel velo d'acqua finché la sua PO₂ non scende fino a quella del sangue: il gradiente sparisce, e con lui
-    V̇O₂, mentre il bisogno di ossigeno resta altissimo. Il tonno va in ipossia e soffoca.</li>
-  </ol>
-  <figure class="w">
-    <iframe src="w/03-pesce.html" title="Fick nel pesce: quando soffoca?" loading="lazy" class="ph"></iframe>
-    <figcaption>Prova tu: abbassa la velocità del tonno, ispessisci la barriera, togli ossigeno all'acqua o accendi la pompa, e guarda quando l'ossigeno non basta più. <a href="w/03-pesce.html">Apri a schermo intero</a></figcaption>
-  </figure>
-  <p>È lo stesso termine che per noi cala con l'<b>ipoventilazione</b>: se non rinnovi il mezzo vicino alla barriera,
-  superficie e spessore perfetti non servono più. Anche alcuni squali, come lo squalo mako e lo squalo bianco, respirano
-  solo nuotando; altri, come lo squalo tigre, possono passare dalla pompa al nuoto a seconda della velocità.</p>
 </section>
 
-<section id="nernst">
-  <h2>3 · Il potenziale di Nernst</h2>
-  <p style="text-align:center;font-size:1.3rem;margin:1.1rem 0 1.2rem">E<sub>X</sub> = (RT / zF) · ln([X]<sub>out</sub> / [X]<sub>in</sub>)</p>
-  <p>Immagina una membrana che lascia passare un solo ione, il K⁺, più concentrato dentro che fuori. Il K⁺ esce lungo il
-  suo gradiente di concentrazione e si porta via la sua carica positiva: l'interno diventa negativo. Quella negatività lo
-  richiama indietro. Quando la spinta chimica verso fuori e quella elettrica verso dentro si equivalgono, il flusso netto
-  si ferma: il K⁺ continua a passare in tutte e due le direzioni, ma in media non si sposta più. Quel voltaggio è il
-  <b>potenziale di equilibrio</b> (o di inversione) di Nernst dello ione. Conta solo il <b>rapporto</b> fra le concentrazioni,
-  non i loro valori assoluti né la permeabilità della membrana.</p>
+<section id="darcy">
+<style>.dq{color:#1456A8;font-weight:700}.dk{color:#B5520C;font-weight:700}.da{color:#0E7C66;font-weight:700}.dp{color:#B03A3A;font-weight:700}.dm{color:#6A3A96;font-weight:700}.dl{color:#8A6A00;font-weight:700}.dkf{color:#0B6E8C;font-weight:700}.dlp{color:#8E1D4A;font-weight:700}.dsteps{margin:.6rem 0 1rem;padding-left:1.3rem}.dsteps li{margin:.55rem 0}.dsteps .f{display:block;text-align:center;font-size:1.15rem;margin:.35rem 0}</style>
+  <h2>3 · La legge di Darcy: il flusso attraverso uno strato poroso</h2>
+  <p style="text-align:center;font-size:1.3rem;margin:1.1rem 0 1.2rem"><span class="dq">Q</span> = <span class="dk">k</span> · <span class="da">A</span> · <span class="dp">ΔP</span> / (<span class="dm">μ</span> · <span class="dl">L</span>)</p>
+  <p>Un liquido attraversa uno strato pieno di pori (sabbia, una membrana, la parete di un capillare) tanto più in fretta quanto più lo strato è permeabile (<span class="dk">k</span>) ed esteso (<span class="da">A</span>) e quanto più forte è la spinta (<span class="dp">ΔP</span>); tanto più piano quanto più il liquido è viscoso (<span class="dm">μ</span>) e lo strato è spesso (<span class="dl">L</span>). Darcy la ricavò nel 1856 dai filtri a sabbia delle fontane di Digione. Vale per un flusso lento e ordinato.</p>
   <h3>Le variabili</h3>
   <div class="tscroll tw"><table>
-    <thead><tr><th>Simbolo</th><th>Che cos'è</th><th>Unità</th><th>Dimensioni</th></tr></thead>
+    <thead><tr><th>Simbolo</th><th>Che cos’è</th><th>Effetto sul flusso</th><th>Unità SI</th><th>Dimensioni</th></tr></thead>
     <tbody>
-    <tr><td>E<sub>X</sub></td><td>potenziale di equilibrio dello ione X (interno rispetto all'esterno)</td><td>mV (V = J/C)</td><td>[M L² T⁻³ I⁻¹]</td></tr>
-    <tr><td>R</td><td>costante dei gas, 8,314</td><td>J·mol⁻¹·K⁻¹</td><td>[M L² T⁻² Θ⁻¹ N⁻¹]</td></tr>
-    <tr><td>T</td><td>temperatura assoluta (37 °C = 310 K)</td><td>K</td><td>[Θ]</td></tr>
-    <tr><td>z</td><td>valenza dello ione: K⁺ e Na⁺ +1, Ca²⁺ +2, Cl⁻ −1</td><td>nessuna (numero puro)</td><td>[1]</td></tr>
-    <tr><td>F</td><td>costante di Faraday, 96 485: la carica di una mole di cariche elementari</td><td>C·mol⁻¹ (C = A·s)</td><td>[I T N⁻¹]</td></tr>
-    <tr><td>[X]<sub>out</sub>, [X]<sub>in</sub></td><td>concentrazione dello ione fuori e dentro la cellula</td><td>mM</td><td>[N L⁻³]; il rapporto è un numero puro</td></tr>
+    <tr><td><span class="dq">Q</span></td><td>flusso: volume che attraversa lo strato nell’unità di tempo (il risultato)</td><td></td><td>m³·s⁻¹ (in fisiologia mL·min⁻¹)</td><td>[L³ T⁻¹]</td></tr>
+    <tr><td><span class="dk">k</span></td><td>permeabilità dello strato: quanti pori, quanto larghi</td><td>più pori, più flusso</td><td>m²</td><td>[L²]</td></tr>
+    <tr><td><span class="da">A</span></td><td>area attraversata</td><td>più area, più flusso</td><td>m²</td><td>[L²]</td></tr>
+    <tr><td><span class="dp">ΔP</span></td><td>differenza di pressione tra i due lati</td><td>è la spinta</td><td>Pa (Pa = N/m²; N = kg·m/s²)</td><td>[M L⁻¹ T⁻²]</td></tr>
+    <tr><td><span class="dm">μ</span></td><td>viscosità del liquido</td><td>più viscoso, meno flusso</td><td>Pa·s</td><td>[M L⁻¹ T⁻¹]</td></tr>
+    <tr><td><span class="dl">L</span></td><td>spessore dello strato</td><td>più spesso, meno flusso</td><td>m</td><td>[L]</td></tr>
     </tbody></table></div>
-  <p class="caveat">[I] corrente elettrica, [Θ] temperatura, [N] quantità di sostanza. Controprova:
-  RT/F = [M L² T⁻² Θ⁻¹ N⁻¹] × [Θ] / [I T N⁻¹] = [M L² T⁻³ I⁻¹], cioè volt ✓ (J/C = V; J = N·m).</p>
-  <p><b>La forma comoda.</b> A 37 °C RT/F = 8,314 × 310,15 / 96 485 ≈ 26,7 mV. Per passare dal logaritmo naturale a quello
-  in base 10 si moltiplica per ln 10 ≈ 2,303, e si ottiene E<sub>X</sub> = (61,5 mV / z) · log<sub>10</sub>([X]<sub>out</sub>/[X]<sub>in</sub>).
-  A 21 °C, la temperatura degli esperimenti classici e del tutorial di St Andrews, il fattore è 58 mV. In pratica: ogni
-  fattore 10 di rapporto vale circa 60 mV, diviso per la valenza.</p>
-  <figure class="w">
-    <iframe src="w/02-nernst.html" title="Il potenziale di Nernst, calcolato passo per passo" loading="lazy" class="ph"></iframe>
-    <figcaption>Scegli lo ione e un esempio, oppure muovi le due concentrazioni: il calcolo è svolto passo per passo. <a href="w/02-nernst.html">Apri a schermo intero</a></figcaption>
-  </figure>
+  <p class="caveat">[M] massa, [L] lunghezza, [T] tempo. Controllo: [L²] × [L²] × [M L⁻¹ T⁻²] / ([M L⁻¹ T⁻¹] × [L]) = [L³ T⁻¹] = <span class="dq">Q</span> ✓. 1 mmHg ≈ 133,3 Pa.</p>
+  <h3>Da Darcy al filtrato glomerulare, in quattro passi</h3>
+  <ol class="dsteps">
+    <li><b>Darcy.</b><span class="f"><span class="dq">Q</span> = <span class="dk">k</span> · <span class="da">A</span> · <span class="dp">ΔP</span> / (<span class="dm">μ</span> · <span class="dl">L</span>)</span></li>
+    <li><b>Raggruppo tutto ciò che descrive la parete e il liquido.</b> Per ogni unità di area:<span class="f"><span class="dlp">L<sub>p</sub></span> = <span class="dk">k</span> / (<span class="dm">μ</span> · <span class="dl">L</span>)</span><span class="dlp">L<sub>p</sub></span> = conducibilità idraulica [M⁻¹ L² T], m·s⁻¹·Pa⁻¹. Moltiplicata per l’area:<span class="f"><span class="dkf">K<sub>f</sub></span> = <span class="dlp">L<sub>p</sub></span> · <span class="da">A</span> = <span class="dk">k</span> · <span class="da">A</span> / (<span class="dm">μ</span> · <span class="dl">L</span>)</span><span class="dkf">K<sub>f</sub></span> = coefficiente di filtrazione [M⁻¹ L⁴ T], m³·s⁻¹·Pa⁻¹ (in fisiologia mL·min⁻¹·mmHg⁻¹).</li>
+    <li><b>Darcy diventa una riga sola.</b><span class="f"><span class="dq">Q</span> = <span class="dkf">K<sub>f</sub></span> · <span class="dp">ΔP</span></span>È la stessa forma di <a href="#starling">Starling</a>: lì la spinta <span class="dp">ΔP</span> è quella netta, pressione idrostatica meno pressione oncotica.</li>
+    <li><b>Nel glomerulo, con i numeri.</b> <span class="dkf">K<sub>f</sub></span> ≈ 12,5 mL·min⁻¹·mmHg⁻¹, <span class="dp">ΔP</span> netta ≈ 10 mmHg:<span class="f"><span class="dq">Q</span> = <span class="dkf">12,5</span> × <span class="dp">10</span> = <span class="dq">125 mL·min⁻¹</span></span>È la velocità di filtrazione glomerulare.</li>
+  </ol>
+  <h3>Chi muove quale termine, nel glomerulo</h3>
   <div class="tscroll tw"><table>
-    <thead><tr><th>Preparazione</th><th>Ione</th><th>Dentro (mM)</th><th>Fuori (mM)</th><th>E (mV)</th><th>Potenziale di riposo</th></tr></thead>
+    <thead><tr><th>Termine</th><th>Chi lo cambia</th><th>Effetto</th></tr></thead>
     <tbody>
-    <tr><td>Assone gigante di calamaro, 21 °C</td><td>K⁺</td><td>400</td><td>20</td><td>−75</td><td rowspan="2">circa −60 mV</td></tr>
-    <tr><td>Assone gigante di calamaro, 21 °C</td><td>Cl⁻</td><td>108</td><td>560</td><td>−41</td></tr>
-    <tr><td>Muscolo di rana, 21 °C</td><td>K⁺</td><td>124</td><td>2,25</td><td>−101</td><td rowspan="2">da −90 a −100 mV</td></tr>
-    <tr><td>Muscolo di rana, 21 °C</td><td>Cl⁻</td><td>1,5</td><td>77,5</td><td>−99</td></tr>
-    <tr><td>Cellula di mammifero, 37 °C</td><td>K⁺</td><td>140</td><td>4</td><td>−95</td><td rowspan="4">circa −70 mV</td></tr>
-    <tr><td>Cellula di mammifero, 37 °C</td><td>Na⁺</td><td>12</td><td>145</td><td>+67</td></tr>
-    <tr><td>Cellula di mammifero, 37 °C</td><td>Cl⁻</td><td>7</td><td>110</td><td>−74</td></tr>
-    <tr><td>Cellula di mammifero, 37 °C</td><td>Ca²⁺</td><td>0,0001</td><td>1,2</td><td>+125</td></tr>
+    <tr><td><span class="da">A</span></td><td>il <b>mesangio</b> che si contrae chiude una parte delle anse capillari; la perdita di nefroni</td><td>meno area: <span class="dkf">K<sub>f</sub></span> e filtrato scendono</td></tr>
+    <tr><td><span class="dl">L</span></td><td>ispessimento della membrana basale (per esempio nel diabete)</td><td>più spessore: <span class="dkf">K<sub>f</sub></span> scende</td></tr>
+    <tr><td><span class="dk">k</span></td><td>pori dell’endotelio, maglie della membrana basale, fessure tra i pedicelli</td><td>meno pori: <span class="dkf">K<sub>f</sub></span> scende</td></tr>
+    <tr><td><span class="dp">ΔP</span></td><td>arteriola afferente ed efferente; pressione oncotica del plasma; pressione nella capsula</td><td>cambia la spinta, non <span class="dkf">K<sub>f</sub></span></td></tr>
     </tbody></table></div>
-  <p class="caveat">Calamaro e rana: dati di Aidley (1989) riportati nel tutorial di St Andrews. Mammifero: valori
-  tipici, indicativi. Le differenze di 1 mV fra la tabella e il widget vengono dall'arrotondamento (58 contro 58,4 mV).</p>
-  <p><b>Bastano pochissimi ioni.</b> Una cellula sferica di 50 µm di diametro ha una capacità di membrana di circa
-  78,5 pF (1 µF per cm²). Per caricarla a −70 mV servono 5,5 × 10⁻¹² C, cioè circa 34 milioni di ioni K⁺, su circa
-  5,5 × 10¹² ioni K⁺ presenti nella cellula: la concentrazione cambia dello 0,0006 %. Il potenziale nasce quindi senza
-  cambiare le concentrazioni in modo misurabile.</p>
-  <p><b>Dal Nernst al potenziale di riposo.</b> Nernst vale per un solo ione. La membrana reale è permeabile a più ioni,
-  e il potenziale di riposo si sistema vicino al potenziale di equilibrio dello ione a cui è più permeabile: a riposo il
-  K⁺, per i canali di fuga. Per pesare tutti gli ioni insieme secondo la loro permeabilità serve l'equazione di
-  Goldman-Hodgkin-Katz. La differenza V<sub>m</sub> − E<sub>X</sub> è la <b>forza spingente</b> sullo ione: dice da che parte va e
-  quanto forte.</p>
-  <p><b>Clinica.</b> Nell'ipercaliemia il K⁺ fuori sale, per esempio da 4 a 7 mM: E<sub>K</sub> passa da −95 a circa −80 mV,
-  le cellule si depolarizzano e cuore e muscoli diventano instabili (aritmie). Lo puoi provare nel widget con l'esempio
-  “K⁺ · ipercaliemia”.</p>
+  <p><b>Strati in serie.</b> La barriera del glomerulo ha tre strati uno dopo l’altro: endotelio, membrana basale, fessure tra i pedicelli. Ogni strato oppone una resistenza <span class="dm">μ</span> · <span class="dl">L</span> / (<span class="dk">k</span> · <span class="da">A</span>), e le resistenze in serie si sommano: il flusso è <span class="dp">ΔP</span> diviso la resistenza totale, come la corrente nella legge di Ohm.</p>
+  <p><b>Stessa forma di Fick.</b> Flusso = coefficiente × area × spinta / spessore. In <a href="#fick">Fick</a> si muove un soluto, spinto da una differenza di concentrazione o di pressione parziale; in Darcy si muove il liquido intero, spinto da una differenza di pressione.</p>
+  <p>Per provarla: nella pagina sui <a href="../circoli-portali/#rene">circoli portali</a> la figura del rene parte da Darcy e ti fa muovere pressioni e spessori. Il mesangio e il polo vascolare sono disegnati nella figura del nefrone dei <a href="../trasportatori/">trasportatori</a>.</p>
+  <p class="caveat">Valori indicativi, per la didattica. La pressione netta di 10 mmHg è la media lungo il capillare glomerulare.</p>
 </section>
 <section id="fonti">
   <h2>Fonti</h2>
@@ -545,14 +443,7 @@ x.addEventListener('mouseenter',function(){show(k);});x.addEventListener('focus'
     <li>Fick A. Ueber Diffusion. <i>Ann Phys</i> 1855;170:59–86.
     <a href="https://doi.org/10.1002/andp.18551700105">doi:10.1002/andp.18551700105</a></li>
     <li>West JB, Luks AM. <i>West's Respiratory Physiology: The Essentials</i>. 11th ed. Philadelphia: Wolters Kluwer; 2020.</li>
-    <li>Heitler WJ. The resting potential. Neurotut, University of St Andrews.
-    <a href="https://www.st-andrews.ac.uk/~wjh/neurotut/RestingPotential.html">st-andrews.ac.uk/~wjh/neurotut</a></li>
-    <li>Aidley DJ. <i>The Physiology of Excitable Cells</i>. 3rd ed. Cambridge: Cambridge University Press; 1989.</li>
-    <li>Hughes GM. The dimensions of fish gills in relation to their function. <i>J Exp Biol</i> 1966;45:177–95.
-    <a href="https://doi.org/10.1242/jeb.45.1.177">doi:10.1242/jeb.45.1.177</a></li>
-    <li>Muir BS, Hughes GM. Gill dimensions for three species of tunny. <i>J Exp Biol</i> 1969;51:271–85.</li>
-    <li>Wegner NC. Gill respiratory morphometrics. In: Farrell AP, ed. <i>Encyclopedia of Fish Physiology</i>. San Diego: Academic Press; 2011.
-    <a href="https://doi.org/10.1016/B978-0-12-374553-8.00166-0">doi:10.1016/B978-0-12-374553-8.00166-0</a></li>
+    <li>Darcy H. <i>Les fontaines publiques de la ville de Dijon</i>. Paris: Victor Dalmont; 1856.</li>
   </ol>
   <p class="caveat">Valori indicativi, arrotondati a scopo didattico.</p>
 </section>
