@@ -223,11 +223,17 @@ function panels(){if(F!=='starling')return;var c=document.getElementById('circ')
  o+='<text x="676" y="270" font-size="11" text-anchor="end" fill="#16222E">'+T('bordo nero = il capillare del disegno sopra','black border = the capillary drawn above')+'</text>';
  function nt(X,Y,t,c){return '<text x="'+X+'" y="'+Y+'" font-size="12.5" font-weight="700" text-anchor="middle" fill="'+(c||'#1456A8')+'">'+t+'</text>';}
  if(st==='lhf')o+=nt(340,92,T('edema polmonare','pulmonary oedema'));
- else if(st==='ph')o+='<text x="6" y="56" font-size="12.5" font-weight="700" fill="#1456A8">'+T('postcarico del','afterload of the')+'</text><text x="6" y="71" font-size="12.5" font-weight="700" fill="#1456A8">'+T('cuore destro ↑↑','right heart ↑↑')+'</text>'+nt(572,156,T('poi: caviglie gonfie','then: swollen ankles'));
+ else if(st==='ph')o+=nt(572,156,T('poi: caviglie gonfie','then: swollen ankles'));
  else if(st==='hf')o+=nt(572,156,T('caviglie gonfie','swollen ankles'));
  else if(st==='dvt')o+=nt(572,150,T('il sangue aggira il blocco','blood bypasses the block'),'#B03A3A')+nt(572,166,T('dalle superficiali','through the superficial veins'),'#B03A3A');
  else if(st==='var')o+=nt(572,156,T('reflusso nelle superficiali','reflux into the superficial veins'),'#B03A3A');
  else if(st==='dehy')o+=nt(340,104,T('poco volume ovunque','low volume everywhere'),'#6A3A96');
+ var PRE=T('precarico','preload'),POST=T('postcarico','afterload'),FULL=T('non si svuota: resta pieno','does not empty: stays full'),LESS=T('gli arriva meno sangue','less blood reaches it');
+ function bd(R,k,ar,sub){var X=R?44:508,c=k?'#9C1F5A':'#0E7C66',bg=k?'#FBE3EE':'#DDF3EC';return '<path d="M'+(R?172:508)+' 98 H'+(R?180:500)+'" stroke="'+c+'" stroke-width="2"/><rect x="'+X+'" y="85" width="128" height="26" rx="13" fill="'+bg+'" stroke="'+c+'" stroke-width="2"/><text x="'+(X+64)+'" y="103" font-size="13" font-weight="700" text-anchor="middle" fill="'+c+'">'+(k?POST:PRE)+' '+ar+'</text><text x="'+(R?172:508)+'" y="124" font-size="10.5" text-anchor="'+(R?'end':'start')+'" fill="'+c+'" stroke="#FFFFFF" stroke-width="3" paint-order="stroke">'+sub+'</text>';}
+ if(st==='lhf')o+=bd(0,0,'↑',FULL)+bd(1,1,'↑',T('spinge contro i polmoni in pressione','pushes against lungs under pressure'));
+ else if(st==='hf')o+=bd(1,0,'↑',FULL)+bd(0,0,'↓',LESS);
+ else if(st==='ph')o+=bd(1,1,'↑↑',T('arteria polmonare in pressione','pulmonary artery under pressure'))+bd(0,0,'↓',LESS);
+ else if(st==='dehy')o+=bd(1,0,'↓',T('poco volume','low volume'))+bd(0,0,'↓',T('poco volume','low volume'));
  c.innerHTML=o+'</svg>';
  g.hidden=st!=='dehy';if(st!=='dehy')return;
  function cd(svg,t,u){return '<div><svg viewBox="0 0 62 54" aria-hidden="true">'+svg+'</svg><b>'+t+'</b>'+u+'</div>';}
