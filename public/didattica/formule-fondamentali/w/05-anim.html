@@ -414,7 +414,7 @@ function gloDraw(dt){var c=document.getElementById('gl');if(!c)return;var g=c.ge
 }
 var draw={darcy:darcy,fick:fick,starling:starling}[F],last=0,vis=true;
 if('IntersectionObserver' in window)new IntersectionObserver(function(e){vis=e[0].isIntersecting;}).observe(cv);
-function loop(t){var dt=Math.min(.05,(t-last)/1000||0);last=t;if(vis){x.clearRect(0,0,W,H);draw(dt);manUpd();if(F==='starling')gloDraw(dt);}requestAnimationFrame(loop);}
+function loop(t){var dt=Math.min(.05,(t-last)/1000||0);last=t;if(vis){x.clearRect(0,0,W,H);draw(dt);manUpd();}if(F==='starling')gloDraw(dt);requestAnimationFrame(loop);}
 upd();requestAnimationFrame(loop);
 })();
 </script>
