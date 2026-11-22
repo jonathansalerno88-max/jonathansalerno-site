@@ -107,7 +107,7 @@ function fmt(x,d){var s=x.toFixed(d==null?2:d);return it?s.replace('.',','):s;}
 function upd(){
  D.t.forEach(function(t){V[t.k]=+document.getElementById('i_'+t.k).value;document.getElementById('e_'+t.k).textContent=t.u==='×'?'×'+fmt(V[t.k]):t.u===''?fmt(V[t.k]):fmt(V[t.k],0)+' '+t.u;});
  var q=D.f(V),r=D.abs?q/Math.abs(base):q/base;
- function B(k){if(k==='res'){var m=Math.min(3,Math.max(.15,Math.abs(r)));return '<b style="color:'+D.rc+';font-size:'+(20+9*Math.log(m)/Math.LN2).toFixed(0)+'px">'+D.res+'</b>';}
+ function B(k){if(k==='res'){var m=Math.min(3,Math.max(.15,Math.abs(r)));return '<b style="color:'+D.rc+';font-size:'+Math.max(9,20+9*Math.log(m)/Math.LN2).toFixed(0)+'px">'+D.res+'</b>';}
   var t=D.t.filter(function(x){return x.k===k;})[0],rel=D.abs?(t.k==='sg'?.5+V[k]*.5:t.k==='Pi'||t.k==='pi'?(V[k]-t.min+4)/(DEF[k]-t.min+4):V[k]/DEF[k]):V[k];rel=Math.min(3.2,Math.max(.22,rel));
   return '<b style="color:'+t.c+';font-size:'+Math.max(11,(20+8*Math.log(rel)/Math.LN2)).toFixed(0)+'px">'+t.s+'</b>';}
  document.getElementById('fm').innerHTML=D.fm(B);if(F==='starling'){if(VIEW==='B')PCB=V.Pc;else PCL=V.Pc;capSel();}var f2=document.getElementById('fm2');if(f2)f2.innerHTML=fm2h();
