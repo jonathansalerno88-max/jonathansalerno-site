@@ -391,7 +391,7 @@ LEGS=Math.max(L,Rr);
  g('mTx').textContent=COLD===2?T('shock: cute marezzata','shock: mottled skin'):COLD===1&&!(Lu>.3)&&EB<=.72?T('mani e piedi freddi','cold hands and feet'):Lu>.3?(EB>.72&&SITE!=='lhf'?T('fiato corto + edema','breathless + oedema'):T('fiato corto','breathless')):EB>.72?T('EDEMA','OEDEMA'):dry>.5?T('asciutto','dry'):'';g('mTx').setAttribute('fill',dry>.5?'#6A3A96':'#1456A8');}
 
 var GL={p:[],w:[],k:'',m:null,ap:0,aw:0,ax:0};
-function gloModel(){var out=outL(),net=gNet(out),Q=Math.max(.05,Math.min(1.6,out*vF())),tg=Math.min(.02*net,.85*Q),N=60,KF=1.42,lo=25,hi=400,i,j,d,q,pi,r;
+function gloModel(){var out=outL(),net=gNet(out),Q=Math.max(.05,Math.min(1.6,out*vF())),tg=Math.min(.02*net,.85*Q),N=60,KF=2.5,lo=25,hi=400,i,j,d,q,pi,r;
  function run(dP,keep){var q=Q,f=[],e=-1;for(var i=0;i<N;i++){var n=dP-25*Q/q;if(n<=.3){n=0;if(e<0)e=i/N;}var dq=Math.min(KF*n/N/35,q-.1*Q);if(dq<0)dq=0;q-=dq;f.push(dq);}return keep?{f:f,e:e,q1:q}:Q-q;}
  for(j=0;j<34;j++){d=(lo+hi)/2;if(run(d)<tg)lo=d;else hi=d;}r=run(hi,1);r.Q=Q;r.net=net;r.tot=Q-r.q1;r.c=[];var s=0;for(i=0;i<N;i++){s+=r.f[i];r.c.push(s);}return r;}
 function gloDraw(dt){var c=document.getElementById('gl');if(!c)return;var g=c.getContext('2d'),a=kaE(),e=KE,k=[a,e,outL(),svrE(),DRUG.d,BPM,KA].join('|');if(k!==GL.k||!GL.m){GL.k=k;GL.m=gloModel();}var m=GL.m,N=60,x0=150,x1=610,x2=636,W=760,cy=75,hc=22,ha=Math.max(4,11*a),he=Math.max(3.5,11*e),i,P,V0=120;
@@ -409,8 +409,8 @@ function gloDraw(dt){var c=document.getElementById('gl');if(!c)return;var g=c.ge
  g.setLineDash([7,5]);g.beginPath();g.moveTo(x0,cy-hc);g.lineTo(x1,cy-hc);g.moveTo(x0,cy+hc);g.lineTo(x1,cy+hc);g.stroke();g.setLineDash([]);
  for(i=0;i<GL.w.length;i++){P=GL.w[i];g.globalAlpha=Math.max(0,1-P.t/1.25);g.fillStyle=P.c===2?'#C0392B':P.c===1?'#7D6BD6':'#3B9BE0';g.beginPath();g.arc(P.x,P.y,P.c===2?3.6:3,0,6.3);g.fill();}g.globalAlpha=1;
  g.fillStyle='#7D6BD6';for(i=0;i<GL.p.length;i++){P=GL.p[i];g.beginPath();g.arc(P.x,cy+P.y*(hh(P.x)-3.2),3,0,6.3);g.fill();}
- g.font='15px system-ui,sans-serif';g.fillStyle='#55697A';g.textAlign='left';g.fillText(T('afferente','afferent'),6,cy-ha-8);g.textAlign='right';g.fillText(T('efferente','efferent'),W-6,cy-he-8);g.textAlign='center';g.fillText(T('spazio di Bowman','Bowman’s space'),x1-76,23);
- if(m.e>=0&&m.e<.97){var xe=x0+m.e*(x1-x0);g.strokeStyle='#16222E';g.lineWidth=1.3;g.setLineDash([4,4]);g.beginPath();g.moveTo(xe,8);g.lineTo(xe,128);g.stroke();g.setLineDash([]);g.fillStyle='#16222E';g.font='600 15px system-ui,sans-serif';g.textAlign=xe>x1-140?'right':xe<x0+60?'left':'center';g.fillText(T('da qui non filtra più','no filtration from here on'),xe+(xe>x1-140?-5:xe<x0+60?5:0),140);}
+ g.font='15px system-ui,sans-serif';g.fillStyle='#55697A';g.textAlign='left';g.fillText(T('afferente','afferent'),6,cy-ha-8);g.textAlign='right';g.fillText(T('efferente','efferent'),W-6,cy-he-8);g.textAlign='center';g.fillText(T('spazio di Bowman','Bowman’s space'),x0+76,138);
+ if(m.e>=0&&m.e<.97){var xe=x0+m.e*(x1-x0);g.strokeStyle='#1456A8';g.lineWidth=2.4;g.setLineDash([6,4]);g.beginPath();g.moveTo(xe,8);g.lineTo(xe,128);g.stroke();g.setLineDash([]);g.fillStyle='#1456A8';g.font='600 15px system-ui,sans-serif';g.textAlign=xe>x1-140?'right':xe<x0+60?'left':'center';g.fillText(T('da qui non filtra più','no filtration from here on'),xe+(xe>x1-140?-5:xe<x0+60?5:0),140);}
 }
 var draw={darcy:darcy,fick:fick,starling:starling}[F],last=0,vis=true;
 if('IntersectionObserver' in window)new IntersectionObserver(function(e){vis=e[0].isIntersecting;}).observe(cv);
