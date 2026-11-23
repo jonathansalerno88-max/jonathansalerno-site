@@ -303,12 +303,19 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 
 <section id="starling">
   <h2>1 · The Starling equation</h2>
-  <p>The Starling equation describes the role of hydrostatic and oncotic forces (the <b>Starling forces</b>) in the <b>movement of fluid across the capillary wall</b>. It was formulated in 1896 by the English physiologist Ernest Starling.</p>
+  <h3>What it is and why it is useful</h3>
+  <p><b>What it is.</b> The Starling equation describes the role of hydrostatic and oncotic forces (the <b>Starling forces</b>) in the <b>movement of fluid across the capillary wall</b>. It was formulated in 1896 by the English physiologist Ernest Starling.</p>
+  <p><b>Why it is useful.</b> To predict whether, in a tissue, fluid leaves the capillary or returns to it. So to understand why oedema appears, or why a tissue dries out, and which of the forces has changed.</p>
+  <h3>Diffusion and filtration</h3>
   <p>Water crosses the capillary wall in two ways:</p>
   <ul>
     <li>by <b>diffusion</b>: molecules are exchanged in both directions, with no net shift of volume;</li>
     <li>by <b>filtration</b>: a bulk flow driven by a pressure difference.</li>
   </ul>
+  <figure class="w">
+    <iframe src="w/06-dvf.html" title="Diffusion and filtration compared" loading="lazy" class="ph"></iframe>
+    <figcaption>On the left, molecules are exchanged in both directions and no volume shifts. On the right, a push moves them all one way: move the slider and watch the net flow. <a href="w/06-dvf.html">Open full screen</a></figcaption>
+  </figure>
   <p>The Starling equation deals <b>only with filtration</b>. The orders of magnitude:</p>
   <div class="tscroll"><table>
     <thead><tr><th>Process</th><th>Per minute</th><th>Per day</th></tr></thead>
@@ -387,10 +394,10 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 
 <section id="fick">
   <h2>2 · Fick's law: diffusion</h2>
-  <p>Diffusion is the net movement of molecules from where they are more concentrated to where they are less, by
-  thermal agitation alone: it is the first of the three routes on the <a href="../transporters/">transporters</a> page,
-  the one through the lipids. Fick's law (1855) comes in two forms: the <b>general</b> one, valid for any dissolved
-  substance, and the one <b>modified for gases</b>, which is the one of pulmonary gas exchange.</p>
+  <h3>What it is and why it is useful</h3>
+  <p><b>What it is.</b> Fick's law (1855) says how much of a substance crosses by <b>diffusion</b>, that is, by the net movement of molecules from where they are more concentrated to where they are less, by thermal agitation alone. It is the first of the three routes on the <a href="../transporters/">transporters</a> page, the one through the lipids.</p>
+  <p><b>Why it is useful.</b> To predict how fast a substance crosses a membrane. So to understand gas exchange in the lung, and why it worsens when the membrane thickens or the surface shrinks.</p>
+  <p>It comes in two forms: the <b>general</b> one, valid for any dissolved substance, and the one <b>modified for gases</b>, which is the one of pulmonary gas exchange.</p>
 
   <div style="border:1px solid var(--rule);border-left:5px solid #1456A8;border-radius:8px;padding:.6rem 1rem .8rem;margin:1.2rem 0">
   <h3 style="margin-top:.4rem">A · The general form</h3>
@@ -444,8 +451,10 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 <section id="darcy">
 <style>.dq{color:#1456A8;font-weight:700}.dk{color:#B5520C;font-weight:700}.da{color:#0E7C66;font-weight:700}.dp{color:#B03A3A;font-weight:700}.dm{color:#6A3A96;font-weight:700}.dl{color:#8A6A00;font-weight:700}.dkf{color:#0B6E8C;font-weight:700}.dlp{color:#8E1D4A;font-weight:700}.dsteps{margin:.6rem 0 1rem;padding-left:1.3rem}.dsteps li{margin:.55rem 0}.dsteps .f{display:block;text-align:center;font-size:1.15rem;margin:.35rem 0}</style>
   <h2>3 · Darcy’s law: flow through a porous layer</h2>
+  <h3>What it is and why it is useful</h3>
+  <p><b>What it is.</b> Darcy’s law says how much liquid crosses a porous layer. A liquid crosses a layer full of pores (sand, a membrane, a capillary wall) faster the more permeable (<span class="dk">k</span>) and the wider (<span class="da">A</span>) the layer is and the stronger the push (<span class="dp">ΔP</span>); slower the more viscous the liquid (<span class="dm">μ</span>) and the thicker the layer (<span class="dl">L</span>). Darcy derived it in 1856 from the sand filters of the fountains of Dijon. It holds for slow, orderly flow.</p>
+  <p><b>Why it is useful.</b> To calculate how much fluid filters across a wall for a given push. It is the law behind glomerular filtration (GFR = K<sub>f</sub> · ΔP), and it explains where the K<sub>f</sub> of the Starling equation comes from.</p>
   <p style="text-align:center;font-size:1.3rem;margin:1.1rem 0 1.2rem"><span class="dq">Q</span> = <span class="dk">k</span> · <span class="da">A</span> · <span class="dp">ΔP</span> / (<span class="dm">μ</span> · <span class="dl">L</span>)</p>
-  <p>A liquid crosses a layer full of pores (sand, a membrane, a capillary wall) faster the more permeable (<span class="dk">k</span>) and the wider (<span class="da">A</span>) the layer is and the stronger the push (<span class="dp">ΔP</span>); slower the more viscous the liquid (<span class="dm">μ</span>) and the thicker the layer (<span class="dl">L</span>). Darcy derived it in 1856 from the sand filters of the fountains of Dijon. It holds for slow, orderly flow.</p>
   <figure class="w">
     <iframe src="w/05-anim.html?f=darcy" title="Darcy: move the terms" loading="lazy" class="ph"></iframe>
     <figcaption>Try it: raise the push, the pores or the area, make the liquid viscous or the layer thick, and watch how much liquid gets through. <a href="w/05-anim.html?f=darcy">Open full screen</a></figcaption>

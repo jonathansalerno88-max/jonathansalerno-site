@@ -303,12 +303,19 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 
 <section id="starling">
   <h2>1 · L'equazione di Starling</h2>
-  <p>L'equazione di Starling descrive il ruolo delle forze idrostatiche e oncotiche (le <b>forze di Starling</b>) nel <b>movimento di liquido attraverso la parete dei capillari</b>. L'ha formulata nel 1896 il fisiologo inglese Ernest Starling.</p>
+  <h3>Che cos'è e a cosa serve</h3>
+  <p><b>Che cos'è.</b> L'equazione di Starling descrive il ruolo delle forze idrostatiche e oncotiche (le <b>forze di Starling</b>) nel <b>movimento di liquido attraverso la parete dei capillari</b>. L'ha formulata nel 1896 il fisiologo inglese Ernest Starling.</p>
+  <p><b>A cosa serve.</b> A prevedere se in un tessuto il liquido esce dal capillare o ci rientra. Quindi a capire perché compare un edema, o perché un tessuto si asciuga, e quale delle forze è cambiata.</p>
+  <h3>Diffusione e filtrazione</h3>
   <p>L'acqua attraversa la parete del capillare in due modi:</p>
   <ul>
     <li>per <b>diffusione</b>: le molecole si scambiano nei due sensi, senza uno spostamento netto di volume;</li>
     <li>per <b>filtrazione</b>: un flusso di massa spinto da una differenza di pressione.</li>
   </ul>
+  <figure class="w">
+    <iframe src="w/06-dvf.html" title="Diffusione e filtrazione a confronto" loading="lazy" class="ph"></iframe>
+    <figcaption>A sinistra le molecole si scambiano nei due sensi e il volume non si sposta. A destra una spinta le muove tutte in un verso: sposta il cursore e guarda il flusso netto. <a href="w/06-dvf.html">Apri a tutto schermo</a></figcaption>
+  </figure>
   <p>L'equazione di Starling riguarda <b>solo la filtrazione</b>. Gli ordini di grandezza:</p>
   <div class="tscroll"><table>
     <thead><tr><th>Processo</th><th>Al minuto</th><th>Al giorno</th></tr></thead>
@@ -388,10 +395,10 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 
 <section id="fick">
   <h2>2 · La legge di Fick: la diffusione</h2>
-  <p>La diffusione è il movimento netto di molecole da dove sono più concentrate a dove lo sono meno, per semplice
-  agitazione termica: è la prima delle tre vie della pagina sui <a href="../trasportatori/">trasportatori</a>, quella
-  attraverso i lipidi. La legge di Fick (1855) si usa in due forme: quella <b>generale</b>, valida per qualunque sostanza
-  sciolta, e quella <b>modificata per i gas</b>, che è quella dello scambio polmonare.</p>
+  <h3>Che cos'è e a cosa serve</h3>
+  <p><b>Che cos'è.</b> La legge di Fick (1855) dice quanta sostanza passa per <b>diffusione</b>, cioè per il movimento netto di molecole da dove sono più concentrate a dove lo sono meno, per semplice agitazione termica. È la prima delle tre vie della pagina sui <a href="../trasportatori/">trasportatori</a>, quella attraverso i lipidi.</p>
+  <p><b>A cosa serve.</b> A prevedere quanto in fretta una sostanza attraversa una membrana. Quindi a capire lo scambio dei gas nel polmone, e perché peggiora quando la membrana si ispessisce o la superficie si riduce.</p>
+  <p>Si usa in due forme: quella <b>generale</b>, valida per qualunque sostanza sciolta, e quella <b>modificata per i gas</b>, che è quella dello scambio polmonare.</p>
 
   <div style="border:1px solid var(--rule);border-left:5px solid #1456A8;border-radius:8px;padding:.6rem 1rem .8rem;margin:1.2rem 0">
   <h3 style="margin-top:.4rem">A · La forma generale</h3>
@@ -445,8 +452,10 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 <section id="darcy">
 <style>.dq{color:#1456A8;font-weight:700}.dk{color:#B5520C;font-weight:700}.da{color:#0E7C66;font-weight:700}.dp{color:#B03A3A;font-weight:700}.dm{color:#6A3A96;font-weight:700}.dl{color:#8A6A00;font-weight:700}.dkf{color:#0B6E8C;font-weight:700}.dlp{color:#8E1D4A;font-weight:700}.dsteps{margin:.6rem 0 1rem;padding-left:1.3rem}.dsteps li{margin:.55rem 0}.dsteps .f{display:block;text-align:center;font-size:1.15rem;margin:.35rem 0}</style>
   <h2>3 · La legge di Darcy: il flusso attraverso uno strato poroso</h2>
+  <h3>Che cos'è e a cosa serve</h3>
+  <p><b>Che cos'è.</b> La legge di Darcy dice quanto liquido attraversa uno strato poroso. Un liquido attraversa uno strato pieno di pori (sabbia, una membrana, la parete di un capillare) tanto più in fretta quanto più lo strato è permeabile (<span class="dk">k</span>) ed esteso (<span class="da">A</span>) e quanto più forte è la spinta (<span class="dp">ΔP</span>); tanto più piano quanto più il liquido è viscoso (<span class="dm">μ</span>) e lo strato è spesso (<span class="dl">L</span>). Darcy la ricavò nel 1856 dai filtri a sabbia delle fontane di Digione. Vale per un flusso lento e ordinato.</p>
+  <p><b>A cosa serve.</b> A calcolare quanto liquido filtra attraverso una parete per una data spinta. È la legge da cui nasce il filtrato glomerulare (VFG = K<sub>f</sub> · ΔP), e spiega da dove viene il K<sub>f</sub> dell'equazione di Starling.</p>
   <p style="text-align:center;font-size:1.3rem;margin:1.1rem 0 1.2rem"><span class="dq">Q</span> = <span class="dk">k</span> · <span class="da">A</span> · <span class="dp">ΔP</span> / (<span class="dm">μ</span> · <span class="dl">L</span>)</p>
-  <p>Un liquido attraversa uno strato pieno di pori (sabbia, una membrana, la parete di un capillare) tanto più in fretta quanto più lo strato è permeabile (<span class="dk">k</span>) ed esteso (<span class="da">A</span>) e quanto più forte è la spinta (<span class="dp">ΔP</span>); tanto più piano quanto più il liquido è viscoso (<span class="dm">μ</span>) e lo strato è spesso (<span class="dl">L</span>). Darcy la ricavò nel 1856 dai filtri a sabbia delle fontane di Digione. Vale per un flusso lento e ordinato.</p>
   <figure class="w">
     <iframe src="w/05-anim.html?f=darcy" title="Darcy: muovi i termini" loading="lazy" class="ph"></iframe>
     <figcaption>Prova: aumenta la spinta, i pori o l’area, rendi il liquido viscoso o lo strato spesso, e guarda quanto liquido passa. <a href="w/05-anim.html?f=darcy">Apri a tutto schermo</a></figcaption>

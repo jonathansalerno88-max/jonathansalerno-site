@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diffusione e filtrazione</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+body{margin:0;padding:8px 10px 10px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.pn{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:8px}
+.pn h3{margin:0 0 6px;font:700 16px/1.2 system-ui,-apple-system,Segoe UI,sans-serif}
+canvas{display:block;width:100%;height:auto;border-radius:8px}
+.cn{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13.5px;margin:7px 2px 4px;font-variant-numeric:tabular-nums}
+.cn b{font-weight:700}
+.net{font-size:15px;font-weight:700;margin:2px 2px 4px}
+.tx{font-size:13px;line-height:1.4;margin:4px 2px 0;color:#16222E}
+label{display:block;font-size:13px;margin:6px 2px 0}
+label em{font-style:normal;float:right;font-weight:700}
+input[type=range]{width:100%;margin:2px 0 0}
+.sr{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+<p class="sr" id="sr"></p>
+<div class="two">
+ <div class="pn"><h3 id="hd" style="color:#1F5FA8"></h3><canvas id="cd" width="720" height="480"></canvas><div class="cn" id="nd"></div><div class="net" id="qd"></div><p class="tx" id="td"></p></div>
+ <div class="pn"><h3 id="hf" style="color:#B03A3A"></h3><canvas id="cf" width="720" height="480"></canvas><div class="cn" id="nf"></div><div class="net" id="qf"></div><label><span id="ll"></span><em id="le"></em><input type="range" id="ps" min="-1" max="1" step="0.1" value="0.6"></label><p class="tx" id="tf"></p></div>
+</div>
+<script>
+(function(){
+var it=document.documentElement.lang==='it';function T(a,b){return it?a:b;}
+var W=360,H=240,Y0=100,Y1=112,PW=14,PG=36,NC=60,NT=60;
+document.getElementById('sr').textContent=T('Due animazioni affiancate. A sinistra la diffusione: le molecole d’acqua attraversano la parete del capillare nei due sensi, in numero uguale. A destra la filtrazione: una differenza di pressione spinge il liquido tutto in un verso.','Two animations side by side. On the left, diffusion: water molecules cross the capillary wall in both directions, in equal numbers. On the right, filtration: a pressure difference pushes the fluid all one way.');
+document.getElementById('hd').textContent=T('Diffusione','Diffusion');document.getElementById('hf').textContent=T('Filtrazione','Filtration');
+document.getElementById('td').innerHTML=T('Ogni molecola si muove a caso. Tante escono e altrettante rientrano: l’acqua <b>si scambia</b> (guarda i due blu che si mescolano), ma il <b>volume non si sposta</b>. Nel corpo questo scambio è migliaia di volte più grande della filtrazione.','Each molecule moves at random. As many leave as return: water is <b>exchanged</b> (watch the two blues mix), but <b>no volume shifts</b>. In the body this exchange is thousands of times larger than filtration.');
+document.getElementById('ll').textContent=T('spinta netta (pressione)','net push (pressure)');
+function pore(x){var m=((x%PG)+PG)%PG;return m>PG/2-PW/2&&m<PG/2+PW/2;}
+function mk(n,top,c){var a=[];for(var i=0;i<n;i++)a.push({x:Math.random()*W,y:top?4+Math.random()*(Y0-8):Y1+4+Math.random()*(H-Y1-8),a:Math.random()*6.283,c:c});return a;}
+var D={p:mk(NC,1,0).concat(mk(NT,0,1)),ev:[]},Fm={p:mk(NC,1,0).concat(mk(NT,0,0)),ev:[]},push=.6,tnow=0;
+function step(S,dt,drift,flow){var sp=drift===null?120:70,i,P,ny,nx,inCap;
+ for(i=S.p.length-1;i>=0;i--){P=S.p[i];P.a+=(Math.random()-.5)*(drift===null?1.6:2.4);inCap=P.y<Y0;
+  nx=P.x+Math.cos(P.a)*sp*dt;ny=P.y+Math.sin(P.a)*sp*dt;
+  if(drift!==null){var near=P.y>Y0-34&&P.y<Y1+34;ny+=drift*(near?38:inCap?14:24)*dt;if(near&&!pore(nx)&&(drift>0)===inCap){var m=((nx%PG)+PG)%PG;nx+=(PG/2-m)*7*dt;}}
+  if(nx<0){nx=0;P.a=Math.PI-P.a;}if(nx>W){nx=W;P.a=Math.PI-P.a;}
+  if(ny<3){if(flow&&drift<0&&inCap){S.p.splice(i,1);continue;}ny=3;P.a=-P.a;}
+  if(ny>H-3){if(drift!==null&&drift>0){S.p.splice(i,1);continue;}ny=H-3;P.a=-P.a;}
+  if(inCap&&ny>=Y0){if(pore(nx)){ny=Y1+1;S.ev.push([tnow,1]);}else{ny=Y0-1;P.a=-P.a;}}
+  else if(!inCap&&ny<=Y1){if(pore(nx)){ny=Y0-1;S.ev.push([tnow,-1]);}else{ny=Y1+1;P.a=-P.a;}}
+  P.x=nx;P.y=ny;}
+ if(flow){var nc=0,nt=0;for(i=0;i<S.p.length;i++){if(S.p[i].y<Y0)nc++;else nt++;}
+  if(nc<NC&&Math.random()<dt*40)S.p.push({x:Math.random()*W,y:4,a:1.57,c:0});
+  if(nt<NT&&Math.random()<dt*(drift<0?40:drift>0?4:20))S.p.push({x:Math.random()*W,y:H-4,a:-1.57,c:0});
+  if(drift<=0&&nt>NT+10){for(i=0;i<S.p.length;i++)if(S.p[i].y>H-30){S.p.splice(i,1);break;}}
+  if(nc>NC+10){for(i=0;i<S.p.length;i++)if(S.p[i].y<30){S.p.splice(i,1);break;}}}
+ while(S.ev.length&&S.ev[0][0]<tnow-5)S.ev.shift();}
+function paint(id,S,arrow){var c=document.getElementById(id),g=c.getContext('2d'),i,P;g.setTransform(2,0,0,2,0,0);g.clearRect(0,0,W,H);
+ g.fillStyle='#FBD9CF';g.fillRect(0,0,W,Y0);g.fillStyle='#FFF6DE';g.fillRect(0,Y1,W,H-Y1);
+ g.fillStyle='#C0392B';for(var x=-PG;x<W+PG;x+=PG){g.fillRect(x+PG/2+PW/2,Y0,PG-PW,Y1-Y0);}
+ g.font='12.5px system-ui,sans-serif';g.fillStyle='#8E3B2C';g.textAlign='left';g.fillText(T('capillare','capillary'),6,15);g.fillStyle='#8A6A00';g.fillText(T('interstizio','interstitium'),6,H-7);
+ if(arrow){var a=Math.abs(arrow),d=arrow>0?1:-1,L=18+46*a,cx=W-34,cy=(Y0+Y1)/2;g.save();g.globalAlpha=.85;g.fillStyle=arrow>0?'#B03A3A':'#1456A8';g.beginPath();g.moveTo(cx-7-4*a,cy-d*L);g.lineTo(cx+7+4*a,cy-d*L);g.lineTo(cx+7+4*a,cy+d*(L-16));g.lineTo(cx+16+7*a,cy+d*(L-16));g.lineTo(cx,cy+d*(L+6));g.lineTo(cx-16-7*a,cy+d*(L-16));g.lineTo(cx-7-4*a,cy+d*(L-16));g.closePath();g.fill();g.restore();}
+ for(i=0;i<S.p.length;i++){P=S.p[i];g.fillStyle=P.c?'#7DB8E8':'#1F5FA8';g.beginPath();g.arc(P.x,P.y,3.3,0,6.3);g.fill();}}
+function rates(S){var o=0,n=0;for(var i=0;i<S.ev.length;i++){if(S.ev[i][1]>0)o++;else n++;}var w=Math.min(5,Math.max(1,tnow));return [o/w,n/w];}
+function f1(v){return v.toFixed(1).replace('.',it?',':'.');}
+var lastTxt=0;
+function texts(){var r=rates(D),q=rates(Fm),nd=r[0]-r[1],nf=q[0]-q[1],ps=T(' al secondo',' per second');
+ document.getElementById('nd').innerHTML='<span>'+T('escono','out')+' <b>'+f1(r[0])+'</b></span><span>'+T('rientrano','back in')+' <b>'+f1(r[1])+'</b></span>';
+ document.getElementById('qd').innerHTML=T('Spostamento netto: ','Net shift: ')+'<span style="color:#1F5FA8">'+T('circa zero','about zero')+'</span>';
+ document.getElementById('nf').innerHTML='<span>'+T('escono','out')+' <b>'+f1(q[0])+'</b></span><span>'+T('rientrano','back in')+' <b>'+f1(q[1])+'</b></span>';
+ document.getElementById('qf').innerHTML=T('Spostamento netto: ','Net shift: ')+'<span style="color:'+(push>0?'#B03A3A':push<0?'#1456A8':'#55697A')+'">'+(Math.abs(nf)<.25?T('zero','zero'):(nf>0?'+':'−')+f1(Math.abs(nf))+ps+(nf>0?T(' verso il tessuto',' towards the tissue'):T(' verso il capillare',' towards the capillary')))+'</span>';
+ document.getElementById('le').textContent=push>0?T('verso fuori','outwards'):push<0?T('verso dentro','inwards'):T('nessuna','none');
+ document.getElementById('tf').innerHTML=push>0?T('Una differenza di pressione spinge il liquido <b>tutto nello stesso verso</b>: il <b>volume si sposta</b> dal capillare al tessuto. È di questo che parla l’equazione di Starling.','A pressure difference pushes the fluid <b>all the same way</b>: <b>volume shifts</b> from the capillary to the tissue. This is what the Starling equation is about.'):push<0?T('La spinta netta è verso dentro: il liquido rientra nel capillare (<b>assorbimento</b>). Anche questo è un flusso di massa, con il segno opposto.','The net push is inwards: fluid returns to the capillary (<b>absorption</b>). This too is bulk flow, with the opposite sign.'):T('Senza spinta netta non c’è flusso di massa: resta solo lo scambio per diffusione.','With no net push there is no bulk flow: only exchange by diffusion remains.');}
+document.getElementById('ps').addEventListener('input',function(){push=+this.value;Fm.ev=[];texts();});
+var last=0,vis=true;if('IntersectionObserver' in window)new IntersectionObserver(function(e){vis=e[0].isIntersecting;}).observe(document.getElementById('cd'));
+function loop(t){var dt=Math.min(.05,(t-last)/1000||0);last=t;if(vis){tnow+=dt;step(D,dt,null,false);step(Fm,dt,push,true);paint('cd',D,0);paint('cf',Fm,push);if(tnow-lastTxt>.5){lastTxt=tnow;texts();}}requestAnimationFrame(loop);}
+texts();requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
