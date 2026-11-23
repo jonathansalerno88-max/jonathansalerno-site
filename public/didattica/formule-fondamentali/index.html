@@ -303,15 +303,29 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 
 <section id="starling">
   <h2>1 · L'equazione di Starling</h2>
-  <p style="text-align:center;font-size:1.3rem;margin:1.1rem 0 1.2rem">J<sub>v</sub> = K<sub>f</sub> · [(P<sub>c</sub> − P<sub>i</sub>) − σ(π<sub>c</sub> − π<sub>i</sub>)]</p>
-  
-  <p>Il flusso di liquido attraverso la parete del capillare è J<sub>v</sub> = K<sub>f</sub> · [(P<sub>c</sub> − P<sub>i</sub>) − σ(π<sub>c</sub> − π<sub>i</sub>)]:
-  la pressione idrostatica nel capillare (P<sub>c</sub>) spinge fuori, quella del tessuto (P<sub>i</sub>) si oppone; la pressione oncotica
-  delle proteine del plasma, soprattutto l'albumina (π<sub>c</sub>), richiama dentro, quella del tessuto (π<sub>i</sub>) richiama fuori;
-  σ dice quanto la parete trattiene le proteine (1 = del tutto, 0 = per niente). Lungo il capillare P<sub>c</sub> scende:
-  all'inizio vince la spinta e il liquido esce, alla fine nel modello classico vince il richiamo e il liquido rientra.
-  Quello che avanza lo riportano i linfatici. L'edema compare quando anche il versante venoso filtra e il filtrato supera
-  i linfatici.</p>
+  <p>L'equazione di Starling descrive il ruolo delle forze idrostatiche e oncotiche (le <b>forze di Starling</b>) nel movimento di liquido attraverso la parete dei capillari. L'ha formulata nel 1896 il fisiologo inglese Ernest Starling.</p>
+  <p>L'acqua attraversa la parete del capillare in due modi:</p>
+  <ul>
+    <li>per <b>diffusione</b>: le molecole si scambiano nei due sensi, senza uno spostamento netto di volume;</li>
+    <li>per <b>filtrazione</b>: un flusso di massa spinto da una differenza di pressione.</li>
+  </ul>
+  <p>L'equazione di Starling riguarda <b>solo la filtrazione</b>. Gli ordini di grandezza:</p>
+  <div class="tscroll"><table>
+    <thead><tr><th>Processo</th><th>Al minuto</th><th>Al giorno</th></tr></thead>
+    <tbody>
+    <tr><td>filtrazione nei capillari glomerulari</td><td>125 mL</td><td>circa 180 L</td></tr>
+    <tr><td>filtrazione in tutti gli altri capillari del corpo</td><td>circa 20 mL</td><td>circa 29 L</td></tr>
+    <tr><td>diffusione di acqua attraverso tutti i capillari</td><td>circa 56 L</td><td>circa 80 000 L</td></tr>
+    </tbody></table></div>
+  <p class="caveat">Controprova: 125 mL/min × 1440 min = 180 L; 20 mL/min × 1440 min = 28,8 L; 80 000 L / 1440 min ≈ 56 L/min. La diffusione scambia migliaia di volte più acqua della filtrazione, ma senza spostare volume: è la filtrazione che decide se un tessuto si gonfia.</p>
+  <h3>L'equazione</h3>
+  <p style="text-align:center;font-size:1.3rem;margin:1.1rem 0 .8rem"><b style="color:#1456A8">J<sub>v</sub></b> = <b style="color:#0B6E8C">K<sub>f</sub></b> · [(<b style="color:#B03A3A">P<sub>c</sub></b> − <b style="color:#C2571A">P<sub>i</sub></b>) − <b style="color:#55697A">σ</b>(<b style="color:#6A3A96">π<sub>c</sub></b> − <b style="color:#8E1D4A">π<sub>i</sub></b>)]</p>
+  <ul>
+    <li>[(<b style="color:#B03A3A">P<sub>c</sub></b> − <b style="color:#C2571A">P<sub>i</sub></b>) − <b style="color:#55697A">σ</b>(<b style="color:#6A3A96">π<sub>c</sub></b> − <b style="color:#8E1D4A">π<sub>i</sub></b>)] è la <b>spinta netta</b>, in mmHg;</li>
+    <li><b style="color:#0B6E8C">K<sub>f</sub></b> è la <b>costante di proporzionalità</b>, che trasforma la spinta in flusso;</li>
+    <li><b style="color:#1456A8">J<sub>v</sub></b> è il <b>flusso netto</b> di liquido tra capillare e interstizio.</li>
+  </ul>
+  <p><b>Convenzione dei segni:</b> una forza che spinge fuori dal capillare è positiva, una che richiama dentro è negativa. Se <b style="color:#1456A8">J<sub>v</sub></b> è positivo il liquido tende a uscire (<b>filtrazione</b>); se è negativo tende a rientrare (<b>assorbimento</b>). Quindi <b style="color:#B03A3A">P<sub>c</sub></b> spinge fuori e <b style="color:#C2571A">P<sub>i</sub></b> si oppone; <b style="color:#6A3A96">π<sub>c</sub></b>, la pressione oncotica delle proteine del plasma (soprattutto albumina), richiama dentro e <b style="color:#8E1D4A">π<sub>i</sub></b> richiama fuori.</p>
   <figure class="w">
     <iframe src="w/05-anim.html?f=starling" title="Starling: muovi le forze" loading="lazy" class="ph"></iframe>
     <figcaption>Prova i casi (scompenso sinistro e destro, ipertensione polmonare, poca albumina, disidratazione…) o muovi le forze: guarda dove sale la pressione nei due circoli e se il vecchietto si gonfia o si asciuga. <a href="w/05-anim.html?f=starling">Apri a tutto schermo</a></figcaption>
@@ -339,6 +353,33 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <p>K<sub>f</sub> è il prodotto di due fattori: la <b>superficie</b> capillare disponibile (cm²) e la <b>conduttanza idraulica</b>
   della parete (L<sub>p</sub>, cioè quanto liquido passa per ogni cm² di parete e per ogni mmHg: mL·min⁻¹·mmHg⁻¹·cm⁻²).
   Quindi K<sub>f</sub> = superficie × L<sub>p</sub>. Il mmHg è una pressione: 1 mmHg ≈ 133,3 Pa (Pa = N/m²).</p>
+  <h3>Il coefficiente di riflessione</h3>
+  <p><b style="color:#55697A">σ</b> è un fattore di correzione, da 0 a 1. La differenza oncotica conta perché la parete trattiene le proteine e lascia passare acqua e piccoli soluti (<b>ultrafiltrazione</b>). Ma molti capillari lasciano sfuggire un po' di albumina, con due conseguenze:</p>
+  <ul>
+    <li><b style="color:#8E1D4A">π<sub>i</sub></b> è più alta di quanto sarebbe con una parete perfetta;</li>
+    <li>non tutte le proteine del plasma trattengono acqua, quindi la <b style="color:#6A3A96">π<sub>c</sub></b> efficace è più bassa di quella misurata.</li>
+  </ul>
+  <p>Tutti e due gli effetti riducono il peso della differenza oncotica, e <b style="color:#55697A">σ</b> lo corregge:</p>
+  <ul>
+    <li><b>capillari glomerulari:</b> <b style="color:#55697A">σ</b> vicino a 1, perché di norma le proteine non passano nel filtrato;</li>
+    <li><b>sinusoidi epatici:</b> <b style="color:#55697A">σ</b> basso, perché sono molto permeabili alle proteine. È utile: l'albumina è prodotta dagli epatociti e così entra facilmente nel sangue.</li>
+  </ul>
+  <h3>Valori indicativi lungo il capillare</h3>
+  <div class="tscroll"><table>
+    <thead><tr><th>Punto del capillare</th><th><b style="color:#B03A3A">P<sub>c</sub></b></th><th><b style="color:#C2571A">P<sub>i</sub></b></th><th><b style="color:#55697A">σ</b><b style="color:#6A3A96">π<sub>c</sub></b></th><th><b style="color:#55697A">σ</b><b style="color:#8E1D4A">π<sub>i</sub></b></th><th>Spinta netta</th></tr></thead>
+    <tbody>
+    <tr><td>estremo arteriolare</td><td>+35</td><td>−2</td><td>+25</td><td>+0,1</td><td>+12</td></tr>
+    <tr><td>estremo venulare</td><td>+15</td><td>−2</td><td>+25</td><td>+3</td><td>−5</td></tr>
+    </tbody></table></div>
+  <p class="caveat">Tutto in mmHg (1 mmHg ≈ 133,3 Pa; Pa = N/m²), dimensioni [M L⁻¹ T⁻²].</p>
+  <ol>
+    <li><b>Estremo arteriolare.</b> (<b style="color:#B03A3A">35</b> − (<b style="color:#C2571A">−2</b>)) − (<b style="color:#6A3A96">25</b> − <b style="color:#8E1D4A">0,1</b>) = 37 − 24,9 ≈ <b>+12 mmHg</b>: il liquido esce.</li>
+    <li><b>Estremo venulare.</b> (<b style="color:#B03A3A">15</b> − (<b style="color:#C2571A">−2</b>)) − (<b style="color:#6A3A96">25</b> − <b style="color:#8E1D4A">3</b>) = 17 − 22 = <b>−5 mmHg</b>: nel modello classico il liquido rientra.</li>
+    <li><b>Media lungo il capillare.</b> Se la spinta cala in modo lineare, la media è (12 − 5) / 2 = <b>+3,5 mmHg</b>: esce un po' più liquido di quanto ne rientra, e l'eccesso lo drenano i linfatici.</li>
+  </ol>
+  <p>L'edema compare quando la spinta netta resta positiva anche sul versante venulare e il filtrato supera quello che i linfatici riescono a drenare.</p>
+  <h3>Utilità clinica</h3>
+  <p>L'equazione serve molto a capire che cosa succede nel capillare, poco a fare calcoli sul paziente: le sei variabili non si possono misurare tutte insieme al letto del malato.</p>
   <p>Nel widget del <a href="../casi-clinici/#liquido">vecchietto con le caviglie gonfie</a> i numeri sono la <b>spinta netta</b> in mmHg, non il flusso: per avere J<sub>v</sub> bisognerebbe
   moltiplicarli per il K<sub>f</sub> di quel letto, che il modello non calcola.</p>
   <p class="caveat">Valori indicativi, a scopo didattico. Oggi si sa che in molti tessuti il riassorbimento venoso è
@@ -451,6 +492,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <li>Levick JR, Michel CC. Microvascular fluid exchange and the revised Starling principle. <i>Cardiovasc Res</i> 2010;87:198–210.
     <a href="https://doi.org/10.1093/cvr/cvq062">doi:10.1093/cvr/cvq062</a></li>
     <li>Boron WF, Boulpaep EL. <i>Medical Physiology</i>. 3rd ed. Philadelphia: Elsevier; 2017.</li>
+    <li>Starling equation. <i>chemeurope.com Encyclopedia</i> (testo derivato da Wikipedia, licenza GNU FDL): impostazione dell'introduzione, ordini di grandezza e valori indicativi lungo il capillare. <a href="https://www.chemeurope.com/en/encyclopedia/Starling_equation.html">chemeurope.com/en/encyclopedia/Starling_equation.html</a></li>
     <li>Hall JE, Hall ME. <i>Guyton and Hall Textbook of Medical Physiology</i>. 14th ed. Philadelphia: Elsevier; 2021.</li>
     <li>Fick A. Ueber Diffusion. <i>Ann Phys</i> 1855;170:59–86.
     <a href="https://doi.org/10.1002/andp.18551700105">doi:10.1002/andp.18551700105</a></li>

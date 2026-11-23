@@ -303,14 +303,29 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 
 <section id="starling">
   <h2>1 · The Starling equation</h2>
-  <p style="text-align:center;font-size:1.3rem;margin:1.1rem 0 1.2rem">J<sub>v</sub> = K<sub>f</sub> · [(P<sub>c</sub> − P<sub>i</sub>) − σ(π<sub>c</sub> − π<sub>i</sub>)]</p>
-  
-  <p>Fluid flow across the capillary wall is J<sub>v</sub> = K<sub>f</sub> · [(P<sub>c</sub> − P<sub>i</sub>) − σ(π<sub>c</sub> − π<sub>i</sub>)]:
-  hydrostatic pressure in the capillary (P<sub>c</sub>) pushes out, tissue pressure (P<sub>i</sub>) opposes it; the oncotic pressure of
-  plasma proteins, mainly albumin (π<sub>c</sub>), pulls back in, tissue oncotic pressure (π<sub>i</sub>) pulls out; σ says how well
-  the wall holds back proteins (1 = fully, 0 = not at all). Along the capillary P<sub>c</sub> falls: at the start the push wins and
-  fluid leaves, at the end, in the classic model, the pull wins and fluid comes back. The lymphatics return what is left.
-  Oedema appears when the venous end filters too and the filtrate exceeds the lymphatics.</p>
+  <p>The Starling equation describes the role of hydrostatic and oncotic forces (the <b>Starling forces</b>) in the movement of fluid across the capillary wall. It was formulated in 1896 by the English physiologist Ernest Starling.</p>
+  <p>Water crosses the capillary wall in two ways:</p>
+  <ul>
+    <li>by <b>diffusion</b>: molecules are exchanged in both directions, with no net shift of volume;</li>
+    <li>by <b>filtration</b>: a bulk flow driven by a pressure difference.</li>
+  </ul>
+  <p>The Starling equation deals <b>only with filtration</b>. The orders of magnitude:</p>
+  <div class="tscroll"><table>
+    <thead><tr><th>Process</th><th>Per minute</th><th>Per day</th></tr></thead>
+    <tbody>
+    <tr><td>filtration in the glomerular capillaries</td><td>125 mL</td><td>about 180 L</td></tr>
+    <tr><td>filtration in all the other capillaries of the body</td><td>about 20 mL</td><td>about 29 L</td></tr>
+    <tr><td>diffusion of water across all the capillaries</td><td>about 56 L</td><td>about 80,000 L</td></tr>
+    </tbody></table></div>
+  <p class="caveat">Check: 125 mL/min × 1440 min = 180 L; 20 mL/min × 1440 min = 28.8 L; 80,000 L / 1440 min ≈ 56 L/min. Diffusion exchanges thousands of times more water than filtration, but shifts no volume: it is filtration that decides whether a tissue swells.</p>
+  <h3>The equation</h3>
+  <p style="text-align:center;font-size:1.3rem;margin:1.1rem 0 .8rem"><b style="color:#1456A8">J<sub>v</sub></b> = <b style="color:#0B6E8C">K<sub>f</sub></b> · [(<b style="color:#B03A3A">P<sub>c</sub></b> − <b style="color:#C2571A">P<sub>i</sub></b>) − <b style="color:#55697A">σ</b>(<b style="color:#6A3A96">π<sub>c</sub></b> − <b style="color:#8E1D4A">π<sub>i</sub></b>)]</p>
+  <ul>
+    <li>[(<b style="color:#B03A3A">P<sub>c</sub></b> − <b style="color:#C2571A">P<sub>i</sub></b>) − <b style="color:#55697A">σ</b>(<b style="color:#6A3A96">π<sub>c</sub></b> − <b style="color:#8E1D4A">π<sub>i</sub></b>)] is the <b>net driving force</b>, in mmHg;</li>
+    <li><b style="color:#0B6E8C">K<sub>f</sub></b> is the <b>proportionality constant</b>, which turns the push into a flow;</li>
+    <li><b style="color:#1456A8">J<sub>v</sub></b> is the <b>net flow</b> of fluid between capillary and interstitium.</li>
+  </ul>
+  <p><b>Sign convention:</b> a force pushing out of the capillary is positive, one pulling in is negative. If <b style="color:#1456A8">J<sub>v</sub></b> is positive, fluid tends to leave (<b>filtration</b>); if it is negative, it tends to return (<b>absorption</b>). So <b style="color:#B03A3A">P<sub>c</sub></b> pushes out and <b style="color:#C2571A">P<sub>i</sub></b> opposes it; <b style="color:#6A3A96">π<sub>c</sub></b>, the oncotic pressure of plasma proteins (mainly albumin), pulls in and <b style="color:#8E1D4A">π<sub>i</sub></b> pulls out.</p>
   <figure class="w">
     <iframe src="w/05-anim.html?f=starling" title="Starling: move the forces" loading="lazy" class="ph"></iframe>
     <figcaption>Try the cases (left and right heart failure, pulmonary hypertension, low albumin, dehydration…) or move the forces: watch where pressure rises in the two circulations and whether the old man swells or dries out. <a href="w/05-anim.html?f=starling">Open full screen</a></figcaption>
@@ -339,6 +354,33 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   So K<sub>f</sub> = surface area × L<sub>p</sub>. The mmHg is a pressure: 1 mmHg ≈ 133.3 Pa (Pa = N/m²).</p>
   <p>In the figure of the <a href="../clinical-cases/#fluid">old man with swollen ankles</a> the numbers are the <b>net driving force</b> in mmHg, not the flow: to get J<sub>v</sub> you would
   multiply them by that bed's K<sub>f</sub>, which the model does not compute.</p>
+  <h3>The reflection coefficient</h3>
+  <p><b style="color:#55697A">σ</b> is a correction factor, from 0 to 1. The oncotic difference matters because the wall holds proteins back and lets water and small solutes through (<b>ultrafiltration</b>). But many capillaries leak a little albumin, with two consequences:</p>
+  <ul>
+    <li><b style="color:#8E1D4A">π<sub>i</sub></b> is higher than it would be with a perfect wall;</li>
+    <li>not all the plasma protein is effective in holding water, so the effective <b style="color:#6A3A96">π<sub>c</sub></b> is lower than the measured one.</li>
+  </ul>
+  <p>Both effects reduce the weight of the oncotic difference, and <b style="color:#55697A">σ</b> corrects for it:</p>
+  <ul>
+    <li><b>glomerular capillaries:</b> <b style="color:#55697A">σ</b> close to 1, because normally no protein crosses into the filtrate;</li>
+    <li><b>hepatic sinusoids:</b> low <b style="color:#55697A">σ</b>, because they are very permeable to proteins. This is useful: albumin is made by hepatocytes and so enters the blood easily.</li>
+  </ul>
+  <h3>Approximate values along the capillary</h3>
+  <div class="tscroll"><table>
+    <thead><tr><th>Point of the capillary</th><th><b style="color:#B03A3A">P<sub>c</sub></b></th><th><b style="color:#C2571A">P<sub>i</sub></b></th><th><b style="color:#55697A">σ</b><b style="color:#6A3A96">π<sub>c</sub></b></th><th><b style="color:#55697A">σ</b><b style="color:#8E1D4A">π<sub>i</sub></b></th><th>Net driving force</th></tr></thead>
+    <tbody>
+    <tr><td>arteriolar end</td><td>+35</td><td>−2</td><td>+25</td><td>+0.1</td><td>+12</td></tr>
+    <tr><td>venular end</td><td>+15</td><td>−2</td><td>+25</td><td>+3</td><td>−5</td></tr>
+    </tbody></table></div>
+  <p class="caveat">All in mmHg (1 mmHg ≈ 133.3 Pa; Pa = N/m²), dimensions [M L⁻¹ T⁻²].</p>
+  <ol>
+    <li><b>Arteriolar end.</b> (<b style="color:#B03A3A">35</b> − (<b style="color:#C2571A">−2</b>)) − (<b style="color:#6A3A96">25</b> − <b style="color:#8E1D4A">0.1</b>) = 37 − 24.9 ≈ <b>+12 mmHg</b>: fluid leaves.</li>
+    <li><b>Venular end.</b> (<b style="color:#B03A3A">15</b> − (<b style="color:#C2571A">−2</b>)) − (<b style="color:#6A3A96">25</b> − <b style="color:#8E1D4A">3</b>) = 17 − 22 = <b>−5 mmHg</b>: in the classic model, fluid returns.</li>
+    <li><b>Mean along the capillary.</b> If the force falls linearly, the mean is (12 − 5) / 2 = <b>+3.5 mmHg</b>: slightly more fluid leaves than returns, and the lymphatics drain the excess.</li>
+  </ol>
+  <p>Oedema appears when the net force stays positive at the venular end too and the filtrate exceeds what the lymphatics can drain.</p>
+  <h3>Clinical usefulness</h3>
+  <p>The equation is very useful for understanding what happens at the capillary, much less for calculations on a patient: the six variables cannot all be measured together at the bedside.</p>
   <p class="caveat">Indicative values, for teaching. We now know that in many tissues venous reabsorption is modest and that
   the endothelial glycocalyx shapes the oncotic forces: the logic of the equation stays the same.</p>
 </section>
@@ -449,6 +491,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <li>Levick JR, Michel CC. Microvascular fluid exchange and the revised Starling principle. <i>Cardiovasc Res</i> 2010;87:198–210.
     <a href="https://doi.org/10.1093/cvr/cvq062">doi:10.1093/cvr/cvq062</a></li>
     <li>Boron WF, Boulpaep EL. <i>Medical Physiology</i>. 3rd ed. Philadelphia: Elsevier; 2017.</li>
+    <li>Starling equation. <i>chemeurope.com Encyclopedia</i> (text derived from Wikipedia, GNU FDL licence): layout of the introduction, orders of magnitude and approximate values along the capillary. <a href="https://www.chemeurope.com/en/encyclopedia/Starling_equation.html">chemeurope.com/en/encyclopedia/Starling_equation.html</a></li>
     <li>Hall JE, Hall ME. <i>Guyton and Hall Textbook of Medical Physiology</i>. 14th ed. Philadelphia: Elsevier; 2021.</li>
     <li>Fick A. Ueber Diffusion. <i>Ann Phys</i> 1855;170:59–86.
     <a href="https://doi.org/10.1002/andp.18551700105">doi:10.1002/andp.18551700105</a></li>
