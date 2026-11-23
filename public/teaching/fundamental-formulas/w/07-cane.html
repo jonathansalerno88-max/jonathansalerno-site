@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Starling’s 1896 experiment</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+body{margin:0;padding:8px 10px 10px}
+.row{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+.dog{flex:0 0 230px;border:1px solid var(--border);border-radius:10px;background:#FFFFFF;display:flex;flex-direction:column;justify-content:center;padding:4px}
+.dog svg{display:block;width:100%;height:auto}
+.zoom{flex:1 1 300px;min-width:0;border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:6px}
+canvas{display:block;width:100%;height:auto;border-radius:8px}
+.cap{font-size:12px;color:#55697A;margin:0 2px 4px}
+.bt{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+.bt button{font:inherit;font-size:14px;font-weight:700;padding:6px 14px;border-radius:999px;border:1.5px solid #1F5FA8;background:#FFFFFF;color:#1F5FA8;cursor:pointer}
+.bt button.on{background:#1F5FA8;color:#FFFFFF}
+.bt button.pl{border-color:#6A3A96;color:#6A3A96}.bt button.pl.on{background:#6A3A96;color:#FFFFFF}
+.bt button.rs{border-color:#55697A;color:#16222E}
+.msg{font-size:14px;line-height:1.45;margin:6px 2px 0;min-height:3.2em}
+.lg{font-size:12.5px;margin:6px 2px 0;color:#16222E}.lg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;vertical-align:middle}.lg i:first-child{margin-left:0}
+.sr{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+<p class="sr" id="sr"></p>
+<div class="row">
+ <div class="dog"><svg id="dg" viewBox="0 0 230 190" role="img"></svg><p class="cap" id="dc" style="text-align:center;margin-top:2px"></p></div>
+ <div class="zoom"><p class="cap" id="zc"></p><canvas id="cv" width="760" height="460"></canvas></div>
+</div>
+<div class="bt"><button id="bs"></button><button id="bp" class="pl"></button><button id="br" class="rs"></button></div>
+<p class="msg" id="msg"></p>
+<p class="lg" id="lg"></p>
+<script>
+(function(){
+var it=document.documentElement.lang==='it';function T(a,b){return it?a:b;}
+var W=380,H=230,Y0=78,Y1=90,YB=160,PW=14,PG=38,BASE=26,INJ=46;
+document.getElementById('sr').textContent=T('Animazione dell’esperimento di Starling del 1896: la soluzione salina iniettata nella zampa del cane rientra nel sangue, il plasma no.','Animation of Starling’s 1896 experiment: saline injected into the dog’s leg returns to the blood, plasma does not.');
+document.getElementById('bs').textContent=T('Inietta soluzione salina','Inject saline');document.getElementById('bp').textContent=T('Inietta plasma','Inject plasma');document.getElementById('br').textContent=T('↺ Ricomincia','↺ Start again');
+document.getElementById('zc').textContent=T('Dentro la zampa: un capillare e il tessuto intorno','Inside the leg: a capillary and the tissue around it');
+document.getElementById('lg').innerHTML='<i style="background:#3B9BE0"></i>'+T('acqua e sali','water and salts')+'<i style="background:#6A3A96"></i>'+T('proteine','proteins')+'<i style="background:#C0392B"></i>'+T('globuli rossi','red cells');
+var mode='',t0=0,now=0,wt=[],pt=[],cw=[],cp=[],rc=[],yb=YB,abs=0,inj=0,i;
+function rnd(a,b){return a+Math.random()*(b-a);}
+function init(){wt=[];pt=[];cw=[];cp=[];rc=[];abs=0;inj=0;yb=YB;mode='';
+ for(i=0;i<BASE;i++)wt.push({x:rnd(4,W-4),y:rnd(Y1+5,YB-5),a:rnd(0,6.28)});
+ for(i=0;i<34;i++)cw.push({x:rnd(0,W),y:rnd(6,Y0-6),a:rnd(0,6.28)});
+ for(i=0;i<13;i++)cp.push({x:rnd(0,W),y:rnd(9,Y0-9),a:rnd(0,6.28)});
+ for(i=0;i<7;i++)rc.push({x:rnd(0,W),y:rnd(16,Y0-16)});ui();}
+function inject(m){if(mode)init();mode=m;t0=now;inj=INJ;for(var i=0;i<INJ;i++)wt.push({x:W*.5+rnd(-26,26),y:Y1+26+rnd(-12,16),a:rnd(0,6.28),n:1});if(m==='pla')for(i=0;i<11;i++)pt.push({x:W*.5+rnd(-24,24),y:Y1+28+rnd(-10,14),a:rnd(0,6.28)});ui();}
+function pore(x){var m=((x%PG)+PG)%PG;return m>PG/2-PW/2&&m<PG/2+PW/2;}
+function ui(){document.getElementById('bs').className=mode==='sal'?'on':'';document.getElementById('bp').className='pl'+(mode==='pla'?' on':'');
+ var ex=Math.max(0,wt.length-BASE),m=document.getElementById('msg'),done=mode==='sal'&&ex<3;
+ m.innerHTML=!mode?T('Scegli che cosa iniettare nel tessuto della zampa.','Choose what to inject into the tissue of the leg.'):mode==='sal'?(done?T('<b>La soluzione salina è rientrata nel sangue</b> e la zampa si è sgonfiata. A richiamarla dentro sono le proteine del plasma: nel capillare ci sono, nel liquido iniettato no.','<b>The saline has returned to the blood</b> and the leg has gone down. What pulls it in is the plasma proteins: they are in the capillary, not in the injected fluid.'):T('La zampa si gonfia: edema artificiale. La parete lascia passare acqua e sali, e le proteine del plasma, che non passano, li <b>richiamano dentro</b>…','The leg swells: artificial oedema. The wall lets water and salts through, and the plasma proteins, which cannot cross, <b>pull them in</b>…')):T('<b>Il plasma resta nel tessuto</b> e la zampa resta gonfia. Ora le proteine ci sono da tutte e due le parti della parete: tirano uguale, e non c’è richiamo netto.','<b>The plasma stays in the tissue</b> and the leg stays swollen. Now there are proteins on both sides of the wall: they pull equally, and there is no net pull.');
+ document.getElementById('dc').textContent=!mode?T('zampa posteriore del cane','the dog’s hind leg'):mode==='sal'?(done?T('zampa di nuovo asciutta','leg back to normal'):T('edema da soluzione salina','oedema from saline')):T('edema da plasma: non si riassorbe','oedema from plasma: not absorbed');dog();}
+function dog(){var ex=Math.max(0,wt.length-BASE)/INJ,sw=1+.75*ex,col=mode==='pla'?'#6A3A96':'#1F5FA8',o='';
+ o+='<ellipse cx="112" cy="84" rx="62" ry="30" fill="#C99A6B" stroke="#7A5230" stroke-width="2"/>';
+ o+='<path d="M168 70 q26 -34 14 -52" fill="none" stroke="#7A5230" stroke-width="7" stroke-linecap="round"/><path d="M168 70 q26 -34 14 -52" fill="none" stroke="#C99A6B" stroke-width="4" stroke-linecap="round"/>';
+ o+='<rect x="62" y="100" width="13" height="62" rx="6" fill="#C99A6B" stroke="#7A5230" stroke-width="2"/><rect x="84" y="102" width="13" height="60" rx="6" fill="#B98858" stroke="#7A5230" stroke-width="2"/><rect x="128" y="102" width="13" height="60" rx="6" fill="#B98858" stroke="#7A5230" stroke-width="2"/>';
+ o+='<ellipse cx="158" cy="'+(128).toFixed(0)+'" rx="'+(8*sw).toFixed(1)+'" ry="34" fill="'+(ex>.05?(mode==='pla'?'#D9C2E8':'#BFDDF5'):'#C99A6B')+'" stroke="#7A5230" stroke-width="2"/>';
+ o+='<circle cx="46" cy="58" r="24" fill="#C99A6B" stroke="#7A5230" stroke-width="2"/><path d="M30 42 q-14 6 -10 30 q10 -4 14 -18Z" fill="#8A5A34" stroke="#7A5230" stroke-width="1.6"/><ellipse cx="27" cy="68" rx="13" ry="9" fill="#D9B48A" stroke="#7A5230" stroke-width="1.8"/><circle cx="17" cy="65" r="3.4" fill="#3A2A1C"/><circle cx="44" cy="52" r="2.8" fill="#3A2A1C"/><path d="M22 73 q6 4 12 0" fill="none" stroke="#7A5230" stroke-width="1.6" stroke-linecap="round"/>';
+ if(mode&&now-t0<2.2){o+='<g transform="translate(176 96) rotate(35)"><rect x="0" y="-5" width="30" height="10" rx="2" fill="#FFFFFF" stroke="#55697A" stroke-width="1.6"/><rect x="3" y="-3" width="'+(22*Math.max(0,1-(now-t0)/1.6)).toFixed(1)+'" height="6" fill="'+col+'"/><path d="M-12 0 H0" stroke="#55697A" stroke-width="1.6"/><path d="M30 0 h9 M39 -6 v12" stroke="#55697A" stroke-width="2"/></g>';}
+ o+='<circle cx="158" cy="128" r="'+(13+10*ex).toFixed(1)+'" fill="none" stroke="#16222E" stroke-width="1.4" stroke-dasharray="3 3"/><path d="M171 124 L226 96" stroke="#16222E" stroke-width="1.2" stroke-dasharray="3 3"/>';
+ document.getElementById('dg').innerHTML=o;}
+function step(dt){var P,nx,ny,ex=wt.length-BASE,pull=mode==='sal'&&now-t0>1.4&&ex>0?1:0;
+ for(i=wt.length-1;i>=0;i--){P=wt[i];P.a+=(Math.random()-.5)*2.2;nx=P.x+Math.cos(P.a)*34*dt;ny=P.y+Math.sin(P.a)*34*dt;
+  if(pull&&P.n){ny-=36*dt;if(ny<Y1+30&&!pore(nx)){var m=((nx%PG)+PG)%PG;nx+=(PG/2-m)*6*dt;}}
+  if(nx<3){nx=3;P.a=Math.PI-P.a;}if(nx>W-3){nx=W-3;P.a=Math.PI-P.a;}if(ny>yb-4){ny=yb-4;P.a=-P.a;}
+  if(ny<Y1+2){if(pull&&P.n&&pore(nx)){wt.splice(i,1);cw.push({x:nx,y:Y0-3,a:-1.2,n:1});abs++;continue;}ny=Y1+2;P.a=-P.a;}
+  P.x=nx;P.y=ny;}
+ for(i=0;i<pt.length;i++){P=pt[i];P.a+=(Math.random()-.5)*2;nx=P.x+Math.cos(P.a)*16*dt;ny=P.y+Math.sin(P.a)*16*dt;if(nx<5){nx=5;P.a=Math.PI-P.a;}if(nx>W-5){nx=W-5;P.a=Math.PI-P.a;}if(ny>yb-6){ny=yb-6;P.a=-P.a;}if(ny<Y1+6){ny=Y1+6;P.a=-P.a;}P.x=nx;P.y=ny;}
+ function flow(A,sp,r,keep){for(var i=A.length-1;i>=0;i--){var P=A[i];P.a=(P.a||0)+(Math.random()-.5)*2;P.x+=(30+Math.cos(P.a)*sp)*dt;P.y+=Math.sin(P.a)*sp*dt;if(P.y<r){P.y=r;P.a=-P.a;}if(P.y>Y0-r){P.y=Y0-r;P.a=-P.a;}if(P.x>W+6){if(P.n&&!keep){A.splice(i,1);continue;}P.x=-6;P.y=rnd(r+2,Y0-r-2);}}}
+ flow(cw,22,4);flow(cp,10,6,1);flow(rc,4,12,1);
+ var tg=YB+(H-10-YB)*Math.max(0,Math.min(1,(wt.length-BASE)/INJ));yb+=(tg-yb)*Math.min(1,dt*4);}
+function paint(){var g=document.getElementById('cv').getContext('2d'),P;g.setTransform(2,0,0,2,0,0);g.clearRect(0,0,W,H);
+ g.fillStyle='#FBD9CF';g.fillRect(0,0,W,Y0);g.fillStyle='#FFF6DE';g.fillRect(0,Y1,W,yb-Y1);g.fillStyle='#D9B45A';g.fillRect(0,yb-1.5,W,3);
+ g.fillStyle='#C0392B';for(var x=-PG;x<W+PG;x+=PG)g.fillRect(x+PG/2+PW/2,Y0,PG-PW,Y1-Y0);
+ g.fillStyle='rgba(192,57,43,.8)';for(i=0;i<rc.length;i++){P=rc[i];g.beginPath();g.ellipse(P.x,P.y,11,7,0,0,6.3);g.fill();}
+ g.fillStyle='#3B9BE0';for(i=0;i<cw.length;i++){P=cw[i];g.beginPath();g.arc(P.x,P.y,3,0,6.3);g.fill();}for(i=0;i<wt.length;i++){P=wt[i];g.beginPath();g.arc(P.x,P.y,3,0,6.3);g.fill();}
+ g.fillStyle='#6A3A96';for(i=0;i<cp.length;i++){P=cp[i];g.beginPath();g.arc(P.x,P.y,5,0,6.3);g.fill();}for(i=0;i<pt.length;i++){P=pt[i];g.beginPath();g.arc(P.x,P.y,5,0,6.3);g.fill();}
+ g.font='12.5px system-ui,sans-serif';g.textAlign='left';g.fillStyle='#8E3B2C';g.fillText(T('capillare (sangue →)','capillary (blood →)'),6,14);g.fillStyle='#8A6A00';g.fillText(T('tessuto','tissue'),6,yb-7);
+ if(mode&&inj){g.textAlign='right';g.font='700 13px system-ui,sans-serif';g.fillStyle=mode==='pla'?'#6A3A96':'#1F5FA8';g.fillText(T('riassorbito: ','absorbed: ')+Math.round(100*Math.min(1,abs/inj))+'%',W-8,yb-8);}}
+document.getElementById('bs').onclick=function(){inject('sal');};document.getElementById('bp').onclick=function(){inject('pla');};document.getElementById('br').onclick=init;
+var last=0,vis=true,lu=0;if('IntersectionObserver' in window)new IntersectionObserver(function(e){vis=e[0].isIntersecting;}).observe(document.getElementById('cv'));
+function loop(t){var dt=Math.min(.05,(t-last)/1000||0);last=t;if(vis){now+=dt;step(dt);paint();if(now-lu>.25){lu=now;ui();}}requestAnimationFrame(loop);}
+init();requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

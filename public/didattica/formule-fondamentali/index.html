@@ -306,14 +306,25 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   <h3>Che cos'è e a cosa serve</h3>
   <p><b>Che cos'è.</b> L'equazione di Starling descrive il ruolo delle forze idrostatiche e oncotiche (le <b>forze di Starling</b>) nel <b>movimento di liquido attraverso la parete dei capillari</b>. Nasce da un'ipotesi formulata nel 1896 dal fisiologo inglese Ernest Starling.</p>
   <p><b>A cosa serve.</b> A prevedere se in un tessuto il liquido esce dal capillare o ci rientra. Quindi a capire perché compare un edema, o perché un tessuto si asciuga, e quale delle forze è cambiata.</p>
-  <div style="border:1px solid var(--rule);border-left:5px solid #8A6A00;border-radius:8px;padding:.5rem 1rem .6rem;margin:1.1rem 0">
-  <h3 style="margin-top:.4rem">Un po' di storia</h3>
+  <h3>Il contesto storico</h3>
+  <ul>
+    <li><b>1896, Londra.</b> Ernest Starling si chiede come il liquido dei tessuti torni nel sangue.</li>
+    <li><b>L'esperimento.</b> Inietta soluzione salina nella zampa di un cane: il sangue la riassorbe. Il plasma, invece, resta lì.</li>
+    <li><b>L'idea.</b> Le proteine del plasma richiamano acqua e bilanciano la pressione che la spinge fuori. L'equazione l'hanno scritta altri, mezzo secolo dopo.</li>
+  </ul>
+  <details class="more" style="border:1px solid var(--rule);border-left:5px solid #8A6A00;border-radius:8px;padding:.45rem 1rem;margin:.2rem 0 1.2rem">
+  <summary style="cursor:pointer;font-weight:600">Approfondisci: l'esperimento del cane, animato, e la storia completa</summary>
+  <figure class="w" style="margin-top:.9rem">
+    <iframe src="w/07-cane.html" title="L'esperimento di Starling del 1896" loading="lazy" class="ph"></iframe>
+    <figcaption>Inietta nella zampa prima la soluzione salina, poi il plasma, e guarda che cosa rientra nel sangue. Schema semplificato: le proporzioni non sono reali. <a href="w/07-cane.html">Apri a tutto schermo</a></figcaption>
+  </figure>
+
   <p><b>Chi era.</b> Ernest Henry Starling (Londra 1866 – 1927) entrò a 16 anni alla scuola di medicina del Guy's Hospital. Nel 1892 andò a Breslavia a lavorare con Rudolf Heidenhain, e dal 1899 fu professore di fisiologia all'University College di Londra.</p>
   <p><b>Qual era la domanda.</b> Come si forma la linfa? Per Carl Ludwig era plasma filtrato attraverso la parete dei capillari, spinto dalla pressione del sangue. Heidenhain non era d'accordo: in alcuni esperimenti la linfa aumentava anche quando la pressione arteriosa crollava, e ne concluse che la parete la <i>secerne</i> attivamente, come una ghiandola. Starling rifece quegli esperimenti e mostrò che si spiegavano con la fisica: contava la pressione nei capillari, non quella nelle arterie.</p>
   <p><b>L'esperimento del 1896.</b> Restava da capire come il liquido torna indietro. Starling iniettò soluzione salina nei tessuti della zampa posteriore di un cane e vide che passava direttamente nel sangue; il plasma iniettato allo stesso modo, invece, restava lì. La sua spiegazione: la parete lascia passare sali e acqua ma trattiene le proteine, e le proteine del plasma esercitano una pressione osmotica piccola, ma dello stesso ordine di grandezza della pressione nei capillari. Due forze opposte che quasi si bilanciano: è l'idea che ancora oggi porta il suo nome, in un articolo di quattordici pagine.</p>
   <p><b>L'equazione non è sua.</b> Starling formulò l'ipotesi a parole. Le misure dirette arrivarono dopo (Landis nel 1927, Pappenheimer e Soto-Rivera nel 1948), e la forma di oggi, con il coefficiente σ, nasce più di mezzo secolo dopo dal lavoro di Staverman e di Kedem e Katchalsky.</p>
   <p><b>Lo stesso Starling.</b> Con il cognato William Bayliss scoprì la secretina (1902) e introdusse la parola «ormone» (1905); poi studiò il cuore come pompa. La legge di Frank-Starling dell'animazione qui sotto è sua.</p>
-  </div>
+  </details>
   <h3>Diffusione e filtrazione</h3>
   <p>L'acqua attraversa la parete del capillare in due modi:</p>
   <ul>
@@ -555,6 +566,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   });
 })();
 </script>
+<script>document.querySelectorAll('details.more').forEach(function(d){d.addEventListener('toggle',function(){[60,500,1500].forEach(function(ms){setTimeout(function(){d.querySelectorAll('iframe').forEach(function(f){try{var h=f.contentDocument.documentElement.offsetHeight;if(h>50)f.style.height=Math.ceil(h)+2+'px';}catch(e){}});},ms);});});});</script>
 <script>document.addEventListener('click',function(e){document.querySelectorAll('details.lang[open]').forEach(function(d){if(!d.contains(e.target))d.removeAttribute('open');});});</script>
 <script>
 /* In-page links: the interactive figures load lazily and grow while they load,
