@@ -18,6 +18,12 @@ svg{display:block;width:100%;height:auto;font-family:system-ui,-apple-system,Seg
 .rd b{font-weight:700}
 .fm{font-size:17px;font-weight:700;margin:4px 2px;line-height:1.5}
 .lg{font-size:12px;line-height:1.4;color:#55697A;margin:4px 2px 0}
+.lgd{margin:8px 2px 2px;border:1px solid #D5DCE3;border-radius:8px;padding:6px 10px;font-size:13px;line-height:1.4}
+.lgd summary{cursor:pointer;font-weight:700;font-size:13.5px}
+.lgd ul{list-style:none;margin:8px 0 2px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:5px 16px}
+.lgd li{display:flex;gap:8px;align-items:flex-start}
+.lgd i{flex:0 0 16px;width:16px;height:16px;border-radius:3px;margin-top:1px;border:1px solid rgba(22,34,46,.25);box-sizing:border-box}
+.lgd p{margin:8px 0 2px;color:#55697A;font-size:12.5px}
 .sr{position:absolute;left:-9999px}
 </style>
 </head>
@@ -27,6 +33,7 @@ svg{display:block;width:100%;height:auto;font-family:system-ui,-apple-system,Seg
  <button type="button" class="bt" id="bt"></button> <button type="button" class="bt b2" id="b2"></button>
  <svg id="sv" viewBox="0 0 704 316" role="img"></svg>
  <div id="rd"></div>
+ <details class="lgd" id="lgd"><summary id="lgs"></summary><div id="lgb"></div></details>
 </div>
 <script>
 (function(){
@@ -125,6 +132,9 @@ function go(m){if(tg){tg=0;}else{mode=m;tg=1;}txt();if(window.matchMedia&&matchM
 b2.addEventListener('click',function(){go('C');});
 bt.addEventListener('click',function(){go('B');return;if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){t=tg;draw();return;}if(!raf)raf=requestAnimationFrame(step);});
 document.getElementById('sr').textContent=T('Grafico a colonne dei tre comparti: acqua, cationi e anioni di plasma, interstizio e cellula muscolare. Un pulsante raccoglie tutta l’acqua (42 litri) in una colonna e tutto il sodio e il potassio (circa 6547 millimoli) in un’altra: il rapporto è circa 156 millimoli per litro.','Column chart of the three compartments: water, cations and anions of plasma, interstitium and muscle cell. A button gathers all the water (42 litres) into one column and all the sodium and potassium (about 6547 millimoles) into another: the ratio is about 156 millimoles per litre.');
+document.getElementById('lgs').textContent=T('Legenda','Legend');
+(function(){var L=[[COL.na,'Na⁺',T('sodio','sodium')],[COL.k,'K⁺',T('potassio','potassium')],[COL.mg,'Mg²⁺',T('magnesio','magnesium')],[COL.cl,'Cl⁻',T('cloruro','chloride')],[COL.hc,'HCO₃⁻',T('bicarbonato','bicarbonate')],[COL.pr,T('proteine','proteins'),T('cariche negative delle proteine (nel plasma soprattutto albumina)','negative charges of proteins (in plasma mostly albumin)')],[COL.org,T('fosfati, organici','phosphates, organic'),T('fosfati e anioni organici della cellula','phosphates and organic anions of the cell')],[COL.ot,T('altri','others'),T('fuori dalle cellule Ca²⁺ e Mg²⁺ tra i cationi; solfati, fosfati e acidi organici tra gli anioni','outside the cells Ca²⁺ and Mg²⁺ among the cations; sulphates, phosphates and organic acids among the anions')],['#D6EEFB',T('acqua','water'),T('litri del comparto, da leggere sull’asse azzurro a destra','litres of the compartment, read on the blue axis on the right'),'1.5px dashed #5AA9DA'],['#B03A3A',T('parete del capillare','capillary wall'),T('separa plasma e interstizio','separates plasma and interstitium')],['#1456A8',T('membrana cellulare','cell membrane'),T('separa interstizio e cellula','separates interstitium and cell')],['#FFE14D','ATP',T('pompa Na⁺/K⁺: 3 Na⁺ fuori, 2 K⁺ dentro per ogni ATP','Na⁺/K⁺ pump: 3 Na⁺ out, 2 K⁺ in per ATP')]];
+ document.getElementById('lgb').innerHTML='<ul>'+L.map(function(q){return '<li><i style="background:'+q[0]+(q[3]?';border:'+q[3]:'')+'"></i><span><b>'+q[1]+'</b>: '+q[2]+'</span></li>';}).join('')+'</ul><p>'+T('<b>+</b> = cationi, <b>−</b> = anioni. Il numero sopra ogni comparto è il totale di una colonna in <b>mEq/L</b> (mEq = milliequivalenti: mmol × carica dello ione). Asse a sinistra: mEq/L. Asse a destra: litri.','<b>+</b> = cations, <b>−</b> = anions. The number above each compartment is the total of one column in <b>mEq/L</b> (mEq = milliequivalents: mmol × charge of the ion). Left axis: mEq/L. Right axis: litres.')+'</p>';})();
 txt();draw();
 })();
 </script>
