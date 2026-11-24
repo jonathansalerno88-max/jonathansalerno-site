@@ -11,6 +11,9 @@ body{margin:0;padding:8px 10px 10px}
 svg{display:block;width:100%;height:auto;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
 .bt{font:700 14.5px/1.2 system-ui,-apple-system,Segoe UI,sans-serif;padding:8px 14px;border-radius:9px;border:2px solid #1456A8;background:#1456A8;color:#FFFFFF;cursor:pointer;margin:2px 2px 6px}
 .bt.on{background:#FFFFFF;color:#1456A8}
+.bt.b2{border-color:#B03A3A;background:#B03A3A}
+.bt.b2.on{background:#FFFFFF;color:#B03A3A}
+.bt[hidden]{display:none}
 .rd{font-size:14px;line-height:1.45;margin:6px 2px 2px}
 .rd b{font-weight:700}
 .fm{font-size:17px;font-weight:700;margin:4px 2px;line-height:1.5}
@@ -21,7 +24,7 @@ svg{display:block;width:100%;height:auto;font-family:system-ui,-apple-system,Seg
 <body>
 <p class="sr" id="sr"></p>
 <div class="pn">
- <button type="button" class="bt" id="bt"></button>
+ <button type="button" class="bt" id="bt"></button> <button type="button" class="bt b2" id="b2"></button>
  <svg id="sv" viewBox="0 0 704 312" role="img"></svg>
  <div id="rd"></div>
 </div>
@@ -37,7 +40,7 @@ var G=[{x:66,n:T('plasma','plasma'),L:3,tot:153,c:[['ot',7,''],['k',4,''],['na',
  {x:478,n:T('cellula muscolare','muscle cell'),L:28,tot:196,c:[['na',12,'Na⁺'],['mg',34,'Mg²⁺'],['k',150,'K⁺']],a:[['pr',55,PR],['hc',14,'HCO₃⁻, Cl⁻'],['org',127,T('fosfati,|organici','phosphates,|organic')]]}];
 var NaT=0,KT=0,WT=0;G.forEach(function(g){WT+=g.L;g.c.forEach(function(q){if(q[0]==='na')NaT+=q[1]*g.L;if(q[0]==='k')KT+=q[1]*g.L;});});
 var TOT=NaT+KT,RES=TOT/WT,hB=200/TOT,wB=200/WT,XB=262,WB=90;
-var gA=mk('g',{}),gB=mk('g',{opacity:0}),mov=[],fad=[];
+var gA=mk('g',{}),gB=mk('g',{opacity:0}),gC=mk('g',{opacity:0}),mov=[],fad=[],mode='B',sC=230/153,XC=262,CC=[{na:[0,142],k:[142,4],ot:[146,7]},{cl:[0,103],hc:[103,25],pr:[128,16],ot:[144,9]}];
 // static A decoration
 mk('path',{d:'M56 '+Y0+' V'+(Y0-228),stroke:MU,'stroke-width':1,fill:'none'},null,gA);
 [0,100,200].forEach(function(v){mk('path',{d:'M51 '+(Y0-v*S)+' H56',stroke:MU,'stroke-width':1},null,gA);mk('text',{x:47,y:Y0-v*S+4,'font-size':11,fill:MU,'text-anchor':'end'},v,gA);});
@@ -51,12 +54,12 @@ G.forEach(function(g){g.wh=g.L/28*196*S;});
 ord.forEach(function(i){var g=G[i];g.wB={x:XB+WB,y:yW-g.L*wB,w:WB,h:g.L*wB};yW-=g.L*wB;});
 ord.forEach(function(i){var g=G[i];g.c.forEach(function(q){if(q[0]==='k'){q.B={x:XB,y:yK-q[1]*g.L*hB,w:WB,h:q[1]*g.L*hB};yK-=q[1]*g.L*hB;}});});
 [0,1,2].forEach(function(i){var g=G[i];g.c.forEach(function(q){if(q[0]==='na'){q.B={x:XB,y:yNa-q[1]*g.L*hB,w:WB,h:q[1]*g.L*hB};yNa-=q[1]*g.L*hB;}});});
-G.forEach(function(g){
+G.forEach(function(g,gi){
  var r=mk('rect',{fill:'#D6EEFB',stroke:'#5AA9DA','stroke-width':1.2,'stroke-dasharray':'4 3'});mov.push({e:r,A:{x:g.x,y:Y0-g.wh,w:W,h:g.wh},B:g.wB});
  var lt=mk('text',{x:g.x+W/2,y:g.wh>40?Y0-g.wh+15:Y0-g.wh/2+4,'font-size':11.5,'font-weight':700,fill:INK,'text-anchor':'middle'},g.L+' L');fad.push(lt);
  [g.c,g.a].forEach(function(col,ci){var cx=g.x+W+ci*W,y=Y0;col.forEach(function(q){var h=q[1]*S;y-=h;
    var r=mk('rect',{fill:COL[q[0]],stroke:'#FFFFFF','stroke-width':1});
-   if(q.B)mov.push({e:r,A:{x:cx,y:y,w:W,h:h},B:q.B});else{r.setAttribute('x',cx);r.setAttribute('y',y);r.setAttribute('width',W);r.setAttribute('height',h);fad.push(r);}
+   var cc=gi===0?CC[ci][q[0]]:null;mov.push({e:r,A:{x:cx,y:y,w:W,h:h},B:q.B,C:cc?{x:XC+ci*WB,y:Y0-(cc[0]+cc[1])*sC,w:WB,h:cc[1]*sC}:null});
    if(q[2]&&q[2].indexOf('|')>0){var ab=q[2].split('|'),t2=mk('text',{x:cx+W/2,y:y+h/2-3,'font-size':11.5,'font-weight':600,fill:INK,'text-anchor':'middle'},ab[0]);mk('tspan',{x:cx+W/2,dy:14},ab[1],t2);fad.push(t2);}
    else if(q[2]&&h>=13)fad.push(mk('text',{x:cx+W/2,y:y+h/2+4,'font-size':q[2].length>9?11:12.5,'font-weight':600,fill:INK,'text-anchor':'middle'},q[2]));
  });});
@@ -83,16 +86,40 @@ mk('text',{x:XB+WB*1.5,y:Y0-100+5,'font-size':15,'font-weight':700,fill:INK,'tex
 mk('text',{x:XB+WB/2,y:Y0+18,'font-size':12,fill:MU,'text-anchor':'middle'},T('tutto il Na⁺ e il K⁺','all the Na⁺ and K⁺'),gB);
 mk('text',{x:XB+WB*1.5,y:Y0+18,'font-size':12,fill:MU,'text-anchor':'middle'},T('tutta l’acqua','all the water'),gB);
 sv.appendChild(gB);
+var yC=function(v){return Y0-v*sC;},CR='#B03A3A';
+mk('path',{d:'M'+(XC-22)+' '+(Y0-236)+' V'+Y0+' H'+(XC+2*WB+10),stroke:MU,'stroke-width':1,fill:'none'},null,gC);
+mk('text',{x:XC-28,y:Y0+18,'font-size':12,'font-weight':700,fill:INK,'text-anchor':'end'},'mEq/L',gC);
+[0,100].forEach(function(v){mk('text',{x:XC-28,y:yC(v)+4,'font-size':12,fill:MU,'text-anchor':'end'},v,gC);});
+mk('text',{x:XC-28,y:yC(142)+4,'font-size':12,'font-weight':700,fill:INK,'text-anchor':'end'},'142',gC);
+mk('path',{d:'M'+(XC-22)+' '+yC(142)+' H'+(XC+2*WB+14),stroke:INK,'stroke-width':1.2,'stroke-dasharray':'5 4',fill:'none'},null,gC);
+mk('rect',{x:XC+WB,y:yC(142),width:WB,height:14*sC,fill:CR,'fill-opacity':.22,stroke:CR,'stroke-width':2.6},null,gC);
+mk('path',{d:'M'+(XC+2*WB+8)+' '+yC(142)+' h8 V'+yC(128)+' h-8',stroke:CR,'stroke-width':2,fill:'none'},null,gC);
+mk('text',{x:XC+2*WB+24,y:yC(135)+6,'font-size':17,'font-weight':800,fill:CR},'AG = 14',gC);
+mk('text',{x:XC+WB/2,y:yC(71)+5,'font-size':15,'font-weight':700,fill:INK,'text-anchor':'middle'},'Na⁺ 142',gC);
+mk('text',{x:XC+WB*1.5,y:yC(51.5)+5,'font-size':15,'font-weight':700,fill:INK,'text-anchor':'middle'},'Cl⁻ 103',gC);
+mk('text',{x:XC+WB*1.5,y:yC(115.5)+5,'font-size':14,'font-weight':700,fill:INK,'text-anchor':'middle'},'HCO₃⁻ 25',gC);
+mk('text',{x:XC+WB+8,y:yC(153)-21,'font-size':11.5,'font-weight':700,fill:INK},T('anioni non misurati: 25','unmeasured anions: 25'),gC);
+mk('text',{x:XC+WB+8,y:yC(153)-7,'font-size':11.5,fill:MU},T('albumina, fosfati, altri','albumin, phosphates, others'),gC);
+mk('text',{x:XC+WB-8,y:yC(153)-21,'font-size':11.5,'font-weight':700,fill:INK,'text-anchor':'end'},T('cationi non misurati: 11','unmeasured cations: 11'),gC);
+mk('text',{x:XC+WB-8,y:yC(153)-7,'font-size':11.5,fill:MU,'text-anchor':'end'},'K⁺, Ca²⁺, Mg²⁺',gC);
+mk('text',{x:XC+WB/2,y:Y0+18,'font-size':12,fill:MU,'text-anchor':'middle'},T('cationi','cations'),gC);
+mk('text',{x:XC+WB*1.5,y:Y0+18,'font-size':12,fill:MU,'text-anchor':'middle'},T('anioni','anions'),gC);
+mk('text',{x:XC+WB,y:Y0+36,'font-size':13.5,'font-weight':700,fill:INK,'text-anchor':'middle'},T('plasma','plasma'),gC);
+sv.appendChild(gC);
 var t=0,tg=0,raf=0;
 function draw(){var e=t<.5?2*t*t:1-2*(1-t)*(1-t);
- mov.forEach(function(m){['x','y','w','h'].forEach(function(k){var v=m.A[k]+(m.B[k]-m.A[k])*e;m.e.setAttribute(k==='w'?'width':k==='h'?'height':k,Math.max(0,v).toFixed(2));});});
- var oa=Math.max(0,1-e*2.5).toFixed(2);fad.forEach(function(f){f.setAttribute('opacity',oa);});gA.setAttribute('opacity',oa);gB.setAttribute('opacity',Math.max(0,(e-.6)/.4).toFixed(2));}
+ var oa=Math.max(0,1-e*2.5).toFixed(2),ob=Math.max(0,(e-.6)/.4).toFixed(2);
+ mov.forEach(function(m){var B=m[mode]||m.A;['x','y','w','h'].forEach(function(k){var v=m.A[k]+(B[k]-m.A[k])*e;m.e.setAttribute(k==='w'?'width':k==='h'?'height':k,Math.max(0,v).toFixed(2));});m.e.setAttribute('opacity',m[mode]?1:oa);});
+ fad.forEach(function(f){f.setAttribute('opacity',oa);});gA.setAttribute('opacity',oa);gB.setAttribute('opacity',mode==='B'?ob:0);gC.setAttribute('opacity',mode==='C'?ob:0);}
 function step(){var d=tg-t;if(Math.abs(d)<.015){t=tg;draw();raf=0;return;}t+=(d>0?1:-1)*.02;draw();raf=requestAnimationFrame(step);}
-var bt=document.getElementById('bt');
-function txt(){bt.textContent=tg?T('↺ Torna ai tre comparti','↺ Back to the three compartments'):T('Raccogli tutta l’acqua, tutto il Na⁺ e tutto il K⁺','Gather all the water, all the Na⁺ and all the K⁺');bt.className='bt'+(tg?' on':'');
+var bt=document.getElementById('bt'),b2=document.getElementById('b2');
+function txt(){var bk=T('↺ Torna ai tre comparti','↺ Back to the three compartments');bt.textContent=tg&&mode==='B'?bk:T('Raccogli tutta l’acqua, tutto il Na⁺ e tutto il K⁺','Gather all the water, all the Na⁺ and all the K⁺');bt.className='bt'+(tg&&mode==='B'?' on':'');b2.textContent=tg&&mode==='C'?bk:T('Solo gli elettroliti: gap anionico','Focus on electrolytes only: anion gap');b2.className='bt b2'+(tg&&mode==='C'?' on':'');bt.hidden=!!(tg&&mode==='C');b2.hidden=!!(tg&&mode==='B');
+ if(tg&&mode==='C'){document.getElementById('rd').innerHTML='<p class="fm"><span style="color:#B03A3A">AG</span> = <span style="color:'+CNa+'">Na⁺</span> − (<span style="color:#2F7FC0">Cl⁻</span> + <span style="color:#5C8F2A">HCO₃⁻</span>) = <span style="color:'+CNa+'">142</span> − (<span style="color:#2F7FC0">103</span> + <span style="color:#5C8F2A">25</span>) = <span style="color:#B03A3A">14 mEq/L</span></p><p class="rd">'+T('<b>Il gap non è un buco.</b> Le due colonne sono alte uguali: il plasma è neutro. Il laboratorio misura Na⁺, Cl⁻ e HCO₃⁻; quello che manca per pareggiare sono gli anioni non misurati (soprattutto albumina) meno i cationi non misurati: 25 − 11 = 14.','<b>The gap is not a hole.</b> The two columns are equally tall: plasma is neutral. The laboratory measures Na⁺, Cl⁻ and HCO₃⁻; what is missing to balance are the unmeasured anions (mostly albumin) minus the unmeasured cations: 25 − 11 = 14.')+'</p><p class="lg"><b style="color:#B03A3A">AG</b> ('+T('anion gap, gap anionico','anion gap')+') [N L⁻³], mEq/L; <b style="color:'+CNa+'">Na⁺</b>, <b style="color:#2F7FC0">Cl⁻</b>, <b style="color:#5C8F2A">HCO₃⁻</b> = '+T('concentrazioni nel plasma','concentrations in plasma')+' [N L⁻³], mEq/L (mEq = mmol × '+T('carica dello ione','charge of the ion')+'). '+T('Valori tipici arrotondati; l’intervallo normale dipende dal laboratorio.','Typical rounded values; the normal range depends on the laboratory.')+'</p>';return;}
  var f=function(v){return it?String(v).replace('.',','):String(v);};
- document.getElementById('rd').innerHTML=tg?'<p class="fm">(<span style="color:'+CNa+'">'+R0(NaT)+'</span> + <span style="color:'+CK+'">'+R0(KT)+'</span>) / <span style="color:'+CW+'">'+WT+'</span> = <span style="color:#B03A3A">'+f(RES.toFixed(0))+' mmol/L</span></p><p class="rd">'+T('<b>Nel plasma però il sodio è 142, non '+RES.toFixed(0)+'.</b> Le cellule hanno più cationi per litro, perché i loro anioni (proteine, fosfati) portano molte cariche in poche particelle; e circa il 7% del plasma non è acqua. Per questo Edelman, misurando le persone, trovò una retta e non una proporzione esatta.','<b>Yet sodium in plasma is 142, not '+RES.toFixed(0)+'.</b> Cells have more cations per litre, because their anions (proteins, phosphates) carry many charges on few particles; and about 7% of plasma is not water. This is why Edelman, measuring people, found a straight line and not an exact proportion.')+'</p><p class="lg"><b style="color:'+CNa+'">'+R0(NaT)+'</b> = '+T('sodio di tutti e tre i comparti','sodium of all three compartments')+' [N], mmol; <b style="color:'+CK+'">'+R0(KT)+'</b> = '+T('potassio di tutti e tre','potassium of all three')+' [N], mmol; <b style="color:'+CW+'">'+WT+'</b> = '+T('acqua totale','total water')+' [L³], L; <b style="color:#B03A3A">'+RES.toFixed(0)+'</b> [N L⁻³], mmol/L. '+T('Quantità = concentrazione × litri del comparto, con i valori arrotondati del grafico.','Amount = concentration × litres of the compartment, with the rounded values of the chart.')+'</p>':'<p class="rd">'+T('Premi il pulsante: l’acqua dei tre comparti si impila in una colonna, il sodio e il potassio in un’altra. Gli altri ioni escono di scena.','Press the button: the water of the three compartments stacks into one column, sodium and potassium into another. The other ions leave the stage.')+'</p>';}
-bt.addEventListener('click',function(){tg=tg?0:1;txt();if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){t=tg;draw();return;}if(!raf)raf=requestAnimationFrame(step);});
+ document.getElementById('rd').innerHTML=tg?'<p class="fm">(<span style="color:'+CNa+'">'+R0(NaT)+'</span> + <span style="color:'+CK+'">'+R0(KT)+'</span>) / <span style="color:'+CW+'">'+WT+'</span> = <span style="color:#B03A3A">'+f(RES.toFixed(0))+' mmol/L</span></p><p class="rd">'+T('<b>Nel plasma però il sodio è 142, non '+RES.toFixed(0)+'.</b> Le cellule hanno più cationi per litro, perché i loro anioni (proteine, fosfati) portano molte cariche in poche particelle; e circa il 7% del plasma non è acqua. Per questo Edelman, misurando le persone, trovò una retta e non una proporzione esatta.','<b>Yet sodium in plasma is 142, not '+RES.toFixed(0)+'.</b> Cells have more cations per litre, because their anions (proteins, phosphates) carry many charges on few particles; and about 7% of plasma is not water. This is why Edelman, measuring people, found a straight line and not an exact proportion.')+'</p><p class="lg"><b style="color:'+CNa+'">'+R0(NaT)+'</b> = '+T('sodio di tutti e tre i comparti','sodium of all three compartments')+' [N], mmol; <b style="color:'+CK+'">'+R0(KT)+'</b> = '+T('potassio di tutti e tre','potassium of all three')+' [N], mmol; <b style="color:'+CW+'">'+WT+'</b> = '+T('acqua totale','total water')+' [L³], L; <b style="color:#B03A3A">'+RES.toFixed(0)+'</b> [N L⁻³], mmol/L. '+T('Quantità = concentrazione × litri del comparto, con i valori arrotondati del grafico.','Amount = concentration × litres of the compartment, with the rounded values of the chart.')+'</p>':'<p class="rd">'+T('Pulsante blu: l’acqua dei tre comparti si impila in una colonna, il sodio e il potassio in un’altra. Pulsante rosso: restano solo cationi e anioni del plasma, e compare il gap anionico.','Blue button: the water of the three compartments stacks into one column, sodium and potassium into another. Red button: only the cations and anions of plasma remain, and the anion gap appears.')+'</p>';}
+function go(m){if(tg){tg=0;}else{mode=m;tg=1;}txt();if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){t=tg;draw();return;}if(!raf)raf=requestAnimationFrame(step);}
+b2.addEventListener('click',function(){go('C');});
+bt.addEventListener('click',function(){go('B');return;if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){t=tg;draw();return;}if(!raf)raf=requestAnimationFrame(step);});
 document.getElementById('sr').textContent=T('Grafico a colonne dei tre comparti: acqua, cationi e anioni di plasma, interstizio e cellula muscolare. Un pulsante raccoglie tutta l’acqua (42 litri) in una colonna e tutto il sodio e il potassio (circa 6547 millimoli) in un’altra: il rapporto è circa 156 millimoli per litro.','Column chart of the three compartments: water, cations and anions of plasma, interstitium and muscle cell. A button gathers all the water (42 litres) into one column and all the sodium and potassium (about 6547 millimoles) into another: the ratio is about 156 millimoles per litre.');
 txt();draw();
 })();
