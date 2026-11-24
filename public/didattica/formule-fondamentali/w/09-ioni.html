@@ -25,7 +25,7 @@ svg{display:block;width:100%;height:auto;font-family:system-ui,-apple-system,Seg
 <p class="sr" id="sr"></p>
 <div class="pn">
  <button type="button" class="bt" id="bt"></button> <button type="button" class="bt b2" id="b2"></button>
- <svg id="sv" viewBox="0 0 704 312" role="img"></svg>
+ <svg id="sv" viewBox="0 0 704 316" role="img"></svg>
  <div id="rd"></div>
 </div>
 <script>
@@ -64,7 +64,11 @@ G.forEach(function(g,gi){
    else if(q[2]&&h>=13)fad.push(mk('text',{x:cx+W/2,y:y+h/2+4,'font-size':q[2].length>9?11:12.5,'font-weight':600,fill:INK,'text-anchor':'middle'},q[2]));
  });});
  mk('text',{x:g.x+2*W,y:Y0-g.tot*S-6,'font-size':11.5,fill:MU,'text-anchor':'middle'},g.tot,gA);
- mk('text',{x:g.x+87,y:Y0+36,'font-size':13.5,'font-weight':700,fill:INK,'text-anchor':'middle'},g.n,gA);
+ var tw=g.n.length*7.7,ix=g.x+87-tw/2-6,iy=Y0+33,ig=mk('g',{transform:'translate('+ix+' '+iy+')'},null,gA);
+ if(gi===0){mk('circle',{r:13,fill:'#FBE6DF',stroke:'#B03A3A','stroke-width':3},null,ig);mk('ellipse',{cx:-4,cy:-3,rx:5,ry:3.2,fill:'#D64545',stroke:'#8E1D1D','stroke-width':.8,transform:'rotate(-15 -4 -3)'},null,ig);mk('ellipse',{cx:4,cy:4,rx:5,ry:3.2,fill:'#D64545',stroke:'#8E1D1D','stroke-width':.8,transform:'rotate(10 4 4)'},null,ig);}
+ else if(gi===1){mk('circle',{r:13,fill:'#F7E9BC',stroke:'#A8862A','stroke-width':2},null,ig);mk('path',{d:'M-10 -3 Q-2 3 9 -6 M-9 6 Q0 1 10 5',stroke:'#C9A94E','stroke-width':1.6,fill:'none'},null,ig);mk('circle',{cx:-2,cy:-6,r:1.8,fill:'#3FA4E6'},null,ig);mk('circle',{cx:4,cy:8,r:1.8,fill:'#3FA4E6'},null,ig);}
+ else{mk('ellipse',{rx:15,ry:12,fill:'#CFE0F5',stroke:'#1456A8','stroke-width':2.4},null,ig);mk('ellipse',{cx:3,cy:1,rx:5.5,ry:4.5,fill:'#7FA6DB',stroke:'#1456A8','stroke-width':1},null,ig);}
+ mk('text',{x:g.x+87+12,y:Y0+38,'font-size':13.5,'font-weight':700,fill:INK,'text-anchor':'middle'},g.n,gA);
  [[29,T('acqua','water')],[87,'+'],[145,'−']].forEach(function(q){mk('text',{x:g.x+q[0],y:Y0+16,'font-size':11,fill:MU,'text-anchor':'middle'},q[1],gA);});
 });
 [[245,T('parete del capillare','capillary wall'),'#B03A3A'],[451,T('membrana cellulare','cell membrane'),'#1456A8']].forEach(function(q){mk('rect',{x:q[0],y:Y0-205*S,width:22,height:205*S,rx:4,fill:q[2],'fill-opacity':.85},null,gA);mk('text',{x:q[0]+15,y:Y0-150,'font-size':11.5,'font-weight':600,fill:'#FFFFFF','text-anchor':'middle',transform:'rotate(-90 '+(q[0]+15)+' '+(Y0-150)+')'},q[1],gA);});
