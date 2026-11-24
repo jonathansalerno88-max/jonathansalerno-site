@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The three compartments inside a tissue</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+body{margin:0;padding:8px 10px 10px}
+.pn{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:8px 10px;color:#16222E}
+svg{display:block;width:100%;height:auto;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+.bt{font:700 13.5px/1.2 system-ui,-apple-system,Segoe UI,sans-serif;padding:6px 12px;border-radius:9px;border:2px solid #55697A;background:#FFFFFF;color:#16222E;cursor:pointer;margin:2px 2px 4px}
+.rd{font-size:14px;line-height:1.45;margin:6px 2px 2px}
+.lb{cursor:pointer}
+.sr{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+<p class="sr" id="sr"></p>
+<div class="pn">
+ <button type="button" class="bt" id="bt"></button>
+ <svg id="sv" viewBox="0 0 720 310" role="img"></svg>
+ <p class="rd" id="rd"></p>
+</div>
+<script>
+(function(){
+var it=document.documentElement.lang==='it';function T(a,b){return it?a:b;}
+var NS='http://www.w3.org/2000/svg',sv=document.getElementById('sv');
+function mk(n,a,t,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;(p||sv).appendChild(e);return e;}
+var INK='#16222E',CP='#B03A3A',CI='#A8862A',CC='#1456A8';
+var LX=150,LY=176,LR=20,ZX=452,ZY=155,ZR=138;
+// arm
+var arm=mk('g',{});
+mk('path',{d:'M-6 128 C60 120 150 140 226 158 C250 150 276 150 300 158 C312 162 312 172 300 174 L262 176 C286 180 306 186 318 194 C326 200 320 210 310 206 L270 196 C288 206 302 216 308 226 C312 234 304 240 296 234 L262 208 C272 220 280 232 282 242 C283 250 274 252 269 246 L246 214 C236 218 222 216 212 208 C150 214 60 226 -6 232 Z',fill:'#EEF1F4',stroke:'#55697A','stroke-width':2,'stroke-linejoin':'round'},null,arm);
+mk('text',{x:60,y:268,'font-size':13,fill:'#55697A'},T('un avambraccio','a forearm'),arm);
+var lens=mk('g',{});
+mk('circle',{cx:LX,cy:LY,r:LR,fill:'#0E2A47','fill-opacity':.85,stroke:INK,'stroke-width':2.5},null,lens);
+var scan=mk('path',{d:'',stroke:'#7FD4FF','stroke-width':2},null,lens);
+var rays=mk('path',{d:'',stroke:INK,'stroke-width':1.3,'stroke-dasharray':'5 4',fill:'none'});
+// zoom
+mk('defs',{}).innerHTML='<clipPath id="zc"><circle cx="0" cy="0" r="'+ZR+'"/></clipPath>';
+var zg=mk('g',{}),zi=mk('g',{'clip-path':'url(#zc)'},null,zg);
+var gI=mk('g',{},null,zi),gC=mk('g',{},null,zi),gP=mk('g',{},null,zi),gW=mk('g',{},null,zi);
+mk('rect',{x:-ZR,y:-ZR,width:2*ZR,height:2*ZR,fill:'#F7E9BC'},null,gI);
+[[-120,-70,60,-95],[-40,96,120,70],[-130,60,-30,100],[30,-110,130,-70]].forEach(function(q){mk('path',{d:'M'+q[0]+' '+q[1]+' Q'+((q[0]+q[2])/2)+' '+((q[1]+q[3])/2+14)+' '+q[2]+' '+q[3],stroke:'#D9BF73','stroke-width':2,fill:'none'},null,gI);});
+var CAP='M-150 26 C-80 -6 -20 30 40 4 C90 -16 120 0 150 -14';
+mk('path',{d:CAP,stroke:CP,'stroke-width':58,fill:'none','stroke-linecap':'butt'},null,gP);
+mk('path',{d:CAP,stroke:'#FBE6DF','stroke-width':48,fill:'none'},null,gP);
+var capP=mk('path',{d:CAP,fill:'none',stroke:'none'},null,gP),capL=capP.getTotalLength(),rbc=[];
+for(var i=0;i<7;i++)rbc.push({e:mk('ellipse',{rx:11,ry:7,fill:'#D64545',stroke:'#8E1D1D','stroke-width':1},null,gP),o:i/7,dy:(i%3-1)*9});
+var cells=[[-84,-78,46,34,-12],[6,-88,44,30,8],[92,-92,40,30,-6],[-96,92,44,32,10],[-6,86,46,30,-8],[84,72,44,32,6]];
+cells.forEach(function(q){var g=mk('g',{transform:'translate('+q[0]+' '+q[1]+') rotate('+q[4]+')'},null,gC);mk('ellipse',{rx:q[2],ry:q[3],fill:'#CFE0F5',stroke:CC,'stroke-width':3},null,g);mk('ellipse',{cx:6,cy:2,rx:13,ry:10,fill:'#7FA6DB',stroke:CC,'stroke-width':1.2},null,g);});
+var drops=[];
+[[-60,-18,-66,-46],[30,-22,26,-52],[100,-34,96,-58],[-70,44,-78,64],[10,34,6,56],[96,18,92,42]].forEach(function(q,i){drops.push({e:mk('circle',{r:4,fill:'#3FA4E6',stroke:'#FFFFFF','stroke-width':1},null,gW),a:q,o:i/6});});
+mk('circle',{cx:0,cy:0,r:ZR,fill:'none',stroke:INK,'stroke-width':3.5},null,zg);
+// labels
+var LB=[['P',T('plasma','plasma'),CP,T('dentro i vasi','inside the vessels'),150,[ZX+ZR*.78,ZY-12]],['C',T('cellule','cells'),CC,T('dentro le cellule','inside the cells'),62,[ZX+ZR*.62,ZY-ZR*.62]],['I',T('interstizio','interstitium'),CI,T('tra le cellule','between the cells'),242,[ZX+127,ZY+33]]],lg=mk('g',{}),sel='';
+LB.forEach(function(q){var g=mk('g',{'class':'lb',tabindex:0,role:'button'},null,lg);
+ mk('path',{d:'M'+q[5][0]+' '+q[5][1]+' L608 '+(q[4]-5),stroke:q[2],'stroke-width':1.6,fill:'none'},null,g);mk('circle',{cx:q[5][0],cy:q[5][1],r:4,fill:q[2]},null,g);
+ mk('rect',{x:606,y:q[4]-24,width:112,height:44,rx:7,fill:'#FFFFFF',stroke:q[2],'stroke-width':2},null,g);
+ mk('text',{x:614,y:q[4]-6,'font-size':15,'font-weight':700,fill:q[2]},q[1],g);mk('text',{x:614,y:q[4]+11,'font-size':11.5,fill:'#55697A'},q[3],g);
+ function on(){sel=sel===q[0]?'':q[0];hi();}
+ g.addEventListener('click',on);g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();on();}});
+ g.addEventListener('mouseenter',function(){if(!sel){hov=q[0];hi();}});g.addEventListener('mouseleave',function(){hov='';hi();});
+});
+var hov='';
+function hi(){var k=sel||hov;gP.setAttribute('opacity',!k||k==='P'?1:.25);gC.setAttribute('opacity',!k||k==='C'?1:.25);gI.setAttribute('opacity',!k||k==='I'?1:.35);gW.setAttribute('opacity',k?.25:1);}
+var z=0,t0=0,red=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function frame(now){if(!t0)t0=now;var s=(now-t0)/1000;z=Math.min(1,s/1.5);if(red)z=1;var e=1-Math.pow(1-z,3),sc=LR/ZR+(1-LR/ZR)*e,cx=LX+(ZX-LX)*e,cy=LY+(ZY-LY)*e;
+ zg.setAttribute('transform','translate('+cx.toFixed(1)+' '+cy.toFixed(1)+') scale('+sc.toFixed(3)+')');lg.setAttribute('opacity',Math.max(0,(z-.8)/.2).toFixed(2));
+ var r=ZR*sc;rays.setAttribute('d','M'+LX+' '+(LY-LR)+' L'+cx.toFixed(1)+' '+(cy-r).toFixed(1)+' M'+LX+' '+(LY+LR)+' L'+cx.toFixed(1)+' '+(cy+r).toFixed(1));
+ var sy=LY+Math.sin(s*3)*LR*.8,hw=Math.sqrt(Math.max(0,LR*LR-(sy-LY)*(sy-LY)));scan.setAttribute('d','M'+(LX-hw).toFixed(1)+' '+sy.toFixed(1)+' H'+(LX+hw).toFixed(1));
+ var tt=red?0:s;
+ rbc.forEach(function(b){var u=((b.o+tt*.09)%1)*capL,p=capP.getPointAtLength(u),p2=capP.getPointAtLength(Math.min(capL,u+2)),an=Math.atan2(p2.y-p.y,p2.x-p.x);b.e.setAttribute('transform','translate('+(p.x-Math.sin(an)*b.dy).toFixed(1)+' '+(p.y+Math.cos(an)*b.dy).toFixed(1)+') rotate('+(an*57.3).toFixed(1)+')');});
+ drops.forEach(function(d){var u=.5+.5*Math.sin((tt*.9+d.o*6.28));d.e.setAttribute('cx',(d.a[0]+(d.a[2]-d.a[0])*u).toFixed(1));d.e.setAttribute('cy',(d.a[1]+(d.a[3]-d.a[1])*u).toFixed(1));});
+ if(!red||z<1)requestAnimationFrame(frame);}
+document.getElementById('bt').textContent=T('↺ Rifai lo zoom','↺ Zoom again');
+document.getElementById('bt').addEventListener('click',function(){t0=0;sel='';hi();if(red)requestAnimationFrame(frame);});
+document.getElementById('rd').innerHTML=T('Guardando dentro un tessuto si vedono tutti e tre: il <b style="color:'+CP+'">plasma</b> scorre nei capillari insieme ai globuli rossi, le <b style="color:'+CC+'">cellule</b> stanno intorno, e l’<b style="color:#8A6A00">interstizio</b> è il liquido che riempie lo spazio tra loro. Le goccioline azzurre sono acqua che passa da un comparto all’altro. Tocca un’etichetta per isolare un comparto. Disegno schematico, non in scala.','Looking inside a tissue you see all three: <b style="color:'+CP+'">plasma</b> flows in the capillaries together with the red cells, the <b style="color:'+CC+'">cells</b> lie around, and the <b style="color:#8A6A00">interstitium</b> is the fluid that fills the space between them. The light-blue droplets are water passing from one compartment to another. Tap a label to isolate a compartment. Schematic drawing, not to scale.');
+document.getElementById('sr').textContent=T('Animazione: una lente su un avambraccio si ingrandisce e mostra un capillare con plasma e globuli rossi, le cellule intorno e l’interstizio tra di esse.','Animation: a lens on a forearm zooms in and shows a capillary with plasma and red cells, the cells around it and the interstitium between them.');
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
