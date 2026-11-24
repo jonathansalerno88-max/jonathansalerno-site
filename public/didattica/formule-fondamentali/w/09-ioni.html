@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>I tre comparti: ioni e acqua</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+body{margin:0;padding:8px 10px 10px}
+.pn{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:8px 10px;color:#16222E}
+svg{display:block;width:100%;height:auto;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+.bt{font:700 14.5px/1.2 system-ui,-apple-system,Segoe UI,sans-serif;padding:8px 14px;border-radius:9px;border:2px solid #1456A8;background:#1456A8;color:#FFFFFF;cursor:pointer;margin:2px 2px 6px}
+.bt.on{background:#FFFFFF;color:#1456A8}
+.rd{font-size:14px;line-height:1.45;margin:6px 2px 2px}
+.rd b{font-weight:700}
+.fm{font-size:17px;font-weight:700;margin:4px 2px;line-height:1.5}
+.lg{font-size:12px;line-height:1.4;color:#55697A;margin:4px 2px 0}
+.sr{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+<p class="sr" id="sr"></p>
+<div class="pn">
+ <button type="button" class="bt" id="bt"></button>
+ <svg id="sv" viewBox="0 0 704 312" role="img"></svg>
+ <div id="rd"></div>
+</div>
+<script>
+(function(){
+var it=document.documentElement.lang==='it';function T(a,b){return it?a:b;}
+var NS='http://www.w3.org/2000/svg',sv=document.getElementById('sv');
+function mk(n,a,t,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;(p||sv).appendChild(e);return e;}
+var COL={na:'#F2B62E',k:'#57C7A3',mg:'#B9A6E8',ot:'#C9CED4',cl:'#7DBBEA',hc:'#A9D27F',pr:'#E58FB0',org:'#F0A27E'},INK='#16222E',MU='#55697A',CNa='#B87A00',CK='#0E7C5A',CW='#1F6FB0';
+var Y0=262,S=1.1,W=58,PR=T('proteine','proteins');
+var G=[{x:66,n:T('plasma','plasma'),L:3,tot:153,c:[['ot',7,''],['k',4,''],['na',142,'Na⁺']],a:[['pr',16,PR],['ot',9,''],['hc',25,'HCO₃⁻'],['cl',103,'Cl⁻']]},
+ {x:272,n:T('interstizio','interstitium'),L:11,tot:148,c:[['ot',5,''],['k',4,''],['na',139,'Na⁺']],a:[['ot',7,''],['hc',28,'HCO₃⁻'],['cl',113,'Cl⁻']]},
+ {x:478,n:T('cellula muscolare','muscle cell'),L:28,tot:196,c:[['na',12,'Na⁺'],['mg',34,'Mg²⁺'],['k',150,'K⁺']],a:[['pr',55,PR],['hc',14,'HCO₃⁻, Cl⁻'],['org',127,T('fosfati,|organici','phosphates,|organic')]]}];
+var NaT=0,KT=0,WT=0;G.forEach(function(g){WT+=g.L;g.c.forEach(function(q){if(q[0]==='na')NaT+=q[1]*g.L;if(q[0]==='k')KT+=q[1]*g.L;});});
+var TOT=NaT+KT,RES=TOT/WT,hB=200/TOT,wB=200/WT,XB=262,WB=90;
+var gA=mk('g',{}),gB=mk('g',{opacity:0}),mov=[],fad=[];
+// static A decoration
+mk('path',{d:'M56 '+Y0+' V'+(Y0-228),stroke:MU,'stroke-width':1,fill:'none'},null,gA);
+[0,100,200].forEach(function(v){mk('path',{d:'M51 '+(Y0-v*S)+' H56',stroke:MU,'stroke-width':1},null,gA);mk('text',{x:47,y:Y0-v*S+4,'font-size':11,fill:MU,'text-anchor':'end'},v,gA);});
+mk('text',{x:14,y:Y0-110,'font-size':11,fill:MU,'text-anchor':'middle',transform:'rotate(-90 14 '+(Y0-110)+')'},'mEq/L',gA);
+var kL=196*S/28;mk('path',{d:'M662 '+Y0+' V'+(Y0-28*kL-8),stroke:'#3F97CE','stroke-width':1.2,fill:'none'},null,gA);
+[0,10,20,28].forEach(function(v){mk('path',{d:'M662 '+(Y0-v*kL)+' h5',stroke:'#3F97CE','stroke-width':1.2},null,gA);mk('text',{x:671,y:Y0-v*kL+4,'font-size':11,'font-weight':600,fill:'#3F97CE'},v,gA);});
+mk('text',{x:694,y:Y0-110,'font-size':11,'font-weight':600,fill:'#3F97CE','text-anchor':'middle',transform:'rotate(90 694 '+(Y0-110)+')'},T('litri d’acqua','litres of water'),gA);
+// moving pieces
+var yNa=Y0-KT*hB,yK=Y0,yW=Y0,ord=[2,1,0];
+G.forEach(function(g){g.wh=g.L/28*196*S;});
+ord.forEach(function(i){var g=G[i];g.wB={x:XB+WB,y:yW-g.L*wB,w:WB,h:g.L*wB};yW-=g.L*wB;});
+ord.forEach(function(i){var g=G[i];g.c.forEach(function(q){if(q[0]==='k'){q.B={x:XB,y:yK-q[1]*g.L*hB,w:WB,h:q[1]*g.L*hB};yK-=q[1]*g.L*hB;}});});
+[0,1,2].forEach(function(i){var g=G[i];g.c.forEach(function(q){if(q[0]==='na'){q.B={x:XB,y:yNa-q[1]*g.L*hB,w:WB,h:q[1]*g.L*hB};yNa-=q[1]*g.L*hB;}});});
+G.forEach(function(g){
+ var r=mk('rect',{fill:'#D6EEFB',stroke:'#5AA9DA','stroke-width':1.2,'stroke-dasharray':'4 3'});mov.push({e:r,A:{x:g.x,y:Y0-g.wh,w:W,h:g.wh},B:g.wB});
+ var lt=mk('text',{x:g.x+W/2,y:g.wh>40?Y0-g.wh+15:Y0-g.wh/2+4,'font-size':11.5,'font-weight':700,fill:INK,'text-anchor':'middle'},g.L+' L');fad.push(lt);
+ [g.c,g.a].forEach(function(col,ci){var cx=g.x+W+ci*W,y=Y0;col.forEach(function(q){var h=q[1]*S;y-=h;
+   var r=mk('rect',{fill:COL[q[0]],stroke:'#FFFFFF','stroke-width':1});
+   if(q.B)mov.push({e:r,A:{x:cx,y:y,w:W,h:h},B:q.B});else{r.setAttribute('x',cx);r.setAttribute('y',y);r.setAttribute('width',W);r.setAttribute('height',h);fad.push(r);}
+   if(q[2]&&q[2].indexOf('|')>0){var ab=q[2].split('|'),t2=mk('text',{x:cx+W/2,y:y+h/2-3,'font-size':11.5,'font-weight':600,fill:INK,'text-anchor':'middle'},ab[0]);mk('tspan',{x:cx+W/2,dy:14},ab[1],t2);fad.push(t2);}
+   else if(q[2]&&h>=13)fad.push(mk('text',{x:cx+W/2,y:y+h/2+4,'font-size':q[2].length>9?11:12.5,'font-weight':600,fill:INK,'text-anchor':'middle'},q[2]));
+ });});
+ mk('text',{x:g.x+2*W,y:Y0-g.tot*S-6,'font-size':11.5,fill:MU,'text-anchor':'middle'},g.tot,gA);
+ mk('text',{x:g.x+87,y:Y0+36,'font-size':13.5,'font-weight':700,fill:INK,'text-anchor':'middle'},g.n,gA);
+ [[29,T('acqua','water')],[87,'+'],[145,'−']].forEach(function(q){mk('text',{x:g.x+q[0],y:Y0+16,'font-size':11,fill:MU,'text-anchor':'middle'},q[1],gA);});
+});
+[[245,T('parete del capillare','capillary wall'),'#B03A3A'],[451,T('membrana cellulare','cell membrane'),'#1456A8']].forEach(function(q){mk('rect',{x:q[0],y:Y0-205*S,width:22,height:205*S,rx:4,fill:q[2],'fill-opacity':.85},null,gA);mk('text',{x:q[0]+15,y:Y0-150,'font-size':11.5,'font-weight':600,fill:'#FFFFFF','text-anchor':'middle',transform:'rotate(-90 '+(q[0]+15)+' '+(Y0-150)+')'},q[1],gA);});
+var py=Y0-66;mk('circle',{cx:462,cy:py,r:15,fill:'#FFE14D',stroke:INK,'stroke-width':1.2},null,gA);mk('text',{x:462,y:py+4,'font-size':10.5,'font-weight':700,fill:INK,'text-anchor':'middle'},'ATP',gA);
+mk('path',{d:'M445 '+(py+6)+' H397 m0 0 l7 -4 v8z',stroke:INK,'stroke-width':1.6,fill:INK},null,gA);mk('text',{x:418,y:py+20,'font-size':11,'font-weight':700,fill:INK,'text-anchor':'middle'},'3 Na⁺',gA);
+mk('path',{d:'M479 '+(py-6)+' H527 m0 0 l-7 -4 v8z',stroke:INK,'stroke-width':1.6,fill:INK},null,gA);mk('text',{x:506,y:py-11,'font-size':11,'font-weight':700,fill:INK,'text-anchor':'middle'},'2 K⁺',gA);
+sv.appendChild(gA);
+// B decoration
+var R0=function(v){return Math.round(v);};
+mk('path',{d:'M'+(XB-22)+' '+(Y0-212)+' V'+Y0+' H'+(XB+2*WB+22)+' V'+(Y0-212),stroke:MU,'stroke-width':1,fill:'none'},null,gB);
+mk('path',{d:'M'+(XB-30)+' '+(Y0-200)+' H'+(XB+2*WB+30),stroke:INK,'stroke-width':1.2,'stroke-dasharray':'5 4',fill:'none'},null,gB);
+mk('text',{x:XB-28,y:Y0-196,'font-size':12,'font-weight':700,fill:INK,'text-anchor':'end'},R0(TOT),gB);mk('text',{x:XB-28,y:Y0+4,'font-size':12,fill:MU,'text-anchor':'end'},'0',gB);
+mk('text',{x:XB-28,y:Y0-216,'font-size':12,'font-weight':700,fill:INK,'text-anchor':'end'},'mmol',gB);
+mk('text',{x:XB+2*WB+28,y:Y0-196,'font-size':12,'font-weight':700,fill:CW},WT,gB);mk('text',{x:XB+2*WB+28,y:Y0+4,'font-size':12,fill:CW},'0',gB);
+mk('text',{x:XB+2*WB+28,y:Y0-216,'font-size':12,'font-weight':700,fill:CW},'L',gB);
+mk('text',{x:XB+WB/2,y:Y0-KT*hB-NaT*hB/2+5,'font-size':15,'font-weight':700,fill:INK,'text-anchor':'middle'},'Na⁺ '+R0(NaT),gB);
+mk('text',{x:XB+WB/2,y:Y0-KT*hB/2+5,'font-size':15,'font-weight':700,fill:INK,'text-anchor':'middle'},'K⁺ '+R0(KT),gB);
+mk('text',{x:XB+WB*1.5,y:Y0-100+5,'font-size':15,'font-weight':700,fill:INK,'text-anchor':'middle'},T('acqua ','water ')+WT+' L',gB);
+mk('text',{x:XB+WB/2,y:Y0+18,'font-size':12,fill:MU,'text-anchor':'middle'},T('tutto il Na⁺ e il K⁺','all the Na⁺ and K⁺'),gB);
+mk('text',{x:XB+WB*1.5,y:Y0+18,'font-size':12,fill:MU,'text-anchor':'middle'},T('tutta l’acqua','all the water'),gB);
+sv.appendChild(gB);
+var t=0,tg=0,raf=0;
+function draw(){var e=t<.5?2*t*t:1-2*(1-t)*(1-t);
+ mov.forEach(function(m){['x','y','w','h'].forEach(function(k){var v=m.A[k]+(m.B[k]-m.A[k])*e;m.e.setAttribute(k==='w'?'width':k==='h'?'height':k,Math.max(0,v).toFixed(2));});});
+ var oa=Math.max(0,1-e*2.5).toFixed(2);fad.forEach(function(f){f.setAttribute('opacity',oa);});gA.setAttribute('opacity',oa);gB.setAttribute('opacity',Math.max(0,(e-.6)/.4).toFixed(2));}
+function step(){var d=tg-t;if(Math.abs(d)<.015){t=tg;draw();raf=0;return;}t+=(d>0?1:-1)*.02;draw();raf=requestAnimationFrame(step);}
+var bt=document.getElementById('bt');
+function txt(){bt.textContent=tg?T('↺ Torna ai tre comparti','↺ Back to the three compartments'):T('Raccogli tutta l’acqua, tutto il Na⁺ e tutto il K⁺','Gather all the water, all the Na⁺ and all the K⁺');bt.className='bt'+(tg?' on':'');
+ var f=function(v){return it?String(v).replace('.',','):String(v);};
+ document.getElementById('rd').innerHTML=tg?'<p class="fm">(<span style="color:'+CNa+'">'+R0(NaT)+'</span> + <span style="color:'+CK+'">'+R0(KT)+'</span>) / <span style="color:'+CW+'">'+WT+'</span> = <span style="color:#B03A3A">'+f(RES.toFixed(0))+' mmol/L</span></p><p class="rd">'+T('<b>Nel plasma però il sodio è 142, non '+RES.toFixed(0)+'.</b> Le cellule hanno più cationi per litro, perché i loro anioni (proteine, fosfati) portano molte cariche in poche particelle; e circa il 7% del plasma non è acqua. Per questo Edelman, misurando le persone, trovò una retta e non una proporzione esatta.','<b>Yet sodium in plasma is 142, not '+RES.toFixed(0)+'.</b> Cells have more cations per litre, because their anions (proteins, phosphates) carry many charges on few particles; and about 7% of plasma is not water. This is why Edelman, measuring people, found a straight line and not an exact proportion.')+'</p><p class="lg"><b style="color:'+CNa+'">'+R0(NaT)+'</b> = '+T('sodio di tutti e tre i comparti','sodium of all three compartments')+' [N], mmol; <b style="color:'+CK+'">'+R0(KT)+'</b> = '+T('potassio di tutti e tre','potassium of all three')+' [N], mmol; <b style="color:'+CW+'">'+WT+'</b> = '+T('acqua totale','total water')+' [L³], L; <b style="color:#B03A3A">'+RES.toFixed(0)+'</b> [N L⁻³], mmol/L. '+T('Quantità = concentrazione × litri del comparto, con i valori arrotondati del grafico.','Amount = concentration × litres of the compartment, with the rounded values of the chart.')+'</p>':'<p class="rd">'+T('Premi il pulsante: l’acqua dei tre comparti si impila in una colonna, il sodio e il potassio in un’altra. Gli altri ioni escono di scena.','Press the button: the water of the three compartments stacks into one column, sodium and potassium into another. The other ions leave the stage.')+'</p>';}
+bt.addEventListener('click',function(){tg=tg?0:1;txt();if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){t=tg;draw();return;}if(!raf)raf=requestAnimationFrame(step);});
+document.getElementById('sr').textContent=T('Grafico a colonne dei tre comparti: acqua, cationi e anioni di plasma, interstizio e cellula muscolare. Un pulsante raccoglie tutta l’acqua (42 litri) in una colonna e tutto il sodio e il potassio (circa 6547 millimoli) in un’altra: il rapporto è circa 156 millimoli per litro.','Column chart of the three compartments: water, cations and anions of plasma, interstitium and muscle cell. A button gathers all the water (42 litres) into one column and all the sodium and potassium (about 6547 millimoles) into another: the ratio is about 156 millimoles per litre.');
+txt();draw();
+})();
+</script>
+</body>
+</html>
