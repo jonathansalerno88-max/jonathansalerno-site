@@ -295,6 +295,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
 
 <nav class="toc" aria-label="Sommario">
   <h2>Sommario</h2>
+  <p style="margin:0 0 .5rem;font-size:.9375rem"><a href="#premessa">Premessa: tre comparti d'acqua</a></p>
   <ol>
     <li><a href="#starling">L'equazione di Starling</a></li>
     <li><a href="#fick">La legge di Fick: la diffusione</a></li>
@@ -302,6 +303,37 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
   </ol>
   <p style="margin:.6rem 0 0;font-size:.9375rem"><a href="#fonti">Fonti</a></p>
 </nav>
+
+<section id="premessa">
+  <h2>Premessa: tre comparti d'acqua</h2>
+  <p>Il corpo di un adulto è fatto d'acqua per circa il 60% del peso (circa il 75% nel neonato, meno nell'anziano e in chi ha più tessuto adiposo). In una persona di 70 kg sono circa 42 litri, divisi in <b>tre comparti in serie</b>: plasma, interstizio e cellule. Tra plasma e interstizio c'è la parete del capillare; tra interstizio e cellule la membrana cellulare.</p>
+  <figure class="w" style="margin:.8rem 0 1rem">
+    <svg viewBox="0 0 680 190" role="img" aria-label="Tre comparti d'acqua in serie: plasma 3 litri, interstizio 11 litri, cellule 28 litri" style="display:block;width:100%;height:auto;max-width:680px;font-family:var(--sans)">
+      <rect x="20" y="52" width="44" height="86" rx="4" fill="#B03A3A" fill-opacity=".22" stroke="#B03A3A" stroke-width="1.5"/>
+      <rect x="70" y="52" width="162" height="86" rx="4" fill="#C2A24A" fill-opacity=".22" stroke="#A8862A" stroke-width="1.5"/>
+      <rect x="238" y="52" width="414" height="86" rx="4" fill="#1456A8" fill-opacity=".16" stroke="#1456A8" stroke-width="1.5"/>
+      <g fill="currentColor" font-size="14" font-weight="600" text-anchor="middle">
+        <text x="42" y="24">plasma</text><text x="42" y="42" font-weight="400">3 L</text>
+        <text x="151" y="90">interstizio</text><text x="151" y="110" font-weight="400">11 L</text>
+        <text x="445" y="90">cellule</text><text x="445" y="110" font-weight="400">28 L</text>
+      </g>
+      <g stroke="currentColor" stroke-width="1.2" fill="none"><path d="M67 142 V156"/><path d="M235 142 V156"/></g>
+      <g font-size="12.5" text-anchor="start" fill="currentColor">
+        <text x="60" y="170">parete del capillare</text><text x="60" y="185" font-weight="700" fill="#B03A3A">Starling</text>
+        <text x="228" y="170">membrana cellulare</text><text x="228" y="185" font-weight="700" fill="#1456A8">osmosi</text>
+      </g>
+    </svg>
+    <figcaption>Le larghezze sono in proporzione ai volumi. Valori tipici per un adulto di 70 kg.</figcaption>
+  </figure>
+  <p>L'acqua attraversa liberamente entrambe le barriere, quindi i tre comparti hanno la <b>stessa osmolalità</b> (circa 290 mOsm/kg). La composizione invece è diversa: sodio fuori dalle cellule, potassio dentro, proteine nel plasma e nelle cellule ma quasi assenti nell'interstizio. Per leggere questo sistema servono poche chiavi:</p>
+  <ul>
+    <li><b>Starling</b> quantifica il movimento d'acqua tra <b>plasma e interstizio</b>, attraverso la parete del capillare. È la <a href="#starling">sezione 1</a>.</li>
+    <li><b>L'osmosi</b> governa il movimento tra <b>interstizio e cellule</b>: lì non c'è una pressione idrostatica che conti, l'acqua segue solo i soluti che non passano la membrana.</li>
+    <li><b>Edelman</b> lega la concentrazione di sodio nel plasma al contenuto di sodio, di potassio e d'acqua di tutto il corpo: <span style="white-space:nowrap"><b style="color:#B03A3A">[Na⁺]</b> ≈ (<b style="color:#C2571A">Na<sub>e</sub></b> + <b style="color:#6A3A96">K<sub>e</sub></b>) / <b style="color:#1456A8">TBW</b></span>. Sezione in arrivo.</li>
+    <li><b>Gibbs-Donnan</b> completa Starling dove ci sono molte proteine, cioè nel plasma: le loro cariche negative trattengono cationi, e la pressione oncotica risulta più alta di quella delle sole proteine. Sezione in arrivo.</li>
+  </ul>
+  <p style="font-size:.875rem;color:var(--mut)"><b style="color:#B03A3A">[Na⁺]</b> = concentrazione di sodio nel plasma [N L⁻³], mmol/L; <b style="color:#C2571A">Na<sub>e</sub></b> e <b style="color:#6A3A96">K<sub>e</sub></b> = sodio e potassio scambiabili di tutto il corpo [N], mmol; <b style="color:#1456A8">TBW</b> (total body water, acqua corporea totale) [L³], L.</p>
+</section>
 
 <section id="starling">
   <h2>1 · L'equazione di Starling</h2>
@@ -570,6 +602,7 @@ dialog.fx #fxzv{font-size:.78rem; color:var(--mut); min-width:2.6rem; text-align
     <a href="https://doi.org/10.1093/cvr/cvq062">doi:10.1093/cvr/cvq062</a></li>
     <li>Boron WF, Boulpaep EL. <i>Medical Physiology</i>. 3rd ed. Philadelphia: Elsevier; 2017.</li>
     <li>Starling equation. <i>chemeurope.com Encyclopedia</i> (testo derivato da Wikipedia, licenza GNU FDL): impostazione dell'introduzione, ordini di grandezza e valori indicativi lungo il capillare. <a href="https://www.chemeurope.com/en/encyclopedia/Starling_equation.html">chemeurope.com/en/encyclopedia/Starling_equation.html</a></li>
+    <li>Edelman IS, Leibman J, O'Meara MP, Birkenfeld LW. Interrelations between serum sodium concentration, serum osmolarity and total exchangeable sodium, total exchangeable potassium and total body water. <i>J Clin Invest</i> 1958;37(9):1236–1256. <a href="https://doi.org/10.1172/JCI103712">doi:10.1172/JCI103712</a></li>
     <li>Klabunde RE. Factors Regulating Arterial Blood Pressure. <i>Cardiovascular Physiology Concepts</i> (rev. 7 dicembre 2022): schema dei determinanti della pressione arteriosa media, ridisegnato e semplificato nell'animazione di Starling. <a href="https://cvphysiology.com/blood-pressure/bp022">cvphysiology.com/blood-pressure/bp022</a></li>
     <li>Woodcock TE, Michel CC. Advances in the Starling principle and microvascular fluid exchange; consequences and implications for fluid therapy. <i>Front Vet Sci</i> 2021;8:623671.
     <a href="https://doi.org/10.3389/fvets.2021.623671">doi:10.3389/fvets.2021.623671</a></li>
