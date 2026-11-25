@@ -375,7 +375,8 @@ footer p{margin:0 0 7px}
 code{font-family:var(--mono);font-size:.92em;background:var(--surface2);padding:1px 4px;border-radius:3px}
 @media (prefers-reduced-motion:no-preference){.presets button,.segbtns button{transition:color .12s,border-color .12s,background .12s}}
 /* two-part structure: what is shown, what is open */
-.intro{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:14px;margin-bottom:34px}
+.intro{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:34px}
+@media (max-width:820px){.intro{grid-template-columns:minmax(0,1fr)}.intro .card.open{order:1}}
 .intro .card{padding:16px 18px 15px;border-top:3px solid var(--line)}
 .intro .card.shown{border-top-color:var(--accent)}
 .intro .card.open{border-top-color:#D9A400}
@@ -398,6 +399,25 @@ code{font-family:var(--mono);font-size:.92em;background:var(--surface2);padding:
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip.open{color:#F2D45C;border-color:#8A7420;background:#3A3010}}
 :root[data-theme="dark"] .chip.open{color:#F2D45C;border-color:#8A7420;background:#3A3010}
 #part-one .out{margin-bottom:20px}
+.intro .jumps{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline}
+.intro button.jump{font:inherit;font-size:12px;font-weight:500;color:var(--accent);background:none;border:0;padding:0;cursor:pointer}
+.intro button.jump::after{content:" \25BE"}
+.intro button.jump[aria-expanded=true]::after{content:" \25B4"}
+.intro button.jump:hover{text-decoration:underline}
+.intro button.jump:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+.pairs{grid-column:1/-1;background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:10px;padding:16px 18px 6px}
+.pairs[hidden]{display:none}
+.pairs-note{margin:0 0 16px;font-size:12.5px;color:var(--mut);max-width:80ch}
+.pairs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:4px 28px}
+.pg{margin-bottom:12px;min-width:0}
+.pg h3{font-size:12.5px;font-weight:600;margin:0 0 5px;color:var(--ink)}
+.pg h3 span{font-weight:400;color:var(--faint);font-size:11.5px;margin-left:4px}
+.pg ul{list-style:none;margin:0;padding:0}
+.pg li{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding:4px 0;border-top:1px solid var(--line);font-size:12.5px;color:var(--mut)}
+.pg li .pp{min-width:0}
+.pg li b{font-weight:500;color:var(--ink)}
+.pg li a{color:var(--accent);white-space:nowrap;font-size:12px}
+@media (max-width:420px){.pg li{flex-direction:column;gap:1px}.pg li a{white-space:normal}}
 </style>
 
 <div class="wrap">
@@ -422,14 +442,57 @@ code{font-family:var(--mono);font-size:.92em;background:var(--surface2);padding:
   <div class="card shown">
     <h2>What has been shown</h2>
     <p>That this reading classifies the modulation of an enzyme by direction, intensity and dominant parameter. Checked retrospectively on 25 combinations across three enzyme systems: the direction agreed with the published characterisation in every state, the dominant parameter in nine of thirteen independent cases. Published after peer review in <a href="https://doi.org/10.1016/j.dmpk.2026.101553" target="_blank" rel="noopener"><i>Drug Metabolism and Pharmacokinetics</i> 71 (2026) 101553</a>.</p>
-    <p><a class="jump" href="#part-one">Part one &#8595;</a></p>
+    <p class="jumps"><a class="jump" href="#part-one">Part one &#8595;</a><button type="button" class="jump" id="pairsBtn" aria-expanded="false" aria-controls="pairs">Show the 25 pairs studied</button></p>
   </div>
   <div class="card open">
     <h2>What is open</h2>
     <p>Whether these indices improve the prediction of what happens in the patient, over the methods in use today. The question is partly one of literature and partly experimental, and it has no answer yet.</p>
     <p><a class="jump" href="#part-two">Part two &#8595;</a></p>
   </div>
+<div class="pairs" id="pairs" hidden>
+  <p class="pairs-note">Each pair is a modulator and the substrate whose metabolism it changes. The name on the right opens the study the kinetic values come from.</p>
+  <div class="pairs-grid">
+    <div class="pg"><h3>CYP3A &#183; midazolam hydroxylation <span>calibration set, 12 pairs</span></h3><ul>
+      <li><span class="pp"><b>Panaxytriol</b> + midazolam</span> <a href="https://doi.org/10.1248/bpb.b15-00143" target="_blank" rel="noopener">He et al. 2015</a></li>
+      <li><span class="pp"><b>Efavirenz</b> + midazolam</span> <a href="https://doi.org/10.1124/dmd.111.043844" target="_blank" rel="noopener">Keubler et al. 2012</a></li>
+      <li><span class="pp"><b>VU0448187</b> + midazolam</span> <a href="https://doi.org/10.1124/dmd.113.052662" target="_blank" rel="noopener">Blobaum et al. 2013</a></li>
+      <li><span class="pp"><b>Perillyl alcohol</b> + midazolam</span> <a href="https://doi.org/10.3390/pharmaceutics16121581" target="_blank" rel="noopener">Ryu et al. 2024</a></li>
+      <li><span class="pp"><b>Icotinib with ketoconazole</b> + midazolam</span> <a href="https://doi.org/10.1016/j.bcp.2016.09.012" target="_blank" rel="noopener">Zhuang et al. 2016</a></li>
+      <li><span class="pp"><b>Bulleyaconitine A</b> + midazolam</span> <a href="https://doi.org/10.1016/j.taap.2022.116024" target="_blank" rel="noopener">Li et al. 2022</a></li>
+      <li><span class="pp"><b>Mibefradil</b> + midazolam</span> <a href="https://doi.org/10.1046/j.1365-2125.1999.00902.x" target="_blank" rel="noopener">Prueksaritanont et al. 1999</a></li>
+      <li><span class="pp"><b>Nefazodone</b> + midazolam</span> <a href="https://doi.org/10.1038/s41598-019-42051-x" target="_blank" rel="noopener">Filppula et al. 2019</a></li>
+      <li><span class="pp"><b>Erythromycin</b> + midazolam</span> <a href="https://doi.org/10.5414/CP203896" target="_blank" rel="noopener">Akiyoshi et al. 2021</a></li>
+      <li><span class="pp"><b>Clarithromycin</b> + midazolam</span> <a href="https://doi.org/10.5414/CP203896" target="_blank" rel="noopener">Akiyoshi et al. 2021</a></li>
+      <li><span class="pp"><b>Shenmai injection</b> + midazolam, 1&prime;-hydroxylation route</span> <a href="https://doi.org/10.1016/j.cbi.2009.03.022" target="_blank" rel="noopener">Xia et al. 2009</a></li>
+      <li><span class="pp"><b>Shenmai injection</b> + midazolam, 4-hydroxylation route</span> <a href="https://doi.org/10.1016/j.cbi.2009.03.022" target="_blank" rel="noopener">Xia et al. 2009</a></li>
+    </ul></div>
+    <div class="pg"><h3>CYP3A4 &#183; other probe reactions <span>independent validation set, 5 pairs</span></h3><ul>
+      <li><span class="pp"><b>Panaxytriol</b> + midazolam, 4-hydroxylation route</span> <a href="https://doi.org/10.1248/bpb.b15-00143" target="_blank" rel="noopener">He et al. 2015</a></li>
+      <li><span class="pp"><b>Progesterone</b> + nifedipine</span> <a href="https://doi.org/10.1080/0049825031000121617" target="_blank" rel="noopener">Niwa et al. 2003</a></li>
+      <li><span class="pp"><b>Testosterone</b> + nifedipine</span> <a href="https://doi.org/10.1080/0049825031000121617" target="_blank" rel="noopener">Niwa et al. 2003</a></li>
+      <li><span class="pp"><b>&alpha;-Naphthoflavone</b> + 7-benzyloxyresorufin</span> <a href="https://doi.org/10.1080/0049825031000121617" target="_blank" rel="noopener">Niwa et al. 2003</a></li>
+      <li><span class="pp"><b>Quinidine</b> + diclofenac</span> <a href="https://doi.org/10.1016/S0090-9556(24)15184-7" target="_blank" rel="noopener">Ngui et al. 2000</a></li>
+    </ul></div>
+    <div class="pg"><h3>Monoamine oxidase B <span>5 pairs</span></h3><ul>
+      <li><span class="pp"><b>Guanabenz</b> + 2-phenylethylamine</span> <a href="https://doi.org/10.1038/sj.bjp.0701214" target="_blank" rel="noopener">Ozaita et al. 1997</a></li>
+      <li><span class="pp"><b>2-BFI</b> + 2-phenylethylamine</span> <a href="https://doi.org/10.1038/sj.bjp.0701214" target="_blank" rel="noopener">Ozaita et al. 1997</a></li>
+      <li><span class="pp"><b>Cirazoline</b> + 2-phenylethylamine</span> <a href="https://doi.org/10.1038/sj.bjp.0701214" target="_blank" rel="noopener">Ozaita et al. 1997</a></li>
+      <li><span class="pp"><b>Idazoxan</b> + 2-phenylethylamine</span> <a href="https://doi.org/10.1038/sj.bjp.0701214" target="_blank" rel="noopener">Ozaita et al. 1997</a></li>
+      <li><span class="pp"><b>LSL 60101</b> + 2-phenylethylamine</span> <a href="https://doi.org/10.1038/sj.bjp.0701214" target="_blank" rel="noopener">Ozaita et al. 1997</a></li>
+    </ul></div>
+    <div class="pg"><h3>Arginase <span>3 pairs</span></h3><ul>
+      <li><span class="pp"><b>DQR peptide</b> + L-arginine</span> <a href="https://doi.org/10.1016/j.fochms.2026.100419" target="_blank" rel="noopener">Chukwuejim et al. 2026</a></li>
+      <li><span class="pp"><b>QER peptide</b> + L-arginine</span> <a href="https://doi.org/10.1016/j.fochms.2026.100419" target="_blank" rel="noopener">Chukwuejim et al. 2026</a></li>
+      <li><span class="pp"><b>REGNH peptide</b> + L-arginine</span> <a href="https://doi.org/10.1016/j.fochms.2026.100419" target="_blank" rel="noopener">Chukwuejim et al. 2026</a></li>
+    </ul></div>
+  </div>
 </div>
+</div>
+<script>
+(function(){var b=document.getElementById('pairsBtn'),p=document.getElementById('pairs');if(!b||!p)return;
+b.addEventListener('click',function(){var open=p.hidden;p.hidden=!open;b.setAttribute('aria-expanded',String(open));
+b.textContent=open?'Hide the pairs studied':'Show the 25 pairs studied';});})();
+</script>
 
 <section class="sec" id="part-one">
 <div class="part">
