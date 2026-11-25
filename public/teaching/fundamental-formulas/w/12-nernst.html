@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nernst is not enough: Donnan is needed</title>
+<link rel="stylesheet" href="widget.css">
+<style>
+body{margin:0;padding:8px 10px 10px}
+.pn{border:1px solid var(--border);border-radius:10px;background:#FFFFFF;padding:10px 12px;color:#16222E;font:14.5px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
+svg{display:block;width:100%;height:auto;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+.rw{display:grid;grid-template-columns:minmax(150px,230px) 1fr 86px;gap:10px;align-items:center;margin:4px 0}
+.rw label{font-weight:700}
+.rw output{font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;margin:0}
+.ck{display:flex;align-items:center;gap:8px;font-weight:700;margin:8px 0 4px;cursor:pointer;user-select:none}
+.ck input{width:19px;height:19px;margin:0;accent-color:#6A3A96}
+.bt{font:700 14px/1.2 system-ui,-apple-system,Segoe UI,sans-serif;padding:7px 14px;border-radius:9px;border:2px solid #6A3A96;background:#6A3A96;color:#FFFFFF;cursor:pointer;margin-left:6px}
+.bt[disabled]{opacity:.35;cursor:default}
+.eq{list-style:none;margin:8px 0 4px;padding:0}
+.eq li{display:flex;gap:10px;align-items:baseline;padding:5px 8px;border-radius:8px;margin:3px 0;font-weight:700;font-variant-numeric:tabular-nums}
+.eq li .mk{flex:0 0 22px;font-size:17px;font-weight:800;text-align:center}
+.eq li.ok{background:#E7F5EC}.eq li.ok .mk{color:#1F8A4C}
+.eq li.no{background:#FBE9E9}.eq li.no .mk{color:#B03A3A}
+.eq li.off{background:#F1F3F5;color:#7A8792}.eq li.off .mk{color:#7A8792}
+.msg{margin:8px 0 2px;padding:8px 10px;border-radius:8px;background:#F4F0FA;border-left:5px solid #6A3A96}
+.msg b{font-weight:800}
+.fm{font-size:16px;font-weight:700;margin:6px 0 2px}
+.lg{font-size:12px;line-height:1.4;color:#55697A;margin:4px 0 0}
+details{margin:8px 0 0;border:1px solid #D5DCE3;border-radius:8px;padding:6px 10px;font-size:13.5px}
+summary{cursor:pointer;font-weight:700}
+.sr{position:absolute;left:-9999px}
+@media(max-width:520px){.rw{grid-template-columns:1fr 70px}.rw label{grid-column:1/3}}
+</style>
+</head>
+<body>
+<p class="sr" id="sr"></p>
+<div class="pn">
+ <div class="rw"><label for="e" id="le"></label><input type="range" id="e" min="-6" max="3" step="0.01" value="0"><output id="oe"></output></div>
+ <div class="rw"><label for="z" id="lz"></label><input type="range" id="z" min="0" max="30" step="1" value="17"><output id="oz"></output></div>
+ <label class="ck"><input type="checkbox" id="dn"><span id="ld"></span><button type="button" class="bt" id="sv2" disabled></button></label>
+ <svg id="sv" viewBox="0 0 720 250" role="img"></svg>
+ <ul class="eq" id="eq"></ul>
+ <div class="msg" id="msg" aria-live="polite"></div>
+ <p class="fm" id="fm"></p>
+ <p class="lg" id="lg"></p>
+ <details><summary id="gs"></summary><p id="gp" style="margin:6px 0 2px"></p></details>
+</div>
+<script>
+(function(){
+var it=document.documentElement.lang==='it';function T(a,b){return it?a:b;}
+function f(v,d){var s=v.toFixed(d);return it?s.replace('.',','):s;}
+var NS='http://www.w3.org/2000/svg',sv=document.getElementById('sv');
+function mk(n,a,t,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;(p||sv).appendChild(e);return e;}
+var INK='#16222E',MU='#55697A',cNa='#B87A00',cCl='#1F6FB0',cPr='#B0436B',cE='#6A3A96',K=26.73,C0=150,Y0=215,S=.9,W=74;
+var PX=150,IX=470;
+mk('path',{d:'M70 '+Y0+' H680',stroke:MU,'stroke-width':1});mk('path',{d:'M70 '+Y0+' V20',stroke:MU,'stroke-width':1});
+[0,100,200].forEach(function(v){mk('text',{x:62,y:Y0-v*S+4,'font-size':11,fill:MU,'text-anchor':'end'},v);mk('path',{d:'M65 '+(Y0-v*S)+' h5',stroke:MU,'stroke-width':1});});
+mk('text',{x:18,y:Y0-95,'font-size':11,fill:MU,'text-anchor':'middle',transform:'rotate(-90 18 '+(Y0-95)+')'},'mEq/L');
+mk('rect',{x:372,y:20,width:20,height:Y0-20,rx:4,fill:'#B03A3A','fill-opacity':.85});mk('text',{x:386,y:118,'font-size':11.5,'font-weight':600,fill:'#FFFFFF','text-anchor':'middle',transform:'rotate(-90 386 118)'},T('parete del capillare','capillary wall'));
+var rNa=mk('rect',{x:PX,width:W,fill:'#F2B62E',stroke:'#FFFFFF'}),rPr=mk('rect',{x:PX+W,width:W,fill:'#E58FB0',stroke:'#FFFFFF'}),rCl=mk('rect',{x:PX+W,width:W,fill:'#7DBBEA',stroke:'#FFFFFF'});
+mk('rect',{x:IX,y:Y0-C0*S,width:W,height:C0*S,fill:'#F2B62E',stroke:'#FFFFFF'});mk('rect',{x:IX+W,y:Y0-C0*S,width:W,height:C0*S,fill:'#7DBBEA',stroke:'#FFFFFF'});
+mk('text',{x:IX+W/2,y:Y0-C0*S/2+5,'font-size':14,'font-weight':700,fill:INK,'text-anchor':'middle'},'Na⁺ 150');mk('text',{x:IX+W*1.5,y:Y0-C0*S/2+5,'font-size':14,'font-weight':700,fill:INK,'text-anchor':'middle'},'Cl⁻ 150');
+var tNa=mk('text',{x:PX+W/2,'font-size':14,'font-weight':700,fill:INK,'text-anchor':'middle'}),tCl=mk('text',{x:PX+W*1.5,'font-size':14,'font-weight':700,fill:INK,'text-anchor':'middle'}),tPr=mk('text',{x:PX+W*1.5,'font-size':11.5,'font-weight':700,fill:INK,'text-anchor':'middle'});
+mk('text',{x:PX+W,y:Y0+18,'font-size':14,'font-weight':700,fill:'#B03A3A','text-anchor':'middle'},T('plasma','plasma'));mk('text',{x:IX+W,y:Y0+18,'font-size':14,'font-weight':700,fill:'#8A6A00','text-anchor':'middle'},T('interstizio','interstitium'));
+mk('text',{x:IX+W,y:Y0+33,'font-size':11.5,fill:MU,'text-anchor':'middle'},T('fisso: è il dato','fixed: it is the given'));
+var tc=mk('text',{x:PX+W/2,'font-size':12.5,'font-weight':800,fill:INK,'text-anchor':'middle'}),ta=mk('text',{x:PX+W*1.5,'font-size':12.5,'font-weight':800,fill:INK,'text-anchor':'middle'});
+var gap=mk('g',{}),gR=mk('rect',{x:PX,width:2*W,fill:'#B03A3A','fill-opacity':.2,stroke:'#B03A3A','stroke-width':2.5,'stroke-dasharray':'6 4'},null,gap),gT=mk('text',{x:PX-8,'font-size':12.5,'font-weight':800,fill:'#B03A3A','text-anchor':'end'},'',gap);
+var tE=mk('text',{x:PX+W,y:Y0+33,'font-size':11.5,'font-weight':700,fill:cE,'text-anchor':'middle'});
+var eS=document.getElementById('e'),zS=document.getElementById('z'),dn=document.getElementById('dn'),bt=document.getElementById('sv2'),raf=0;
+function sol(z){var na=z/2+Math.sqrt(z*z/4+C0*C0);return{na:na,cl:na-z,e:-K*Math.log(na/C0)};}
+function draw(){var E=+eS.value,z=+zS.value,na=C0*Math.exp(-E/K),cl=C0*Math.exp(E/K),on=dn.checked,dif=na-(cl+z),ok=Math.abs(dif)<.36,s=sol(z);
+ document.getElementById('oe').textContent=(E>0?'+':'')+f(E,2)+' mV';document.getElementById('oz').textContent=z+' mEq/L';
+ var hN=na*S,hC=cl*S,hP=z*S;rNa.setAttribute('y',Y0-hN);rNa.setAttribute('height',hN);rPr.setAttribute('y',Y0-hP);rPr.setAttribute('height',hP);rCl.setAttribute('y',Y0-hP-hC);rCl.setAttribute('height',hC);
+ tNa.setAttribute('y',Y0-hN/2+5);tNa.textContent='Na⁺ '+f(na,1);tCl.setAttribute('y',Y0-hP-hC/2+5);tCl.textContent='Cl⁻ '+f(cl,1);tPr.setAttribute('y',Y0-hP/2+4);tPr.textContent=z>=9?T('proteine ','proteins ')+z:'';
+ tc.setAttribute('y',Y0-hN-6);tc.textContent=f(na,1);ta.setAttribute('y',Y0-hP-hC-6);ta.textContent=f(cl+z,1);
+ var top=Y0-Math.max(na,cl+z)*S,bot=Y0-Math.min(na,cl+z)*S;gap.setAttribute('opacity',on&&!ok?1:0);gR.setAttribute('y',top);gR.setAttribute('height',Math.max(0,bot-top));gT.setAttribute('y',(top+bot)/2+4);gT.textContent=(dif>0?'+':'')+f(dif,1);
+ tc.setAttribute('fill',on?(ok?'#1F8A4C':'#B03A3A'):INK);ta.setAttribute('fill',on?(ok?'#1F8A4C':'#B03A3A'):INK);
+ tE.textContent=T('potenziale ','potential ')+(E>0?'+':'')+f(E,2)+' mV';
+ var nE=K*Math.log(C0/na),cE2=-K*Math.log(C0/cl);
+ document.getElementById('eq').innerHTML='<li class="ok"><span class="mk">✓</span><span>'+T('Nernst per ','Nernst for ')+'<span style="color:'+cNa+'">Na⁺</span>: '+f(K,1)+' × ln (150 / <span style="color:'+cNa+'">'+f(na,1)+'</span>) = <span style="color:'+cE+'">'+f(nE,2)+' mV</span></span></li><li class="ok"><span class="mk">✓</span><span>'+T('Nernst per ','Nernst for ')+'<span style="color:'+cCl+'">Cl⁻</span>: −'+f(K,1)+' × ln (150 / <span style="color:'+cCl+'">'+f(cl,1)+'</span>) = <span style="color:'+cE+'">'+f(cE2,2)+' mV</span></span></li><li class="'+(on?(ok?'ok':'no'):'off')+'"><span class="mk">'+(on?(ok?'✓':'✗'):'–')+'</span><span>'+T('Elettroneutralità','Electroneutrality')+': <span style="color:'+cNa+'">'+f(na,1)+'</span> '+(Math.abs(dif)<.08?'=':ok?'≈':'≠')+' <span style="color:'+cCl+'">'+f(cl,1)+'</span> + <span style="color:'+cPr+'">'+z+'</span>'+(on?'':T(' (non richiesta)',' (not required)'))+'</span></li>';
+ var m;if(!on)m=T('<b>Solo Nernst.</b> Muovi il potenziale: le due equazioni di Nernst restano vere per qualsiasi valore. Ogni posizione del cursore è una soluzione valida. <b>Nernst non sa scegliere</b>: ha tre incognite (Na⁺, Cl⁻, potenziale) e due equazioni.','<b>Nernst alone.</b> Move the potential: the two Nernst equations stay true for any value. Every slider position is a valid solution. <b>Nernst cannot choose</b>: it has three unknowns (Na⁺, Cl⁻, potential) and two equations.');
+ else if(ok)m=T('<b>Trovata: è l’unica.</b> Con '+z+' cariche di proteine il plasma sta a <b>'+f(s.e,2)+' mV</b>, con Na⁺ '+f(s.na,1)+' e Cl⁻ '+f(s.cl,1)+'. Ioni piccoli nel plasma: '+f(s.na+s.cl,1)+' contro 300 fuori. Cambia le proteine e risolvi di nuovo: il potenziale e lo scarto crescono con loro.','<b>Found: it is the only one.</b> With '+z+' protein charges plasma sits at <b>'+f(s.e,2)+' mV</b>, with Na⁺ '+f(s.na,1)+' and Cl⁻ '+f(s.cl,1)+'. Small ions in plasma: '+f(s.na+s.cl,1)+' against 300 outside. Change the proteins and solve again: the potential and the gap grow with them.');
+ else m=T('<b>Con il vincolo di Donnan.</b> Ora il plasma deve essere neutro: le due colonne devono essere alte uguali. Adesso i cationi '+(dif>0?'superano':'sono sotto')+' gli anioni di <b>'+f(Math.abs(dif),1)+'</b>. Muovi il potenziale finché pareggiano, oppure premi «Risolvi». Di posizioni giuste ce n’è una sola.','<b>With the Donnan constraint.</b> Plasma must now be neutral: the two columns must be equally tall. Right now cations are '+(dif>0?'above':'below')+' anions by <b>'+f(Math.abs(dif),1)+'</b>. Move the potential until they match, or press “Solve”. There is only one right position.');
+ document.getElementById('msg').innerHTML=m;bt.disabled=!on;}
+function go(){var tgt=sol(+zS.value).e;(function st(){var c=+eS.value,d=tgt-c;if(Math.abs(d)<.03){eS.value=tgt;draw();raf=0;return;}eS.value=c+d*.12+(d>0?.02:-.02);draw();raf=requestAnimationFrame(st);})();}
+eS.addEventListener('input',draw);zS.addEventListener('input',draw);dn.addEventListener('change',draw);bt.addEventListener('click',function(e){e.preventDefault();if(!raf)go();});
+document.getElementById('le').textContent=T('Potenziale del plasma','Plasma potential');document.getElementById('lz').textContent=T('Cariche − delle proteine','Protein − charges');
+document.getElementById('ld').textContent=T('Aggiungi il vincolo di Donnan: il plasma deve essere neutro','Add the Donnan constraint: plasma must be neutral');bt.textContent=T('Risolvi','Solve');
+document.getElementById('fm').innerHTML='<span style="color:'+cE+'">E</span> = (<span style="color:'+MU+'">RT</span> / <span style="color:#0E7C5A">z</span><span style="color:'+MU+'">F</span>) · ln (<span style="color:#8A6A00">c<sub>'+T('interstizio','interstitium')+'</sub></span> / <span style="color:#B03A3A">c<sub>plasma</sub></span>)';
+document.getElementById('lg').innerHTML='<b style="color:'+cE+'">E</b> = '+T('potenziale del plasma rispetto all’interstizio','potential of plasma relative to the interstitium')+' [M L² T⁻³ I⁻¹], mV (V = J/C); <b style="color:'+MU+'">RT/F</b> = '+f(K,1)+' mV '+T('a 37 °C','at 37 °C')+'; <b style="color:#0E7C5A">z</b> = '+T('carica dello ione','charge of the ion')+' [1], +1 '+T('per','for')+' Na⁺, −1 '+T('per','for')+' Cl⁻; <b style="color:#8A6A00">c</b>, <b style="color:#B03A3A">c</b> = '+T('concentrazioni','concentrations')+' [N L⁻³], mEq/L. '+T('Esempio semplificato: solo Na⁺ e Cl⁻, interstizio fisso a 150.','Simplified example: only Na⁺ and Cl⁻, interstitium fixed at 150.');
+document.getElementById('gs').textContent=T('E Goldman?','And Goldman?');
+document.getElementById('gp').innerHTML=T('Goldman calcola il potenziale di una membrana in cui gli ioni <b>non</b> sono all’equilibrio, a partire dalle concentrazioni e dalle permeabilità. Qui non aiuta per due motivi: vuole le concentrazioni come dati, e sono proprio l’incognita; e alla parete del capillare gli ioni sono all’equilibrio, quindi Goldman si riduce a Nernst. Serve dove una pompa tiene gli ioni lontani dall’equilibrio, come nella membrana cellulare.','Goldman computes the potential of a membrane where the ions are <b>not</b> at equilibrium, from concentrations and permeabilities. It does not help here for two reasons: it needs the concentrations as givens, and they are precisely the unknown; and at the capillary wall the ions are at equilibrium, so Goldman reduces to Nernst. It is needed where a pump keeps the ions away from equilibrium, as in the cell membrane.');
+document.getElementById('sr').textContent=T('Interattivo: con il solo Nernst qualsiasi potenziale soddisfa le equazioni di sodio e cloro; aggiungendo l’elettroneutralità con le cariche delle proteine resta una sola soluzione.','Interactive: with Nernst alone any potential satisfies the sodium and chloride equations; adding electroneutrality with the protein charges leaves a single solution.');
+draw();
+})();
+</script>
+</body>
+</html>
